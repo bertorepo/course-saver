@@ -12,7 +12,7 @@ public class VenueNames {
 		this.name = name;
 	}
 	
-	public int getId {
+	public int getId() {
 		return id;
 	}
 
