@@ -25,7 +25,7 @@ public class VenueListController {
 	
 	@GetMapping("/")
 	public String show(Model model) {
-		VenueListForm venue = new VenueListForm();
+		VenueListForm venue = new VenueListForm;
 		Set<VenueNames> vns = new HashSet<>();
 		
 		VenueNames vn1 = new VenueNames();

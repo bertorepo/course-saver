@@ -14,7 +14,7 @@ public class VenueListForm {
 
 	
 	
-	public Set<VenueNames> getVNs() {
+	public Set<VenueNames> getVNs {
 		return VNs;
 	}
 	public void setVNs(Set<VenueNames> VNs) {
