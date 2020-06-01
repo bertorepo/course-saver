@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+<H1>Venues</H1>
+<button class="btn btn-primary" style="float: right"><i class="fa fa-plus"></i></button><br><br>
+<form action="#" th:action="@{/venue/}" th:object="${venueList}" method="post">
+  
+<table class="table">
+<tr>
+	<thead>
+		<tr>
+			<th>#</th>
+			<th style="width:70%">Venues</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tr th:each="VN : *{VNs}">
+		<td >
+		  <label th:for="${VN.id}" th:text="${VN.id}"></label>
+		</td>
+		<td >
+		  <label th:for="${VN.name}" th:text="${VN.name}"></label>
+		</td>
+		<td>
+			<a href=""><label><i class="fa fa-pencil"></i></label></a>
+			<a href=""><label><i class="fa fa-search"></i></label></a>
+			<a href=""><label><i class="fa fa-trash-o"></i></label></a>
+		</td>
+	</tr>
+</table>
+
+</form>  
+</div>
+</body>
+</html>
