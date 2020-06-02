@@ -17,7 +17,7 @@ public class CourseUpdateForm {
 		return id;
 	}
 
-	public String getCousrseName() {
+	public String getName() {
 		return name;
 	}
 

@@ -10,24 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.fujitsu.ph.tsup.course.management.model.CourseUpdateForm;
 
 @Controller
-@RequestMapping("/course")
+@RequestMapping("/courses")
 public class CourseUpdateController {
 
 	@GetMapping()
 	public String show(Model model) {
-		 List<CourseUpdateForm> courses;
 
-		 CourseUpdateForm course = new CourseUpdateForm();
+
+		CourseUpdateForm course = new CourseUpdateForm();
 		course.setId(123456);
 		course.setName("Course 1");
 
 
-		courses = new ArrayList<>();
-		courses.add(course);
-		model.addAttribute("course", courses);
+
+
+		model.addAttribute("course", course);
 		return "course-management/CourseUpdateForm";
-
-
-
 	}
 }

@@ -8,121 +8,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-	<style>
-
-		.tbl_participants, .{
-			width:1100px;
-			text-align:center;
-
-		}
-		.table_participants{
-			width: 1100px
-			border: 1px solid black;
-		}
-
-		.table_participants tr th{
-			border : 1px solid black;
-			background-color: skyblue;
-			padding:5px;
-		}
-
-		.table_participants .tbody_participants tr{
-			width:1100px;
-		}
-		.table_participants td{
-			border :1px solid black;
-			padding 5px;
-		}
-		.table_participants input{
-			width:400px
-		}
-
-
-		.tbl_course_details, .{
-			width:1100px;
-			text-align:center;
-
-		}
-		.table_course_details{
-			width: 1100px
-			border: 1px solid black;
-		}
-
-		.tabel_course_details tr th{
-			border : 1px solid black;
-			background-color: skyblue;
-			padding:5px;
-		}
-
-		.tabel_course_details .tbody_details tr{
-			width:1100px;
-		}
-		.tabel_course_details td{
-			border :1px solid black;
-			padding 5px;
-		}
-		.tabel_course_details input{
-			width:335px
-		}
-
-
-		.tbl_course_non_participant, .{
-			width:1100px;
-			text-align:center;
-
-		}
-		.table_course_non_participant{
-			width: 1100px
-			border: 1px solid black;
-		}
-
-		.table_course_non_participant tr th{
-			border : 1px solid black;
-			background-color: skyblue;
-			padding:5px;
-		}
-
-		.table_course_non_participant .tbody_details tr{
-			width:1100px;
-		}
-		.table_course_non_participant td{
-			border :1px solid black;
-			padding 5px;
-		}
-		.table_course_non_participant input{
-			width:220px
-		}
-
-
-		.tbl_course_attendance, .{
-			width:1100px;
-			text-align:center;
-
-		}
-		.table_course_attendance{
-			width: 1100px
-			border: 1px solid black;
-		}
-
-		.table_course_attendance tr th{
-			border : 1px solid black;
-			background-color: skyblue;
-			padding:5px;
-		}
-
-		.table_course_attendance .tbody_details tr{
-			width:1100px;
-		}
-		.table_course_attendance td{
-			border :1px solid black;
-			padding 5px;
-		}
-		.table_course_attendance input{
-			width:200px
-		}
-
-
-	</style>
 
 </head>
 <body>
@@ -130,7 +15,7 @@
 		<H1>Course Update</H1>
 		<a href=""><button class="btn btn-primary" style="float: right">Save</button></a><br><br>
 
-		<form action="#" th:action="@{course/update}" th:object="${course}" method="post">
+		<form action="#" th:action="@{courses/update}" th:object="${course}" method="post">
 			<br>
 			<div class="tbl_participants">
 				<h2>Table Participant</h2>
@@ -139,13 +24,13 @@
 				<tbody class="tbody_participants">
 					<tr>
 						<th><b>ID</b></th>
-						<td> <input type="text" name="tpID" th:text="${course.ID}" disabled/></td>
+						<td> <input type="text" name="tpID" th:text="*{id}" disabled/></td>
 						<th><b>Course Schedule ID</b></th>
 						<td> <input type="text" name="tpCSID" /></td>
 					</tr>
 					<tr>
 						<th><b>Participant ID</b></th>
-						<td> <input type="text" name="tpparticipantID" th:text="${course.CourseName}"/></td>
+						<td> <input type="text" name="tpparticipantID" th:text="*{name}"/></td>
 						<th><b>Registration Date</b></th>
 						<td> <input type="date" class="form-From" id="tpregDate" name=""></td>
 					</tr>
