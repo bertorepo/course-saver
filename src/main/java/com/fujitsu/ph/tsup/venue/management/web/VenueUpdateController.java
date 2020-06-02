@@ -1,5 +1,4 @@
 package com.fujitsu.ph.tsup.venue.management.web;
-
 /*
  * 	Author: Jimenez, John Carlo, R.
  *  Last Modified: 6/2/2020
