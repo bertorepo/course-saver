@@ -20,10 +20,10 @@ import com.fujitsu.ph.tsup.venue.management.model.VenueListForm;
 import com.fujitsu.ph.tsup.venue.management.model.VenueNames;
 
 @Controller
-@RequestMapping("/venue")
+@RequestMapping("/venues")
 public class VenueListController {
 	
-	@GetMapping("/")
+	@GetMapping()
 	public String show(Model model) {
 		VenueListForm venue = new VenueListForm();
 		Set<VenueNames> vns = new HashSet<>();
