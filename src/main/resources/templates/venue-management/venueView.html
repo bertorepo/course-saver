@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Venues</title>
+<link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}" crossorigin="anonymous">
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+<H1>View Venues</H1>
+<form action="#" th:action="@{/venue/view}" th:object="${venueView}" method="post">
+  
+<table class="table">
+<tr>
+	<thead class="table-success">
+		<tr>
+			<th>Id</th>
+			<th style="width:70%">Venue Name</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tr th:each="VN : *{VNs}">
+		<td >
+		  <label th:for="${VN.id}" th:text="${VN.id}"></label>
+		</td>
+		<td >
+		  <label th:for="${VN.name}" th:text="${VN.name}"></label>
+		</td>
+	</tr>
+</table>
+
+	 <a href="http://localhost:8080//venues/" class="btn btn-info" role="button">Back</a>
+
+</form>  
+</div>
+</body>
+</html>  
