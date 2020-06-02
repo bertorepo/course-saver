@@ -1,6 +1,8 @@
 package com.fujitsu.ph.tsup.course.management.model;
 
 public class CourseNames {
+	
+	//variables
 	private String name;
 	private int id;
 

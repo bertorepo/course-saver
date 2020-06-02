@@ -33,6 +33,11 @@ public class CourseListController {
 		cn3.setName("Information Technology DA");
 		cns.add(cn3);
 		
+		CourseNames cn4 = new CourseNames();
+		cn4.setId(987632451);
+		cn4.setName("Information Technology DA");
+		cns.add(cn4);
+		
 		course.setCNs(cns);
 		model.addAttribute("courseList", course);
 		
