@@ -31,6 +31,6 @@ public class CourseUpdateForm {
 
 	@Override
 	public String toString() {
-		return "COURSE [ID = " + id + ", Course Name = " + name + "]";
+		return "COURSE [ID = " + id + ", CourseName = " + name + "]";
 	}
 }

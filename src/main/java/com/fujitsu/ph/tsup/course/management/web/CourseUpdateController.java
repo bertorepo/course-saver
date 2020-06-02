@@ -24,8 +24,8 @@ public class CourseUpdateController {
 
 		courses = new ArrayList<>();
 		courses.add(course);
-		model.addAttribute("course", course);
-		return "course-management/courseUpdate";
+		model.addAttribute("course", courses);
+		return "course-management/CourseUpdateForm";
 
 
 

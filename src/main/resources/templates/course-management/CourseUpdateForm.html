@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Course Update</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -128,7 +130,7 @@
 		<H1>Course Update</H1>
 		<a href=""><button class="btn btn-primary" style="float: right">Save</button></a><br><br>
 
-		<form action="#" th:action="@{/course/update}" th:object="${employee}" method="post">
+		<form action="#" th:action="@{course/update}" th:object="${course}" method="post">
 			<br>
 			<div class="tbl_participants">
 				<h2>Table Participant</h2>
@@ -137,13 +139,13 @@
 				<tbody class="tbody_participants">
 					<tr>
 						<th><b>ID</b></th>
-						<td> <input type="text" name="tpID" th:value="*{}" disabled/></td>
+						<td> <input type="text" name="tpID" th:text="${course.ID}" disabled/></td>
 						<th><b>Course Schedule ID</b></th>
-						<td> <input type="text" name="tpCSID" th:value="*{}"/></td>
+						<td> <input type="text" name="tpCSID" /></td>
 					</tr>
 					<tr>
 						<th><b>Participant ID</b></th>
-						<td> <input type="text" name="tpparticipantID" th:value="*{}"/></td>
+						<td> <input type="text" name="tpparticipantID" th:text="${course.CourseName}"/></td>
 						<th><b>Registration Date</b></th>
 						<td> <input type="date" class="form-From" id="tpregDate" name=""></td>
 					</tr>
@@ -156,9 +158,9 @@
 				<tbody class="tbody_details">
 					<tr>
 						<th><b>ID</b></th>
-						<td> <input type="text" name="csdID" th:value="*{}" disabled/></td>
+						<td> <input type="text" name="csdID" disabled/></td>
 						<th><b>Course_Schedule_ID</b></th>
-						<td> <input type="text" name="csdCSID" th:value="*{}"/></td>
+						<td> <input type="text" name="csdCSID" /></td>
 					</tr>
 					<tr>
 						<th><b>Scheduled_Start_Datetime</b></th>
@@ -168,7 +170,7 @@
 					</tr>
 					<tr>
 						<th><b>Duration</b></th>
-						<td colspan="3"><input type="text" name="csdDuration" th:value="*{}"/></td>
+						<td colspan="3"><input type="text" name="csdDuration" /></td>
 					</tr>
 			</table>
 
@@ -181,13 +183,13 @@
 				<tbody class="tbody_details">
 					<tr>
 						<th><b>ID</b></th>
-						<td> <input type="text" name="ID" th:value="*{}" disabled/></td>
+						<td> <input type="text" name="ID"  disabled/></td>
 
 						<th><b>Course_Schedule_ID</b></th>
-						<td> <input type="text" name="cnpCSID" th:value="*{}"/></td>
+						<td> <input type="text" name="cnpCSID" /></td>
 
 						<th><b>Participant ID</b></th>
-						<td> <input type="text" name="cnpParticipantID" th:value="*{}"/></td>
+						<td> <input type="text" name="cnpParticipantID" /></td>
 
 					</tr>
 					<tr>
@@ -213,18 +215,18 @@
 				<tbody class="tbody_details">
 					<tr>
 						<th><b>ID</b></th>
-						<td> <input type="text" name="attID" th:value="*{}" disabled/></td>
+						<td> <input type="text" name="attID" disabled/></td>
 
 						<th><b>Course_Schedule_ID</b></th>
-						<td> <input type="text" name="caCoursSchedID" th:value="*{}"/></td>
+						<td> <input type="text" name="caCoursSchedID" /></td>
 
 						<th><b>Participant ID</b></th>
-						<td> <input type="text" name="caParticipantID" th:value="*{}"/></td>
+						<td> <input type="text" name="caParticipantID" /></td>
 
 					</tr>
 					<tr>
 						<th><b>Status</b></th>
-						<td colspan="5"> <input type="text" name="status" th:value="*{}"/></td>
+						<td colspan="5"> <input type="text" name="status" /></td>
 					</tr>
 					<tr>
 						<th><b>Login Date and Time</b></th>
