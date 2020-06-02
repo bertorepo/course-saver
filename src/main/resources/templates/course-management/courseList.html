@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Course</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+	<h1>Course</h1>
+	<form action="#" th:action="@{/course/}" th:object="${courseList}" method="post">
+	<table class="table">
+		<tr>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th style="width:50%">Course Name</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tr th:each="CN : *{CNs}">
+				<td >
+				  <label th:for="${CN.id}" th:text="${CN.id}"></label>
+				</td>
+				<td>
+				  <label th:for="${CN.name}" th:text="${CN.name}"></label>
+				</td>
+			</tr>
+		</tr>
+	</table>
+	</form>  
+</div>
+</body>
+</html>
