@@ -30,7 +30,7 @@ public class VenueDeleteForm {
 	}
 	@Override
 	public String toString() {
-		return "VenueListForm [VNs=" + VNs +", delete=" + delete + "]";
+		return "VenueDeleteForm [VNs=" + VNs +", delete=" + delete + "]";
 	}
 
 }

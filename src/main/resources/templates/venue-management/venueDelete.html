@@ -12,7 +12,7 @@
 <div class="container">
 <br>
 <H1>List of Venues</H1>
-<form action="#" th:action="@{/venue/delete}" th:object="${venueDelete}" method="post">
+<form action="#" th:action="@{/venues/delete}" th:object="${venueDelete}" method="post">
 <table class="table table-bordered">
 <tr>
 	<thead>
@@ -32,7 +32,7 @@
 </table>
 			<button class="btn btn-primary" style="float: right"><i class="fa fa-trash-o"></i> Delete</button>
 			
-			<a href="http://localhost:9999/venue/" class="btn btn-primary" style="float: right; margin-right:10px;"><i class="fa fa-arrow-left"> Back</i></a>
+			<a href="http://localhost:9999/venues" class="btn btn-primary" style="float: right; margin-right:10px;"><i class="fa fa-arrow-left"> Back</i></a>
 </form>  
 </div>
 </body>
