@@ -1,19 +1,18 @@
 package com.fujitsu.ph.tsup.employee.management.model;
 
-public class EMPLOYEE_CREATE {	
-	private long ID;
+public class EmployeeUpdateForm {
+	private int ID;
 	private String NUMBER;
 	private String LAST_NAME;
 	private String FIRST_NAME;
 	private String EMAIL_ADDRESS;
 	private String USERNAME;
-	private String submit;
-
+	private String SUBMIT;
 	
-	public Long getID() {
+	public int getID() {
 		return ID;
 	}
-	public void setID(Long ID) {
+	public void setID(int ID) {
 		this.ID = ID;
 	}
 	public String getNUMBER() {
@@ -46,19 +45,18 @@ public class EMPLOYEE_CREATE {
 	public void setUSERNAME(String USERNAME) {
 		this.USERNAME = USERNAME;
 	}
-	public String getSubmit() {
-		return submit;
+	public String getSUBMIT() {
+		return SUBMIT;
 	}
-	public void setSubmit(String submit) {
-		this.submit = submit;
+	public void setSUBMIT(String SUBMIT) {
+		this.SUBMIT = SUBMIT;
 	}
+	
 	@Override
 	public String toString() {
-		return "EMPLOYEE_CREATE [ID=" + ID + ", NUMBER="
+		return "EMPLOYEE_UPDATE [ID=" + ID + ", NUMBER="
 				+ NUMBER + ", LAST_NAME=" + LAST_NAME + ", FIRST_NAME=" + FIRST_NAME
-				+ ", EMAIL_ADDRESS=" + EMAIL_ADDRESS + ", USERNAME=" + USERNAME + ", submit="
-				+ submit + "]";
+				+ ", EMAIL_ADDRESS=" + EMAIL_ADDRESS + ", USERNAME=" + USERNAME + ", SUBMIT="
+				+ SUBMIT + "]";
 	}
-	
-	
 }

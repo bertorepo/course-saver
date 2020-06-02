@@ -15,14 +15,14 @@ public class EMPLOYEE_CREATE_CONTROLLER {
 	public String show(Model model) {
 		EMPLOYEE_CREATE employee = new EMPLOYEE_CREATE();
 		employee.setID(1L);
-		employee.setNUMBER("2014-104334");
-		employee.setLAST_NAME("Lumontad");
-		employee.setFIRST_NAME("Mark Evan");
-		employee.setEMAIL_ADDRESS("m.lumontad@fujitsu.com");
-		employee.setUSERNAME("m.lumontad");
+		employee.setNUMBER("0000-000000");
+		employee.setLAST_NAME("Surname");
+		employee.setFIRST_NAME("Firstname");
+		employee.setEMAIL_ADDRESS("email@email.com");
+		employee.setUSERNAME("i.surname"); // "i" stands for First Name Initials
 		
+		model.addAttribute("employeeCreate", employee);
 		return "employee-management/EMPLOYEE_CREATE_FORM";
 }
 }
-//Mark Lumontad
-//Mark Lumontad
+//Mark
