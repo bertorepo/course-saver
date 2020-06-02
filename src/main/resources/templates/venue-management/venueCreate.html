@@ -11,6 +11,15 @@
 	<H2>Create Venue</H2>
 	<br>
 	<form action="#" th:action="@{/venues/new}" th:object="${venueCreate}" method="post">
+	
+	<div>
+	  <ul>
+	    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+	        <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+	        <span th:text="${e.message}">The error message</span>
+	    </li>
+	  </ul>
+  </div>
 
 
 		<div class="form-inline">
@@ -28,7 +37,8 @@
 
 		</div>
 		<br> <br>
-
+		
+		
 		<div class="container">
 
 			<table class="table">
@@ -37,19 +47,16 @@
 					<tr>
 						<th>#</th>
 						<th style="width: 25%">Venues</th>
-						<th></th>
+						
 					</tr>
 				</thead>
-				<tr th:each="VN : *{VNs}">
-					<td><label th:for="${VN.id}" th:text="${VN.id}"></label></td>
-					<td><label th:for="${VN.name}" th:text="${VN.name}"></label></td>
-					<td><href=""> <label><i class="fa fa-pencil"></i></label>
-						<href=""> <label><i class="fa fa-search"></i></label>
-						<href=""> <label><i class="fa fa-trash-o"></i></label></td>
+				<tr>
+					<td th:text="${id}"></td>
+					<td th:text="${venueName}"></td>
+					
 				</tr>
 			</table>
 		</div>
-
 	</form>
 
 

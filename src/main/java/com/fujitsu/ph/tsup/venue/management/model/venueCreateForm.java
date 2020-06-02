@@ -1,12 +1,17 @@
+/* @Author j.balanon */
+
 package com.fujitsu.ph.tsup.venue.management.model;
 
-import java.util.Set;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class venueCreateForm {
-
+	
 	private int id;
+	@NotBlank
+	@NotNull
 	private String venueName;
-	private Set<VenueNames> VNs;
+	private String submit;
 
 	public int getId() {
 		return id;
@@ -24,15 +29,15 @@ public class venueCreateForm {
 		this.venueName = venueName;
 	}
 	
-	public Set<VenueNames> getVNs() {
-		return VNs;
+	public String getSubmit() {
+		return submit;
 	}
-	public void setVNs(Set<VenueNames> VNs) {
-		this.VNs = VNs;
+	public void setSubmit(String submit) {
+		this.submit = submit;
 	}
 	@Override
 	public String toString() {
-		return "VenueListForm [VNs=" + VNs +"]";
+		return "venueCreateForm [id=" + id + ", venueName=" + venueName+ "]";
 	}
-
 }
+	
