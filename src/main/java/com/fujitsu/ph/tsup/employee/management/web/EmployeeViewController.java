@@ -16,25 +16,16 @@ import com.fujitsu.ph.tsup.employee.management.model.EmployeeView;
 @Controller
 @RequestMapping("/employees")
 public class EmployeeViewController {
+	    // load employee data
+	    List<EmployeeView> theEmployees;
 
-	
 	@GetMapping("/view")
 	public String viewEmployeeForm(Model model) {
-		
-		model.addAttribute("employee", theEmployees);
-		
-		return "employee-management/viewEmployee";
-	}
-	
-	private List<EmployeeView> theEmployees;
-	@PostConstruct
-	private void loadData() {
-		
 		// create employees
 		EmployeeView emp1 = new EmployeeView();
-		int id=1;
-		int employeeId=17415;
-		
+		int id = 1;
+		int employeeId = 17415;
+
 		emp1.setId(id++);
 		emp1.setEmpNumber(employeeId++);
 		emp1.setFirstName("Janella");
@@ -58,47 +49,35 @@ public class EmployeeViewController {
 		emp3.setEmailAddress("liza@gmail.com");
 		emp3.setUserName("Liza123");
 
-	
-		EmployeeView emp4 = new EmployeeView(); 
+		EmployeeView emp4 = new EmployeeView();
 		emp4.setId(id++);
-		emp4.setEmpNumber(employeeId++); 
+		emp4.setEmpNumber(employeeId++);
 		emp4.setFirstName("Jonessa");
-		emp4.setLastName("Mercado"); 
+		emp4.setLastName("Mercado");
 		emp4.setEmailAddress("mercado@gmail.com");
 		emp4.setUserName("Jonessa123");
-		
-		 
-		EmployeeView emp5 = new EmployeeView(); 
+
+		EmployeeView emp5 = new EmployeeView();
 		emp5.setId(id++);
-		emp5.setEmpNumber(employeeId++); 
+		emp5.setEmpNumber(employeeId++);
 		emp5.setFirstName("Vincent");
-		emp5.setLastName("Cruz"); 
+		emp5.setLastName("Cruz");
 		emp5.setEmailAddress("vincentcruz@gmail.com");
 		emp5.setUserName("Vincent123");
-		 
 
 		// create the list
 		theEmployees = new ArrayList<>();
-		
+
 		// add to the list
 		theEmployees.add(emp1);
 		theEmployees.add(emp2);
 		theEmployees.add(emp3);
-		theEmployees.add(emp4); 
+		theEmployees.add(emp4);
 		theEmployees.add(emp5);
-	
-		
+
+		model.addAttribute("employee", theEmployees);
+
+		return "employee-management/viewEmployee";
 	}
-	
 
-	
 }
-
-
-
-
-
-
-
-
-
