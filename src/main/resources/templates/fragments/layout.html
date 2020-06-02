@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="../css/lib/bootstrap.min.css">
+	<script src="../js/lib/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body>
+	<div th:fragment="header">
+		<div style="height: 3.5rem; background-color: lightgray;">
+			<img src="../images/logo.png" height="50px" style="float:left; vertical-align:middle">
+			<div style="padding-top: 10px;">
+				<h3 style="margin: 0">
+					TS - UP
+					
+				</h3>
+				<h5 style="margin: 0">Philippine Global Delivery Center</h5>
+			</div>
+		</div>
+
+	</div>
+
+	<div th:fragment="footer">
+		<div
+			style="height: 50px; background-color: lightgray; position: absolute; bottom: 0; width: 99%; height: 3.5rem;">
+
+		</div>
+	</div>
+
+</body>
+
+</html>
