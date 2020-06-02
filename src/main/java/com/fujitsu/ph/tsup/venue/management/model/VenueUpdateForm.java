@@ -1,5 +1,11 @@
 package com.fujitsu.ph.tsup.venue.management.model;
 
+/*
+ * 	Author: Jimenez, John Carlo, R.
+ *  Last Modified: 6/2/2020
+ * 
+ */
+
 import java.util.Set;
 
 import javax.validation.constraints.Min;
