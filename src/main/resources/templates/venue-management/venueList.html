@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Venues</title>
+<title>List of Venues</title>
 <link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}" crossorigin="anonymous">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-<H1>Venues</H1>
+<H1>List of Venues</H1>
 <a href=""><button class="btn btn-primary" style="float: right"><i class="fa fa-plus"></i></button></a><br><br>
 <form action="#" th:action="@{/venues}" th:object="${venueList}" method="post">
   
