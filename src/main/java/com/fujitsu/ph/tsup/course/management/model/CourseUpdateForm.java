@@ -1,3 +1,4 @@
+//@Author Thomas Oviedo
 package com.fujitsu.ph.tsup.course.management.model;
 
 public class CourseUpdateForm {
