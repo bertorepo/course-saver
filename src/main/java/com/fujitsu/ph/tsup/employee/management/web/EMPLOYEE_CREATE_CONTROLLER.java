@@ -21,6 +21,7 @@ public class EMPLOYEE_CREATE_CONTROLLER {
 		employee.setEMAIL_ADDRESS("m.lumontad@fujitsu.com");
 		employee.setUSERNAME("m.lumontad");
 		
-		return "course-management/EMPLOYEE_CREATE_FORM";
+		return "employee-management/EMPLOYEE_CREATE_FORM";
 }
 }
+//Mark Lumontad

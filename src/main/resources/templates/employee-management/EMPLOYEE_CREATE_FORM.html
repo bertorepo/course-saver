@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Employee Register</title>
+</head>
+<body>
+<form action="#" th:action="@{/EmployeeCreate/Register}" method="post">
+
+  <table style="width:100%">
+             
+                <tr>
+                  <th class="text-center align-middle">Employee ID</th>
+
+                  <th class="text-center align-middle">Employee Number</th>
+                  <th class="text-center align-middle">Last Name</th>
+                  <th class="text-center align-middle">First Name</th>
+				  <th class="text-center align-middle">Email Address</th>
+				  <th class="text-center align-middle">Username</th>
+                </tr>
+                <tr>
+                  <td> <input type="text" name="ID" th:value="*{ID}"/> </td>
+                  <td> <input type="text" name="NUMBER" th:value="*{NUMBER}"/></td>
+                  <td> <input type="text" name="LAST_NAME" th:value="*{LAST_NAME}"/></td>
+                  <td> <input type="text" name="FIRST_NAME" th:value="*{FIRST_NAME}"/></td>
+                  <td> <input type="text" name="EMAIL_ADDRESS" th:value="*{EMAIL_ADDRESS}"/></td>
+                  <td> <input type="text" name="FIRST_NAME" th:value="*{USERNAME}"/></td>
+                </tr>
+              </tbody>
+            </table>
+  <button type="submit" name="submit" value="submit">Submit</button>
+</form> 
+</body>
+</html>
