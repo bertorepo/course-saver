@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+       <meta charset="UTF-8" />
+      <title> Delete Course List</title>
+      
+   </head>
+   <body>
+      <h1>Delete Course List</h1>
+      <br/><br/>
+      <form action="#" th:action="@{/course/Delete/}" th:object="${courseDelete}" method="post"> 
+      <div>
+         <table border="1">
+            <tr>
+               <th>Course Id</th>
+               <th>Course Name</th>
+            </tr>
+            <tr th:each ="course : ${course}">
+               <td th:utext="${course.CourseId}">...</td>
+               <td th:utext="${course.CourseName}">...</td>   
+               <td><button>Delete</button></td> 
+            </tr>
+         </table>
+      </div>
+      </form>
+   </body>
+</html>
