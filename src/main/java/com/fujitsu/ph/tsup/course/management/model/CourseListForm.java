@@ -3,7 +3,6 @@ package com.fujitsu.ph.tsup.course.management.model;
 import java.util.Set;
 
 public class CourseListForm {
-	
 	//get and set coursenames
 	private Set<CourseNames> CNs;
 	public Set<CourseNames> getCNs() 
