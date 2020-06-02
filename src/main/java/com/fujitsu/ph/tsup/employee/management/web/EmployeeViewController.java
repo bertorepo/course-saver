@@ -21,7 +21,6 @@ public class EmployeeViewController {
 
 	@GetMapping("/view")
 	public String viewEmployeeForm(Model model) {
-
 		// create employees
 		EmployeeView emp1 = new EmployeeView();
 		int id = 1;
