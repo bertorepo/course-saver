@@ -18,7 +18,7 @@
 
 	<h3>Employee Directory</h3>
 	<hr>
-	
+	<form action="#" th:action="@{/employees/view}" method="post">
 	<table class="table table-bordered table-striped">
 		<thead class="thead-dark">
 			<tr>
@@ -30,8 +30,8 @@
 				<th>User Name</th>
 			</tr>
 		</thead>
-		
-				<tr th:each="tempEmployee : ${employee}">
+		<tbody>
+			<tr th:each="tempEmployee : ${employee}">
 				
 				<td th:text="${tempEmployee.id}" />
 				<td th:text="${tempEmployee.empNumber}" />	
@@ -39,13 +39,12 @@
 				<td th:text="${tempEmployee.lastName}" />	
 				<td th:text="${tempEmployee.emailAddress}" />	
 				<td th:text="${tempEmployee.userName}" />
-				
-		
+			</tr>
 		</tbody>		
 	</table> 
-	
+</form>
 </div>
-	
+		
 </body>
 </html>
 
