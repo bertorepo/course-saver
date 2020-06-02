@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fujitsu.ph.tsup.course.management.model.CourseDelete;
 
-
 @Controller
 @RequestMapping("/Course")
 public class CourseDeleteController {

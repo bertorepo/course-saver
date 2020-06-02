@@ -30,8 +30,7 @@ public class CourseDelete {
 
 		@Override
 		public String toString() {
-			return "courseDelete[CourseName=" + courseName + ", CourseId=" + courseId + "]";
-		
+			return "courseDelete[CourseName=" + courseName + ", CourseId=" + courseId + "]";	
 	}
 }
 
