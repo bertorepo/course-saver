@@ -20,7 +20,7 @@ import com.fujitsu.ph.tsup.venue.management.model.VenueListForm;
 import com.fujitsu.ph.tsup.venue.management.model.VenueNames;
 
 @Controller
-@RequestMapping("/venue")
+@RequestMapping("/venues")
 public class VenueListController {
 	
 	@GetMapping("/")
