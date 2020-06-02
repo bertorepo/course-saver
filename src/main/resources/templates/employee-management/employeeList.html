@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>List of Venues</title>
+<link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}" crossorigin="anonymous">
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+
+	<h3>List of Employees</h3>
+	<a href=""><button class="btn btn-primary" style="float: right"><i class="fa fa-plus"></i></button></a><br><br>
+	<form action="#" th:action="@{/employee/}" th:object="${empoyeeList}" method="post"> 
+	<hr>
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+			    <th>ID</th>
+				<th>Employee Number</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>Username</th>
+				<th></th>
+				
+			</tr>
+		</thead>
+		
+				<tr th:each="EMP : ${employee}">
+				
+				<td th:text="${EMP.id}" />	
+				<td th:text="${EMP.empNumber}" />	
+				<td th:text="${EMP.firstName}" />	
+				<td th:text="${EMP.lastName}" />	
+				<td th:text="${EMP.emailAddress}" />	
+				<td th:text="${EMP.userName}" />
+				
+				<td>
+					<a href=""><label><i class="fa fa-pencil"></i></label></a>
+					<a href=""><label><i class="fa fa-trash-o"></i></label></a>
+				</td>
+		
+		</tbody>		
+	</table> 
+	
+</div>
+	
+</body>
+</html> 
