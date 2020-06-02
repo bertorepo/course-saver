@@ -2,22 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>List of Venues</title>
+<title>Venues</title>
 <link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}" crossorigin="anonymous">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-<H1>List of Venues</H1>
-<a th:href="@{/venues/new}"><button class="btn btn-primary" style="float: right"><i class="fa fa-plus"></i></button></a><br><br>
-<form action="#" th:action="@{/venues}" th:object="${venueList}" method="post">
+<H1>View Venues</H1>
+<form action="#" th:action="@{/venue/view}" th:object="${venueView}" method="post">
   
 <table class="table">
 <tr>
-	<thead>
+	<thead class="table-success">
 		<tr>
-			<th>#</th>
-			<th style="width:70%">Venues</th>
+			<th>Id</th>
+			<th style="width:70%">Venue Name</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -28,15 +27,12 @@
 		<td >
 		  <label th:for="${VN.name}" th:text="${VN.name}"></label>
 		</td>
-		<td>
-			<a th:href="@{/venues/update}"><label><i class="fa fa-pencil"></i></label></a>
-			<a th:href="@{/venues/view}"><label><i class="fa fa-search"></i></label></a>
-			<a th:href="@{/venues/delete}"><label><i class="fa fa-trash-o"></i></label></a>
-		</td>
 	</tr>
 </table>
+
+	 <a href="http://localhost:8080//venues/" class="btn btn-info" role="button">Back</a>
 
 </form>  
 </div>
 </body>
-</html>
+</html>  
