@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.fujitsu.ph.tsup.course.management.model.CourseListForm;
 import com.fujitsu.ph.tsup.course.management.model.CourseNames;
 
-
 @Controller
 @RequestMapping("/course")
 public class CourseListController {

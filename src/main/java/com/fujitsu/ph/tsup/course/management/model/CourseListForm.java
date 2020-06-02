@@ -18,4 +18,5 @@ public class CourseListForm {
 		return "CourseListForm [CNs=" + CNs +"]";
 	}
 
+	
 }
