@@ -37,5 +37,6 @@ public class VenueUpdateController {
 		model.addAttribute("venueUpdate", venue);
 		return "venue-management/venueUpdate";
 		
+		
 	}
 }
