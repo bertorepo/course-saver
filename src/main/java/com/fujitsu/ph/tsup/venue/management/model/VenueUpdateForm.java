@@ -2,7 +2,6 @@ package com.fujitsu.ph.tsup.venue.management.model;
 
 import java.util.Set;
 
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
