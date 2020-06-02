@@ -16,7 +16,11 @@
 		<label class="mt-4" for="venueName">Update Venue Name</label>
 	  	<input type="text" name="venueName" placeholder="Name" class="form-control" th:value="${VN.name}"/>
 	</div>
-	<button type="submit" name="update" value="update" class="float-sm-right  btn btn-primary"> <i class="fa fa-pencil"></i>Update</button>
+	<div>
+		<button type="submit" name="update" value="update" class="float-sm-left  btn btn-primary">Back</button>
+		<button type="submit" name="update" value="update" class="float-sm-right  btn btn-primary"> <i class="fa fa-pencil"></i> Update</button>
+	</div>
+	
 	</form>
 </div>
 

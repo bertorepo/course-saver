@@ -18,6 +18,7 @@ public class VenueUpdateForm {
 		this.VNs = VNs;
 	}
 	
+	
 	@Override
 	public String toString() {
 		return "VenueListForm [VNs=" + VNs +"]";
