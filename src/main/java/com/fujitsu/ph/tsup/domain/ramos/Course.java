@@ -1,5 +1,8 @@
 package com.fujitsu.ph.tsup.domain.ramos;
 
+import java.util.regex.Pattern;
+import ch.qos.logback.core.boolex.Matcher;
+
 public class Course {
 	private Long id;
 	private String courseName;
@@ -23,10 +26,9 @@ public class Course {
 	public static class Builder {
 		private Long id;
 		private String courseName;
-
+		private Pattern pattern;
+		
 		public Builder(Long id, String courseName) {
-			validateId(id);
-			this.id = id;
 			validateCourseName(courseName);
 			this.courseName = courseName;
 		}
@@ -34,16 +36,15 @@ public class Course {
 		public Course build() {
 			return new Course(this);
 		}
-		
-		private void validateId(Long id) {
-			if (id == null) {
-				throw new IllegalArgumentException("Id is empty");
-			}
-		}
 
 		private void validateCourseName(String courseName) {
-			if (courseName == null || courseName.isEmpty() || courseName.toUpperCase().length() < 10 || courseName.length() > 50) {
-				throw new IllegalArgumentException("Course Name should not be empty");
+			Pattern.compile("[a-zA-Z]*");
+			java.util.regex.Matcher matcher = pattern.matcher(courseName);
+			
+			if (courseName == null || courseName.isEmpty() || courseName.length() < 10 || courseName.length() > 50) {
+				throw new IllegalArgumentException("Course Name is empty");
+			}else if (!matcher.matches()) {
+				throw new IllegalArgumentException("Course Name contains special characters");
 			}
 		}
 	}
