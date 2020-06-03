@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fujitsu.ph.tsup.employee.management.model.EmployeeViewForm;
+import com.fujitsu.ph.tsup.employee.management.model.EmployeeView;
 
 @Controller
 @RequestMapping("/employees")
@@ -24,7 +24,7 @@ public class EmployeeViewController {
 	@GetMapping("/view")
 	public String viewEmployeeForm(Model model) {
 
-		EmployeeViewForm employee = new EmployeeViewForm();
+		EmployeeView employee = new EmployeeView();
 
 		employee.setFirstName("Janella");
 		employee.setLastName("Macabugao");
@@ -38,15 +38,17 @@ public class EmployeeViewController {
 	}
 
 	@PostMapping("/view")
-	public String viewEmployeeSubmit(@Valid EmployeeViewForm employeeView, BindingResult bindingResult, Model model) {
+	public String viewEmployeeSubmit(@Valid EmployeeView employeeView, BindingResult bindingResult, Model model) {
 
 		logger.debug("EmployeeView:{}", employeeView);
 		logger.debug("Result:{}", bindingResult);
 
-		employeeView.setFirstName("Janella");
-		employeeView.setLastName("Macabugao");
-		employeeView.setEmailAddress("j.macabugao@fujitsu.com");
-		employeeView.setUserName("Janella");
+	
+		 employeeView.setFirstName("Janella"); 
+		 employeeView.setLastName("Macabugao");
+		 employeeView.setEmailAddress("j.macabugao@fujitsu.com");
+		 employeeView.setUserName("Janella");
+	
 		model.addAttribute("employeeView", employeeView);
 		if (bindingResult.hasErrors()) {
 			return "employee-management/viewEmployee";
@@ -58,4 +60,3 @@ public class EmployeeViewController {
 	}
 
 }
-

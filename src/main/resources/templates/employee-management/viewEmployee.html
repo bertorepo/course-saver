@@ -29,7 +29,7 @@
                         <input type="text" class="form-control" th:field="*{id}" name="id" /> 
                         <label th:errorclass="fieldError" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">ID error </label> 
                     </div>   
-<fieldset disabled>                  
+      <fieldset disabled>           
       <table class="table table-bordered table-striped">
 		     <thead class="thead-dark">
 			    <tr>
@@ -49,7 +49,9 @@
 		    </tbody> 
       </table>
 </fieldset>
+
 	<button type="submit" class="btn btn-primary">View</button>
+	
          </div>
       </div>
   </div>
@@ -59,5 +61,4 @@
 </div> 	
 </body>
 </html>
-
 
