@@ -1,5 +1,5 @@
+/* @Author R.Ramos */
 package com.fujitsu.ph.tsup.course.management.model;
-
 import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
