@@ -3,21 +3,32 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Course</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+</head>
+<body>
 <div class="container">
-	<h1>Course</h1>
+	<h1>Courses</h1>
 	<form action="#" th:action="@{/course/}" th:object="${courseList}" method="post">
-	<table class="table">
+	<div class="alert alert-danger" role="alert" th:if="${not #lists.isEmpty(#fields.detailedErrors())}">
+		<ul>
+	    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+	        <span th:text="${e.global}? '*' : ${e.fieldName}">Complete Search Field</span> |
+	        <span th:text="${e.message}">The error message</span>
+	    </li>
+	  </ul>
+	</div>
+	
+	<table class="table table-bordered">
 		<tr>
 			<thead>
 				<tr>
 					<th>ID</th>
 					<th style="width:50%">Course Name</th>
-					<th></th>
 				</tr>
 			</thead>
 			<tr th:each="CN : *{CNs}">
@@ -30,9 +41,18 @@
 			</tr>
 		</tr>
 	</table>
+	
+	<div class="input-group float-right col-lg-4">
+		<h5>Search Course</h5>
+		  <input class="form-control" type="text" placeholder="Search" name="search" th:value="*{search}">
+		  <div class="input-group-append">
+			<button type="submit" class="input-group-text" name="submit" value="Submit">
+				<i class="fa fa-search"></i>
+					</button>
+		  </div>
+		</div>
+		<a th:href="@{/courses/new}" class="btn btn-primary float-left"><i class="fa fa-plus"></i></a>
 	</form>  
 </div>
-
 </body>
-
 </html>
