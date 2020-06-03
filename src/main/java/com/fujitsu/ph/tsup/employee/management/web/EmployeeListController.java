@@ -3,7 +3,6 @@ package com.fujitsu.ph.tsup.employee.management.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
