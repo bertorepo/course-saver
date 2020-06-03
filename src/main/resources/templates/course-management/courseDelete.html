@@ -1,0 +1,65 @@
+<!-- @Author:Freo, Kristine Faith-->
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+       <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> 
+     <title> Delete Course</title>   
+   </head>
+  <body> 
+ <div class="container">
+	<h3>Course List</h3>
+	<hr>
+	 <form action="#" th:action="@{/Course/delete}" th:object="${courseDelete}" method="post"> 
+	  <form action="#" th:action="@{/Course/delete}" th:object="${courseDelete}" method="post">   
+         <divclass="row w-50"><table border="1">
+         <div class="row justify-content-md-center">  
+            <tr th:each ="course : ${course}">	    
+         Enter Course Id:
+         <input type="text" name="CourseId" th:value="*{CourseId}"/>
+          </tr>       
+	    <button type="submit" name="submit" value="submit">Search</button>    
+	    <br>
+	     <div>
+ 	 	<div class="w-50">
+	  		<ul>
+	    		<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+	        		<span th:text="${e.global}? '*' : ${e.fieldName}">Field Name</span> |
+	        		<span th:text="${e.message}">Error Message</span>
+	    		</li>
+	  		</ul>
+ 	 	</div>
+	</div>	 
+	<br>
+  <br>    
+<h5>Results<h5>
+    <table class="table table-bordered table-striped">
+	  <thead class="">
+			  <tr>
+				<th></th>
+			    <th>Course ID</th>
+				<th>Course Name</th>				
+			 </tr>
+		</thead>
+      <tbody>
+		<tr th:each="crsCourse : ${courseDelete}">	
+			<td><input type="checkbox" th:field="*{checkedItems}" th:value="${item}"/>	
+			<td th:text="${crsCourse.CourseID}" />
+			<td th:text="${crsCourse.courseName}" />		
+		</tr>
+	</tbody>			 	
+</table> 
+ <button th:text="#{msg_warning}" th:attr="onclick='return confirm(\'' + #{msg_confirm_warning} + '\');'">Delete</button>
+</form>
+</div>
+</table>
+      </div>
+      </div>
+      </form>
+    </body>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script type="text/javascript" src="/js/lib/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"crossorigin="anonymous">
+ </script>	 	
+</html>

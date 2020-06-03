@@ -17,8 +17,7 @@ public class CourseDelete {
 	public CourseDelete(int Id, String courseName, String search) {
 		this.courseId = Id;
 		this.courseName = courseName;
-		this.search = search;
-		
+		this.search = search;	
 	}
 		public int getCourseId() {
 		return courseId;

@@ -1,11 +1,14 @@
 package com.fujitsu.ph.tsup.course.management.web;
 
+/* @Author: Freo, Kristine Faith */
+
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/* @Author: Freo, Kristine Faith */
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,7 +55,7 @@ public class CourseDeleteController {
 		if (result.hasErrors()) {
 			return "course-management/CourseDelete";
 		}
-		redirectAttributes.addFlashAttribute("courseDelete", CourseDelete);
+		redirectAttributes.addFlashAttribute("CourseDelete", CourseDelete);
 		return "redirect:/courseDelete";
 	}
 }
