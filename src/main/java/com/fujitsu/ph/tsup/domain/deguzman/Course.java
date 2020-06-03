@@ -1,6 +1,5 @@
 package src.main.java.com.fujitsu.ph.tsup.domain.deguzman;
 
-
 public class Course {
     private Long id;
     private String name;
