@@ -1,5 +1,6 @@
 package com.fujitsu.ph.tsup.domain.deguzman;
 
+
 public class Course {
     private Long id;
     private String courseName;
