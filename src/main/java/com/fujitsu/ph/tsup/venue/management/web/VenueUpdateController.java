@@ -24,49 +24,49 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fujitsu.ph.tsup.venue.management.model.VenueListForm;
 import com.fujitsu.ph.tsup.venue.management.model.VenueNames;
 import com.fujitsu.ph.tsup.venue.management.model.VenueUpdateForm;
 
 @Controller
 @RequestMapping("/venues")
 public class VenueUpdateController {
+    //VenueName
+    Set<VenueNames> vname = new HashSet<>();
+    VenueNames vn = new VenueNames();
+    
+    //VenueUpdateForm
+    VenueUpdateForm venue = new VenueUpdateForm();
 	
 	//logger for VenueUpdateController
 	private static Logger logs = LoggerFactory.getLogger(VenueUpdateController.class);
 	
 	@GetMapping("/update")
 	public String update(Model model) {
-		VenueUpdateForm venue = new VenueUpdateForm();
-		List<VenueNames> vns = new ArrayList<>();
-		
-		/*
-		 * Sets Variables for VenueNames
-		 */
-		VenueNames vn1 = new VenueNames();
-		vn1.setId(1234567);
-		vn1.setName("SMX Convention Center");
-		vns.add(vn1);
-		
-		/*
-		 * Sets Variables for VNLst, Id, venue
-		 */
-		venue.setVNLst(vns);
-		venue.setId(1234567);
-		venue.setVenue("SMX Convention Center");
+	    venue.setId((long) 12345);
+	    venue.setVenue("SMX Convention Center");
+	    venue.setVNLst(createVenueLst());
 
 		model.addAttribute("venueUpdate", venue);
 		return "venue-management/venueUpdate";	
 	}
 	
 	@PostMapping("/update")
-	public String submitUpdate(@Valid VenueUpdateForm venueUpdateForm, BindingResult bres, Model model) {
+	public String submitUpdate(@Valid @ModelAttribute("venueUpdate") VenueUpdateForm venueUpdateForm, 
+	        BindingResult bres, Model model, RedirectAttributes redirectAttributes) {
 		
 		//Logs the bugs caught by the system
 		logs.debug("Venue: {}", venueUpdateForm);
 		logs.debug("Result: {}", bres);
-		logs.debug("Model: {}", model);
+		
+		venueUpdateForm.setId((long) 12345);
+		venueUpdateForm.setVenue("SMX Convention Center");
+		venueUpdateForm.setVNLst(createVenueLst());
+        
+        /*
+         * Sets Variables for VenueNames
+         */
 		
 		model.addAttribute("venueUpdate", venueUpdateForm);
 		
@@ -74,7 +74,21 @@ public class VenueUpdateController {
 			return "venue-management/venueUpdate";
 		}
 		
-		return "venue-management/venueUpdate";
+		redirectAttributes.addFlashAttribute("venueUpdate", venueUpdateForm);
+		return "redirect:/venues";
 	
 	}
+	
+	public Set<VenueNames> createVenueLst(){
+	    /*
+         * Sets Variables for VenueNames
+         */
+        vn.setId(1234567);
+        vn.setName("SMX Convention Center");
+        vname.add(vn);
+        
+        return vname;
+	}
+	
 }
+    
