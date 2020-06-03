@@ -1,3 +1,4 @@
+/* Author : Macabugao, Janella Marie */
 package com.fujitsu.ph.tsup.employee.management.model;
 
 import javax.validation.constraints.NotEmpty;
