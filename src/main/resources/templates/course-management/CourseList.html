@@ -3,10 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Course List</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}" crossorigin="anonymous">
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -40,15 +38,14 @@
 		</tr>
 	</table>
 	
-		<div class="input-group float-right col-lg-3">
-			<h5>Search Course</h5>
+	<h5>Search Course</h5>
+		<div class="input-group float-left col-lg-3">
 		  		<input class="form-control" type="text" placeholder="Search" name="Search" th:value="*{Search}">
+		   <div class="input-group-append">
 			<button type="submit" class="input-group-text" name="submit" value="Submit"><i class="fa fa-search"></i>
 					</button>
+					</div>
 		</div>
-		
-		<a th:href="@{/course/new}" class="btn btn-primary float-left"><i class="fa fa-plus"></i></a>
-		
 	</form>  
 </div>
 </body>
