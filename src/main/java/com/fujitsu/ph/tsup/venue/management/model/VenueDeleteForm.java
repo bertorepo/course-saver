@@ -11,27 +11,33 @@ import javax.validation.constraints.Size;
 
 
 public class VenueDeleteForm {
+	private int idnumber;
+	private String vname;
 	
-	private Set<VenueNames> VNs;
-	private String delete;
 	
-	
-	public Set<VenueNames> getVNs() {
-		return VNs;
+	public int getIdnumber() {
+		return idnumber;
 	}
-	public void setVNs(Set<VenueNames> VNs) {
-		this.VNs = VNs;
+
+
+	public void setIdnumber(int idnumber) {
+		this.idnumber = idnumber;
 	}
-	
-	public String getDelete() {
-		return delete;
+
+
+	public String getVname() {
+		return vname;
 	}
-	public void setDelete(String delete) {
-		this.delete = delete;
+
+
+	public void setVname(String vname) {
+		this.vname = vname;
 	}
+
+
 	@Override
 	public String toString() {
-		return "VenueDeleteForm [VNs=" + VNs +", delete=" + delete + "]";
+		return "VenueNames [idnumber=" + idnumber + ", vname=" + vname +"]";
 	}
 
 }
