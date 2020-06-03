@@ -3,12 +3,14 @@ package com.fujitsu.ph.tsup.course.management.model;
 
 import java.util.Set;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class CourseListForm {
 
     private Set<CourseNames> cns;
-    @Size(min = 1, max = 50)
+    @NotBlank
+    @Size(min = 1, max = 10)
     private String Search;
 
     public String getSearch() {
