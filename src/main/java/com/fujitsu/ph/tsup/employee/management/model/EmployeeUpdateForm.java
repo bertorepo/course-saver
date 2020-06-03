@@ -3,14 +3,13 @@ package com.fujitsu.ph.tsup.employee.management.model;
 /*Iwarat, Jhon Harvey A*/
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 public class EmployeeUpdateForm {
 
-    private long id;
+    private Long id;
     @PositiveOrZero
     @Pattern(regexp = "[^.]+", message = "The dot character is not allowed")
     @NotBlank(message = "Employee number must not be empty")
@@ -29,11 +28,11 @@ public class EmployeeUpdateForm {
     private String username;
     private String submit;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

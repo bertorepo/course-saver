@@ -28,7 +28,7 @@ public class EmployeeUpdateController {
         }
 
         EmployeeUpdateForm employeeUpdate = new EmployeeUpdateForm();
-        employeeUpdate.setId(7);
+        employeeUpdate.setId((long) 7);
         employeeUpdate.setNumber("220053693");
         employeeUpdate.setLastName("Iwarat");
         employeeUpdate.setFirstName("Harvey");
