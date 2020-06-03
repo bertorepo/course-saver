@@ -1,4 +1,4 @@
-package src.main.java.com.fujitsu.ph.tsup.domain.deguzman;
+package com.fujitsu.ph.tsup.domain.deguzman;
 
 public class Venue {
     private Long id;
