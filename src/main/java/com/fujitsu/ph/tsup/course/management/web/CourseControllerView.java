@@ -24,7 +24,7 @@ public class CourseControllerView {
 		
 		model.addAttribute("courses", courses);
 		logger.info("Mode:{}", model);
-		return "course-management/coursesForm";
+		return "course-management/courseView";
 		
 	}
 	
@@ -37,10 +37,10 @@ public class CourseControllerView {
 		
 		if (result.hasErrors()) {
 			model.addAttribute("coursesForm1", courses);
-			return "course-management/coursesForm";
+			return "course-management/courseView";
 		}
 		model.addAttribute("coursesForm1", courses);
-		return "course-management/coursesForm";
+		return "course-management/courseView";
 
 	}
 

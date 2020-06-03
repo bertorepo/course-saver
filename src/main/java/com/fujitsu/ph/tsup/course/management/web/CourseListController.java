@@ -1,4 +1,4 @@
-/* Author : Angara, Mary Rose */
+/* Author : Angara, Mary Rose 
 package com.fujitsu.ph.tsup.course.management.web;
 
 import java.util.HashSet;
@@ -75,4 +75,4 @@ public class CourseListController {
 
         return cns;
     }
-}
+}*/
