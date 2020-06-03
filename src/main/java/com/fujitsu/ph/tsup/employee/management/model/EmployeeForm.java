@@ -3,6 +3,8 @@ package com.fujitsu.ph.tsup.employee.management.model;
 import javax.validation.constraints.*;
 
 public class EmployeeForm {
+	@NotNull 
+	private long id;
 	@NotBlank(message = "First Name cannot be null")
 	private String firstName;
 	@NotBlank(message = "Last Name cannot be null")
@@ -19,42 +21,75 @@ public class EmployeeForm {
 	private String submit;
 
 
+	public long getId() {
+		return id;
+	}
+
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+
 	public String getFirstName() {
 		return firstName;
 	}
+
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
+
 	public String getLastName() {
 		return lastName;
 	}
+
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+
 	public String getEmployeeNumber() {
 		return employeeNumber;
 	}
+
+
 	public void setEmployeeNumber(String employeeNumber) {
 		this.employeeNumber = employeeNumber;
 	}
+
+
 	public String getEmailAddress() {
 		return emailAddress;
 	}
+
+
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
+
+
 	public String getUsername() {
 		return username;
 	}
+
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+
 	public String getSubmit() {
 		return submit;
 	}
+
+
 	public void setSubmit(String submit) {
 		this.submit = submit;
 	}
+
 
 	@Override
 	public String toString() {

@@ -33,6 +33,7 @@ public class EmployeeDeleteController {
 		}
 		
 		EmployeeForm employee = new EmployeeForm();
+		employee.setId(123456);
 		employee.setFirstName("JAY IAN");
 		employee.setLastName("MACABUDBUD");
 		employee.setEmployeeNumber("A12345");
