@@ -1,6 +1,5 @@
 package com.fujitsu.ph.tsup.domain.deguzman;
 
-
 public class Employee {
     private Long id;
     private String number;
@@ -93,7 +92,8 @@ public class Employee {
         }
 
         private void validateEmailAddress(String emailAddress) {
-            if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() > 50 || emailAddress.length() < 5) {
+            if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() > 50
+                    || emailAddress.length() < 5) {
                 throw new IllegalArgumentException("Email Address should not be empty");
             }
         }
