@@ -41,12 +41,12 @@
 			<th></th>
 		</tr>
 	</thead>
-	<tr th:each="VN : *{VNs}">
+	<tr th:each="vn : *{vns}">
 		<td >
-		  <label th:for="${VN.id}" th:text="${VN.id}"></label>
+		  <label th:for="${vn.id}" th:text="${vn.id}"></label>
 		</td>
 		<td >
-		  <label th:for="${VN.name}" th:text="${VN.name}"></label>
+		  <label th:for="${vn.name}" th:text="${vn.name}"></label>
 		</td>
 		<td>
 			<a th:href="@{/venues/update}"><label><i class="fa fa-pencil"></i></label></a>

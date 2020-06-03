@@ -3,37 +3,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>DELETE VENUE RECORD</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
-
-
 <div class="container">
 <br>
-<H1>List of Venues</H1>
-<form action="#" th:action="@{/venues/delete}" th:object="${venueDelete}" method="post">
-<table class="table table-bordered">
-<tr>
-	<thead>
-		<tr>
-			<th>No.</th>
-			<th style="width:70%">Venues</th>
-		</tr>
-	</thead>
-	<tr th:each="VN : *{VNs}">
-		<td >
-		  <label th:for="${VN.id}" th:text="${VN.id}"></label>
-		</td>
-		<td >
-		  <label th:for="${VN.name}" th:text="${VN.name}"></label>
-		</td>
-	</tr>	
-</table>
-			<button class="btn btn-primary" style="float: right"><i class="fa fa-trash-o"></i> Delete</button>
-			
-			<a href="http://localhost:9999/venues" class="btn btn-primary" style="float: right; margin-right:10px;"><i class="fa fa-arrow-left"> Back</i></a>
+<div class="row justify-content-md-center p-4">
+<H1>DELETE VENUE RECORD</H1>
+</div>
+<form action="#" th:action="@{/venues/delete}" th:object="${venueDeleteForm}" method="post">
+
+<fieldset disabled>
+<div class="row justify-content-md-center p-4">
+		<div class="form-group row w-50">
+		    <label for="idnumber" class="col-sm-3">ID Number</label>
+		    <div class="col-sm-9">
+		      <input type="text" class="form-control" name="idnumber" th:value="*{idnumber}"/>
+		    </div>
+	  	</div>	
+	</div>
+	
+	<div class="row justify-content-md-center p-4">
+	  	<div class="form-group row w-50">
+		    <label for="vname" class="col-sm-3">Venue</label>
+		    <div class="col-sm-9">
+		      <input type="text" class="form-control" name="vname" th:value="*{vname}"/>
+		    </div>
+	  	</div>
+	</div>
+</fieldset>
+
+<div class="row justify-content-md-center p-4">
+	 <div class="row w-50">
+	 	<div class="col align-self-end">
+	 	<button class="btn btn-primary" style="float: right"><i class="fa fa-trash-o"></i>Delete</button>
+	 	<a href="http://localhost:9999/venues" class="btn btn-primary" style="float: right; margin-right:10px;"><i class="fa fa-arrow-left"> Back</i></a>
+	 </div>
+	</div>
+</div>
 </form>  
 </div>
 </body>

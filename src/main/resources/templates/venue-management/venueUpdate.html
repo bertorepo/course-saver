@@ -13,18 +13,17 @@
 <body>
 <div class="container">
 	<h1 class="mb-5 mt-5">Update Venue</h1>
-	<form action="#" th:action="@{/venues/update/}" th:object="${venueUpdate}" method="post">
-	<div class="form-group mb-5" th:each="VN : *{VNs}">
-		<label for="venueId">Update Venue ID</label>
-		<input type="text" name="venueId" placeholder="Id" class="form-control" th:value="${VN.id}"/>
+	<form action="#" th:action="@{/venues/update}" th:object="${venueUpdate}" method="post">
+	<div class="form-group mb-5" th:each="Id : *{Id}">
+		<label for="venueId">Venue ID</label>
+		<input type="text" name="venueId" placeholder="Id" class="form-control" th:value="${Id}" disabled/>
 		<label class="mt-4" for="venueName">Update Venue Name</label>
-	  	<input type="text" name="venueName" placeholder="Name" class="form-control" th:value="${VN.name}"/>
+	  	<input type="text" name="venueName" placeholder="Name" class="form-control" th:value="${venue}"/>
 	</div>
 	<div>
-		<button type="submit" name="update" value="update" class="float-sm-left  btn btn-primary">Back</button>
-		<button type="submit" name="update" value="update" class="float-sm-right  btn btn-primary"> <i class="fa fa-pencil"></i> Update</button>
+		<button type="submit" name="submitUpdate" value="submitUpdate" class="float-sm-left  btn btn-primary">Back</button>
+		<button type="submit" name="submitUpdate" value="submitUpdate" class="float-sm-right  btn btn-primary"><i class="fa fa-pencil"></i> Update</button>
 	</div>
-	
 	</form>
 </div>
 
