@@ -9,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.employee.management.model.EmployeeView;
 
@@ -23,7 +24,11 @@ public class EmployeeViewController {
 
 	@GetMapping("/view")
 	public String viewEmployeeForm(Model model) {
-
+		logger.debug("Model:{}", model);
+		
+		if (model.containsAttribute("employeeView")) {
+			return "employee-management/viewEmployee";
+		}
 		EmployeeView employee = new EmployeeView();
 
 		employee.setFirstName("Janella");
@@ -38,7 +43,9 @@ public class EmployeeViewController {
 	}
 
 	@PostMapping("/view")
-	public String viewEmployeeSubmit(@Valid EmployeeView employeeView, BindingResult bindingResult, Model model) {
+	public String viewEmployeeSubmit(@Valid @ModelAttribute("employeeView")  
+	EmployeeView employeeView, BindingResult bindingResult, Model model,
+	RedirectAttributes redirectAttributes) {
 
 		logger.debug("EmployeeView:{}", employeeView);
 		logger.debug("Result:{}", bindingResult);
@@ -54,7 +61,7 @@ public class EmployeeViewController {
 			return "employee-management/viewEmployee";
 
 		}
-
+		redirectAttributes.addFlashAttribute("employeeView", employeeView);
 		return "redirect:/employees/view";
 
 	}
