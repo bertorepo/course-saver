@@ -17,11 +17,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class VenueUpdateForm {
-	@NotNull
+    @NotNull
 	private Long id;
 	@NotBlank
 	private String venue;
-	@Size.List(value = {@Size})
+
 	private Set<VenueNames> vnset = new HashSet<>();
 	
 	public String getVenue() {
