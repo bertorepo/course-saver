@@ -107,20 +107,20 @@ public class CourseSchedule {
         }
         
         private void validateMinRequired(Integer MinRequired) {
-            if (MinRequired == 0 || MinRequired == null) {
-                throw new IllegalArgumentException("Min Required should not be zero or null");
+            if (MinRequired <= 0 || MinRequired > 99999 || MinRequired == null) {
+                throw new IllegalArgumentException("Min Required should not be less than or equal to zero, greater than 99999 or null");
             }
         }
         
         private void validateMaxAllowed(Integer MaxAllowed) {
-            if (MaxAllowed == 0 || MaxAllowed == null) {
-                throw new IllegalArgumentException("Max Allowed should not be zero or null");
+            if (MaxAllowed <= 0 || MaxAllowed > 99999 || MaxAllowed == null) {
+                throw new IllegalArgumentException("Max Allowed should not be less than or equal to zero, greater than 99999 or null");
             }
         }
         
         private void validateStatus(char Status) {
             if (Status == '\u0000' || Character.isWhitespace(Status)) {
-                throw new IllegalArgumentException("Status should not be null");
+                throw new IllegalArgumentException("Status should not be null or consisted of spaces only");
             }
         }
     }
