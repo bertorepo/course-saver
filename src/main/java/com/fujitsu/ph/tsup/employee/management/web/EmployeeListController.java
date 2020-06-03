@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.employee.management.model.EmployeeListForm;
 
@@ -17,24 +23,24 @@ import com.fujitsu.ph.tsup.employee.management.model.EmployeeListForm;
 @RequestMapping("/employees")
 public class EmployeeListController {
 
-	
+	private static Logger logger = LoggerFactory.getLogger(EmployeeListController.class);
+
+	private List<EmployeeListForm> employee;
+
 	@GetMapping()
 	public String EmployeeListForm(Model model) {
-		
-		model.addAttribute("employee", employee);
-		
-		return "employee-management/employeeList";
-	}
-	
-	private List<EmployeeListForm> employee;
-	@PostConstruct
-	private void loadData() {
-		
-		// create employees
+		logger.debug("Model:{}", model);
+
+		if (model.containsAttribute("employeeList")) {
+			return "employee-management/employeeList";
+		}
+		EmployeeListForm search = new EmployeeListForm();
+		search.setSearch("");
+
 		EmployeeListForm emp1 = new EmployeeListForm();
-		int id=1;
-		int employeeId=9190022;
-		
+		int id = 1;
+		int employeeId = 9190022;
+
 		emp1.setId(id++);
 		emp1.setEmpNumber(employeeId++);
 		emp1.setFirstName("Juan");
@@ -49,43 +55,32 @@ public class EmployeeListController {
 		emp2.setLastName("Rizal");
 		emp2.setEmailAddress("jRizal@gmail.com");
 		emp2.setUserName("ph_Jose");
-		
-		EmployeeListForm emp3 = new EmployeeListForm();
-		emp3.setId(id++);
-		emp3.setEmpNumber(employeeId++);
-		emp3.setFirstName("Queen");
-		emp3.setLastName("Elizabet");
-		emp3.setEmailAddress("UK@gmail.com");
-		emp3.setUserName("ph_Queen");
-		
-		EmployeeListForm emp4 = new EmployeeListForm();
-		emp4.setId(id++);
-		emp4.setEmpNumber(employeeId++);
-		emp4.setFirstName("Damon");
-		emp4.setLastName("Nathaniel");
-		emp4.setEmailAddress("Dn@gmail.com");
-		emp4.setUserName("ph_Moonie");
-		
-		EmployeeListForm emp5 = new EmployeeListForm();
-		emp5.setId(id++);
-		emp5.setEmpNumber(employeeId++);
-		emp5.setFirstName("Jhaymee");
-		emp5.setLastName("Lim");
-		emp5.setEmailAddress("Jlim@gmail.com");
-		emp5.setUserName("ph_Gabbie");
 
-		// create the list
 		employee = new ArrayList<>();
-		
-		// add to the list
+
 		employee.add(emp1);
 		employee.add(emp2);
-		employee.add(emp3);
-		employee.add(emp4);
-		employee.add(emp5);
+
+		model.addAttribute("employee", employee);
+
+		return "employee-management/employeeList";
 	}
-	
-	
-	
-	
-} 
+
+	@PostMapping("")
+	public String submit(@Valid @ModelAttribute("employeeList") EmployeeListForm employeeList, BindingResult result,
+			Model model, RedirectAttributes redirectAttributes) {
+
+		logger.debug("Venue List:{}", employeeList);
+		logger.debug("Result:{}", result);
+
+		model.addAttribute("venueList", employeeList);
+		if (result.hasErrors()) {
+			return "employee-management/employeeList";
+		}
+
+		redirectAttributes.addFlashAttribute("venueList", employeeList);
+		return "redirect:/empooyees";
+
+	}
+
+}

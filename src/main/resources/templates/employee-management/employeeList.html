@@ -9,10 +9,18 @@
 <body>
 <div class="container">
 
-	</br>
+	<br>
 	<h3>List of Employees</h3>
-	<a href=""><button class="btn btn-primary" style="float: right"><i class="fa fa-plus"></i></button></a><br><br>
+	
 	<form action="#" th:action="@{/employee/}" th:object="${empoyeeList}" method="post"> 
+
+	<div class="input-group float-right col-lg-4">
+ 		<input class="form-control" type="text" placeholder="Search" name="search">
+  			<div class="input-group-append">
+   			 <button type="submit" class="input-group-text" name="submit" value="Submit"><i class="fa fa-search"></i></button>
+ 			</div>
+	</div>
+  	<br><br>
 	<hr>
 	
 	<table class="table table-bordered table-striped">
@@ -41,6 +49,7 @@
 				<td>
 					<a href=""><label><i class="fa fa-pencil"></i></label></a>
 					<a href=""><label><i class="fa fa-trash-o"></i></label></a>
+					<a href=""><label><i class="fa fa-plus"></i></label></a>
 				</td>
 		
 		</tbody>		

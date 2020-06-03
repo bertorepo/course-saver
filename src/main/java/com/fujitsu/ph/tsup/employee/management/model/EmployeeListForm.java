@@ -1,83 +1,94 @@
 package com.fujitsu.ph.tsup.employee.management.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class EmployeeListForm {
 
+	private int id;
+	private int empNumber;
+	@NotBlank
+	private String firstName;
+	private String lastName;
+	private String emailAddress;
+	private String userName;
+	@Size(min = 1, max = 50)
+	private String search;
 
-		private int id;
-		private int empNumber;
-		private String firstName;
-		private String lastName;
-		private String emailAddress;
-		private String userName;
-		
+	public EmployeeListForm() {
 
-		public EmployeeListForm() {
-			
-		}
-		
-		public EmployeeListForm(int id, int empNumber, String firstName, String lastName, String emailAddress, String userName) {
-			this.id = id;
-			this.empNumber = empNumber;
-			this.firstName = firstName;
-			this.lastName = lastName;
-			this.emailAddress = emailAddress;
-			this.userName = userName;
-		}
+	}
 
-		public int getId() {
-			return id;
-		}
+	public EmployeeListForm(int id, int empNumber, String firstName, String lastName, String emailAddress,
+			String userName) {
+		this.id = id;
+		this.empNumber = empNumber;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emailAddress = emailAddress;
+		this.userName = userName;
+	}
 
-		public void setId(int id) {
-			this.id = id;
-		}
+	public String getSearch() {
+		return search;
+	}
 
-		public int getEmpNumber() {
-			return empNumber;
-		}
+	public void setSearch(String search) {
+		this.search = search;
+	}
 
-		public void setEmpNumber(int empNumber) {
-			this.empNumber = empNumber;
-		}
+	public int getId() {
+		return id;
+	}
 
-		public String getFirstName() {
-			return firstName;
-		}
+	public void setId(int id) {
+		this.id = id;
+	}
 
-		public void setFirstName(String firstName) {
-			this.firstName = firstName;
-		}
+	public int getEmpNumber() {
+		return empNumber;
+	}
 
-		public String getLastName() {
-			return lastName;
-		}
+	public void setEmpNumber(int empNumber) {
+		this.empNumber = empNumber;
+	}
 
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
-		}
+	public String getFirstName() {
+		return firstName;
+	}
 
-		public String getEmailAddress() {
-			return emailAddress;
-		}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-		public void setEmailAddress(String emailAddress) {
-			this.emailAddress = emailAddress;
-		}
+	public String getLastName() {
+		return lastName;
+	}
 
-		public String getUserName() {
-			return userName;
-		}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-		public void setUserName(String userName) {
-			this.userName = userName;
-		}
+	public String getEmailAddress() {
+		return emailAddress;
+	}
 
-		@Override
-		public String toString() {
-			return "EMP [id=" + id + ", empNumber=" + empNumber + ", firstName=" + firstName + ", lastName=" + lastName
-					+ ", emailAddress=" + emailAddress + ", userName=" + userName + "]";
-		}
-		
-		
-		
-	} 
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Override
+	public String toString() {
+		return "EMP [id=" + id + ", empNumber=" + empNumber + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", emailAddress=" + emailAddress + ", userName=" + userName + "]";
+	}
+
+}
