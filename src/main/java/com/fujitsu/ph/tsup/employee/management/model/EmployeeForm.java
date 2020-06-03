@@ -1,10 +1,20 @@
 package com.fujitsu.ph.tsup.employee.management.model;
 
+import javax.validation.constraints.*;
+
 public class EmployeeForm {
+	@NotBlank(message = "First Name cannot be null")
 	private String firstName;
+	@NotBlank(message = "Last Name cannot be null")
 	private String lastName;
+	@NotBlank(message = "Employee Number cannot be null")
+	@Size(min = 6, max = 6, message ="Employee number should be 6 characters")
 	private String employeeNumber;
+	@NotBlank(message = "Email Address cannot be null")
+	@Email(message = "Email should be valid")
 	private String emailAddress;
+	@NotBlank(message = "Username cannot be null")
+	@Size(min = 6, max = 50)
 	private String username;
 	private String submit;
 

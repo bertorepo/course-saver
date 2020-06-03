@@ -9,17 +9,31 @@
 	rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body>
-<!-- <div th:replace="fragments/layout :: header"></div> -->
 <div class="row justify-content-md-center p-4">
 <H1>DELETE EMPLOYEE RECORD</H1>
 </div>
 <form action="#" th:action="@{/employees/delete}" th:object="${employee}" method="post">
-<fieldset disabled>
+  <!-- <div>
+	  <ul>
+	    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+	        <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+	        <span th:text="${e.message}">The error message</span>
+	    </li>
+	  </ul>
+  </div>
+  -->
+<fieldset>
+	<div class="row justify-content-md-center ">
+		<p th:if="!${#fields.detailedErrors().isEmpty()}" class="p-3">
+		        <span class="alert alert-danger"><b>Error:</b> Cannot delete record.</span>
+	    </p>
+   </div>
 	<div class="row justify-content-md-center">
 		<div class="form-group row w-50">
 		    <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
 		    <div class="col-sm-9">
 		      <input type="text" class="form-control" name="firstName" th:value="*{firstName}"/>
+		      <span style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
 		    </div>
 	  	</div>
 	</div>
@@ -28,6 +42,7 @@
 		    <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
 		    <div class="col-sm-9">
 		      <input type="text" class="form-control" name="lastName" th:value="*{lastName}"/>
+		      <span style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
 		    </div>
 	  	</div>
 	</div>
@@ -36,6 +51,7 @@
 		    <label for="employeeNumber" class="col-sm-3 col-form-label">Employee Number</label>
 		    <div class="col-sm-9">
 		      <input type="text" class="form-control" name="employeeNumber" th:value="*{employeeNumber}"/>
+		      <span style="color: red" th:if="${#fields.hasErrors('employeeNumber')}" th:errors="*{employeeNumber}"></span>
 		    </div>
 	  	</div>
 	</div>
@@ -43,7 +59,8 @@
 	  	<div class="form-group row w-50">
 		    <label for="emailAddress" class="col-sm-3 col-form-label">Email Address</label>
 		    <div class="col-sm-9">
-		      <input type="email" class="form-control" name="emailAddress" th:value="*{emailAddress}"/>
+		      <input type="text" class="form-control" name="emailAddress" th:value="*{emailAddress}"/>
+		      <span style="color: red" th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}"></span>
 		    </div>
 	  	</div>
 	</div>
@@ -52,13 +69,14 @@
 		    <label for="username" class="col-sm-3 col-form-label">Username</label>
 		    <div class="col-sm-9">
 		      <input type="text" class="form-control" name="username" th:value="*{username}"/>
+		      <span style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
 		    </div>
 	  	</div>
 	</div>
 </div>
  </fieldset>
 	<div class="d-flex justify-content-center">
-	  <button type="submit" class="btn btn-primary" name="submit" value="Submit">Delete</button></button>
+	  <button type="submit" class="btn btn-danger" name="submit" value="Submit">Delete</button></button>
 	</div>
 </form>  
 </body>
