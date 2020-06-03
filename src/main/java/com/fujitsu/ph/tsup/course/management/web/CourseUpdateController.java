@@ -27,7 +27,7 @@ public class CourseUpdateController {
 		return "course-management/CourseUpdateForm";
 	}
 
-	@PostMapping("/new")
+	@PostMapping("/update")
 	public String submit(@Valid @ModelAttribute("course")CourseUpdateForm course, BindingResult result, Model model) {
 		/*logger.debug("course:{}", course);
 		logger.debug("Result:{}", result);
