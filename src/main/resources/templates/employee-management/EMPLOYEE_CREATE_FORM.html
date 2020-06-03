@@ -3,32 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <title>Employee Update</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-	crossorigin="anonymous">
-<link
-	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-	rel="stylesheet">
+<link href="/css/lib/bootstrap.min.css" 
+	rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link href="/css/lib/bootstrap-grid.min.css" 
+	rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <body>
 	<div class="card"> 
           <div class="card-header">
-            <h3 style="text-align: left">従業員登録</h3>
+            <h3 style="text-align: center">従業員登録</h3>
+            <p style="text-align:  center">(Employee Registration)</p>
           </div>
-
-	
-		<div style="width: 50%">
+<div class="row justify-content-md-center">
 			<form action="#" th:object="${employeeCreate}" th:action="@{/EmployeeCreate/Register}" method="post">
 				<br>
-				<table style="width: 100%"  >
+				<table>
 					<thead>
 						<tr>
-							<th >Employee ID</th>
-							<td><input type="text" class="form-control" name="ID" th:value="*{ID}" disabled/></td>
+							<th>Employee ID</th>
+							<td><input type="text" class="form-control" name="ID" th:value="*{ID}"  disabled/></td>
 						</tr>
 						<tr>
 							<th>Employee Number</th>
-							<td><input type="text" class="form-control" name="NUMBER" th:value="*{NUMBER}" /></td>
+							<td><input type="text" class="form-control" name="NUMBER" th:value="*{NUMBER} " /></td>
 						</tr>
 						<tr>
 							<th>Last Name</th>
@@ -49,11 +45,13 @@
 					</thead>
 				</table>
 				<br>
-				<button style="float: right;" class="btn btn-primary" type="submit" name="submit" value="submit">登録</button>	
+				<button style="float: right;" class="btn btn-primary" type="submit" name="submit" value="submit">登録</button>
 				</form>
-	</div>
-	<br>
-	</div>
+				</div>
+				<br>
+				</div>
 </body>
-</html>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script type="text/javascript" src="/js/lib/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+	 crossorigin="anonymous"></script></html>
 <!-- Mark -->
