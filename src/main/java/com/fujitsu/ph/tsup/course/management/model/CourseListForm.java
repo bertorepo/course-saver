@@ -2,9 +2,8 @@
 package com.fujitsu.ph.tsup.course.management.model;
 
 import java.util.Set;
-import javax.validation.constraints.Size;
 
-import com.fujitsu.ph.tsup.venue.management.model.VenueNames;
+import javax.validation.constraints.Size;
 
 public class CourseListForm {
 
@@ -15,7 +14,7 @@ public class CourseListForm {
     public String getSearch() {
         return Search;
     }
- 
+
     public void setSearch(String Search) {
         this.Search = Search;
     }
@@ -23,7 +22,7 @@ public class CourseListForm {
     public Set<CourseNames> getCns() {
         return cns;
     }
-    
+
     public void setCns(Set<CourseNames> cns) {
         this.cns = cns;
     }
@@ -31,5 +30,5 @@ public class CourseListForm {
     @Override
     public String toString() {
         return "CourseListForm [cns=" + cns + "]";
-    }     
+    }
 }

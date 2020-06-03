@@ -1,14 +1,14 @@
 /* Author : Macabugao, Janella Marie */
 package com.fujitsu.ph.tsup.employee.management.model;
 
-import javax.validation.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 
 
 public class EmployeeView {
 
-	    @NotBlank(message="Input value for id, it must not be empty")
-		private String id;
+	    @NotNull(message="Input value for id, it must not be empty")
+		private Long id;
 		private int empNumber;
 		private String firstName;
 		private String lastName;
@@ -16,11 +16,11 @@ public class EmployeeView {
 		private String userName;
 		
 	
-		public String getId() {
+		public Long getId() {
 			return id;
 		}
 
-		public void setId(String id) {
+		public void setId(Long id) {
 			this.id = id;
 		}
 
