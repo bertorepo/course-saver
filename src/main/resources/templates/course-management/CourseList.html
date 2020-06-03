@@ -10,14 +10,14 @@
 <div class="container">
 	<h1>Courses</h1>
 	<form action="#" th:action="@{/course}" th:object="${CourseList}" method="post">
-	<div class="alert alert-danger" role="alert" th:if="${not #lists.isEmpty(#fields.detailedErrors())}">
-		<ul>
+	<div>
+	  <ul>
 	    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
-	        <span th:text="${e.global}? '*' : ${e.fieldName}">Complete Search Field</span> |
+	        <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
 	        <span th:text="${e.message}">The error message</span>
 	    </li>
 	  </ul>
-	</div>
+  </div> 
 	
 	<table class="table table-bordered">
 		<tr>
