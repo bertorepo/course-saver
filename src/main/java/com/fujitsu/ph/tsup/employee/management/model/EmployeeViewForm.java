@@ -4,9 +4,9 @@ package com.fujitsu.ph.tsup.employee.management.model;
 import javax.validation.constraints.NotEmpty;
 
 
-public class EmployeeView {
+public class EmployeeViewForm {
 
-	    @NotEmpty(message="Input value for id, it must not be blank")
+	    @NotEmpty(message="Input value for id, it cannot be empty")
 		private String id;
 		private int empNumber;
 		private String firstName;

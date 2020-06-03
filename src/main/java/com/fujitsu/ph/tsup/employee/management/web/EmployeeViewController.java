@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fujitsu.ph.tsup.employee.management.model.EmployeeView;
+import com.fujitsu.ph.tsup.employee.management.model.EmployeeViewForm;
 
 @Controller
 @RequestMapping("/employees")
@@ -24,7 +24,7 @@ public class EmployeeViewController {
 	@GetMapping("/view")
 	public String viewEmployeeForm(Model model) {
 
-		EmployeeView employee = new EmployeeView();
+		EmployeeViewForm employee = new EmployeeViewForm();
 
 		employee.setFirstName("Janella");
 		employee.setLastName("Macabugao");
@@ -38,7 +38,7 @@ public class EmployeeViewController {
 	}
 
 	@PostMapping("/view")
-	public String viewEmployeeSubmit(@Valid EmployeeView employeeView, BindingResult bindingResult, Model model) {
+	public String viewEmployeeSubmit(@Valid EmployeeViewForm employeeView, BindingResult bindingResult, Model model) {
 
 		logger.debug("EmployeeView:{}", employeeView);
 		logger.debug("Result:{}", bindingResult);
