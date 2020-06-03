@@ -1,3 +1,4 @@
+<!-- Created by: Jhaisy Jade Yu -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -9,29 +10,48 @@
 <body>
 <div class="container">
 <H1>View Venues</H1>
-<form action="#" th:action="@{/venue/view}" th:object="${venueView}" method="post">
-  
-<table class="table">
-<tr>
-	<thead class="table-success">
-		<tr>
-			<th>Id</th>
-			<th style="width:70%">Venue Name</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tr th:each="VN : *{VNs}">
-		<td >
-		  <label th:for="${VN.id}" th:text="${VN.id}"></label>
-		</td>
-		<td >
-		  <label th:for="${VN.name}" th:text="${VN.name}"></label>
-		</td>
-	</tr>
-</table>
-
-	 <a href="http://localhost:8080//venues/" class="btn btn-info" role="button">Back</a>
-
+<form action="#" th:action="@{/venues/view}" th:object="${view}" method="post">
+	<table class="table">
+		<thead class="table-success">
+			<tr>
+			    <th>ID</th>
+				<th>Venue Name</th> 
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="Venue : ${view}">
+				<td th:text="${Venue.id}" />
+				<td th:text="${Venue.venuename}" />	
+			</tr>
+		</tbody>		
+	</table> 
+   	<div>
+		<div class="w-50">
+			<label for="delete" class="col-sm-8 col-form-label">Search the Id number of the Venue</label>
+			<div class="col-sm-9">
+    			<input type="text" name="search" th:value="*{search}"/>
+  			</div>
+  		</div>
+    </div>
+  	<div>
+ 	 	<div class="w-50">
+	  		<ul>
+	    		<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+	        		<span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+	        		<span th:text="${e.message}">The error message</span>
+	    		</li>
+	  		</ul>
+ 	 	</div>
+	</div>	
+ 	<br></br>
+ 	<div>
+		<div class="w-50">
+	 		<div class="col-sm-9">
+	 			<button class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</button>
+	 			<a href="http://localhost:8080/venues" class="btn btn-danger"><i class="fa fa-arrow-left"> Back</i></a>
+	 		</div> 
+		</div>
+	</div>	
 </form>  
 </div>
 </body>
