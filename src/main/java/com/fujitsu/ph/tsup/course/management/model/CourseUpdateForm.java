@@ -1,3 +1,4 @@
+//@Author Thomas Oviedo
 package com.fujitsu.ph.tsup.course.management.model;
 
 public class CourseUpdateForm {
@@ -17,7 +18,7 @@ public class CourseUpdateForm {
 		return id;
 	}
 
-	public String getCousrseName() {
+	public String getName() {
 		return name;
 	}
 
@@ -31,6 +32,6 @@ public class CourseUpdateForm {
 
 	@Override
 	public String toString() {
-		return "COURSE [ID = " + id + ", Course Name = " + name + "]";
+		return "COURSE [ID = " + id + ", CourseName = " + name + "]";
 	}
 }

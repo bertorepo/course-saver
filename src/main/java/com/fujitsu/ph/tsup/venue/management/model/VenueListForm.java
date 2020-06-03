@@ -1,3 +1,4 @@
+/* Created by: Jeamel de Guzman */
 package com.fujitsu.ph.tsup.venue.management.model;
 
 import java.util.Set;
@@ -11,8 +12,15 @@ import javax.validation.constraints.Size;
 public class VenueListForm {
 	
 	private Set<VenueNames> VNs;
-
+	@Size(min = 1, max = 50)
+	private String search;
 	
+	public String getSearch() {
+		return search;
+	}
+	public void setSearch(String search) {
+		this.search = search;
+	}
 	
 	public Set<VenueNames> getVNs() {
 		return VNs;

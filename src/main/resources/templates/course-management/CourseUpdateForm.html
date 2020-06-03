@@ -1,239 +1,30 @@
+<!--@Author Thomas Oviedo  -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Course Update</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-	<style>
-
-		.tbl_participants, .{
-			width:1100px;
-			text-align:center;
-
-		}
-		.table_participants{
-			width: 1100px
-			border: 1px solid black;
-		}
-
-		.table_participants tr th{
-			border : 1px solid black;
-			background-color: skyblue;
-			padding:5px;
-		}
-
-		.table_participants .tbody_participants tr{
-			width:1100px;
-		}
-		.table_participants td{
-			border :1px solid black;
-			padding 5px;
-		}
-		.table_participants input{
-			width:400px
-		}
-
-
-		.tbl_course_details, .{
-			width:1100px;
-			text-align:center;
-
-		}
-		.table_course_details{
-			width: 1100px
-			border: 1px solid black;
-		}
-
-		.tabel_course_details tr th{
-			border : 1px solid black;
-			background-color: skyblue;
-			padding:5px;
-		}
-
-		.tabel_course_details .tbody_details tr{
-			width:1100px;
-		}
-		.tabel_course_details td{
-			border :1px solid black;
-			padding 5px;
-		}
-		.tabel_course_details input{
-			width:335px
-		}
-
-
-		.tbl_course_non_participant, .{
-			width:1100px;
-			text-align:center;
-
-		}
-		.table_course_non_participant{
-			width: 1100px
-			border: 1px solid black;
-		}
-
-		.table_course_non_participant tr th{
-			border : 1px solid black;
-			background-color: skyblue;
-			padding:5px;
-		}
-
-		.table_course_non_participant .tbody_details tr{
-			width:1100px;
-		}
-		.table_course_non_participant td{
-			border :1px solid black;
-			padding 5px;
-		}
-		.table_course_non_participant input{
-			width:220px
-		}
-
-
-		.tbl_course_attendance, .{
-			width:1100px;
-			text-align:center;
-
-		}
-		.table_course_attendance{
-			width: 1100px
-			border: 1px solid black;
-		}
-
-		.table_course_attendance tr th{
-			border : 1px solid black;
-			background-color: skyblue;
-			padding:5px;
-		}
-
-		.table_course_attendance .tbody_details tr{
-			width:1100px;
-		}
-		.table_course_attendance td{
-			border :1px solid black;
-			padding 5px;
-		}
-		.table_course_attendance input{
-			width:200px
-		}
-
-
-	</style>
 
 </head>
 <body>
 	<div class="container">
 		<H1>Course Update</H1>
-		<a href=""><button class="btn btn-primary" style="float: right">Save</button></a><br><br>
 
-		<form action="#" th:action="@{/course/update}" th:object="${employee}" method="post">
+
+		<form action="#" th:action="@{/courses}" th:object="${course}" method="post">
 			<br>
-			<div class="tbl_participants">
-				<h2>Table Participant</h2>
+			<div class="main-content" style="align:center">
+				<label>Course ID:</label>
+				<input type="text" name="name" th:value="*{id}"/>
+				<label>Course Name:</label>
+				<input type="text" name="name" th:value="*{name}"/>
+				<a href=""><button class="btn btn-primary" style = "margin-left:20px">Save</button></a><br><br><hr>
 			</div>
-			<table class="table_participants">
-				<tbody class="tbody_participants">
-					<tr>
-						<th><b>ID</b></th>
-						<td> <input type="text" name="tpID" th:value="*{}" disabled/></td>
-						<th><b>Course Schedule ID</b></th>
-						<td> <input type="text" name="tpCSID" th:value="*{}"/></td>
-					</tr>
-					<tr>
-						<th><b>Participant ID</b></th>
-						<td> <input type="text" name="tpparticipantID" th:value="*{}"/></td>
-						<th><b>Registration Date</b></th>
-						<td> <input type="date" class="form-From" id="tpregDate" name=""></td>
-					</tr>
-			</table>
-			<br><br>
-			<div class="tbl_course_details">
-				<h2>Course Schedule Details</h2>
-			</div>
-			<table class="tabel_course_details">
-				<tbody class="tbody_details">
-					<tr>
-						<th><b>ID</b></th>
-						<td> <input type="text" name="csdID" th:value="*{}" disabled/></td>
-						<th><b>Course_Schedule_ID</b></th>
-						<td> <input type="text" name="csdCSID" th:value="*{}"/></td>
-					</tr>
-					<tr>
-						<th><b>Scheduled_Start_Datetime</b></th>
-						<td> <input type="date" class="csdsSchedStart"></td>
-						<th><b>Scheduled_End_Datetime</b></th>
-						<td><input type="date" class="csdSchedStart"></td>
-					</tr>
-					<tr>
-						<th><b>Duration</b></th>
-						<td colspan="3"><input type="text" name="csdDuration" th:value="*{}"/></td>
-					</tr>
-			</table>
-
-			<br><br>
-			<div class="tbl_course_non_participant">
-				<h2>Course Non Participant</h2>
-			</div>
-
-			<table class="table_course_non_participant">
-				<tbody class="tbody_details">
-					<tr>
-						<th><b>ID</b></th>
-						<td> <input type="text" name="ID" th:value="*{}" disabled/></td>
-
-						<th><b>Course_Schedule_ID</b></th>
-						<td> <input type="text" name="cnpCSID" th:value="*{}"/></td>
-
-						<th><b>Participant ID</b></th>
-						<td> <input type="text" name="cnpParticipantID" th:value="*{}"/></td>
-
-					</tr>
-					<tr>
-						<th><b>Registration Date</b></th>
-						<td colspan="5"><input type="date" class="cnpregDate"></td>
-					</tr>
-					<tr>
-						<th><b>Reason</b></th>
-						<td colspan="5"><textarea name="comment" form="usrform">Enter text here...</textarea></td>
-					</tr>
-					<tr>
-						<th><b>Decline Date</b></th>
-						<td colspan="5"><input type="date" class="declineDate"></td>
-					</tr>
-			</table>
-			<br><br>
-
-			<div class="tbl_course_attendance">
-				<h2>Course Attendance</h2>
-			</div>
-
-			<table class="table_course_attendance">
-				<tbody class="tbody_details">
-					<tr>
-						<th><b>ID</b></th>
-						<td> <input type="text" name="attID" th:value="*{}" disabled/></td>
-
-						<th><b>Course_Schedule_ID</b></th>
-						<td> <input type="text" name="caCoursSchedID" th:value="*{}"/></td>
-
-						<th><b>Participant ID</b></th>
-						<td> <input type="text" name="caParticipantID" th:value="*{}"/></td>
-
-					</tr>
-					<tr>
-						<th><b>Status</b></th>
-						<td colspan="5"> <input type="text" name="status" th:value="*{}"/></td>
-					</tr>
-					<tr>
-						<th><b>Login Date and Time</b></th>
-						<td colspan="2"><input style="width:365px" type="date" class="login"></td>
-
-						<th><b>Log Out Date and Time</b></th>
-						<td colspan="2"><input style="width:320px" type="date" class="logout"></td>
-					</tr>
-			</table>
 		</form>
 		<br><br>
 	</div>

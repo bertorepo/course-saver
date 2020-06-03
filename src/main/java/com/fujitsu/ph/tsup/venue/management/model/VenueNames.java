@@ -1,3 +1,4 @@
+/* Created by: Jeamel de Guzman */
 package com.fujitsu.ph.tsup.venue.management.model;
 
 public class VenueNames {
