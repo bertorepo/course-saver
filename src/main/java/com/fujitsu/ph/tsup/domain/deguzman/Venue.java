@@ -2,7 +2,7 @@ package com.fujitsu.ph.tsup.domain.deguzman;
 
 public class Venue {
     private Long id;
-    private String name;
+    private String venueName;
 
     protected Venue() {
 
@@ -10,33 +10,33 @@ public class Venue {
 
     private Venue(Builder builder) {
         this.id = builder.id;
-        this.name = builder.name;
+        this.venueName = builder.venueName;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getVenueName() {
+        return venueName;
     }
 
     public static class Builder {
         private Long id;
-        private String name;
+        private String venueName;
 
-        public Builder(String name) {
-            validateName(name);
+        public Builder(String venueName) {
+            validateVenueName(venueName);
 
-            this.name = name;
+            this.venueName = venueName;
         }
 
         public Venue build() {
             return new Venue(this);
         }
 
-        private void validateName(String name) {
-            if (name == null || name.isEmpty() || name.length() < 5 || name.length() > 100) {
+        private void validateVenueName(String venueName) {
+            if (venueName == null || venueName.isEmpty() || venueName.length() < 5 || venueName.length() > 100) {
                 throw new IllegalArgumentException("Venue Name should not be empty");
             }
 

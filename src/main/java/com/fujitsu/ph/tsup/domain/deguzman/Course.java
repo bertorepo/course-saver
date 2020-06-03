@@ -2,7 +2,7 @@ package com.fujitsu.ph.tsup.domain.deguzman;
 
 public class Course {
     private Long id;
-    private String name;
+    private String courseName;
 
     protected Course() {
 
@@ -10,33 +10,33 @@ public class Course {
 
     private Course(Builder builder) {
         this.id = builder.id;
-        this.name = builder.name;
+        this.courseName = builder.courseName;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getCourseName() {
+        return courseName;
     }
 
     public static class Builder {
         private Long id;
-        private String name;
+        private String courseName;
 
-        public Builder(String name) {
-            validateName(name);
+        public Builder(String courseName) {
+            validateCourseName(courseName);
 
-            this.name = name;
+            this.courseName = courseName;
         }
 
         public Course build() {
             return new Course(this);
         }
 
-        private void validateName(String name) {
-            if (name == null || name.isEmpty() || name.length() < 5 || name.length() > 100) {
+        private void validateCourseName(String courseName) {
+            if (courseName == null || courseName.isEmpty() || courseName.length() < 5 || courseName.length() > 100) {
                 throw new IllegalArgumentException("Course Name should not be empty");
             }
 
