@@ -13,15 +13,28 @@
 <body>
 <div class="container">
 	<h1 class="mb-5 mt-5">Update Venue</h1>
+	
 	<form action="#" th:action="@{/venues/update}" th:object="${venueUpdate}" method="post">
-	<div class="form-group mb-5" th:each="Id : *{Id}">
-		<label for="venueId">Venue ID</label>
-		<input type="text" name="venueId" placeholder="Id" class="form-control" th:value="${Id}" disabled/>
-		<label class="mt-4" for="venueName">Update Venue Name</label>
-	  	<input type="text" name="venueName" placeholder="Name" class="form-control" th:value="${venue}"/>
+	
+	<div class="w-50 mb-5">
+	  <ul class="list-unstyled text-danger">
+	    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+	        <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+	        <span th:text="${e.message}">The error message</span>
+	    </li>
+	  </ul>
+  	</div>
+  	
+	<div class="form-group" th:each="Id : *{Id}">
+		<label for="Id">Venue ID</label>
+		<input type="text" name="Id" placeholder="Id" class="form-control" th:value="${Id}" readonly/>
+	</div>
+	<div class="form-group mb-5" th:each="Venue: *{venue}">
+		<label class="mt-4" for="Venue">Update Venue Name</label>
+	  	<input type="text" name="Venue" placeholder="Name" class="form-control" th:value="${Venue}"/>
 	</div>
 	<div>
-		<button type="submit" name="submitUpdate" value="submitUpdate" class="float-sm-left  btn btn-primary">Back</button>
+		<a href="#" onclick="history.go(-1);" class="float-sm-left  btn btn-primary">Back</a>
 		<button type="submit" name="submitUpdate" value="submitUpdate" class="float-sm-right  btn btn-primary"><i class="fa fa-pencil"></i> Update</button>
 	</div>
 	</form>

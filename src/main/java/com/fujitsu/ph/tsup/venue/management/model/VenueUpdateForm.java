@@ -7,6 +7,7 @@ package com.fujitsu.ph.tsup.venue.management.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,34 +18,38 @@ import javax.validation.constraints.Size;
 
 public class VenueUpdateForm {
 	@NotNull
-	private long Id;
+	private Long id;
 	@NotBlank
 	private String venue;
-	@Size(min=1, max=50)
-	private List<VenueNames> ListVenue = new ArrayList<>();
+	@Size.List(value = {@Size})
+	private Set<VenueNames> vnset = new HashSet<>();
 	
 	public String getVenue() {
 		return venue;
 	}
 	
-	public long getId() {
-		return Id;
+	public Long getId() {
+		return id;
 	}
 	
 	public void setVenue(String Venue) {
 		this.venue = Venue;
 	}
 	
-	public void setId(long id) {
-		this.Id = id;
+	public void setId(Long Id) {
+		this.id = Id;
 	}
 	
-	public void setVNLst(List<VenueNames> list) { 
-		this.ListVenue = list;
+	public void setVNLst(Set<VenueNames> list) { 
+		this.vnset = list;
+	}
+	
+	public Set<VenueNames> getVNlst(){
+	    return vnset;
 	}
 	
 	@Override
 	public String toString() {
-		return "VenueUpdateForm [Id = "+ Id +", venue = "+ venue +", VenueNames =" + ListVenue +"]";
+		return "VenueUpdateForm [Id = "+ id +", Venue = "+ venue +", VenueNames =" + vnset +"]";
 	}
 }
