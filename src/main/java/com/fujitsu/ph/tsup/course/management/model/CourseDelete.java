@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 /* Created by: @Author Freo, Kristine Faith */
 
 public class CourseDelete {
-	private int courseId;
+	private Long Id;
 	private String courseName;
 	@NotBlank
 	(message="Field must not be empty")
@@ -14,32 +14,41 @@ public class CourseDelete {
 	public CourseDelete() {	
 	}
 	
-	public CourseDelete(int Id, String courseName, String search) {
-		this.courseId = Id;
+	public CourseDelete(Long Id, String courseName, String search) {
+		this.Id = Id;
 		this.courseName = courseName;
 		this.search = search;	
 	}
-		public int getCourseId() {
-		return courseId;
+		
+		public Long getCourseId() {
+		return Id;
 	}
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
+
+	public void setCourseId(Long courseId) {
+		this.Id = courseId;
 	}
+
 	public String getCourseName() {
 		return courseName;
 	}
+
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
+
 	public String getSearch() {
 		return search;
 	}
+
 	public void setSearch(String search) {
 		this.search = search;
 	}
+
 		@Override
 		public String toString() {
-			return "courseDelete[CourseName=" + courseName + ", CourseId=" + courseId +", Search=" + search + "]";	
+			return "courseDelete[CourseName=" + courseName + ", CourseId=" + Id +", Search=" + search + "]";	
 	}
+
+		
 }
 

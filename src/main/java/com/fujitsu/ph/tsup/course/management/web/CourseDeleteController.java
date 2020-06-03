@@ -8,8 +8,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +33,8 @@ public class CourseDeleteController {
 			return "course-management/CourseDelete";
 		}
 		CourseDelete course = new CourseDelete();
-		 course.setCourseId(20202);
+		
+		 
 		 course.setCourseName("SDEM1");
 		 course.setSearch("");
 	
@@ -48,9 +47,10 @@ public class CourseDeleteController {
 			BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		logger.debug("CourseDelete:{}", CourseDelete);
 		logger.debug("Result:{}", result);
-		CourseDelete.setCourseId(20202);
-		CourseDelete.setCourseName("SDEM1");
 		
+		CourseDelete.setCourseName("SDEM1");
+		CourseDelete.setSearch("");
+		 
 		model.addAttribute("CourseDelete", CourseDelete);
 		if (result.hasErrors()) {
 			return "course-management/CourseDelete";
