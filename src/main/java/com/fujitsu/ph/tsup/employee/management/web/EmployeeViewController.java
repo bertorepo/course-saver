@@ -1,14 +1,15 @@
 package com.fujitsu.ph.tsup.employee.management.web;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.Valid;
 
-import javax.annotation.PostConstruct;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fujitsu.ph.tsup.employee.management.model.EmployeeView;
@@ -16,68 +17,44 @@ import com.fujitsu.ph.tsup.employee.management.model.EmployeeView;
 @Controller
 @RequestMapping("/employees")
 public class EmployeeViewController {
-	    // load employee data
-	    List<EmployeeView> theEmployees;
+
+	private static Logger logger = LoggerFactory.getLogger(EmployeeViewController.class);
 
 	@GetMapping("/view")
 	public String viewEmployeeForm(Model model) {
-		// create employees
-		EmployeeView emp1 = new EmployeeView();
-		int id = 1;
-		int employeeId = 17415;
 
-		emp1.setId(id++);
-		emp1.setEmpNumber(employeeId++);
-		emp1.setFirstName("Janella");
-		emp1.setLastName("Macabugao");
-		emp1.setEmailAddress("macabugaoj@gmail.com");
-		emp1.setUserName("Janella");
+		EmployeeView employee = new EmployeeView();
 
-		EmployeeView emp2 = new EmployeeView();
-		emp2.setId(id++);
-		emp2.setEmpNumber(employeeId++);
-		emp2.setFirstName("Cedie R");
-		emp2.setLastName("King");
-		emp2.setEmailAddress("cedirking@gmail.com");
-		emp2.setUserName("Cedie123");
+		employee.setFirstName("Janella");
+		employee.setLastName("Macabugao");
+		employee.setEmailAddress("j.macabugao@fujitsu.com");
+		employee.setUserName("Janella");
 
-		EmployeeView emp3 = new EmployeeView();
-		emp3.setId(id++);
-		emp3.setEmpNumber(employeeId++);
-		emp3.setFirstName("Lisa");
-		emp3.setLastName("Valenzuela");
-		emp3.setEmailAddress("liza@gmail.com");
-		emp3.setUserName("Liza123");
-
-		EmployeeView emp4 = new EmployeeView();
-		emp4.setId(id++);
-		emp4.setEmpNumber(employeeId++);
-		emp4.setFirstName("Jonessa");
-		emp4.setLastName("Mercado");
-		emp4.setEmailAddress("mercado@gmail.com");
-		emp4.setUserName("Jonessa123");
-
-		EmployeeView emp5 = new EmployeeView();
-		emp5.setId(id++);
-		emp5.setEmpNumber(employeeId++);
-		emp5.setFirstName("Vincent");
-		emp5.setLastName("Cruz");
-		emp5.setEmailAddress("vincentcruz@gmail.com");
-		emp5.setUserName("Vincent123");
-
-		// create the list
-		theEmployees = new ArrayList<>();
-
-		// add to the list
-		theEmployees.add(emp1);
-		theEmployees.add(emp2);
-		theEmployees.add(emp3);
-		theEmployees.add(emp4);
-		theEmployees.add(emp5);
-
-		model.addAttribute("employee", theEmployees);
+		model.addAttribute("employeeView", employee);
 
 		return "employee-management/viewEmployee";
+
+	}
+
+	@PostMapping("/view")
+	public String viewEmployeeSubmit(@Valid EmployeeView employeeView, BindingResult bindingResult, Model model) {
+
+		logger.debug("EmployeeView:{}", employeeView);
+		logger.debug("Result:{}", bindingResult);
+
+		employeeView.setFirstName("Janella");
+		employeeView.setLastName("Macabugao");
+		employeeView.setEmailAddress("j.macabugao@fujitsu.com");
+		employeeView.setUserName("Janella");
+		model.addAttribute("employeeView", employeeView);
+		if (bindingResult.hasErrors()) {
+			return "employee-management/viewEmployee";
+
+		}
+
+		return "redirect:/employees/view";
+
 	}
 
 }
+

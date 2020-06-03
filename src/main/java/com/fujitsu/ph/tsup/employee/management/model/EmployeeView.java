@@ -1,34 +1,24 @@
 package com.fujitsu.ph.tsup.employee.management.model;
 
+import javax.validation.constraints.NotEmpty;
+
+
 public class EmployeeView {
 
-
-		private int id;
+	    @NotEmpty(message="Input value for id, it must not be blank")
+		private String id;
 		private int empNumber;
 		private String firstName;
 		private String lastName;
 		private String emailAddress;
 		private String userName;
 		
-
-		public EmployeeView() {
-			
-		}
-		
-		public EmployeeView(int id, int empNumber, String firstName, String lastName, String emailAddress, String userName) {
-			this.id = id;
-			this.empNumber = empNumber;
-			this.firstName = firstName;
-			this.lastName = lastName;
-			this.emailAddress = emailAddress;
-			this.userName = userName;
-		}
-
-		public int getId() {
+	
+		public String getId() {
 			return id;
 		}
 
-		public void setId(int id) {
+		public void setId(String id) {
 			this.id = id;
 		}
 

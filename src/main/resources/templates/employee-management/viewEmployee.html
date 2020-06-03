@@ -3,48 +3,60 @@
 
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
+     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <!--   Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> 
 
 	<title>Employee Directory</title>
 </head>
 
 <body>
 
-<div class="container">
+ <div class="container"> 
 
-	<h3>Employee Directory</h3>
+	<h3>Employee View Directory</h3>
 	<hr>
-	<form action="#" th:action="@{/employees/view}" method="post">
-	<table class="table table-bordered table-striped">
-		<thead class="thead-dark">
-			<tr>
-			    <th>ID</th>
-				<th>Employee Number</th> 
-				<th>First Name</th>
-				<th>Last Name</th>
-				<th>Email</th>
-				<th>User Name</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="tempEmployee : ${employee}">
-				
-				<td th:text="${tempEmployee.id}" />
-				<td th:text="${tempEmployee.empNumber}" />	
-				<td th:text="${tempEmployee.firstName}" />	
-				<td th:text="${tempEmployee.lastName}" />	
-				<td th:text="${tempEmployee.emailAddress}" />	
-				<td th:text="${tempEmployee.userName}" />
-			</tr>
-		</tbody>		
-	</table> 
-</form>
+	<form action="#" th:action="@{/employees/view}" th:object=${employeeView} method="post">
+      <div class="container my-3">
+           <div class="row">
+                <div class="col-md-8 mx-auto">
+                   <div class="form-row">
+                     <div class="col-md-6 form-group">
+                        <label>Enter the ID you want to View </label>
+                        <input type="text" class="form-control" th:field="*{id}" name="id" /> 
+                        <label th:errorclass="fieldError" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">ID error </label> 
+                    </div>   
+<fieldset disabled>                  
+      <table class="table table-bordered table-striped">
+		     <thead class="thead-dark">
+			    <tr>
+				    <th>First Name</th>
+				    <th>Last Name</th>
+				    <th>Email</th>
+				    <th>User Name</th>
+			   </tr>
+		     </thead>
+		     <tbody>
+			      <tr>		
+				     <td> <input type="text" name="firstName" th:value="*{firstName}" />	
+				     <td> <input type="text" name="lastName"  th:value="*{lastName}" />	
+				     <td> <input type="text" name="emailAddress" th:value="*{emailAddress}" />	
+				     <td> <input type="text" name="userName" th:value="*{userName}" />
+			     </tr>
+		    </tbody> 
+      </table>
+</fieldset>
+	<button type="submit" class="btn btn-primary">View</button>
+         </div>
+      </div>
+  </div>
 </div>
-		
+      
+</form>               
+</div> 	
 </body>
 </html>
+
 
