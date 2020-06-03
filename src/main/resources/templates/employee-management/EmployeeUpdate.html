@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--Iwarat, Jhon Harvey A-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
@@ -16,45 +17,47 @@
 			<H1 style="text-align: center">Employee Account Update</H1>
 		</div>
 		<div style="width: 80%">
-			<form action="#" th:object="${updating}" th:action="@{/employee/Update}" method="post">
-				<br>
-				<br>
-				<table style="width: 100%" >
+			<form action="#" th:object="${updating}"
+				th:action="@{/employee/Update}" method="post">
+				<div>
+					<ul>
+						<li th:each="e : ${#fields.detailedErrors()}"
+							th:class="${e.global}? globalerr : fielderr"><span
+							th:text="${e.global}? '*' : ${e.fieldName}">The field name</span>
+							| <span th:text="${e.message}">The error message</span></li>
+					</ul>
+				</div>
+				<br> <br>
+				<table style="width: 100%">
 					<thead>
 						<tr>
-							<th >Employee ID</th>
-							<td><input type="text" class="form-control" name="ID"
-								th:value="*{ID}" /></td>
-						</tr>
-						<tr>
 							<th>Employee Number</th>
-							<td><input type="text" class="form-control" name="NUMBER"
-								th:value="*{NUMBER}" /></td>
+							<td><input type="text" class="form-control" name="number"
+								th:value="*{number}" /></td>
 						</tr>
 						<tr>
 							<th>Last Name</th>
-							<td><input class="form-control" type="text" name="LAST_NAME"
-								th:value="*{LAST_NAME}" /></td>
+							<td><input class="form-control" type="text" name="lastName"
+								th:value="*{lastName}" /></td>
 						</tr>
 						<tr>
 							<th>First Name</th>
-							<td><input class="form-control" type="text"
-								name="FIRST_NAME" th:value="*{FIRST_NAME}" /></td>
+							<td><input class="form-control" type="text" name="firstName"
+								th:value="*{firstName}" /></td>
 						</tr>
 						<tr>
 							<th>Email Address</th>
 							<td><input class="form-control" type="text"
-								name="EMAIL_ADDRESS" th:value="*{EMAIL_ADDRESS}" /></td>
+								name="emailAddress" th:value="*{emailAddress}" /></td>
 						</tr>
 						<tr>
 							<th>Username</</th>
-							<td><input class="form-control" type="text"
-								name="FIRST_NAME" th:value="*{USERNAME}" /></td>
+							<td><input class="form-control" type="text" name="username"
+								th:value="*{username}" /></td>
 						</tr>
 					</thead>
 				</table>
-				<br>
-				<br>
+				<br> <br>
 				<button class="btn btn-primary" type="submit" name="submit"
 					value="submit">Update</button>
 			</form>

@@ -27,37 +27,38 @@ public class venueCreateController {
 	@GetMapping("/new")
 	public String show(Model model) {
 		logger.debug("Model:{}", model);
-		if (model.containsAttribute("venue")) {
+		if (model.containsAttribute("venueCreate")) {
 			return "venue-management/venueCreate";
 		}
 
-		venueCreateForm venue = new venueCreateForm();
+		venueCreateForm venueCreate = new venueCreateForm();
 
-		venue.setId(123);
-		venue.setVenueName("Marquis Hall");
+		venueCreate.setId(123456);
+		venueCreate.setVenueName("Marquis Hall");
 		
 		
-		model.addAttribute("venueCreate", venue);
+		model.addAttribute("venueCreate", venueCreate);
 		return "venue-management/venueCreate";
 	}
 	
 	@PostMapping("/new")
 	public String submit(
-			@Valid @ModelAttribute("venueCreate") venueCreateForm venue,
+			@Valid @ModelAttribute("venueCreate") venueCreateForm venueCreate,
 			BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		
-		logger.debug("id:{}", venue);
-		logger.debug("venueCreate:{}", result);
+		logger.debug("VenueCreate:{}", venueCreate);
+		logger.debug("Result:{}", result);
 
-		model.addAttribute("venueCreate", venue);
+		model.addAttribute("venueCreate", venueCreate);
 		if (result.hasErrors()) {
 			return "venue-management/venueCreate";
 		}
-		redirectAttributes.addFlashAttribute("venue-management", venue);
-		return "venue-management/venueCreate";
+		
+		redirectAttributes.addFlashAttribute("venueCreate", venueCreate);
+		return "redirect:/venues/new";
+		}
 		
 	}
 	
 	
 	
-}

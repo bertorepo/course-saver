@@ -13,10 +13,7 @@
 <body>
 <div class="container">
 	<h1>Courses</h1>
-			<a th:href="@{/venues/update}"><label><i class="fa fa-pencil"></i></label></a>
-			<a th:href="@{/venues/view}"><label><i class="fa fa-search"></i></label></a>
-			<a th:href="@{/venues/delete}"><label><i class="fa fa-trash-o"></i></label></a>
-	<form action="#" th:action="@{/course/}" th:object="${courseList}" method="post">
+	<form action="#" th:action="@{/courses}" th:object="${courseList}" method="post">
 	<div class="alert alert-danger" role="alert" th:if="${not #lists.isEmpty(#fields.detailedErrors())}">
 		<ul>
 	    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
@@ -47,7 +44,7 @@
 	
 	<div class="input-group float-right col-lg-2">
 		<h5>Search Course</h5>
-		  <input class="form-control" type="text" placeholder="Search" name="search" th:value="*{search}">
+		  <input class="form-control" type="text" placeholder="Search" name="Search" th:value="*{Search}">
 		  <div class="input-group-append">
 			<button type="submit" class="input-group-text" name="submit" value="Submit">
 				<i class="fa fa-search"></i>

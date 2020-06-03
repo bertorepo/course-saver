@@ -39,9 +39,9 @@ public class VenueViewController {
 		vn2.setName("Benilde Hall");
 		vns.add(vn2);
 		
-		venue.setVNs(vns);
+		/*venue.setVNs(vns);
 		model.addAttribute("venueView", venue);
-		
+		*/
 		return "venue-management/venueView";
 		
 	}

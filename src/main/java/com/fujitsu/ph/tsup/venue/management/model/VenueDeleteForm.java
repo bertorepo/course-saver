@@ -1,43 +1,43 @@
-/* @Author Kenneth Abad */
 package com.fujitsu.ph.tsup.venue.management.model;
+/* @Author Kenneth Abad */
 
 
-import java.util.Set;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 
 public class VenueDeleteForm {
-	private int idnumber;
+	private int id;
 	private String vname;
+	@NotBlank
+	private String delete;
 	
 	
-	public int getIdnumber() {
-		return idnumber;
+	public int getId() {
+		return id;
 	}
 
-
-	public void setIdnumber(int idnumber) {
-		this.idnumber = idnumber;
+	public void setId(int id) {
+		this.id = id;
 	}
-
 
 	public String getVname() {
 		return vname;
 	}
 
-
 	public void setVname(String vname) {
 		this.vname = vname;
 	}
+	
+	public String getDelete() {
+		return delete;
+	}
 
+	public void setDelete(String delete) {
+		this.delete = delete;
+	}
 
 	@Override
 	public String toString() {
-		return "VenueNames [idnumber=" + idnumber + ", vname=" + vname +"]";
+		return "VenueNames [vname=" + vname +"]";
 	}
 
 }

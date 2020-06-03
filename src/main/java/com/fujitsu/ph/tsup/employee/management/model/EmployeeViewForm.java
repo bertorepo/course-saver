@@ -1,13 +1,12 @@
 /* Author : Macabugao, Janella Marie */
 package com.fujitsu.ph.tsup.employee.management.model;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 
+public class EmployeeViewForm {
 
-public class EmployeeView {
-
-	    @NotBlank(message="Input value for id, it must not be empty")
+	    @NotEmpty(message="Input value for id, it cannot be empty")
 		private String id;
 		private int empNumber;
 		private String firstName;
