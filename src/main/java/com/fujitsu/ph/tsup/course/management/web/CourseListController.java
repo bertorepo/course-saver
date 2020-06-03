@@ -19,60 +19,60 @@ import com.fujitsu.ph.tsup.course.management.model.CourseListForm;
 import com.fujitsu.ph.tsup.course.management.model.CourseNames;
 
 @Controller
-@RequestMapping("/course")
+@RequestMapping("/courses")
 public class CourseListController {
-	
-	private static Logger logger = LoggerFactory.getLogger(CourseListController.class);
-	
-	@GetMapping("/new")
-	public String show(Model model) {
-		CourseListForm course = new CourseListForm();
-		course.setSearch("");
-		course.setCNs(createCNs());
-		 
-		model.addAttribute("courseList", course);
-		return "course-management/courseList";
-	}
-	
-	@PostMapping("/new")
-	public String submit(@Valid CourseListForm courseList, BindingResult result, Model model) {
-		
-		logger.debug("Course List:{}", courseList);
-		logger.debug("Result:{}", result);
-		
-		courseList.setCNs(createCNs());
 
-		model.addAttribute("courseList", courseList);
-		if (result.hasErrors()) {
-			return "course-management/courseList";
-		}
-		return "course-management/courseList";
-		
-	}
-	
-		private Set<CourseNames> createCNs() {
-		Set<CourseNames> cns = new HashSet<>();
-		
-		CourseNames cn1 = new CourseNames();
-		cn1.setId(123456789);
-		cn1.setName("Information Technology");
-		cns.add(cn1);
-		
-		CourseNames cn2 = new CourseNames();
-		cn2.setId(987654321);
-		cn2.setName("Computer Science");
-		cns.add(cn2);
-		
-		CourseNames cn3 = new CourseNames();
-		cn3.setId(987632451);
-		cn3.setName("Information Technology DA");
-		cns.add(cn3);
-		
-		CourseNames cn4 = new CourseNames();
-		cn4.setId(753951852);
-		cn4.setName("Computer Engineering");
-		cns.add(cn4);
-		
-		return cns;
-}
+    private static Logger logger = LoggerFactory.getLogger(CourseListController.class);
+
+    @GetMapping("/new")
+    public String show(Model model) {
+        CourseListForm course = new CourseListForm();
+        course.setSearch("");
+        course.setCNs(createCNs());
+
+        model.addAttribute("CourseList", course);
+        return "course-management/CourseList";
+    }
+
+    @PostMapping("/new")
+    public String submit(@Valid CourseListForm CourseList, BindingResult result, Model model) {
+
+        logger.debug("Course List:{}", CourseList);
+        logger.debug("Result:{}", result);
+
+        CourseList.setCNs(createCNs());
+
+        model.addAttribute("CourseList", CourseList);
+        if (result.hasErrors()) {
+            return "course-management/CourseList";
+        }
+        return "course-management/CourseList";
+
+    }
+
+    private Set<CourseNames> createCNs() {
+        Set<CourseNames> cns = new HashSet<>();
+
+        CourseNames cn1 = new CourseNames();
+        cn1.setId(123456789);
+        cn1.setName("Information Technology");
+        cns.add(cn1);
+
+        CourseNames cn2 = new CourseNames();
+        cn2.setId(987654321);
+        cn2.setName("Computer Science");
+        cns.add(cn2);
+
+        CourseNames cn3 = new CourseNames();
+        cn3.setId(987632451);
+        cn3.setName("Information Technology DA");
+        cns.add(cn3);
+
+        CourseNames cn4 = new CourseNames();
+        cn4.setId(753951852);
+        cn4.setName("Computer Engineering");
+        cns.add(cn4);
+
+        return cns;
+    }
 }
