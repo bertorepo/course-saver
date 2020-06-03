@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<H1>COURSES</H1>
+<form action="#" th:action="@{/courses/view}" th:object="${courses}" method="post">
+<div>
+ <input type="text" name="courseid" th:value="${courses?.courseid}"/>
+<!--  <label th:errorclass="fieldError" th:if="${#fields.hasErrors('courseid')}" th:errors="*{courseid}"></label> -->
+</div>
+<div>
+ <input type="text" name="coursename" th:value="${courses?.coursename}"/>
+</div>
+ <button type="submit" name="submit" value="Submit">View</button>
+<br>
+<br>
+<table style="width:100%">
+  <tr>
+    <th>Course ID</th>
+    <th>Course Description</th>
+  </tr>
+  <tr>
+    <th>12345678</th>
+    <th>Java Programming</th>
+  </tr>
+</table>
+
+</form>
+</body>
+</html>
