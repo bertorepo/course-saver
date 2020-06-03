@@ -1,4 +1,4 @@
-/* Author : Angara, Mary Rose 
+/* Author : Angara, Mary Rose */
 package com.fujitsu.ph.tsup.course.management.web;
 
 import java.util.HashSet;
@@ -14,43 +14,46 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.course.management.model.CourseListForm;
 import com.fujitsu.ph.tsup.course.management.model.CourseNames;
 
 @Controller
-@RequestMapping("/courses")
+@RequestMapping("/course")
 public class CourseListController {
 
     private static Logger logger = LoggerFactory.getLogger(CourseListController.class);
 
-    @GetMapping("/new")
+    @GetMapping()
     public String show(Model model) {
         CourseListForm course = new CourseListForm();
         course.setSearch("");
-        course.setCNs(createCNs());
+        course.setCns(createCns());
 
         model.addAttribute("CourseList", course);
         return "course-management/CourseList";
     }
 
-    @PostMapping("/new")
-    public String submit(@Valid CourseListForm CourseList, BindingResult result, Model model) {
+    @PostMapping("")
+    public String submit(@Valid CourseListForm CourseList, BindingResult result, Model model,
+            RedirectAttributes redirectAttributes) {
 
         logger.debug("Course List:{}", CourseList);
         logger.debug("Result:{}", result);
 
-        CourseList.setCNs(createCNs());
+        CourseList.setCns(createCns());
 
         model.addAttribute("CourseList", CourseList);
         if (result.hasErrors()) {
             return "course-management/CourseList";
         }
-        return "course-management/CourseList";
+        redirectAttributes.addFlashAttribute("CourseList", CourseList);
+        return "redirect:/course";
 
     }
 
-    private Set<CourseNames> createCNs() {
+    private Set<CourseNames> createCns() {
         Set<CourseNames> cns = new HashSet<>();
 
         CourseNames cn1 = new CourseNames();
@@ -75,4 +78,4 @@ public class CourseListController {
 
         return cns;
     }
-}*/
+}

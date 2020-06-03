@@ -4,9 +4,11 @@ package com.fujitsu.ph.tsup.course.management.model;
 import java.util.Set;
 import javax.validation.constraints.Size;
 
+import com.fujitsu.ph.tsup.venue.management.model.VenueNames;
+
 public class CourseListForm {
 
-    private Set<CourseNames> CNs;
+    private Set<CourseNames> cns;
     @Size(min = 1, max = 50)
     private String Search;
 
@@ -18,17 +20,16 @@ public class CourseListForm {
         this.Search = Search;
     }
 
-    public Set<CourseNames> getCNs() {
-        return CNs;
+    public Set<CourseNames> getCns() {
+        return cns;
     }
-
-    public void setCNs(Set<CourseNames> CNs) {
-        this.CNs = CNs;
+    
+    public void setCns(Set<CourseNames> cns) {
+        this.cns = cns;
     }
 
     @Override
     public String toString() {
-        return "CourseListForm [CNs=" + CNs + "]";
-    }
-
+        return "CourseListForm [cns=" + cns + "]";
+    }     
 }

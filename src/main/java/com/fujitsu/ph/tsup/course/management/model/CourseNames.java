@@ -24,7 +24,7 @@ public class CourseNames {
 
     @Override
     public String toString() {
-        return "CN [id=" + id + ", name=" + name + "]";
+        return "Course Names [id=" + id + ", name=" + name + "]";
     }
 
 }

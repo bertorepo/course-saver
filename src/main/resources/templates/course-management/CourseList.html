@@ -13,7 +13,7 @@
 <body>
 <div class="container">
 	<h1>Courses</h1>
-	<form action="#" th:action="@{/courses}" th:object="${courseList}" method="post">
+	<form action="#" th:action="@{/course}" th:object="${CourseList}" method="post">
 	<div class="alert alert-danger" role="alert" th:if="${not #lists.isEmpty(#fields.detailedErrors())}">
 		<ul>
 	    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
@@ -32,7 +32,7 @@
 				</tr>
 			</thead>
 			<tr th:each="CN : *{CNs}">
-				<td >
+				<td>
 				  <label th:for="${CN.id}" th:text="${CN.id}"></label>
 				</td>
 				<td>
