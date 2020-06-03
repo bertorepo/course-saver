@@ -1,6 +1,5 @@
 package src.main.java.com.fujitsu.ph.tsup.domain.deguzman;
 
-
 public class Employee {
     private Long id;
     private String number;
@@ -29,7 +28,7 @@ public class Employee {
     public String getNumber() {
         return number;
     }
-    
+
     public String getLastName() {
         return lastName;
     }
@@ -60,7 +59,7 @@ public class Employee {
             validateFirstName(firstName);
             validateEmailAddress(emailAddress);
             validateUserName(userName);
-            
+
             this.number = number;
             this.lastName = lastName;
             this.firstName = firstName;
@@ -71,13 +70,14 @@ public class Employee {
         public Employee build() {
             return new Employee(this);
         }
-        
+
         private void validateNumber(String number) {
             if (number == null || number.isEmpty() || number.length() < 10 || number.length() > 10) {
                 throw new IllegalArgumentException("Employee Number should not be empty");
             }
 
         }
+
         private void validateLastName(String lastName) {
             if (lastName == null || lastName.isEmpty() || lastName.length() < 1 || lastName.length() > 50) {
                 throw new IllegalArgumentException("Last name should not be empty");
@@ -92,7 +92,8 @@ public class Employee {
         }
 
         private void validateEmailAddress(String emailAddress) {
-            if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() > 50 || emailAddress.length() < 5) {
+            if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() > 50
+                    || emailAddress.length() < 5) {
                 throw new IllegalArgumentException("Email Address should not be empty");
             }
         }

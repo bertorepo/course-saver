@@ -1,6 +1,5 @@
 package src.main.java.com.fujitsu.ph.tsup.domain.deguzman;
 
-
 public class CourseSchedule {
     private Long id;
     private Long courseId;
@@ -47,7 +46,7 @@ public class CourseSchedule {
     public int getMaxAllowed() {
         return maxAllowed;
     }
-    
+
     public String getStatus() {
         return status;
     }

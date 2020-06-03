@@ -21,7 +21,6 @@ public class Venue {
         return name;
     }
 
-
     public static class Builder {
         private Long id;
         private String name;
@@ -31,7 +30,6 @@ public class Venue {
 
             this.name = name;
         }
-
 
         public Venue build() {
             return new Venue(this);

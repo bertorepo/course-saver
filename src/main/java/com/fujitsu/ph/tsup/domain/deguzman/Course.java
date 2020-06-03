@@ -1,6 +1,5 @@
 package src.main.java.com.fujitsu.ph.tsup.domain.deguzman;
 
-
 public class Course {
     private Long id;
     private String name;
@@ -22,7 +21,6 @@ public class Course {
         return name;
     }
 
-
     public static class Builder {
         private Long id;
         private String name;
@@ -32,7 +30,6 @@ public class Course {
 
             this.name = name;
         }
-
 
         public Course build() {
             return new Course(this);
