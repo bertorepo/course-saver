@@ -7,37 +7,37 @@ import javax.validation.constraints.NotNull;
 
 public class venueCreateForm {
 	
-	private int id;
+	private int Id;
 	@NotBlank
 	@NotNull
-	private String venueName;
-	private String submit;
+	private String VenueName;
+	private String Submit;
 
 	public int getId() {
-		return id;
+		return Id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int Id) {
+		this.Id = Id;
 	}
 
 	public String getVenueName() {
-		return venueName;
+		return VenueName;
 	}
 
-	public void setVenueName(String venueName) {
-		this.venueName = venueName;
+	public void setVenueName(String VenueName) {
+		this.VenueName = VenueName;
 	}
 	
 	public String getSubmit() {
-		return submit;
+		return Submit;
 	}
 	public void setSubmit(String submit) {
-		this.submit = submit;
+		this.Submit = submit;
 	}
 	@Override
 	public String toString() {
-		return "venueCreateForm [id=" + id + ", venueName=" + venueName+ "]";
+		return "venueCreateForm [id=" + Id + ", venueName=" + VenueName+ "]";
 	}
 }
 	
