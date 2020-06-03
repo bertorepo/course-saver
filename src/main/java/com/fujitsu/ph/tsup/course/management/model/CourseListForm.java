@@ -15,7 +15,7 @@ public class CourseListForm {
     public String getSearch() {
         return Search;
     }
-
+ 
     public void setSearch(String Search) {
         this.Search = Search;
     }

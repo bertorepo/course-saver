@@ -9,8 +9,6 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-</head>
-<body>
 <div class="container">
 	<h1>Courses</h1>
 	<form action="#" th:action="@{/course}" th:object="${CourseList}" method="post">
@@ -31,27 +29,26 @@
 					<th style="width:50%">Course Name</th>
 				</tr>
 			</thead>
-			<tr th:each="CN : *{CNs}">
-				<td>
-				  <label th:for="${CN.id}" th:text="${CN.id}"></label>
+			<tr th:each="cn : *{Cns}">
+				<td >
+				  <label th:for="${cn.id}" th:text="${cn.id}"></label>
 				</td>
 				<td>
-				  <label th:for="${CN.name}" th:text="${CN.name}"></label>
+				  <label th:for="${cn.name}" th:text="${cn.name}"></label>
 				</td>
 			</tr>
 		</tr>
 	</table>
 	
-	<div class="input-group float-right col-lg-2">
-		<h5>Search Course</h5>
-		  <input class="form-control" type="text" placeholder="Search" name="Search" th:value="*{Search}">
-		  <div class="input-group-append">
-			<button type="submit" class="input-group-text" name="submit" value="Submit">
-				<i class="fa fa-search"></i>
+		<div class="input-group float-right col-lg-3">
+			<h5>Search Course</h5>
+		  		<input class="form-control" type="text" placeholder="Search" name="Search" th:value="*{Search}">
+			<button type="submit" class="input-group-text" name="submit" value="Submit"><i class="fa fa-search"></i>
 					</button>
-		  </div>
 		</div>
-		<a th:href="@{/courses/new}" class="btn btn-primary float-left"><i class="fa fa-plus"></i></a>
+		
+		<a th:href="@{/course/new}" class="btn btn-primary float-left"><i class="fa fa-plus"></i></a>
+		
 	</form>  
 </div>
 </body>
