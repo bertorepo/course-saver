@@ -16,7 +16,7 @@ public class Employee {
 		this.Id = builder.Id;
 		this.employeeNumber = builder.employeeNumber;
 		this.lastName = builder.lastName;
-		this.firstName = builder.lastName;
+		this.firstName = builder.firstName;
 		this.emailAddress = builder.emailAddress;
 		this.userName = builder.userName;
 	}
@@ -67,42 +67,39 @@ public class Employee {
 			this.firstName = firstName1;
 			this.emailAddress = emailAddress1;
 			this.userName = userName1;
-		}
-		
+			
+		}	
 		 public Employee builder() {
 			 return new Employee(this);
-		 }
+		 }	 
 		 
 		private void validateId(Long Id) {
 			if (Id == null) {
                 throw new IllegalArgumentException("ID should not be null");
             }
-		}
-		
+		}	
 		private void validateemployeeNumber(Long employeeNumber) {
 			if (employeeNumber == null) {
                 throw new IllegalArgumentException("Employee Number should not be null");
             }
 		}
-			
 		private void validatefirstName(String firstName) {
-			if (firstName.isEmpty()  || firstName== null) {
+			if (firstName.isEmpty() || firstName== null) {
 				throw new IllegalArgumentException("First Name Should not be empty");	
 			}
 		}
-		
 		private void validatelastName(String lastName) {
-			if (lastName.isEmpty()  || lastName== null) {
+			if (lastName.isEmpty() || lastName== null) {
 				throw new IllegalArgumentException("Last Name Should not be empty");	
 			}
 		}
 		private void validateemailAddress(String emailAddress) {
-			if (emailAddress.isEmpty()  || emailAddress== null) {
+			if (emailAddress.isEmpty() || emailAddress== null) {
 				throw new IllegalArgumentException("Email Address Should not be empty");	
 			}
 		}
 		private void validateuserName(String userName) {
-			if (userName.isEmpty()  || userName== null) {
+			if (userName.isEmpty() || userName== null) {
 				throw new IllegalArgumentException("Username Should not be empty");	
 			}
 		}

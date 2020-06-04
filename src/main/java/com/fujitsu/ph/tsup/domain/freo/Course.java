@@ -5,7 +5,6 @@ public class Course {
 	private Long Id;
 	private String courseName;
 
-
 	protected Course() {
 		
 	}
@@ -38,15 +37,14 @@ public class Course {
 	public Course builder() {
 		return new Course(this);
 	}
-	
+
 	private void validateId(Long Id) {
 		if (Id== null) {
 			throw new IllegalArgumentException("ID Should not be empty");
 		}
 	}
-
 	private void validatecourseName(String courseName) {
-		if (courseName.isEmpty()  || courseName== null) {
+		if (courseName.isEmpty() || courseName== null) {
 			throw new IllegalArgumentException("Course Name Should not be empty");
 			
 		 }

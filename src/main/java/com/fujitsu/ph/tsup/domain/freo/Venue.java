@@ -4,14 +4,12 @@ public class Venue {
 	private Long Id;
 	private String venueName;
 
-
 	protected Venue() {
 		
 	}
 	private Venue (Builder builder) {
 		this.Id = builder.Id;
-		this.venueName=builder.venueName;
-		
+		this.venueName=builder.venueName;	
 	}
 	public Long getId() {
 		return Id;
@@ -34,12 +32,12 @@ public class Venue {
 	}
 	
 	private void validateId(Long id2) {
-		if (Id== null) {
+		if (Id == null) {
 			throw new IllegalArgumentException("ID Should not be empty");
 		}
 	}
 	private void validatevenueName(String venueName2) {
-		if (venueName.isEmpty()  || venueName== null) {
+		if (venueName.isEmpty() || venueName== null) {
 			throw new IllegalArgumentException("Course Name Should not be empty");	
 			}
 		}

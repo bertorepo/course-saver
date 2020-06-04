@@ -80,7 +80,6 @@ public class CourseSchedule {
                 throw new IllegalArgumentException("ID should not be null");
             }
          }
-
 		private void validateinstructorId(Long instructorId) {
 			if ( instructorId == null) {
                 throw new IllegalArgumentException(" Instructor Id should not be null");
