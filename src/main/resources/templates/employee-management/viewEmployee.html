@@ -24,46 +24,41 @@
 						<li th:each="e : ${#fields.detailedErrors()}"
 							th:class="${e.global}? globalerr : fielderr"><span
 							th:text="${e.global}? '*' : ${e.fieldName}">The field name</span>
-							| <span th:text="${e.message}">The error message</span></li>
+							<span th:text="${e.message}">The error message</span></li>
 					</ul> 
-	
       <div class="container my-3">
            <div class="row">
                 <div class="col-md-8 mx-auto">
                    <div class="form-row">
                      <div class="col-md-6 form-group">
-                        <label>Enter the ID you want to View </label>
+                         <label>Enter the ID you want to View </label>
                         <input type="text" class="form-control" th:field="*{id}" name="id" /> 
-                      <!--   <label th:errorclass="fieldError" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">ID error </label>  -->
+                      <label th:errorclass="fieldError" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">ID error </label>  
                     </div>   
-      <fieldset disabled>           
       <table class="table table-bordered table-striped">
 		     <thead class="thead-dark">
 			    <tr>
 				    <th>First Name</th>
 				    <th>Last Name</th>
-				    <th>Email</th>
+				  	<th>Email Address</th>
 				    <th>User Name</th>
-			   </tr>
+			  </tr>
 		     </thead>
-		     <tbody>
-			      <tr>		
-				     <td> <input type="text" name="firstName" th:value="*{firstName}" />	
-				     <td> <input type="text" name="lastName"  th:value="*{lastName}" />	
-				     <td> <input type="text" name="emailAddress" th:value="*{emailAddress}" />	
-				     <td> <input type="text" name="userName" th:value="*{userName}" />
+		   <tbody>
+			      <tr>	
+			         <tr th:each="employee : ${employeeView}">
+			         <td th:text="*{firstName}" />	
+				     <td th:text="*{lastName}" />	
+				     <td th:text="*{emailAddress}" />	
+				     <td th:text="*{userName}" />	
 			     </tr>
-		    </tbody> 
+		    </tbody>
       </table>
-</fieldset>
-
-	<button type="submit" class="btn btn-primary">View</button>
-	
+	        <button type="submit" class="btn btn-primary">View</button>
          </div>
       </div>
-  </div>
-</div>
-      
+  </div>           
+</div>       
 </form>               
 </div> 	
 </body>
