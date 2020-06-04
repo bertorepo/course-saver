@@ -18,12 +18,7 @@
 	<h3>Employee View Directory</h3>
 	<hr>
 	<form action="#" th:action="@{/employees/view}" th:object=${employeeView} method="post">
-					<ul>
-						<li th:each="e : ${#fields.detailedErrors()}"
-							th:class="${e.global}? globalerr : fielderr"><span
-							th:text="${e.global}? '*' : ${e.fieldName}">The field name</span>
-							<span th:text="${e.message}">The error message</span></li>
-					</ul> 
+			
       <div class="container my-3">
            <div class="row">
                 <div class="col-md-8 mx-auto">

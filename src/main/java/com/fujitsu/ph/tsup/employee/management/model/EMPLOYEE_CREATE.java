@@ -109,9 +109,10 @@ public class EMPLOYEE_CREATE {
 
     @Override
     public String toString() {
-        return "EMPLOYEE_CREATE [employeeID=" + employeeID + ", employeeNumber=" + employeeNumber + ", lastName=" + lastName
-                + ", firstName=" + firstName + ",  emailAddress=" + emailAddress + ", username=" + username
+        return "EMPLOYEE_CREATE [employeeID=" + employeeID + ", employeeNumber=" + employeeNumber + ", lastName="
+                + lastName + ", firstName=" + firstName + ",  emailAddress=" + emailAddress + ", username=" + username
                 + ", submit=" + submit + "]";
     }
 
 }
+//Mark Lumontad
