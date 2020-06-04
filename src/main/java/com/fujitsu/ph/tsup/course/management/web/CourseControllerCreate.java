@@ -22,7 +22,7 @@ import com.fujitsu.ph.tsup.course.management.model.CourseCreate;
 public class CourseControllerCreate {
 	private static Logger logger = LoggerFactory.getLogger(CourseControllerCreate.class);
 	
-	@GetMapping("/new")
+	@GetMapping("/create")
 	public String show(Model model) {
 		logger.debug("Model:{}", model);
 
@@ -41,7 +41,7 @@ public class CourseControllerCreate {
 		
 	}
 	
-	@PostMapping("/new")
+	@PostMapping("/create")
     public String submit(@Valid @ModelAttribute("course") CourseCreate course, BindingResult result, Model model,
             RedirectAttributes redirectAttributes) {
         logger.debug("Course:{}", course);
