@@ -39,48 +39,48 @@ public class VenueUpdateController {
     //VenueUpdateForm
     VenueUpdateForm venue = new VenueUpdateForm();
 	
-	//logger for VenueUpdateController
-	private static Logger logs = LoggerFactory.getLogger(VenueUpdateController.class);
+    //logger for VenueUpdateController
+    private static Logger logs = LoggerFactory.getLogger(VenueUpdateController.class);
 	
-	@GetMapping("/update")
-	public String update(Model model) {
-	    venue.setId((long) 12345);
-	    venue.setVenue("SMX Convention Center");
-	    venue.setVNLst(createVenueLst());
+    @GetMapping("/update")
+    public String update(Model model) {
+        venue.setId((long) 12345);
+        venue.setVenue("SMX Convention Center");
+        venue.setVNLst(createVenueLst());
 
-		model.addAttribute("venueUpdate", venue);
-		return "venue-management/venueUpdate";	
-	}
+        model.addAttribute("venueUpdate", venue);
+        return "venue-management/venueUpdate";	
+    }
 	
-	@PostMapping("/update")
-	public String submitUpdate(@Valid @ModelAttribute("venueUpdate") VenueUpdateForm venueUpdateForm, 
-	        BindingResult bres, Model model, RedirectAttributes redirectAttributes) {
+    @PostMapping("/update")
+    public String submitUpdate(@Valid @ModelAttribute("venueUpdate") VenueUpdateForm venueUpdateForm, 
+            BindingResult bres, Model model, RedirectAttributes redirectAttributes) {
 		
-		//Logs the bugs caught by the system
-		logs.debug("Venue: {}", venueUpdateForm);
-		logs.debug("Result: {}", bres);
-		
-		venueUpdateForm.setId((long) 12345);
-		venueUpdateForm.setVenue("SMX Convention Center");
-		venueUpdateForm.setVNLst(createVenueLst());
+        //Logs the bugs caught by the system
+        logs.debug("Venue: {}", venueUpdateForm);
+        logs.debug("Result: {}", bres);
+        
+        venueUpdateForm.setId((long) 12345);
+        venueUpdateForm.setVenue("SMX Convention Center");
+        venueUpdateForm.setVNLst(createVenueLst());
         
         /*
          * Sets Variables for VenueNames
          */
 		
-		model.addAttribute("venueUpdate", venueUpdateForm);
+        model.addAttribute("venueUpdate", venueUpdateForm);
+        
+        if (bres.hasErrors()) {
+            return "venue-management/venueUpdate";
+        }
 		
-		if (bres.hasErrors()) {
-			return "venue-management/venueUpdate";
-		}
-		
-		redirectAttributes.addFlashAttribute("venueUpdate", venueUpdateForm);
-		return "redirect:/venues";
+        redirectAttributes.addFlashAttribute("venueUpdate", venueUpdateForm);
+        return "redirect:/venues";
+        
+    }
 	
-	}
-	
-	public Set<VenueNames> createVenueLst(){
-	    /*
+    public Set<VenueNames> createVenueLst(){
+        /*
          * Sets Variables for VenueNames
          */
         vn.setId(1234567);
@@ -88,7 +88,7 @@ public class VenueUpdateController {
         vname.add(vn);
         
         return vname;
-	}
+    }
 	
 }
     
