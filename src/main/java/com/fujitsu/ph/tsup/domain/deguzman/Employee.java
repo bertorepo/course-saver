@@ -6,7 +6,7 @@ public class Employee {
     private String lastName;
     private String firstName;
     private String emailAddress;
-    private String userName;;
+    private String userName;
 
     protected Employee() {
 
