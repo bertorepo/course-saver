@@ -73,33 +73,54 @@ public class Employee {
         }
            
         private void validateEmployeeNumber(String employeeNumber) {
-            if (employeeNumber == null || employeeNumber.isEmpty() || employeeNumber.length() < 5 || employeeNumber.length() > 20) {
+            if (employeeNumber == null || employeeNumber.isEmpty()) {
                 throw new IllegalArgumentException("Employee Number cannot be Empty");
-            } 
+            }else if (employeeNumber.length() < 10) {
+                throw new IllegalArgumentException("Employee Number is less than the Required 10 Characters!");
+                
+            }else if (employeeNumber.length() > 10) {
+                throw new IllegalArgumentException("Employee Number is greater than the Required 10 Characters!");
+            }
         }
             
         private void validateLastName(String lastName) {
-            if (lastName == null || lastName.isEmpty() || lastName.length() < 1 || lastName.length() > 20) {
+            if (lastName == null || lastName.isEmpty()) {
                 throw new IllegalArgumentException("Last Name cannot be Empty");
+            }else if (lastName.length() < 2) {
+                throw new IllegalArgumentException("Last Name is less than the Required 2 Characters!");
+            }else if (  lastName.length() > 50) {
+                throw new IllegalArgumentException("Last Name is greater than the Required 50 Characters!");
             }
         }
                 
         private void validateFirstName(String firstName) {
-            if (firstName == null || firstName.isEmpty() || firstName.length() < 1 || firstName.length() > 20) {
+            if (firstName == null || firstName.isEmpty()) {
                 throw new IllegalArgumentException("First Name cannot be Empty");
+            }else if(firstName.length() < 2) {
+                throw new IllegalArgumentException("First Name is less than the Required 2 Characters!");
+            }else if(firstName.length() > 20) {
+                throw new IllegalArgumentException("First Name is greater than the Required 50 Characters!");
             }
         }
                     
         private void validateEmailAddress(String emailAddress) {
-            if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() < 10 || emailAddress.length() > 100) {
+            if (emailAddress == null || emailAddress.isEmpty()) {
                  throw new IllegalArgumentException("Email Address cannot be Empty");
+            }else if(emailAddress.length() < 10) {
+                throw new IllegalArgumentException("Email Address is less than the Required 10 Characters!");
+            }else if(emailAddress.length() > 50) {
+                throw new IllegalArgumentException("Email Address is greater than the Required 50 Characters!");
             }
         }
                         
         private void validateUserName(String userName) {
-            if (userName == null || userName.isEmpty() || userName.length() < 1 || userName.length() > 20) {
+            if (userName == null || userName.isEmpty()) {
                  throw new IllegalArgumentException("Username cannot be Empty");
-            } 
+            }else if (userName.length() < 4) {
+                throw new IllegalArgumentException("Username is less than the Required 4 Characters!");
+            }else if (userName.length() > 50){
+                throw new IllegalArgumentException("Username is greater than the Required 50 Characters!");
+            }
        }       
     }
 }

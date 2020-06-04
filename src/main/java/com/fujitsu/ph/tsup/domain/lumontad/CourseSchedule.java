@@ -2,7 +2,7 @@ package com.fujitsu.ph.tsup.domain.lumontad;
 
 public class CourseSchedule {
     private Long courseScheduleID;
-    private Long courseId;
+    private Long courseID;
     private Long employeeID;
     private Long venueID;
     private int minRequired;
@@ -14,7 +14,7 @@ public class CourseSchedule {
 
     private CourseSchedule(Builder builder) {
         this.courseScheduleID = builder.courseScheduleID;
-        this.courseId = builder.courseId;
+        this.courseID = builder.courseID;
         this.employeeID = builder.employeeID;
         this.venueID = builder.venueID;
         this.minRequired = builder.minRequired;
@@ -27,7 +27,7 @@ public class CourseSchedule {
     }
 
     public Long getCourseId() {
-        return courseId;
+        return courseID;
     }
 
     public Long getInstructorId() {
@@ -52,22 +52,22 @@ public class CourseSchedule {
 
     public static class Builder {
         private Long courseScheduleID;
-        private Long courseId;
+        private Long courseID;
         private Long employeeID;
         private long venueID;
         private int minRequired;
         private int maxAllowed;
         private String status;
 
-        public Builder(Long courseId, Long employeeID, Long venueID, int minRequired, int maxAllowed, String status) {
-            validateCourseId(courseId);
+        public Builder(Long courseID, Long employeeID, Long venueID, int minRequired, int maxAllowed, String status) {
+            validateCourseId(courseID);
             validateInstructorId(employeeID);
             validateVenueId(venueID);
             validateMinRequired(minRequired);
             validateMaxAllowed(maxAllowed);
             validateStatus(status);
 
-            this.courseId = courseId;
+            this.courseID = courseID;
             this.employeeID = employeeID;
             this.venueID = venueID;
             this.minRequired = minRequired;
@@ -79,8 +79,8 @@ public class CourseSchedule {
             return new CourseSchedule(this);
         }
 
-        private void validateCourseId(Long courseId) {
-            if (courseId == null) {
+        private void validateCourseId(Long courseID) {
+            if (courseID == null) {
                 throw new IllegalArgumentException("Course ID cannot not be empty");
             }
         }

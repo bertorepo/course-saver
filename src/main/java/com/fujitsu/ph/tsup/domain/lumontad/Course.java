@@ -36,8 +36,14 @@ public class Course {
         }
 
         private void validateCourseName(String courseName) {
-            if (courseName == null || courseName.isEmpty() || courseName.length() < 5 || courseName.length() > 100) {
-                throw new IllegalArgumentException("Course Name should not be empty");
+            if (courseName == null) {
+                throw new IllegalArgumentException("Course Name cannot be Empty!");
+            }else if(courseName.isEmpty()) {
+                throw new IllegalArgumentException("Course Name cannot be Empty!");
+            }else if(courseName.length() < 5) {
+                throw new IllegalArgumentException("Course Name is less than the Required 5 Characters!");
+            }else if (courseName.length() > 100) {
+                throw new IllegalArgumentException("Course Name is greater than the Required 100 Characters!");
             }
 
         }

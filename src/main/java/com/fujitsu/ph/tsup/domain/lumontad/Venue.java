@@ -41,11 +41,11 @@ public class Venue {
             else if (venueName.isEmpty()) {
                 throw new IllegalArgumentException("Venue Name cannot be Empty");
             }
-            else if (venueName.length() < 10) {
-                throw new IllegalArgumentException("Venue Name cannot be Empty");
+            else if (venueName.length() < 5) {
+                throw new IllegalArgumentException("Venue Name is less than the Required 5 Characters");
             }
-            else if (venueName.length() > 50) {
-                throw new IllegalArgumentException("Venue Name cannot be Empty");
+            else if (venueName.length() > 100) {
+                throw new IllegalArgumentException("Venue Name is greater than the Required 100 Characters");
             }  
         }
     }
