@@ -26,7 +26,7 @@ public class EmployeeViewController {
 	public String viewEmployeeForm(Model model) {
 		logger.debug("Model:{}", model);
 		
-		if (model.containsAttribute("employeeView")) {
+		if (model.containsAttribute("employee")) {
 			return "employee-management/viewEmployee";
 		}
 		EmployeeView employee = new EmployeeView();
@@ -50,11 +50,10 @@ public class EmployeeViewController {
 		logger.debug("EmployeeView:{}", employeeView);
 		logger.debug("Result:{}", bindingResult);
 
-	
-		 employeeView.setFirstName("Janella"); 
-		 employeeView.setLastName("Macabugao");
-		 employeeView.setEmailAddress("j.macabugao@fujitsu.com");
-		 employeeView.setUserName("Janella");
+		employeeView.setFirstName("Janella");
+		employeeView.setLastName("Macabugao");
+		employeeView.setEmailAddress("j.macabugao@fujitsu.com");
+		employeeView.setUserName("Janella");
 	
 		model.addAttribute("employeeView", employeeView);
 		if (bindingResult.hasErrors()) {
