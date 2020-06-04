@@ -73,31 +73,31 @@ public class Employee {
 		
 		private void validateEmployeeNumber(String employeeNumber) {
             if (employeeNumber == null || employeeNumber.isEmpty() || employeeNumber.length() < 5 || employeeNumber.length() > 20) {
-                throw new IllegalArgumentException("employee number should not be empty.");
+                throw new IllegalArgumentException("course name should NOT be null,NOT be less than 5 characters and NOT be greater than 20 characters");
             } 
         }
             
         private void validateLastName(String lastName) {
             if (lastName == null || lastName.isEmpty() || lastName.length() < 1 || lastName.length() > 20) {
-                throw new IllegalArgumentException("last name should not be empty.");
+                throw new IllegalArgumentException("last name should not be null,NOT be less than 1 character and NOT be greater than 20 characters");
             }
         }
                 
         private void validateFirstName(String firstName) {
             if (firstName == null || firstName.isEmpty() || firstName.length() < 1 || firstName.length() > 20) {
-                throw new IllegalArgumentException("first name should not be empty.");
+                throw new IllegalArgumentException("first name should NOT be null,NOT be less than 1 character and NOT be greater than 20 characters");
             }
         }
                     
         private void validateEmailAddress(String emailAddress) {
             if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() < 10 || emailAddress.length() > 100) {
-                 throw new IllegalArgumentException("email address should not be empty.");
+                 throw new IllegalArgumentException("email address should NOT be null,NOT less than 10 characters and NOT be greater than 100 characters");
             }
         }
                         
         private void validateUserName(String userName) {
             if (userName == null || userName.isEmpty() || userName.length() < 1 || userName.length() > 20) {
-                 throw new IllegalArgumentException("username should not be empty.");
+                 throw new IllegalArgumentException("email address should NOT be null,NOT less than 1 character and NOT be greater than 20 characters");
             } 
        }      
 	}
