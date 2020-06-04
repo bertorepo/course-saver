@@ -5,8 +5,8 @@ public class CourseSchedule {
     private Long CourseId;
     private Long instructorId;
     private Long venueId;
-    private Integer minRequired;
-    private Integer maxAllowed;
+    private int minRequired;
+    private int maxAllowed;
     private char status;
     
     protected CourseSchedule() {
@@ -39,11 +39,11 @@ public class CourseSchedule {
         return venueId;
     }
     
-    public Integer getMinRequired() {
+    public int getMinRequired() {
         return minRequired;
     }
     
-    public Integer getmaxAllowed() {
+    public int getmaxAllowed() {
         return maxAllowed;
     }
     
@@ -56,11 +56,11 @@ public class CourseSchedule {
         private Long CourseId;
         private Long instructorId;
         private Long venueId;
-        private Integer minRequired;
-        private Integer maxAllowed;
+        private int minRequired;
+        private int maxAllowed;
         private char status;
         
-        public Builder(Long id, Long CourseId, Long InstructorId, Long VenueId, Integer MinRequired, Integer MaxAllowed, char Status) {
+        public Builder(Long id, Long CourseId, Long InstructorId, Long VenueId, int MinRequired, int MaxAllowed, char Status) {
             validateId(id);
             validateCourseId(CourseId);
             validateInstructorId(InstructorId);
@@ -106,21 +106,31 @@ public class CourseSchedule {
             }
         }
         
-        private void validateMinRequired(Integer MinRequired) {
-            if (MinRequired <= 0 || MinRequired > 99999 || MinRequired == null) {
-                throw new IllegalArgumentException("Min Required should not be less than or equal to zero, greater than 99999 or null");
+        private void validateMinRequired(int MinRequired) {
+            if (MinRequired <= 0) {
+                throw new IllegalArgumentException("Min Required should not be less than or equal to zero");
+            } else if (MinRequired > 99999) {
+                throw new IllegalArgumentException("Min Required should not be greater than 99999");
+            } else if (String.valueOf(MinRequired).equals(null)) {
+                throw new NullPointerException("Min Required should not be null.");
             }
         }
         
-        private void validateMaxAllowed(Integer MaxAllowed) {
-            if (MaxAllowed <= 0 || MaxAllowed > 99999 || MaxAllowed == null) {
-                throw new IllegalArgumentException("Max Allowed should not be less than or equal to zero, greater than 99999 or null");
+        private void validateMaxAllowed(int MaxAllowed) {
+            if (MaxAllowed <= 0) {
+                throw new IllegalArgumentException("Max Allowed should not be less than or equal to zero, greater than 99999 or null.");
+            } else if (MaxAllowed > 99999) {
+                throw new IllegalArgumentException("Max Allowed should not be greater than 99999.");
+            } else if (String.valueOf(MaxAllowed).equals(null)) {
+                throw new IllegalArgumentException("Max Allowed should not be null.");
             }
         }
         
         private void validateStatus(char Status) {
-            if (Status == '\u0000' || Character.isWhitespace(Status)) {
-                throw new IllegalArgumentException("Status should not be null or consisted of spaces only");
+            if (Status == '\u0000') {
+                throw new IllegalArgumentException("Status should not be a null character.");
+            } else if (Character.isWhitespace(Status)) {
+                throw new IllegalArgumentException("Status should not be consisted of spaces.");
             }
         }
     }

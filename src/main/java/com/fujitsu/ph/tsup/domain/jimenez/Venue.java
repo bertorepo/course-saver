@@ -44,8 +44,12 @@ public class Venue {
         }
         
         private void validateVenueName(String name) {
-            if ((name == null)||(name.isEmpty())) {
-                throw new IllegalArgumentException("Venue Name should not be null nor Empty");
+            if (name == null) {
+                throw new NullPointerException("Venue Name should not be null");
+            } else if (name.isEmpty()) {
+                throw new IllegalArgumentException("Venue Name should not be Empty");
+            } else if (name.length() > 100) {
+                throw new IllegalArgumentException("Venue Name Length exceeds the Limit");
             }
         }
     }

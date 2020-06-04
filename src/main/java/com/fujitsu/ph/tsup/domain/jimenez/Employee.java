@@ -82,30 +82,48 @@ public class Employee {
         private void validateEmpNum(Long empno) {
             if (empno == null) {
                 throw new IllegalArgumentException("Employee Number should not be null");
+            } else if (String.valueOf(empno).length() > 10) {
+                throw new IllegalArgumentException("Employee Number Length exceeds the Limit");
             }
         }
         
         private void validateFirstName(String fname) {
-            if ((fname == null)||(fname.isEmpty())) {
-                throw new IllegalArgumentException("First Name should not be null nor Empty");
+            if (fname == null) {
+                throw new IllegalArgumentException("First Name should not be null");
+            } else if (fname.isEmpty()) {
+                throw new IllegalArgumentException("First Name should not be Empty");
+            } else if (fname.length() > 50) {
+                throw new IllegalArgumentException("First Name Length exceeds the Limit");
             }
         }
         
         private void validateLastName(String lname) {
-            if ((lname == null)||(lname.isEmpty())) {
-                throw new IllegalArgumentException("Last Name should not be null nor Empty");
+            if (lname== null) {
+                throw new IllegalArgumentException("Last Name should not be null");
+            } else if (lname.isEmpty()) {
+                throw new IllegalArgumentException("Last Name should not be Empty");
+            } else if (lname.length() > 50) {
+                throw new IllegalArgumentException("Last Name Length exceeds the Limit");
             }
         }
         
         private void validateEmailAddress(String email) {
-            if ((email == null)||(email.isEmpty())) {
-                throw new IllegalArgumentException("Email Address should not be null nor Empty");
+            if (email == null) {
+                throw new IllegalArgumentException("Email Address should not be null");
+            } else if (email.isEmpty()) {
+                throw new IllegalArgumentException("Email Address should not be Empty");
+            } else if (email.length() > 50) {
+                throw new IllegalArgumentException("Email Address Length exceeds the Limit");
             }
         }
         
         private void validateUserName(String uname) {
-            if ((uname == null)||(uname.isEmpty())) {
-                throw new IllegalArgumentException("Username should not be null nor Empty");
+            if (uname == null) {
+                throw new IllegalArgumentException("Username should not be null");
+            } else if (uname.isEmpty()) {
+                throw new IllegalArgumentException("Username should not be Empty");
+            } else if (uname.length() > 50) {
+                throw new IllegalArgumentException("Username Length exceeds the Limit");
             }
         }
     }
