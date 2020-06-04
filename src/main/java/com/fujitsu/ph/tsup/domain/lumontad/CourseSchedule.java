@@ -1,29 +1,29 @@
 package com.fujitsu.ph.tsup.domain.lumontad;
 
 public class CourseSchedule {
-    private Long id;
+    private Long courseScheduleID;
     private Long courseId;
-    private Long instructorId;
-    private Long venueId;
+    private Long employeeID;
+    private Long venueID;
     private int minRequired;
     private int maxAllowed;
     private String status;
-    
-    protected CourseSchedule() {    
+
+    protected CourseSchedule() {
     }
-    
+
     private CourseSchedule(Builder builder) {
-        this.id = builder.id;
+        this.courseScheduleID = builder.courseScheduleID;
         this.courseId = builder.courseId;
-        this.instructorId = builder.instructorId;
-        this.venueId = builder.venueId;
+        this.employeeID = builder.employeeID;
+        this.venueID = builder.venueID;
         this.minRequired = builder.minRequired;
         this.maxAllowed = builder.maxAllowed;
         this.status = builder.status;
     }
-    
+
     public Long getId() {
-        return id;
+        return courseScheduleID;
     }
 
     public Long getCourseId() {
@@ -31,11 +31,11 @@ public class CourseSchedule {
     }
 
     public Long getInstructorId() {
-        return instructorId;
+        return employeeID;
     }
 
     public long getVenueId() {
-        return venueId;
+        return venueID;
     }
 
     public int getMinRequired() {
@@ -51,68 +51,68 @@ public class CourseSchedule {
     }
 
     public static class Builder {
-        private Long id;
+        private Long courseScheduleID;
         private Long courseId;
-        private Long instructorId;
-        private long venueId;
+        private Long employeeID;
+        private long venueID;
         private int minRequired;
         private int maxAllowed;
         private String status;
 
-        public Builder(Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed, String status) {
+        public Builder(Long courseId, Long employeeID, Long venueID, int minRequired, int maxAllowed, String status) {
             validateCourseId(courseId);
-            validateInstructorId(instructorId);
-            validateVenueId(venueId);
+            validateInstructorId(employeeID);
+            validateVenueId(venueID);
             validateMinRequired(minRequired);
             validateMaxAllowed(maxAllowed);
             validateStatus(status);
-            
+
             this.courseId = courseId;
-            this.instructorId = instructorId;
-            this.venueId = venueId;
+            this.employeeID = employeeID;
+            this.venueID = venueID;
             this.minRequired = minRequired;
             this.maxAllowed = maxAllowed;
             this.status = status;
         }
-        
+
         public CourseSchedule build() {
             return new CourseSchedule(this);
         }
-        
+
         private void validateCourseId(Long courseId) {
             if (courseId == null) {
-                throw new IllegalArgumentException("course id should not be empty");
+                throw new IllegalArgumentException("Course ID cannot not be empty");
             }
         }
-            
-        private void validateInstructorId(Long venueId) {
-            if (venueId == null) {
-                throw new IllegalArgumentException("venue id should not be empty");
-            } 
-        }
-            
-        private void validateVenueId(Long instructorId) {
-            if (instructorId == null) {
-                throw new IllegalArgumentException("instructor id should not be empty");
+
+        private void validateInstructorId(Long venueID) {
+            if (venueID == null) {
+                throw new IllegalArgumentException("Venue ID cannot not be empty");
             }
         }
-                
+
+        private void validateVenueId(Long employeeID) {
+            if (employeeID == null) {
+                throw new IllegalArgumentException("Instructor's ID cannot be empty");
+            }
+        }
+
         private void validateMinRequired(int minRequired) {
             if (minRequired < 1 || minRequired > 1000) {
-                throw new IllegalArgumentException("minimun number of participants should not be empty");
+                throw new IllegalArgumentException("Minimum Participants cannot be Empty");
             }
         }
-                    
+
         private void validateMaxAllowed(int maxAllowed) {
-            if (maxAllowed > 1000  || maxAllowed < 1) {
-                 throw new IllegalArgumentException("maximum number of participants should not be empty");
+            if (maxAllowed > 1000 || maxAllowed < 1) {
+                throw new IllegalArgumentException("Maximum Participants cannot be Empty");
             }
         }
-                        
+
         private void validateStatus(String status) {
             if (status == null || status.isEmpty()) {
-                 throw new IllegalArgumentException("status should not be empty");
-            } 
-       }       
+                throw new IllegalArgumentException("Status cannot be Empty");
+            }
+        }
     }
 }

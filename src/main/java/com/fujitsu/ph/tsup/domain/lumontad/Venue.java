@@ -35,9 +35,18 @@ public class Venue {
         }
         
         private void validateVenueName(String venueName) {
-            if (venueName == null || venueName.isEmpty() || venueName.length() < 10 || venueName.length() > 50) {
-                throw new IllegalArgumentException("venue name should not be empty");
-            }           
+            if (venueName == null) {
+                throw new IllegalArgumentException("Venue Name cannot be Empty");
+            }
+            else if (venueName.isEmpty()) {
+                throw new IllegalArgumentException("Venue Name cannot be Empty");
+            }
+            else if (venueName.length() < 10) {
+                throw new IllegalArgumentException("Venue Name cannot be Empty");
+            }
+            else if (venueName.length() > 50) {
+                throw new IllegalArgumentException("Venue Name cannot be Empty");
+            }  
         }
     }
 }

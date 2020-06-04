@@ -74,31 +74,31 @@ public class Employee {
            
         private void validateEmployeeNumber(String employeeNumber) {
             if (employeeNumber == null || employeeNumber.isEmpty() || employeeNumber.length() < 5 || employeeNumber.length() > 20) {
-                throw new IllegalArgumentException("employee number should not be empty");
+                throw new IllegalArgumentException("Employee Number cannot be Empty");
             } 
         }
             
         private void validateLastName(String lastName) {
             if (lastName == null || lastName.isEmpty() || lastName.length() < 1 || lastName.length() > 20) {
-                throw new IllegalArgumentException("last name should not be empty");
+                throw new IllegalArgumentException("Last Name cannot be Empty");
             }
         }
                 
         private void validateFirstName(String firstName) {
             if (firstName == null || firstName.isEmpty() || firstName.length() < 1 || firstName.length() > 20) {
-                throw new IllegalArgumentException("first name should not be empty");
+                throw new IllegalArgumentException("First Name cannot be Empty");
             }
         }
                     
         private void validateEmailAddress(String emailAddress) {
             if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() < 10 || emailAddress.length() > 100) {
-                 throw new IllegalArgumentException("email address should not be empty");
+                 throw new IllegalArgumentException("Email Address cannot be Empty");
             }
         }
                         
         private void validateUserName(String userName) {
             if (userName == null || userName.isEmpty() || userName.length() < 1 || userName.length() > 20) {
-                 throw new IllegalArgumentException("username should not be empty");
+                 throw new IllegalArgumentException("Username cannot be Empty");
             } 
        }       
     }
