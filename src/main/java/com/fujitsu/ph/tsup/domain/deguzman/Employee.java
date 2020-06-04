@@ -6,7 +6,7 @@ public class Employee {
     private String lastName;
     private String firstName;
     private String emailAddress;
-    private String userName;;
+    private String userName;
 
     protected Employee() {
 
@@ -92,8 +92,7 @@ public class Employee {
         }
 
         private void validateEmailAddress(String emailAddress) {
-            if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() > 50
-                    || emailAddress.length() < 5) {
+            if (emailAddress == null || emailAddress.isEmpty() || emailAddress.length() > 50 || emailAddress.length() < 5) {
                 throw new IllegalArgumentException("Email Address should not be empty");
             }
         }

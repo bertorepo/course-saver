@@ -30,7 +30,7 @@ public class Course {
         
         private void validateCourseName(String CourseName) {
             if (CourseName == null || CourseName.isEmpty()) {
-                throw new IllegalArgumentException("Please provide the name of the course.");
+                throw new IllegalArgumentException("Provide the name of the course properly");
             }
             
         }
