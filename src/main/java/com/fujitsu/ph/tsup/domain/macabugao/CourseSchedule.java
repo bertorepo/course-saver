@@ -100,14 +100,14 @@ public class CourseSchedule {
         }
 
         private void validateMinRequired(int minRequired) {
-            if (minRequired < 1 || minRequired > 10000) {
+            if (minRequired < 1 || minRequired > 99999) {
                 throw new IllegalArgumentException("Minimum Number of Participants should not be empty");
             }
 
         }
 
         private void validateMaxAllowed(int maxAllowed) {
-            if (maxAllowed > 10000 || maxAllowed < 1) {
+            if (maxAllowed > 99999 || maxAllowed < 1) {
                 throw new IllegalArgumentException("Maximum Number of Participants should not be empty");
             }
         }
