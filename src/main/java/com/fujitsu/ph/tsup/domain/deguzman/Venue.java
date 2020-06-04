@@ -36,8 +36,12 @@ public class Venue {
         }
 
         private void validateVenueName(String venueName) {
-            if (venueName == null || venueName.isEmpty() || venueName.length() < 5 || venueName.length() > 100) {
+            if (venueName == null || venueName.isEmpty()) {
                 throw new IllegalArgumentException("Venue Name should not be empty");
+            } else if(venueName.length() < 5) {
+                throw new IllegalArgumentException("Venue Name should not be less than 5 characters");
+            } else if(venueName.length() > 100) {
+                throw new IllegalArgumentException("Venue Name should not be more than 100 characters");
             }
 
         }

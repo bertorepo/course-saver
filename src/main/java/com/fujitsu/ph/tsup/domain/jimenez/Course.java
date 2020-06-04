@@ -43,8 +43,12 @@ public class Course {
         }
         
         private void validateCourseName(String name) {
-            if ((name == null)||(name.isEmpty())) {
-                throw new IllegalArgumentException("Course Name should not be null");
+            if (name == null) {
+                throw new NullPointerException("Course Name should not be null");
+            } else if (name.isEmpty()) {
+                throw new IllegalArgumentException("Course Name should not be Empty");
+            } else if (name.length() > 100) {
+                throw new IllegalArgumentException("Course Name Length exceeds the Limit");
             }
         }
     }
