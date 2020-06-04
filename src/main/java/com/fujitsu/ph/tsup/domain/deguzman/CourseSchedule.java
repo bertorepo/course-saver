@@ -100,22 +100,28 @@ public class CourseSchedule {
         }
 
         private void validateMinRequired(int minRequired) {
-            if (minRequired < 1 || minRequired > 99999) {
+            if (minRequired < 1) {
                 throw new IllegalArgumentException("Min Required should not be empty");
+            } else if(minRequired > 99999) {
+                throw new IllegalArgumentException("Min Required should not exceed 99999");
             }
 
         }
 
         private void validateMaxAllowed(int maxAllowed) {
-            if (maxAllowed > 99999 || maxAllowed < 1) {
+            if (maxAllowed < 1) {
                 throw new IllegalArgumentException("Max Allowed should not be empty");
+            }else if(maxAllowed > 99999) {
+                throw new IllegalArgumentException("Max Allowed should not exceed 99999");
             }
         }
 
         private void validateStatus(String status) {
-            if (status == null || status.isEmpty() || status.length() > 1 || status.length() < 1) {
+            if (status == null || status.isEmpty()) {
                 throw new IllegalArgumentException("Status should not be empty");
-            }
+            } else if(status.length() > 1 || status.length() < 1) {
+                throw new IllegalArgumentException("Status should be 1 character");
+            } 
         }
     }
 
