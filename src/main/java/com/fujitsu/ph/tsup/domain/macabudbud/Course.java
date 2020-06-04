@@ -29,7 +29,7 @@ public class Course {
 		
 		public void validateCourseName(String courseName) {
 			if(courseName == null || courseName.isEmpty()) {
-				throw new IllegalArgumentException("Field required. Course name should notn be empty");
+				throw new IllegalArgumentException("Field required. Course name should not be empty");
 			}else if(courseName.length() > 100){
 				throw new IllegalArgumentException("Characters exceeds to 100.");
 			}
