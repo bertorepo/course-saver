@@ -4,7 +4,8 @@ public class Course {
     private Long id;
     private String courseName;
 
-    protected Course() {
+
+    protected Course(long l, String string) {
 
     }
 
@@ -21,14 +22,22 @@ public class Course {
         return courseName;
     }
 
-    public static class Builder {
+    public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public static class Builder {
         private Long id;
         private String courseName;
 
-        public Builder(String courseName) {
+        public Builder(String courseName, Long id) {
         
             validateCourseName(courseName);
-         
+           
             this.courseName = courseName;
         }
 

@@ -76,7 +76,9 @@ public class CourseSchedule {
             this.status = status;
         }
 
-        public CourseSchedule build() {
+      
+
+		public CourseSchedule build() {
             return new CourseSchedule(this);
         }
 
