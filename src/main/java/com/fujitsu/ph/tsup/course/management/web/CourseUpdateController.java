@@ -3,6 +3,8 @@ package com.fujitsu.ph.tsup.course.management.web;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import com.fujitsu.ph.tsup.course.management.model.CourseUpdateForm;
 @Controller
 @RequestMapping("/courses")
 public class CourseUpdateController {
+	private static Logger logger = LoggerFactory.getLogger(CourseUpdateController.class);
 
 	@GetMapping()
 	public String show(Model model) {
@@ -28,10 +31,11 @@ public class CourseUpdateController {
 	}
 
 	@PostMapping("/update")
-	public String submit(@Valid @ModelAttribute("course")CourseUpdateForm course, BindingResult result, Model model) {
-		/*logger.debug("course:{}", course);
+	public String submit(@Valid @ModelAttribute("course") CourseUpdateForm course, BindingResult result, Model model) {
+		logger.debug("course:{}", course);
 		logger.debug("Result:{}", result);
-		logger.debug("Model:{}", model);*/
+		logger.debug("Model:{}", model);
+
 		model.addAttribute("course", course);
 		if (result.hasErrors()) {
 			return "course-management/CourseUpdateForm";

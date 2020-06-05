@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -34,8 +36,27 @@ public class VenueServiceImplTest {
     @MockBean
     private VenueDao venueDao;
 
-//wala po ako test sa Save kasi void po sya wala sya return.
-//sa idea ko lang po
+    @Test
+    void testSave() {
+
+        doNothing().when(venueDao).save(any(Venue.class));
+
+    }
+
+    @Test
+    void testSaveError() {
+        Venue saveV = createVenue();
+
+        doThrow(new IllegalArgumentException("error")).when(venueDao).save(any(Venue.class));
+        Exception exception = assertThrows(MyException.class, () -> {
+            venueService.save(saveV);
+        });
+
+        String expectedMessage = "Error found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
     @Test
     void testFindById() {
         Venue expected = createVenue();
@@ -54,7 +75,7 @@ public class VenueServiceImplTest {
             venueService.findById(7L);
         });
 
-        String expectedMessage = "Error not found";
+        String expectedMessage = "Error found";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -77,7 +98,7 @@ public class VenueServiceImplTest {
             venueService.findAll().size();
         });
 
-        String expectedMessage = "Error not found";
+        String expectedMessage = "Error found";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }

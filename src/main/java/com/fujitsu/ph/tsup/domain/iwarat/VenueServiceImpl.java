@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class VenueServiceImpl implements VenueService {
 
@@ -13,7 +14,12 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     public void save(Venue venue) {
-        vdao.save(venue);
+        try {
+            vdao.save(venue);
+        } catch (IllegalArgumentException e) {
+            throw new  MyException("Error found", e);
+        }
+
     }
 
     @Override
@@ -21,7 +27,7 @@ public class VenueServiceImpl implements VenueService {
         try {
             return vdao.findAll();
         } catch (IllegalArgumentException e) {
-            throw new MyException("Error not found", e);
+            throw new MyException("Error found", e);
         }
     }
 
@@ -30,7 +36,7 @@ public class VenueServiceImpl implements VenueService {
         try {
             return vdao.findById(id);
         } catch (IllegalArgumentException e) {
-            throw new MyException("Error not found", e);
+            throw new MyException("Error found", e);
         }
     }
 

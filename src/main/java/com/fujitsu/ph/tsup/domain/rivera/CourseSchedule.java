@@ -83,37 +83,37 @@ public class CourseSchedule {
 		
 		private void validateCourseId(Long courseId) {
 			if(courseId == null) {
-				throw new IllegalArgumentException("course id should not be empty.");
+				throw new IllegalArgumentException("course id should not be epmty.");
 			}
 		}
 		
 		private void validateInstructorId(Long instructorId) {
 			if(instructorId == null) {
-				throw new IllegalArgumentException("course id should not be empty.");
+				throw new IllegalArgumentException("instructor id should not be empty.");
 			}
 		}
 		
 		private void validateVenueId(Long courseId) {
 			if(venueId == null) {
-				throw new IllegalArgumentException("course id should not be empty.");
+				throw new IllegalArgumentException("venue id should not be empty");
 			}
 		}
 		
 		private void validateMinRequired(int minRequired) {
 			if(minRequired < 1 || minRequired > 1000) {
-				throw new IllegalArgumentException("course id should not be empty.");
+				throw new IllegalArgumentException(" min required should NOT be less than 1 and NOT more than 1000");
 			}
 		}
 		
 		private void validateMaxAllowed(int maxAllowed) {
 			if(maxAllowed > 1000 || maxAllowed < 1) {
-				throw new IllegalArgumentException("course id should not be empty.");
+				throw new IllegalArgumentException("max allowed should NOT be more than 1000 and NOT less than 1");
 			}
 		}
 		
 		private void validateStatus(String status) {
 			if(status == null) {
-				throw new IllegalArgumentException("course id should not be empty.");
+				throw new IllegalArgumentException("status should NOT be empty.");
 			}
 		}
 	}

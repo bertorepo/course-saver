@@ -13,7 +13,11 @@ public class CourseScheduleServiceImpl implements CourseScheduleService {
 
     @Override
     public void save(CourseSchedule courseSchedule) {
-        cdao.save(courseSchedule);
+        try {
+            cdao.save(courseSchedule);
+        } catch (IllegalArgumentException e) {
+            throw new MyException("Error found", e);
+        }
     }
 
     @Override
@@ -21,7 +25,7 @@ public class CourseScheduleServiceImpl implements CourseScheduleService {
         try {
             return cdao.findAll();
         } catch (IllegalArgumentException e) {
-            throw new MyException("Error not found", e);
+            throw new MyException("Error found", e);
         }
     }
 
@@ -30,7 +34,7 @@ public class CourseScheduleServiceImpl implements CourseScheduleService {
         try {
             return cdao.findById(id);
         } catch (IllegalArgumentException e) {
-            throw new MyException("Error not found", e);
+            throw new MyException("Error found", e);
         }
     }
 }

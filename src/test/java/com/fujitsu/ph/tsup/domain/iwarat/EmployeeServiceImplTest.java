@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -34,8 +36,27 @@ public class EmployeeServiceImplTest {
     @MockBean
     private EmployeeDao employeeDao;
 
-    // wala po ako test sa Save kasi void po sya wala sya return.
-    // sa idea ko lang po
+    @Test
+    void testSave() {
+
+        doNothing().when(employeeDao).save(any(Employee.class));
+
+    }
+
+    @Test
+    void testSaveError() {
+        Employee saveE = createEmployee();
+
+        doThrow(new IllegalArgumentException("error")).when(employeeDao).save(any(Employee.class));
+        Exception exception = assertThrows(MyException.class, () -> {
+            employeeService.save(saveE);
+        });
+
+        String expectedMessage = "Error found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+    
     @Test
     void testFindById() {
         Employee expected = createEmployee();
@@ -59,7 +80,7 @@ public class EmployeeServiceImplTest {
             employeeService.findById(7L);
         });
 
-        String expectedMessage = "Error not found";
+        String expectedMessage = "Error found";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -87,7 +108,7 @@ public class EmployeeServiceImplTest {
             employeeService.findAll().size();
         });
 
-        String expectedMessage = "Error not found";
+        String expectedMessage = "Error found";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }

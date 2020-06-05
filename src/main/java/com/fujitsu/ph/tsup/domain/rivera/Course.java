@@ -36,7 +36,7 @@ public class Course {
 		
 		private void validateCourseName(String courseName) {
 			if(courseName == null || courseName.isEmpty() || courseName.length() < 5 || courseName.length() > 50) {
-				throw new IllegalArgumentException("course name should not be empty.");
+				throw new IllegalArgumentException("course name should NOT be null, characters should NOT be less than 5 and NOT greater than 50.");
 			}
 		}
 	}

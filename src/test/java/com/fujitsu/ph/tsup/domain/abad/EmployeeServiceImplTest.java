@@ -1,8 +1,11 @@
 package com.fujitsu.ph.tsup.domain.abad;
 
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -17,7 +20,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-
 
 @RunWith(SpringRunner.class)
 public class EmployeeServiceImplTest {
@@ -44,29 +46,31 @@ public class EmployeeServiceImplTest {
     public void testFindById() {
         when(employeeDao.findById(anyLong()))
             .thenReturn(createEmployeeId());
-        Employee employee = service.findById((long) 1000);
-        assertEquals(employee.getLastName(), "abad");
+        Employee employee = service.findById(1000L);
+        assertEquals(employee.getId(), new Long(1000));
     }
     
     @Test
     public void testFindById_Unmatched() {
-        when(employeeDao.findById(anyLong()))
-            .thenReturn(createEmployeeIdUnmatched());
-        Employee employee = service.findById((long) 2020);
-        assertEquals(employee.getLastName(), "topacio");
+        when(employeeDao.findById(any(Long.class)))
+        .thenThrow(new ServiceException("Employee not found"));
+    
+        Exception exception = assertThrows(ServiceException.class, () -> {
+        service.findById(1000L);
+        });
+    
+        String expectedMessage = "Employee not found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     private Employee createEmployeeId() {
-        return new Employee.Builder((long) 1000, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
-    }
-    
-    private Employee createEmployeeIdUnmatched() {
-        return new Employee.Builder((long) 2020, "12345", "topacio", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
+        return new Employee.Builder(1000L, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
     }
     
     @Test
     public void testSave(){
-        Employee employee = new Employee.Builder((long) 1000, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
+        Employee employee = new Employee.Builder(1000L, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
         service.save(employee);
         assertEquals(employee.getId(), new Long(1000));
         assertEquals(employee.getEmployeeNumber(), "12345");
@@ -78,14 +82,18 @@ public class EmployeeServiceImplTest {
     
     @Test
     public void testSaveUnmatched(){
-        Employee employee = new Employee.Builder((long) 2020, "12345", "topacio", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
-        service.save(employee);  
-        assertEquals(employee.getId(), new Long(2020));
-        assertEquals(employee.getEmployeeNumber(), "12345");
-        assertEquals(employee.getLastName(), "topacio");
-        assertEquals(employee.getFirstName(), "kenneth");
-        assertEquals(employee.getEmailAddress(), "k.abad@fujitsu.com");
-        assertEquals(employee.getUserName(), "k.abad");
+        Employee employee = createEmployeeId();
+        doThrow(new ServiceException("Employee Id not saved")).
+            when(employeeDao).save(any(Employee.class));
+            
+        Exception exception = assertThrows(ServiceException.class, () -> {
+            service.save(employee);
+                
+        });
+
+        String expectedMessage = "Employee Id not saved";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
     
  
@@ -93,16 +101,23 @@ public class EmployeeServiceImplTest {
     @Test
     public void testFindAll() {
         Set<Employee> employee = new HashSet<Employee>();
-        employee.add(new Employee.Builder((long) 1000, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build());
+        employee.add(new Employee.Builder(1000L, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build());
         when(employeeDao.findAll()).thenReturn(employee);
-        assertEquals(employeeDao.findAll().size(), employee.size());
+        assertEquals(service.findAll().size(), employee.size());
     }
     
     @Test
     public void testFindAllUnmatched() {
-        Set<Employee> employee = new HashSet<Employee>();
-        employee.add(new Employee.Builder((long) 2020, "12345", "topacio", "kenneth", "k.abad@fujitsu.com", "k.abad").build());
-        assertEquals(employeeDao.findAll().size(), employee.size());
+        doThrow(new ServiceException("Record not found")).
+        when(employeeDao).findAll();
+    
+        Exception exception = assertThrows(ServiceException.class, () -> {
+        service.findAll();    
+        });
+
+        String expectedMessage = "Record not found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
     
 }

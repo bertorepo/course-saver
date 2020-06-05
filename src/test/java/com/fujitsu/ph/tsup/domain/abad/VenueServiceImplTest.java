@@ -1,8 +1,11 @@
 package com.fujitsu.ph.tsup.domain.abad;
 
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -43,29 +46,31 @@ public class VenueServiceImplTest {
     public void testFindById() {
         when(venuDao.findById(anyLong()))
             .thenReturn(createVenueId());
-        Venue venue = service.findById((long) 1000);
+        Venue venue = service.findById(1000L);
         assertEquals(venue.getId(), new Long(1000));
     }
     
     @Test
     public void testFindById_Unmatched() {
-        when(venuDao.findById(anyLong()))
-            .thenReturn(createVenueIdUnmatched());
-        Venue venue = service.findById((long) 2020);
-        assertEquals(venue.getId(), new Long(2020));
+        when(venuDao.findById(any(Long.class)))
+        .thenThrow(new ServiceException("Venue not found"));
+    
+        Exception exception = assertThrows(ServiceException.class, () -> {
+        service.findById(1000L);
+        });
+    
+        String expectedMessage = "Venue not found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     private Venue createVenueId() {
-        return new Venue.Builder((long) 1000, "Imus Plaza").build();
-    }
-    
-    private Venue createVenueIdUnmatched() {
-        return new Venue.Builder((long) 2020, "Fujitsu Building").build();
+        return new Venue.Builder(1000L, "Imus Plaza").build();
     }
     
     @Test
     public void testSave() {
-        Venue venue = new Venue.Builder((long) 1000, "Imus Plaza").build();
+        Venue venue = new Venue.Builder(1000L, "Imus Plaza").build();
         service.save(venue);
         assertEquals(venue.getId(), new Long(1000));
         assertEquals(venue.getVenueName(), "Imus Plaza");
@@ -74,25 +79,40 @@ public class VenueServiceImplTest {
     
     @Test
     public void testSaveUnmatched() {
-        Venue venue = new Venue.Builder((long) 2020, "Imus Plaza").build();
-        service.save(venue);
-        assertEquals(venue.getId(), new Long(2020));
-        assertEquals(venue.getVenueName(), "Fujitsu Building");
+        Venue venue = createVenueId();
+        doThrow(new ServiceException("Venue not saved")).
+            when(venuDao).save(any(Venue.class));
+            
+        Exception exception = assertThrows(ServiceException.class, () -> {
+            service.save(venue);
+                
+        });
+
+        String expectedMessage = "Venue not saved";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
      
     @Test
     public void testFindAll() {
         Set<Venue> venue = new HashSet<Venue>();
-        venue.add(new Venue.Builder((long) 1000, "Imus Plaza").build());
+        venue.add(new Venue.Builder(1000L, "Imus Plaza").build());
         when(venuDao.findAll()).thenReturn(venue);
-        assertEquals(venuDao.findAll().size(), venue.size());
+        assertEquals(service.findAll().size(), venue.size());
     }
     
     @Test
     public void testFindAllUnmatched() {
-        Set<Venue> venue = new HashSet<Venue>();
-        venue.add(new Venue.Builder((long) 2020, "Fujitsu Building").build());
-        assertEquals(venuDao.findAll().size(), venue.size());
+        doThrow(new ServiceException("Record not found")).
+        when(venuDao).findAll();
+    
+        Exception exception = assertThrows(ServiceException.class, () -> {
+        service.findAll();    
+        });
+
+        String expectedMessage = "Record not found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
     
 }
