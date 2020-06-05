@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doAnswer;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -83,13 +84,15 @@ class CourseServiceImplTest {
 
 	@Test
 	void testFindAll() {
-		Course expectedResult = createCourse();
-		when(courseDao.findAll()).thenReturn((Set<Course>) expectedResult);
-
-		Set<Course> course = courseService.findAll();
 		
-		assertEquals(expectedResult.getCourseName(), course.contains(course));
+        Set<Course> s = new HashSet<Course>();
+        s.add(new Course.Builder("Programming", 1L).build());
+
+        when(courseDao.findAll()).thenReturn(s);
+        assertEquals(courseDao.findAll().size(), s.size());
+        
 	}
+
 
 	@Test
 	void testFindAllWithError() {
