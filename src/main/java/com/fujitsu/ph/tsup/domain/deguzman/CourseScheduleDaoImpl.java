@@ -44,7 +44,8 @@ public class CourseScheduleDaoImpl implements CourseScheduleDao {
                 .addValue("instructorId", courseSchedule.getInstructorId())
                 .addValue("venueId", courseSchedule.getVenueId())
                 .addValue("minRequired", courseSchedule.getMinRequired())
-                .addValue("maxAllowed", courseSchedule.getMaxAllowed()).addValue("status", courseSchedule.getStatus());
+                .addValue("maxAllowed", courseSchedule.getMaxAllowed())
+                .addValue("status", courseSchedule.getStatus());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         template.update(sql, namedParameters, generatedKeyHolder);
