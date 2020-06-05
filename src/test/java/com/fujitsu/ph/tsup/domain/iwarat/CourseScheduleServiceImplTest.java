@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -35,8 +37,27 @@ public class CourseScheduleServiceImplTest {
     @MockBean
     private CourseScheduleDao courseScheduleDao;
 
-//wala po ako test sa Save kasi void po sya wala sya return.
-//sa idea ko lang po
+    @Test
+    void testSave() {
+
+        doNothing().when(courseScheduleDao).save(any(CourseSchedule.class));
+
+    }
+
+    @Test
+    void testSaveError() {
+        CourseSchedule saveSC = createCourseSchedule();
+
+        doThrow(new IllegalArgumentException("error")).when(courseScheduleDao).save(any(CourseSchedule.class));
+        Exception exception = assertThrows(MyException.class, () -> {
+            courseScheduleService.save(saveSC);
+        });
+
+        String expectedMessage = "Error found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
     @Test
     void testFindById() {
         CourseSchedule expected = createCourseSchedule();
@@ -61,7 +82,7 @@ public class CourseScheduleServiceImplTest {
             courseScheduleService.findById(7L);
         });
 
-        String expectedMessage = "Error not found";
+        String expectedMessage = "Error found";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -85,7 +106,7 @@ public class CourseScheduleServiceImplTest {
             courseScheduleService.findAll().size();
         });
 
-        String expectedMessage = "Error not found";
+        String expectedMessage = "Error found";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }

@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -13,7 +14,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void save(Employee employee) {
-        edao.save(employee);
+        try {
+            edao.save(employee);
+        } catch (IllegalArgumentException e) {
+            throw new  MyException("Error found", e);
+        }
     }
 
     @Override
@@ -21,7 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             return edao.findAll();
         } catch (IllegalArgumentException e) {
-            throw new MyException("Error not found", e);
+            throw new MyException("Error found", e);
         }
     }
 
@@ -30,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             return edao.findById(id);
         } catch (IllegalArgumentException e) {
-            throw new MyException("Error not found", e);
+            throw new MyException("Error found", e);
         }
     }
 }
