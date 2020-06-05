@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.dao.DataRetrievalFailureException;
+
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -50,7 +50,7 @@ class EmployeeServiceImplTest {
 	void testSaveWithError() {
 		Employee employee = createEmployee();
 
-		doThrow(new DataRetrievalFailureException("error")).when(employeeDao).save(any(Employee.class));
+		doThrow(new IllegalArgumentException("error")).when(employeeDao).save(any(Employee.class));
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			employeeService.save(employee);
@@ -74,7 +74,7 @@ class EmployeeServiceImplTest {
 	@Test
 	void testFindAllWithError() {
 		
-		doThrow(new DataRetrievalFailureException("error")).when(employeeDao).findAll();
+		doThrow(new IllegalArgumentException("error")).when(employeeDao).findAll();
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			employeeService.findAll();
@@ -98,7 +98,7 @@ class EmployeeServiceImplTest {
 
 	@Test
 	void testFindByIdWithError() {
-		when(employeeDao.findById(any(Long.class))).thenThrow(new DataRetrievalFailureException("error"));
+		when(employeeDao.findById(any(Long.class))).thenThrow(new IllegalArgumentException("error"));
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			employeeService.findById(1L);
