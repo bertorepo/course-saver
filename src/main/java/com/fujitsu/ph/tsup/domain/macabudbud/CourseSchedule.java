@@ -84,8 +84,8 @@ public class CourseSchedule {
 		}
 		public void validateStatus(char status) {
 			if (!Character.isLetter(status)) {
-                throw new IllegalArgumentException("Invalid input. Please enter 'A' or 'C'");
-            } else if (Character.toUpperCase(status) != 'A' || Character.toUpperCase(status) != 'C') {
+                throw new IllegalArgumentException("Invalid input. Characters only 'A' or 'C'");
+            } else if (status != 'A' && status != 'C') {
                 throw new IllegalArgumentException("Invalid status. Please enter 'A' or 'C'");
             }
 		}	

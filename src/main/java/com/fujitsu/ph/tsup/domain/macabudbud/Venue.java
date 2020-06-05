@@ -29,7 +29,7 @@ public class Venue {
 		
 		public void validateVenueName(String venueName) {
 			if(venueName == null || venueName.isEmpty()) {
-				throw new IllegalArgumentException("Field required. Venue name should notn be empty");
+				throw new IllegalArgumentException("Field required. Venue name should not be empty");
 			}else if(venueName.length() > 100){
 				throw new IllegalArgumentException("Characters exceeds to 100.");
 			}
