@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class CourseScheduleServiceImpl implements CourseScheduleService{
 
-private Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
+private Logger logger = LoggerFactory.getLogger(CourseScheduleServiceImpl.class);
     
     @Autowired
     private CourseScheduleDao dao;

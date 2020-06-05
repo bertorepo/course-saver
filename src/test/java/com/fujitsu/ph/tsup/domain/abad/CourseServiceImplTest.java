@@ -44,7 +44,7 @@ public class CourseServiceImplTest {
     public void testFindById() {
         when(courseDao.findById(anyLong()))
             .thenReturn(createCourseId());
-        Course course = service.findById((long) 1000);
+        Course course = service.findById(1000L);
         assertEquals(course.getId(), new Long(1000));
     }
     
@@ -52,7 +52,7 @@ public class CourseServiceImplTest {
     public void testFindById_Unmatched() {
         when(courseDao.findById(anyLong()))
             .thenReturn(createCourseIdUnmatched());
-        Course course = service.findById((long) 2020);
+        Course course = service.findById(2020L);
         assertEquals(course.getId(), new Long(2020));
     }
     
@@ -66,7 +66,7 @@ public class CourseServiceImplTest {
     
     @Test
     public void testSave() {
-        Course course = new Course.Builder((long) 1000, "DIFFCALC").build();
+        Course course = new Course.Builder(1000L, "DIFFCALC").build();
         service.save(course);
         assertEquals(course.getId(), new Long(1000));
         assertEquals(course.getCourseName(), "DIFFCALC");    
@@ -74,7 +74,7 @@ public class CourseServiceImplTest {
     
     @Test
     public void testSaveUnmatched() {
-        Course course = new Course.Builder((long) 2020, "INTEGCALC").build();
+        Course course = new Course.Builder(2020L, "INTEGCALC").build();
         service.save(course);
         assertEquals(course.getId(), new Long(2020));
         assertEquals(course.getCourseName(), "INTEGCALC");
@@ -83,7 +83,7 @@ public class CourseServiceImplTest {
     @Test
     public void testFindAll() {
         Set<Course> course = new HashSet<Course>();
-        course.add(new Course.Builder((long) 1000, "DIFFCALC").build());
+        course.add(new Course.Builder(1000L, "DIFFCALC").build());
         when(courseDao.findAll()).thenReturn(course);
         assertEquals(service.findAll().size(), course.size());
     }
@@ -91,7 +91,7 @@ public class CourseServiceImplTest {
     @Test
     public void testFindAllUnmatched() {
         Set<Course> course = new HashSet<Course>();
-        course.add(new Course.Builder((long) 2020, "INTEGCALC").build());
+        course.add(new Course.Builder(0L, "").build());
         assertEquals(service.findAll().size(), course.size());
         
       
