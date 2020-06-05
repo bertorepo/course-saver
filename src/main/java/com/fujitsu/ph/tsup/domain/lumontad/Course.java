@@ -25,9 +25,10 @@ public class Course {
         private Long courseID;
         private String courseName;
 
-        public Builder(String courseName) {
+        public Builder(Long id, String courseName) {
             validateCourseName(courseName);
 
+            this.courseID = id;
             this.courseName = courseName;
         }
 
