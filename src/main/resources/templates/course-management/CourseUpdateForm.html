@@ -4,30 +4,47 @@
 <head>
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Course Update</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+	crossorigin="anonymous">
+<link
+	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+	rel="stylesheet">
 </head>
 <body>
 	<div class="container">
 		<H1>Course Update</H1>
+		<form action="#" th:action="@{/courses/update}" th:object="${course}"
+			method="post">
 
-
-		<form action="#" th:action="@{/courses}" th:object="${course}" method="post">
+			<div>
+				<ul>
+					<li th:each="e : ${#fields.detailedErrors()}"
+						th:class="${e.global}? globalerr : fielderr"><span
+						th:text="${e.global}? '*' : ${e.fieldName}">The field name</span>
+						| <span th:text="${e.message}">The error message</span></li>
+				</ul>
+			</div>
+			<hr>
 			<br>
-			<div class="main-content" style="align:center">
-				<label>Course ID:</label>
-				<input type="text" name="name" th:value="*{id}"/>
-				<label>Course Name:</label>
-				<input type="text" name="name" th:value="*{name}"/>
-				<a href=""><button class="btn btn-primary" style = "margin-left:20px">Save</button></a><br><br><hr>
+			<div class="main-content" style="align: center">
+
+				<label>Course ID:</label> <input type="text" name="name"
+					th:value="*{id}" /> <label>Course Name:</label> <input type="text"
+					name="name" th:value="*{name}" /> <a href=""><button
+						class="btn btn-primary" style="margin-left: 20px">Update</button></a><br>
+
+				<br>
+
+
 			</div>
 		</form>
-		<br><br>
+		<br> <br>
 	</div>
-<footer></footer>
+	<footer></footer>
 </body>
 </html>
