@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.dao.DataRetrievalFailureException;
+
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -51,7 +51,7 @@ class VenueServiceImplTest {
 
 		Venue venue = createVenue();
 
-		doThrow(new DataRetrievalFailureException("error")).when(venueDao).save(any(Venue.class));
+		doThrow(new IllegalArgumentException("error")).when(venueDao).save(any(Venue.class));
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			venueService.save(venue);
@@ -77,7 +77,7 @@ class VenueServiceImplTest {
 	@Test
 	void testFindAllWithError() {
 
-		doThrow(new DataRetrievalFailureException("error")).when(venueDao).findAll();
+		doThrow(new IllegalArgumentException("error")).when(venueDao).findAll();
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			venueService.findAll();
@@ -101,7 +101,7 @@ class VenueServiceImplTest {
 
 	@Test
 	void testFindByIdWithError() {
-		when(venueDao.findById(any(Long.class))).thenThrow(new DataRetrievalFailureException("error"));
+		when(venueDao.findById(any(Long.class))).thenThrow(new IllegalArgumentException("error"));
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			venueService.findById(1L);

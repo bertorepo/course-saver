@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.dao.DataRetrievalFailureException;
+
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
@@ -58,7 +58,7 @@ class CourseScheduleServiceImplTest {
 
 		CourseSchedule courseSchedule = createCourse();
 
-		doThrow(new DataRetrievalFailureException("error")).when(courseScheduleDao).save(any(CourseSchedule.class));
+		doThrow(new IllegalArgumentException("error")).when(courseScheduleDao).save(any(CourseSchedule.class));
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			courseScheduleService.save(courseSchedule);
@@ -85,7 +85,7 @@ class CourseScheduleServiceImplTest {
 	@Test
 	void testFindAllWithError() {
 		
-		doThrow(new DataRetrievalFailureException("error")).when(courseScheduleDao).findAll();
+		doThrow(new IllegalArgumentException("error")).when(courseScheduleDao).findAll();
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			courseScheduleService.findAll();
@@ -109,7 +109,7 @@ class CourseScheduleServiceImplTest {
 
 	@Test
 	void testFindByIdWithError() {
-		when(courseScheduleDao.findById(any(Long.class))).thenThrow(new DataRetrievalFailureException("error"));
+		when(courseScheduleDao.findById(any(Long.class))).thenThrow(new IllegalArgumentException("error"));
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			courseScheduleService.findById(1L);
