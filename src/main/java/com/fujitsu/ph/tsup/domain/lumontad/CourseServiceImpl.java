@@ -1,23 +1,25 @@
 package com.fujitsu.ph.tsup.domain.lumontad;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
-public class CourseServiceImpl {
-private Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
+
+@Service
+public class CourseServiceImpl implements CourseService{
     
-    @Autowired
-    private CourseDao dao;
+private CourseDao courseDao;
 
-    public Course findByid(Long courseID) {
-        
-        Course c = dao.findByid(courseID);
-        if (c.getId() == 1) {
-            throw new IllegalArgumentException("Course ID not Equal");
-        }
-        
-        return c;
-        
+@Override
+public Long save(Course courseid) {
+    return courseDao.save(courseid);
+}
+
+@Override
+public Course findById(Long id) {
+    try {
+        return courseDao.findById(id);
+    } catch (DataAccessException ex) {
+        throw new CourseException("Course not found", ex);
     }
+}
 }
