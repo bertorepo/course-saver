@@ -108,13 +108,17 @@ public class CourseSchedule {
         }
 
         private void validateMinRecquired(int minRecquired) {
-            if (minRecquired > 1 || minRecquired < 99999) {
+            if (minRecquired < 1) {
+                throw new IllegalArgumentException("Min recquired should not be empty or null");
+            } else if (minRecquired > 99999) {
                 throw new IllegalArgumentException("Min recquired should not be empty or null");
             }
         }
 
         private void validateMaxRecquired(int maxRecquired) {
-            if (maxRecquired > 1 || maxRecquired < 99999) {
+            if (maxRecquired < 1) {
+                throw new IllegalArgumentException("Max recquired should not be empty or null");
+            } else if (maxRecquired > 99999) {
                 throw new IllegalArgumentException("Max recquired should not be empty or null");
             }
         }
