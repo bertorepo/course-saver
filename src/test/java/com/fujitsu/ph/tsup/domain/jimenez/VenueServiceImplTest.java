@@ -3,7 +3,6 @@ package com.fujitsu.ph.tsup.domain.jimenez;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
 import java.util.HashSet;
@@ -11,8 +10,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -40,6 +37,7 @@ public class VenueServiceImplTest {
     
     @MockBean
     private VenueDao venueDao;
+    
     
     @Test
     void testSave() {
@@ -96,11 +94,25 @@ public class VenueServiceImplTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
     
+    
+    
     @Test
     void testFindAll() {
         Set<Venue> vnu = new HashSet<Venue>();
-        vnu.add(createVenue());
+        vnu.add(new Venue.Builder(123434L, "Mutien Hall").builder());
+        when(venueDao.findAll()).thenReturn(vnu);
+        assertEquals(venueService.findAll().size(), vnu.size()); 
+    }
+    
+    @Test
+    void testFindAll_NotFound() {
+        Exception vException = assertThrows(VenueException.class, () -> {
+            venueService.findAll();
+        });
         
+        String expectedMessage = "Can't find Venue Details";
+        String actualMessage = vException.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     private Venue createVenue() {
@@ -111,7 +123,4 @@ public class VenueServiceImplTest {
        return new Venue.Builder(0L, "name").builder();
     }
     
-    private Venue createNullVenue() {
-        return new Venue.Builder(null, null).builder();
-    }
 }

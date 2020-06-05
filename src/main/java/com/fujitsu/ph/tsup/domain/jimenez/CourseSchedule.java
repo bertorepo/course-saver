@@ -43,7 +43,7 @@ public class CourseSchedule {
         return minRequired;
     }
     
-    public int getmaxAllowed() {
+    public int getMaxAllowed() {
         return maxAllowed;
     }
     
