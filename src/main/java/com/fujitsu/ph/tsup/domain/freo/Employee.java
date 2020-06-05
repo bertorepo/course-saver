@@ -2,7 +2,7 @@ package com.fujitsu.ph.tsup.domain.freo;
 
 public class Employee {
 	private Long Id;
-	private Long employeeNumber;
+	private String employeeNumber;
 	private String lastName;
 	private String firstName;
 	private String emailAddress;
@@ -25,7 +25,7 @@ public class Employee {
 		return Id;
 	}
 
-	public Long getEmployeeNumber() {
+	public String getEmployeeNumber() {
 		return employeeNumber;
 	}
 
@@ -51,9 +51,9 @@ public class Employee {
 		private String firstName;
 		private String emailAddress;
 		private String userName;
-		private Long employeeNumber;
+		private String employeeNumber;
 		
-		public Builder(Long Id1, Long employeeNumber1, String lastName1, String firstName1, String emailAddress1,String userName1) {
+		public Builder(Long Id1, String employeeNumber1, String lastName1, String firstName1, String emailAddress1,String userName1) {
 			validateId(Id1);
 			validateemployeeNumber(employeeNumber1);
 			validatefirstName(firstName1);
@@ -78,28 +78,28 @@ public class Employee {
                 throw new IllegalArgumentException("ID should not be null");
             }
 		}	
-		private void validateemployeeNumber(Long employeeNumber) {
-			if (employeeNumber == null) {
+		private void validateemployeeNumber(String employeeNumber1) {
+			if (employeeNumber1 == null|| employeeNumber1.length() > 40  ||  employeeNumber1.length() < 10) {
                 throw new IllegalArgumentException("Employee Number should not be null");
             }
 		}
 		private void validatefirstName(String firstName) {
-			if (firstName.isEmpty() || firstName== null) {
+			if (firstName.isEmpty() || firstName== null || firstName.length() > 40  ||  firstName.length() < 10  ) {
 				throw new IllegalArgumentException("First Name Should not be empty");	
 			}
 		}
 		private void validatelastName(String lastName) {
-			if (lastName.isEmpty() || lastName== null) {
+			if (lastName.isEmpty() || lastName== null || lastName.length() > 40  ||  lastName.length() < 10) {
 				throw new IllegalArgumentException("Last Name Should not be empty");	
 			}
 		}
 		private void validateemailAddress(String emailAddress) {
-			if (emailAddress.isEmpty() || emailAddress== null) {
+			if (emailAddress.isEmpty() || emailAddress== null|| lastName== null || lastName.length() > 40  ||  lastName.length() < 10) {
 				throw new IllegalArgumentException("Email Address Should not be empty");	
 			}
 		}
 		private void validateuserName(String userName) {
-			if (userName.isEmpty() || userName== null) {
+			if (userName.isEmpty() || userName== null|| lastName== null || lastName.length() > 40  ||  lastName.length() < 10) {
 				throw new IllegalArgumentException("Username Should not be empty");	
 			}
 		}

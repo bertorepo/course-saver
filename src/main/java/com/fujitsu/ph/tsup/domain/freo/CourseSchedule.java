@@ -8,7 +8,8 @@ public class CourseSchedule {
 	private Long venueId;
 	private int minRequired; 
 	private int maxAllowed; 
-	    
+	private String status;
+	
 	protected CourseSchedule() {
 
 	 	}
@@ -20,6 +21,7 @@ public class CourseSchedule {
 	  this.venueId = builder.venueId;
 	  this.minRequired = builder.minRequired;
 	  this.maxAllowed= builder.maxAllowed;
+	  this.status=builder.status;
 	    
 	}
 	
@@ -47,8 +49,12 @@ public class CourseSchedule {
 		return maxAllowed;
 	}
 
+	public  String getStatus() {
+		return status;
+	}
 	
 	public static class Builder {
+		
 		
 		private Long Id;
 		private Long courseId;
@@ -56,13 +62,15 @@ public class CourseSchedule {
 		private Long venueId;
 		private int minRequired; 
 		private int maxAllowed; 
-	
-		public Builder (Long id, Long courseId, Long instructorId, Long venueId, int minRequired, int maxRequired, int maxAllowed) {
+		private String status;
+		
+		public Builder (Long id, Long courseId, Long instructorId, Long venueId, int minRequired, int maxRequired, int maxAllowed,String status) {
 			validatecourseId(courseId);
 			validateinstructorId(instructorId);
 			validatevenueId(venueId);
 			validateminRequired(minRequired);
 			validatemaxAllowed(maxAllowed);
+			validatestatus(status);
 			
 			this.courseId = courseId;
 			this.instructorId = instructorId;
@@ -71,10 +79,19 @@ public class CourseSchedule {
 			this.maxAllowed = maxAllowed;
 		}
 		
-		 public CourseSchedule builder() {
+		 
+
+		public CourseSchedule builder() {
 			 return new CourseSchedule(this);
 		 }
-		 
+		private void validatestatus(String status) {
+			if (status == null) {
+                throw new IllegalArgumentException("ID should not be null");
+            }  else if(status.length() > 3 || status.length() < 1) {
+                throw new IllegalArgumentException("Status should be 3 characters");
+            } 
+         }
+			
 		private void validatecourseId(Long courseId) {
 			if (courseId == null) {
                 throw new IllegalArgumentException("ID should not be null");
@@ -94,12 +111,16 @@ public class CourseSchedule {
 		private void validateminRequired(int minRequired) {
 			if (minRequired < 1 || minRequired > 99999) {
 				throw new IllegalArgumentException("Minimum number of Participants Required should not be empty");
-			}
+			} else if(minRequired > 99999) {
+                throw new IllegalArgumentException("Minimum number of Participants Required should not exceed 99999");
+            }
 		}
 		private void validatemaxAllowed (int maxAllowed ) {
 			if (maxAllowed < 1 || maxAllowed > 99999) {
                 throw new IllegalArgumentException("Maximum Number of Participants should not be empty");
-			}
+			 } else if(maxAllowed > 99999) {
+                throw new IllegalArgumentException("Max Allowed should not exceed 99999");
+            }
 		}
 	}
 }

@@ -31,15 +31,19 @@ public class Venue {
 		return new Venue (this);
 	}
 	
-	private void validateId(Long id2) {
+	private void validateId(Long Id2) {
 		if (Id == null) {
 			throw new IllegalArgumentException("ID Should not be empty");
 		}
 	}
 	private void validatevenueName(String venueName2) {
-		if (venueName.isEmpty() || venueName== null) {
-			throw new IllegalArgumentException("Course Name Should not be empty");	
-			}
+		if (venueName.isEmpty() || venueName== null|| venueName== null || venueName.length() > 50  ||  venueName.length() < 10) {
+			throw new IllegalArgumentException("Venue Name Should not be empty");	
+			}else if(venueName.length() < 8) {
+                throw new IllegalArgumentException("Venue Name should not be less than 8 characters");
+            } else if(venueName.length() > 50) {
+                throw new IllegalArgumentException("Venue Name should not be more than 50 characters");
+            }
 		}
 	}
 }

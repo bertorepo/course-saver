@@ -44,10 +44,13 @@ public class Course {
 		}
 	}
 	private void validatecourseName(String courseName) {
-		if (courseName.isEmpty() || courseName== null) {
+		if (courseName.isEmpty() || courseName== null|| courseName.length() < 8 || courseName.length() > 20) {
 			throw new IllegalArgumentException("Course Name Should not be empty");
-			
-		 }
+		 } else if (courseName.length() < 8) {
+             throw new IllegalArgumentException("Filed should not be less than 8");
+         } else if(courseName.length() > 40) {
+             throw new IllegalArgumentException("Field should not be more than 40");
+        }	 
 	 }
   }
 }
