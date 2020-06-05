@@ -35,7 +35,6 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
         
     }
 
-
     @Override
     public void save(CourseSchedule courseSchedule) {
         if (courseSchedule.getId() != 0) {

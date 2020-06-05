@@ -96,8 +96,7 @@ public class EmployeeServiceImplTest {
         String expectedMessage = "Employee not found!";
         String actualMessage = eException.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
-    }
-    
+    }   
     
     
     @Test

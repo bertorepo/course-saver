@@ -67,7 +67,6 @@ public class VenueServiceImplTest {
     }
 
 
-
     @Test
     void testFindById() {
         Venue createVnu = createVenue();

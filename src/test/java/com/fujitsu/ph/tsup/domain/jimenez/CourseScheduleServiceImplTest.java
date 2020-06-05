@@ -72,7 +72,6 @@ public class CourseScheduleServiceImplTest {
     }
 
 
-
     @Test
     void testFindById() {
         CourseSchedule createCrse = createCourseSchedule();

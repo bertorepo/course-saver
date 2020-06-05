@@ -7,3 +7,4 @@ public interface CourseService {
     Set<Course> findAll();
     Course findById(Long id);
 }
+

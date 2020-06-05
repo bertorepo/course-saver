@@ -36,7 +36,6 @@ public class VenueServiceImpl implements VenueService{
         
     }
 
-
     @Override
     public void save(Venue venue) {
         if (venue.getId() != 0) {

@@ -11,3 +11,4 @@ public class CourseException extends RuntimeException{
         super(err, cause);
     }
 }
+

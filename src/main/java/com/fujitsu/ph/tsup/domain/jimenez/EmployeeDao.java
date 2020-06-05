@@ -7,3 +7,4 @@ public interface EmployeeDao {
     Set<Employee> findAll();
     Employee findById(Long id);
 }
+

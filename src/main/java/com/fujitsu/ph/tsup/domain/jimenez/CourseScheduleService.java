@@ -7,3 +7,4 @@ public interface CourseScheduleService {
     Set<CourseSchedule> findAll();
     CourseSchedule findById(Long id);
 }
+
