@@ -31,7 +31,11 @@ public class Course {
             this.id = id;
             this.courseName = courseName;
         }
+        public Builder(String courseName) {
+            validateCourseName(courseName);
 
+            this.courseName = courseName;
+        }
         public Course build() {
             return new Course(this);
         }
