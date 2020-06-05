@@ -1,7 +1,11 @@
 package com.fujitsu.ph.tsup.domain.lumontad;
 
-public interface CourseDao {
-    Long save(Course courseid);
+import java.util.Set;
 
-    Course findById(Long id);
+public interface CourseDao {
+ void save(Course course);
+    
+    Set<Course> findAll();
+    
+    Course findById(Long id);  
 }
