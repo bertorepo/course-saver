@@ -13,7 +13,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void save(Course course) {
-        dao.save(course);
+        try {
+            dao.save(course);
+        } catch (IllegalArgumentException e) {
+            throw new  MyException("Error found", e);
+        }
     }
 
     @Override
@@ -21,7 +25,7 @@ public class CourseServiceImpl implements CourseService {
         try {
             return dao.findAll();
         } catch (IllegalArgumentException e) {
-            throw new MyException("Error not found", e);
+            throw new MyException("Error found", e);
         }
     }
 
@@ -30,7 +34,7 @@ public class CourseServiceImpl implements CourseService {
         try {
             return dao.findById(id);
         } catch (IllegalArgumentException e) {
-            throw new MyException("Error not found", e);
+            throw new MyException("Error found", e);
         }
     }
 
