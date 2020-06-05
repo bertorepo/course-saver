@@ -2,7 +2,11 @@ package com.fujitsu.ph.tsup.domain.abad;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -50,20 +54,22 @@ public class CourseServiceImplTest {
     
     @Test
     public void testFindById_Unmatched() {
-        when(courseDao.findById(anyLong()))
-            .thenReturn(createCourseIdUnmatched());
-        Course course = service.findById(2020L);
-        assertEquals(course.getId(), new Long(2020));
+        when(courseDao.findById(any(Long.class)))
+            .thenThrow(new ServiceException("Course not found"));
+    
+        Exception exception = assertThrows(ServiceException.class, () -> {
+        service.findById(1000L);
+        });
+        
+        String expectedMessage = "Course not found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     private Course createCourseId() {
         return new Course.Builder(new Long(1000), "DIFFCALC").build();
     }
-    
-    private Course createCourseIdUnmatched() {
-        return new Course.Builder(new Long(2020), "INTEGCALC").build();
-    }
-    
+       
     @Test
     public void testSave() {
         Course course = new Course.Builder(1000L, "DIFFCALC").build();
@@ -74,10 +80,18 @@ public class CourseServiceImplTest {
     
     @Test
     public void testSaveUnmatched() {
-        Course course = new Course.Builder(2020L, "INTEGCALC").build();
-        service.save(course);
-        assertEquals(course.getId(), new Long(2020));
-        assertEquals(course.getCourseName(), "INTEGCALC");
+        Course course = createCourseId();
+        doThrow(new ServiceException("Course not saved")).
+            when(courseDao).save(any(Course.class));
+            
+        Exception exception = assertThrows(ServiceException.class, () -> {
+            service.save(course);
+                
+        });
+
+        String expectedMessage = "Course not saved";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
         
     @Test
@@ -90,11 +104,16 @@ public class CourseServiceImplTest {
     
     @Test
     public void testFindAllUnmatched() {
-        Set<Course> course = new HashSet<Course>();
-        course.add(new Course.Builder(0L, "").build());
-        assertEquals(service.findAll().size(), course.size());
-        
-      
+        doThrow(new ServiceException("Record not found")).
+        when(courseDao).findAll();
+    
+        Exception exception = assertThrows(ServiceException.class, () -> {
+        service.findAll();    
+        });
+
+        String expectedMessage = "Record not found";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage)); 
     }
     
 }
