@@ -59,7 +59,7 @@ public class CourseSchedule {
         private int maxAllowed;
         private String status;
 
-        public Builder(Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed, String status) {
+        public Builder(Long id, Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed, String status) {
             validateCourseId(courseId);
             validateInstructorId(instructorId);
             validateVenueId(venueId);
@@ -67,6 +67,7 @@ public class CourseSchedule {
             validateMaxAllowed(maxAllowed);
             validateStatus(status);
             
+            this.id = id;
             this.courseId = courseId;
             this.instructorId = instructorId;
             this.venueId = venueId;
@@ -98,14 +99,20 @@ public class CourseSchedule {
         }
                 
         private void validateMinRequired(int minRequired) {
-            if (minRequired < 1 || minRequired > 1000) {
-                throw new IllegalArgumentException("minimun number of participants should not be empty");
+            if (minRequired < 1) {
+                throw new IllegalArgumentException("minimum number of participants should not be empty");
+            }        
+            else if(minRequired > 1000) {
+                throw new IllegalArgumentException("minimum number of participants should not exceed by 1000");     
             }
         }
                     
         private void validateMaxAllowed(int maxAllowed) {
-            if (maxAllowed > 1000  || maxAllowed < 1) {
-                 throw new IllegalArgumentException("maximum number of participants should not be empty");
+            if (maxAllowed > 1000) {
+                 throw new IllegalArgumentException("maximum number of participants should not exceed by 1000");
+            }
+            else if(maxAllowed < 1) {
+                throw new IllegalArgumentException("maximum number of participants should not be empty");  
             }
         }
                         

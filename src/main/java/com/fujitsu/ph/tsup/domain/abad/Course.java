@@ -24,9 +24,10 @@ public class Course {
         private Long id;
         private String courseName;
 
-        public Builder(String courseName) {
+        public Builder(Long id, String courseName) {
             validateCourseName(courseName);
             
+            this.id = id;
             this.courseName = courseName;
         }
         
@@ -35,9 +36,17 @@ public class Course {
         }
         
         private void validateCourseName(String courseName) {
-            if (courseName == null || courseName.isEmpty() || courseName.length() < 5 || courseName.length() > 50) {
+            if (courseName == null || courseName.isEmpty()) {
                 throw new IllegalArgumentException("course name should not be empty");
-            }           
+            }  
+            else if (courseName.length() < 5) {
+                throw new IllegalArgumentException("course name should not be less than 5 characters");
+            }
+            
+            else if(courseName.length() > 50) {
+                throw new IllegalArgumentException("course name should not exceed by 50 characters");         
+            }
         }       
     }
 }
+
