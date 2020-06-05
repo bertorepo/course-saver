@@ -9,22 +9,23 @@ public class Course {
         this.id = builder.id;
     }
 
-    private String getCourseName() {
-        return courseName;
-    }
-
-    private Long getId() {
+    Long getId() {
         return id;
     }
 
+    public String getCourseName() {
+        return courseName;
+    }
+    
     public static class Builder {
         public String courseName;
         private Long id;
 
-        public Builder(String courseName) {
+        public Builder(String courseName, Long id) {
             ValidateCourseName(courseName);
 
             this.courseName = courseName;
+            this.id = id;
         }
 
         private void ValidateCourseName(String courseName) {

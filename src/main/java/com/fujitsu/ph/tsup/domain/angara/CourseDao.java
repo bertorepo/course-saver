@@ -3,10 +3,10 @@ package com.fujitsu.ph.tsup.domain.angara;
 import java.util.Set;
 
 public interface CourseDao {
-    void save(CourseDao id);
+    void save(Course course);
 
-    Set<CourseDao> findAll();
+    Set<Course> findAll();
 
-    CourseDao findById(Long id);
+    Course findById(Long id);
 
 }

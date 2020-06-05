@@ -55,7 +55,7 @@ public class Employee {
         public Builder(Long employeeNumber, String firstName, String lastName, String emailAddress, String userName) {
             validateEmployeeNumber(employeeNumber);
             validateLastName(lastName);
-            validateLastName(firstName);
+            validateFirstName(firstName);
             validateEmailAddress(emailAddress);
             validateUserName(userName);
 

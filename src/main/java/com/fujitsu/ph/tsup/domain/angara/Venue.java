@@ -16,7 +16,7 @@ public class Venue {
         return venueName;
     }
 
-    private Long getId() {
+    Long getId() {
         return id;
     }
 

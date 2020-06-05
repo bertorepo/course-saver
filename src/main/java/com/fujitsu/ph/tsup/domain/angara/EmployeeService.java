@@ -3,8 +3,10 @@ package com.fujitsu.ph.tsup.domain.angara;
 import java.util.Set;
 
 public interface EmployeeService {
-    void save(Employee employeeId);
+    void save(Employee employee);
+
     Set<Employee> findAll();
-    Employee findById (Long employeeId);
+
+    Employee findById(Long id);
 
 }
