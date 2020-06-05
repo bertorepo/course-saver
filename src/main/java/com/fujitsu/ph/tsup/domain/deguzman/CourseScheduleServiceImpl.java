@@ -16,18 +16,19 @@ private Logger logger = LoggerFactory.getLogger(CourseScheduleServiceImpl.class)
     
     @Override
     public void save(CourseSchedule courseSchedule){
-        CourseSchedule c = new CourseSchedule.Builder((long) 1, (long) 1, (long) 1, 5, 100, "A").build();
-        if(c.getStatus() == "C") {
-            throw new IllegalArgumentException("Course Schedule is Closed");
+        dao.save(courseSchedule);
+        if(courseSchedule.getStatus() == "C") {
+            throw new IllegalArgumentException("Course not saved");
         }
     }
     
     @Override
     public Set<CourseSchedule> findAll(){
         Set<CourseSchedule> c = dao.findAll();
+        
         if (c.isEmpty() || c == null) {
             throw new IllegalArgumentException("No records found");
-        }
+        } 
         return c;
     }
     

@@ -44,42 +44,42 @@ public class EmployeeServiceImplTest {
     
     @Test
     public void testSave(){
-        when(employeeDao.findById(anyLong())).thenReturn(createEmployee());
-        Employee c = service.findById((long) 123);
+        Employee c = new Employee.Builder((long)1, "1234567890", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
         service.save(c);
         assertEquals(c.getNumber(), "1234567890");
+        assertEquals(c.getId(), new Long(1));
+        assertEquals(c.getLastName(), "de Guzman");
+        assertEquals(c.getFirstName(), "Jeamel");
+        assertEquals(c.getEmailAddress(), "jeamel.deguzman@gmail.com");
+        assertEquals(c.getUserName(), "jm.deguzman");
     }
 
 
     @Test
     public void testSaveErr() {
-        when(employeeDao.findById(anyLong())).thenReturn(createEmployeeErr());
-        Employee c = service.findById((long) 123);
+        Employee c = new Employee.Builder((long)1, "1111111111", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
         service.save(c);
         assertEquals(c.getNumber(), "1111111111");
+        assertEquals(c.getId(), new Long(1));
+        assertEquals(c.getLastName(), "de Guzman");
+        assertEquals(c.getFirstName(), "Jeamel");
+        assertEquals(c.getEmailAddress(), "jeamel.deguzman@gmail.com");
+        assertEquals(c.getUserName(), "jm.deguzman");
     }
     
-    private Employee createEmployee() {
-        return new Employee.Builder("1234567890", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
-    }
-    private Employee createEmployeeErr() {
-        return new Employee.Builder("1111111111", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
-    }
 
     @Test
     public void testFindAll(){
         Set<Employee> c = new HashSet<Employee>();
-        c.add(new Employee.Builder("1234567890", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build());
+        c.add(new Employee.Builder((long)1, "1234567890", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build());
         when(employeeDao.findAll()).thenReturn(c);
-        assertEquals(employeeDao.findAll().size(), c.size());
+        assertEquals(service.findAll().size(), c.size());
     }
 
     @Test
     public void testFindAllErr() {
         Set<Employee> c = new HashSet<Employee>();
-        c.add(new Employee.Builder("1", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build());
-        when(employeeDao.findAll()).thenReturn(c);
-        assertEquals(employeeDao.findAll().size(), c.size());
+        assertEquals(service.findAll().size(), c.size());
     }
     
     @Test
@@ -99,10 +99,10 @@ public class EmployeeServiceImplTest {
     }
     
     private Employee createEmployeeFindById() {
-        return new Employee.Builder("1234567890", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
+        return new Employee.Builder((long)1, "1234567890", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
     }
     private Employee createEmployeeFindByIdErr() {
-        return new Employee.Builder("1111111111", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
+        return new Employee.Builder((long)0, "1111111111", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
     }
 
 }

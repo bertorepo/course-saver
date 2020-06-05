@@ -44,42 +44,35 @@ public class VenueServiceImplTest {
     
     @Test
     public void testSave(){
-        when(venueDao.findById(anyLong())).thenReturn(createVenue());
-        Venue c = service.findById((long) 123);
+        Venue c = new Venue.Builder((long) 1, "Duerr Hall").build();
         service.save(c);
+        assertEquals(c.getId(), new Long (1));
         assertEquals(c.getVenueName(), "Duerr Hall");
     }
 
 
     @Test
     public void testSaveErr() {
-        when(venueDao.findById(anyLong())).thenReturn(createVenueErr());
-        Venue c = service.findById((long) 123);
+        Venue c = new Venue.Builder((long) 0, "Mutien Hall").build();
         service.save(c);
+        assertEquals(c.getId(), new Long(0));
         assertEquals(c.getVenueName(), "Mutien Hall");
     }
     
-    private Venue createVenue() {
-        return new Venue.Builder("Duerr Hall").build();
-    }
-    private Venue createVenueErr() {
-        return new Venue.Builder("Mutien Hall").build();
-    }
 
     @Test
     public void testFindAll(){
         Set<Venue> c = new HashSet<Venue>();
-        c.add(new Venue.Builder("Duerr Hall").build());
+        c.add(new Venue.Builder((long) 1, "Duerr Hall").build());
         when(venueDao.findAll()).thenReturn(c);
-        assertEquals(venueDao.findAll().size(), c.size());
+        assertEquals(service.findAll().size(), c.size());
     }
 
     @Test
     public void testFindAllErr() {
         Set<Venue> c = new HashSet<Venue>();
-        c.add(new Venue.Builder("").build());
-        when(venueDao.findAll()).thenReturn(c);
-        assertEquals(venueDao.findAll().size(), c.size());
+        c.add(new Venue.Builder((long) 0, "Mutien Hall").build());
+        assertEquals(service.findAll().size(), c.size());
     }
     
     @Test
@@ -87,22 +80,22 @@ public class VenueServiceImplTest {
         when(venueDao.findById(anyLong()))
         .thenReturn(createVenueFindById());
         Venue c = service.findById((long) 1);
-        assertEquals(c.getVenueName(), "Duerr Hall");
+        assertEquals(c.getId(), new Long(1));
     }
 
     @Test
     public void testFindByIdErr() {
         when(venueDao.findById(anyLong()))
         .thenReturn(createVenueFindByIdErr());
-        Venue c = service.findById((long) 123);
-        assertEquals(c.getVenueName(), "Mutien Hall");
+        Venue c = service.findById((long) 0);
+        assertEquals(c.getId(), new Long(0));
     }
     
     private Venue createVenueFindById() {
-        return new Venue.Builder("Duerr Hall").build();
+        return new Venue.Builder((long) 1, "Duerr Hall").build();
     }
     private Venue createVenueFindByIdErr() {
-        return new Venue.Builder("Mutien Hall").build();
+        return new Venue.Builder((long) 0, "Mutien Hall").build();
     }
 
 }

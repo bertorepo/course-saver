@@ -16,9 +16,9 @@ private Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
     
     @Override
     public void save(Employee employee){
-        Employee e = new Employee.Builder("1234567890", "de Guzman", "Jeamel", "jeamel.deguzman@gmail.com", "jm.deguzman").build();
-        if(e.getNumber() == "1111111111") {
-            throw new IllegalArgumentException("Invalid employee");
+        dao.save(employee);
+        if(employee.getNumber() == "1111111111") {
+            throw new IllegalArgumentException("Employee not saved");
         }
     }
     

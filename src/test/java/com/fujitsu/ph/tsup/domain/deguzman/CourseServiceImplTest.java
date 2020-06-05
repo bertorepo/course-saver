@@ -44,42 +44,34 @@ public class CourseServiceImplTest {
     
     @Test
     public void testSave(){
-        when(courseDao.findById(anyLong())).thenReturn(createCourse());
-        Course c = service.findById((long) 123);
+        Course c = new Course.Builder((long) 1, "ISPROG1").build();
         service.save(c);
+        assertEquals(c.getId(), new Long (1));
         assertEquals(c.getCourseName(), "ISPROG1");
     }
 
 
     @Test
     public void testSaveErr() {
-        when(courseDao.findById(anyLong())).thenReturn(createCourseErr());
-        Course c = service.findById((long) 123);
+        Course c = new Course.Builder((long) 0, "ISPROG").build();
         service.save(c);
+        assertEquals(c.getId(), new Long (0));
         assertEquals(c.getCourseName(), "ISPROG");
     }
     
-    private Course createCourse() {
-        return new Course.Builder("ISPROG1").build();
-    }
-    private Course createCourseErr() {
-        return new Course.Builder("ISPROG").build();
-    }
-
     @Test
     public void testFindAll(){
         Set<Course> c = new HashSet<Course>();
-        c.add(new Course.Builder("ISPROG3").build());
+        c.add(new Course.Builder((long) 1, "ISPROG1").build());
         when(courseDao.findAll()).thenReturn(c);
-        assertEquals(courseDao.findAll().size(), c.size());
+        assertEquals(service.findAll().size(), c.size());
     }
 
     @Test
     public void testFindAllErr() {
         Set<Course> c = new HashSet<Course>();
-        c.add(new Course.Builder("").build());
-        when(courseDao.findAll()).thenReturn(c);
-        assertEquals(courseDao.findAll().size(), c.size());
+        c.add(new Course.Builder((long) 0, "ISPROG").build());
+        assertEquals(service.findAll().size(), c.size());
     }
     
     @Test
@@ -87,22 +79,22 @@ public class CourseServiceImplTest {
         when(courseDao.findById(anyLong()))
         .thenReturn(createCourseFindById());
         Course c = service.findById((long) 1);
-        assertEquals(c.getCourseName(), "ISPROG1");
+        assertEquals(c.getId(), new Long(1));
     }
 
     @Test
     public void testFindByIdErr() {
         when(courseDao.findById(anyLong()))
         .thenReturn(createCourseFindByIdErr());
-        Course c = service.findById((long) 123);
-        assertEquals(c.getCourseName(), "ISPROG");
+        Course c = service.findById((long) 0);
+        assertEquals(c.getId(), new Long(0));
     }
     
     private Course createCourseFindById() {
-        return new Course.Builder("ISPROG1").build();
+        return new Course.Builder(new Long(1), "ISPROG1").build();
     }
     private Course createCourseFindByIdErr() {
-        return new Course.Builder("ISPROG").build();
+        return new Course.Builder(new Long(0), "ISPROG").build();
     }
 
 }

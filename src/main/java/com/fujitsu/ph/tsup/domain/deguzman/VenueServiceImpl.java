@@ -16,9 +16,9 @@ private Logger logger = LoggerFactory.getLogger(VenueServiceImpl.class);
     
     @Override
     public void save(Venue venue){
-        Venue v = new Venue.Builder("Duerr Hall").build();
-        if(v.getVenueName() == "Mutien Hall") {
-            throw new IllegalArgumentException("Invalid venue");
+        dao.save(venue);
+        if(venue.getId() == 0) {
+            throw new IllegalArgumentException("Venue not saved");
         }
     }
     
@@ -27,14 +27,14 @@ private Logger logger = LoggerFactory.getLogger(VenueServiceImpl.class);
         Set<Venue> v = dao.findAll();
         if (v.isEmpty() || v == null) {
             throw new IllegalArgumentException("No records found");
-        }
+        } 
         return v;
     }
     
     @Override
     public Venue findById(Long id){
         Venue v = dao.findById(id);
-        if (v.getVenueName() == "Mutien Hall") {
+        if (v.getId() == 0) {
             throw new IllegalArgumentException("Invalid venue");
         }
         return v;
