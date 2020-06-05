@@ -3,6 +3,8 @@ package com.fujitsu.ph.tsup.domain.macabugao;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -16,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.doNothing;
@@ -70,14 +73,12 @@ class CourseScheduleServiceImplTest {
 
 	@Test
 	void testFindAll() {
-		CourseSchedule expectedResult = createCourse();
-		//when(courseScheduleDao.findAll()).thenReturn((Set<CourseSchedule>) expectedResult);
+        Set<CourseSchedule> s = new HashSet<CourseSchedule>();
+        s.add(new CourseSchedule.Builder(1L, 1L, 1L, 45, 45, "Any").build());
 
-		when(courseScheduleDao.findAll()).thenReturn((Set<CourseSchedule>) expectedResult);
-
-		Set<CourseSchedule> courseSchedule = courseScheduleService.findAll();
-		
-		assertEquals(expectedResult.getCourseId(), courseSchedule.contains(courseSchedule));
+        when(courseScheduleDao.findAll()).thenReturn(s);
+        assertEquals(courseScheduleService.findAll().size(), s.size());
+        
 
 	}
 

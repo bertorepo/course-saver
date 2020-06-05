@@ -6,6 +6,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -64,25 +65,24 @@ class VenueServiceImplTest {
 
 	@Test
 	void testFindAll() {
-		Venue expectedResult = createVenue();
-		when(venueDao.findAll()).thenReturn((Set<Venue>) expectedResult);
 
-		Set<Venue> venue = venueService.findAll();
-		
-		assertEquals(expectedResult.getVenueName(), venue.getClass());
-		
+		Set<Venue> s = new HashSet<Venue>();
+		s.add(new Venue.Builder(1L, "Philippine Arena").build());
+
+		when(venueDao.findAll()).thenReturn(s);
+		assertEquals(venueDao.findAll().size(), s.size());
 
 	}
 
 	@Test
 	void testFindAllWithError() {
-		
+
 		doThrow(new DataRetrievalFailureException("error")).when(venueDao).findAll();
 
 		Exception exception = assertThrows(IllegalApplicationException.class, () -> {
 			venueService.findAll();
-	    });
-		
+		});
+
 		String expectedMessage = "Cannot find venue";
 		String actualMessage = exception.getMessage();
 		assertTrue(actualMessage.contains(expectedMessage));

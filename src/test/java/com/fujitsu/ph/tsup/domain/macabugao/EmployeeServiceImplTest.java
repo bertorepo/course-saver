@@ -6,6 +6,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -63,14 +64,11 @@ class EmployeeServiceImplTest {
 
 	@Test
 	void testFindAll() {
-		
-		Employee expectedResult = createEmployee();
-		when(employeeDao.findAll()).thenReturn((Set<Employee>) expectedResult);
+		 Set<Employee> s = new HashSet<Employee>();
+	        s.add(new Employee.Builder(1L, "12345", "Janella", "Macabugao", "j.macabugao@fujitsu.com", "Janella").build());
 
-		Set<Employee> employee = employeeService.findAll();
-		
-		assertEquals(expectedResult.getFirstName(), employee.getClass());
-
+	        when(employeeDao.findAll()).thenReturn(s);
+	        assertEquals(employeeDao.findAll().size(), s.size());
 	}
 
 	@Test
