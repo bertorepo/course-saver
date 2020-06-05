@@ -1,5 +1,4 @@
 package com.fujitsu.ph.tsup.domain.deguzman;
-
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,22 +10,15 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-
-
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-
 import java.util.HashSet;
 import java.util.Set;
-
 import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringRunner.class)
 public class CourseScheduleServiceImplTest {
-
     @Rule
     public ExpectedException thrown = ExpectedException.none(); 
-
     @TestConfiguration
     static class CourseScheduleServiceImplestContextConfiguration {
         
@@ -36,7 +28,6 @@ public class CourseScheduleServiceImplTest {
         }
         
     }
-
     @Autowired
     private CourseScheduleService service;
     
@@ -55,8 +46,6 @@ public class CourseScheduleServiceImplTest {
         assertEquals(c.getMinRequired(), 5);
         assertEquals(c.getMaxAllowed(), 100);
     }
-
-
     @Test
     public void testSaveErr() {
         CourseSchedule c = new CourseSchedule.Builder((long) 0, (long) 0, (long)0, (long) 0, 5, 100, "C").build();
@@ -70,7 +59,6 @@ public class CourseScheduleServiceImplTest {
         assertEquals(c.getMaxAllowed(), 100);
     }
     
-
     @Test
     public void testFindAll(){
         Set<CourseSchedule> c = new HashSet<CourseSchedule>();
@@ -78,7 +66,6 @@ public class CourseScheduleServiceImplTest {
         when(courseScheduleDao.findAll()).thenReturn(c);
         assertEquals(service.findAll().size(), c.size());
     }
-
     @Test
     public void testFindAllErr() {
         Set<CourseSchedule> c = new HashSet<CourseSchedule>();
@@ -92,7 +79,6 @@ public class CourseScheduleServiceImplTest {
         CourseSchedule c = service.findById((long) 1);
         assertEquals(c.getStatus(), "A");
     }
-
     @Test
     public void testFindByIdErr() {
         when(courseScheduleDao.findById(anyLong()))
@@ -107,5 +93,4 @@ public class CourseScheduleServiceImplTest {
     private CourseSchedule createCourseScheduleFindByIdErr() {
         return new CourseSchedule.Builder((long) 0, (long) 1, (long) 1, (long) 1, 5, 100, "C").build();
     }
-
 }
