@@ -1,6 +1,8 @@
 package com.fujitsu.ph.tsup.domain.deguzman;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,9 @@ public class VenueDaoImpl implements VenueDao {
     @Override
     public Set<Venue> findAll() {
         String sql = "SELECT id, name FROM VENUE";
-        Set<Venue> venue = (Set<Venue>) template.query(sql, new VenueRowMapper());
-        return venue;
+        List<Venue> venue = template.query(sql, new VenueRowMapper());
+        Set<Venue> v = new HashSet<Venue>(venue);
+        return v;
     }
 
     @Override

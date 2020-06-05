@@ -2,10 +2,13 @@ package com.fujitsu.ph.tsup.domain.deguzman;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -54,6 +57,8 @@ class CourseDaoImplTest {
         Course dbCourse2 = courseDao.findById(c2);
         assertEquals("BBBBBBBBBB", dbCourse2.getCourseName());
         
+        Set<Course> c = courseDao.findAll();
+        assertNotNull(c.size());
     }
 
     @Test

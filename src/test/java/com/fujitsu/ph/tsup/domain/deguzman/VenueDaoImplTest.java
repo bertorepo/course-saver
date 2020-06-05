@@ -54,6 +54,8 @@ class VenueDaoImplTest {
         Venue dbVenue2 = venueDao.findById(v2);
         assertEquals("BBBBBBBBBB", dbVenue2.getVenueName());
         
+        Set<Venue> v = venueDao.findAll();
+        assertNotNull(v.size());
     }
 
     @Test

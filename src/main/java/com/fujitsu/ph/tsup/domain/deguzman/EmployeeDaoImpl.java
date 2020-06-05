@@ -1,6 +1,8 @@
 package com.fujitsu.ph.tsup.domain.deguzman;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Override
     public Set<Employee> findAll() {
         String sql = "SELECT id, number, last_name, first_name, email_address, user_name FROM employee";
-        Set<Employee> employee = (Set<Employee>) template.query(sql, new EmployeeRowMapper());
-        return employee;
+        List<Employee> employee = template.query(sql, new EmployeeRowMapper());
+        Set<Employee> e = new HashSet<Employee>(employee);
+        return e;
     }
 
     @Override

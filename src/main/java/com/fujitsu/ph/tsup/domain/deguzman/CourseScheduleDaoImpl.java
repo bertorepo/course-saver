@@ -1,6 +1,8 @@
 package com.fujitsu.ph.tsup.domain.deguzman;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,9 @@ public class CourseScheduleDaoImpl implements CourseScheduleDao {
     @Override
     public Set<CourseSchedule> findAll() {
         String sql = "SELECT id, course_Id, instructor_Id, venue_Id, min_Required, max_Allowed, status FROM COURSESCHEDULE";
-        Set<CourseSchedule> courseSchedule = (Set<CourseSchedule>) template.query(sql, new CourseScheduleRowMapper());
-        return courseSchedule;
+        List<CourseSchedule> courseSchedule = template.query(sql, new CourseScheduleRowMapper());
+        Set<CourseSchedule> cs = new HashSet<CourseSchedule>(courseSchedule);
+        return cs;
     }
 
     @Override
@@ -37,12 +40,11 @@ public class CourseScheduleDaoImpl implements CourseScheduleDao {
                 + "VALUES(:courseId, :instructorId, :venueId, :minRequired, :maxAllowed, :status)";
         
         SqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue("courseId",courseSchedule.getCourseId())
+                .addValue("courseId", courseSchedule.getCourseId())
                 .addValue("instructorId", courseSchedule.getInstructorId())
                 .addValue("venueId", courseSchedule.getVenueId())
                 .addValue("minRequired", courseSchedule.getMinRequired())
-                .addValue("maxAllowed", courseSchedule.getMaxAllowed())
-                .addValue("status", courseSchedule.getStatus());
+                .addValue("maxAllowed", courseSchedule.getMaxAllowed()).addValue("status", courseSchedule.getStatus());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         template.update(sql, namedParameters, generatedKeyHolder);
@@ -54,6 +56,5 @@ public class CourseScheduleDaoImpl implements CourseScheduleDao {
         // TODO Auto-generated method stub
         return;
     }
-
 
 }

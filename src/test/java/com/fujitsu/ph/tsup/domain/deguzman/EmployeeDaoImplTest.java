@@ -62,6 +62,8 @@ class EmployeeDaoImplTest {
         assertEquals("j.balanon@gmail.com", dbEmployee2.getEmailAddress());
         assertEquals("j.balanon", dbEmployee2.getUserName());
         
+        Set<Employee> e = employeeDao.findAll();
+        assertNotNull(e.size());
     }
 
     @Test

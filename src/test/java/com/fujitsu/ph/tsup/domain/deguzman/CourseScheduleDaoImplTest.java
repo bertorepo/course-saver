@@ -64,6 +64,8 @@ class CourseScheduleDaoImplTest {
         assertEquals(200, dbCourseSchedule2.getMaxAllowed());
         assertEquals("C", dbCourseSchedule2.getStatus());
         
+        Set<CourseSchedule> cs = courseScheduleDao.findAll();
+        assertNotNull(cs.size());
     }
 
     @Test

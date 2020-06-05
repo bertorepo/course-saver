@@ -1,6 +1,8 @@
 package com.fujitsu.ph.tsup.domain.deguzman;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,9 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public Set<Course> findAll() {
         String sql = "SELECT id, name FROM COURSE";
-        Set<Course> course = (Set<Course>) template.query(sql, new CourseRowMapper());
-        return course;
+        List<Course> course = template.query(sql, new CourseRowMapper());
+        Set<Course> c = new HashSet<Course>(course);
+        return c;
     }
 
     @Override
