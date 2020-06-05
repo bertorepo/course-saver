@@ -1,6 +1,5 @@
 package com.fujitsu.ph.tsup.domain.abad;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
