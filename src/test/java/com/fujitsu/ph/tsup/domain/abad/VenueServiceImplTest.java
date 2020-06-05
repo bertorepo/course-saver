@@ -43,7 +43,7 @@ public class VenueServiceImplTest {
     public void testFindById() {
         when(venuDao.findById(anyLong()))
             .thenReturn(createVenueId());
-        Venue venue = service.findById((long) 1000);
+        Venue venue = service.findById(1000L);
         assertEquals(venue.getId(), new Long(1000));
     }
     
@@ -51,21 +51,21 @@ public class VenueServiceImplTest {
     public void testFindById_Unmatched() {
         when(venuDao.findById(anyLong()))
             .thenReturn(createVenueIdUnmatched());
-        Venue venue = service.findById((long) 2020);
+        Venue venue = service.findById(2020L);
         assertEquals(venue.getId(), new Long(2020));
     }
     
     private Venue createVenueId() {
-        return new Venue.Builder((long) 1000, "Imus Plaza").build();
+        return new Venue.Builder(1000L, "Imus Plaza").build();
     }
     
     private Venue createVenueIdUnmatched() {
-        return new Venue.Builder((long) 2020, "Fujitsu Building").build();
+        return new Venue.Builder(2020L, "Fujitsu Building").build();
     }
     
     @Test
     public void testSave() {
-        Venue venue = new Venue.Builder((long) 1000, "Imus Plaza").build();
+        Venue venue = new Venue.Builder(1000L, "Imus Plaza").build();
         service.save(venue);
         assertEquals(venue.getId(), new Long(1000));
         assertEquals(venue.getVenueName(), "Imus Plaza");
@@ -74,7 +74,7 @@ public class VenueServiceImplTest {
     
     @Test
     public void testSaveUnmatched() {
-        Venue venue = new Venue.Builder((long) 2020, "Imus Plaza").build();
+        Venue venue = new Venue.Builder(2020L, "Imus Plaza").build();
         service.save(venue);
         assertEquals(venue.getId(), new Long(2020));
         assertEquals(venue.getVenueName(), "Fujitsu Building");
@@ -83,16 +83,16 @@ public class VenueServiceImplTest {
     @Test
     public void testFindAll() {
         Set<Venue> venue = new HashSet<Venue>();
-        venue.add(new Venue.Builder((long) 1000, "Imus Plaza").build());
+        venue.add(new Venue.Builder(1000L, "Imus Plaza").build());
         when(venuDao.findAll()).thenReturn(venue);
-        assertEquals(venuDao.findAll().size(), venue.size());
+        assertEquals(service.findAll().size(), venue.size());
     }
     
     @Test
     public void testFindAllUnmatched() {
         Set<Venue> venue = new HashSet<Venue>();
-        venue.add(new Venue.Builder((long) 2020, "Fujitsu Building").build());
-        assertEquals(venuDao.findAll().size(), venue.size());
+        venue.add(new Venue.Builder(0L, "").build());
+        assertEquals(service.findAll().size(), venue.size());
     }
     
 }

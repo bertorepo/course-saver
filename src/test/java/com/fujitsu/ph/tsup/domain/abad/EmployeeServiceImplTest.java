@@ -44,7 +44,7 @@ public class EmployeeServiceImplTest {
     public void testFindById() {
         when(employeeDao.findById(anyLong()))
             .thenReturn(createEmployeeId());
-        Employee employee = service.findById((long) 1000);
+        Employee employee = service.findById(1000L);
         assertEquals(employee.getLastName(), "abad");
     }
     
@@ -52,21 +52,21 @@ public class EmployeeServiceImplTest {
     public void testFindById_Unmatched() {
         when(employeeDao.findById(anyLong()))
             .thenReturn(createEmployeeIdUnmatched());
-        Employee employee = service.findById((long) 2020);
+        Employee employee = service.findById(2020L);
         assertEquals(employee.getLastName(), "topacio");
     }
     
     private Employee createEmployeeId() {
-        return new Employee.Builder((long) 1000, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
+        return new Employee.Builder(1000L, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
     }
     
     private Employee createEmployeeIdUnmatched() {
-        return new Employee.Builder((long) 2020, "12345", "topacio", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
+        return new Employee.Builder(2020L, "12345", "topacio", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
     }
     
     @Test
     public void testSave(){
-        Employee employee = new Employee.Builder((long) 1000, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
+        Employee employee = new Employee.Builder(1000L, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
         service.save(employee);
         assertEquals(employee.getId(), new Long(1000));
         assertEquals(employee.getEmployeeNumber(), "12345");
@@ -78,7 +78,7 @@ public class EmployeeServiceImplTest {
     
     @Test
     public void testSaveUnmatched(){
-        Employee employee = new Employee.Builder((long) 2020, "12345", "topacio", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
+        Employee employee = new Employee.Builder(2020L, "12345", "topacio", "kenneth", "k.abad@fujitsu.com", "k.abad").build();
         service.save(employee);  
         assertEquals(employee.getId(), new Long(2020));
         assertEquals(employee.getEmployeeNumber(), "12345");
@@ -93,16 +93,16 @@ public class EmployeeServiceImplTest {
     @Test
     public void testFindAll() {
         Set<Employee> employee = new HashSet<Employee>();
-        employee.add(new Employee.Builder((long) 1000, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build());
+        employee.add(new Employee.Builder(1000L, "12345", "abad", "kenneth", "k.abad@fujitsu.com", "k.abad").build());
         when(employeeDao.findAll()).thenReturn(employee);
-        assertEquals(employeeDao.findAll().size(), employee.size());
+        assertEquals(service.findAll().size(), employee.size());
     }
     
     @Test
     public void testFindAllUnmatched() {
         Set<Employee> employee = new HashSet<Employee>();
-        employee.add(new Employee.Builder((long) 2020, "12345", "topacio", "kenneth", "k.abad@fujitsu.com", "k.abad").build());
-        assertEquals(employeeDao.findAll().size(), employee.size());
+        employee.add(new Employee.Builder(0L, "", "", "", "", "").build());
+        assertEquals(service.findAll().size(), employee.size());
     }
     
 }

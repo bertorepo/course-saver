@@ -34,7 +34,7 @@ public class CourseSchedule {
         return instructorId;
     }
 
-    public long getVenueId() {
+    public Long getVenueId() {
         return venueId;
     }
 
@@ -54,7 +54,7 @@ public class CourseSchedule {
         private Long id;
         private Long courseId;
         private Long instructorId;
-        private long venueId;
+        private Long venueId;
         private int minRequired;
         private int maxAllowed;
         private String status;
