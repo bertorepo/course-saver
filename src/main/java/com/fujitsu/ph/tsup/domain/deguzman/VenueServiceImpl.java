@@ -27,8 +27,6 @@ private Logger logger = LoggerFactory.getLogger(VenueServiceImpl.class);
         Set<Venue> v = dao.findAll();
         if (v.isEmpty() || v == null) {
             throw new IllegalArgumentException("No records found");
-        } else if(v.size()==0) {
-            throw new IllegalArgumentException("Invalid venue");
         }
         return v;
     }
