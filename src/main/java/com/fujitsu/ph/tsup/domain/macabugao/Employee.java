@@ -53,7 +53,7 @@ public class Employee {
         private String emailAddress;
         private String userName;
 
-        public Builder(String employeeNumber, String lastName, String firstName, String emailAddress, String userName) {
+        public Builder(Long id, String employeeNumber, String lastName, String firstName, String emailAddress, String userName) {
             validateNumber(employeeNumber);
             validateLastName(lastName);
             validateFirstName(firstName);

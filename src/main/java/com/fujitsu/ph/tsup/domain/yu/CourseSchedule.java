@@ -60,7 +60,7 @@ public class CourseSchedule {
         private int maxAllowed;
         private String status;
 
-        public Builder(Long courseId, Long instructorId, Long venueId,
+        public Builder(Long id, Long courseId, Long instructorId, Long venueId,
                 int minRequired, int maxAllowed, String status) {
             validateCourseId(courseId);
             validateInstructorId(instructorId);
@@ -68,7 +68,8 @@ public class CourseSchedule {
             validateMinRequired(minRequired);
             validateMaxAllowed(maxAllowed);
             validateStatus(status);
-
+            
+            this.id = id;
             this.courseId = courseId;
             this.instructorId = instructorId;
             this.venueId = venueId;
