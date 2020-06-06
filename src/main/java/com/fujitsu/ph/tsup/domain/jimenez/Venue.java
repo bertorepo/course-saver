@@ -33,6 +33,12 @@ public class Venue {
             this.name = name;
         }
         
+        public Builder(String name) {
+            validateVenueName(name);
+            
+            this.name = name;
+        }
+        
         public Venue builder() {
             return new Venue(this);
         }
