@@ -37,8 +37,7 @@ public class CourseDaoImplTest {
         @Bean
         public CourseDao CourseDao() {
             return new CourseDaoImpl();
-        }
-        
+        }            
     }
     
     @Test

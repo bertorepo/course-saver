@@ -38,6 +38,7 @@ public class Course {
             this.name = name;
         }
         
+        
         public Course builder() {
             return new Course(this);
         }
