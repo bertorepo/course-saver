@@ -19,7 +19,6 @@ public class CourseServiceImp implements CourseService {
 	         }  
 	     }
 	     
-
 	    @Override
 	    public Set<Course> findAll() {
 	    	 Set<Course> CourseList = cdao.findAll();
