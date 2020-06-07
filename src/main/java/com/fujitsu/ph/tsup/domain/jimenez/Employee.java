@@ -69,6 +69,20 @@ public class Employee {
             this.userName = uname;
         }
         
+        public Builder(Long empno, String fname, String lname, String email, String uname) {
+            validateEmpNum(empno);
+            validateFirstName(fname);
+            validateLastName(lname);
+            validateEmailAddress(email);
+            validateUserName(uname);
+            
+            this.empNum = empno;
+            this.firstName = fname;
+            this.lastName = lname;
+            this.emailAddress = email;
+            this.userName = uname;
+        }
+        
         public Employee builder() {
             return new Employee(this);
         }

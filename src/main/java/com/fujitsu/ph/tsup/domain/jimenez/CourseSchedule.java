@@ -94,6 +94,7 @@ public class CourseSchedule {
             this.status = Status;
         }
         
+        
         public CourseSchedule builder() {
             return new CourseSchedule(this);
         }
