@@ -1,6 +1,5 @@
 package com.fujitsu.ph.tsup.domain.deguzman;
 
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

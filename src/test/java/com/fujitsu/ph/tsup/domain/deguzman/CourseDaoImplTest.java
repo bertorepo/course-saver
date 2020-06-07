@@ -24,8 +24,11 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 @JdbcTest
-@ActiveProfiles({"postgres-test-deguzman"})
+@ActiveProfiles({ "postgres-test-deguzman" })
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 class CourseDaoImplTest {
 
@@ -43,6 +46,7 @@ class CourseDaoImplTest {
 
     @Test
     void test() {
+
         Course course1 = new Course.Builder("AAAAAAAAAA").build();
         Long c1 = courseDao.saveLong(course1);
         System.out.println("ID1:" + c1);
@@ -53,12 +57,13 @@ class CourseDaoImplTest {
 
         Course dbCourse1 = courseDao.findById(c1);
         assertEquals("AAAAAAAAAA", dbCourse1.getCourseName());
-        
+
         Course dbCourse2 = courseDao.findById(c2);
         assertEquals("BBBBBBBBBB", dbCourse2.getCourseName());
-        
+
         Set<Course> c = courseDao.findAll();
         assertNotNull(c.size());
+
     }
 
     @Test
