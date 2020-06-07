@@ -20,7 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
 
-
 @ExtendWith(SpringExtension.class)
 class VenueServiceImpTest {
 	  @TestConfiguration
@@ -32,7 +31,7 @@ class VenueServiceImpTest {
 	            return new VenueServiceImp();
 	        }
 	    }
-
+ 
 	    @Autowired
 	    private VenueService venueService;
 	  

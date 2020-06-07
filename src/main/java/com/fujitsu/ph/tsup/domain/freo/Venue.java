@@ -1,7 +1,7 @@
 package com.fujitsu.ph.tsup.domain.freo;
 
 public class Venue {
-	
+
 	private Long Id;
 	private String venueName;
 

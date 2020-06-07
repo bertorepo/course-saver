@@ -1,5 +1,6 @@
 package com.fujitsu.ph.tsup.domain.freo;
 
+
 public class Employee {
 	private Long Id;
 	private String employeeNumber;

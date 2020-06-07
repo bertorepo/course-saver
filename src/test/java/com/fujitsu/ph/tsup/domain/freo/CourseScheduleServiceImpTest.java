@@ -21,7 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
 
-
+ 
 @ExtendWith(SpringExtension.class)
 public class CourseScheduleServiceImpTest {
 
@@ -34,7 +34,7 @@ public class CourseScheduleServiceImpTest {
 	            return new CourseScheduleServiceImp();
 	        }
 	    }
-
+	  
 	    @Autowired
 	    private CourseScheduleService CsService;
 	  
