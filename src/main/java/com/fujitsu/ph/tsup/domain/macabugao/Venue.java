@@ -27,10 +27,14 @@ public class Venue {
 
         public Builder(Long id, String venueName) {
             validateVenueName(venueName);
-
+            this.id = id;
             this.venueName = venueName;
         }
 
+        public Builder(String venueName) {
+            validateVenueName(venueName);
+            this.venueName = venueName;
+        }
         public Venue build() {
             return new Venue(this);
         }

@@ -33,13 +33,20 @@ public class Course {
 	public static class Builder {
         private Long id;
         private String courseName;
-
-        public Builder(String courseName, Long id) {
+        
+ 
+        public Builder(Long id,String courseName) {
         
             validateCourseName(courseName);
            
             this.courseName = courseName;
         }
+        
+        public Builder(String courseName) {
+        	validateCourseName(courseName);
+        	   this.courseName = courseName;
+        }
+
 
         public Course build() {
             return new Course(this);

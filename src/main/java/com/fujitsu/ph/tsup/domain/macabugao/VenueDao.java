@@ -9,4 +9,5 @@ public interface VenueDao {
 
 	Venue findById(Long id);
 
+	Long generatedKey();
 }

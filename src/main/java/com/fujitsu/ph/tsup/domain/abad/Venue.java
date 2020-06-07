@@ -31,6 +31,12 @@ public class Venue {
             this.venueName = venueName;
         }
         
+        public Builder(String venueName) {
+            validateVenueName(venueName);
+
+            this.venueName = venueName;
+        }
+        
         public Venue build() {
             return new Venue(this);
         }
