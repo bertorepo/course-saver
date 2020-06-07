@@ -26,47 +26,48 @@ import org.springframework.test.context.ActiveProfiles;
 @JdbcTest
 @ActiveProfiles({"postgres-test-jimenez"})
 @AutoConfigureTestDatabase(replace=Replace.NONE)
-public class VenueDaoImplTest {
+public class CourseDaoImplTest {
         
     @Autowired
-    private VenueDao venueDao;
+    private CourseDao courseDao;
     
     @TestConfiguration
     static class TestContextConfiguration{
         
         @Bean
-        public VenueDao venueDao() {
-            return new VenueDaoImpl();
+        public CourseDao CourseDao() {
+            return new CourseDaoImpl();
         }
         
     }
     
     @Test
     void test() {
-        Venue vnu1 = new Venue.Builder("Mutien Hall").builder();
-        venueDao.save(vnu1);
-        Long vId1 = venueDao.returnGeneratedKey();
-        System.out.println("ID: "+ vId1);
+        Course crse1 = new Course.Builder("SpringBoot").builder();
+        courseDao.save(crse1);
+        Long cId1 = courseDao.returnGeneratedKey();
+        System.out.println("ID: "+ cId1);
         
-        Venue vnu2 = new Venue.Builder("SMX Convention Center").builder();
-        venueDao.save(vnu2);
-        Long vId2 = venueDao.returnGeneratedKey();
-        System.out.println("ID: "+ vId2);
+        Course crse2 = new Course.Builder("Git").builder();
+        courseDao.save(crse2);
+        Long cId2 = courseDao.returnGeneratedKey();
+        System.out.println("ID: "+ cId2);
         
-        Venue vnuId1 = venueDao.findById(vId1);
-        assertEquals("Mutien Hall", vnuId1.getName());
+        Course crseId1 = courseDao.findById(cId1);
+        assertEquals("SpringBoot", crseId1.getName());
         
-        Venue vnuId2 = venueDao.findById(vId2);
-        assertEquals("SMX Convention Center", vnuId2.getName());
+        Course crseId2 = courseDao.findById(cId2);
+        assertEquals("Git", crseId2.getName());
         
-        Set<Venue> VnuSet = venueDao.findAll();
-        assertNotNull(VnuSet.size());
+        Set<Course> crseSet = courseDao.findAll();
+        assertNotNull(crseSet.size());
     }
     
     @Test
     void Test_NotFound() {
         assertThrows(EmptyResultDataAccessException.class, () -> {
-            venueDao.findById(1L);
+            courseDao.findById(1L);
         });
     }
 }
+
