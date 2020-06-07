@@ -1,29 +1,27 @@
-package com.fujitsu.ph.tsup.domain.freo;
+ package com.fujitsu.ph.tsup.domain.freo;
 
-import static org.junit.Assert.assertEquals;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Rule;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
+
 
 
 
@@ -71,7 +69,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 	        String expectedMessage = "Course Id should not be zero or less than zero.";
 	        String actualMessage = cseException.getMessage();
 	        assertTrue(actualMessage.contains(expectedMessage));
-	        
 	    }
 
 
@@ -81,7 +78,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 	        when(cdao.findById(any(Long.class)))
 	            .thenReturn(createCs);
 	        
-	        Course Course = courseService.findById(123434L);
+	        Course Course = courseService.findById(2020202L);
 	        
 	        assertEquals(createCs.getId(), Course.getId());
 	    }
@@ -95,7 +92,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 	            courseService.findById(1L);
 	        });
 	        
-	        String expectedMessage = "Course not found!";
+	        String expectedMessage = "No Course ID match!";
 	        String actualMessage = cseException.getMessage();
 	        assertTrue(actualMessage.contains(expectedMessage));
 	    }
@@ -115,18 +112,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 	            courseService.findAll();
 	        });
 	        
-	        String expectedMessage = "Can't find Course Details";
+	        String expectedMessage = "No Course Details found match";
 	        String actualMessage = cseException.getMessage();
 	        assertTrue(actualMessage.contains(expectedMessage));
 	    }
-
 	    private Course createCourse() {
-	        return new Course.Builder(123434L, "SDEM1").builder(); 
+	        return new Course.Builder(2020202L, "SDEM1").builder(); 
 	    }
 	    
 	    private Course createCrsCourse() {
 	       return new Course.Builder(0L, "CourseName").builder();
 	    }
-	    
-
 }

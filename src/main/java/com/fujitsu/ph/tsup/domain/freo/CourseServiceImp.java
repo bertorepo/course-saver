@@ -24,12 +24,12 @@ public class CourseServiceImp implements CourseService {
 	    	 Set<Course> CourseList = cdao.findAll();
 	         try {
 	             if(CourseList.isEmpty() || CourseList == null) {
-	                 throw new CourseException("Can't find Course Details");
+	                 throw new CourseException("No Course Details found match");
 	             } else {
 	                 return CourseList;
 	             }    
 	         } catch (DataAccessException e) {
-	             throw new CourseException("Can't access Course Details.");
+	             throw new CourseException("No Course Details found match.");
 	         } 
 	     }
 
@@ -38,10 +38,8 @@ public class CourseServiceImp implements CourseService {
 		public Course findById(Long id) {
 			try {
 	            return cdao.findById(id);
-	        } catch (DataAccessException e) {
-	            throw new CourseException("Course not found!", e);
+	        } catch (DataAccessException vn) {
+	            throw new CourseException("No Course ID match!", vn);
 	        }
 		}
-	    
-	
 }

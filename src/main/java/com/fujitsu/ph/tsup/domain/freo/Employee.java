@@ -3,8 +3,8 @@ package com.fujitsu.ph.tsup.domain.freo;
 public class Employee {
 	private Long Id;
 	private String employeeNumber;
-	private String lastName;
 	private String firstName;
+	private String lastName;
 	private String emailAddress;
 	private String userName;
 	
@@ -15,8 +15,8 @@ public class Employee {
 	private Employee(Builder builder) {
 		this.Id = builder.Id;
 		this.employeeNumber = builder.employeeNumber;
-		this.lastName = builder.lastName;
 		this.firstName = builder.firstName;
+		this.lastName = builder.lastName;
 		this.emailAddress = builder.emailAddress;
 		this.userName = builder.userName;
 	}
@@ -29,12 +29,12 @@ public class Employee {
 		return employeeNumber;
 	}
 
-	public String getLastName() {
-		return lastName;
-	}
 
 	public String getFirstName() {
 		return firstName;
+	}
+	public String getLastName() {
+		return lastName;
 	}
 
 	public String getEmailAddress() {
@@ -47,26 +47,26 @@ public class Employee {
 	
 	public static class Builder {
 		private Long Id;
-		private String lastName;
-		private String firstName;
-		private String emailAddress;
-		private String userName;
 		private String employeeNumber;
+		private String firstName;
+		private String lastName;
+		private String emailAddress;
+		private String userName;	
 		
-		public Builder(Long Id1, String employeeNumber1, String lastName1, String firstName1, String emailAddress1,String userName1) {
-			validateId(Id1);
-			validateemployeeNumber(employeeNumber1);
-			validatefirstName(firstName1);
-			validatelastName(lastName1);
-			validateemailAddress(emailAddress1);
-			validateuserName(userName1);
+		public Builder(Long Id, String employeeNumber,  String firstName, String lastName, String emailAddress,String userName) {
+			validateId(Id);
+			validateemployeeNumber(employeeNumber);
+			validatefirstName(firstName);
+			validatelastName(lastName);
+			validateemailAddress(emailAddress);
+			validateuserName(userName);
 			
-			this.Id = Id1;
-			this.employeeNumber = employeeNumber1;
-			this.lastName = lastName1;
-			this.firstName = firstName1;
-			this.emailAddress = emailAddress1;
-			this.userName = userName1;
+			this.Id = Id;
+			this.employeeNumber = employeeNumber;
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.emailAddress = emailAddress;
+			this.userName = userName;
 			
 		}	
 		 public Employee builder() {
@@ -78,31 +78,48 @@ public class Employee {
                 throw new IllegalArgumentException("ID should not be null");
             }
 		}	
-		private void validateemployeeNumber(String employeeNumber1) {
-			if (employeeNumber1 == null|| employeeNumber1.length() > 40  ||  employeeNumber1.length() < 10) {
-                throw new IllegalArgumentException("Employee Number should not be null");
+		private void validateemployeeNumber(String employeeNumber) {
+			if (employeeNumber == null) {
+                throw new IllegalArgumentException("The Employee Number must not null");
+            }else if (employeeNumber.length() > 18) {
+                throw new IllegalArgumentException(" The Employee Number Length exceeds the Limit");
             }
 		}
 		private void validatefirstName(String firstName) {
-			if (firstName.isEmpty() || firstName== null || firstName.length() > 40  ||  firstName.length() < 10  ) {
-				throw new IllegalArgumentException("First Name Should not be empty");	
-			}
+			if (firstName== null) {
+				throw new IllegalArgumentException("The First Name must not null");	
+			}else if (firstName.isEmpty()) {
+                throw new IllegalArgumentException("The First Name must not null");
+            }else if (firstName.length() > 30) {
+                throw new IllegalArgumentException("The First Name Length exceeds the Limit");
+            }
 		}
 		private void validatelastName(String lastName) {
-			if (lastName.isEmpty() || lastName== null || lastName.length() > 40  ||  lastName.length() < 10) {
-				throw new IllegalArgumentException("Last Name Should not be empty");	
-			}
+			if ( lastName== null ) {
+				throw new IllegalArgumentException("Last Name Should not  null");	
+			} else if (lastName.isEmpty()) {
+                throw new IllegalArgumentException("Last Name should not Empty");
+            }else if (lastName.length() > 30) {
+                throw new IllegalArgumentException("Last Name Length exceeds the Limit");
+            }
 		}
 		private void validateemailAddress(String emailAddress) {
-			if (emailAddress.isEmpty() || emailAddress== null|| lastName== null || lastName.length() > 40  ||  lastName.length() < 10) {
-				throw new IllegalArgumentException("Email Address Should not be empty");	
-			}
-		}
+			if (emailAddress== null) {
+				throw new IllegalArgumentException("Email Address must notnull");	
+			}else if (emailAddress.isEmpty()) {
+                throw new IllegalArgumentException("Email Address must not Empty");
+            }else if (emailAddress.length() > 18) {
+                throw new IllegalArgumentException("Email Address Length exceeds the Limit");
+           }
+		}   
 		private void validateuserName(String userName) {
-			if (userName.isEmpty() || userName== null|| lastName== null || lastName.length() > 40  ||  lastName.length() < 10) {
-				throw new IllegalArgumentException("Username Should not be empty");	
-			}
+			if (userName == null) {
+				throw new IllegalArgumentException("Username must not null");	
+			}  else if (userName.isEmpty()) {
+                throw new IllegalArgumentException("Username must not Empty");
+            }else if (userName.length() > 18) {
+                throw new IllegalArgumentException("Username Length exceeds the Limit");
+           }
 		}
 	}
 }
-

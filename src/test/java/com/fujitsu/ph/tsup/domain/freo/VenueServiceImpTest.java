@@ -1,100 +1,125 @@
 package com.fujitsu.ph.tsup.domain.freo;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
 
-@RunWith(SpringRunner.class)
+
+@ExtendWith(SpringExtension.class)
 class VenueServiceImpTest {
-
-	 @Rule
-	    public ExpectedException thrown = ExpectedException.none(); 
-
-	    @TestConfiguration
-	    static class VenueServiceImplestContextConfiguration {
+	  @TestConfiguration
+	    static class TestContextConfiguration {
 	        
 	        @Bean
-	        VenueService venueService() {
+	        VenueService VenueService() {
+	          
 	            return new VenueServiceImp();
 	        }
-	        
 	    }
 
 	    @Autowired
-	    private VenueService service;
+	    private VenueService venueService;
+	  
 	    
 	    @MockBean
-	    private VenueDao venueDao;
+	    private VenueDao vndao;
 	    
 	    @Test
-	    public void testSave(){
-	        Venue c = new Venue.Builder((long) 1, "Convention Center").builder();
-	        service.save(c);
-	        assertEquals(c.getId(), new Long (1));
-	        assertEquals(c.getVenueName(), "Convention Center");
-	    }
-
-
-	    @Test
-	    public void testSaveEe() {
-	        Venue c = new Venue.Builder((long) 0, "Convention Center").builder();
-	        service.save(c);
-	        assertEquals(c.getId(), new Long(0));
-	        assertEquals(c.getVenueName(), "Convention Center");
-	    }
-	    
-
-	    @Test
-	    public void testFindAll(){
-	        Set<Venue> c = new HashSet<Venue>();
-	        c.add(new Venue.Builder((long) 1, "Convention Center").builder());
-	        when(venueDao.findAll()).thenReturn(c);
-	        assertEquals(service.findAll().size(), c.size());
-	    }
-
-	    @Test
-	    public void testFindAllEe() {
-	        Set<Venue> c = new HashSet<Venue>();
-	        c.add(new Venue.Builder((long) 0, "Convention Center").builder());
-	        assertEquals(service.findAll().size(), c.size());
+	    void testSave() {
+	        doThrow(new DataRetrievalFailureException("error occurs")).when(vndao).save(null);
+	        
+	        Venue ven = createVenue();        
+	        venueService.save(ven);     
+	        
+	        assertEquals(ven.getId(), 062020L);
+	        assertEquals(ven.getVenueName(), "Crescent park Hotel");
 	    }
 	    
 	    @Test
-	    public void testFindById(){
-	        when(venueDao.findById(anyLong()))
-	        .thenReturn(createVenueFindById());
-	        Venue c = service.findById((long) 1);
-	        assertEquals(c.getId(), new Long(1));
+	    void testSaveEx() {
+	        doThrow(new DataRetrievalFailureException("error")).when(vndao).save(null);
+	        
+	        Venue vnu = createVnVenue();
+	        
+	        Exception vException = assertThrows(VenueException.class, () -> {
+	            venueService.save(vnu);
+	        });
+	        
+	        String expectedMessage = "Venue Id should not be zero or less than zero.";
+	        String actualMessage = vException.getMessage();
+	        assertTrue(actualMessage.contains(expectedMessage));
+	    }
+
+
+	    @Test
+	    void testFindById() {
+	        Venue createVnu = createVenue();
+	        when(vndao.findById(any(Long.class)))
+	            .thenReturn(createVnu);
+	        
+	        Venue venue = venueService.findById(062020L);
+	        
+	        assertEquals(createVnu.getId(), venue.getId());
+	
 	    }
 
 	    @Test
-	    public void testFindByIdEe() {
-	        when(venueDao.findById(anyLong()))
-	        .thenReturn(createVenueFindByIdEe());
-	        Venue c = service.findById((long) 0);
-	        assertEquals(c.getId(), new Long(0));
+	    void testFindById_NotFound() {
+	        when(vndao.findById(any(Long.class)))
+	            .thenThrow(new DataRetrievalFailureException("error occurs"));
+	        
+	        Exception vException = assertThrows(VenueException.class, () -> {
+	            venueService.findById(1L);
+	        });
+	        
+	        String expectedMessage = "Venue not found!";
+	        String actualMessage = vException.getMessage();
+	        assertTrue(actualMessage.contains(expectedMessage));
 	    }
 	    
-	    private Venue createVenueFindById() {
-	        return new Venue.Builder((long) 1, "Convention Center").builder();
+	    
+	    
+	    @Test
+	    void testFindAll() {
+	        Set<Venue> vnu = new HashSet<Venue>();
+	        vnu.add(new Venue.Builder(062020L, "Crescent park Hotel").builder());
+	        when(vndao.findAll()).thenReturn(vnu);
+	        assertEquals(venueService.findAll().size(), vnu.size()); 
 	    }
-	    private Venue createVenueFindByIdEe() {
-	        return new Venue.Builder((long) 0, "Convention Center").builder();
+	    
+	    @Test
+	    void testFindAll_NotFound() {
+	        Exception vException = assertThrows(VenueException.class, () -> {
+	            venueService.findAll();
+	        });
+	        
+	        String expectedMessage = "Can't find Venue Details";
+	        String actualMessage = vException.getMessage();
+	        assertTrue(actualMessage.contains(expectedMessage));
 	    }
 
+	    private Venue createVenue() {
+	        return new Venue.Builder(062020L, "Crescent park Hotel").builder(); 
+	    }
+	    
+	    private Venue createVnVenue() {
+	       return new Venue.Builder(0L, "venueName").builder();
+	    }
+	  
 }

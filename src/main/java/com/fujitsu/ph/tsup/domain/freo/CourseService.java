@@ -6,5 +6,4 @@ public interface CourseService {
 	 void save(Course course);
 	  Set<Course> findAll(); 
 	  Course findById(Long id);
-	
 }

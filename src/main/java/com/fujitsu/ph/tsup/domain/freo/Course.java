@@ -4,7 +4,7 @@ public class Course {
 
 	private Long id;
 	private String courseName;
-
+	
 	protected Course() {
 		
 	}
@@ -51,13 +51,14 @@ public class Course {
 			throw new IllegalArgumentException("ID Should not be empty");
 		}
 	}
+	
 	private void validateCourseName(String courseName) {
 		if (courseName == null) {
-			throw new IllegalArgumentException("Course Name Should not be empty");
+			throw new IllegalArgumentException("The Course Name Should not be empty");
 		 } else if (courseName.isEmpty()) {
-             throw new IllegalArgumentException("Course Name should not be empty");
+             throw new IllegalArgumentException("The Course Name should not be empty");
          } else if(courseName.length() > 50) {
-             throw new IllegalArgumentException("Course Name should not be more than 50 Characters");
+             throw new IllegalArgumentException("The Course Name should not be more than 50 Characters");
         }	 
 	 }
 	}

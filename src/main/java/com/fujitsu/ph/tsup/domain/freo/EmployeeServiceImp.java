@@ -3,6 +3,7 @@ package com.fujitsu.ph.tsup.domain.freo;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 
@@ -11,29 +12,37 @@ public  class EmployeeServiceImp implements EmployeeService {
 
 	@Autowired
 	private EmployeeDao empdao;
-	
-	@Autowired
+
+	@Override
 	public void save(Employee employee) {
-		empdao.save(employee);	
-	}
-	
-	@Override
-	public Set<Employee> findAll()  {
-		   Set<Employee> ee = empdao.findAll();
-	        if (ee.isEmpty() || ee == null) {
-	            throw new IllegalArgumentException("Employee not found");
+		  if (employee.getId() != 0) {
+	            empdao.save(employee);
+	        } else if (employee.getId() <= 0) {
+	            throw new EmployeeException("Employee Id should not be zero or less than zero.");
 	        }
-	        return ee;
-	    }
-		
-	@Override
-	public Employee findById(Long Id) {
-		 Employee ee = empdao.findById(Id);
-	        if (ee.getEmployeeNumber() == "") {
-	            throw new IllegalArgumentException("Employee not found");
-	        }
-	        return ee;
 	}
 
+	@Override
+	public Set<Employee >findAll() {
+		Set<Employee> EmployeeList = empdao.findAll();
+        try {
+            if(EmployeeList.isEmpty() || EmployeeList == null) {
+                throw new EmployeeException("Can't find any Employee details on List");
+            } else {
+                return EmployeeList;
+            }    
+        } catch (DataAccessException ex) {
+            throw new EmployeeException("Can't access Employee Details.");
+        }
+        
+	}
 
+	@Override
+	public Employee findById(Long id) {
+		 try {
+	            return empdao.findById(id);
+	        } catch (DataAccessException e) {
+	            throw new EmployeeException("Employee ID not found!", e);
+	        }
+	}
 }
