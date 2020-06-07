@@ -9,4 +9,5 @@ public interface EmployeeDao {
 
 	Employee findById(Long id);
 
+	Long generatedKey();
 }

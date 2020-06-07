@@ -60,6 +60,21 @@ public class Employee {
             validateEmailAddress(emailAddress);
             validateUserName(userName);
 
+            this.id = id;
+            this.employeeNumber = employeeNumber;
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.emailAddress = emailAddress;
+            this.userName = userName;
+        }
+        
+        public Builder(String employeeNumber, String lastName, String firstName, String emailAddress, String userName) {
+            validateNumber(employeeNumber);
+            validateLastName(lastName);
+            validateFirstName(firstName);
+            validateEmailAddress(emailAddress);
+            validateUserName(userName);
+
             this.employeeNumber = employeeNumber;
             this.lastName = lastName;
             this.firstName = firstName;

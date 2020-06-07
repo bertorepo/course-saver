@@ -9,5 +9,7 @@ public interface CourseDao {
 	Set<Course> findAll();
 
 	Course findById(Long id);
+	
+	Long GeneratedKey();
 
 }
