@@ -60,25 +60,14 @@ public class VenueServiceImplTest {
     }
 
     @Test
-    public void testFindAll() {
-        Set<Venue> c = new HashSet<Venue>();
-        c.add(new Venue.Builder((long) 1, "TwoNeo").build());
-        when(venueDao.findAll()).thenReturn(c);
-        assertEquals(service.findAll().size(), c.size());
-    }
-
-    @Test
-    public void testFindAllError() {
-        Set<Venue> c = new HashSet<Venue>();
-        c.add(new Venue.Builder((long) 2, "EcoTower").build());
-        assertEquals(service.findAll().size(), c.size());
-    }
-
-    @Test
     public void testFindById() {
         when(venueDao.findById(anyLong())).thenReturn(createVenueFindById());
         Venue c = service.findById((long) 1);
         assertEquals(c.getId(), new Long(1));
+    }
+    
+    private Venue createVenueFindById() {
+        return new Venue.Builder((long) 1, "TwoNeo").build();
     }
 
     @Test
@@ -89,9 +78,6 @@ public class VenueServiceImplTest {
         assertEquals(c.getId(), new Long(2));
     }
 
-    private Venue createVenueFindById() {
-        return new Venue.Builder((long) 1, "TwoNeo").build();
-    }
     private Venue createVenueFindByIdError() {
         return new Venue.Builder((long) 2, "EcoTower").build();
     }

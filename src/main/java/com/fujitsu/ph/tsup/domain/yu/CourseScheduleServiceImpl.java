@@ -28,20 +28,17 @@ public class CourseScheduleServiceImpl implements CourseScheduleService {
     }
 
     @Override
-    public Set<CourseSchedule> findAll() {
-        Set<CourseSchedule> c = dao.findAll();
-        if (c.isEmpty()) {
-            throw new IllegalArgumentException("No schedule found");
-        }
-        return c;
-    }
-
-    @Override
     public CourseSchedule findById(Long id) {
         CourseSchedule c = dao.findById(id);
         if (c.getStatus() == "C") {
             throw new IllegalArgumentException("Course is cancelled");
         }
         return c;
+    }
+
+    @Override
+    public Set<CourseSchedule> findAll() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

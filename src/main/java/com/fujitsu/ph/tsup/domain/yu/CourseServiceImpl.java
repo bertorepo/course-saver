@@ -26,15 +26,6 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
-    @Override
-    public Set<Course> findAll() {
-        Set<Course> c = dao.findAll();
-        if (c.isEmpty()) {
-            throw new IllegalArgumentException("No course found");
-        }
-        return c;
-    }
-
     public Course findById(Long id) {
 
         Course c = dao.findById(id);
@@ -43,6 +34,12 @@ public class CourseServiceImpl implements CourseService {
         }
 
         return c;
+    }
+
+    @Override
+    public Set<Course> findAll() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
