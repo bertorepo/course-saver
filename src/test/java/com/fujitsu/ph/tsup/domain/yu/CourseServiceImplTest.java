@@ -40,8 +40,8 @@ public class CourseServiceImplTest {
     @Autowired
     private CourseService service;
 
-    @MockBean
-    private CourseDao courseDao;
+        @MockBean
+        private CourseDao courseDao;
 
     @Test
     public void testSave() {
@@ -60,25 +60,15 @@ public class CourseServiceImplTest {
     }
 
     @Test
-    public void testFindAll() {
-        Set<Course> c = new HashSet<Course>();
-        c.add(new Course.Builder((long) 1, "SpringBoot").build());
-        when(courseDao.findAll()).thenReturn(c);
-        assertEquals(service.findAll().size(), c.size());
-    }
-
-    @Test
-    public void testFindAllError() {
-        Set<Course> c = new HashSet<Course>();
-        c.add(new Course.Builder((long) 0, "SpringBootMVC").build());
-        assertEquals(service.findAll().size(), c.size());
-    }
-
-    @Test
     public void testFindById() {
         when(courseDao.findById(anyLong())).thenReturn(createCourseFindById());
         Course c = service.findById((long) 1);
         assertEquals(c.getId(), new Long(1));
+    }
+
+    private Course createCourseFindById() {
+        
+        return new Course.Builder(new Long(1), "SpringBoot").build();
     }
 
     @Test
@@ -89,14 +79,8 @@ public class CourseServiceImplTest {
         assertEquals(c.getId(), new Long(2));
     }
 
-    private Course createCourseFindById() {
-
-        return new Course.Builder(new Long(1), "SpringBoot").build();
-    }
-
     private Course createCourseFindByIdError() {
-
+        
         return new Course.Builder(new Long(2), "SpringBootMVC").build();
     }
-
 }

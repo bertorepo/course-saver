@@ -70,26 +70,16 @@ public class EmployeeServiceImplTest {
     }
 
     @Test
-    public void testFindAll() {
-        Set<Employee> c = new HashSet<Employee>();
-        c.add(new Employee.Builder((long) 1, "220053487", "Yu", "Jhaisy Jade",
-                "j.yu@fujitsu.com", "j.yu").build());
-        when(employeeDao.findAll()).thenReturn(c);
-        assertEquals(service.findAll().size(), c.size());
-    }
-
-    @Test
-    public void testFindAllError() {
-        Set<Employee> c = new HashSet<Employee>();
-        assertEquals(service.findAll().size(), c.size());
-    }
-
-    @Test
     public void testFindById() {
         when(employeeDao.findById(anyLong()))
                 .thenReturn(createEmployeeFindById());
         Employee c = service.findById((long) 1);
         assertEquals(c.getNumber(), "220053487");
+    }
+    
+    private Employee createEmployeeFindById() {
+        return new Employee.Builder((long) 1, "220053487", "Yu", "Jhaisy Jade",
+                "j.yu@fujitsu.com", "j.yu").build();
     }
 
     @Test
@@ -99,11 +89,7 @@ public class EmployeeServiceImplTest {
         Employee c = service.findById((long) 2);
         assertEquals(c.getNumber(), "784350022");
     }
-
-    private Employee createEmployeeFindById() {
-        return new Employee.Builder((long) 1, "220053487", "Yu", "Jhaisy Jade",
-                "j.yu@fujitsu.com", "j.yu").build();
-    }
+  
     private Employee createEmployeeFindByIdError() {
         return new Employee.Builder((long) 2, "784350022", "Yu", "Jhaisy Jade",
                 "j.yu@fujitsu.com", "j.yu").build();

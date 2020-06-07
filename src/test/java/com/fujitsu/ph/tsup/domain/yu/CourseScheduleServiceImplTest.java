@@ -40,8 +40,8 @@ public class CourseScheduleServiceImplTest {
     @Autowired
     private CourseScheduleService service;
 
-    @MockBean
-    private CourseScheduleDao courseScheduleDao;
+        @MockBean
+        private CourseScheduleDao courseScheduleDao;
 
     @Test
     public void testSave() {
@@ -72,28 +72,18 @@ public class CourseScheduleServiceImplTest {
     }
 
     @Test
-    public void testFindAll() {
-        Set<CourseSchedule> c = new HashSet<CourseSchedule>();
-        c.add(new CourseSchedule.Builder((long) 1, (long) 1, (long) 1, (long) 1,
-                1, 1, "A").build());
-        when(courseScheduleDao.findAll()).thenReturn(c);
-        assertEquals(service.findAll().size(), c.size());
-    }
-
-    @Test
-    public void testFindAllError() {
-        Set<CourseSchedule> c = new HashSet<CourseSchedule>();
-        assertEquals(service.findAll().size(), c.size());
-    }
-
-    @Test
     public void testFindById() {
         when(courseScheduleDao.findById(anyLong()))
                 .thenReturn(createCourseScheduleFindById());
         CourseSchedule c = service.findById((long) 1);
         assertEquals(c.getStatus(), "A");
     }
-
+    
+    private CourseSchedule createCourseScheduleFindById() {
+        return new CourseSchedule.Builder((long) 1, (long) 1, (long) 1,
+                (long) 1, 1, 1, "A").build();
+    }
+  
     @Test
     public void testFindByIdError() {
         when(courseScheduleDao.findById(anyLong()))
@@ -102,14 +92,8 @@ public class CourseScheduleServiceImplTest {
         assertEquals(c.getStatus(), "C");
     }
 
-    private CourseSchedule createCourseScheduleFindById() {
-        return new CourseSchedule.Builder((long) 1, (long) 1, (long) 1,
-                (long) 1, 1, 1, "A").build();
-    }
-
     private CourseSchedule createCourseScheduleFindByIdError() {
         return new CourseSchedule.Builder((long) 2, (long) 2, (long) 2,
                 (long) 2, 2, 2, "C").build();
     }
-
 }

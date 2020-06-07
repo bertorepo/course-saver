@@ -21,15 +21,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Set<Employee> findAll() {
-        Set<Employee> c = dao.findAll();
-        if (c.isEmpty()) {
-            throw new IllegalArgumentException("No employee found");
-        }
-        return c;
-    }
-
-    @Override
     public Employee findById(Long id) {
         Employee c = dao.findById(id);
         if (c.getNumber() == "784350022") {
@@ -37,6 +28,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return c;
 
+    }
+
+    @Override
+    public Set<Employee> findAll() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
