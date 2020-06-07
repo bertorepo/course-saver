@@ -5,5 +5,5 @@ import java.util.Set;
 interface CourseDao {
 	 void save(Course course);
 	 Set<Course> findAll();
-	 Course findById(Long Id);
+	 Course findById(Long id);
 }

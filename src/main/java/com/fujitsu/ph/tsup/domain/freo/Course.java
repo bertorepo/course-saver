@@ -2,58 +2,65 @@ package com.fujitsu.ph.tsup.domain.freo;
 
 public class Course {
 	
-	private Long Id;
+	private Long id;
 	private String courseName;
 
 	protected Course() {
 		
 	}
 	private Course (Builder builder) {
-		this.Id=builder.Id;
-		this.courseName=builder.courseName;	
+		this.id = builder.id;
+		this.courseName = builder.courseName;	
 	}
 	
-	public Long getId() {
-		return Id;
+	public  Long getId() {
+		return id;
 	}
 	public String getCourseName() {
 		return courseName;
 	}
 	
 	public static class Builder {
-		
-		private Long Id;
+		private Long id;
 		private String courseName;
 		
-	
-	public Builder (Long Id, String courseName) {
-		validateId(Id);
-		validatecourseName(courseName);
+		public Builder (Long id, String courseName) {
+			validateId(id);
+			validateCourseName(courseName);
 		
-		this.Id = Id;
-		this.courseName = courseName;	
-	}
+			this.id = id;
+			this.courseName= courseName;
+		}
+		
+		public Builder (String courseName) {
+			validateCourseName(courseName);
+			
+			this.CourseName(courseName);
+		}
 	
-	public Course builder() {
+		private void CourseName(String courseName2) {
+			
+		}
+
+		public Course builder() {
 		return new Course(this);
 	}
 
-	private void validateId(Long Id) {
-		if (Id== null) {
+	private void validateId(Long id) {
+		if (id== null) {
 			throw new IllegalArgumentException("ID Should not be empty");
 		}
 	}
-	private void validatecourseName(String courseName) {
-		if (courseName.isEmpty() || courseName== null|| courseName.length() < 8 || courseName.length() > 20) {
+	private void validateCourseName(String courseName) {
+		if (courseName == null) {
 			throw new IllegalArgumentException("Course Name Should not be empty");
-		 } else if (courseName.length() < 8) {
-             throw new IllegalArgumentException("Filed should not be less than 8");
-         } else if(courseName.length() > 40) {
-             throw new IllegalArgumentException("Field should not be more than 40");
+		 } else if (courseName.isEmpty()) {
+             throw new IllegalArgumentException("Course Name should not be empty");
+         } else if(courseName.length() > 50) {
+             throw new IllegalArgumentException("Course Name should not be more than 50 Characters");
         }	 
 	 }
-  }
-}
+	}
 
-	
-	
+
+}	
