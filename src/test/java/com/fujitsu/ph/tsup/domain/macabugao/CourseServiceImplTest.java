@@ -86,7 +86,7 @@ class CourseServiceImplTest {
 	void testFindAll() {
 		
         Set<Course> s = new HashSet<Course>();
-        s.add(new Course.Builder("Programming", 1L).build());
+        s.add(new Course.Builder(1L ,"Programming").build());
 
         when(courseDao.findAll()).thenReturn(s);
         assertEquals(courseDao.findAll().size(), s.size());
@@ -132,7 +132,7 @@ class CourseServiceImplTest {
 	}
 
 	private Course createCourse() {
-		return new Course.Builder("Programming", 1L).build();
+		return new Course.Builder(1L,"Programming").build();
 
 	}
 
