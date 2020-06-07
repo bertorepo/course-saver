@@ -24,9 +24,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 @JdbcTest
 @ActiveProfiles({ "postgres-test-deguzman" })
 @AutoConfigureTestDatabase(replace = Replace.NONE)
