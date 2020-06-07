@@ -41,6 +41,8 @@ public class CourseScheduleServiceImplTest {
     
     @Test
     void testSave() {
+        
+        //This function will return a DataRetrievalFailureException when save() of CourseScheduleDao is null.
         doThrow(new DataRetrievalFailureException("error")).when(CourseScheduleDao).save(null);
         
         CourseSchedule CourseSchedule = createCourseSchedule();        
@@ -57,6 +59,7 @@ public class CourseScheduleServiceImplTest {
     
     @Test
     void testSaveEx() {
+        //This function will return a DataRetrievalFailureException when save() of CourseScheduleDao is null.
         doThrow(new DataRetrievalFailureException("error")).when(CourseScheduleDao).save(null);
         
         CourseSchedule crse = createErrCourseSchedule();
@@ -75,6 +78,7 @@ public class CourseScheduleServiceImplTest {
     @Test
     void testFindById() {
         CourseSchedule createCrse = createCourseSchedule();
+        //This function will return createCourseSchedule when a data has been passed to findbyId.
         when(CourseScheduleDao.findById(any(Long.class)))
             .thenReturn(createCrse);
         
@@ -86,15 +90,19 @@ public class CourseScheduleServiceImplTest {
 
     @Test
     void testFindById_NotFound() {
+        //This function will return an error when a data has been passed to findbyId.
+        //To test this method properly, no parameters should be passed.
         when(CourseScheduleDao.findById(any(Long.class)))
             .thenThrow(new DataRetrievalFailureException("error"));
         
+        //This will get the exception thrown by inserting just a 1L
         Exception cException = assertThrows(CourseScheduleException.class, () -> {
             CourseScheduleService.findById(1L);
         });
         
         String expectedMessage = "Course Schedule not found!";
         String actualMessage = cException.getMessage();
+        //This will assert True if the exception message matches the expectedMessage
         assertTrue(actualMessage.contains(expectedMessage));
     }
     

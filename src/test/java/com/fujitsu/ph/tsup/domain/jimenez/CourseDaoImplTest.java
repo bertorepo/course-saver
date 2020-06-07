@@ -47,15 +47,17 @@ public class CourseDaoImplTest {
         Long cId1 = courseDao.returnGeneratedKey();
         System.out.println("ID: "+ cId1);
         
+        Course crseId1 = courseDao.findById(cId1);
+        System.out.println("Course Name: "+ crseId1.getName());
+        assertEquals("SpringBoot", crseId1.getName());
+        
         Course crse2 = new Course.Builder("Git").builder();
         courseDao.save(crse2);
         Long cId2 = courseDao.returnGeneratedKey();
         System.out.println("ID: "+ cId2);
         
-        Course crseId1 = courseDao.findById(cId1);
-        assertEquals("SpringBoot", crseId1.getName());
-        
         Course crseId2 = courseDao.findById(cId2);
+        System.out.println("Course Name: "+ crseId2.getName());
         assertEquals("Git", crseId2.getName());
         
         Set<Course> crseSet = courseDao.findAll();

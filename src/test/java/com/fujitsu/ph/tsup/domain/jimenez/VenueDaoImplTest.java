@@ -54,9 +54,11 @@ public class VenueDaoImplTest {
         System.out.println("ID: "+ vId2);
         
         Venue vnuId1 = venueDao.findById(vId1);
+        System.out.println("Venue Name: "+ vnuId1.getName());
         assertEquals("Mutien Hall", vnuId1.getName());
         
         Venue vnuId2 = venueDao.findById(vId2);
+        System.out.println("Venue Name: "+ vnuId2.getName());
         assertEquals("SMX Convention Center", vnuId2.getName());
         
         Set<Venue> VnuSet = venueDao.findAll();

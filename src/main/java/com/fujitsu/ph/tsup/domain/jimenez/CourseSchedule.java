@@ -78,6 +78,22 @@ public class CourseSchedule {
             this.status = Status;
         }
         
+        public Builder(Long CourseId, Long InstructorId, Long VenueId, int MinRequired, int MaxAllowed, char Status) {
+            validateCourseId(CourseId);
+            validateInstructorId(InstructorId);
+            validateVenueId(VenueId);
+            validateMinRequired(MinRequired);
+            validateMaxAllowed(MaxAllowed);
+            validateStatus(Status);
+            
+            this.CourseId = CourseId;
+            this.instructorId = InstructorId;
+            this.venueId = VenueId;
+            this.minRequired = MinRequired;
+            this.maxAllowed = MaxAllowed;
+            this.status = Status;
+        }
+        
         public CourseSchedule builder() {
             return new CourseSchedule(this);
         }
