@@ -57,7 +57,7 @@ public class CourseScheduleServiceImpTest {
 	        assertEquals(CourseSchedule.getVenueId(), 8888L);
 	        assertEquals(CourseSchedule.getMinRequired(), 1);
 	        assertEquals(CourseSchedule.getMaxAllowed(), 2);
-	        assertEquals(CourseSchedule.getStatus(), "OP");
+	        assertEquals(CourseSchedule.getStatus(), "O");
 	    }
 	    
 	    @Test
@@ -129,11 +129,11 @@ public class CourseScheduleServiceImpTest {
 	    }
 	    
 	    private CourseSchedule createCourseSchedule() {
-	        return new CourseScheduleService.builder(20202L, 0000L, 5555L, 8888L, 1, 2, "OP").builder(); 
+	        return new CourseScheduleService.builder(20202L, 0000L, 5555L, 8888L, 1, 2, "O").builder(); 
 	    }
 	    
 	    private CourseSchedule createschCourseSchedule() {
-	       return new CourseScheduleService.builder(20202L, 0000L, 5555L, 8888L, 1, 2, "OP").builder();
+	       return new CourseScheduleService.builder(20202L, 0000L, 5555L, 8888L, 1, 2, "O").builder();
 	    }
 	   
 }

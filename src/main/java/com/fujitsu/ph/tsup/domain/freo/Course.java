@@ -57,8 +57,8 @@ public class Course {
 			throw new IllegalArgumentException("The Course Name Should not be empty");
 		 } else if (courseName.isEmpty()) {
              throw new IllegalArgumentException("The Course Name should not be empty");
-         } else if(courseName.length() > 50) {
-             throw new IllegalArgumentException("The Course Name should not be more than 50 Characters");
+         } else if(courseName.length() > 100) {
+             throw new IllegalArgumentException("The Course Name should not be more than 100 Characters");
         }	 
 	 }
 	}

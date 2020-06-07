@@ -52,8 +52,8 @@ public class Venue {
 			throw new IllegalArgumentException("The Venue Name Should not be empty");	
 			}else if(venueName.length() < 8) {
                 throw new IllegalArgumentException("The Venue Name should not be less than 8 characters");
-            } else if(venueName.length() > 50) {
-                throw new IllegalArgumentException("The Venue Name should not be more than 50 characters");
+            } else if(venueName.length() > 100) {
+                throw new IllegalArgumentException("The Venue Name should not be more than 100 characters");
             }
 		}
 	}

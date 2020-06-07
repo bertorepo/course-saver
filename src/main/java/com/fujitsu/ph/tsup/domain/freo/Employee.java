@@ -82,7 +82,7 @@ public class Employee {
 		private void validateemployeeNumber(String employeeNumber) {
 			if (employeeNumber == null) {
                 throw new IllegalArgumentException("The Employee Number must not null");
-            }else if (employeeNumber.length() > 18) {
+            }else if (employeeNumber.length() > 10) {
                 throw new IllegalArgumentException(" The Employee Number Length exceeds the Limit");
             }
 		}
@@ -91,7 +91,7 @@ public class Employee {
 				throw new IllegalArgumentException("The First Name must not null");	
 			}else if (firstName.isEmpty()) {
                 throw new IllegalArgumentException("The First Name must not null");
-            }else if (firstName.length() > 30) {
+            }else if (firstName.length() > 50) {
                 throw new IllegalArgumentException("The First Name Length exceeds the Limit");
             }
 		}
@@ -100,7 +100,7 @@ public class Employee {
 				throw new IllegalArgumentException("Last Name Should not  null");	
 			} else if (lastName.isEmpty()) {
                 throw new IllegalArgumentException("Last Name should not Empty");
-            }else if (lastName.length() > 30) {
+            }else if (lastName.length() > 50) {
                 throw new IllegalArgumentException("Last Name Length exceeds the Limit");
             }
 		}
@@ -109,7 +109,7 @@ public class Employee {
 				throw new IllegalArgumentException("Email Address must notnull");	
 			}else if (emailAddress.isEmpty()) {
                 throw new IllegalArgumentException("Email Address must not Empty");
-            }else if (emailAddress.length() > 18) {
+            }else if (emailAddress.length() > 50) {
                 throw new IllegalArgumentException("Email Address Length exceeds the Limit");
            }
 		}   
@@ -118,7 +118,7 @@ public class Employee {
 				throw new IllegalArgumentException("Username must not null");	
 			}  else if (userName.isEmpty()) {
                 throw new IllegalArgumentException("Username must not Empty");
-            }else if (userName.length() > 18) {
+            }else if (userName.length() > 50) {
                 throw new IllegalArgumentException("Username Length exceeds the Limit");
            }
 		}

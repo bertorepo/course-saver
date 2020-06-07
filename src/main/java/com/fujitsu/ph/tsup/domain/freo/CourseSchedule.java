@@ -148,7 +148,7 @@ public class CourseSchedule {
             }
         }
 		private void validateminRequired(int minRequired) {
-			if (minRequired < 1 ) {
+			if (minRequired < 5 ) {
 				throw new IllegalArgumentException("Minimum number of Participants Required should not be empty");
 			} else if(minRequired > 99999) {
                 throw new IllegalArgumentException("Minimum number of Participants Required should not exceed 99999");
@@ -158,7 +158,7 @@ public class CourseSchedule {
 		  }
 		}
 		private static void validatemaxAllowed (int maxAllowed ) {
-			if (maxAllowed < 1 ) {
+			if (maxAllowed < 5 ) {
                 throw new IllegalArgumentException("Maximum Number of Participants should not be empty");
 			 } else if(maxAllowed > 99999) {
                 throw new IllegalArgumentException("Max Allowed should not exceed 99999");
@@ -169,8 +169,8 @@ public class CourseSchedule {
 		private static  void validatestatus(String status) {
 			if (status.isEmpty()) {
 	            throw new IllegalArgumentException("Status must not be empty field");
-			 } else if(status.length() > 3) {
-	             throw new IllegalArgumentException("The status should be 3 characters");
+			 } else if(status.length() > 1) {
+	             throw new IllegalArgumentException("The status should be 1 characters");
 	        }	
   }
 }	
