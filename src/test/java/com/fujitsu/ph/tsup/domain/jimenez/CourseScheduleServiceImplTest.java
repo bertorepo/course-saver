@@ -41,7 +41,6 @@ public class CourseScheduleServiceImplTest {
     
     @Test
     void testSave() {
-        
         //This function will return a DataRetrievalFailureException when save() of CourseScheduleDao is null.
         doThrow(new DataRetrievalFailureException("error")).when(CourseScheduleDao).save(null);
         

@@ -62,6 +62,7 @@ public class CourseDaoImplTest {
         
         Set<Course> crseSet = courseDao.findAll();
         assertNotNull(crseSet.size());
+        
     }
     
     @Test

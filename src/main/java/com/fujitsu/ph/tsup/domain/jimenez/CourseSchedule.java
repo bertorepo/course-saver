@@ -78,7 +78,7 @@ public class CourseSchedule {
             this.status = Status;
         }
         
-        public Builder(Long CourseId, Long InstructorId, Long VenueId, int MinRequired, int MaxAllowed, char Status) {
+        public Builder(Long CourseId, Long InstructorId, Long VenueId, int MinRequired, int MaxAllowed, char Status){
             validateCourseId(CourseId);
             validateInstructorId(InstructorId);
             validateVenueId(VenueId);
