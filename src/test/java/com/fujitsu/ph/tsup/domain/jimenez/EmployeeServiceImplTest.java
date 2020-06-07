@@ -119,11 +119,11 @@ public class EmployeeServiceImplTest {
     }
 
     private Employee createEmployee() {
-        return new Employee.Builder(123434L, 1234L, "HELLLLLLLOOO", "HIIIIIIIIIIII", "HIIIIIIIIIIII@example.com", "HIIIIIIIIIIII").builder(); 
+        return new Employee.Builder(123434L, "1234", "HELLLLLLLOOO", "HIIIIIIIIIIII", "HIIIIIIIIIIII@example.com", "HIIIIIIIIIIII").builder(); 
     }
     
     private Employee createErrEmployee() {
-       return new Employee.Builder(0L, 1234L, "HELLLLLLLOOO", "HIIIIIIIIIIII", "HIIIIIIIIIIII@example.com", "HIIIIIIIIIIII").builder();
+       return new Employee.Builder(0L, "1234L", "HELLLLLLLOOO", "HIIIIIIIIIIII", "HIIIIIIIIIIII@example.com", "HIIIIIIIIIIII").builder();
     }
     
 }

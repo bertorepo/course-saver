@@ -2,7 +2,7 @@ package com.fujitsu.ph.tsup.domain.jimenez;
 
 public class Employee {
     private Long id;
-    private Long empNum;
+    private String empNum;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -25,7 +25,7 @@ public class Employee {
         return id;
     }
     
-    public Long getEmpNum() {
+    public String getEmpNum() {
         return empNum;
     }
     
@@ -47,13 +47,13 @@ public class Employee {
     
     public static class Builder {
         private Long id;
-        private Long empNum;
+        private String empNum;
         private String firstName;
         private String lastName;
         private String emailAddress;
         private String userName;
         
-        public Builder(Long id, Long empno, String fname, String lname, String email, String uname) {
+        public Builder(Long id, String empno, String fname, String lname, String email, String uname) {
             validateId(id);
             validateEmpNum(empno);
             validateFirstName(fname);
@@ -69,7 +69,7 @@ public class Employee {
             this.userName = uname;
         }
         
-        public Builder(Long empno, String fname, String lname, String email, String uname) {
+        public Builder(String empno, String fname, String lname, String email, String uname) {
             validateEmpNum(empno);
             validateFirstName(fname);
             validateLastName(lname);
@@ -94,10 +94,10 @@ public class Employee {
             }
         }
         
-        private void validateEmpNum(Long empno) {
+        private void validateEmpNum(String empno) {
             if (empno == null) {
                 throw new IllegalArgumentException("Employee Number should not be null");
-            } else if (String.valueOf(empno).length() > 10) {
+            } else if (empno.length() > 10) {
                 throw new IllegalArgumentException("Employee Number Length exceeds the Limit");
             }
         }
