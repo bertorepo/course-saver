@@ -4,19 +4,22 @@ public class Course {
     private String courseName;
     private Long id;
 
+    protected Course() {
+    }
+
     private Course(Builder builder) {
         this.courseName = builder.courseName;
         this.id = builder.id;
     }
 
-    Long getId() {
+    public Long getId() {
         return id;
     }
 
     public String getCourseName() {
         return courseName;
     }
-    
+
     public static class Builder {
         public String courseName;
         private Long id;
@@ -27,12 +30,17 @@ public class Course {
             this.courseName = courseName;
             this.id = id;
         }
-
+        
         private void ValidateCourseName(String courseName) {
             if (courseName.isEmpty() || courseName == null || courseName.length() > 50 || courseName.length() <= 5) {
-                throw new IllegalArgumentException("Provide the course name.");
+                throw new IllegalArgumentException("Provide the appropriate course name.");
             }
         }
 
+        public Course build() {
+            return new Course(this);
+        }
+
     }
+
 }

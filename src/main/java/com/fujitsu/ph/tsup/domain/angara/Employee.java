@@ -52,7 +52,7 @@ public class Employee {
         public Long id;
         private Long employeeNumber;
 
-        public Builder(Long employeeNumber, String firstName, String lastName, String emailAddress, String userName) {
+        public Builder(Long employeeNumber, String firstName, String lastName, String emailAddress, String userName, String string) {
             validateEmployeeNumber(employeeNumber);
             validateLastName(lastName);
             validateFirstName(firstName);
@@ -96,6 +96,10 @@ public class Employee {
             if (firstName.isEmpty() || firstName == null || firstName.length() > 50 || firstName.length() < 1) {
                 throw new IllegalArgumentException("Provide appropriate first name.");
             }
+        }
+
+        public Employee build() {
+            return null;
         }
     }
 }

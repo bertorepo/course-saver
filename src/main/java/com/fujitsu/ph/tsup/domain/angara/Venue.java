@@ -12,7 +12,7 @@ public class Venue {
         this.venueName = builder.venueName;
     }
 
-    private String getVenueName() {
+    String getVenueName() {
         return venueName;
     }
 
@@ -44,6 +44,13 @@ public class Venue {
             }
 
         }
+
+        public Venue build() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        
 
     }
 }
