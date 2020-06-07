@@ -23,6 +23,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 
+
 @JdbcTest
 @ActiveProfiles({"postgres-test-jimenez"})
 @AutoConfigureTestDatabase(replace=Replace.NONE)

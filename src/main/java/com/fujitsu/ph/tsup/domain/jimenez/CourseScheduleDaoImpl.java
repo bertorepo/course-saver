@@ -56,4 +56,5 @@ public class CourseScheduleDaoImpl implements CourseScheduleDao{
         return (Long) generatedKeyHolder.getKeys().get("id");
     }
     
+    
 }

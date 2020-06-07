@@ -81,6 +81,7 @@ public class Employee {
             this.lastName = lname;
             this.emailAddress = email;
             this.userName = uname;
+            
         }
         
         public Employee builder() {
