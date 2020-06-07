@@ -27,7 +27,7 @@ public class CourseSchedule {
         return id;
     }
 
-    public Long getInstructionId() {
+    public Long getInstructorId1() {
         return instructorId;
     }
 
@@ -47,7 +47,7 @@ public class CourseSchedule {
         return maxRequired;
     }
 
-    private String getStatus() {
+    String getStatus() {
         return status;
     }
 
@@ -60,7 +60,7 @@ public class CourseSchedule {
         private Long instructorId;
         private Long id;
 
-        public Builder(Long courseId, Long instructorId, Long venueId, int minRequired, int maxRequired,
+        public Builder(Long courseId, Long instructorId, Long venueId, long l, int minRequired, int maxRequired,
                 String status) {
             ValidateCourseId(courseId);
             ValidateInstructorId(instructorId);
@@ -117,6 +117,11 @@ public class CourseSchedule {
             }
         }
 
+    }
+
+    public Object getInstructorId() {
+        
+        return null;
     }
 
 }
