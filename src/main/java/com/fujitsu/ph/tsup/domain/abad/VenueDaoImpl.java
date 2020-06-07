@@ -25,7 +25,7 @@ public class VenueDaoImpl implements VenueDao {
 
     @Override
     public void save(Venue venue) {
-        String sql = "INSERT INTO EMPLOYEE(venue_name)"
+        String sql = "INSERT INTO VENUE(venue_name)"
                 + "VALUES(:venueName)";      
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("venueName", venue.getVenueName());

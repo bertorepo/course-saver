@@ -48,7 +48,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public Employee findById(Long id) {
-        String sql = "SELECT id, employee_number, last,name, first_name, email_address, user_name FROM EMPLOYEE WHERE id = :id";
+        String sql = "SELECT id, employee_number, last_name, first_name, email_address, user_name FROM EMPLOYEE WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
         return template.queryForObject(sql, namedParameters, new EmployeeRowMapper());
     }

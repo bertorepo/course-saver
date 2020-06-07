@@ -1,27 +1,15 @@
 package com.fujitsu.ph.tsup.domain.abad;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-
-import javax.sql.DataSource;
-
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 
 @JdbcTest
@@ -51,7 +39,7 @@ public class EmployeeDaoImplTest {
         Employee dbEmployeeOne = employeeDao.findById(empOne);
         
         System.out.println("Employee Number: " + dbEmployeeOne.getEmployeeNumber());
-        assertEquals("2020", dbEmployeeOne.getEmployeeNumber());
+        assertEquals("202020", dbEmployeeOne.getEmployeeNumber());
         
         System.out.println("Employee Number: " + dbEmployeeOne.getLastName());
         assertEquals("abad", dbEmployeeOne.getLastName());
@@ -73,7 +61,7 @@ public class EmployeeDaoImplTest {
         Employee dbEmployeeTwo = employeeDao.findById(empTwo);
         
         System.out.println("Employee Number: " + dbEmployeeTwo.getEmployeeNumber());
-        assertEquals("3030", dbEmployeeTwo.getEmployeeNumber());
+        assertEquals("303030", dbEmployeeTwo.getEmployeeNumber());
         
         System.out.println("Employee Number: " + dbEmployeeTwo.getLastName());
         assertEquals("velasco", dbEmployeeTwo.getLastName());
