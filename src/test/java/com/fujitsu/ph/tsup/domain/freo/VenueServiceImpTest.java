@@ -92,8 +92,6 @@ class VenueServiceImpTest {
 	        assertTrue(actualMessage.contains(expectedMessage));
 	    }
 	    
-	    
-	    
 	    @Test
 	    void testFindAll() {
 	        Set<Venue> vnu = new HashSet<Venue>();

@@ -43,7 +43,7 @@ public class VenueDaoImp implements VenueDao {
 	public Venue findById(Long Id) {
 		
 	        String query = "SELECT id, name FROM venue WHERE id = :id";
-	        SqlParameterSource namedParams = new MapSqlParameterSource().addValue("id", id);
+	        SqlParameterSource namedParams = new MapSqlParameterSource().addValue("Id", id);
 	        return template.queryForObject(query, namedParams, new VenueRowMapper());
 	}
 		  @Override
