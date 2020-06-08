@@ -6,5 +6,5 @@ public interface EmployeeDao {
     void save(Employee id);
     Set<Employee> findAll();
     Employee findById(Long id);
-
+    Long generatedKey();
 }

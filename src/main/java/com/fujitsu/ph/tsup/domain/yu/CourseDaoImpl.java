@@ -16,22 +16,35 @@ public class CourseDaoImpl implements CourseDao {
     @Autowired
     private NamedParameterJdbcTemplate template;
     
+    KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+    
     @Override
     public void save(Course id) {
-        // TODO Auto-generated method stub
-        
+        String query = "INSERT INTO COURSE(name)"+"VALUES(:name)";   
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("name", id.getName());
+        template.update(query, namedParameters, generatedKeyHolder);
+        generatedKey(); 
     }
+
+    public Long generatedKey() {
+        return (Long) generatedKeyHolder.getKeys().get("id");
+    }
+
 
     @Override
     public Set<Course> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT id, name FROM COURSE";
+        List<Course> courseList = template.query(query, new CourseRowMapper());
+        Set<Course> courseSet = new HashSet<Course>(courseList);
+        return courseSet;
     }
 
     @Override
     public Course findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT id, name FROM COURSE WHERE id = :id";
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
+        return template.queryForObject(query, namedParameters, new CourseRowMapper());
     }
 
 }

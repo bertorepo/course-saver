@@ -12,23 +12,45 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 public class CourseScheduleDaoImpl implements CourseScheduleDao {
+    
+    @Autowired
+    private NamedParameterJdbcTemplate template;
+    
+    KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
     @Override
     public void save(CourseSchedule id) {
-        // TODO Auto-generated method stub
-        
+        String query = "INSERT INTO COURSESCHEDULE(course_id, instructor_id, venue_id, min_required, max_allowed, status)"
+                + "VALUES(:courseId, :instructorId, :venueId, :minRequired, :maxAllowed, :status)";
+
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("courseId", id.getCourseId())
+                .addValue("instructorId", id.getInstructorId())
+                .addValue("venueId", id.getVenueId())
+                .addValue("minRequired", id.getMinRequired())
+                .addValue("maxAllowed", id.getMaxAllowed())
+                .addValue("status", id.getStatus());
+        template.update(query, namedParameters, generatedKeyHolder);
+        generatedKey();    
+    }
+    
+    public Long generatedKey() {
+        return (Long) generatedKeyHolder.getKeys().get("id");
     }
 
     @Override
     public Set<CourseSchedule> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT id, course_id, instructor_id, venue_id, min_required, max_allowed, status FROM COURSESCHEDULE";
+        List<CourseSchedule> courseScheduleList = template.query(query, new CourseScheduleRowMapper());
+        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        return courseScheduleSet;
     }
 
     @Override
     public CourseSchedule findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT id, course_id, instructor_id, venue_id, min_required, max_allowed, status FROM COURSESCHEDULE WHERE id = :id";
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
+        return template.queryForObject(query, namedParameters, new CourseScheduleRowMapper());
     }
 
 }

@@ -6,5 +6,5 @@ public interface CourseScheduleDao {
     void save(CourseSchedule id);
     Set<CourseSchedule> findAll();
     CourseSchedule findById(Long id);
-
+    Long generatedKey();
 }

@@ -32,6 +32,12 @@ public class Course {
             this.name = name;
         }
 
+        public Builder(String name) {
+            validateName(name);
+
+            this.name = name;
+        }
+
         public Course build() {
             return new Course(this);
         }

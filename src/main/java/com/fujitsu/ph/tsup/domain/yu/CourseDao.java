@@ -6,5 +6,5 @@ public interface CourseDao {
     void save(Course id);
     Set<Course> findAll();
     Course findById(Long id);
-
+    Long generatedKey();
 }

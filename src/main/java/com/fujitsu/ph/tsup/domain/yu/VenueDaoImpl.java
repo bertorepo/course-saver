@@ -12,23 +12,39 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 public class VenueDaoImpl implements VenueDao {
+    
+    @Autowired
+    private NamedParameterJdbcTemplate template;
+
+    KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
     @Override
     public void save(Venue id) {
-        // TODO Auto-generated method stub
-        
+        String query = "INSERT INTO VENUE(name)" + "VALUES(:name)";
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("name", id.getName());
+        template.update(query, namedParameters, generatedKeyHolder);
+        generatedKey();
+    }
+    
+    @Override
+    public Long generatedKey() {
+        return (Long) generatedKeyHolder.getKeys().get("id");
     }
 
     @Override
     public Set<Venue> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT id, name FROM VENUE";
+        List<Venue> venueList = template.query(query, new VenueRowMapper());
+        Set<Venue> venueSet = new HashSet<Venue>(venueList);
+        return venueSet;
     }
 
     @Override
     public Venue findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT id, name FROM VENUE WHERE id = :id";
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
+        return template.queryForObject(query, namedParameters, new VenueRowMapper());
     }
 
 }
