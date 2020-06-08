@@ -4,9 +4,11 @@ import java.util.Set;
 
 public interface CourseDao {
 
-    void save(Course CourseId);
+    void save(Course Id);
 
-    Set<Course> findall();
+    Set<Course> findAll();
 
-    Course findById(Long CourseId);
+    Course findById(Long Id);
+    
+    
 }

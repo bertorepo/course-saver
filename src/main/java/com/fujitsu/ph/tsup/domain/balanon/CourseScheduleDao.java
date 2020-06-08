@@ -3,10 +3,10 @@ package com.fujitsu.ph.tsup.domain.balanon;
 import java.util.Set;
 
 public interface CourseScheduleDao {
-    void save(CourseSchedule CourseScheduleId);
+    void save(CourseSchedule Id);
 
-    Set<Course> findall();
+    Set<CourseSchedule> findAll();
 
-    Course findById(Long CourseScheduleId);
+    CourseSchedule findById(Long Id);
 
 }

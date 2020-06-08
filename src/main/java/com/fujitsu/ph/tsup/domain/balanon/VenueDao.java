@@ -3,9 +3,9 @@ package com.fujitsu.ph.tsup.domain.balanon;
 import java.util.Set;
 
 public interface VenueDao {
-    void save(Venue VenueId);
+    void save(Venue Id);
 
-    Set<Course> findall();
+    Set<Venue> findall();
 
-    Course findById(Long VenueId);
+    Venue findById(Long Id);
 }

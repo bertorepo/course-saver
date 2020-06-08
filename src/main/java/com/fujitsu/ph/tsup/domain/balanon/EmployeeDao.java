@@ -4,10 +4,10 @@ import java.util.Set;
 
 public interface EmployeeDao {
 
-    void save(Employee EmployeeId);
+    void save(Employee Id);
 
-    Set<Course> findall();
+    Set<Employee> findall();
 
-    Course findById(Long EmployeeId);
+    Employee findById(Long Id);
 
 }

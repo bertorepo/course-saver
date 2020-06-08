@@ -4,9 +4,9 @@ import java.util.Set;
 
 public interface CourseScheduleService {
 
-    void save(CourseSchedule CourseScheduleId);
+    void save(CourseSchedule Id);
 
-    Set<Course> findall();
+    Set<CourseSchedule> findAll();
 
-    Course findById(Long CourseScheduleId);
+    CourseSchedule findById(Long Id);
 }

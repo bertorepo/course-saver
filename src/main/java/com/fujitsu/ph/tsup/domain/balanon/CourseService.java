@@ -4,10 +4,12 @@ import java.util.Set;
 
 public interface CourseService {
 
-    void save(Course CourseId);
+    void save(Course Id);
 
-    Set<Course> findall();
+    Set<Course> findAll();
 
-    Course findById(Long CourseId);
+    Course findById(Long Id);
+
+    Course getId(Long Id);
 
 }

@@ -3,10 +3,10 @@ package com.fujitsu.ph.tsup.domain.balanon;
 import java.util.Set;
 
 public interface EmployeeService {
-    void save(Employee EmployeeId);
+    void save(Employee Id);
 
-    Set<Course> findall();
+    Set<Employee> findall();
 
-    Course findById(Long EmployeeId);
+    Employee findById(Long Id);
 
 }
