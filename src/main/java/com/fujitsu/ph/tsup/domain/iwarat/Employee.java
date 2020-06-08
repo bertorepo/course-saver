@@ -53,6 +53,21 @@ public class Employee {
         private String emailAddress;
         private String username;
         
+        public Builder(String number, String lastName, String firstName, String emailAddress,
+                String username) {
+            validateNumber(number);
+            validateLastName(lastName);
+            validateFirstName(firstName);
+            validateEmailAddress(emailAddress);
+            validateUsername(username);
+            
+            this.number = number;
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.emailAddress = emailAddress;
+            this.username = username;
+        }
+        
         public Builder(Long id, String number, String lastName, String firstName, String emailAddress,
                 String username) {
             validateId(id);

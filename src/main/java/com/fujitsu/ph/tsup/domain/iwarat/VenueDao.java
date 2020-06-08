@@ -8,4 +8,6 @@ public interface VenueDao {
     Set<Venue> findAll();
 
     Venue findById(Long id);
+
+    Long GeneratedKeyHolderId();
 }

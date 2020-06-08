@@ -8,4 +8,6 @@ public interface CourseScheduleDao {
     Set<CourseSchedule> findAll();
 
     CourseSchedule findById(Long id);
+
+    Long GeneratedKeyHolderId();
 }

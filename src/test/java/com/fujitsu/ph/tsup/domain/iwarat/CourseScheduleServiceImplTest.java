@@ -69,8 +69,8 @@ public class CourseScheduleServiceImplTest {
         assertEquals(expected.getCourseId(), courseSchedules.getCourseId());
         assertEquals(expected.getInstructorId(), courseSchedules.getInstructorId());
         assertEquals(expected.getVenueId(), courseSchedules.getVenueId());
-        assertEquals(expected.getMinRecquired(), courseSchedules.getMinRecquired());
-        assertEquals(expected.getMaxRecquired(), courseSchedules.getMaxRecquired());
+        assertEquals(expected.getMinRequired(), courseSchedules.getMinRequired());
+        assertEquals(expected.getMaxAllowed(), courseSchedules.getMaxAllowed());
         assertEquals(expected.getStatus(), courseSchedules.getStatus());
 
     }
