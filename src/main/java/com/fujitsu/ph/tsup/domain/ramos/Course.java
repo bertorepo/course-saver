@@ -27,9 +27,17 @@ public class Course {
 		private Long id;
 		private String courseName;
 		private Pattern pattern;
-		
+
 		public Builder(Long id, String courseName) {
 			validateCourseName(courseName);
+
+			this.id = id;
+			this.courseName = courseName;
+		}
+
+		public Builder(String courseName) {
+			validateCourseName(courseName);
+
 			this.courseName = courseName;
 		}
 
@@ -40,10 +48,10 @@ public class Course {
 		private void validateCourseName(String courseName) {
 			Pattern.compile("[a-zA-Z]*");
 			java.util.regex.Matcher matcher = pattern.matcher(courseName);
-			
+
 			if (courseName == null || courseName.isEmpty() || courseName.length() < 10 || courseName.length() > 50) {
 				throw new IllegalArgumentException("Course Name is empty");
-			}else if (!matcher.matches()) {
+			} else if (!matcher.matches()) {
 				throw new IllegalArgumentException("Course Name contains special characters");
 			}
 		}

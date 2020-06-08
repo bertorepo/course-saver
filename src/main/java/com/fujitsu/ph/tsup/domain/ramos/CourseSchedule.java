@@ -74,7 +74,7 @@ public class CourseSchedule {
 			this.maxAllowed = maxAllowed;
 			this.status = status;
 		}
-
+		
 		public CourseSchedule build() {
 			return new CourseSchedule(this);
 		}
