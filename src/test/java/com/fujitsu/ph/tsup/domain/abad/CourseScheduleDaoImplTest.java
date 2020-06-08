@@ -46,56 +46,43 @@ public class CourseScheduleDaoImplTest {
         CourseSchedule courseScheduleOne = new CourseSchedule.Builder(1000L, 1000L, 1000L, 1, 1000, "A").build();
         courseScheduleDao.save(courseScheduleOne);
         Long crsSchdlOne = courseScheduleDao.saveCourseSchedule();
-        System.out.println("ID1: " + crsSchdlOne);
-        
-        CourseSchedule dbCourseScheduleOne = courseScheduleDao.findById(crsSchdlOne);
-        
-        System.out.println("Course Id: "+ dbCourseScheduleOne.getCourseId());
-        assertEquals(1000L, dbCourseScheduleOne.getCourseId());
-        
-        System.out.println("Instructor Id: "+ dbCourseScheduleOne.getInstructorId());
-        assertEquals(1000L, dbCourseScheduleOne.getInstructorId());
-        
-        System.out.println("Venue Id: "+ dbCourseScheduleOne.getVenueId());
-        assertEquals(1000L, dbCourseScheduleOne.getVenueId());
-        
-        System.out.println("Minimum Required: "+ dbCourseScheduleOne.getMinRequired());
-        assertEquals(1, dbCourseScheduleOne.getMinRequired());
-        
-        System.out.println("Maximum Required: "+ dbCourseScheduleOne.getMaxAllowed());
-        assertEquals(1000, dbCourseScheduleOne.getMaxAllowed());
-        
-        System.out.println("Status: "+ dbCourseScheduleOne.getStatus());
-        assertEquals("A", dbCourseScheduleOne.getStatus());
         
         CourseSchedule courseScheduleTwo = new CourseSchedule.Builder(2000L, 2000L, 2000L, 1, 999, "B").build();
         courseScheduleDao.save(courseScheduleTwo);
         Long crsSchdlTwo = courseScheduleDao.saveCourseSchedule();
+              
+        System.out.println("ID1: " + crsSchdlOne);
+        CourseSchedule dbCourseScheduleOne = courseScheduleDao.findById(crsSchdlOne);   
+        System.out.println("Course Id: "+ dbCourseScheduleOne.getCourseId());
+        assertEquals(1000L, dbCourseScheduleOne.getCourseId());
+        System.out.println("Instructor Id: "+ dbCourseScheduleOne.getInstructorId());
+        assertEquals(1000L, dbCourseScheduleOne.getInstructorId());
+        System.out.println("Venue Id: "+ dbCourseScheduleOne.getVenueId());
+        assertEquals(1000L, dbCourseScheduleOne.getVenueId());
+        System.out.println("Minimum Required: "+ dbCourseScheduleOne.getMinRequired());
+        assertEquals(1, dbCourseScheduleOne.getMinRequired());
+        System.out.println("Maximum Required: "+ dbCourseScheduleOne.getMaxAllowed());
+        assertEquals(1000, dbCourseScheduleOne.getMaxAllowed());
+        System.out.println("Status: "+ dbCourseScheduleOne.getStatus());
+        assertEquals("A", dbCourseScheduleOne.getStatus());
+        
         System.out.println("ID2: " + crsSchdlTwo);
-        
-        CourseSchedule dbCourseScheduleTwo = courseScheduleDao.findById(crsSchdlTwo);
-        
+        CourseSchedule dbCourseScheduleTwo = courseScheduleDao.findById(crsSchdlTwo); 
         System.out.println("Course Id: "+ dbCourseScheduleTwo.getCourseId());
         assertEquals(2000L, dbCourseScheduleTwo.getCourseId());
-        
         System.out.println("Instructor Id: "+ dbCourseScheduleTwo.getInstructorId());
         assertEquals(2000L, dbCourseScheduleTwo.getInstructorId());
-        
         System.out.println("Venue Id: "+ dbCourseScheduleTwo.getVenueId());
         assertEquals(2000L, dbCourseScheduleTwo.getVenueId());
-        
         System.out.println("Minimum Required: "+ dbCourseScheduleTwo.getMinRequired());
         assertEquals(1, dbCourseScheduleTwo.getMinRequired());
-        
         System.out.println("Maximum Required: "+ dbCourseScheduleTwo.getMaxAllowed());
-        assertEquals(999, dbCourseScheduleTwo.getMaxAllowed());
-        
+        assertEquals(999, dbCourseScheduleTwo.getMaxAllowed());       
         System.out.println("Status: "+ dbCourseScheduleTwo.getStatus());
         assertEquals("B", dbCourseScheduleTwo.getStatus());
         
         Set<CourseSchedule> courseSchedule = courseScheduleDao.findAll();
-        assertNotNull(courseSchedule.size());
-        
+        assertNotNull(courseSchedule.size());      
     }
     
     @Test

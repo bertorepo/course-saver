@@ -34,51 +34,39 @@ public class EmployeeDaoImplTest {
         Employee employeeOne = new Employee.Builder("202020", "abad", "kenneth", "k.abad@fujitsu.com", "kt.abad").build();
         employeeDao.save(employeeOne);
         Long empOne = employeeDao.saveEmployee();
-        System.out.println("ID1: " + empOne);
-        
-        Employee dbEmployeeOne = employeeDao.findById(empOne);
-        
-        System.out.println("Employee Number: " + dbEmployeeOne.getEmployeeNumber());
-        assertEquals("202020", dbEmployeeOne.getEmployeeNumber());
-        
-        System.out.println("Employee Number: " + dbEmployeeOne.getLastName());
-        assertEquals("abad", dbEmployeeOne.getLastName());
-        
-        System.out.println("Employee Number: " + dbEmployeeOne.getFirstName());
-        assertEquals("kenneth", dbEmployeeOne.getFirstName());
-        
-        System.out.println("Employee Number: " + dbEmployeeOne.getEmailAddress());
-        assertEquals("k.abad@fujitsu.com", dbEmployeeOne.getEmailAddress());
-        
-        System.out.println("Employee Number: " + dbEmployeeOne.getUserName());
-        assertEquals("kt.abad", dbEmployeeOne.getUserName());
         
         Employee employeeTwo = new Employee.Builder("303030", "velasco", "monica", "m.a.velasco@gmail.com", "m.velasco").build();
         employeeDao.save(employeeTwo);
         Long empTwo = employeeDao.saveEmployee();
-        System.out.println("ID2: " + empTwo);
         
-        Employee dbEmployeeTwo = employeeDao.findById(empTwo);
+        System.out.println("ID1: " + empOne);
+        Employee dbEmployeeOne = employeeDao.findById(empOne);       
+        System.out.println("Employee Number: " + dbEmployeeOne.getEmployeeNumber());
+        assertEquals("202020", dbEmployeeOne.getEmployeeNumber());        
+        System.out.println("Employee Number: " + dbEmployeeOne.getLastName());
+        assertEquals("abad", dbEmployeeOne.getLastName());        
+        System.out.println("Employee Number: " + dbEmployeeOne.getFirstName());
+        assertEquals("kenneth", dbEmployeeOne.getFirstName());       
+        System.out.println("Employee Number: " + dbEmployeeOne.getEmailAddress());
+        assertEquals("k.abad@fujitsu.com", dbEmployeeOne.getEmailAddress());       
+        System.out.println("Employee Number: " + dbEmployeeOne.getUserName());
+        assertEquals("kt.abad", dbEmployeeOne.getUserName());
         
+        System.out.println("ID2: " + empTwo);      
+        Employee dbEmployeeTwo = employeeDao.findById(empTwo);        
         System.out.println("Employee Number: " + dbEmployeeTwo.getEmployeeNumber());
-        assertEquals("303030", dbEmployeeTwo.getEmployeeNumber());
-        
+        assertEquals("303030", dbEmployeeTwo.getEmployeeNumber());       
         System.out.println("Employee Number: " + dbEmployeeTwo.getLastName());
-        assertEquals("velasco", dbEmployeeTwo.getLastName());
-        
+        assertEquals("velasco", dbEmployeeTwo.getLastName());        
         System.out.println("Employee Number: " + dbEmployeeTwo.getFirstName());
-        assertEquals("monica", dbEmployeeTwo.getFirstName());
-        
+        assertEquals("monica", dbEmployeeTwo.getFirstName());        
         System.out.println("Employee Number: " + dbEmployeeTwo.getEmailAddress());
-        assertEquals("m.a.velasco@gmail.com", dbEmployeeTwo.getEmailAddress());
-        
+        assertEquals("m.a.velasco@gmail.com", dbEmployeeTwo.getEmailAddress());        
         System.out.println("Employee Number: " + dbEmployeeTwo.getUserName());
         assertEquals("m.velasco", dbEmployeeTwo.getUserName());
-
          
         Set<Employee> employee = employeeDao.findAll();
-        assertNotNull(employee.size());
-        
+        assertNotNull(employee.size());       
     }
     
     @Test

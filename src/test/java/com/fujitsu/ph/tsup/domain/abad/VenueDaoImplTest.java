@@ -34,25 +34,23 @@ public class VenueDaoImplTest {
         Venue venueOne = new Venue.Builder("Imus Plaza").build();
         venueDao.save(venueOne);
         Long vnOne = venueDao.saveVenue();
-        System.out.println("ID1: " + vnOne);
-        
-        Venue dbVenueOne = venueDao.findById(vnOne);
-        
-        System.out.println("Venue Name: " +dbVenueOne.getVenueName());
-        assertEquals("Imus Plaza", dbVenueOne.getVenueName());
         
         Venue venueTwo = new Venue.Builder("Fujitsu Building").build();
         venueDao.save(venueTwo);
         Long vnTwo = venueDao.saveVenue();
-        System.out.println("ID2: " + vnTwo);
         
+        System.out.println("ID1: " + vnOne);
+        Venue dbVenueOne = venueDao.findById(vnOne);      
+        System.out.println("Venue Name: " +dbVenueOne.getVenueName());
+        assertEquals("Imus Plaza", dbVenueOne.getVenueName());
+        
+        System.out.println("ID2: " + vnTwo); 
         Venue dbVenueTwo = venueDao.findById(vnTwo);
         System.out.println("Venue Name: " +dbVenueTwo.getVenueName());
         assertEquals("Fujitsu Building", dbVenueTwo.getVenueName());
          
         Set<Venue> venue = venueDao.findAll();
-        assertNotNull(venue.size());
-        
+        assertNotNull(venue.size());        
     }
     
     @Test

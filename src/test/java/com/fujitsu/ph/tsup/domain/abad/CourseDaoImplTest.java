@@ -46,17 +46,17 @@ public class CourseDaoImplTest {
         Course courseOne = new Course.Builder("DIFFCALC").build();
         courseDao.save(courseOne);
         Long crsOne = courseDao.saveCourse();
+ 
+        Course courseTwo = new Course.Builder("INTEGCALC").build();
+        courseDao.save(courseTwo);
+        Long crsTwo = courseDao.saveCourse();
+           
         System.out.println("ID1: " + crsOne);
-        
         Course dbCourseOne = courseDao.findById(crsOne);
         System.out.println("Course Name: " +dbCourseOne.getCourseName());
         assertEquals("DIFFCALC", dbCourseOne.getCourseName());
         
-        Course courseTwo = new Course.Builder("INTEGCALC").build();
-        courseDao.save(courseTwo);
-        Long crsTwo = courseDao.saveCourse();
         System.out.println("ID2: " + crsTwo);
-          
         Course dbCourseTwo = courseDao.findById(crsTwo);
         System.out.println("Course Name: "+dbCourseTwo.getCourseName());
         assertEquals("INTEGCALC", dbCourseTwo.getCourseName());
