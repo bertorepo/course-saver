@@ -18,6 +18,7 @@ public class CourseDaoImpl implements CourseDao {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
+	
 	KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
 	@Override
@@ -27,7 +28,7 @@ public class CourseDaoImpl implements CourseDao {
 		SqlParameterSource namedParameters = new MapSqlParameterSource()
 				.addValue("name", course.getCourseName());
 		template.update(sql, namedParameters, generatedKeyHolder);
-
+		generatedKey();
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class CourseDaoImpl implements CourseDao {
 		return template.queryForObject(sql, namedParameters, new CourseRowMapper());
 	}
 
-	public Long GeneratedKey() {
+	public Long generatedKey() {
 		return (Long) generatedKeyHolder.getKeys().get("id");
 
 	}
