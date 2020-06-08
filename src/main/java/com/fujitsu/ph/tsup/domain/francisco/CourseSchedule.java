@@ -60,7 +60,7 @@ public class CourseSchedule {
         private int maxAllowed;
         private String status;
 
-        public Builder(Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed, String status) {
+        public Builder(Long id, Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed, String status) {
             validateCourseId(courseId);
             validateInstructorId(instructorId);
             validateVenueId(venueId);
@@ -68,6 +68,7 @@ public class CourseSchedule {
             validateMaxAllowed(maxAllowed);
             validateStatus(status);
 
+            this.id = id;
             this.courseId = courseId;
             this.instructorId = instructorId;
             this.venueId = venueId;
@@ -117,7 +118,7 @@ public class CourseSchedule {
         public void validateStatus(String status) {
             if (status == null || status.isEmpty()) {
                 throw new IllegalArgumentException("status should not be null or empty!");
-            } else if (status != "a" || status != "A" || status != "c" || status != "C") {
+            } else if (!(status.equalsIgnoreCase("a") || status.equalsIgnoreCase("c"))) {
                 throw new IllegalArgumentException("Invalid status!");
             }
         }

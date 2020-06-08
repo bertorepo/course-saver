@@ -36,7 +36,8 @@ public class CourseScheduleServiceImplTest {
 
     @Test
     void testSave() {
-        CourseSchedule cSched = new CourseSchedule.Builder(new Long(1), new Long(1), new Long(1), 1, 5, "a").build();
+        CourseSchedule cSched = new CourseSchedule.Builder(new Long(1), new Long(1), new Long(1), new Long(1), 1, 5,
+                "a").build();
         assertEquals(cSched.getCourseId(), new Long(1));
         assertEquals(cSched.getStatus(), "a");
     }
@@ -44,7 +45,7 @@ public class CourseScheduleServiceImplTest {
     @Test
     void testSaveError() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(new Long(1), new Long(1), new Long(1), 1, 5, "").build();
+            new CourseSchedule.Builder(new Long(1), new Long(1), new Long(1), new Long(1), 1, 5, "").build();
         });
 
         String expectedMessage = "status should not be null or empty!";
@@ -55,8 +56,8 @@ public class CourseScheduleServiceImplTest {
     @Test
     void testFindAll() {
         Set<CourseSchedule> cSched = new HashSet<CourseSchedule>();
-        cSched.add(new CourseSchedule.Builder(new Long(1),new Long(1),new Long(1),1,5, "a").build());
-        cSched.add(new CourseSchedule.Builder(new Long(2),new Long(2),new Long(2),1,5, "a").build());
+        cSched.add(new CourseSchedule.Builder(new Long(1), new Long(1), new Long(1), new Long(1), 1, 5, "a").build());
+        cSched.add(new CourseSchedule.Builder(new Long(2), new Long(2), new Long(2), new Long(2), 1, 5, "C").build());
         when(dao.findAll()).thenReturn(cSched);
         assertEquals(service.findAll().size(), cSched.size());
     }
@@ -75,7 +76,8 @@ public class CourseScheduleServiceImplTest {
 
     @Test
     void testFindById() {
-        CourseSchedule c = new CourseSchedule.Builder(new Long(1),new Long(1),new Long(1),1,5, "a").build();
+        CourseSchedule c = new CourseSchedule.Builder(new Long(1), new Long(1), new Long(1), new Long(1), 1, 5, "a")
+                .build();
         when(dao.findById(c.getId())).thenReturn(c);
         CourseSchedule cSched = service.findById(c.getId());
         assertEquals(c.getId(), cSched.getId());

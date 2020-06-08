@@ -10,11 +10,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
 public class EmployeeServiceImplTest {
 
     @TestConfiguration
@@ -56,8 +59,8 @@ public class EmployeeServiceImplTest {
     @Test
     void testFindAll() {
         Set<Employee> employee = new HashSet<Employee>();
-        employee.add(new Employee.Builder(new Long(1), "123","delacruz", "juan","abc@gmail.com","juandc").build());
-        employee.add(new Employee.Builder(new Long(2), "456","garcia", "jose","def@gmail.com","joseg").build());
+        employee.add(new Employee.Builder(new Long(1), "12345","delacruz", "juan","abc@gmail.com","juandc").build());
+        employee.add(new Employee.Builder(new Long(2), "45678","garcia", "jose","def@gmail.com","joseg").build());
         when(dao.findAll()).thenReturn(employee);
         assertEquals(service.findAll().size(), employee.size());
     }

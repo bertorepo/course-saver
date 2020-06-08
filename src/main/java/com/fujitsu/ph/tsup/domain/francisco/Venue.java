@@ -25,8 +25,9 @@ public class Venue {
         private Long id;
         private String name;
 
-        public Builder(String name) {
+        public Builder(Long id, String name) {
             validateName(name);
+            this.id = id;
             this.name = name;
         }
 
