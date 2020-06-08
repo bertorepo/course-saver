@@ -9,5 +9,4 @@ public interface CourseService {
 
 	Course findById(Long courseId);
 	
-	Course getCourseId(Long courseId);
 }
