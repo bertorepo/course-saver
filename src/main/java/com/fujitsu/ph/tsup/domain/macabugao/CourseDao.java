@@ -10,6 +10,6 @@ public interface CourseDao {
 
 	Course findById(Long id);
 	
-	Long GeneratedKey();
+	Long generatedKey();
 
 }

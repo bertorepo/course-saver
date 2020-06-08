@@ -47,7 +47,7 @@ public class EmployeeServiceImplTest {
         employeeService.save(Employee);     
         
         assertEquals(Employee.getId(), 123434L);
-        assertEquals(Employee.getEmpNum(), 1234L);
+        assertEquals(Employee.getEmpNum(), "1234");
         assertEquals(Employee.getFirstName(), "HELLLLLLLOOO");
         assertEquals(Employee.getLastName(), "HIIIIIIIIIIII");
         assertEquals(Employee.getEmailAddress(), "HIIIIIIIIIIII@example.com");

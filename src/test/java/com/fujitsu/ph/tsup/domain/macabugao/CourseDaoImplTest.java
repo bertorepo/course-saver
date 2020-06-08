@@ -37,13 +37,13 @@ class CourseDaoImplTest {
 	void test() {
 		Course course1 = new Course.Builder("Programming").build();
 		courseDao.save(course1);
-		Long id1 = courseDao.GeneratedKey();
+		Long id1 = courseDao.generatedKey();
 	    System.out.println("ID1:" + id1);
 
 		
 		Course course2 = new Course.Builder("Programming2").build();
 		courseDao.save(course2);
-		Long id2 = courseDao.GeneratedKey();
+		Long id2 = courseDao.generatedKey();
 	    System.out.println("ID1:" + id2);
 
 		

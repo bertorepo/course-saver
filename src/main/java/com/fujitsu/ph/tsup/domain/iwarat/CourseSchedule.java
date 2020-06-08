@@ -5,8 +5,8 @@ public class CourseSchedule {
     private Long courseId;
     private Long instructorId;
     private Long venueId;
-    private int minRecquired;
-    private int maxRecquired;
+    private int minRequired;
+    private int maxAllowed;
     private String status;
 
     protected CourseSchedule() {
@@ -18,8 +18,8 @@ public class CourseSchedule {
         this.courseId = builder.courseId;
         this.instructorId = builder.instructorId;
         this.venueId = builder.venueId;
-        this.minRecquired = builder.minRecquired;
-        this.maxRecquired = builder.maxRecquired;
+        this.minRequired = builder.minRequired;
+        this.maxAllowed = builder.maxAllowed;
         this.status = builder.status;
     }
 
@@ -39,12 +39,12 @@ public class CourseSchedule {
         return venueId;
     }
 
-    public int getMinRecquired() {
-        return minRecquired;
+    public int getMinRequired() {
+        return minRequired;
     }
 
-    public int getMaxRecquired() {
-        return maxRecquired;
+    public int getMaxAllowed() {
+        return maxAllowed;
     }
 
     public String getStatus() {
@@ -56,26 +56,43 @@ public class CourseSchedule {
         private Long courseId;
         private Long instructorId;
         private Long venueId;
-        private int minRecquired;
-        private int maxRecquired;
+        private int minRequired;
+        private int maxAllowed;
         private String status;
 
-        public Builder(Long id, Long courseId, Long instructorId, Long venueId, int minRecquired, int maxRecquired,
+
+        public Builder(Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed, String status) {
+            validateCourseId(courseId);
+            validateInstructorId(instructorId);
+            validateVenueId(venueId);
+            validateMinRequired(minRequired);
+            validateMaxAllowed(maxAllowed);
+            validateStatus(status);
+
+            this.courseId = courseId;
+            this.instructorId = instructorId;
+            this.venueId = venueId;
+            this.minRequired = minRequired;
+            this.maxAllowed = maxAllowed;
+            this.status = status;
+        }
+        
+        public Builder(Long id, Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed,
                 String status) {
             validateId(id);
             validateCourseId(courseId);
             validateInstructorId(instructorId);
             validateVenueId(venueId);
-            validateMinRecquired(minRecquired);
-            validateMaxRecquired(maxRecquired);
+            validateMinRequired(minRequired);
+            validateMaxAllowed(maxAllowed);
             validateStatus(status);
 
             this.id = id;
             this.courseId = courseId;
             this.instructorId = instructorId;
             this.venueId = venueId;
-            this.minRecquired = minRecquired;
-            this.maxRecquired = maxRecquired;
+            this.minRequired = minRequired;
+            this.maxAllowed = maxAllowed;
             this.status = status;
         }
 
@@ -107,18 +124,18 @@ public class CourseSchedule {
             }
         }
 
-        private void validateMinRecquired(int minRecquired) {
-            if (minRecquired < 1) {
+        private void validateMinRequired(int minRequired) {
+            if (minRequired < 1) {
                 throw new IllegalArgumentException("Min recquired should not be empty or null");
-            } else if (minRecquired > 99999) {
+            } else if (minRequired > 99999) {
                 throw new IllegalArgumentException("Min recquired should not be empty or null");
             }
         }
 
-        private void validateMaxRecquired(int maxRecquired) {
-            if (maxRecquired < 1) {
+        private void validateMaxAllowed(int maxAllowed) {
+            if (maxAllowed < 1) {
                 throw new IllegalArgumentException("Max recquired should not be empty or null");
-            } else if (maxRecquired > 99999) {
+            } else if (maxAllowed > 99999) {
                 throw new IllegalArgumentException("Max recquired should not be empty or null");
             }
         }

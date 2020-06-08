@@ -47,27 +47,12 @@ class CourseServiceImplTest {
 	@Test
 	void testSave() {
 
-		/*
-		 * ArgumentCaptor<Course> valueCapture = ArgumentCaptor.forClass(Course.class);
-		 * Course course = new Course(1L,"Course");
-		 * 
-		 * courseDao.save(course);
-		 * 
-		 * Mockito.verify(courseDao).save(ArgumentCaptor.capture());
-		 * 
-		 * Course captured = argumentCaptor.getValue();
-		 */
-
 		doNothing().when(courseDao).save(any(Course.class));
 		
 	}
 
-
-
 	@Test
 	void testSaveWithError() {
-
-		//Course course = new Course.Builder("", null).build();
 		
 		Course course = createCourse();
 		doThrow(new IllegalArgumentException("error")).when(courseDao).save(any(Course.class));
@@ -132,7 +117,7 @@ class CourseServiceImplTest {
 	}
 
 	private Course createCourse() {
-		return new Course.Builder(1L,"Programming").build();
+		return new Course.Builder(1L, "Programming").build();
 
 	}
 
