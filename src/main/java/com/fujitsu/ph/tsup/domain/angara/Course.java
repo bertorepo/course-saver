@@ -31,16 +31,23 @@ public class Course {
             this.id = id;
         }
         
+        public Builder(String courseName) {
+            ValidateCourseName(courseName);
+            this.courseName = courseName;
+        }
+        public Course build() {
+            return new Course(this);
+
+        }
+
         private void ValidateCourseName(String courseName) {
             if (courseName.isEmpty() || courseName == null || courseName.length() > 50 || courseName.length() <= 5) {
                 throw new IllegalArgumentException("Provide the appropriate course name.");
             }
         }
 
-        public Course build() {
-            return new Course(this);
+        
         }
 
     }
 
-}

@@ -66,6 +66,16 @@ public class Employee {
             this.userName = userName;
         }
 
+        public Builder(Long id2, Long employeeNumber2, String firstName2, String lastName2, String emailAddress2,
+                String userName2) {
+            // TODO Auto-generated constructor stub
+        }
+
+        public Builder(String string, String firstName2, String lastName2, String emailAddress2, String userName2,
+                String string2) {
+            // TODO Auto-generated constructor stub
+        }
+
         private void validateUserName(String userName) {
             if (userName.isEmpty() || userName == null || userName.length() > 50 || userName.length() < 3) {
                 throw new IllegalArgumentException("Provide appropriate username.");

@@ -60,7 +60,7 @@ public class CourseSchedule {
         private Long instructorId;
         private Long id;
 
-        public Builder(Long courseId, Long instructorId, Long venueId, long l, int minRequired, int maxRequired,
+        public Builder(Long courseId, Long instructorId, Long venueId, int minRequired, int maxRequired,
                 String status) {
             ValidateCourseId(courseId);
             ValidateInstructorId(instructorId);
@@ -76,7 +76,7 @@ public class CourseSchedule {
             this.maxRequired = maxRequired;
             this.status = status;
         }
-        
+
         public CourseSchedule build() {
             return new CourseSchedule(this);
         }

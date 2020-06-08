@@ -32,6 +32,10 @@ public class Venue {
             this.id = id;
         }
 
+        public Builder(String venueName2, String string) {
+            // TODO Auto-generated constructor stub
+        }
+
         private void ValidateId(Long id) {
             if (id == 0 || id == null || id <= 10 || id >= 15) {
                 throw new IllegalArgumentException("Provide appropriate Id number.");
