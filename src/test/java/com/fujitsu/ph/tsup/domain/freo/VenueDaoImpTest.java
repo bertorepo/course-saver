@@ -36,12 +36,12 @@ public class VenueDaoImpTest {
 	    @Test
 	    void test() {
 	        Venue vn = new Venue.Builder("Crescent Park Hotel").builder();
-	        VenueDao.save(vn);
+	        venueDao.save(vn);
 	        Long vId = venueDao.returnGeneratedKey();
 	        System.out.println("ID: "+ vId);
 	        
 	        Venue ve = new Venue.Builder("Circuit Mall").builder();
-	        VenueDao.save(ve);
+	        venueDao.save(ve);
 	        Long vId1 = venueDao.returnGeneratedKey();
 	        System.out.println("ID: "+ vId);
 	        

@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 
-
 @JdbcTest
 @ActiveProfiles({"postgres-test-freo"})
 @AutoConfigureTestDatabase(replace=Replace.NONE)

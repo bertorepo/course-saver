@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 @ExtendWith(SpringExtension.class)
 class EmployeeServiceImpTest {
 
@@ -30,7 +29,7 @@ class EmployeeServiceImpTest {
 	            return new EmployeeServiceImp();
 	        }
  	    }
-
+	 
 	    @Autowired
 	    private EmployeeService employeeService;
 	  
@@ -47,7 +46,7 @@ class EmployeeServiceImpTest {
 	        employeeService.save(Employee);     
 	        
 	        assertEquals(Employee.getId(), 202006L);
-	        assertEquals(Employee.getEmployeeNumber(), "202007");
+	        assertEquals(Employee.getEmployeeNumber(), "202007L");
 	        assertEquals(Employee.getFirstName(), "faith");
 	        assertEquals(Employee.getLastName(), "freo");
 	        assertEquals(Employee.getEmailAddress(), "faithfreo@yy.com");

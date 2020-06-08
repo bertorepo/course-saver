@@ -8,7 +8,7 @@ public class CourseSchedule {
 	private Long venueId;
 	private int minRequired; 
 	private int maxAllowed; 
-	private String status;
+	private char status;
 	
 	protected CourseSchedule() {
 
@@ -49,7 +49,7 @@ public class CourseSchedule {
 		return maxAllowed;
 	}
 
-	public  String getStatus() {
+	public  char getStatus() {
 		return status;
 	}
 	
@@ -62,16 +62,16 @@ public class CourseSchedule {
 		private Long venueId;
 		private int minRequired; 
 		private int maxAllowed; 
-		private String status;
+		private char status;
 		
-		public Builder (Long Id, Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed, String status) {
+		public Builder (Long Id, Long courseId, Long instructorId, Long venueId, int minRequired, int maxAllowed, char status) {
 			validateId(Id);
 			validatecourseId(courseId);
 			validateinstructorId(instructorId);
 			validatevenueId(venueId);
 			validateminRequired(minRequired);
 			validatemaxAllowed(maxAllowed);
-			validatestatus(status);
+			validateId(status);
 			
 			this.Id = Id;
 			this.courseId = courseId;
@@ -83,26 +83,12 @@ public class CourseSchedule {
 		}
 		
 
-		public Builder( Long Id, long courseId, long instructorId, long venueId, int minRequired, int maxAllowed, String status) {
-			validateId(Id);
-			validatecourseId(courseId);
-			validateinstructorId(instructorId);
-			validatevenueId(venueId);
-			validateminRequired(minRequired);
-			validatemaxAllowed(maxAllowed);
-			validatestatus(status);
-		
-			this.Id=Id;
-			this.courseId = courseId;
-			this.instructorId = instructorId;
-			this.venueId = venueId;
-			this.minRequired = minRequired;
-			this.maxAllowed = maxAllowed;
-			this.status = status;
-
+		private void validateId(char status2) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		public Builder(long id, long courseId1, long instructorId1, long venueId1, long Id1, int maxAllowed1, int minRequired1, String Status ) {
+		public Builder(long id, long courseId1, long instructorId1, long venueId1, long Id1, int maxAllowed1, int minRequired1, char Status ) {
 			validateId(id);
 			validatecourseId(courseId1);
 			validateinstructorId(instructorId1);
@@ -119,6 +105,25 @@ public class CourseSchedule {
 			this.maxAllowed = maxAllowed1;
 			this.status = Status;
 		}
+
+		public Builder(long Id, long courseId, long instructorId, long venueId, int minRequired, int maxAllowed, char status) {
+			validateId(Id);
+			validatecourseId(courseId);
+			validateinstructorId(instructorId);
+			validatevenueId(venueId);
+			validateminRequired(minRequired);
+			validatemaxAllowed(maxAllowed);
+			validatestatus(status);
+		
+			this.Id=Id;
+			this.courseId = courseId;
+			this.instructorId = instructorId;
+			this.venueId = venueId;
+			this.minRequired = minRequired;
+			this.maxAllowed = maxAllowed;
+			this.status = status;
+		}
+
 
 		public CourseSchedule builder() {
 			 return new CourseSchedule(this);
@@ -153,7 +158,7 @@ public class CourseSchedule {
 			} else if(minRequired > 99999) {
                 throw new IllegalArgumentException("Minimum number of Participants Required should not exceed 99999");
             }  else if (String.valueOf(minRequired).equals(null)) {
-                throw new NullPointerException("Min Required should not be null.");
+                throw new NullPointerException("Minimum Required should not be null.");
             }
 		  }
 		}
@@ -161,15 +166,15 @@ public class CourseSchedule {
 			if (maxAllowed < 5 ) {
                 throw new IllegalArgumentException("Maximum Number of Participants should not be empty");
 			 } else if(maxAllowed > 99999) {
-                throw new IllegalArgumentException("Max Allowed should not exceed 99999");
+                throw new IllegalArgumentException("Maximum Allowed should not exceed 99999");
             } else if (String.valueOf(maxAllowed).equals(null)) {
-                throw new IllegalArgumentException("Max Allowed should not be null.");
+                throw new IllegalArgumentException("Maximum Allowed should not be null.");
             }
 		}
-		private static  void validatestatus(String status) {
-			if (status.isEmpty()) {
+		private static  void validatestatus(char status) {
+			if (status == '\u8888') {
 	            throw new IllegalArgumentException("Status must not be empty field");
-			 } else if(status.length() > 1) {
+			 } else if(Character.isWhitespace(status)) {
 	             throw new IllegalArgumentException("The status should be 1 characters");
 	        }	
   }

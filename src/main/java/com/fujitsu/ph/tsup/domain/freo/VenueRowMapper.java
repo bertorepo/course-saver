@@ -13,10 +13,10 @@ public class VenueRowMapper implements RowMapper<Venue> {
 	@Override
 	public Venue mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
-		String name = rs.getString("venue_name");
+		String name = rs.getString("venuName");
 		
-		Course course = new Course.Builder(id, venuename).builder();
-		return Venue;
+		Venue venue = new Venue.Builder(id, venueName).builder();
+		return venue;
 	}
 
 	

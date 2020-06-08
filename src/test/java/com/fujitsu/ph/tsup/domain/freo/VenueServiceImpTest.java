@@ -116,5 +116,5 @@ class VenueServiceImpTest {
 	    private Venue createVnVenue() {
 	       return new Venue.Builder(0L, "venueName").builder();
 	    }
-	  
+
 }

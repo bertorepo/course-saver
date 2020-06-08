@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class EmployeeDaoImp {
+public class EmployeeDaoImp implements EmployeeDao {
 
 	 @Autowired
 	    private NamedParameterJdbcTemplate template;
@@ -33,7 +33,6 @@ public class EmployeeDaoImp {
 	                .addValue("user_name", employee.getUserName());
 	        template.update(sql, namedParams, generatedKeyHolder);
 	        returnGeneratedKey();
-	   
 	    }
 
 	    @Override
@@ -56,5 +55,4 @@ public class EmployeeDaoImp {
 	    public Long returnGeneratedKey() {
 	        return (Long) generatedKeyHolder.getKeys().get("id");
 	    }
-	
 }
