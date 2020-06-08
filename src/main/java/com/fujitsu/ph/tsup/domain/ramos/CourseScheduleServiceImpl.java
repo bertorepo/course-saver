@@ -22,11 +22,11 @@ public class CourseScheduleServiceImpl implements CourseScheduleService {
 
 	@Override
 	public Set<CourseSchedule> findAll() {
-        Set<CourseSchedule> c = dao.findAll();
-        if (c.isEmpty() || c == null) {
+        Set<CourseSchedule> courseSchedule = dao.findAll();
+        if (courseSchedule.isEmpty() || courseSchedule == null) {
             throw new IllegalArgumentException("Invalid course schedule");
         }
-        return c;
+        return courseSchedule;
 	}
 
 	@Override

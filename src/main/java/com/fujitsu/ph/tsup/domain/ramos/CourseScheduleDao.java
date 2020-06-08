@@ -3,7 +3,7 @@ package com.fujitsu.ph.tsup.domain.ramos;
 import java.util.Set;
 
 public interface CourseScheduleDao {
-	void save(CourseSchedule courseSchedule);
+	Long save(CourseSchedule courseSchedule);
 
 	Set<CourseSchedule> findAll();
 	

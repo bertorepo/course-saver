@@ -47,25 +47,25 @@ public class CourseScheduleServiceImplTest {
     @Test
     public void testFindAll() {
         Set<CourseSchedule> courseSchedule = new HashSet<CourseSchedule>();
-        courseSchedule.add(new CourseSchedule.Builder(1000L, 2000L, 3000L, 5, 5, "R").build());
+        courseSchedule.add(new CourseSchedule.Builder(1000L, 2000L, 3000L, 15, 5, "R").build());
         when(courseScheduleDao.findAll()).thenReturn(courseSchedule);
         assertEquals(service.findAll().size(), courseSchedule.size());
     }
     
     @Test
     public void testSave() {
-        CourseSchedule courseSchedule = new CourseSchedule.Builder(1000L, 2000L, 3000L, 5, 5, "R").build();
+        CourseSchedule courseSchedule = new CourseSchedule.Builder(1000L, 2000L, 3000L, 15, 5, "R").build();
         service.save(courseSchedule);
         assertEquals(courseSchedule.getCourseId(), new Long(1000));
         assertEquals(courseSchedule.getInstructorId(), new Long(2000));
         assertEquals(courseSchedule.getVenueId(), new Long(3000));
-        assertEquals(courseSchedule.getMinRequired(), 5);
+        assertEquals(courseSchedule.getMinRequired(), 15);
         assertEquals(courseSchedule.getMaxAllowed(), 5);
         assertEquals(courseSchedule.getStatus(), "R");
     }
     
 	private CourseSchedule createCourseSchedule() {
-		return new CourseSchedule.Builder(1000L, 2000L, 3000L, 5, 5, "R").build();
+		return new CourseSchedule.Builder(1000L, 2000L, 3000L, 15, 5, "R").build();
 
 	}
 }

@@ -22,11 +22,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public Set<Employee> findAll() {
-        Set<Employee> e = dao.findAll();
-        if (e.isEmpty() || e == null) {
+        Set<Employee> employee = dao.findAll();
+        if (employee.isEmpty() || employee == null) {
             throw new IllegalArgumentException("Invalid employee");
         }
-        return e;
+        return employee;
 	}
 
 	@Override

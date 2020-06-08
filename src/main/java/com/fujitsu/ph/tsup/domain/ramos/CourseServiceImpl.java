@@ -32,11 +32,11 @@ private Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
     }
 	@Override
     public Set<Course> findAll() {
-        Set<Course> c = dao.findAll();
-        if (c.isEmpty() || c == null) {
+        Set<Course> course = dao.findAll();
+        if (course.isEmpty() || course == null) {
             throw new IllegalArgumentException("Invalid course");
         }
-        return c;
+        return course;
     }
 }
 
