@@ -45,6 +45,8 @@ public class Employee {
 		return userName;
 	}
 	
+	
+	
 	public static class Builder{
 		private Long id;
 		private String employeeNumber;
@@ -66,6 +68,21 @@ public class Employee {
 	         this.emailAddress = emailAddress;
 	         this.userName = userName;
 		}
+		
+		public Builder(Long id, String employeeNumber, String lastName, String firstName, String emailAddress, String userName) {
+            validateEmployeeNumber(employeeNumber);
+            validateLastName(lastName);
+            validateFirstName(firstName);
+            validateEmailAddress(emailAddress);
+            validateUserName(userName);
+            
+            this.id = id;
+            this.employeeNumber = employeeNumber;
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.emailAddress = emailAddress;
+            this.userName = userName;
+        }
 		
 		public Employee build() {
 			return new Employee(this);

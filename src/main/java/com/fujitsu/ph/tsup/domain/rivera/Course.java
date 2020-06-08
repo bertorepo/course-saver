@@ -25,10 +25,18 @@ public class Course {
 		private Long courseId;
 		private String courseName;
 		
-		public Builder(String courseName) {
+		public Builder(Long courseId, String courseName) {
 			validateCourseName(courseName);
+			
+			this.courseId = courseId;
 			this.courseName = courseName;
 		}
+		
+		public Builder(String courseName) {
+            validateCourseName(courseName);
+            
+            this.courseName = courseName;
+        }
 		
 		public Course build() {
 			return new Course(this);
