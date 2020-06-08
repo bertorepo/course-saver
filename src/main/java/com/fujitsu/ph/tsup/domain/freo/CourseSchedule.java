@@ -173,4 +173,4 @@ public class CourseSchedule {
 	             throw new IllegalArgumentException("The status should be 1 characters");
 	        }	
   }
-}	
+}

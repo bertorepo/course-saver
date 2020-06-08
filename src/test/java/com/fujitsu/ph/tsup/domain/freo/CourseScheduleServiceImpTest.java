@@ -134,6 +134,5 @@ public class CourseScheduleServiceImpTest {
 	    
 	    private CourseSchedule createschCourseSchedule() {
 	       return new CourseScheduleService.builder(20202L, 0000L, 5555L, 8888L, 1, 2, "O").builder();
-	    }
-	   
+	    }   
 }

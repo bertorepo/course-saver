@@ -7,5 +7,4 @@ public interface VenueDao {
 	  Set<Venue> findAll();
 	Venue findById(Long Id);
 	Long returnGeneratedKey();
-	
 }

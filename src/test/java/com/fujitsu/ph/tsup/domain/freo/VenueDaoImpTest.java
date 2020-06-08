@@ -3,7 +3,6 @@ package com.fujitsu.ph.tsup.domain.freo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -57,7 +56,6 @@ public class VenueDaoImpTest {
 	        Set<Venue> VnuSet = venueDao.findAll();
 	        assertNotNull(VnuSet.size());
 	    }
-	    
 	    
 	    
 	    @Test

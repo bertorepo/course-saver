@@ -6,7 +6,7 @@ public class VenueException extends RuntimeException {
 	    public VenueException(String vn) {
 	        super(vn);
 	    }
-	    
+	   
 	    public VenueException(String vn, Throwable cause) {
 	        super(vn, cause);
 	    }

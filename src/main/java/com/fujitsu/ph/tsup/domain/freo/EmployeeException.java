@@ -6,7 +6,6 @@ public class EmployeeException extends RuntimeException{
 	    public EmployeeException(String ee) {
 	        super(ee);
 	    }
-	    
 	    public EmployeeException(String ee, Throwable cause) {
 	        super(ee, cause);
 	    }

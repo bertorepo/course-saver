@@ -57,8 +57,7 @@ public class CourseDaoImpTest {
 	        Set<Course> csSet = cdao.findAll();
 	        assertNotNull(csSet.size());
 	        
-	    }
-	    
+	    }    
 	    @Test
 	    void Test_NotFound() {
 	        assertThrows(EmptyResultDataAccessException.class, () -> {

@@ -7,7 +7,7 @@ public class CourseException extends RuntimeException {
 	public CourseException(String crsmsg) {
 		super(crsmsg);
 	}
-	
+
 	public CourseException(String crsmsg , Throwable cause) {
 		super(crsmsg , cause);
 	}

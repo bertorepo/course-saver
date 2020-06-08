@@ -67,8 +67,7 @@ public class Employee {
 			this.firstName = firstName;
 			this.lastName = lastName;
 			this.emailAddress = emailAddress;
-			this.userName = userName;
-			
+			this.userName = userName;	
 		}	
 		 public Employee builder() {
 			 return new Employee(this);

@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 
 
-
 public class VenueRowMapper implements RowMapper<Venue> {
 
 	@Override

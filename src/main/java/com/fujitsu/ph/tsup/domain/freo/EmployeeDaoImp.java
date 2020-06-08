@@ -57,5 +57,4 @@ public class EmployeeDaoImp {
 	        return (Long) generatedKeyHolder.getKeys().get("id");
 	    }
 	
-	
 }

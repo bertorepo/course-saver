@@ -6,7 +6,7 @@ public class CourseScheduleException extends RuntimeException {
 	    public CourseScheduleException(String e) {
 	        super(e);
 	    }
-	    
+	   
 	    public CourseScheduleException(String e, Throwable cause) {
 	        super(e, cause);
 	    }

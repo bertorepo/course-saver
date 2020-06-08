@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 
 public class CourseRowMapper implements RowMapper<Course> {
-
 	
 	@Override
 	public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
