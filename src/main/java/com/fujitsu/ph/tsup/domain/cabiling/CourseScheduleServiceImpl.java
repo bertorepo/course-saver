@@ -3,6 +3,7 @@ package com.fujitsu.ph.tsup.domain.cabiling;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,8 +16,8 @@ public class CourseScheduleServiceImpl implements CourseScheduleService {
 	public void save(CourseSchedule courseSchedule) {
 		try {
 			dao.save(courseSchedule);
-		} catch (IllegalArgumentException ex) {
-			throw new NewException("Schedule not saved", ex);
+		} catch (DataAccessException ex) {
+			throw new CourseScheduleException("Schedule not saved", ex);
 		}
 	}
 
@@ -24,8 +25,8 @@ public class CourseScheduleServiceImpl implements CourseScheduleService {
 	public Set<CourseSchedule> findAll() {
 		try {
 			return dao.findAll();
-		} catch (IllegalArgumentException ex) {
-			throw new NewException("No schedule found", ex);
+		} catch (DataAccessException ex) {
+			throw new CourseScheduleException("No schedule found", ex);
 		}
 	}
 
@@ -33,8 +34,8 @@ public class CourseScheduleServiceImpl implements CourseScheduleService {
 	public CourseSchedule findById(Long id) {
 		try {
 			return dao.findById(id);
-		} catch (IllegalArgumentException ex) {
-			throw new NewException("No schedule found for that id", ex);
+		} catch (DataAccessException ex) {
+			throw new CourseScheduleException("No schedule found for that id", ex);
 		}
 	}
 
