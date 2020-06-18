@@ -1,4 +1,4 @@
-package com.fujitsu.ph.tsup.domain.abad;
+package com.fujitsu.ph.tsup.domain.rivera;
 
 import java.util.HashSet;
 import java.util.Set;

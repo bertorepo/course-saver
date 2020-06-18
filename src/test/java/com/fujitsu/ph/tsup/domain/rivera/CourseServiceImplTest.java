@@ -57,7 +57,7 @@ public class CourseServiceImplTest {
     public void testSave() {
         Course course = new Course.Builder(1000L, "Course1").build();
         service.save(course);
-        assertEquals(course.getId(), new Long(1000));
+        assertEquals(course.getCourseId(), new Long(1000));
         assertEquals(course.getCourseName(), "Course1");    
     }
     
