@@ -20,43 +20,43 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class EmployeeDaoImplTest {
 
-    @Autowired
-    private EmployeeDao employeeDao;
-    
-    @TestConfiguration
-    static class TestingConfiguration {
-        
-        @Bean
-        public EmployeeDao employeeDao() {
-            return new EmployeeDaoImpl();
-        }
-    }
-    
-    @Test
-    public void test() {
-        Employee employee1 = new Employee.Builder("12345678", "00001111", "Mary Rose", "Angara", "m.angara", "mangara").build();
-        Long e = employeeDao.save(employee1);
-        System.out.println("ID1: " + e);
-        
-        Employee dbEmployee = employeeDao.findById(e);
-        assertEquals("12345678", dbEmployee.getId());
-        assertEquals("00001111", dbEmployee.getEmployeeNumber());
-        assertEquals("Mary Rose", dbEmployee.getFirstName());
-        assertEquals("Angara", dbEmployee.getLastName());
-        assertEquals("m_angara", dbEmployee.getEmailAddress());
-        assertEquals("mangara", dbEmployee.getUserName());
-        
-        Set<Employee> emp = employeeDao.findAll();
-        assertNotNull(emp.size());
-    }
-    
-    @Test
-    void notFound_Test() {
-        assertThrows(AccessException.class, () -> {
-            employeeDao.findById(1L);
-        });
-        
-        
-    }
+//    @Autowired
+//    private EmployeeDao employeeDao;
+//    
+//    @TestConfiguration
+//    static class TestingConfiguration {
+//        
+//        @Bean
+//        public EmployeeDao employeeDao() {
+//            return new EmployeeDaoImpl();
+//        }
+//    }
+//    
+//    @Test
+//    public void test() {
+//        Employee employee1 = new Employee.Builder("12345678", "00001111", "Mary Rose", "Angara", "m.angara", "mangara").build();
+//        //Long e = employeeDao.save(employee1);
+//        System.out.println("ID1: " + e);
+//        
+//        Employee dbEmployee = employeeDao.findById(e);
+//        assertEquals("12345678", dbEmployee.getId());
+//        assertEquals("00001111", dbEmployee.getEmployeeNumber());
+//        assertEquals("Mary Rose", dbEmployee.getFirstName());
+//        assertEquals("Angara", dbEmployee.getLastName());
+//        assertEquals("m_angara", dbEmployee.getEmailAddress());
+//        assertEquals("mangara", dbEmployee.getUserName());
+//        
+//        Set<Employee> emp = employeeDao.findAll();
+//        assertNotNull(emp.size());
+//    }
+//    
+//    @Test
+//    void notFound_Test() {
+//        assertThrows(AccessException.class, () -> {
+//            employeeDao.findById(1L);
+//        });
+//        
+//        
+//    }
 
 }
