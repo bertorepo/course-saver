@@ -15,4 +15,4 @@ public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
     Course Course = new Course.Builder(id, name).builder();
     
     return Course;
-}
+}}
