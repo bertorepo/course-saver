@@ -1,6 +1,5 @@
 package com.fujitsu.ph.tsup.domain.angara;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,8 +52,8 @@ public class CourseScheduleDaoImpl implements CourseScheduleDao {
     }
 
     @Override
-    public void save(CourseSchedule courseSchedule) {
-        return;
+    public Long save(CourseSchedule courseSchedule) {
+        return null;
 
     }
 

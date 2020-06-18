@@ -9,6 +9,8 @@ public interface CourseScheduleDao {
 
     CourseSchedule findById(Long id);
 
+    Long saveLong1(CourseSchedule courseSchedule);
+
     
 
 }
