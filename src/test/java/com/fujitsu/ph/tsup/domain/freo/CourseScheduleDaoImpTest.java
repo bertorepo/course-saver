@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
-
+/*
 
 @JdbcTest
 @ActiveProfiles({"postgres-test-freo"})
@@ -85,3 +85,4 @@ public class CourseScheduleDaoImpTest {
 	        });
 	    }
 }
+*/

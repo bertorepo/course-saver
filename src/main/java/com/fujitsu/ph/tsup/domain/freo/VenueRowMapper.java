@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 
-
+/*
 public class VenueRowMapper implements RowMapper<Venue> {
 
 	@Override
@@ -23,7 +23,7 @@ public class VenueRowMapper implements RowMapper<Venue> {
 
 	}
 
-	
+	*/
 
 
 

@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
+/*
 
 public class VenueDaoImp implements VenueDao {
 
@@ -51,3 +51,4 @@ public class VenueDaoImp implements VenueDao {
 		        return (Long) generatedKeyHolder.getKeys().get("id");
 		    }
 }
+*/

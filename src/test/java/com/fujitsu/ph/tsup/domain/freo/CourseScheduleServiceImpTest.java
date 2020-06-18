@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
+/*
 
  
 @ExtendWith(SpringExtension.class)
@@ -136,3 +136,4 @@ public class CourseScheduleServiceImpTest {
 	       return new CourseSchedule.Builder(20202L, 0000L, 5555L, 8888L, 1, 2, "O").builder();
 	    }   
 }
+*/
