@@ -41,7 +41,7 @@ public class Venue {
         }
 
         private void validateVenueName(String venueName) {
-            if (venueName.isBlank() ||venueName == null || venueName.isEmpty())
+            if (venueName == null || venueName.isEmpty())
                 throw new IllegalArgumentException("Venue Name should not be empty");
 
         }

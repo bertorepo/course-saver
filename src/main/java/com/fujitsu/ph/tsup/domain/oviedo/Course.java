@@ -56,7 +56,7 @@ public class Course {
 		}
 
 		private void validateCourse(String strCourse) {
-			if (strCourse == null || strCourse.isBlank() || strCourse.isEmpty() || strCourse.length() < 50
+			if (strCourse == null || strCourse.isEmpty() || strCourse.length() < 50
 					|| strCourse.length() > 5) {
 				throw new IllegalArgumentException("Course should not be empty");
 			}
