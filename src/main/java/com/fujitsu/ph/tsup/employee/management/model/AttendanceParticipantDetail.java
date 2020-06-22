@@ -3,7 +3,7 @@ package com.fujitsu.ph.tsup.employee.management.model;
 //==================================================================================================
 //$Id:PR03$
 //Project Name :Training Sign Up
-//System Name  :Generate Attendance Sheet
+//System Name  :Attendance process
 //Class Name   :AttendanceParticipantDetail.java
 //
 //<<Modification History>>
