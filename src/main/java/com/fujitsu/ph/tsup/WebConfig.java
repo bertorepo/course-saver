@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 
-        configurer.favorPathExtension(true)
+        configurer
     		.ignoreAcceptHeader(false)
             .defaultContentType(MediaType.TEXT_HTML)
             .mediaType("html", MediaType.TEXT_HTML)
