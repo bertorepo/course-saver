@@ -32,32 +32,32 @@ public class CourseScheduleListForm {
     /* Set of Course Schedule Form */
     private Set<CourseScheduleDetailForm> courseSchedules;
 
-    /* Course From Date Getter */
+    /** Course From Date Getter */
     public ZonedDateTime getFromDateTime() {
         return fromDateTime;
     }
 
-    /* Course From Date Setter */
+    /** Course From Date Setter */
     public void setFromDateTime(ZonedDateTime fromDateTime) {
         this.fromDateTime = fromDateTime;
     }
 
-    /* Course To Date Getter */
+    /** Course To Date Getter */
     public ZonedDateTime getToDateTime() {
         return toDateTime;
     }
 
-    /* Course To Date Setter */
+    /** Course To Date Setter */
     public void setToDateTime(ZonedDateTime toDateTime) {
         this.toDateTime = toDateTime;
     }
 
-    /* Course Schedule Set Getter */
+    /** Course Schedule Set Getter */
     public Set<CourseScheduleDetailForm> getCourseSchedules() {
         return courseSchedules;
     }
 
-    /* Course Schedule Set Setter */
+    /** Course Schedule Set Setter */
     public void setCourseSchedules(Set<CourseScheduleDetailForm> courseSchedules) {
         this.courseSchedules = courseSchedules;
     }
