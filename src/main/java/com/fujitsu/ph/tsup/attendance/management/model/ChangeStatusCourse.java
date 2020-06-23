@@ -22,12 +22,12 @@ package com.fujitsu.ph.tsup.attendance.management.model;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/22/2020 | WS) h.francisco       | New Creation
 public class ChangeStatusCourse {
-    
+
     /**
      * Course Schedule Detail Id
      */
     private Long id;
-    
+
     /**
      * Course Name
      */
@@ -60,7 +60,7 @@ public class ChangeStatusCourse {
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
-    
+
     @Override
     public String toString() {
         return "ChangeStatusCourse [id = " + id + ", courseName = " + courseName + "]";
