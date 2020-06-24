@@ -1,6 +1,9 @@
 package com.fujitsu.ph.tsup.authz.core.model;
 
+import java.util.Set;
+
 import org.springframework.data.annotation.Id;
+
 /**
  * 
  * @author j.macabudbud
@@ -10,61 +13,89 @@ public class EmployeeAuth {
 	@Id
 	private Long id;
 	private String username;
-	private String role;
+	private Set<String> authzSet;
+
+	protected EmployeeAuth() {
+	}
 
 	public static class Builder {
-		private final String username;
-		private final String role;
-
 		private Long id;
+		private String username;
+		private Set<String> authzSet;
 
-		public Builder(String username, String role) {
+		/**
+		 * 
+		 * @param username
+		 * @param authzSet
+		 */
+		public Builder(String username, Set<String> authzSet) {
 			validateUsername(username);
-			validateRole(role);
+			validateRole(authzSet);
 			this.username = username;
-			this.role = role;
+			this.authzSet = authzSet;
 		}
 
-		private void validateRole(String role) {
-			if (role == null || role.isEmpty()) {
-				throw new IllegalArgumentException("role should have a value");
+		/**
+		 * 
+		 * @param authzSet
+		 */
+		private void validateRole(Set<String> authzSet) {
+			if (authzSet == null || authzSet.isEmpty() || authzSet.size() == 0) {
+				throw new IllegalArgumentException("Authorization should not be empty");
 			}
-			
+
 		}
 
+		/**
+		 * 
+		 * @param username
+		 */
 		private void validateUsername(String username) {
-			if (username == null || username.isEmpty()) {
-				throw new IllegalArgumentException("username should have a value");
+			if (username == null || username.isEmpty() || username.length() == 0) {
+				throw new IllegalArgumentException("Username should not be empty");
 			}
-			
+
 		}
-		
+
 		public EmployeeAuth build() {
 			return new EmployeeAuth(this);
 		}
 	}
-	
-	protected EmployeeAuth(Builder builder) {
-		this.role = builder.role;
+
+	/**
+	 * 
+	 * @param builder
+	 */
+	private EmployeeAuth(Builder builder) {
+		this.authzSet = builder.authzSet;
 		this.username = builder.username;
 		this.id = builder.id;
 	}
-	
+
 	public Long getId() {
+		if (id == null || id.toString().isEmpty() || id == 0) {
+			throw new IllegalArgumentException("Username should not be empty");
+		}
 		return id;
 	}
 
-	public String getRole() {
-		return role;
+	public Set<String> getRole() {
+		if (authzSet == null || authzSet.isEmpty() || authzSet.size() == 0) {
+			throw new IllegalArgumentException("Authorization should not be empty");
+		}
+		return authzSet;
 	}
 
 	public String getusername() {
+		if (username == null || username.isEmpty() || username.length() == 0) {
+			throw new IllegalArgumentException("Username should not be empty");
+		}
 		return username;
 	}
 
 	@Override
 	public String toString() {
-		return "EmployeeAuth [id=" + id + ", username=" + username + ", role=" + role + "]";
+		return "EmployeeAuth [id=" + id + ", username=" + username + ", authzSet=" + authzSet + "]";
 	}
 
 }
