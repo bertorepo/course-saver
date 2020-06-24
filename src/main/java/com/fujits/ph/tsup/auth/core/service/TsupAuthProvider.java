@@ -9,17 +9,23 @@ import org.springframework.stereotype.Component;
 
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.auth.provider.FpiLdapAuthenticationProvider;
+import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
 import com.fujitsu.ph.tsup.authz.core.service.AuthorizationService;
-import com.fujitsu.ph.tsup.employee.management.model.Employee;
-import com.fujitsu.ph.tsup.employee.management.service.EmployeeService;
 
-
+/**
+ * <pre>
+ * It is a Class for employee authentication
+ * </pre>
+ * 
+ * @version 0.01
+ * @author j.macabudbud
+ */
 @Component
 public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
 	private Logger logger = LoggerFactory.getLogger(TsupAuthProvider.class);
 
 	@Autowired
-	private EmployeeService employeeService;
+	private EmployeeAuth employeeAuth;
 
 	@Autowired
 	private AuthorizationService authorizationService;
@@ -28,14 +34,10 @@ public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
 	protected FpiUser getUser(String username) {
 		FpiUser fpiUser = new FpiUser();
 		
-		Employee employee = employeeService.findByUserName(username);
-		fpiUser.setEmployeeNumber(employee.getNumber());
-		fpiUser.setId(employee.getId());
-		fpiUser.setFirstName(employee.getName().getFirstName());
-		fpiUser.setLastName(employee.getName().getLastName());
+		fpiUser.setId(employeeAuth.getId());
 		fpiUser.setUserName(username);
 		
-		List<String> roles = authorizationService.findByUserName(username);
+		List<String> roles = authorizationService.findByUsername(username);
 		fpiUser.setRoles(roles);
 		
 		logger.debug("User:{}", fpiUser);

@@ -6,6 +6,14 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * <pre>
+ * It is a Class web configuration and controller registry
+ * </pre>
+ * 
+ * @version 0.01
+ * @author j.macabudbud
+ */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     

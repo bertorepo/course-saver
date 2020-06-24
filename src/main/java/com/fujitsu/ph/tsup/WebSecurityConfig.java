@@ -32,15 +32,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/images/**",
 				"/js/**" 
 		};
-		
+			
 		http
 			.csrf()
 			.and() 
 			.authorizeRequests()
 				.antMatchers(resourcesList).permitAll()
-				.antMatchers("/api/member/**").hasRole("MEMBER")
-				.antMatchers("/api/instructor/**").hasRole("INSTRUCTOR")
-				.antMatchers("/api/pmo/**").hasRole("PMO")
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
