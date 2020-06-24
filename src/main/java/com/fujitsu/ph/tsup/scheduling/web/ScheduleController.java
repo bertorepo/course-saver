@@ -13,19 +13,45 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
+import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
+
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/scheduling")
 public class ScheduleController {
     private ScheduleService scheduleService;
     private static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
+    
+    
+    @RequestMapping(value = "/new" , method = RequestMethod.GET)
+    public ModelAndView showCourseScheduleNewForm() {
+    	
+    	Set<CourseForm> CourseFormList = scheduleService.findAllCourses();
+    	Set<VenueForm> VenueFormList = scheduleService.findAllVenues();
+    	Set<InstructorForm> InstructorFormList = scheduleService.findAllInstructors();
+    	
+    	CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
+    	
+    	courseScheduleNewForm.setInstructors(InstructorFormList);
+    	courseScheduleNewForm.setVenues(VenueFormList);
+    	courseScheduleNewForm.setCourses(CourseFormList);
+    	
+		return new ModelAndView("scheduleNew", "courseScheduleNewForm", courseScheduleNewForm);
+    	
+    	
+    }
+     
     
     @PostMapping("/new")
     public String createCourseSchedule(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form, 
