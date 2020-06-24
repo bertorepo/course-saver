@@ -57,7 +57,7 @@ public interface AttendanceDao {
      * @param id
      * @return
      */
-    Set<CourseAttendance> findCourseAttendanceByCourseScheduleDetailById(Long id);
+    Set<CourseAttendance> findCourseAttendanceByCourseScheduleDetailId(Long id);
 
     /**
      * Creates the course attendance
