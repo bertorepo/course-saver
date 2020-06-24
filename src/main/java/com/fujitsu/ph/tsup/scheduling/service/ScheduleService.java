@@ -32,17 +32,42 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 public interface ScheduleService {
     
     /**
+     * <pre>
      * Finds all scheduled courses based on the given date range
+     * <pre>
      * @param fromDate
      * @param toDate
+     * @return Set<CourseSchedule>
      */
-    //Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDate, ZonedDateTime toDate);
+    Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDate, ZonedDateTime toDate);
     
-    //Set<CourseForm> findAllCourses();
+    /**
+     * <pre>
+     * Finds all Courses based on the given date range
+     * <pre>
+     * 
+     * @return Set<CourseForm>
+     */
+    Set<CourseForm> findAllCourses();
     
-    //Set<InstructorForm> findAllInstructors();
+    /**
+     * <pre>
+     * Finds all Instructors based on the given date range
+     * <pre>
+     * 
+     * @return Set<InstructorForm>
+     */
+    Set<InstructorForm> findAllInstructors();
     
-    //Set<VenueForm> findAllVenues();
+    /**
+     * <pre>
+     * Finds all Venues based on the given date range
+     * <pre>
+     * 
+     * @return Set<VenueForm>
+     */
+    Set<VenueForm> findAllVenues();
+    
     /**
      * Create a course schedule
      * @param courseSchedule
