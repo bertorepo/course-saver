@@ -1,4 +1,5 @@
 package com.fujitsu.ph.tsup.scheduling.model;
+
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up

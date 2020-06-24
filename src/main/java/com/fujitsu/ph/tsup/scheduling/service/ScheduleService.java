@@ -1,8 +1,5 @@
 package com.fujitsu.ph.tsup.scheduling.service;
 
-import java.time.ZonedDateTime;
-import java.util.Set;
-
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -23,6 +20,9 @@ import java.util.Set;
 * @author jc.jimenez
 *
 */
+
+import java.time.ZonedDateTime;
+import java.util.Set;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;

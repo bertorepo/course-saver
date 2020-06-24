@@ -1,7 +1,5 @@
 package com.fujitsu.ph.tsup.scheduling.domain;
 
-import java.util.Set;
-
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -25,6 +23,7 @@ import java.util.Set;
 *
 */
 
+import java.util.Set;
 
 public class CourseSchedule {
 	

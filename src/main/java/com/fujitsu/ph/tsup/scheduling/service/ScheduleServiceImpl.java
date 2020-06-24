@@ -31,8 +31,24 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 * <pre>
 * @version 0.01
 * @author j.macabugao
-*
+* @author jc.jimenez
 */
+
+//=======================================================
+//$Id: PR02$
+//Project Name: Training Sign Up
+//Class Name: CourseScheduleNewForm.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by      | Content
+//--------+------------+-----------------+---------------
+//0.01    | 06/24/2020 | WS) JC. Jimenez | New Creation
+//        |            | WS) J. Macabugao| 
+//
+//
+//
+//=======================================================
+
 public class ScheduleServiceImpl implements ScheduleService{
 	
 	/**
@@ -41,26 +57,50 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Autowired
 	private ScheduleDao scheduleDao;
 
-
+	/**
+	 * <pre>
+	 * Finds all scheduled courses based on the given date range
+	 * Call scheduleDao.findAllScheduledCourses using the given fromDateTime, toDateTime and return the result
+	 * <pre>
+	 * 
+	 * @param fromDate
+	 * @param toDate
+	 */
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDate,
             ZonedDateTime toDate) {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            return scheduleDao.findAllScheduledCourses(fromDate, toDate);
+        } catch (DataAccessException ex) {
+            throw new IllegalArgumentException("Can't access fromDate and toDate.");
+        }
     }
-
+    
+    /**
+     * <pre>
+     * Finds all courses.
+     * Call scheduleDao.findAllCourses and return the result.
+     * <pre>
+     */
     @Override
     public Set<CourseForm> findAllCourses() {
-        // TODO Auto-generated method stub
-        return null;
+        Set<CourseForm> CourseFormList = scheduleDao.findAllCourses();
+        try {
+            if(CourseFormList == null || CourseFormList.isEmpty()) {
+                throw new IllegalArgumentException("Can't find Courses");
+            } else {
+                return CourseFormList;
+            }    
+        } catch (DataAccessException ex) {
+            throw new IllegalArgumentException("Can't access Courses");
+        }
     }
 
 	/**
      * <pre>
      * Finds all instructors
+     * Call scheduleDao.findAllInstructors and return the result
      * <pre>
-     * 
-     * @return
      */
     @Override
     public Set<InstructorForm> findAllInstructors() {
@@ -80,9 +120,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 	/**
      * <pre>
      * Finds all venues
+     * Call scheduleDao.findAllVenues and return the result
      * <pre>
-     * 
-     * @return
      */
     @Override
     public Set<VenueForm> findAllVenues() {
@@ -102,6 +141,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	/**
      * <pre>
      * Create a course schedule
+     * Call the scheduleDao.saveCourseSchedule using the given courseSchedule
      * <pre>
      * 
      * @param courseSchedule

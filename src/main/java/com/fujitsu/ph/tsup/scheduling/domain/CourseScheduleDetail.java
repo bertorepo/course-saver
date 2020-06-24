@@ -1,8 +1,5 @@
 package com.fujitsu.ph.tsup.scheduling.domain;
 
-import java.time.ZonedDateTime;
-import java.time.Duration;
-
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -17,15 +14,17 @@ import java.time.Duration;
 //=======================================================
 
 /**
- * <pre>
- * The Course Schedule Detail Model.
- * This uses a Builder Pattern
- * <pre>
- * @version 0.01
- * @author jc.jimenez
- *
- */
+* <pre>
+* The Course Schedule Detail Model.
+* This uses a Builder Pattern
+* <pre>
+* @version 0.01
+* @author jc.jimenez
+*
+*/
 
+import java.time.ZonedDateTime;
+import java.time.Duration;
 
 public class CourseScheduleDetail {
     
