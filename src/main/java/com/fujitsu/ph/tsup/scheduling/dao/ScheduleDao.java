@@ -3,8 +3,8 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import com.fujitsu.ph.tsup.employee.management.model.EmployeeForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
+import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 //=======================================================
@@ -48,7 +48,7 @@ public interface ScheduleDao {
      * Finds all instructors
      * 
      */
-	Set<EmployeeForm>findAllInstructors();
+	Set<InstructorForm> findAllInstructors();
 	
 	 /**
      * Finds all venues

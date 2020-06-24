@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import com.fujitsu.ph.tsup.domain.jimenez.CourseScheduleException;
 import com.fujitsu.ph.tsup.scheduling.dao.ScheduleDao;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 //=======================================================
@@ -40,6 +41,64 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Autowired
 	private ScheduleDao scheduleDao;
 
+
+    @Override
+    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDate,
+            ZonedDateTime toDate) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Set<CourseForm> findAllCourses() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+	/**
+     * <pre>
+     * Finds all instructors
+     * <pre>
+     * 
+     * @return
+     */
+    @Override
+    public Set<InstructorForm> findAllInstructors() {
+    	 Set<InstructorForm> InstructorFormList = scheduleDao.findAllInstructors();
+         try {
+             if(InstructorFormList == null || InstructorFormList.isEmpty()) {
+                 throw new IllegalArgumentException("Can't find Instructors");
+             } else {
+                 return InstructorFormList;
+             }    
+         } catch (DataAccessException ex) {
+             throw new IllegalArgumentException("Can't access Instructors");
+         }
+         
+    }
+    
+	/**
+     * <pre>
+     * Finds all venues
+     * <pre>
+     * 
+     * @return
+     */
+    @Override
+    public Set<VenueForm> findAllVenues() {
+    	 Set<VenueForm> VenueFormList = scheduleDao.findAllVenues();
+         try {
+             if(VenueFormList == null || VenueFormList.isEmpty()) {
+                 throw new IllegalArgumentException("Can't find Venues");
+             } else {
+                 return VenueFormList;
+             }    
+         } catch (DataAccessException ex) {
+             throw new IllegalArgumentException("Can't access Venues");
+         }
+         
+    }
+    
 	/**
      * <pre>
      * Create a course schedule
@@ -56,32 +115,6 @@ public class ScheduleServiceImpl implements ScheduleService{
 	        	 throw new IllegalArgumentException("No records found"); 
 	        }
 	    }
-
-    @Override
-    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDate,
-            ZonedDateTime toDate) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Set<CourseForm> findAllCourses() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Set<InstructorForm> findAllInstructors() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Set<VenueForm> findAllVenues() {
-        // TODO Auto-generated method stub
-        return null;
-    } 
-	}
-	
+}
 	
 
