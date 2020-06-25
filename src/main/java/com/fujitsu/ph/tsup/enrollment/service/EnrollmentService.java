@@ -43,8 +43,7 @@ public interface EnrollmentService {
 	
 	/** Decline the course which the participant was previously enrolled */
 	void declineCourse(CourseParticipant courseParticipant);
-	
+
 	/** Cancels a scheduled course */
 	void cancel(Long id);
-	
 }
