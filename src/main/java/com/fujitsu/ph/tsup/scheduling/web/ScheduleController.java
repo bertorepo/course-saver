@@ -9,11 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
@@ -25,8 +26,6 @@ import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 
-import org.springframework.web.servlet.ModelAndView;
-
 @Controller
 @RequestMapping("/scheduling")
 public class ScheduleController {
@@ -34,20 +33,22 @@ public class ScheduleController {
     private static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
     
     
-    @RequestMapping(value = "/new" , method = RequestMethod.GET)
-    public ModelAndView showCourseScheduleNewForm() {
+    @GetMapping("/new")
+    public String showCourseScheduleNewForm(Model model) {
     	
-    	Set<CourseForm> CourseFormList = scheduleService.findAllCourses();
-    	Set<VenueForm> VenueFormList = scheduleService.findAllVenues();
-    	Set<InstructorForm> InstructorFormList = scheduleService.findAllInstructors();
+    	Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+    	Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+    	Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
     	
     	CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
     	
-    	courseScheduleNewForm.setInstructors(InstructorFormList);
-    	courseScheduleNewForm.setVenues(VenueFormList);
-    	courseScheduleNewForm.setCourses(CourseFormList);
+    	courseScheduleNewForm.setInstructors(instructorFormList);
+    	courseScheduleNewForm.setVenues(venueFormList);
+    	courseScheduleNewForm.setCourses(courseFormList);
     	
-		return new ModelAndView("scheduleNew", "courseScheduleNewForm", courseScheduleNewForm);
+    	model.addAttribute("scheduleNew", courseScheduleNewForm);
+    	
+	return "scheduling/scheduleNew";
     	
     	
     }
