@@ -126,4 +126,10 @@ public class CourseDeclineForm {
     public void setReason(String reason) {
         this.reason = reason;
     }
+    
+    public String toString() {
+        return "CourseScheduleDetailForm [id=" + id + ", courseName=" + courseName + ", instructorName=" + instructorName
+        		+ ", venueName=" + venueName + ", participantName=" + participantName + ", courseScheduleDetailsForm=" 
+        		+ courseScheduleDetailsForm + ", registrationDate=" + registrationDate + ", reason=" + reason + "]";
+    }
 }
