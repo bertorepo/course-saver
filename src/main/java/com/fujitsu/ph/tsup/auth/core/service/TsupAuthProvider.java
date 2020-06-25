@@ -1,4 +1,4 @@
-package com.fujits.ph.tsup.auth.core.service;
+package com.fujitsu.ph.tsup.auth.core.service;
 
 import java.util.List;
 
