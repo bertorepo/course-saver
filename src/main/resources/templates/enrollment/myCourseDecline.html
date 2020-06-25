@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>My Course Decline</title>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	
+</head>
+
+<body>
+	<div th:insert="fragments/general.html :: header"> </div>
+	
+	<div class="container mt-5">
+		<form class="form-horizontal">
+			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
+			<hr>
+			<div class="card">
+				<div class="card-body">
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">From Date</label>
+						<div class="col-lg-3">
+							<input type="date" class="form-control" id="" >
+						</div>
+						<label class="col-lg-2 col-form-label">To Date</label>
+						<div class="col-lg-3">
+							<input type="date" class="form-control" id="" >
+						</div>
+					</div>
+					<div class="float-right">
+						<input type="submit" class="btn btn-success" value="Submit">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--Success Modal-->
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<h5 class="modal-title">Success!</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Your registration has been successfully cancelled!</label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Success Modal End-->
+		<!--Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">To Date can't be less than From Date.</label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Error Modal End-->
+		<!--Buttons for messages (delete these)-->
+			<input type="button" name="success" class="btn btn-success" value="Success">
+			<input type="button" name="error" class="btn btn-danger" value="Error">
+		<!--Buttons for messages (delete these) End-->
+		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
+			<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
+			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%">
+				<colgroup >
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:10%"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Course Name</th>
+						<th>Instructor</th>
+						<th>Start Date/Time</th>
+						<th>End Date/Time</th>
+						<th>Duration</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>2020/01/01 08:00:00</td>
+						<td>2020/01/01 10:00:00</td>
+						<td>2 hours</td>
+					</tr>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>2020/01/01 08:00:00</td>
+						<td>2020/01/01 10:00:00</td>
+						<td>2 hours</td>
+					</tr>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>2020/01/01 08:00:00</td>
+						<td>2020/01/01 10:00:00</td>
+						<td>2 hours</td>
+					</tr>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>2020/01/01 08:00:00</td>
+						<td>2020/01/01 10:00:00</td>
+						<td>2 hours</td>
+					</tr>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>2020/01/01 08:00:00</td>
+						<td>2020/01/01 10:00:00</td>
+						<td>2 hours</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!--Cancel Registration Modal-->
+		<form class="form-horizontal">
+			<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Course Information</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Course ID:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="" value="ABC-123">
+								</div>
+								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="" value="Understanding SS">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Instructor:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="" value="JC">
+								</div>
+								<label class="col-lg-3 col-form-label">Course Date(s):</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="" value="January 2, 2020">
+								</div>
+								<label class="col-lg-3 col-form-label">Timeslot:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="" value="8:00 - 10:00">
+								</div>
+								<label class="col-lg-3 col-form-label">Venue:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="" value="WebEx Training">
+								</div>
+							</div>	
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Course Description:</label>
+								<div class="col-lg-9">
+									<label class="col-form-label">Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World</label>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="submit" name="cancel" class="btn btn-success" data-dismiss="modal" value="Cancel Registration">
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--Cancel Regsitration Modal End-->
+		<!--Confirm Cancellation Modal-->
+		<form class="form-horizontal">
+			<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Are you sure you want to cancel your registration for this training - {courseName}?</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label class="col-lg-12 col-form-label">Please write the reason for your cancellation.
+									<p class="text-danger">*This is a required field.</p>
+								</label>
+								<div class="col-lg-9">
+									<textarea cols="100" rows="10"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="submit" name="success" class="btn btn-success" data-dismiss="modal" value="Confirm Cancellation">
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>      
+		<!--Confirm Cancellation Modal End-->
+		
+	</div>
+	
+	<footer th:replace="fragments/general.html :: footer"></footer>
+	
+	<script>
+	$('tbody').on('dblclick', function() {
+		$('#cancelModal').modal('show');
+	});
+	$('input[name="cancel"]').on('click', function() {
+		$('#confirmModal').modal('show');
+	});
+	<!--Message alert-->
+	//add if statement for the success/fail messages
+	$('input[name="error"]').on('click', function() {
+		$('#errorModal').modal('show');
+	});
+	$('input[name="success"]').on('click', function() {
+		$('#successModal').modal('show');
+	});
+	<!--Message alert End-->
+	</script>
+</body>
+
+</html>

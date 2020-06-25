@@ -167,6 +167,16 @@ public class CourseAttendance {
     public char getStatus() {
         return status;
     }
+    
+	@Override
+	public String toString() {
+		return "CourseAttendance [id = " + id + ", courseScheduleDetailId = " + courseScheduleDetailId
+				+ ", courseName = " + courseName + ", instructorName = " + instructorName + ", venueName = " + venueName
+				+ ", participantId = " + participantId + ", participantName = " + participantName
+				+ ", scheduledStartDateTime = " + scheduledStartDateTime + ", scheduledEndDateTime = "
+				+ scheduledEndDateTime + ", duration = " + duration + ", registrationDate = " + registrationDate
+				+ ", loginDateTime = " + loginDateTime + ", status = " + status + "]";
+	}
 
     /**
      * <pre>
