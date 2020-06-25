@@ -124,5 +124,11 @@ public class GenerateAttendanceForm {
     }
     public void setParticipants(Set<AttendanceParticipantDetail> participants) {
         this.participants = participants;
-    }   
+    }  
+    
+    @Override
+    public String toString() {
+        return "GenerateAttendanceForm [id=" + id + ", courses=" + courses + ", courseName=" + courseName + ", instructorName="
+                + instructorName + ", venueName=" + venueName + ", scheduledStartDateTime=" + scheduledStartDateTime + ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration=" + duration + ", participants=" + participants + ", ]";
+    }
 }
