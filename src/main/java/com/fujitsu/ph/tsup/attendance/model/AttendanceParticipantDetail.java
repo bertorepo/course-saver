@@ -101,4 +101,10 @@ public class AttendanceParticipantDetail {
         this.employeeNumber = employeeNumber;
     }
 
+    @Override
+    public String toString() {
+        return "AttendanceParticipantDetail [id=" + id + ", name=" + name + ", status" + status + ", loginDateTime="
+                + loginDateTime + ", email=" + email + ", employeeNumber=" + employeeNumber + "]";
+    }
+
 }
