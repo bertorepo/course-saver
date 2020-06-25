@@ -1,6 +1,7 @@
 package com.fujitsu.ph.tsup.attendance.model;
 
 import java.util.Set;
+
 //==================================================================================================
 //$Id:PR03$
 //Project Name :Training Sign Up
@@ -11,67 +12,69 @@ import java.util.Set;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) J. Iwarat   | New Creation
+//0.01 | 06/25/2020 |  WS) J. Iwarat   | Update
 //==================================================================================================
 /**
-* <pre>
-* JavaBean for CourseScheduleForm
-* <pre>
-* 
-* @version 0.01
-* @author j.iwarat
-*/
+ * <pre>
+ * JavaBean for CourseScheduleForm
+ * 
+ * <pre>
+ * 
+ * @version 0.01
+ * @author j.iwarat
+ */
 public class CourseScheduleForm {
 
     /**
      * Course Schedule Id
      */
     private Long id;
-    
+
     /**
      * Course Id
      */
     private Long courseId;
-    
+
     /**
      * Course Name
      */
     private String courseName;
-    
+
     /**
      * Instructor Id
      */
     private Long instructorId;
-    
+
     /**
      * Instructor Name(LASTNAME, FIRSTNAME)
      */
     private String instructorName;
-    
+
     /**
      * Venue Id
      */
     private Long venueId;
-    
+
     /**
      * Venue Name
      */
     private String venueName;
-    
+
     /**
      * Set of course schedule details
      */
     private Set<CourseScheduleDetailForm> courseScheduleDetails;
-    
+
     /**
      * Minimum number of participants
      */
     private int minRequired;
-    
+
     /**
      * Maximum number of participants
      */
     private int maxAllowed;
-    
+
     /**
      * Total Number of Participants currently enrolled
      */
@@ -164,5 +167,13 @@ public class CourseScheduleForm {
     public void setTotalParticipants(int totalParticipants) {
         this.totalParticipants = totalParticipants;
     }
-  
+
+    @Override
+    public String toString() {
+        return "CourseScheduleForm [id=" + id + ", courseId=" + courseId + ", courseName" + courseName
+                + ", instructorId=" + instructorId + ", instructorName=" + instructorName + ", venueId=" + venueId
+                + ", venueName=" + venueName + ", courseScheduleDetails=" + courseScheduleDetails + ", minRequired="
+                + minRequired + ", maxAllowed=" + maxAllowed + ", totalParticipants=" + totalParticipants + "]";
+    }
+
 }
