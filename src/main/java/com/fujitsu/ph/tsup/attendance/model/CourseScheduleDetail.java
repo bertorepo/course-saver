@@ -90,6 +90,13 @@ public class CourseScheduleDetail {
     public float getDuration() {
         return duration;
     }
+    
+	@Override
+	public String toString() {
+		return "CourseAttendance [id = " + id + ", courseScheduleId = " + courseScheduleId
+				+ ", scheduledStartDateTime = " + scheduledStartDateTime + ", scheduledEndDateTime = "
+				+ scheduledEndDateTime + ", duration = " + duration + "]";
+	}
 
     /**
      * <pre>

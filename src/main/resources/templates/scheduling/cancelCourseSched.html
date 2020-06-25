@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Cancel Course Schedule</title>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	
+</head>
+
+<body>
+	<div th:insert="fragments/general.html :: header"> </div>
+	
+	<div class="container mt-5">
+			<h3><i class="fa fa-book"></i> My Courses</h3>
+			<hr>
+		
+		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
+			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%">
+				<colgroup >
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Course Name</th>
+						<th>Instructor</th>
+						<th>Participants</th>
+						<th>Start Date</th>
+						<th>Time</th>
+						<th>End Date</th>
+						<th>Time</th>
+						<th>Duration</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>10</td>
+						<td>2020/01/01</td>
+						<td>10:00</td>
+						<td>2020/01/01</td>
+						<td>12:00</td>
+						<td>2 hours</td>
+						<td>
+							<form class="form-inline" action="">
+								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>10</td>
+						<td>2020/01/01</td>
+						<td>10:00</td>
+						<td>2020/01/01</td>
+						<td>12:00</td>
+						<td>2 hours</td>
+						<td>
+							<form class="form-inline" action="">
+								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>10</td>
+						<td>2020/01/01</td>
+						<td>10:00</td>
+						<td>2020/01/01</td>
+						<td>12:00</td>
+						<td>2 hours</td>
+						<td>
+							<form class="form-inline" action="">
+								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>10</td>
+						<td>2020/01/01</td>
+						<td>10:00</td>
+						<td>2020/01/01</td>
+						<td>12:00</td>
+						<td>2 hours</td>
+						<td>
+							<form class="form-inline" action="">
+								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>Understanding UI</td>
+						<td>Genevieve De Guzman</td>
+						<td>10</td>
+						<td>2020/01/01</td>
+						<td>10:00</td>
+						<td>2020/01/01</td>
+						<td>12:00</td>
+						<td>2 hours</td>
+						<td>
+							<form class="form-inline" action="">
+								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>     
+		<!--Success Modal-->
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">You have cancelled this {Course}</label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Success Modal End-->	
+		<!--Buttons for messages (delete these)-->
+			<input type="button" name="success" class="btn btn-success" value="Success">
+		<!--Buttons for messages (delete these) End-->
+	</div>
+	
+	<footer th:replace="fragments/general.html :: footer"></footer>
+<script>
+	<!--Message alert-->
+	//add if statement for the success/fail messages
+	$('input[name="success"]').on('click', function() {
+		$('#successModal').modal('show');
+	});
+	<!--Message alert End-->
+</script>
+</body>
+
+</html>
