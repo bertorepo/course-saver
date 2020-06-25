@@ -1,3 +1,10 @@
+package com.fujitsu.ph.tsup.employee.management.model;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * <pre>
  * It is a JavaBean for Employee
@@ -8,13 +15,6 @@
  * @author j.macabudbud
  *
  */
-package com.fujitsu.ph.tsup.employee.management.model;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 
 //==================================================================================================
 //$Id:PR03$
