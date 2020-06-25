@@ -9,16 +9,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
+import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 
 @Controller
@@ -26,6 +31,28 @@ import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 public class ScheduleController {
     private ScheduleService scheduleService;
     private static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
+    
+    
+    @GetMapping("/new")
+    public String showCourseScheduleNewForm(Model model) {
+    	
+    	Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+    	Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+    	Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+    	
+    	CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
+    	
+    	courseScheduleNewForm.setInstructors(instructorFormList);
+    	courseScheduleNewForm.setVenues(venueFormList);
+    	courseScheduleNewForm.setCourses(courseFormList);
+    	
+    	model.addAttribute("scheduleNew", courseScheduleNewForm);
+    	
+	return "scheduling/scheduleNew";
+    	
+    	
+    }
+     
     
     @PostMapping("/new")
     public String createCourseSchedule(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form, 

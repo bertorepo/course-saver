@@ -72,7 +72,7 @@ public interface ScheduleService {
      * Create a course schedule
      * @param courseSchedule
      */
-    CourseSchedule createCourseSchedule(CourseSchedule courseSchedule);
+    void createCourseSchedule(CourseSchedule courseSchedule);
     
     
 }

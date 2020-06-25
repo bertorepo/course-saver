@@ -367,17 +367,12 @@ public class CourseSchedule {
          * @param maxAllowed
          * @return builder
          */
-	
-		public CourseSchedule maxAllowed(int maxAllowed) {
+		public Builder maxAllowed(int maxAllowed) {
 		
 		validateMaxAllowed(maxAllowed);
 		this.maxAllowed = maxAllowed;
 		
-		CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
-				instructorLastName, instructorFirstName, venueId, venueName, maxAllowed, maxAllowed, status)
-				.build();
-		
-			return builder;
+			return this;
 		
 	}
 		/**
@@ -388,17 +383,12 @@ public class CourseSchedule {
          * @param courseScheduleDetail
          * @return builder
          */
-	
-		public CourseSchedule addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
+		public Builder addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
 		
 		validateCourseScheduleDetail(courseScheduleDetail);
 		this.courseScheduleDetail = courseScheduleDetail;
-		
-		CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
-				instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed, status)
-				.build();
-		
-			return builder;	
+	
+			return this;	
 	}
 		 /**
          * Creates a new instance of the course schedule.
@@ -574,6 +564,15 @@ public class CourseSchedule {
 				throw new IllegalArgumentException("The schedule should have at least 1 record");
 		}
 	}
+
+		@Override
+		public String toString() {
+			return "Builder [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", instructorId="
+					+ instructorId + ", instructorLastName=" + instructorLastName + ", instructorFirstName="
+					+ instructorFirstName + ", venueId=" + venueId + ", venueName=" + venueName + ", minRequired="
+					+ minRequired + ", maxAllowed=" + maxAllowed + ", courseScheduleDetail=" + courseScheduleDetail
+					+ ", status=" + status + "]";
+		}
 	
 	
 	
