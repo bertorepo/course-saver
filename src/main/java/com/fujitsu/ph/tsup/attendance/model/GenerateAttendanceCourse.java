@@ -6,7 +6,7 @@ package com.fujitsu.ph.tsup.attendance.model;
  * In this class, Instances of the List Data required for the Initial setting of the database
  * </pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author k.abad
  *
  */
@@ -20,7 +20,7 @@ package com.fujitsu.ph.tsup.attendance.model;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/22/2020 | WS) K.Abad            | New Creation
+//0.02    | 06/25/2020 | WS) K.Abad            | New Creation
 
 public class GenerateAttendanceCourse {
     /**
@@ -46,5 +46,8 @@ public class GenerateAttendanceCourse {
         this.courseName = courseName;
     }
     
-    
+    @Override
+    public String toString() {
+        return "GenerateAttendanceCourse [id=" + id + ", courseName=" + courseName + "]";
+    }
 }
