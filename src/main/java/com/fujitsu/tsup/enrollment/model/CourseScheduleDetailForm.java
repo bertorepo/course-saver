@@ -73,4 +73,9 @@ public class CourseScheduleDetailForm {
     public void setDuration(float duration) {
         this.duration = duration;
     }
+    
+    public String toString() {
+        return "CourseScheduleDetailForm [id=" + id + ", scheduledStartDateTime=" + scheduledStartDateTime
+                + ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration=" + duration + "]";
+    }
 }
