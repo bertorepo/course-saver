@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Generate Attendance Sheet</title>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	
+</head>
+
+<body>
+	<div th:insert="fragments/general.html :: header"> </div>
+	
+	<div class="container mt-5">
+		<form class="form-horizontal">
+			<h3><i class="fa fa-file-text"></i> Generate Attendance Sheet</h3>
+			<hr>
+			<div class="card">
+				<div class="card-body">
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Course Schedule</label>
+						<div class="col-lg-5">
+							<select class="form-control">
+								<option value="">Select...</option>
+								<option value="">Hello</option>
+								<option value="">World</option>
+							</select>
+						</div>
+					</div>
+					<div class="float-right">
+						<input type="submit" class="btn btn-success" value="Generate">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--Success Modal-->
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">You have signed in to this {Course}</label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Success Modal End-->
+		<!--Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">No selected course</label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Error Modal End-->
+		<!--Buttons for messages (delete these)-->
+		<input type="button" name="success" class="btn btn-success" value="Success">
+		<input type="button" name="error" class="btn btn-danger" value="Error">
+		<!--Buttons for messages (delete these) End-->
+		<div class="card mt-5">
+			<div class="card-body">	
+				<div class="col-lg-12" style="overflow-x:auto">				
+					<table class="table table-bordered">
+						<tr>
+							<td colspan="3">
+								<label class="col-lg-6 col-form-label">COURSE TITLE</label>
+								<label class="col-lg-12 col-form-label text-center">The Course</label>
+							</td>
+							<td colspan="1">
+								<label class="col-lg-6 col-form-label">DURATION</label>
+								<label class="col-lg-12 col-form-label text-center">2 hours</label>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="1">
+								<label class="col-lg-6 col-form-label">INCLUSIVE DATES</label>
+							</td>
+							<td colspan="1">
+								<label class="col-lg-6 col-form-label">Start</label>
+								<label class="col-lg-12 col-form-label text-center">5/5/2020</label>
+							</td>
+							<td colspan="1">
+								<label class="col-lg-6 col-form-label">End</label>
+								<label class="col-lg-12 col-form-label text-center">5/5/2020</label>
+							</td>
+							<td colspan="1">
+								<label class="col-lg-6 col-form-label">VENUE</label>
+								<label class="col-lg-12 col-form-label text-center">Online Meeting</label>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="1">
+								<label class="col-lg-5 col-form-label">SESSION</label>
+								<label class="col-lg-1 col-form-label text-center">1</label>
+								<label class="col-lg-3 col-form-label text-center">OF</label>
+								<label class="col-lg-1 col-form-label text-center">5</label>
+							</td>
+							<td colspan="1">
+								<label class="col-lg-6 col-form-label">START TIME</label>
+								<label class="col-lg-12 col-form-label text-center">10:00 PHT</label>
+							</td>
+							<td colspan="1">
+								<label class="col-lg-6 col-form-label">&nbsp;</label>
+								<label class="col-lg-12 col-form-label text-center">12:00 PHT</label>
+							</td>
+							<td colspan="1" rowspan="2">
+								<label class="col-lg-6 col-form-label">INSTRUCTOR</label>
+								<div class="row mt-5">
+									<label class="col-lg-12 col-form-label text-center">Instructor Name</label>
+								</div>
+								<div class="row mt-5">
+									<label class="col-lg-12 col-form-label text-center">___________________________________</label>
+								</div>
+								<div class="row">
+									<label class="col-lg-12 col-form-label text-center">(SIGNATURE OVER PRINTED NAME)</label>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<label class="col-lg-6 col-form-label">TRAINING TYPE</label>
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="1">
+											<label class="form-check-label" for="1">INDUCTION</label>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="2">
+											<label class="form-check-label" for="2">LANGUAGE</label>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="3">
+											<label class="form-check-label" for="3">TEAM BUILDING</label>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="4">
+											<label class="form-check-label" for="4">IT-TECHNICAL (SOFTWARE)</label>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="5">
+											<label class="form-check-label" for="5">IT-TECHNICAL (HARDWARE)</label>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="6">
+											<label class="form-check-label" for="6">IT-TECHNICAL (PROCESS)</label>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="7">
+											<label class="form-check-label" for="7">STANDARDS COMPLIANCE</label>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="8">
+											<label class="form-check-label" for="8">SOFT SKILLS/BEHAVIORAL</label>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="9">
+											<label class="form-check-label" for="9">MANAGEMENT/LEADERSHIP</label>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="10">
+											<label class="form-check-label" for="10">POLICY ORIENTATION</label>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="11">
+											<label class="form-check-label" for="11">OTHER</label>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="col-lg-12 mt-5" style="overflow-x:auto; display: block; white-space: nowrap">				
+					<table class="table table-bordered text-center" >
+						<colgroup >
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>
+							<col style="width:10%"/>								
+						</colgroup>
+						<thead>
+							<tr>
+								<th class="align-middle">8-Digit EMPLOYEE ID NUMBER<br>(if Applicable)</th>
+								<th class="align-middle">PARTICIPANT'S NAME<br>(Please <u>PRINT FULL NAME)</u></th>
+								<th class="align-middle">COMPANY/BU/DEPT</th>
+								<th class="align-middle">TIME-IN</th>
+								<th class="align-middle">TIME-OUT</th>
+								<th class="align-middle">SIGNATURE</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Tenorio, Arlene<br>a.tenorio@ph.fujitsu.com</td>
+								<td>G3CC</td>
+								<td>SL</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Virtudazo, Aljohn Rey<br>a.virtudazo@ph.fujitsu.com</td>
+								<td>G3CC</td>
+								<td>10:00</td>
+								<td>12:00</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Avellana, Brex<br>b.avellana@ph.fujitsu.com</td>
+								<td>G3CC</td>
+								<td>10:00</td>
+								<td>12:00</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Con-Ui, Jan Daryll Martin<br>j.conui@ph.fujitsu.com</td>
+								<td>G3CC</td>
+								<td>10:00</td>
+								<td>12:00</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Lorenzana, Joel<br>j.lorenzana@ph.fujitsu.com</td>
+								<td>G3CC</td>
+								<td>10:00</td>
+								<td>12:00</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Abella, Rixon Jeuz<br>r.abella@ph.fujitsu.com</td>
+								<td>G3CC</td>
+								<td>10:00</td>
+								<td>12:00</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>  
+	</div>
+	
+	<footer th:replace="fragments/general.html :: footer"></footer>
+<script>
+	<!--Message alert-->
+	//add if statement for the success/fail messages
+	$('input[name="success"]').on('click', function() {
+		$('#successModal').modal('show');
+	});
+	$('input[name="error"]').on('click', function() {
+		$('#errorModal').modal('show');
+	});
+	<!--Message alert End-->
+</script>
+</body>
+
+</html>
