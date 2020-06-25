@@ -6,21 +6,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
-import com.fujitsu.ph.tsup.domain.jimenez.CourseScheduleException;
+
 import com.fujitsu.ph.tsup.scheduling.dao.ScheduleDao;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
-//=======================================================
-//$Id: PR02$
-//Project Name: Training Sign Up
-//Class Name: ScheduleServiceImpl.java
-//
-//<<Modification History>>
-//Version | Date       | Updated by      | Content
-//--------+------------+-----------------+---------------
-//0.01    | 06/23/2020 | WS) J.Macabugao | New Creation
-//
-//
-//=======================================================
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
@@ -43,7 +31,7 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/24/2020 | WS) JC. Jimenez | New Creation
-//        |            | WS) J. Macabugao| 
+//0.01    | 06/24/2020 | WS) J. Macabugao| New Creattion
 //
 //
 //
@@ -84,12 +72,12 @@ public class ScheduleServiceImpl implements ScheduleService{
      */
     @Override
     public Set<CourseForm> findAllCourses() {
-        Set<CourseForm> CourseFormList = scheduleDao.findAllCourses();
+        Set<CourseForm> courseFormList = scheduleDao.findAllCourses();
         try {
-            if(CourseFormList == null || CourseFormList.isEmpty()) {
+            if(courseFormList == null || courseFormList.isEmpty()) {
                 throw new IllegalArgumentException("Can't find Courses");
             } else {
-                return CourseFormList;
+                return courseFormList;
             }    
         } catch (DataAccessException ex) {
             throw new IllegalArgumentException("Can't access Courses");
@@ -104,12 +92,12 @@ public class ScheduleServiceImpl implements ScheduleService{
      */
     @Override
     public Set<InstructorForm> findAllInstructors() {
-    	 Set<InstructorForm> InstructorFormList = scheduleDao.findAllInstructors();
+    	 Set<InstructorForm> instructorFormList = scheduleDao.findAllInstructors();
          try {
-             if(InstructorFormList == null || InstructorFormList.isEmpty()) {
+             if(instructorFormList == null || instructorFormList.isEmpty()) {
                  throw new IllegalArgumentException("Can't find Instructors");
              } else {
-                 return InstructorFormList;
+                 return instructorFormList;
              }    
          } catch (DataAccessException ex) {
              throw new IllegalArgumentException("Can't access Instructors");
@@ -125,12 +113,12 @@ public class ScheduleServiceImpl implements ScheduleService{
      */
     @Override
     public Set<VenueForm> findAllVenues() {
-    	 Set<VenueForm> VenueFormList = scheduleDao.findAllVenues();
+    	 Set<VenueForm> venueFormList = scheduleDao.findAllVenues();
          try {
-             if(VenueFormList == null || VenueFormList.isEmpty()) {
+             if(venueFormList == null || venueFormList.isEmpty()) {
                  throw new IllegalArgumentException("Can't find Venues");
              } else {
-                 return VenueFormList;
+                 return venueFormList;
              }    
          } catch (DataAccessException ex) {
              throw new IllegalArgumentException("Can't access Venues");
@@ -147,12 +135,12 @@ public class ScheduleServiceImpl implements ScheduleService{
      * @param courseSchedule
      */
 	@Override
-	public CourseSchedule createCourseSchedule(CourseSchedule courseSchedule) {
+	public void createCourseSchedule(CourseSchedule courseSchedule) {
 		
 		 try {
-	            return scheduleDao.saveCourseSchedule(courseSchedule);
+			   scheduleDao.saveCourseSchedule(courseSchedule);
 	        } catch (DataAccessException ex) {
-	        	 throw new IllegalArgumentException("No records found"); 
+	        	 throw new IllegalArgumentException("Can't save course schedule"); 
 	        }
 	    }
 }
