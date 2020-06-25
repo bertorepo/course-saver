@@ -1,7 +1,16 @@
 package com.fujitsu.ph.tsup.scheduling.dao;
 
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
@@ -10,7 +19,10 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 public class ScheduleDaoImpl implements ScheduleDao{
     
-    
+    @Autowired
+    private NamedParameterJdbcTemplate namedParametertemplate;
+    private JdbcTemplate jdbcTemplate;
+    KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime scheduledStartDateTime,
@@ -21,8 +33,21 @@ public class ScheduleDaoImpl implements ScheduleDao{
 
     @Override
     public Set<CourseForm> findAllCourses() {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT * FROM COURSE";
+        
+        Set<CourseForm> courses = new HashSet<>();
+        
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
+        
+        for (Map<String,Object> rowMap : rows) {
+            CourseForm courseForm = new CourseForm();
+            
+            courseForm.setId((Long) rowMap.get("ID"));
+            courseForm.setName((String) rowMap.get("NAME"));
+            courses.add(courseForm);
+        }
+        
+        return courses;
     }
 
     @Override
@@ -39,7 +64,8 @@ public class ScheduleDaoImpl implements ScheduleDao{
 
     @Override
     public void saveCourseSchedule(CourseSchedule courseSchedule) {
-        // TODO Auto-generated method stub
+        String courseScheduleSql = "INSERT INTO COURSE_SCHEDULE(ID, COURSE_ID, INSTRUCTOR_ID, VENUE_ID) "+
+                "VALUES (:id, :name)";
         
     }
 

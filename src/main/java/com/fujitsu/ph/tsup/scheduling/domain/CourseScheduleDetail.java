@@ -260,7 +260,6 @@ public class CourseScheduleDetail {
          */
         private float computeDuration(ZonedDateTime scheduledStartDateTime, 
                 ZonedDateTime scheduledEndDateTime) {
-            
             float duration;
             Long durationToHours = Duration.between(scheduledStartDateTime, scheduledEndDateTime).toHours();
             Long durationToMinutes = Duration.between(scheduledStartDateTime, scheduledEndDateTime).toMinutes();
@@ -273,5 +272,7 @@ public class CourseScheduleDetail {
                 return duration;
             }
         }
+        
+        
     }
 }

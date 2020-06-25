@@ -37,7 +37,7 @@ public class InstructorForm {
         this.id = id;
     }
     
-    public void setname(String name) {
+    public void setName(String name) {
         this.name = name;
     }
     
@@ -45,7 +45,7 @@ public class InstructorForm {
         return id;
     }
     
-    public String getname() {
+    public String getName() {
         return name;
     }
     
