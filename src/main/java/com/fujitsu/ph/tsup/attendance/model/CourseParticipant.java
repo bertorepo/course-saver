@@ -23,6 +23,7 @@ import java.time.ZonedDateTime;
  * @version 0.2
  * @author m.angara
  */
+
 public class CourseParticipant {
     /* Course Schedule Id */
     private Long id;
@@ -69,7 +70,6 @@ public class CourseParticipant {
     /**
      * <pre>
      * Creates an instance of the CourseParticipant using the given builder class.
-     * 
      * <pre>
      * 
      * @param builder
@@ -143,16 +143,6 @@ public class CourseParticipant {
     public String getEmployeeNumber() {
         return employeeNumber;
     }
-    
-    @Override
-    public String toString() {
-        return "CourseParticipant [id = " + id + ",courseScheduleId = " + courseScheduleId + ",courseName = " + courseName
-                + ",instructorName = " + instructorName + ",venueName = " + venueName + ",participantId =" + participantId
-                + ",participantName =" + participantName + ",scheduledStartDateTime =" + scheduledStartDateTime + ",scheduledEndDateTime ="
-                + scheduledEndDateTime + ",duration = " + duration + "registrationDate =" + registrationDate + ",email =" + email
-                + ",employeeNumber =" + employeeNumber + "]";
-    }
-    
 
     /**
      * <pre>
@@ -223,42 +213,42 @@ public class CourseParticipant {
          * @param scheduledStartDateTime
          * @param scheduledEndDateTime
          * @param duration
+         * @param registrationDate
          * @param email
          * @param employeeNumber
-         * @param registrationDate
          */
 
         public Builder(Long id, Long courseScheduleId, String courseName, String instructorName, String venueName,
                 Long participantId, String participantName, ZonedDateTime scheduledStartDateTime,
-                ZonedDateTime scheduledEndDateTime, float duration, String email, String employeeNumber,
-                ZonedDateTime registrationDate) {
+                ZonedDateTime scheduledEndDateTime, float duration, ZonedDateTime registrationDate, String email,
+                String employeeNumber) {
 
             validateId(id);
             validateCourseScheduleId(courseScheduleId);
+            validateParticipantId(participantId);
+            validateRegistrationDate(registrationDate);
             validateCourseName(courseName);
             validateInstructorName(instructorName);
             validateVenueName(venueName);
-            validateParticipantId(participantId);
             validateParticipantName(participantName);
             validateScheduledStartDateTime(scheduledStartDateTime);
             validateScheduledEndDateTime(scheduledEndDateTime);
-            validateRegistrationDate(registrationDate);
 
             this.id = id;
             this.courseScheduleId = courseScheduleId;
+            this.participantId = participantId;
+            this.registrationDate = registrationDate;
             this.courseName = courseName;
             this.instructorName = instructorName;
             this.venueName = venueName;
-            this.participantId = participantId;
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
-            this.registrationDate = registrationDate;
+
         }
 
-        /**
-         * <pre>
-         * Validate the id based on the condition below. If it is invalid then throw an
-         * IllegalArgumentException with the corresponding message.
+        /*
+         * <pre> Validate the id based on the condition below. If it is invalid then
+         * throw an IllegalArgumentException with the corresponding message.
          * 
          * <pre>
          * 
@@ -271,10 +261,10 @@ public class CourseParticipant {
             }
         }
 
-        /**
-         * <pre>
-         * Validate the courseScheduleId based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
+        /*
+         * <pre> Validate the courseScheduleId based on the condition below. If it is
+         * invalid then throw an IllegalArgumentException with the corresponding
+         * message.
          * 
          * <pre>
          * 
@@ -287,58 +277,10 @@ public class CourseParticipant {
             }
         }
 
-        /**
-         * <pre>
-         * Validate the courseName based on the condition below. If it is invalid then
-         * throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param courseName
-         */
-
-        private void validateCourseName(String courseName) {
-            if (courseName == null || courseName.isEmpty()) {
-                throw new IllegalArgumentException("Course Name should not be empty");
-            }
-        }
-
-        /**
-         * <pre>
-         * Validate the instructorName based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param instructorName
-         */
-
-        private void validateInstructorName(String instructorName) {
-            if (instructorName == null || instructorName.isEmpty()) {
-                throw new IllegalArgumentException("Instructor Name should not be empty");
-            }
-        }
-
-        /**
-         * <pre>
-         * Validate the venueName based on the condition below. If it is invalid then
-         * throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param venueName
-         */
-
-        private void validateVenueName(String venueName) {
-            if (venueName == null || venueName.isEmpty()) {
-                throw new IllegalArgumentException("Venue Name should not be empty");
-            }
-        }
-
-        /**
-         * <pre>
-         * Validate the participantId based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
+        /*
+         * <pre> Validate the participantId based on the condition below. If it is
+         * invalid then throw an IllegalArgumentException with the corresponding
+         * message.
          * 
          * <pre>
          * 
@@ -351,10 +293,87 @@ public class CourseParticipant {
             }
         }
 
-        /**
-         * <pre>
-         * Validate the scheduledStartDatetime based on the condition below. If it is
+        /*
+         * <pre> Validate the registrationDate based on the condition below. If it is
          * invalid then throw an IllegalArgumentException with the corresponding
+         * message.
+         * 
+         * <pre>
+         * 
+         * @param registrationDate
+         */
+
+        private void validateRegistrationDate(ZonedDateTime registrationDate) {
+            if (registrationDate == null) {
+                throw new IllegalArgumentException("Registration date should not be empty");
+            }
+        }
+
+        /*
+         * <pre> Validate the courseName based on the condition below. If it is invalid
+         * then throw an IllegalArgumentException with the corresponding message.
+         * 
+         * <pre>
+         * 
+         * @param courseName
+         */
+
+        private void validateCourseName(String courseName) {
+            if (courseName == null || courseName.isEmpty()) {
+                throw new IllegalArgumentException("Course Name should not be empty");
+            }
+        }
+
+        /*
+         * <pre> Validate the instructorName based on the condition below. If it is
+         * invalid then throw an IllegalArgumentException with the corresponding
+         * message.
+         * 
+         * <pre>
+         * 
+         * @param instructorName
+         */
+
+        private void validateInstructorName(String instructorName) {
+            if (instructorName == null || instructorName.isEmpty()) {
+                throw new IllegalArgumentException("Instructor Name should not be empty");
+            }
+        }
+
+        /*
+         * <pre> Validate the venueName based on the condition below. If it is invalid
+         * then throw an IllegalArgumentException with the corresponding message.
+         * 
+         * <pre>
+         * 
+         * @param venueName
+         */
+
+        private void validateVenueName(String venueName) {
+            if (venueName == null || venueName.isEmpty()) {
+                throw new IllegalArgumentException("Venue Name should not be empty");
+            }
+        }
+
+        /*
+         * <pre> Validate the participantName based on the condition below. If it is
+         * invalid then throw an IllegalArgumentException with the corresponding
+         * message.
+         * 
+         * <pre>
+         * 
+         * @param participantName
+         */
+
+        private void validateParticipantName(String participantName) {
+            if (participantName == null || participantName.isEmpty()) {
+                throw new IllegalArgumentException("Participant Name should not be empty");
+            }
+        }
+
+        /*
+         * <pre> Validate the scheduledStartDatetime based on the condition below. If it
+         * is invalid then throw an IllegalArgumentException with the corresponding
          * message.
          * 
          * <pre>
@@ -368,10 +387,9 @@ public class CourseParticipant {
             }
         }
 
-        /**
-         * <pre>
-         * Validate the scheduledEndDateTime based on the condition below. If it is
-         * invalid then throw an IllegalArgumentException with the corresponding
+        /*
+         * <pre> Validate the scheduledEndDateTime based on the condition below. If it
+         * is invalid then throw an IllegalArgumentException with the corresponding
          * message.
          * 
          * <pre>
@@ -382,42 +400,10 @@ public class CourseParticipant {
         private void validateScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
             if (scheduledEndDateTime == null) {
                 throw new IllegalArgumentException("Scheduled end date should not be empty");
-
-            } else if (scheduledEndDateTime.isBefore(scheduledStartDateTime)) {
+            }
+            if (scheduledEndDateTime.isBefore(scheduledStartDateTime)) {
                 throw new IllegalArgumentException(
                         "Scheduled end date and time should be greater than or equal to Scheduled start date and time");
-            }
-        }
-
-        /**
-         * <pre>
-         * Validate the participantName based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param participantName
-         */
-
-        private void validateParticipantName(String participantName) {
-            if (participantName == null || participantName.isEmpty()) {
-                throw new IllegalArgumentException("Participant Name should not be empty");
-            }
-        }
-
-        /**
-         * <pre>
-         * Validate the registrationDate based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param registrationDate
-         */
-
-        private void validateRegistrationDate(ZonedDateTime registrationDate) {
-            if (registrationDate == null) {
-                throw new IllegalArgumentException("Registration date should not be empty");
             }
         }
 
