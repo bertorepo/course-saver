@@ -13,6 +13,7 @@ import java.util.Set;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) J. Iwarat   | New Creation
+//0.01 | 06/25/2020 |  WS) J. Iwarat   | Update
 //==================================================================================================
 /**
  * <pre>
@@ -61,6 +62,12 @@ public class CourseScheduleListForm {
 
     public void setCourseSchedules(Set<CourseScheduleForm> courseSchedules) {
         this.courseSchedules = courseSchedules;
+    }
+
+    @Override
+    public String toString() {
+        return "CourseScheduleListForm [fromDateTime=" + fromDateTime + ", toDateTime" + toDateTime
+                + ", courseSchedules=" + courseSchedules + "]";
     }
 
 }
