@@ -11,7 +11,8 @@ import java.time.ZonedDateTime;
 //<<Modification History>>
 //Version |    Date    | Updated By    | Content
 //--------+------------+---------------+-----------
-///0.01   | 06/23/2020 | WS) M.Angara  | New Creation
+// 0.01   | 06/23/2020 | WS) M.Angara  | New Creation
+// 0.02   | 06/25/2020 | WS) M.Angara  | Updated
 //=========================================================================================
 /**
  * <pre>
@@ -19,8 +20,8 @@ import java.time.ZonedDateTime;
  * 
  * <pre>
  * 
- * @version
- * @author
+ * @version 0.2
+ * @author m.angara
  */
 public class CourseParticipant {
     /* Course Schedule Id */
@@ -142,6 +143,16 @@ public class CourseParticipant {
     public String getEmployeeNumber() {
         return employeeNumber;
     }
+    
+    @Override
+    public String toString() {
+        return "CourseParticipant [id = " + id + ",courseScheduleId = " + courseScheduleId + ",courseName = " + courseName
+                + ",instructorName = " + instructorName + ",venueName = " + venueName + ",participantId =" + participantId
+                + ",participantName =" + participantName + ",scheduledStartDateTime =" + scheduledStartDateTime + ",scheduledEndDateTime ="
+                + scheduledEndDateTime + ",duration = " + duration + "registrationDate =" + registrationDate + ",email =" + email
+                + ",employeeNumber =" + employeeNumber + "]";
+    }
+    
 
     /**
      * <pre>
