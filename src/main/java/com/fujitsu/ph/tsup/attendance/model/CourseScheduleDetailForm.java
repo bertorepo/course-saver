@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/24/2020 |  WS) J. Iwarat   | New Creation
+//0.01 | 06/25/2020 |  WS) J. Iwarat   | Update
 //==================================================================================================
 /**
  * <pre>
@@ -63,4 +64,9 @@ public class CourseScheduleDetailForm {
         this.scheduledEndDateTime = scheduledEndDateTime;
     }
 
+    @Override
+    public String toString() {
+        return "CourseScheduleDetailForm [id=" + id + ", scheduledStartDateTime" + scheduledStartDateTime
+                + ", scheduledEndDateTime=" + scheduledEndDateTime + "]";
+    }
 }
