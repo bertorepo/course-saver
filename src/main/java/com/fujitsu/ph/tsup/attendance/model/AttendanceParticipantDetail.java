@@ -10,6 +10,7 @@ package com.fujitsu.ph.tsup.attendance.model;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/19/2020 |  WS) J. Iwarat   | New Creation
+//0.01 | 06/25/2020 |  WS) J. Iwarat   | Update
 //==================================================================================================
 /**
  * <pre>
@@ -99,6 +100,12 @@ public class AttendanceParticipantDetail {
 
     public void setEmployeeNumber(String employeeNumber) {
         this.employeeNumber = employeeNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "AttendanceParticipantDetail [id=" + id + ", name=" + name + ", status" + status + ", loginDateTime="
+                + loginDateTime + ", email=" + email + ", employeeNumber=" + employeeNumber + "]";
     }
 
 }
