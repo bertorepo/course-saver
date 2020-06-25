@@ -58,11 +58,18 @@ public class ScheduleController {
     public String createCourseSchedule(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form, 
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         
+        Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+        Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+        Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+        
         logger.debug("CourseScheduleNewForm: {}", form);
         logger.debug("Result: {}", bindingResult);
         
         if(bindingResult.hasErrors()) {
-            return "scheduling-management/scheduleNew";
+            form.setCourses(courseFormList);
+            form.setVenues(venueFormList);
+            form.setInstructors(instructorFormList);
+            return "scheduling/scheduleNew";
         }
         
         CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
@@ -83,7 +90,7 @@ public class ScheduleController {
         scheduleService.createCourseSchedule(courseSchedule);
         
         redirectAttributes.addFlashAttribute("scheduleNew", form);
-        return "redirect:/scheduling";
+        return "redirect:/view";
         
         
     }
