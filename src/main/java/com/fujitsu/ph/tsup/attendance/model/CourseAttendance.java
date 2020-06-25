@@ -403,15 +403,11 @@ public class CourseAttendance {
          * @return builder
          */
 
-        public CourseAttendance absent() {
+        public Builder absent() {
             this.status = 'A';
             this.loginDateTime = null;
 
-            CourseAttendance builder = new CourseAttendance.Builder(id, courseScheduleDetailId, courseName,
-                    instructorName, venueName, participantId, participantName, scheduledStartDateTime,
-                    scheduledEndDateTime, duration, registrationDate).build();
-
-            return builder;
+            return this;
         }
 
         /**
@@ -424,15 +420,11 @@ public class CourseAttendance {
          * @return builder
          */
 
-        public CourseAttendance present(ZonedDateTime loginDateTime) {
+        public Builder present(ZonedDateTime loginDateTime) {
             this.status = 'P';
             this.loginDateTime = loginDateTime;
 
-            CourseAttendance builder = new CourseAttendance.Builder(id, courseScheduleDetailId, courseName,
-                    instructorName, venueName, participantId, participantName, scheduledStartDateTime,
-                    scheduledEndDateTime, duration, registrationDate).build();
-
-            return builder;
+            return this;
         }
 
         /**
@@ -609,7 +601,8 @@ public class CourseAttendance {
             if (scheduledEndDateTime == null) {
                 throw new IllegalArgumentException("Scheduled end date should not be empty");
 
-            } else if (scheduledEndDateTime.isBefore(scheduledStartDateTime)) {
+            } 
+            if (scheduledEndDateTime.isBefore(scheduledStartDateTime)) {
                 throw new IllegalArgumentException(
                         "Scheduled end date and time should be greater than or equal to Scheduled start date and time");
             }
