@@ -8,7 +8,7 @@ package com.fujitsu.ph.tsup.enrollment.domain;
 //<<Modification History>>
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
-//0.01    | 06/22/2020 | WS) M. Lumontad | New Creation
+//0.01    | 06/22/2020 | WS) M. Lumontad | Update
 //
 //
 //=======================================================
@@ -89,7 +89,7 @@ public class CourseScheduleDetail {
    * 
    * <pre>
    * 
-   * @author jc.jimenez
+   * @author m.lumontad
    *
    */
   public static class Builder {
