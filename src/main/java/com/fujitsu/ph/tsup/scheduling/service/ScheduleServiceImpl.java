@@ -72,13 +72,14 @@ public class ScheduleServiceImpl implements ScheduleService{
      */
     @Override
     public Set<CourseForm> findAllCourses() {
-        Set<CourseForm> courseFormList = scheduleDao.findAllCourses();
+        
         try {
+            Set<CourseForm> courseFormList = scheduleDao.findAllCourses();
             if(courseFormList == null || courseFormList.isEmpty()) {
                 throw new IllegalArgumentException("Can't find Courses");
-            } else {
-                return courseFormList;
-            }    
+            }
+            
+            return courseFormList;
         } catch (DataAccessException ex) {
             throw new IllegalArgumentException("Can't access Courses");
         }
@@ -92,13 +93,14 @@ public class ScheduleServiceImpl implements ScheduleService{
      */
     @Override
     public Set<InstructorForm> findAllInstructors() {
-    	 Set<InstructorForm> instructorFormList = scheduleDao.findAllInstructors();
+    	 
          try {
+             Set<InstructorForm> instructorFormList = scheduleDao.findAllInstructors();
              if(instructorFormList == null || instructorFormList.isEmpty()) {
                  throw new IllegalArgumentException("Can't find Instructors");
-             } else {
-                 return instructorFormList;
-             }    
+             }
+             
+             return instructorFormList;
          } catch (DataAccessException ex) {
              throw new IllegalArgumentException("Can't access Instructors");
          }
@@ -113,13 +115,14 @@ public class ScheduleServiceImpl implements ScheduleService{
      */
     @Override
     public Set<VenueForm> findAllVenues() {
-    	 Set<VenueForm> venueFormList = scheduleDao.findAllVenues();
+    	 
          try {
+             Set<VenueForm> venueFormList = scheduleDao.findAllVenues();
              if(venueFormList == null || venueFormList.isEmpty()) {
                  throw new IllegalArgumentException("Can't find Venues");
-             } else {
-                 return venueFormList;
-             }    
+             }
+             
+             return venueFormList;
          } catch (DataAccessException ex) {
              throw new IllegalArgumentException("Can't access Venues");
          }
