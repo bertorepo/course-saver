@@ -62,6 +62,6 @@ public interface ScheduleDao {
      * Saves the CourseSchedule and CourseScheduleDetail object
      * @param courseSchedule
      */
-	CourseSchedule saveCourseSchedule(CourseSchedule courseSchedule);
+	void saveCourseSchedule(CourseSchedule courseSchedule);
 	
 }
