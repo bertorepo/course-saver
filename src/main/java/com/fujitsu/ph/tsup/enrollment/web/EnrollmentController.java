@@ -61,8 +61,7 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
 		if (result.hasErrors()) {
 			return "enrollment-management/CourseDeclineForm";
 		}
-		
-		
+			
 		redirectAttributes.addFlashAttribute("courseDecline", courseDeclineForm);	
 		return "redirect:/enrollment/CourseDeclineForm";
 		}
