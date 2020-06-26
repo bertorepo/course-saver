@@ -438,7 +438,7 @@ public class CourseParticipant {
 				throw new IllegalArgumentException("Reason should not be empty");
 			}
 		}
-		
+
 	}
 	
 }
