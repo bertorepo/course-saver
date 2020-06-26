@@ -20,7 +20,7 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 * @author j.macabugao
 *
 */
-import
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
