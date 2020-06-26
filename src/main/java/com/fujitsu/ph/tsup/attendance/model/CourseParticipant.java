@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 //--------+------------+---------------+-----------
 // 0.01   | 06/23/2020 | WS) M.Angara  | New Creation
 // 0.02   | 06/25/2020 | WS) M.Angara  | Updated
+// 0.03   | 06/26/2020 | WS) M.Angara  | Updated
 //=========================================================================================
 /**
  * <pre>
@@ -20,7 +21,7 @@ import java.time.ZonedDateTime;
  * 
  * <pre>
  * 
- * @version 0.2
+ * @version 0.3
  * @author m.angara
  */
 
@@ -67,7 +68,7 @@ public class CourseParticipant {
     protected CourseParticipant() {
     }
 
-    /**
+    /*
      * <pre>
      * Creates an instance of the CourseParticipant using the given builder class.
      * <pre>
@@ -401,7 +402,7 @@ public class CourseParticipant {
             if (scheduledEndDateTime == null) {
                 throw new IllegalArgumentException("Scheduled end date should not be empty");
             }
-            if (scheduledEndDateTime.isBefore(scheduledStartDateTime)) {
+            if (scheduledEndDateTime.isAfter(scheduledStartDateTime)) {
                 throw new IllegalArgumentException(
                         "Scheduled end date and time should be greater than or equal to Scheduled start date and time");
             }
