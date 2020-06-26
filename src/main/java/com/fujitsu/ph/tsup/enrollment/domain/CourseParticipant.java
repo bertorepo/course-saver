@@ -278,14 +278,13 @@ public class CourseParticipant {
 		 * @return builder
 		 */
 
-		public CourseParticipant decline(String reason) {
+		public Builder decline(String reason) {
 
 			validateReason(reason);
+			this.declineDate=ZonedDateTime.now();
 			this.reason = reason;
-
-			CourseParticipant builder = new CourseParticipant.Builder(id).build();
-
-			return builder;
+				
+			return this;
 		}
 
 		/**
@@ -438,7 +437,9 @@ public class CourseParticipant {
 			if (reason == null || reason.isEmpty()) {
 				throw new IllegalArgumentException("Reason should not be empty");
 			}
-
 		}
+		
 	}
+	
 }
+
