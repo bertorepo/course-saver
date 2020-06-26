@@ -156,13 +156,12 @@ public class ScheduleController {
             form.setCourses(courseFormList);
             form.setVenues(venueFormList);
             form.setInstructors(instructorFormList);
+            model.addAttribute("scheduleNew", form);
             return "scheduling/scheduleNew";
         }
 
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-
-        model.addAttribute("scheduleNew", form);
+        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>(); 
         
         for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
              CourseScheduleDetail courseScheduleDetail = 
