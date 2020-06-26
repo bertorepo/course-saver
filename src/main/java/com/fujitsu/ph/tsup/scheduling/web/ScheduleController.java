@@ -1,5 +1,28 @@
 package com.fujitsu.ph.tsup.scheduling.web;
 
+//=======================================================
+//$Id: PR02$
+//Project Name: Training Sign Up
+//Class Name: ScheduleController.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by      | Content
+//--------+------------+-----------------+---------------
+//0.01    | 06/26/2020 | WS) J.Macabugao | New Creation
+//0.01    | 06/26/2020 | WS) JC.Jimenez  | New Creation
+//0.01    | 06/26/2020 | WS) J.Balanon   | New Creation
+//=======================================================
+
+/**
+* <pre>
+* The controller for course scheduling. 
+* <pre>
+* @version 0.01
+* @author jc.jimenez
+* @author j.balanon
+* @author j.macabugao
+*
+*/
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +34,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +46,6 @@ import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
-import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleViewForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
@@ -32,9 +53,27 @@ import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 @Controller
 @RequestMapping("/scheduling")
 public class ScheduleController {
+	
+	/**
+     * Schedule Service
+     */
     private ScheduleService scheduleService;
+    
+	/**
+     * Logger Factory
+     */
     private static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
     
+    
+    /**
+     * <pre>
+     * View all course schedule. Method = GET
+     * <pre>
+     * @param CourseScheduleListForm form
+     * @param BindingResult bindingResult
+     * @param Model model
+     * @return courseScheduleListForm and view
+     */
     @GetMapping("/view")
     public String viewAllCourseSchedule(@Valid @ModelAttribute("scheduleView") CourseScheduleListForm form,
             BindingResult bindingResult, Model model) {
@@ -63,10 +102,19 @@ public class ScheduleController {
         return "scheduling/scheduleView";
 
     }
-
+    
+    /**
+     * <pre>
+     * Show the Course Schedule New Form. Method = GET
+     * <pre>
+     * @param Model model
+     * @return courseScheduleListForm and view
+     */
     @GetMapping("/new")
     public String showCourseScheduleNewForm(Model model) {
 
+    	logger.debug("Model:{}", model);
+    	
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
@@ -82,7 +130,17 @@ public class ScheduleController {
         return "scheduling/scheduleNew";
 
     }
-
+    
+    /**
+     * <pre>
+     * Create the course schedule. Method = GET
+     * <pre>
+     * @param CourseScheduleListForm form
+     * @param BindingResult bindingResult
+     * @param Model model
+     * @param RedirectAttributes redirectAttributes
+     * @return courseScheduleListForm and view
+     */
     @PostMapping("/new")
     public String submitCourseScheduleNewForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
