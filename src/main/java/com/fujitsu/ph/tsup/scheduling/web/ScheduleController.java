@@ -159,19 +159,22 @@ public class ScheduleController {
             return "scheduling/scheduleNew";
         }
 
-        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
 
         model.addAttribute("scheduleNew", form);
-
-        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailForm.getId(),
-                courseScheduleDetailForm.getScheduledStartDateTime(),
-                courseScheduleDetailForm.getScheduledEndDateTime()).build();
-
-        courseScheduleDetailSet.add(courseScheduleDetail);
+        
+        for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
+             CourseScheduleDetail courseScheduleDetail = 
+                         new CourseScheduleDetail.Builder(courseSchedDetForm.getId(),
+                         courseSchedDetForm.getScheduledStartDateTime(),
+                         courseSchedDetForm.getScheduledEndDateTime()).build();
+             courseScheduleDetailSet.add(courseScheduleDetail);
+        } 
 
         CourseSchedule courseSchedule = new CourseSchedule.Builder(form.getCourseId(), form.getInstructorId(),
-                form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet).build();
+                form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet)
+                .maxAllowed(form.getMaxAllowed()).build();
         scheduleService.createCourseSchedule(courseSchedule);
 
         redirectAttributes.addFlashAttribute("scheduleNew", form);
