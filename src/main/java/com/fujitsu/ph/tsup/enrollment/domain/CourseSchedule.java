@@ -24,7 +24,6 @@ package com.fujitsu.ph.tsup.enrollment.domain;
 *
 */
 
-
 import java.util.Set;
 
 public class CourseSchedule {
@@ -273,7 +272,8 @@ public class CourseSchedule {
 		 * @param maxAllowed
 		 */
 		public Builder(Long id, Long courseId, String courseName, Long instructorId, String instructorLastName,
-				String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed) {
+				String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed,
+				int totalParticipants, char status) {
 
 			validateId(id);
 			validateCourseId(courseId);
@@ -328,7 +328,8 @@ public class CourseSchedule {
 			this.maxAllowed = maxAllowed;
 
 			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
-					instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed).build();
+					instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed,
+					totalParticipants, status).build();
 
 			return builder;
 		}
@@ -348,7 +349,8 @@ public class CourseSchedule {
 			this.courseScheduleDetail = courseScheduleDetail;
 
 			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
-					instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed).build();
+					instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed,
+					totalParticipants, status).build();
 
 			return builder;
 		}
@@ -367,7 +369,8 @@ public class CourseSchedule {
 			this.status = 'C';
 
 			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
-					instructorLastName, instructorFirstName, venueId, venueName, maxAllowed, maxAllowed).build();
+					instructorLastName, instructorFirstName, venueId, venueName, maxAllowed, maxAllowed,
+					totalParticipants, status).build();
 
 			return builder;
 		}
@@ -517,7 +520,7 @@ public class CourseSchedule {
 		 * @param minRequired
 		 */
 		private void validateMinRequired(int minRequired) {
-			if (minRequired < 0) {
+			if (minRequired <= 0) {
 				throw new IllegalArgumentException("Mininum No. of Participants should be greater than 0");
 			}
 		}
