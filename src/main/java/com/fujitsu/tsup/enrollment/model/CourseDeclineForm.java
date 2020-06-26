@@ -23,7 +23,7 @@ import java.time.ZonedDateTime;
 import java.util.Set;
 
 public class CourseDeclineForm {
-    /* COURSE_PARTICIPANT.Id */
+	 /* COURSE_PARTICIPANT.Id */
     private Long id;
 
     /* Course Name */
