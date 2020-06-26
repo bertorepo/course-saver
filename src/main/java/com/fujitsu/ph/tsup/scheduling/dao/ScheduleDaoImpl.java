@@ -90,7 +90,7 @@ public class ScheduleDaoImpl implements ScheduleDao{
      */
     @Override
     public Set<InstructorForm> findAllInstructors() {
-    	String query = "SELECT * FROM INSTRUCTOR";
+    	String query = "SELECT ID, FIRST_NAME, LAST_NAME FROM EMPLOYEE";
 
   	   	List<InstructorForm> instructorList = template.query(query, new InstructorRowMapper());
   	   	Set<InstructorForm> instructors = new HashSet<>(instructorList);
