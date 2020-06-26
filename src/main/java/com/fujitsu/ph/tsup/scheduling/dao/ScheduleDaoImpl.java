@@ -66,7 +66,7 @@ public class ScheduleDaoImpl implements ScheduleDao{
                 + "(ID, COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "+
                 "VALUES (:id, :course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
         
-        SqlParameterSource namedParameters = new MapSqlParameterSource()
+        SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
                     .addValue("id", courseSchedule.getId())
                     .addValue("course_id", courseSchedule.getCourseId())
                     .addValue("instructor_id", courseSchedule.getInstructorId())
@@ -74,7 +74,7 @@ public class ScheduleDaoImpl implements ScheduleDao{
                     .addValue("min_required", courseSchedule.getMinRequired())
                     .addValue("max_allowed", courseSchedule.getMaxAllowed())
                     .addValue("status", courseSchedule.getStatus());
-        template.update(courseScheduleSql, namedParameters);
+        template.update(courseScheduleSql, courseSchedParameters);
         
         String courseScheduleDetailSql = "INSERT INTO COURSE_SCHEDULE_DETAIL" + 
                 "(ID, COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, DURATION)"+
@@ -93,7 +93,4 @@ public class ScheduleDaoImpl implements ScheduleDao{
             template.update(courseScheduleDetailSql, courseSchedDetailParameters);
         }
     }
-    
-    
-
 }
