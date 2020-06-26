@@ -52,7 +52,6 @@ public class ScheduleController {
         courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
 
         if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
-
             if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())){
                 model.addAttribute("scheduleView", courseScheduleListForm);
                 return "scheduling/scheduleView";
