@@ -51,7 +51,7 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 
 @Controller
-@RequestMapping("/scheduling")
+@RequestMapping("/schedules")
 public class ScheduleController {
 	
 	/**
