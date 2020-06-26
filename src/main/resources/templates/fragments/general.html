@@ -19,49 +19,49 @@
 </head>
 
 <body>
-		<div th:fragment="header">
+	<div th:fragment="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-			<a class="navbar-brand mx-4" href="#">TS-Up</a>
+			<a class="navbar-brand mx-4" th:href="@{/dashboard}">TS-Up</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarColor01">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="#">Home </a>
+						<a class="nav-link" th:href="@{/dashboard}">Home </a>
 					</li>
 					<!--Member-->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enroll<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" href="">Enroll</a>
-							<a class="dropdown-item" href="">View Course Enroll</a>
+							<a class="dropdown-item" th:href="@{/enrollment/schedules/{courseScheduleId}/enroll}">Enroll</a>
+							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">My Courses<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" href="">My Course Schedule</a>
-							<a class="dropdown-item" href="">My Course Decline</a>
+							<a class="dropdown-item" th:href="@{/enrollment/mySchedules}">My Course Schedule</a>
+							<a class="dropdown-item" th:href="@{/enrollment/myschedules/{courseParticipantId}/decline}">My Course Decline</a>
 						</div>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Attend</a>
+						<a class="nav-link" th:href="@{/attendance/signin/{courseScheduleDetailId}}">Attend</a>
 					</li>
 					<!--Member end-->
 					<!--PMO-->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" href="">Create Schedule</a>
-							<a class="dropdown-item" href="">Cancel Course Schedule</a>
+							<a class="dropdown-item" th:href="@{/scheduling/new}">Create Schedule</a>
+							<a class="dropdown-item" th:href="@{/enrollment/schedules}">Cancel Course Schedule</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" href="">Generate Attendance Sheet</a>
-							<a class="dropdown-item" href="">Attendance for Absent</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/present}">Generate Attendance Sheet</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/absent}">Attendance for Absent</a>
 						</div>
 					</li>
 					<!--PMO end-->
@@ -69,20 +69,20 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" href="">Instuctor Course Schedule</a>
-							<a class="dropdown-item" href="">View Instructor Course Participants</a>
+							<a class="dropdown-item" th:href="@{/scheduling/view}">Instructor Course Schedule</a>
+							<a class="dropdown-item" th:href="@{/schedules/{courseScheduleId}/participants}">View Instructor Course Participants</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" href="">Change Attendance Status</a>
-							<a class="dropdown-item" href="">Generate Attendance Sheet</a>
+							<a class="dropdown-item" th:href="@{/attendance/participants}">Change Attendance Status</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/present}">Generate Attendance Sheet</a>
 						</div>
 					</li>
 					<!--Instructor end-->
 				</ul>
-				<form class="form-inline my-2 my-lg-0">
+				<form class="form-inline my-2 my-lg-0" th:action="@{/logout}">
 					<button class="btn btn-primary my-2 my-sm-0" ><i class="fa fa-sign-out"></i> Logout</button>
 				</form>
 			</div>
