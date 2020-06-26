@@ -164,4 +164,12 @@ public class CourseEnrollCancelForm {
         this.totalParticipants = totalParticipants;
     }
 
+	@Override
+	public String toString() {
+		String toReturn = "CancelCourseSchedule [Course ID="+courseId+", Course Name="
+				+ courseName + ", Instructor ID=" + instructorId + ", Instructor Name=" + instructorName + ", Venue ID="
+				+ venueId + ", Venue Name=" + venueName + ", Course Schedule Details=" + courseScheduleDetail + ", Minimum Required" + minRequired 
+				+ ", Maximum Allowed=" + maxAllowed + ", Total Participants=" + totalParticipants + "]";
+		return toReturn;
+	}
 }
