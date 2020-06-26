@@ -34,26 +34,7 @@ import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 public class ScheduleController {
     private ScheduleService scheduleService;
     private static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
-
-    @GetMapping("/new")
-    public String showCourseScheduleNewForm(Model model) {
-
-        Set<CourseForm> courseFormList = scheduleService.findAllCourses();
-        Set<VenueForm> venueFormList = scheduleService.findAllVenues();
-        Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
-
-        CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
-
-        courseScheduleNewForm.setInstructors(instructorFormList);
-        courseScheduleNewForm.setVenues(venueFormList);
-        courseScheduleNewForm.setCourses(courseFormList);
-
-        model.addAttribute("scheduleNew", courseScheduleNewForm);
-
-        return "scheduling/scheduleNew";
-
-    }
-
+    
     @GetMapping("/view")
     public String viewAllCourseSchedule(@Valid @ModelAttribute("scheduleView") CourseScheduleListForm form,
             BindingResult bindingResult, Model model) {
@@ -83,6 +64,25 @@ public class ScheduleController {
 
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/scheduleView";
+
+    }
+
+    @GetMapping("/new")
+    public String showCourseScheduleNewForm(Model model) {
+
+        Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+        Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+        Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+
+        CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
+
+        courseScheduleNewForm.setInstructors(instructorFormList);
+        courseScheduleNewForm.setVenues(venueFormList);
+        courseScheduleNewForm.setCourses(courseFormList);
+
+        model.addAttribute("scheduleNew", courseScheduleNewForm);
+
+        return "scheduling/scheduleNew";
 
     }
 
