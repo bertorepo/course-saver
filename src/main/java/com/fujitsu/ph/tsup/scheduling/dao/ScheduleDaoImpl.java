@@ -52,14 +52,40 @@ public class ScheduleDaoImpl implements ScheduleDao{
 
     @Override
     public Set<InstructorForm> findAllInstructors() {
-        // TODO Auto-generated method stub
-        return null;
+    	 String query = "SELECT * FROM INSTRUCTOR";
+         
+         Set<InstructorForm> instructors = new HashSet<>();
+         
+         List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
+         
+         for (Map<String,Object> rowMap : rows) {
+             InstructorForm instructorForm = new InstructorForm();
+             
+             instructorForm.setId((Long) rowMap.get("ID"));
+             instructorForm.setName((String) rowMap.get("NAME"));
+             instructors.add(instructorForm);
+         }
+         
+         return instructors;
     }
 
     @Override
     public Set<VenueForm> findAllVenues() {
-        // TODO Auto-generated method stub
-        return null;
+    	 String query = "SELECT * FROM VENUE";
+         
+         Set<VenueForm> venues = new HashSet<>();
+         
+         List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
+         
+         for (Map<String,Object> rowMap : rows) {
+             VenueForm venueForm = new VenueForm();
+             
+             venueForm.setId((Long) rowMap.get("ID"));
+             venueForm.setName((String) rowMap.get("NAME"));
+             venues.add(venueForm);
+         }
+         
+         return venues;
     }
 
     @Override
