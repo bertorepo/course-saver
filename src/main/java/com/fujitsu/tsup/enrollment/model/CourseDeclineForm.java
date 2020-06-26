@@ -9,7 +9,7 @@ package com.fujitsu.tsup.enrollment.model;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/22/2020 | WS) M.Lumontad        | New Creation
+//0.01   | 06/25/2020 | WS) K.Freo       | Modified
 //==================================================================================================
 /**
 * <pre>
@@ -17,13 +17,13 @@ package com.fujitsu.tsup.enrollment.model;
 * <pre>
 * 
 * @version 0.01
-* @author m.lumontad                    
+* @author k.freo                   
 */
 import java.time.ZonedDateTime;
 import java.util.Set;
 
 public class CourseDeclineForm {
-    /* COURSE_PARTICIPANT.Id */
+	 /* COURSE_PARTICIPANT.Id */
     private Long id;
 
     /* Course Name */

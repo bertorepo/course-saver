@@ -16,15 +16,15 @@ import java.util.Set;
 //0.01    | 06/23/2020 | WS) K.Freo        | New Creation
 //==================================================================================================
 /**
- * <pre>
- * Enrollment Model Use as Course Participant Builder Pattern <added
- * description>
- * 
- * <pre>
- * 
- * @version 0.01
- * @author K.Freo
- */
+* <pre>
+* Enrollment Model Use as Course Participant Builder Pattern <added
+* description>
+* 
+* <pre>
+* 
+* @version 0.01
+* @author K.Freo
+*/
 
 public class CourseParticipant {
 
@@ -278,14 +278,13 @@ public class CourseParticipant {
 		 * @return builder
 		 */
 
-		public CourseParticipant decline(String reason) {
+		public Builder decline(String reason) {
 
 			validateReason(reason);
+			this.declineDate=ZonedDateTime.now();
 			this.reason = reason;
-
-			CourseParticipant builder = new CourseParticipant.Builder(id).build();
-
-			return builder;
+				
+			return this;
 		}
 
 		/**
@@ -438,7 +437,9 @@ public class CourseParticipant {
 			if (reason == null || reason.isEmpty()) {
 				throw new IllegalArgumentException("Reason should not be empty");
 			}
-
 		}
+
 	}
+	
 }
+
