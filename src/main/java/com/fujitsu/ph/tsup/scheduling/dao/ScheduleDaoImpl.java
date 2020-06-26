@@ -20,7 +20,7 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 public class ScheduleDaoImpl implements ScheduleDao{
     
     @Autowired
-    private NamedParameterJdbcTemplate namedParametertemplate;
+    private NamedParameterJdbcTemplate template;
     private JdbcTemplate jdbcTemplate;
     KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
@@ -35,17 +35,9 @@ public class ScheduleDaoImpl implements ScheduleDao{
     public Set<CourseForm> findAllCourses() {
         String query = "SELECT * FROM COURSE";
         
-        Set<CourseForm> courses = new HashSet<>();
         
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
-        
-        for (Map<String,Object> rowMap : rows) {
-            CourseForm courseForm = new CourseForm();
-            
-            courseForm.setId((Long) rowMap.get("ID"));
-            courseForm.setName((String) rowMap.get("NAME"));
-            courses.add(courseForm);
-        }
+        List<CourseForm> courseList = template.query(query, new CourseRowMapper());
+        Set<CourseForm> courses = new HashSet<>(courseList);
         
         return courses;
     }
