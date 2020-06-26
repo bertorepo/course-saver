@@ -64,4 +64,10 @@ public class CourseEnrolledListForm {
     public void setCourseScheduleDetailForm(Set<CourseEnrollmentForm> courseSchedules) {
         this.courseSchedules = courseSchedules;
     }
+    
+    @Override
+	public String toString() {
+		return "CourseEnrolledListForm [FromDateTime = " + fromDateTime + ", ToDateTime = " + toDateTime + ","
+				+ " CourseSchedules =" + courseSchedules + "]";
+	}
 }
