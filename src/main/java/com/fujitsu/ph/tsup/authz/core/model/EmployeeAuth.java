@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.data.annotation.Id;
 
 /**
+ * It is a class of Employee Authorization
  * 
  * @author j.macabudbud
  *
@@ -24,6 +25,7 @@ public class EmployeeAuth {
 		private Set<String> authzSet;
 
 		/**
+		 * The builder is a public static member class of EmployeeAuth
 		 * 
 		 * @param username
 		 * @param authzSet
@@ -35,7 +37,12 @@ public class EmployeeAuth {
 			this.authzSet = authzSet;
 		}
 
+		public Builder(String username2, String role) {
+			// TODO Auto-generated constructor stub
+		}
+
 		/**
+		 * Validates authorization
 		 * 
 		 * @param authzSet
 		 */
@@ -47,6 +54,7 @@ public class EmployeeAuth {
 		}
 
 		/**
+		 * Validates username
 		 * 
 		 * @param username
 		 */
