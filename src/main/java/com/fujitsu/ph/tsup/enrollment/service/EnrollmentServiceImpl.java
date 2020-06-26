@@ -8,7 +8,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/25/2020  | WS) T.Oviedo          | New Creation
+//0.01    | 06/25/2020 | WS) T.Oviedo          | New Creation
 //==================================================================================================
 /**
 * <pre>
@@ -20,7 +20,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 */
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-
+import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -31,7 +31,7 @@ import org.springframework.dao.DataAccessException;
 public class EnrollmentServiceImpl implements EnrollmentService {
 
 	@Autowired
-	EnrollmentDao enrollmentDao;
+	private EnrollmentDao enrollmentDao;
 	
 	/** Finds the scheduled courses starting from today onwards */
 	@Override
@@ -111,7 +111,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 			throw new IllegalArgumentException("This course{"+id+"} is not existing");
 		}
 		CourseSchedule courseScheduleInstance = new CourseSchedule.Builder(id).cancel();	
-		enrollmentDao.changeCourseScheduleStatus(courseSchedule);
+		enrollmentDao.changeCourseScheduleStatus(courseScheduleInstance);
 	}
 
 }

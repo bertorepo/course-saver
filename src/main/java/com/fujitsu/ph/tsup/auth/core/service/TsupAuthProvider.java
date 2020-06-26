@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.auth.provider.FpiLdapAuthenticationProvider;
 import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
+import com.fujitsu.ph.tsup.authz.core.service.AuthorizationService;
 
 /**
  * <pre>
@@ -22,9 +23,6 @@ import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
 @Component
 public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
 	private Logger logger = LoggerFactory.getLogger(TsupAuthProvider.class);
-
-	@Autowired
-	private EmployeeAuth employeeAuth;
 	
 	/* Uncomment this once the Class for AuthorizationService is created */ 
 	//@Autowired
@@ -34,12 +32,12 @@ public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
 	protected FpiUser getUser(String username) {
 		FpiUser fpiUser = new FpiUser();
 		
-		fpiUser.setId(employeeAuth.getId());
+		fpiUser.setId(1L);
 		fpiUser.setUserName(username);
 		
 		/* Uncomment this once the Class for AuthorizationService is created */ 
-		// List<String> roles = authorizationService.findByUsername(username);
-		// fpiUser.setRoles(roles);
+		//List<String> roles = authorizationService.findByUsername(username);
+		//fpiUser.setRoles(roles);
 		
 		logger.debug("User:{}", fpiUser);
 		
