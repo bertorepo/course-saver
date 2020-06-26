@@ -273,6 +273,12 @@ public class CourseScheduleDetail {
             }
         }
         
+        @Override
+        public String toString() {
+            return "CourseScheduleDetail = [id="+id +" courseScheduleId="+ courseScheduleId + 
+                    " courseScheduleId="+ courseScheduleId+" scheduledStartDateTime="+ scheduledStartDateTime 
+                    + " scheduledEndDateTime="+ scheduledEndDateTime + " duration="+ duration +"]";
+        }
         
     }
 }

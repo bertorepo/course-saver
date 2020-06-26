@@ -87,7 +87,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/new")
-    public String createCourseSchedule(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
+    public String submitCourseScheduleNewForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
