@@ -20,7 +20,6 @@ public class ScheduleDaoImpl implements ScheduleDao{
     
     @Autowired
     private NamedParameterJdbcTemplate template;
- 
     KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
     @Override

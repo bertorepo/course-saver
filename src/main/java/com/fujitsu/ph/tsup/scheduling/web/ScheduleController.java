@@ -53,9 +53,7 @@ public class ScheduleController {
 
         if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
 
-            if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime()))
-
-            {
+            if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())){
                 model.addAttribute("scheduleView", courseScheduleListForm);
                 return "scheduling/scheduleView";
             }

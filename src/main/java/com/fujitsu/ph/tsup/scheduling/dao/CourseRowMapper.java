@@ -50,5 +50,4 @@ public class CourseRowMapper implements RowMapper<CourseForm>{
         
         return courseForm;
     }
-
 }
