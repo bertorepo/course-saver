@@ -39,7 +39,7 @@ public class CourseScheduleDetailForm {
      */
 	private ZonedDateTime scheduledEndDateTime;
 	
-	/**
+	/**     
      *  Duration
      */
     private float duration;
