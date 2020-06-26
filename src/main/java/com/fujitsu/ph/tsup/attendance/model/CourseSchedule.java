@@ -335,7 +335,7 @@ public class CourseSchedule {
 
 			this.maxAllowed = maxAllowed;
 
-			return builder;
+			return this;
 
 		}
 
@@ -354,7 +354,7 @@ public class CourseSchedule {
 
 			this.courseScheduleDetail = courseScheduleDetail;
 
-			return builder;
+			return this;
 		}
 
 		/**
@@ -369,7 +369,7 @@ public class CourseSchedule {
 
 			this.status = 'C';
 
-			return builder;
+			return this;
 		}
 
 		/**
