@@ -30,7 +30,15 @@ import org.springframework.jdbc.core.RowMapper;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 
 public class CourseRowMapper implements RowMapper<CourseForm>{
-
+    
+    /**
+     * <pre>
+     * Maps the Rows returned by ResultSet
+     * <pre>
+     * @param ResultSet rs
+     * @param int rowNum
+     * @throws SQLException
+     */
     @Override
     public CourseForm mapRow(ResultSet rs, int rowNum) throws SQLException {
         CourseForm courseForm = new CourseForm();

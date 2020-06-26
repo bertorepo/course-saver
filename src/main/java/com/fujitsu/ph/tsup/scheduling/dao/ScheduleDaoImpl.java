@@ -34,7 +34,6 @@ public class ScheduleDaoImpl implements ScheduleDao{
     public Set<CourseForm> findAllCourses() {
         String query = "SELECT * FROM COURSE";
         
-        
         List<CourseForm> courseList = template.query(query, new CourseRowMapper());
         Set<CourseForm> courses = new HashSet<>(courseList);
         
@@ -43,22 +42,22 @@ public class ScheduleDaoImpl implements ScheduleDao{
 
     @Override
     public Set<InstructorForm> findAllInstructors() {
-    	 String query = "SELECT * FROM INSTRUCTOR";
+    	String query = "SELECT * FROM INSTRUCTOR";
 
   	   	List<InstructorForm> instructorList = template.query(query, new InstructorRowMapper());
   	   	Set<InstructorForm> instructors = new HashSet<>(instructorList);
        
-       return instructors;
+        return instructors;
     }
 
     @Override
     public Set<VenueForm> findAllVenues() {
-    	 String query = "SELECT * FROM VENUE";
+    	String query = "SELECT * FROM VENUE";
         
     	List<VenueForm> venueList = template.query(query, new VenueRowMapper());
         Set<VenueForm> venues = new HashSet<>(venueList);
            
-           return venues;
+        return venues;
     }
 
     @Override
