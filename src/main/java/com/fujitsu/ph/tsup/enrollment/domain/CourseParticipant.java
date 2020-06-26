@@ -16,15 +16,15 @@ import java.util.Set;
 //0.01    | 06/23/2020 | WS) K.Freo        | New Creation
 //==================================================================================================
 /**
- * <pre>
- * Enrollment Model Use as Course Participant Builder Pattern <added
- * description>
- * 
- * <pre>
- * 
- * @version 0.01
- * @author K.Freo
- */
+* <pre>
+* Enrollment Model Use as Course Participant Builder Pattern <added
+* description>
+* 
+* <pre>
+* 
+* @version 0.01
+* @author K.Freo
+*/
 
 public class CourseParticipant {
 
