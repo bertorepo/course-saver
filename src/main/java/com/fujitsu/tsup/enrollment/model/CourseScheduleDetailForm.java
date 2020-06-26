@@ -9,7 +9,7 @@ package com.fujitsu.tsup.enrollment.model;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 | WS) K.Freo            | New Creation
+//0.01    | 06/25/2020 | WS) K.Freo            | New Creation
 //==================================================================================================
 /**
 * <pre>
