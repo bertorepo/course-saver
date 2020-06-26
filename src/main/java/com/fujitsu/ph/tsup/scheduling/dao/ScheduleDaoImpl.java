@@ -1,5 +1,29 @@
 package com.fujitsu.ph.tsup.scheduling.dao;
 
+//=======================================================
+//$Id: PR02$
+//Project Name: Training Sign Up
+//Class Name: ScheduleDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by      | Content
+//--------+------------+-----------------+---------------
+//0.01    | 06/26/2020 | WS) J.Macabugao | New Creation
+//0.01    | 06/26/2020 | WS) JC.Jimenez  | New Creation
+//0.01    | 06/26/2020 | WS) J.Balanon   | New Creation
+//=======================================================
+
+/**
+* <pre>
+* The data access class for schedule related database access
+* <pre>
+* @version 0.01
+* @author jc.jimenez
+* @author j.balanon
+* @author j.macabugao
+*
+*/
+
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -20,16 +44,35 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 public class ScheduleDaoImpl implements ScheduleDao{
     
+    /**
+     * JDBC Template for Named Parameters
+     */
     @Autowired
     private NamedParameterJdbcTemplate template;
+    
+    /**
+     * Generated Key Holder
+     */
     KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-
+    
+    /**
+     * <pre>
+     * Finds the scheduled courses starting from today onwards
+     * <pre>
+     * @param ZonedDateTime scheduledStartDateTime
+     * @param ZonedDateTime scheduledEndDateTime
+     */
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime scheduledStartDateTime,
             ZonedDateTime scheduledEndDateTime) {
         return null;
     }
-
+    
+    /**
+     * <pre>
+     * Finds all courses
+     * <pre>
+     */
     @Override
     public Set<CourseForm> findAllCourses() {
         String query = "SELECT * FROM COURSE";
@@ -39,7 +82,12 @@ public class ScheduleDaoImpl implements ScheduleDao{
         
         return courses;
     }
-
+    
+    /**
+     * <pre>
+     * Finds all instructors
+     * <pre>
+     */
     @Override
     public Set<InstructorForm> findAllInstructors() {
     	String query = "SELECT * FROM INSTRUCTOR";
@@ -49,7 +97,12 @@ public class ScheduleDaoImpl implements ScheduleDao{
        
         return instructors;
     }
-
+    
+    /**
+     * <pre>
+     * Finds all venues
+     * <pre>
+     */
     @Override
     public Set<VenueForm> findAllVenues() {
     	String query = "SELECT * FROM VENUE";
@@ -59,7 +112,14 @@ public class ScheduleDaoImpl implements ScheduleDao{
            
         return venues;
     }
-
+    
+    /**
+     * <pre>
+     * Saves the CourseSchedule and CourseScheduleDetail object
+     * <pre>
+     * 
+     * @param CourseSchedule courseSchedule
+     */
     @Override
     public void saveCourseSchedule(CourseSchedule courseSchedule) {
         String courseScheduleSql = "INSERT INTO COURSE_SCHEDULE"
