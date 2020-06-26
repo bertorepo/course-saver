@@ -3,11 +3,10 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -21,7 +20,7 @@ public class ScheduleDaoImpl implements ScheduleDao{
     
     @Autowired
     private NamedParameterJdbcTemplate template;
-    private JdbcTemplate jdbcTemplate;
+ 
     KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
     @Override
@@ -45,39 +44,21 @@ public class ScheduleDaoImpl implements ScheduleDao{
     @Override
     public Set<InstructorForm> findAllInstructors() {
     	 String query = "SELECT * FROM INSTRUCTOR";
-         
-         Set<InstructorForm> instructors = new HashSet<>();
-         
-         List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
-         
-         for (Map<String,Object> rowMap : rows) {
-             InstructorForm instructorForm = new InstructorForm();
-             
-             instructorForm.setId((Long) rowMap.get("ID"));
-             instructorForm.setName((String) rowMap.get("NAME"));
-             instructors.add(instructorForm);
-         }
-         
-         return instructors;
+
+  	   	List<InstructorForm> instructorList = template.query(query, new InstructorRowMapper());
+  	   	Set<InstructorForm> instructors = new HashSet<>(instructorList);
+       
+       return instructors;
     }
 
     @Override
     public Set<VenueForm> findAllVenues() {
     	 String query = "SELECT * FROM VENUE";
-         
-         Set<VenueForm> venues = new HashSet<>();
-         
-         List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
-         
-         for (Map<String,Object> rowMap : rows) {
-             VenueForm venueForm = new VenueForm();
-             
-             venueForm.setId((Long) rowMap.get("ID"));
-             venueForm.setName((String) rowMap.get("NAME"));
-             venues.add(venueForm);
-         }
-         
-         return venues;
+        
+    	List<VenueForm> venueList = template.query(query, new VenueRowMapper());
+        Set<VenueForm> venues = new HashSet<>(venueList);
+           
+           return venues;
     }
 
     @Override
