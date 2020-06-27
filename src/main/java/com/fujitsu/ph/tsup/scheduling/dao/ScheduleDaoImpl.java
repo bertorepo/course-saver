@@ -42,80 +42,94 @@ import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
-public class ScheduleDaoImpl implements ScheduleDao{
-    
+public class ScheduleDaoImpl implements ScheduleDao {
+
     /**
      * JDBC Template for Named Parameters
      */
     @Autowired
     private NamedParameterJdbcTemplate template;
-    
+
     /**
      * Generated Key Holder
      */
     KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-    
+
     /**
      * <pre>
      * Finds the scheduled courses starting from today onwards
+     * 
      * <pre>
+     * 
      * @param ZonedDateTime scheduledStartDateTime
      * @param ZonedDateTime scheduledEndDateTime
      */
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime scheduledStartDateTime,
             ZonedDateTime scheduledEndDateTime) {
-        return null;
+
+        String query = "SELECT * FROM COURSE_SCHEDULE, COURSE_SCHEDULE_DETAIL, COURSE, EMPLOYEE, VENUE"
+                + "WHERE COURSE_SCHEDULE_ID BETWEEN fromDateTime AND ToDateTime"
+                + "ORDER BY COURSE_SCHEDULED_ID AND SCHEDULED_START_DATE_TIME";
+        
+        List<CourseSchedule> courseScheduleList = template.query(query, new CourseScheduleRowMapper());
+        Set<CourseSchedule> courseSchedule = new HashSet<>(courseScheduleList);
+        
+        return courseSchedule;
     }
-    
+
     /**
      * <pre>
      * Finds all courses
+     * 
      * <pre>
      */
     @Override
     public Set<CourseForm> findAllCourses() {
         String query = "SELECT * FROM COURSE";
-        
+
         List<CourseForm> courseList = template.query(query, new CourseRowMapper());
         Set<CourseForm> courses = new HashSet<>(courseList);
-        
+
         return courses;
     }
-    
+
     /**
      * <pre>
      * Finds all instructors
+     * 
      * <pre>
      */
     @Override
     public Set<InstructorForm> findAllInstructors() {
-    	String query = "SELECT ID, FIRST_NAME, LAST_NAME FROM EMPLOYEE";
+        String query = "SELECT ID, FIRST_NAME, LAST_NAME FROM EMPLOYEE";
 
-  	   	List<InstructorForm> instructorList = template.query(query, new InstructorRowMapper());
-  	   	Set<InstructorForm> instructors = new HashSet<>(instructorList);
-       
+        List<InstructorForm> instructorList = template.query(query, new InstructorRowMapper());
+        Set<InstructorForm> instructors = new HashSet<>(instructorList);
+
         return instructors;
     }
-    
+
     /**
      * <pre>
      * Finds all venues
+     * 
      * <pre>
      */
     @Override
     public Set<VenueForm> findAllVenues() {
-    	String query = "SELECT * FROM VENUE";
-        
-    	List<VenueForm> venueList = template.query(query, new VenueRowMapper());
+        String query = "SELECT * FROM VENUE";
+
+        List<VenueForm> venueList = template.query(query, new VenueRowMapper());
         Set<VenueForm> venues = new HashSet<>(venueList);
-           
+
         return venues;
     }
-    
+
     /**
      * <pre>
      * Saves the CourseSchedule and CourseScheduleDetail object
+     * 
      * <pre>
      * 
      * @param CourseSchedule courseSchedule
@@ -123,26 +137,24 @@ public class ScheduleDaoImpl implements ScheduleDao{
     @Override
     public void saveCourseSchedule(CourseSchedule courseSchedule) {
         String courseScheduleSql = "INSERT INTO COURSE_SCHEDULE"
-                + "(ID, COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "+
-                "VALUES (:id, :course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
-        
-        SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
-                    .addValue("id", courseSchedule.getId())
-                    .addValue("course_id", courseSchedule.getCourseId())
-                    .addValue("instructor_id", courseSchedule.getInstructorId())
-                    .addValue("venue_id", courseSchedule.getVenueId())
-                    .addValue("min_required", courseSchedule.getMinRequired())
-                    .addValue("max_allowed", courseSchedule.getMaxAllowed())
-                    .addValue("status", courseSchedule.getStatus());
+                + "(ID, COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "
+                + "VALUES (:id, :course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
+
+        SqlParameterSource courseSchedParameters = new MapSqlParameterSource().addValue("id", courseSchedule.getId())
+                .addValue("course_id", courseSchedule.getCourseId())
+                .addValue("instructor_id", courseSchedule.getInstructorId())
+                .addValue("venue_id", courseSchedule.getVenueId())
+                .addValue("min_required", courseSchedule.getMinRequired())
+                .addValue("max_allowed", courseSchedule.getMaxAllowed()).addValue("status", courseSchedule.getStatus());
         template.update(courseScheduleSql, courseSchedParameters);
-        
-        String courseScheduleDetailSql = "INSERT INTO COURSE_SCHEDULE_DETAIL" + 
-                "(ID, COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, DURATION)"+
-                "VALUES (:id, :course_schedule_id, :scheduled_start_datetime, :scheduled_end_datetime, "
+
+        String courseScheduleDetailSql = "INSERT INTO COURSE_SCHEDULE_DETAIL"
+                + "(ID, COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, DURATION)"
+                + "VALUES (:id, :course_schedule_id, :scheduled_start_datetime, :scheduled_end_datetime, "
                 + ":duration";
-        
+
         Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
-        
+
         for (CourseScheduleDetail courseSchedDetail : courseScheduleDetail) {
             SqlParameterSource courseSchedDetailParameters = new MapSqlParameterSource()
                     .addValue("id", courseSchedDetail.getId())
