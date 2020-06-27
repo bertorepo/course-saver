@@ -75,29 +75,28 @@ public class ScheduleController {
      * @return courseScheduleListForm and view
      */
     @GetMapping("/view")
-    public String viewAllCourseSchedule(@Valid @ModelAttribute("scheduleView") CourseScheduleListForm form,
-            BindingResult bindingResult, Model model) {
+    public String viewAllCourseSchedule(@Valid @ModelAttribute("scheduleView") CourseScheduleListForm 
+            courseScheduleListForm, BindingResult bindingResult, Model model) {
 
-        logger.debug("CourseScheduleListForm: {}", form);
+        logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "scheduling-management/scheduleView";
+            return "scheduling/scheduleView";
         }
 
-        CourseScheduleListForm courseScheduleListForm = new CourseScheduleListForm();
-
-        courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
-        courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
-
-        if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
-            if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())){
-                model.addAttribute("scheduleView", courseScheduleListForm);
-                return "scheduling/scheduleView";
-            }
-
+        if (courseScheduleListForm.getToDateTime()==null || courseScheduleListForm.getFromDateTime()== null){
+            
+            courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
+            courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
-
+        
+        if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())){
+            model.addAttribute("scheduleView", courseScheduleListForm);
+            model.addAttribute("error", "To Date should be greater than or equal to From Date");
+            return "scheduling/scheduleView";
+        }
+        
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/scheduleView";
 
@@ -142,7 +141,7 @@ public class ScheduleController {
      * @return courseScheduleListForm and view
      */
     @PostMapping("/new")
-    public String submitCourseScheduleNewForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
+    public String submitCourseScheduleNewForm(@Valid @ModelAttribute("scheduleNew")CourseScheduleNewForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
