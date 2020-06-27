@@ -99,7 +99,6 @@ public class ScheduleController {
         
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/scheduleView";
-
     }
     
     /**
