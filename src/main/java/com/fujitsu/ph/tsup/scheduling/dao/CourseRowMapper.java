@@ -43,8 +43,8 @@ public class CourseRowMapper implements RowMapper<CourseForm>{
     public CourseForm mapRow(ResultSet rs, int rowNum) throws SQLException {
         CourseForm courseForm = new CourseForm();
         
-        Long id = rs.getLong("id");
-        String name = rs.getString("name");
+        Long id = rs.getLong("ID");
+        String name = rs.getString("NAME");
         courseForm.setId(id);
         courseForm.setName(name);
         

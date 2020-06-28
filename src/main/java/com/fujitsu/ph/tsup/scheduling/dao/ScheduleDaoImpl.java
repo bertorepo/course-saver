@@ -65,26 +65,41 @@ public class ScheduleDaoImpl implements ScheduleDao {
      * @param ZonedDateTime scheduledEndDateTime
      */
     @Override
-    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime scheduledStartDateTime,
-            ZonedDateTime scheduledEndDateTime) {
+    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime,
+            ZonedDateTime toDateTime) {
 
-        String query = "SELECT \r\n" + "CSCHED.ID AS ID,\r\n" + "CSCHED.COURSE_ID AS COURSE_ID,\r\n"
-                + "C.NAME AS COURSE_NAME,\r\n" + "CSCHED.INSTRUCTOR_ID AS INSTRUCTOR_ID,\r\n"
-                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME,\r\n" + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME,\r\n"
-                + "CSCHED.VENUE_ID AS VENUE_ID,\r\n" + "V.NAME AS VENUE_NAME,\r\n"
-                + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED,\r\n" + "CSCHED.MAX_REQUIRED AS MAX_REQUIRED,\r\n"
-                + "COUNT(CPART.PARTICIPANT_ID) AS TOTAL_PARTICIPANTS,\r\n" + "CSCHED.STATUS AS STATUS\r\n"
-                + "FROM COURSE_SCHEDULE AS CSCHED\r\n" + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET\r\n"
-                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID\r\n" + "INNER JOIN COURSE AS C\r\n"
-                + "ON CSCHED.COURSE_ID = C.ID\r\n" + "INNER JOIN EMPLOYEE AS E\r\n"
-                + "ON CSCHED.INSTRUCTOR_ID = E.ID\r\n" + "INNER JOIN VENUE AS V\r\n" + "ON CSCHED.VENUE_ID = V.ID\r\n"
-                + "INNER JOIN COURSE_PARTICIPANT AS CPART\r\n" + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID\r\n"
-                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime\r\n"
-                + "ORDER BY CSCHED.ID AND CSCHEDDET.SCHEDULED_START_DATETIME ";
+        String query = "SELECT " 
+                + "CSCHED.ID AS ID," 
+                + "CSCHED.COURSE_ID AS COURSE_ID,"
+                + "C.NAME AS COURSE_NAME," 
+                + "CSCHED.INSTRUCTOR_ID AS INSTRUCTOR_ID,"
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME," 
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME,"
+                + "CSCHED.VENUE_ID AS VENUE_ID," 
+                + "V.NAME AS VENUE_NAME,"
+                + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED," 
+                + "CSCHED.MAX_REQUIRED AS MAX_REQUIRED,"
+                + "COUNT(CPART.PARTICIPANT_ID) AS TOTAL_PARTICIPANTS," 
+                + "CSCHED.STATUS AS STATUS"
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME"
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME"
+                + "FROM COURSE_SCHEDULE AS CSCHED" 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET"
+                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID" 
+                + "INNER JOIN COURSE AS C"
+                + "ON CSCHED.COURSE_ID = C.ID" 
+                + "INNER JOIN EMPLOYEE AS E"
+                + "ON CSCHED.INSTRUCTOR_ID = E.ID" 
+                + "INNER JOIN VENUE AS V" 
+                + "ON CSCHED.VENUE_ID = V.ID"
+                + "INNER JOIN COURSE_PARTICIPANT AS CPART" 
+                + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID"
+                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime"
+                + "ORDER BY CSCHED.ID AND CSCHEDDET.SCHEDULED_START_DATETIME";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
-                .addValue("scheduledStartDateTime", scheduledStartDateTime)
-                .addValue("scheduledEndDateTime", scheduledEndDateTime);
+                .addValue("fromDateTime", fromDateTime)
+                .addValue("toDateTime", toDateTime);
 
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                 new CourseScheduleRowMapper());

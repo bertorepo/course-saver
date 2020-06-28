@@ -44,8 +44,8 @@ public class VenueRowMapper implements RowMapper<VenueForm>{
 		
 		VenueForm venueForm = new VenueForm();
 		
-		Long venueId = rs.getLong("id");
-		String venueName = rs.getString("name");
+		Long venueId = rs.getLong("ID");
+		String venueName = rs.getString("NAME");
 		venueForm.setId(venueId);
 		venueForm.setName(venueName);
 		

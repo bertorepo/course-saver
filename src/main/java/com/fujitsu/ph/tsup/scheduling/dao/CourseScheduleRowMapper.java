@@ -34,30 +34,35 @@ import org.springframework.jdbc.core.RowMapper;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 
+/**
+ * 
+ * @author j.balanon
+ *
+ */
 public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
     
     @Override
     public CourseSchedule mapRow(ResultSet cs, int rowNum) throws SQLException {
         
-        Long id = cs.getLong("id");
-        Long courseId = cs.getLong("course_id");
-        String courseName = cs.getString("course_name");
-        Long instructorId = cs.getLong("instructor_id");
-        String instructorLastName = cs.getString("instructor_last_name");
-        String instructorFirstName = cs.getString("instructor_first_name");
-        Long venueId = cs.getLong("venue_id");
-        String venueName = cs.getString("venue_name");
-        int minRequired = cs.getInt("min_required");
-        int maxAllowed = cs.getInt("max_allowed");
-        int totalParticipants = cs.getInt("total_participants");
-        char status = cs.getString("status").charAt(0);
+        Long id = cs.getLong("ID");
+        Long courseId = cs.getLong("COURSE_ID");
+        String courseName = cs.getString("COURSE_NAME");
+        Long instructorId = cs.getLong("INSTRUCTOR_ID");
+        String instructorLastName = cs.getString("INSTRUCTOR_LAST_NAME");
+        String instructorFirstName = cs.getString("INSTRUCTOR_FIRST_NAME");
+        Long venueId = cs.getLong("VENUE_ID");
+        String venueName = cs.getString("VENUE_NAME");
+        int minRequired = cs.getInt("MIN_REQUIRED");
+        int maxAllowed = cs.getInt("MAX_ALLOWED");
+        int totalParticipants = cs.getInt("TOTAL_PARTICIPANTS");
+        char status = cs.getString("STATUS").charAt(0);
         
         ZonedDateTime scheduledStartDateTime = 
-                ZonedDateTime.ofInstant(cs.getTimestamp("scheduled_start_datetime").toInstant(),
+                ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(),
                         ZoneId.of("UTC"));
         
         ZonedDateTime scheduledEndDateTime = 
-                ZonedDateTime.ofInstant(cs.getTimestamp("scheduled_end_datetime").toInstant(),
+                ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
                         ZoneId.of("UTC"));
         
         CourseScheduleDetail courseScheduleDetail = 
