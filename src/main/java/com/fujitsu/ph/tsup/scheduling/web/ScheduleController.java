@@ -46,6 +46,7 @@ import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleViewForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
@@ -53,30 +54,32 @@ import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 @Controller
 @RequestMapping("/schedules")
 public class ScheduleController {
-	
-	/**
+
+    /**
      * Schedule Service
      */
     private ScheduleService scheduleService;
-    
-	/**
+
+    /**
      * Logger Factory
      */
     private static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
-    
-    
+
     /**
      * <pre>
      * View all course schedule. Method = GET
+     * 
      * <pre>
+     * 
      * @param CourseScheduleListForm form
-     * @param BindingResult bindingResult
-     * @param Model model
+     * @param BindingResult          bindingResult
+     * @param Model                  model
      * @return courseScheduleListForm and view
      */
     @GetMapping("/view")
-    public String viewAllCourseSchedule(@Valid @ModelAttribute("scheduleView") CourseScheduleListForm 
-            courseScheduleListForm, BindingResult bindingResult, Model model) {
+    public String viewAllCourseSchedule(
+            @Valid @ModelAttribute("scheduleView") CourseScheduleListForm courseScheduleListForm,
+            BindingResult bindingResult, Model model) {
 
         logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", bindingResult);
@@ -85,34 +88,71 @@ public class ScheduleController {
             return "scheduling/scheduleView";
         }
 
-        if (courseScheduleListForm.getToDateTime()==null || courseScheduleListForm.getFromDateTime()== null){
-            
+        if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
+
             courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
             courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
-        
-        if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())){
+
+        if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())) {
             model.addAttribute("scheduleView", courseScheduleListForm);
             model.addAttribute("error", "To Date should be greater than or equal to From Date");
             return "scheduling/scheduleView";
         }
-        
+
+        Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
+                courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
+
+        Set<CourseScheduleViewForm> courseScheduleViewFormSet = courseScheduleListForm.getCourseSchedules();
+
+        for (CourseSchedule courseSched : courseSchedule) {
+            CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
+
+            courseScheduleViewForm.setId(courseSched.getId());
+            courseScheduleViewForm.setCourseId(courseSched.getCourseId());
+            courseScheduleViewForm.setCourseName(courseSched.getCourseName());
+            courseScheduleViewForm.setInstructorId(courseSched.getInstructorId());
+            courseScheduleViewForm.setInstructorName(
+                    courseSched.getInstructorLastName() + ", " + courseSched.getInstructorFirstName());
+            courseScheduleViewForm.setParticipants(courseSched.getTotalParticipants());
+
+            Set<CourseScheduleDetail> courseSchedDetSet = courseSched.getCourseScheduleDetail();
+            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
+
+            for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
+                CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
+
+                courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+                courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+                courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
+
+                courseScheduleDetailFormSet.add(courseSchedDetailForm);
+
+            }
+
+            courseScheduleViewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
+
+            courseScheduleViewFormSet.add(courseScheduleViewForm);
+        }
+
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/scheduleView";
     }
-    
+
     /**
      * <pre>
      * Show the Course Schedule New Form. Method = GET
+     * 
      * <pre>
+     * 
      * @param Model model
      * @return courseScheduleListForm and view
      */
     @GetMapping("/new")
     public String showCourseScheduleNewForm(Model model) {
 
-    	logger.debug("Model:{}", model);
-    	
+        logger.debug("Model:{}", model);
+
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
@@ -128,19 +168,21 @@ public class ScheduleController {
         return "scheduling/scheduleNew";
 
     }
-    
+
     /**
      * <pre>
      * Create the course schedule. Method = GET
+     * 
      * <pre>
+     * 
      * @param CourseScheduleListForm form
-     * @param BindingResult bindingResult
-     * @param Model model
-     * @param RedirectAttributes redirectAttributes
+     * @param BindingResult          bindingResult
+     * @param Model                  model
+     * @param RedirectAttributes     redirectAttributes
      * @return courseScheduleListForm and view
      */
     @PostMapping("/new")
-    public String submitCourseScheduleNewForm(@Valid @ModelAttribute("scheduleNew")CourseScheduleNewForm form,
+    public String submitCourseScheduleNewForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
@@ -159,19 +201,18 @@ public class ScheduleController {
         }
 
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>(); 
-        
+        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+
         for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
-             CourseScheduleDetail courseScheduleDetail = 
-                         new CourseScheduleDetail.Builder(courseSchedDetForm.getId(),
-                         courseSchedDetForm.getScheduledStartDateTime(),
-                         courseSchedDetForm.getScheduledEndDateTime()).build();
-             courseScheduleDetailSet.add(courseScheduleDetail);
-        } 
+            CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseSchedDetForm.getId(),
+                    courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime())
+                            .build();
+            courseScheduleDetailSet.add(courseScheduleDetail);
+        }
 
         CourseSchedule courseSchedule = new CourseSchedule.Builder(form.getCourseId(), form.getInstructorId(),
-                form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet)
-                .maxAllowed(form.getMaxAllowed()).build();
+                form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet).maxAllowed(form.getMaxAllowed())
+                        .build();
         scheduleService.createCourseSchedule(courseSchedule);
 
         redirectAttributes.addFlashAttribute("scheduleNew", form);
