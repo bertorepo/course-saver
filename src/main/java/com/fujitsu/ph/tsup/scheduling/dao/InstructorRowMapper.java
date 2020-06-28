@@ -41,9 +41,9 @@ public class InstructorRowMapper implements RowMapper<InstructorForm>{
 	public InstructorForm mapRow(ResultSet rs, int rowNum) throws SQLException {
 		InstructorForm instructorForm = new InstructorForm();
 
-		Long instructorId = rs.getLong("instructorId");
-		String instructorLastName = rs.getString("instructorLastName");
-		String instructorFirstName = rs.getNString("instructorFirstName");
+		Long instructorId = rs.getLong("id");
+		String instructorLastName = rs.getString("last_name");
+		String instructorFirstName = rs.getNString("first_name");
 		
 		instructorForm.setId(instructorId);
 		instructorForm.setName(instructorLastName + "," + instructorFirstName);

@@ -41,10 +41,10 @@ public class CourseScheduleDetailRowMapper implements RowMapper <CourseScheduleD
 
         Long id = csd.getLong("id");
         ZonedDateTime scheduledStartDateTime = 
-                ZonedDateTime.ofInstant(csd.getTimestamp("scheduledStartDateTime").toInstant(),
+                ZonedDateTime.ofInstant(csd.getTimestamp("scheduled_start_datetime").toInstant(),
                         ZoneId.of("UTC"));
         ZonedDateTime scheduledEndDateTime = 
-                ZonedDateTime.ofInstant(csd.getTimestamp("scheduledEndDateTime").toInstant(),
+                ZonedDateTime.ofInstant(csd.getTimestamp("scheduled_end_datetime").toInstant(),
                         ZoneId.of("UTC"));
         float duration = csd.getFloat("duration");
         
