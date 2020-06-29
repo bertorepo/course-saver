@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-
+import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.scheduling.dao.ScheduleDao;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
@@ -36,8 +36,9 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 //
 //
 //=======================================================
-
+@Service
 public class ScheduleServiceImpl implements ScheduleService{
+	
 	
 	/**
      * Schedule dao
