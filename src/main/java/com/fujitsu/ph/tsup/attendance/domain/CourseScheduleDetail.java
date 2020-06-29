@@ -1,4 +1,4 @@
-package com.fujitsu.ph.tsup.attendance.model;
+package com.fujitsu.ph.tsup.attendance.domain;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
