@@ -1,5 +1,24 @@
 package com.fujitsu.ph.tsup.enrollment.dao;
 
+//=================================================================================================
+//$Id:PR01$
+//Project Name :Training Sign Up
+//System Name  :Enroll Course
+//Class Name   :CourseScheduleForm.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+--------------------------------------------------
+//0.02    | 06/24/2020 | WS) M.Lumontad        | New Creation
+//=================================================================================================
+/**
+* <pre>
+* JavaBean for CourseScheduleForm.java
+* <pre>
+* 
+* @version 0.01
+* @author m.lumontad                      
+*/
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -24,6 +43,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         return null;
     }
 
+    /**
+     * Method to Sort the Table Course Schedule by ID and STATUS
+     **/
     @Override
     public CourseSchedule findCourseScheduleById(Long id) {
         String findCourseScheduleByIdSql = "SELECT * FROM COURSE_SCHEDULE" + "WHERE ID = :id" + "AND STATUS = 'A'";
@@ -32,6 +54,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 new EnrollmentRowMapperCourseSchedule());
     }
 
+    /** 
+     * Method to Sort the Table Course Participant by COURSE SCHEDULE ID and PARTICIPANT ID 
+     **/
     @Override
     public CourseParticipant findCourseParticipantByCourseScheduleIdAndParticipantId(Long courseScheduleId,
             Long participantId) {
@@ -43,7 +68,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         return template.queryForObject(findCourseParticipantByCourseScheduleIdAndParticipantIdSql, NamedParameters,
                 new EnrollmentRowMapperCourseParticipant());
     }
-
+    /** 
+     * Method to Save Data to Table COURSE PARTICIPANT 
+     **/
     @Override
     public void saveCourseParticipant(CourseParticipant courseParticipant) {
         String saveCourseParticipantSql = "INSERT INTO COURSE_PARTICIPANT"
