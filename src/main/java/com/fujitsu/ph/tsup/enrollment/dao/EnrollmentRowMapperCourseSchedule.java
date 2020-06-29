@@ -62,5 +62,4 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
        
         return courseSchedule; 
     }
-
 }
