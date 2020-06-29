@@ -111,7 +111,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public void deleteCourseParticipantById(Long id) {
         // TODO Auto-generated method stub
-
+    	String sql = "DELETE FROM COURSE_PARTICIPANT WHERE id = :id";
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
+		template.update(sql, namedParameters);
     }
 
     @Override
@@ -123,7 +125,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public void changeCourseScheduleStatus(CourseSchedule courseSchedule) {
         // TODO Auto-generated method stub
-
+    	String sql = "UPDATE COURSE_SCHEDULE SET status = :status WHERE id = :id";
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("status", courseSchedule.getStatus()).addValue("id", courseSchedule.getId());
+		template.update(sql, namedParameters);
     }
 
 }
