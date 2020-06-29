@@ -3,9 +3,9 @@ package com.fujitsu.ph.tsup.attendance.dao;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import com.fujitsu.ph.tsup.attendance.model.CourseAttendance;
-import com.fujitsu.ph.tsup.attendance.model.CourseParticipant;
-import com.fujitsu.ph.tsup.attendance.model.CourseSchedule;
+import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
+import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 
 //==================================================================================================
 //$Id:PR03$
@@ -16,7 +16,7 @@ import com.fujitsu.ph.tsup.attendance.model.CourseSchedule;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01 | 06/23/2020 |  WS) J. Iwarat   | New Creation
+//0.01    | 06/23/2020 |  WS) J. Iwarat        | New Creation
 //==================================================================================================
 /**
  * <pre>
