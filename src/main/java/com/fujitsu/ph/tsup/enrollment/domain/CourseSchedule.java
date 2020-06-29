@@ -122,7 +122,11 @@ public class CourseSchedule {
 		this.status = builder.status;
 	}
 
-	public Long getId() {
+	public CourseSchedule(CourseSchedule courseSchedule) {
+        // TODO Auto-generated constructor stub
+    }
+
+    public Long getId() {
 		return id;
 	}
 
@@ -380,10 +384,10 @@ public class CourseSchedule {
 		 * 
 		 * @return new CourseSchedule(this)
 		 */
-		public CourseSchedule build() {
-
-			return new CourseSchedule(this);
-		}
+		 public CourseSchedule build() {
+		     
+		        return new CourseSchedule(this);
+		    }
 
 		/**
 		 * <pre>
@@ -558,5 +562,13 @@ public class CourseSchedule {
 		}
 
 	}
-
+	
+	/**
+     * Creates a new instance of the course schedule.
+     * 
+     * @return new CourseSchedule(this)
+     */
+    public CourseSchedule build() {
+        return new CourseSchedule(this);
+    }
 }
