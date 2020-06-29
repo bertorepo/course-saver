@@ -30,7 +30,7 @@ public class CourseScheduleListForm {
     private ZonedDateTime toDateTime;
 
     /* Set of Course Schedule Form */
-    private Set<CourseScheduleDetailForm> courseSchedules;
+    private Set<CourseScheduleForm> courseSchedules;
 
     /** Course From Date Getter */
     public ZonedDateTime getFromDateTime() {
@@ -53,12 +53,12 @@ public class CourseScheduleListForm {
     }
 
     /** Course Schedule Set Getter */
-    public Set<CourseScheduleDetailForm> getCourseSchedules() {
+    public Set<CourseScheduleForm> getCourseSchedules() {
         return courseSchedules;
     }
 
     /** Course Schedule Set Setter */
-    public void setCourseSchedules(Set<CourseScheduleDetailForm> courseSchedules) {
+    public void setCourseSchedules(Set<CourseScheduleForm> courseSchedules) {
         this.courseSchedules = courseSchedules;
     }
 
