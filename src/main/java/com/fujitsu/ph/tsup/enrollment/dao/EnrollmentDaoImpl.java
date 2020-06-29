@@ -4,7 +4,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //$Id:PR01$
 //Project Name :Training Sign Up
 //System Name  :Enroll Course
-//Class Name   :CourseScheduleForm.java
+//Class Name   :EnrollmentDaoImpl.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
@@ -13,7 +13,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //=================================================================================================
 /**
 * <pre>
-* JavaBean for CourseScheduleForm.java
+* JavaBean for EnrollmentDaoImpl.java
 * <pre>
 * 
 * @version 0.01
