@@ -1,9 +1,9 @@
 package com.fujitsu.ph.tsup.attendance.service;
 
 import com.fujitsu.ph.tsup.attendance.dao.AttendanceDao;
-import com.fujitsu.ph.tsup.attendance.model.CourseAttendance;
-import com.fujitsu.ph.tsup.attendance.model.CourseParticipant;
-import com.fujitsu.ph.tsup.attendance.model.CourseSchedule;
+import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
+import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 
 import java.time.ZonedDateTime;
 import java.util.Set;
