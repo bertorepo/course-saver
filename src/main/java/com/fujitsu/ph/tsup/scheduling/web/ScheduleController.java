@@ -62,6 +62,7 @@ public class ScheduleController {
 	@Autowired
     private ScheduleService scheduleService;
 
+	
     /**
      * Logger Factory
      */
