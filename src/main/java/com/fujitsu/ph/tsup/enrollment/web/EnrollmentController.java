@@ -1,21 +1,33 @@
 package com.fujitsu.ph.tsup.enrollment.web;
 
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fujitsu.ph.tsup.employee.management.model.CourseScheduleListForm;
+import com.fujitsu.ph.auth.model.FpiUser;
+import com.fujitsu.ph.tsup.course.management.model.CourseListForm;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 import com.fujitsu.tsup.enrollment.model.CourseDeclineForm;
+import com.fujitsu.tsup.enrollment.model.CourseEnrollmentForm;
+import com.fujitsu.tsup.enrollment.model.CourseScheduleDetailForm;
 
 
 
@@ -70,7 +82,7 @@ public class EnrollmentController {
      * @author J.yu
      */
     @GetMapping("/viewCourseEnroll")
-    public String viewAllCourseSchedule(CourseScheduleListForm form, BindingResult result, Model model) {
+    public String viewAllCourseSchedule(CourseListForm form, BindingResult result, Model model) {
     
         if(result.hasErrors()) {
     
@@ -132,4 +144,86 @@ public class EnrollmentController {
 		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
 		return "redirect:/schedule";
 	}
+	
+	
+	@GetMapping("/schedules/{courseScheduleId}/enroll")
+    public String showCourseEnrollmentForm(Long id, Model model) {
+        logger.debug("Model:{}", model);
+        if (model.containsAttribute("courseEnrollmentForm")) {
+            return "enrollment-management/CourseEnrollmentForm";
+        }
+
+        CourseSchedule courseSchedule = enrollmentService.findCourseScheduleById(id);
+        
+        CourseScheduleDetail courseScheduleDetail = (CourseScheduleDetail) courseSchedule.getCourseScheduleDetail();
+
+        
+        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<CourseScheduleDetailForm>();
+        
+        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+        
+        courseScheduleDetailForm.setId(courseScheduleDetail.getCourseScheduleId());
+        courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+        courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+        
+        
+        
+        courseScheduleDetailFormSet.add(courseScheduleDetailForm);
+        
+        
+        CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
+
+        courseEnrollmentForm.setCourseScheduleId(courseSchedule.getId());
+        courseEnrollmentForm.setCourseName(courseSchedule.getCourseName());
+        courseEnrollmentForm.setInstructorName(courseSchedule.getInstructorLastName()+", " +courseSchedule.getInstructorFirstName());
+        courseEnrollmentForm.setVenueName(courseSchedule.getVenueName());
+        courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet); 
+        courseEnrollmentForm.setRegistrationDate(ZonedDateTime.now());
+
+        model.addAttribute("courseEnrollmentForm",courseEnrollmentForm);
+
+        return "enrollment-management/courseEnrollmentForm";
+    }
+
+    @PostMapping("/schedules/{courseScheduleId}/enroll")
+    public String submitCourseEnrollmentForm(@Valid @ModelAttribute("enroll") CourseEnrollmentForm courseEnrollmentForm,
+            BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+
+        logger.debug("submitCourseEnrollmentForm:{}", courseEnrollmentForm);
+        logger.debug("Result:{}", result);
+
+        if (result.hasErrors()) {
+            return "enrollment-management/courseEnrollmentForm";
+        }
+
+        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+        courseScheduleDetailForm = (CourseScheduleDetailForm) courseEnrollmentForm.getCourseScheduleDetails();
+
+        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+
+        model.addAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
+
+        CourseScheduleDetail courseScheduleDetail = 
+            new CourseScheduleDetail.Builder(courseScheduleDetailForm.getId(), 
+                courseScheduleDetailForm.getScheduledStartDateTime(), 
+                courseScheduleDetailForm.getScheduledEndDateTime()).build();
+
+        courseScheduleDetailSet.add(courseScheduleDetail);
+
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        CourseParticipant courseParticipant = 
+            new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(), 
+            user.getId()).build();
+
+        
+        enrollmentService.enroll(courseParticipant);
+
+        redirectAttributes.addFlashAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
+
+        return "redirect:/enrollment";
+    }
+
+	
+	
 }
