@@ -196,19 +196,7 @@ public class EnrollmentController {
             return "enrollment-management/courseEnrollmentForm";
         }
 
-        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-        courseScheduleDetailForm = (CourseScheduleDetailForm) courseEnrollmentForm.getCourseScheduleDetails();
-
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-
         model.addAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
-
-        CourseScheduleDetail courseScheduleDetail = 
-            new CourseScheduleDetail.Builder(courseScheduleDetailForm.getId(), 
-                courseScheduleDetailForm.getScheduledStartDateTime(), 
-                courseScheduleDetailForm.getScheduledEndDateTime()).build();
-
-        courseScheduleDetailSet.add(courseScheduleDetail);
 
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
