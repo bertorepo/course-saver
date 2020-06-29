@@ -20,14 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.auth.model.FpiUser;
-import com.fujitsu.ph.tsup.course.management.model.CourseListForm;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
-import com.fujitsu.tsup.enrollment.model.CourseDeclineForm;
-import com.fujitsu.tsup.enrollment.model.CourseEnrollmentForm;
-import com.fujitsu.tsup.enrollment.model.CourseScheduleDetailForm;
+
 
 
 
@@ -39,9 +40,8 @@ import com.fujitsu.tsup.enrollment.model.CourseScheduleDetailForm;
 //<<Modification History>>
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
-//0.01    | 06/25/2020 | WS) K.Freo | New Creation
-//
-//
+//0.01    | 06/25/2020 | WS) K.Freo      | New Creation
+//0.01    | 06/29/2020 | WS) M.Lumontad  | Updated
 //=======================================================
 
 
@@ -81,34 +81,37 @@ public class EnrollmentController {
      * @return String
      * @author J.yu
      */
-    @GetMapping("/viewCourseEnroll")
-    public String viewAllCourseSchedule(CourseListForm form, BindingResult result, Model model) {
-    
-        if(result.hasErrors()) {
-    
-            model.addAttribute("errorMessage", result.getAllErrors());
-            return "enrollment/courseScheduleListForm"; 
-        }
-        
-        ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
-        if(form.getFromDateTime() == null) {
-            form.setFromDateTime(zoneDateTimeNow);
-        }
-        if(form.getToDateTime() == null) {
-            form.setToDateTime(zoneDateTimeNow.plusDays(5));
-        }
-        long difference = form.getToDateTime().compareTo(form.getFromDateTime());
-        
-        if(difference > 0 ) {
-            logger.debug("CourseScheduleListForm:{}",form);
+    	@GetMapping("/viewCourseEnroll")
+        public String viewAllCourseSchedule(@Valid @ModelAttribute
+                ("viewSchedule")CourseScheduleListForm courseScheduleListForm, BindingResult result, Model model) {
             
-            model.addAttribute("CourseScheduleListForm", form); 
+            logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
+            logger.debug("Result: {}", result);
             
+            if(result.hasErrors()) {
+        
+                model.addAttribute("errorMessage", result.getAllErrors());
+                return "enrollment/courseScheduleListForm"; 
+            }
+            
+            ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
+            if(courseScheduleListForm.getFromDateTime() == null) {
+                courseScheduleListForm.setFromDateTime(zoneDateTimeNow);
+            }
+            if(courseScheduleListForm.getToDateTime() == null) {
+                courseScheduleListForm.setToDateTime(zoneDateTimeNow.plusDays(5));
+            }
+            long difference = courseScheduleListForm.getToDateTime().compareTo(courseScheduleListForm.getFromDateTime());
+            
+            if(difference > 0 ) {
+                logger.debug("CourseScheduleListForm:{}",courseScheduleListForm);
+                
+                model.addAttribute("CourseScheduleListForm", courseScheduleListForm); 
+                
+              
+            }      
             return "enrollment/courseSCheduleListForm"; 
-        }      
-        
-       return "view/courseScheduleListForm";
-}
+	    }
 
 	@GetMapping("/myschedules/{courseParticipantId}/decline")
 	public String showCourseDeclineForm(Long id, Model model) {
@@ -196,19 +199,7 @@ public class EnrollmentController {
             return "enrollment-management/courseEnrollmentForm";
         }
 
-        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-        courseScheduleDetailForm = (CourseScheduleDetailForm) courseEnrollmentForm.getCourseScheduleDetails();
-
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-
         model.addAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
-
-        CourseScheduleDetail courseScheduleDetail = 
-            new CourseScheduleDetail.Builder(courseScheduleDetailForm.getId(), 
-                courseScheduleDetailForm.getScheduledStartDateTime(), 
-                courseScheduleDetailForm.getScheduledEndDateTime()).build();
-
-        courseScheduleDetailSet.add(courseScheduleDetail);
 
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

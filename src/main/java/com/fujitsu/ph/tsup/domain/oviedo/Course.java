@@ -3,6 +3,7 @@ package com.fujitsu.ph.tsup.domain.oviedo;
 import java.util.Set;
 
 public class Course {
+	
 	private Long id;
 	private String course;
 	public Set<Course> cns;

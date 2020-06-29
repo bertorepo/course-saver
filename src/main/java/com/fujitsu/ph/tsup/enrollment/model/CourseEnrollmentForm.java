@@ -1,4 +1,4 @@
-package com.fujitsu.tsup.enrollment.model;
+package com.fujitsu.ph.tsup.enrollment.model;
 
 //==================================================================================================
 //$Id:PR01$

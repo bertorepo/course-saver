@@ -1,26 +1,26 @@
-package com.fujitsu.tsup.enrollment.model;
+package com.fujitsu.ph.tsup.enrollment.model;
 //=================================================================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
 //System Name  :Enroll Course
-//Class Name   :CourseScheduleForm.java
+//Class Name   :CancelCourseScheduleForm.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
-//0.02    | 06/24/2020 | WS) J.Yu              | New Creation
+//0.02    | 06/24/2020 | WS) T.Oviedo          | New Creation
 //=================================================================================================
 /**
 * <pre>
-* JavaBean for CourseScheduleForm.java
+* JavaBean for CancelCourseScheduleForm.java
 * <pre>
 * 
 * @version 0.01
-* @author j.yu                       
+* @author t.oviedo                          
 */
 import java.util.Set;
 
-public class CourseScheduleForm {
+public class CourseEnrollCancelForm {
     /* Course Schedule Id */
     private Long id;
 
@@ -164,4 +164,12 @@ public class CourseScheduleForm {
         this.totalParticipants = totalParticipants;
     }
 
+	@Override
+	public String toString() {
+		String toReturn = "CancelCourseSchedule [Course ID="+courseId+", Course Name="
+				+ courseName + ", Instructor ID=" + instructorId + ", Instructor Name=" + instructorName + ", Venue ID="
+				+ venueId + ", Venue Name=" + venueName + ", Course Schedule Details=" + courseScheduleDetail + ", Minimum Required" + minRequired 
+				+ ", Maximum Allowed=" + maxAllowed + ", Total Participants=" + totalParticipants + "]";
+		return toReturn;
+	}
 }

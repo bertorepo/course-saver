@@ -20,9 +20,9 @@
 
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
-	
 	<div class="container mt-5">
-		<form class="form-horizontal">
+	
+		<form class="form-horizontal" action="#" th:action="@{/scheduling/view}" th:object=${scheduleNew} method="post">
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
 			<div class="card">
@@ -196,8 +196,10 @@
 		<!--Buttons for messages (delete these)-->
 			<input type="button" name="success" class="btn btn-success" value="Success">
 			<input type="button" name="error" class="btn btn-danger" value="Error">
-		<!--Buttons for messages (delete these) End-->		
+		<!--Buttons for messages (delete these) End-->
+		
 	</div>
+
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 <script>

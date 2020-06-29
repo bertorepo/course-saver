@@ -9,11 +9,11 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
-//0.02    | 06/24/2020 | WS) M.Lumontad        | New Creation
+//0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
 //=================================================================================================
 /**
 * <pre>
-* JavaBean for EnrollmentDaoImpl.java
+* EnrollmentDaoImpl.java is data access class for enrollment related database access
 * <pre>
 * 
 * @version 0.01
@@ -111,7 +111,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public void deleteCourseParticipantById(Long id) {
         // TODO Auto-generated method stub
-
+    	String sql = "DELETE FROM COURSE_PARTICIPANT WHERE id = :id";
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
+		template.update(sql, namedParameters);
     }
 
     @Override
@@ -123,7 +125,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public void changeCourseScheduleStatus(CourseSchedule courseSchedule) {
         // TODO Auto-generated method stub
-
+    	String sql = "UPDATE COURSE_SCHEDULE SET status = :status WHERE id = :id";
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("status", courseSchedule.getStatus()).addValue("id", courseSchedule.getId());
+		template.update(sql, namedParameters);
     }
 
 }

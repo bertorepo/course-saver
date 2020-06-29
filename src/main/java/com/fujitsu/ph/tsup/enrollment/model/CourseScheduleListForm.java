@@ -1,73 +1,70 @@
-package com.fujitsu.tsup.enrollment.model;
+package com.fujitsu.ph.tsup.enrollment.model;
 
 //==================================================================================================
 //$Id:PR01$
-//Project Name :  Training Sign Up
-//System Name  : Enrollment process
-//Class Name   : CourseEnrolledListForm.java
+//Project Name :Training Sign Up
+//System Name  :Enroll Course
+//Class Name   :CourseScheduleListForm.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/22/2020 | WS) G.Cabiling        | New Creation
+//0.01    | 06/23/2020 | WS) M. Lumontad       | New Creation
 //==================================================================================================
-
-/** 
-*<pre>  
-* It is a JavaBean for CourseEnrolledListForm       
-*</pre> 
-*   
-* @version 0.01
-* @author g.cabiling    
+/**
+* <pre>
+* JavaBean for CourseScheduleListForm.java
+* <pre>
 * 
+* @version 0.01
+* @author m.lumontad                          
 */
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-public class CourseEnrolledListForm {
-
+public class CourseScheduleListForm {
     /* From Date and Time */
     private ZonedDateTime fromDateTime;
 
     /* To Date and Time */
     private ZonedDateTime toDateTime;
 
-    /* Set of Course Enrollment Form */
-    private Set<CourseEnrollmentForm> courseSchedules;
+    /* Set of Course Schedule Form */
+    private Set<CourseScheduleDetailForm> courseSchedules;
 
-    /** From Date and Time Getter */
+    /** Course From Date Getter */
     public ZonedDateTime getFromDateTime() {
         return fromDateTime;
     }
 
-    /** From Date and Time Setter */
+    /** Course From Date Setter */
     public void setFromDateTime(ZonedDateTime fromDateTime) {
         this.fromDateTime = fromDateTime;
     }
 
-    /** To Date and Time Getter */
+    /** Course To Date Getter */
     public ZonedDateTime getToDateTime() {
         return toDateTime;
     }
 
-    /** To Date and Time Setter */
+    /** Course To Date Setter */
     public void setToDateTime(ZonedDateTime toDateTime) {
         this.toDateTime = toDateTime;
     }
 
-    /** Set of Course Enrollment Form Getter */
-    public Set<CourseEnrollmentForm> getCourseSchedules() {
+    /** Course Schedule Set Getter */
+    public Set<CourseScheduleDetailForm> getCourseSchedules() {
         return courseSchedules;
     }
 
-    /** Set of Course Enrollment Form Setter */
-    public void setCourseScheduleDetailForm(Set<CourseEnrollmentForm> courseSchedules) {
+    /** Course Schedule Set Setter */
+    public void setCourseSchedules(Set<CourseScheduleDetailForm> courseSchedules) {
         this.courseSchedules = courseSchedules;
     }
-    
+
     @Override
-	public String toString() {
-		return "CourseEnrolledListForm [FromDateTime = " + fromDateTime + ", ToDateTime = " + toDateTime + ","
-				+ " CourseSchedules =" + courseSchedules + "]";
-	}
+    public String toString() {
+        return "CourseScheduleListForm [fromDateTime=" + fromDateTime + ", toDateTime=" + toDateTime
+                + ", courseSchedules=" + courseSchedules + "]";
+    }
 }

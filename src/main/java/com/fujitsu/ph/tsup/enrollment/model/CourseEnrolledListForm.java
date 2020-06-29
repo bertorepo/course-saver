@@ -1,70 +1,73 @@
-package com.fujitsu.tsup.enrollment.model;
+package com.fujitsu.ph.tsup.enrollment.model;
 
 //==================================================================================================
 //$Id:PR01$
-//Project Name :Training Sign Up
-//System Name  :Enroll Course
-//Class Name   :CourseScheduleListForm.java
+//Project Name :  Training Sign Up
+//System Name  : Enrollment process
+//Class Name   : CourseEnrolledListForm.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 | WS) M. Lumontad       | New Creation
+//0.01    | 06/22/2020 | WS) G.Cabiling        | New Creation
 //==================================================================================================
-/**
-* <pre>
-* JavaBean for CourseScheduleListForm.java
-* <pre>
-* 
+
+/** 
+*<pre>  
+* It is a JavaBean for CourseEnrolledListForm       
+*</pre> 
+*   
 * @version 0.01
-* @author m.lumontad                          
+* @author g.cabiling    
+* 
 */
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-public class CourseScheduleListForm {
+public class CourseEnrolledListForm {
+
     /* From Date and Time */
     private ZonedDateTime fromDateTime;
 
     /* To Date and Time */
     private ZonedDateTime toDateTime;
 
-    /* Set of Course Schedule Form */
-    private Set<CourseScheduleDetailForm> courseSchedules;
+    /* Set of Course Enrollment Form */
+    private Set<CourseEnrollmentForm> courseSchedules;
 
-    /** Course From Date Getter */
+    /** From Date and Time Getter */
     public ZonedDateTime getFromDateTime() {
         return fromDateTime;
     }
 
-    /** Course From Date Setter */
+    /** From Date and Time Setter */
     public void setFromDateTime(ZonedDateTime fromDateTime) {
         this.fromDateTime = fromDateTime;
     }
 
-    /** Course To Date Getter */
+    /** To Date and Time Getter */
     public ZonedDateTime getToDateTime() {
         return toDateTime;
     }
 
-    /** Course To Date Setter */
+    /** To Date and Time Setter */
     public void setToDateTime(ZonedDateTime toDateTime) {
         this.toDateTime = toDateTime;
     }
 
-    /** Course Schedule Set Getter */
-    public Set<CourseScheduleDetailForm> getCourseSchedules() {
+    /** Set of Course Enrollment Form Getter */
+    public Set<CourseEnrollmentForm> getCourseSchedules() {
         return courseSchedules;
     }
 
-    /** Course Schedule Set Setter */
-    public void setCourseSchedules(Set<CourseScheduleDetailForm> courseSchedules) {
+    /** Set of Course Enrollment Form Setter */
+    public void setCourseScheduleDetailForm(Set<CourseEnrollmentForm> courseSchedules) {
         this.courseSchedules = courseSchedules;
     }
-
+    
     @Override
-    public String toString() {
-        return "CourseScheduleListForm [fromDateTime=" + fromDateTime + ", toDateTime=" + toDateTime
-                + ", courseSchedules=" + courseSchedules + "]";
-    }
+	public String toString() {
+		return "CourseEnrolledListForm [FromDateTime = " + fromDateTime + ", ToDateTime = " + toDateTime + ","
+				+ " CourseSchedules =" + courseSchedules + "]";
+	}
 }
