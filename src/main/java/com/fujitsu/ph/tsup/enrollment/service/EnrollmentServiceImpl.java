@@ -97,10 +97,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
 	@Override
 	public void declineCourse(CourseParticipant courseParticipant) {
-		CourseParticipant dbCourseParticipant = enrollmentDao.findCourseParticipantById(courseParticipant.getId());
+		//CourseParticipant dbCourseParticipant = enrollmentDao.findCourseParticipantById(courseParticipant.getId());
 		//how to set courseParticipant.reason to dbCourseParticipant *CourseParticipant instance
 		enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
-		enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
+		enrollmentDao.saveCourseNonParticipant(courseParticipant.getId());
 	}
 
 	@Override
