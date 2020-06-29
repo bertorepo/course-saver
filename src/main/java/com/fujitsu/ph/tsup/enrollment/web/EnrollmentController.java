@@ -23,12 +23,12 @@ import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
-import com.fujitsu.tsup.enrollment.model.CourseDeclineForm;
-import com.fujitsu.tsup.enrollment.model.CourseEnrollmentForm;
-import com.fujitsu.tsup.enrollment.model.CourseScheduleDetailForm;
-import com.fujitsu.tsup.enrollment.model.CourseScheduleForm;
-import com.fujitsu.tsup.enrollment.model.CourseScheduleListForm;
+
 
 
 
@@ -40,9 +40,8 @@ import com.fujitsu.tsup.enrollment.model.CourseScheduleListForm;
 //<<Modification History>>
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
-//0.01    | 06/25/2020 | WS) K.Freo | New Creation
-//
-//
+//0.01    | 06/25/2020 | WS) K.Freo      | New Creation
+//0.01    | 06/29/2020 | WS) M.Lumontad  | Updated
 //=======================================================
 
 
