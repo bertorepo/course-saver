@@ -1,11 +1,19 @@
 package com.fujitsu.ph.tsup.enrollment.web;
 
+import com.fujitsu.ph.auth.model.FpiUser;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
+import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +26,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.fujitsu.ph.auth.model.FpiUser;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
-import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
-import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
-import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
-import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
-import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
-
-
-
-
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -43,8 +37,6 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.01    | 06/25/2020 | WS) K.Freo      | New Creation
 //0.01    | 06/29/2020 | WS) M.Lumontad  | Updated
 //=======================================================
-
-
 /**
 * <pre>
 * The implementation of Enrollment Controller
@@ -52,22 +44,22 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 * @version 0.01
 * @author K.Freo
 */
-
 @Controller
 @RequestMapping("/Enrollment")
 public class EnrollmentController {
-	private static Logger logger = LoggerFactory.getLogger(EnrollmentController.class);
-	@Autowired
-	private EnrollmentService enrollmentService;
+private static Logger logger = LoggerFactory.getLogger(EnrollmentController.class);
+
+    private EnrollmentService enrollmentService;
+
     /**
      * <pre>
      * US02. As a member, I can view all course that I can enroll. URL Value = /schedules , method = GET 
      * 1. if bindingResult.hasErrors()
      *      1.1. Return the course schedule list form and view
      * 2. Set the following fields
-     *      Argumet         | Condition          | Set Value
-     *  form.fromDateTime   | isBlank            | Date Today
-     *  form.toDateTime     | isBlank            | Date Today + 5 days
+     *      Argument         | Condition          | Set Value
+     *  form.fromDateTime    | isBlank            | Date Today
+     *  form.toDateTime      | isBlank            | Date Today + 5 days
      * 3. if form.toDateTime < cform.fromDateTime
      *      3.1 Return the course schedule list form and view with a message "To Date should be 
      *          greater than or equal to From Date"
@@ -81,38 +73,59 @@ public class EnrollmentController {
      * @return String
      * @author J.yu
      */
-    	@GetMapping("/viewCourseEnroll")
-        public String viewAllCourseSchedule(@Valid @ModelAttribute
-                ("viewSchedule")CourseScheduleListForm courseScheduleListForm, BindingResult result, Model model) {
-            
-            logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
-            logger.debug("Result: {}", result);
-            
-            if(result.hasErrors()) {
+    @GetMapping("/viewCourseEnroll")
+    public String viewAllCourseSchedule(@Valid @ModelAttribute
+            ("viewSchedule")CourseScheduleListForm courseScheduleListForm, BindingResult result, Model model) {  
+        logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
+        logger.debug("Result: {}", result);
         
-                model.addAttribute("errorMessage", result.getAllErrors());
-                return "enrollment/courseScheduleListForm"; 
-            }
-            
-            ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
-            if(courseScheduleListForm.getFromDateTime() == null) {
-                courseScheduleListForm.setFromDateTime(zoneDateTimeNow);
-            }
-            if(courseScheduleListForm.getToDateTime() == null) {
-                courseScheduleListForm.setToDateTime(zoneDateTimeNow.plusDays(5));
-            }
-            long difference = courseScheduleListForm.getToDateTime().compareTo(courseScheduleListForm.getFromDateTime());
-            
-            if(difference > 0 ) {
-                logger.debug("CourseScheduleListForm:{}",courseScheduleListForm);
-                
-                model.addAttribute("CourseScheduleListForm", courseScheduleListForm); 
-                
-              
-            }      
+        if(result.hasErrors()) {
+            model.addAttribute("errorMessage", result.getAllErrors());
+            return "enrollment/courseScheduleListForm"; 
+        }
+        
+        ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
+        if(courseScheduleListForm.getFromDateTime() == null) {
+            courseScheduleListForm.setFromDateTime(zoneDateTimeNow);
+        }
+        if(courseScheduleListForm.getToDateTime() == null) {
+            courseScheduleListForm.setToDateTime(zoneDateTimeNow.plusDays(5));
+        }
+        long difference = courseScheduleListForm.getToDateTime().compareTo(courseScheduleListForm.getFromDateTime());
+        
+        if(difference > 0 ) {
+            logger.debug("CourseScheduleListForm:{}",courseScheduleListForm);     
+            model.addAttribute("CourseScheduleListForm", courseScheduleListForm);   
             return "enrollment/courseSCheduleListForm"; 
-	    }
+        }      
+        
+        Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
+                courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
+        Set<CourseScheduleForm> courseScheduleFormSet = courseScheduleListForm.getCourseSchedules();
+        
+        for (CourseSchedule courseSchedule : courseSchedules) {
+            CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
 
+            courseScheduleForm.setCourseName(courseSchedule.getCourseName());
+            courseScheduleForm.setInstructorName(
+                    courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
+
+            Set<CourseScheduleDetail> courseScheduleDetailFormSets = courseSchedule.getCourseScheduleDetail();
+            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
+
+            for (CourseScheduleDetail courseScheduleDetail : courseScheduleDetailFormSets) {
+                CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
+
+                courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+                courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+                courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
+                courseScheduleDetailFormSet.add(courseSchedDetailForm);
+            }
+            courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
+            courseScheduleFormSet.add(courseScheduleForm);
+        }
+       return "view/courseScheduleListForm";
+    }
 	@GetMapping("/myschedules/{courseParticipantId}/decline")
 	public String showCourseDeclineForm(Long id, Model model) {
 		logger.debug("Model:{}", model);
