@@ -21,8 +21,7 @@
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	<div class="container mt-5">
-	
-		<form class="form-horizontal" action="#" th:action="@{/schedules/view}" th:object=${scheduleNew} method="post">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object=${scheduleNew} method="post">
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
 			<div class="card">
