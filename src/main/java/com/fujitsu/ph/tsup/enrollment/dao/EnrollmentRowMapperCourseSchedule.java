@@ -1,7 +1,6 @@
 package com.fujitsu.ph.tsup.enrollment.dao;
 
 //=================================================================================================
-//$Id:PR01$
 //Project Name :Training Sign Up
 //System Name  :Enroll Course
 //Class Name   :EnrollmentRowMapperCourseSchedule.java
@@ -9,7 +8,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
-//0.02    | 06/24/2020 | WS) M.Lumontad        | New Creation
+//0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
 //=================================================================================================
 /**
 * <pre>
