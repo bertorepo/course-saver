@@ -8,21 +8,23 @@ import java.util.Set;
  * In this class, Instances of the List Data required for the Initial setting of the database
  * </pre>
  * 
- * @version 0.01
- * @author h.francisco
+ * @version 0.02
+ * @author m.angara
  *
  */
 
 //==================================================================================================
 //$Id:PR03$
-//Project Name :Training Sign up
-//System Name  :Attendance process 
-//Class Name   :CourseParticipantsForm.java
+//Project Name : Training Sign up
+//System Name  : Attendance process 
+//Class Name   : CourseParticipantsForm.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) h.francisco       | New Creation
+//0.02    | 06/29/2020 | WS) m.angara          | Updated
+//==================================================================================================
 public class CourseParticipantsForm {
 
     /**
@@ -251,6 +253,16 @@ public class CourseParticipantsForm {
      */
     public void setCourseSchedules(Set<CourseScheduleForm> courseSchedules) {
         this.courseSchedules = courseSchedules;
+    }
+
+    @Override
+    public String toString() {
+        return "CourseParticipantsForm [id=" + id + ", courseId =" + courseId + ", courseName =" + courseName
+                + ", instructorId = " + instructorId + ", instructorName = " + instructorName + ",venueName = "
+                + venueName + ", venueId = " + venueId + ", courseScheduleDetails = " + courseScheduleDetails
+                + ", minRequired = " + minRequired + ", maxAllowed = " + maxAllowed + ", participants = " + participants
+                + ", courseSchedules = " + courseSchedules + "]";
+
     }
 
 }
