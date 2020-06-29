@@ -9,11 +9,11 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
-//0.02    | 06/24/2020 | WS) M.Lumontad        | New Creation
+//0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
 //=================================================================================================
 /**
 * <pre>
-* JavaBean for EnrollmentDaoImpl.java
+* EnrollmentDaoImpl.java is data access class for enrollment related database access
 * <pre>
 * 
 * @version 0.01
