@@ -27,6 +27,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 import com.fujitsu.tsup.enrollment.model.CourseDeclineForm;
 import com.fujitsu.tsup.enrollment.model.CourseEnrollmentForm;
 import com.fujitsu.tsup.enrollment.model.CourseScheduleDetailForm;
+import com.fujitsu.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.tsup.enrollment.model.CourseScheduleListForm;
 
 
@@ -81,34 +82,37 @@ public class EnrollmentController {
      * @return String
      * @author J.yu
      */
-    @GetMapping("/viewCourseEnroll")
-    public String viewAllCourseSchedule(CourseScheduleListForm form, BindingResult result, Model model) {
-    
-        if(result.hasErrors()) {
-    
-            model.addAttribute("errorMessage", result.getAllErrors());
-            return "enrollment/courseScheduleListForm"; 
-        }
-        
-        ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
-        if(form.getFromDateTime() == null) {
-            form.setFromDateTime(zoneDateTimeNow);
-        }
-        if(form.getToDateTime() == null) {
-            form.setToDateTime(zoneDateTimeNow.plusDays(5));
-        }
-        long difference = form.getToDateTime().compareTo(form.getFromDateTime());
-        
-        if(difference > 0 ) {
-            logger.debug("CourseScheduleListForm:{}",form);
+    	@GetMapping("/viewCourseEnroll")
+        public String viewAllCourseSchedule(@Valid @ModelAttribute
+                ("viewSchedule")CourseScheduleListForm courseScheduleListForm, BindingResult result, Model model) {
             
-            model.addAttribute("CourseScheduleListForm", form); 
+            logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
+            logger.debug("Result: {}", result);
             
+            if(result.hasErrors()) {
+        
+                model.addAttribute("errorMessage", result.getAllErrors());
+                return "enrollment/courseScheduleListForm"; 
+            }
+            
+            ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
+            if(courseScheduleListForm.getFromDateTime() == null) {
+                courseScheduleListForm.setFromDateTime(zoneDateTimeNow);
+            }
+            if(courseScheduleListForm.getToDateTime() == null) {
+                courseScheduleListForm.setToDateTime(zoneDateTimeNow.plusDays(5));
+            }
+            long difference = courseScheduleListForm.getToDateTime().compareTo(courseScheduleListForm.getFromDateTime());
+            
+            if(difference > 0 ) {
+                logger.debug("CourseScheduleListForm:{}",courseScheduleListForm);
+                
+                model.addAttribute("CourseScheduleListForm", courseScheduleListForm); 
+                
+              
+            }      
             return "enrollment/courseSCheduleListForm"; 
-        }      
-        
-       return "view/courseScheduleListForm";
-}
+	    }
 
 	@GetMapping("/myschedules/{courseParticipantId}/decline")
 	public String showCourseDeclineForm(Long id, Model model) {

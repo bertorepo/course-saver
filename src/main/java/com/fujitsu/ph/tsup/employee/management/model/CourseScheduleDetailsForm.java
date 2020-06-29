@@ -23,52 +23,93 @@ package com.fujitsu.ph.tsup.employee.management.model;
 import java.time.ZonedDateTime;
 
 public class CourseScheduleDetailsForm {
+	/* Course Schedule Detail Id */
 	private Long id;
-	private Long courseScheduleId;
+	
+	/* Start Date and Time */
 	private ZonedDateTime scheduledStartDateTime;
+	
+	/* End Date and Time */
 	private ZonedDateTime scheduledEndDateTime;
+	
+	/* duration */
 	private float duration;
 	
-	public CourseScheduleDetailsForm(Long id, Long courseScheduleId, ZonedDateTime scheduledStartDateTime,
-			ZonedDateTime scheduledEndDateTime, float duration) {
-		super();
+	/**
+	 * JavaBean for CourseScheduleDetailForm
+	 * @param id
+	 * @param scheduledStartDateTime
+	 * @param scheduledEndDateTime
+	 * @param duration
+	 */
+	public CourseScheduleDetailsForm(Long id, ZonedDateTime scheduledStartDateTime, ZonedDateTime scheduledEndDateTime,
+			float duration) {
 		this.id = id;
-		this.courseScheduleId = courseScheduleId;
 		this.scheduledStartDateTime = scheduledStartDateTime;
 		this.scheduledEndDateTime = scheduledEndDateTime;
 		this.duration = duration;
 	}
-	
+
+	/**
+	 * get id
+	 * @return
+	 */
 	public Long getId() {
 		return id;
 	}
+	/**
+	 * set id
+	 * @param id
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getCourseScheduleId() {
-		return courseScheduleId;
-	}
-	public void setCourseScheduleId(Long courseScheduleId) {
-		this.courseScheduleId = courseScheduleId;
-	}
+	
+	/**
+	 * get ScheduledStartDateTime
+	 * @return
+	 */
 	public ZonedDateTime getScheduledStartDateTime() {
 		return scheduledStartDateTime;
 	}
+	
+	/**
+	 * set ScheduledStartDateTime
+	 * @param scheduledStartDateTime
+	 */
 	public void setScheduledStartDateTime(ZonedDateTime scheduledStartDateTime) {
 		this.scheduledStartDateTime = scheduledStartDateTime;
 	}
+	
+	/**
+	 * get ScheduledEndDateTime
+	 * @return
+	 */
 	public ZonedDateTime getScheduledEndDateTime() {
 		return scheduledEndDateTime;
 	}
+	
+	/**
+	 * set ScheduledEndDateTime
+	 * @param scheduledEndDateTime
+	 */
 	public void setScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
 		this.scheduledEndDateTime = scheduledEndDateTime;
 	}
+	
+	/**
+	 * get Duration
+	 * @return
+	 */
 	public float getDuration() {
 		return duration;
 	}
+	
+	/**
+	 * set Duration
+	 * @param duration
+	 */
 	public void setDuration(float duration) {
 		this.duration = duration;
 	}
-	
-	
 }
