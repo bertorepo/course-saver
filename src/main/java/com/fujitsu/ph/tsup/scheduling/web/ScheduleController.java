@@ -152,6 +152,10 @@ public class ScheduleController {
     public String showCourseScheduleNewForm(Model model) {
 
         logger.debug("Model:{}", model);
+        
+        if (model.containsAttribute("scheduleNew")) {
+			return "scheduling/createSched";
+		}
 
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
@@ -165,7 +169,7 @@ public class ScheduleController {
 
         model.addAttribute("scheduleNew", courseScheduleNewForm);
 
-        return "scheduling/scheduleNew";
+        return "scheduling/createSched";
 
     }
 
@@ -197,7 +201,7 @@ public class ScheduleController {
             form.setVenues(venueFormList);
             form.setInstructors(instructorFormList);
             model.addAttribute("scheduleNew", form);
-            return "scheduling/scheduleNew";
+            return "scheduling/createSched";
         }
 
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
