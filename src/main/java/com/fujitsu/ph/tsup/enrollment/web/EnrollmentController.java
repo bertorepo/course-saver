@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.auth.model.FpiUser;
-import com.fujitsu.ph.tsup.course.management.model.CourseListForm;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
@@ -28,6 +27,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 import com.fujitsu.tsup.enrollment.model.CourseDeclineForm;
 import com.fujitsu.tsup.enrollment.model.CourseEnrollmentForm;
 import com.fujitsu.tsup.enrollment.model.CourseScheduleDetailForm;
+import com.fujitsu.tsup.enrollment.model.CourseScheduleListForm;
 
 
 
@@ -82,7 +82,7 @@ public class EnrollmentController {
      * @author J.yu
      */
     @GetMapping("/viewCourseEnroll")
-    public String viewAllCourseSchedule(CourseListForm form, BindingResult result, Model model) {
+    public String viewAllCourseSchedule(CourseScheduleListForm form, BindingResult result, Model model) {
     
         if(result.hasErrors()) {
     
