@@ -42,7 +42,6 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("courseScheduleId  ", courseScheduleId).addValue("participantId", participantId);
         return template.queryForObject(findCourseParticipantByCourseScheduleIdAndParticipantIdSql, NamedParameters,
                 new EnrollmentRowMapperCourseParticipant());
-        return null;
     }
 
     @Override
