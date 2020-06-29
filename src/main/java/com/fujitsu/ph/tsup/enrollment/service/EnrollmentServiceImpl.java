@@ -46,30 +46,34 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 	/** Finds the course schedule by id */
 	@Override
 	public CourseSchedule findCourseScheduleById(Long id) {
-		try {
-            return enrollmentDao.findCourseScheduleById(id);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Error found", e);
-        }
+		return enrollmentDao.findCourseScheduleById(id);
 	}
 
+	/** enroll using the courseParticipant */
 	@Override
 	public void enroll(CourseParticipant courseParticipant) {
-		Long id = courseParticipant.getId();
-		Long courseScheduleId = courseParticipant.getCourseScheduleId();
-		Long participantId = courseParticipant.getParticipantId();
-		String course = courseParticipant.getCourseName();
+		
 
-		CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(id);
-		CourseParticipant participantRecord = enrollmentDao.findCourseParticipantByCourseScheduleIdAndParticipantId(courseScheduleId, participantId);
-
-		if(courseRecord == null){
-			throw new IllegalArgumentException("This course " +course+ " is not existing");
-		}else if(participantRecord != null){
-			throw new IllegalArgumentException("You are already enrolled to the course: " +course+ ".");
-		}else{
-			enrollmentDao.saveCourseParticipant(courseParticipant);
+		try {
+			CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getId());
+			if (courseRecord == null){
+				throw new IllegalArgumentException("This course " +courseParticipant.getCourseName()+ " is not existing");
+			}
+		} catch (Exception e) {
+			throw new IllegalArgumentException("This course " +courseParticipant.getCourseName()+ " is not existing");
 		}
+		
+		try {
+			CourseParticipant participantRecord = enrollmentDao.findCourseParticipantByCourseScheduleIdAndParticipantId(courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
+			if(participantRecord != null){
+				throw new IllegalArgumentException("You are already enrolled to the course: " +courseParticipant.getCourseName()+ ".");
+			}
+		} catch (Exception e) {
+			throw new IllegalArgumentException("You are already enrolled to the course: " +courseParticipant.getCourseName()+ ".");
+		}
+
+		enrollmentDao.saveCourseParticipant(courseParticipant);
+
 	}
 
 	/** Finds the scheduled courses starting from today onwards */
