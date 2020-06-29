@@ -3,15 +3,15 @@ package com.fujitsu.ph.tsup.attendance.service;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import com.fujitsu.ph.tsup.attendance.model.CourseAttendance;
-import com.fujitsu.ph.tsup.attendance.model.CourseParticipant;
-import com.fujitsu.ph.tsup.attendance.model.CourseSchedule;
+import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
+import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 
 //==================================================================================================
 //$Id:PR03$
-//Project Name :Training Sign up
-//System Name  :Attendance process 
-//Class Name   :AttendanceService.java
+//Project Name : Training Sign up
+//System Name  : Attendance process 
+//Class Name   : AttendanceService.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
