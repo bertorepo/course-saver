@@ -241,9 +241,10 @@ public class CourseScheduleDetail {
                 ZonedDateTime scheduledStartDateTime) {
             if (scheduledEndDateTime == null || String.valueOf(scheduledEndDateTime).isEmpty()) {
                 throw new IllegalArgumentException("Scheduled End Date and Time should not be empty");
-            } else if (scheduledEndDateTime.isAfter(scheduledStartDateTime)) {
+            } else if (scheduledStartDateTime.isAfter(scheduledEndDateTime)) {
                 throw new IllegalArgumentException("Scheduled end date and time should be greater than or "
                         + "equal to the the scheduled start date and time");
+                
             }
         }
         
@@ -259,16 +260,25 @@ public class CourseScheduleDetail {
          */
         private float computeDuration(ZonedDateTime scheduledStartDateTime, 
                 ZonedDateTime scheduledEndDateTime) {
-            
+            float duration;
             Long durationToHours = Duration.between(scheduledStartDateTime, scheduledEndDateTime).toHours();
             Long durationToMinutes = Duration.between(scheduledStartDateTime, scheduledEndDateTime).toMinutes();
             
             if(durationToMinutes % 60 == 0) {
-                return durationToHours;
+                return (float) durationToHours;
             } else {
-                
+                float minutePercentage = (durationToMinutes % 60 ) / 60;
+                duration = durationToHours + minutePercentage;
+                return duration;
             }
-            return duration;
         }
+        
+        @Override
+        public String toString() {
+            return "CourseScheduleDetail = [id="+id +" courseScheduleId="+ courseScheduleId + 
+                    " courseScheduleId="+ courseScheduleId+" scheduledStartDateTime="+ scheduledStartDateTime 
+                    + " scheduledEndDateTime="+ scheduledEndDateTime + " duration="+ duration +"]";
+        }
+        
     }
 }

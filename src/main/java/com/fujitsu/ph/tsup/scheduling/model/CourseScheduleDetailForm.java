@@ -39,6 +39,11 @@ public class CourseScheduleDetailForm {
      */
 	private ZonedDateTime scheduledEndDateTime;
 	
+	/**     
+     *  Duration
+     */
+    private float duration;
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,11 +62,17 @@ public class CourseScheduleDetailForm {
 	public void setScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
 		this.scheduledEndDateTime = scheduledEndDateTime;
 	}
+	public float getDuration() {
+        return duration;
+    }
+    public void setDuration(float duration) {
+        this.duration = duration;
+    }
 	
 	@Override
 	public String toString() {
 		return "CourseScheduleDetailForm [id=" + id + ", scheduledStartDateTime=" + scheduledStartDateTime
-				+ ", scheduledEndDateTime=" + scheduledEndDateTime + "]";
+				+ ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration = " + duration + "]";
 	}
 
 }
