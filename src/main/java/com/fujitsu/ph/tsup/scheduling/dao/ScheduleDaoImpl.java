@@ -35,13 +35,14 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
-
+@Repository
 public class ScheduleDaoImpl implements ScheduleDao {
 
     /**
