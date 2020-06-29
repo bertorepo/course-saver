@@ -19,9 +19,12 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 * @version 0.01
 * @author m.lumontad                      
 */
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -29,18 +32,36 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-
 public class EnrollmentDaoImpl implements EnrollmentDao {
     @Autowired
     private NamedParameterJdbcTemplate template;
     KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-
+    
+    /**
+     * Finds the scheduled courses by the given fromDateTime and toDateTime
+     * 
+     * @param fromDateTime
+     * @param toDateTime
+     * @return Course Schedule Set
+     * @author J.yu
+     **/
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT C.NAME, E.FIRST_NAME, E.LAST_NAME, CSD.SCHEDULED_START_DATETIME, CSD.SCHEDULED_END_DATETIME, CSD.DURATION"
+                + "FROM COURSE_SCHEDULE_DETAIL AS CSD"
+                + "INNER JOIN COURSE_SCHEDULE AS CS"
+                + "ON CSD.COURSE_SCHEDULE_ID = C.ID"
+                + "INNER JOIN COURSE AS C"
+                + "ON CS.COURSE_ID = C.ID"
+                + "INNER JOIN EMPLOYEE AS E"
+                + "ON CS.INSTRUCTOR_ID = E.ID"
+                + "WHERE SCHEDULED_START_DATETIME = :fromDate AND SCHEDULE_END_DATETIME = :toDate";
+        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                .addValue("fromDateTime", fromDateTime)
+                .addValue("toDateTime", toDateTime);
+        List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters, new EnrollmentRowMapperCourseSchedule());
+        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        return courseScheduleSet;
     }
 
     /**
