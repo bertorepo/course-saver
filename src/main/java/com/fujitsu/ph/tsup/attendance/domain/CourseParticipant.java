@@ -1,4 +1,4 @@
-package com.fujitsu.ph.tsup.attendance.model;
+package com.fujitsu.ph.tsup.attendance.domain;
 
 import java.time.ZonedDateTime;
 
@@ -14,6 +14,7 @@ import java.time.ZonedDateTime;
 // 0.01   | 06/23/2020 | WS) M.Angara  | New Creation
 // 0.02   | 06/25/2020 | WS) M.Angara  | Updated
 // 0.03   | 06/26/2020 | WS) M.Angara  | Updated
+// 0.04   | 06/26/2020 | WS) R.Ramos   | Updated
 //=========================================================================================
 /**
  * <pre>
@@ -21,7 +22,7 @@ import java.time.ZonedDateTime;
  * 
  * <pre>
  * 
- * @version 0.3
+ * @version 0.4
  * @author m.angara
  */
 
