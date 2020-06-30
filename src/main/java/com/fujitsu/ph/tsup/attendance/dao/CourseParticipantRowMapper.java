@@ -41,7 +41,7 @@ public class CourseParticipantRowMapper implements RowMapper<CourseParticipant> 
         Long id = rs.getLong("id");
         Long courseScheduleId = rs.getLong("COURSE_SCHEDULE_ID");
         String courseName = rs.getString("COURSE_NAME");
-        String instructorName = rs.getString("LAST_NAME") + ", " + rs.getShort("FIRST_NAME");
+        String instructorName = rs.getString("LAST_NAME") + ", " + rs.getString("FIRST_NAME");
         String venueName = rs.getString("VENUE_NAME");
         Long participantId = rs.getLong("PARTICIPANT_ID");
         String participantName = rs.getString("LAST_NAME") + ", " + rs.getString("FIRST_NAME");
