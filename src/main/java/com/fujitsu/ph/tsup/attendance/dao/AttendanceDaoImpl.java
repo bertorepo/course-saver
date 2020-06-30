@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 //==================================================================================================
 //$Id:PR03$
@@ -27,19 +28,21 @@ import org.springframework.jdbc.support.KeyHolder;
 //--------+------------+---------------------------------------------------------+-----------------
 //0.01    | 06/26/2020 | WS) K.Abad, WS) H.Francisco, WS) J.Iwarat, WS) R.Ramos    | New Creation
 //0.02    | 06/30/2020 | WS) K.Abad                                                | Update
+//0.03    | 06/30/2020 | WS) J.Iwarat                                              | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access class for attendance related database access
  * </pre>
  * 
- * @version 0.01
+ * @version 0.03
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
  * @author r.ramos
  * 
  */
+@Repository 
 public class AttendanceDaoImpl implements AttendanceDao {
     @Autowired
     private NamedParameterJdbcTemplate template;
