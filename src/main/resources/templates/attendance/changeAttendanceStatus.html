@@ -10,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Change Attendance Status</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css"> 
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -22,7 +22,7 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal">
+		<form class="form-horizontal"  action="#" th:action="@{/attendance/participants}" th:object="${statusForm}" method="post">
 			<h3><i class="fa fa-check-square-o"></i> Change Attendance Status</h3>
 			<hr>
 			<div class="card">
@@ -30,11 +30,17 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course</label>
 						<div class="col-lg-5">
-							<select class="form-control">
+					<!--  		<select class="form-control">
 								<option value="">Select...</option>
 								<option value="">Hello</option>
 								<option value="">World</option>
-							</select>
+							</select> -->
+							<select class="form-control" th:field="*{id}">
+                            <option value="">   </option>
+                            <option th:each = "changeAttendanceStatus : *{statusForm}"
+                            th:value="${changeAttendanceStatus.getCourseName()}"
+                            th:utext="${changeAttendanceStatus.getCourseName()}"/>
+                            </select>
 						</div>
 					</div>
 				</div>
@@ -57,25 +63,27 @@
 									<label class="col-lg-10 col-form-label text-center">Time In</label>
 								</td>
 							</tr>
-							<tr>
+							<tr th:each="changeAttendanceStatus : *{statusForm}">
 								<td>
-									<label class="col-lg-6 col-form-label" >Name1</label>
+									<label class="col-lg-6 col-form-label" th:text="*{changeAttendanceStatus.getParticipantName()}"></label>
 								</td>
 								<td>
 									<div class="col-lg-10">
-										<select class="form-control">
-											<option value="">Select...</option>
-											<option value="">Present</option>
-											<option value="">Absent</option>
-										</select>
+                            <select class="form-control" th:field="*{id}">
+                            <option value="">   </option>
+                            <option th:each = "changeAttendanceStatus : *{statusForm}"
+                            th:value="${changeAttendanceStatus.getStatus()}"
+                            th:utext="${changeAttendanceStatus.getStatus()}"/>
+                            </select>
 									</div>
 								</td>
 								<td>
 										<div class="col-lg-10">
-											<input type="text" class="form-control" id="" >
+											<input type="text" class="form-control" th:value="*{changeAttendanceStatus.getLoginDateTime()}" >
 										</div>
 								</td>
 							</tr>
+							<!--  
 							<tr>
 								<td>
 									<label class="col-lg-6 col-form-label" >Name2</label>
@@ -114,6 +122,7 @@
 										</div>
 								</td>
 							</tr>
+							-->
 						</table>
 					</div>
 					<div class="float-right">
