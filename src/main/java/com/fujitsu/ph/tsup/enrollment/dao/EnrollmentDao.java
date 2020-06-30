@@ -79,12 +79,13 @@ public interface EnrollmentDao {
      * Save the course non participant
      * @param id
      */
-    void saveCourseNonParticipant(Long id);
-    
+	void saveCourseNonParticipant(CourseParticipant courseParticipant); 
+ 
     /**
      * Save the course schedule
      * @param courseSchedule
      */
-    void changeCourseScheduleStatus(CourseSchedule courseSchedule); 
-
+    void changeCourseScheduleStatus(CourseSchedule courseSchedule);
+   
+  
 }
