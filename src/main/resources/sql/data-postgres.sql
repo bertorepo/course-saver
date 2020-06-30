@@ -1,10 +1,10 @@
 SET search_path = tsup;
 INSERT INTO EMPLOYEE(ID, NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME) 
-	VALUES (1, 'A10210', 'LORENZO', 'LOYCE', 'l.lorenzo', 'l.lorenzo@gujitsu.ph');
+	VALUES (1, 'A10210', 'LORENZO', 'LOYCE', 'l.lorenzo', 'l.lorenzo@fujitsu.ph');
 INSERT INTO EMPLOYEE(ID, NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME) 
-	VALUES (2, 'A10456', 'DE LEON', 'JC', 'jc.deleon', 'jc.deleon@gujitsu.ph');
+	VALUES (2, 'A10456', 'DE LEON', 'JC', 'jc.deleon', 'jc.deleon@fujitsu.ph');
 INSERT INTO EMPLOYEE(ID, NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME) 
-	VALUES (3, 'A15893', 'MACABUDBUD', 'JAY IAN', 'j.macabudbud', 'j.macabudbud@gujitsu.ph');
+	VALUES (3, 'A15893', 'MACABUDBUD', 'JAY IAN', 'j.macabudbud', 'j.macabudbud@fujitsu.ph');
 
 --Access Type
 INSERT INTO EMPLOYEE_AUTH(ID, AUTH_NAME, USERNAME) VALUES (1, 'PMO', 'l.lorenzo');
@@ -60,10 +60,10 @@ INSERT INTO COURSE_NON_PARTICIPANT(ID, COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGIS
 --Course Attendance
 INSERT INTO COURSE_ATTENDANCE(ID, COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT ID, STATUS, LOG_IN_DATETIME, 
 		LOG_OUT_DATETIME, EMAIL)
-	VALUES (1, 1, 3, 'A', NOW(), NOW(), 'j.macabudbud@gujitsu.ph');
+	VALUES (1, 1, 3, 'A', NOW(), NOW(), 'j.macabudbud@fujitsu.ph');
 INSERT INTO COURSE_ATTENDANCE(ID, COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT ID, STATUS, LOG_IN_DATETIME, 
 		LOG_OUT_DATETIME, EMAIL)
-	VALUES (1, 2, 3, 'A', NOW(), NOW(), 'j.macabudbud@gujitsu.ph');
+	VALUES (1, 2, 3, 'A', NOW(), NOW(), 'j.macabudbud@fujitsu.ph');
 INSERT INTO COURSE_ATTENDANCE(ID, COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT ID, STATUS, LOG_IN_DATETIME, 
 		LOG_OUT_DATETIME, EMAIL)
-	VALUES (1, 3, 2, 'A', NOW(), NOW(), 'jc.deleon@gujitsu.ph');
+	VALUES (1, 3, 2, 'A', NOW(), NOW(), 'jc.deleon@fujitsu.ph');
