@@ -137,6 +137,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.NAME AS COURSE_NAME, " 
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "V.VENUE_NAME AS VENUE_NAME, "
                 + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
                 + "CNONPART.REASON AS REASON, "
                 + "CNONPART.DECLINE_DATE AS DECLINE_DATE, "
