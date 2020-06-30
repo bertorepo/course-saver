@@ -209,39 +209,71 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
 
 	}
     
-	@GetMapping("/myschedules/{courseParticipantId}/decline")
+	
+	 /*
+     * Method for showCourseDeclineForm			
+     */
+	@GetMapping("/decline")
 	public String showCourseDeclineForm(Long id, Model model) {
 		logger.debug("Model:{}", model);
-		if (model.containsAttribute("courseDecline")) {
+		
+		  CourseDeclineForm courseDeclineForm = new  CourseDeclineForm () ; 
+		  
+		  CourseParticipant courseParticipant  = enrollmentService.findCourseParticipantById(id);
+		  
+		  courseDeclineForm.setId(courseParticipant.getId());
+		  courseDeclineForm.setCourseName(courseParticipant.getCourseName());
+		  courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
+		  courseDeclineForm.setVenueName(courseParticipant.getVenueName());
+		  courseDeclineForm.setParticipantName(courseParticipant.getVenueName());
+		  courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
+		  courseDeclineForm.setReason(courseParticipant.getReason());
+		 
+		  	model.addAttribute("courseDecline", courseDeclineForm);
 			return "enrollment-management/CourseDeclineForm";
-		}
-		
-		
-		return "enrollment-management/CourseDeclineForm";
 	}
 	
-	@PostMapping("/myschedules/{courseParticipantId}/decline")
-	public String submitCourseDeclineForm( Long id, CourseDeclineForm courseDeclineForm,
-			BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+	/*
+	 * 	Method for submitCourseDeclineForm
+	 */
+	@PostMapping("/decline")
+	public String submitCourseDeclineForm(@Valid @ModelAttribute ("enrollmentDecline")  CourseParticipant courseParticipant,
+			BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
 		
-		logger.debug("courseDecline:{}", courseDeclineForm);
-		logger.debug("Result:{}", result);
 
-		model.addAttribute("courseDecline", courseDeclineForm);
-		if (result.hasErrors()) {
-			return "enrollment-management/CourseDeclineForm";
-		}
-			
-		redirectAttributes.addFlashAttribute("courseDecline", courseDeclineForm);	
-		return "redirect:/enrollment/CourseDeclineForm";
-		}
-	
-	@PostMapping("/schedules/{courseScheduleId}/cancel")
-	public String submitCourseEnrollmentCancelForm(Long id, Model model, RedirectAttributes redirectAttributes) {
-		//call enrollmentService.cancel using the given id
-		enrollmentService.cancel(id);
-		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
-		return "redirect:/schedule";
+		logger.debug("courseDeclineForm:{}", courseParticipant);		
+		logger.debug("BindingResult:{}", bindingresult);
+
+		if (bindingresult.hasErrors()) {
+            return "enrollment/courseDeclineForm";
+        }
+		
+		logger.debug("Model:{}", model);
+		
+		 CourseDeclineForm   courseDeclineForm = new  CourseDeclineForm () ; 
+ 
+		 courseDeclineForm.setId(courseParticipant.getId());
+		 courseDeclineForm.setCourseName(courseParticipant.getCourseName());
+		 courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
+		 courseDeclineForm.setVenueName(courseParticipant.getVenueName());
+		 courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
+		 courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
+		 courseDeclineForm.setReason(courseParticipant.getReason());
+
+		  Set<CourseParticipant> courseParticipantFormSet=  courseParticipant.getCoureseParticipant;
+	        Set<CourseParticipant> courseParticipantSet = new HashSet<>();
+		 
+		 for (CourseParticipant coursePart: courseParticipantSet) {	 
+			 CourseParticipant courseParticipants = new CourseParticipant.Builder(coursePart.getId(), coursePart.getCourseScheduleId(), 
+					 coursePart.getCourseName(), coursePart.getInstructorName(), coursePart.getVenueName(), coursePart.getCourseScheduleDetails(),
+					 coursePart.getRegistrationDate(), coursePart.getReason(), coursePart.getDeclineDate(), coursePart.getParticipantId())
+					 .build();
+			 
+			 enrollmentService.declineCourse(courseParticipant);
+		 }
+		 
+		 redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
+		 return "redirect:/enrollment/CourseDeclineForm";
 	}
 	
 	
