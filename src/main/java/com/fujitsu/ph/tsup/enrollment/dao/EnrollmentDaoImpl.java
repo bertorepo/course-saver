@@ -10,6 +10,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
 //0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
+//0.01    | 06/29/2020 | WS) G.Cabiling        | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -116,11 +117,57 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 
     }
 
+    
+	/**
+	 * Finds the scheduled courses starting from today onwards
+	 * 
+	 * @param participantId
+	 * @param fromDateTime
+	 * @param toDateTime
+	 * 
+	 * @author g.cabiling
+	 */
+    
     @Override
     public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, ZonedDateTime fromDateTime,
             ZonedDateTime toDateTime) {
-        // TODO Auto-generated method stub
-        return null;
+    	String query = "SELECT " 
+    			+ "CSCHED.ID AS ID, " 
+                + "CSCHED.COURSE_ID AS COURSE_ID, "
+                + "C.NAME AS COURSE_NAME, " 
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
+                + "CNONPART.REASON AS REASON, "
+                + "CNONPART.DECLINE_DATE AS DECLINE_DATE, "
+                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "FROM COURSE_SCHEDULE AS CSCHED " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + " ON CSCHED.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E"
+                + " ON CSCHED.INSTRUCTOR_ID = E.ID " 
+                + "INNER JOIN VENUE AS V " 
+                + " ON CSCHED.VENUE_ID = V.ID "
+                + "INNER JOIN COURSE_PARTICIPANT AS CPART " 
+                + " ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
+                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
+                + "AND CPART.PARTICIPANT_ID = participantId"
+                + "AND STATUS = 'A'";
+
+        SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
+        		.addValue("participantId", participantId)
+                .addValue("fromDateTime", fromDateTime)
+                .addValue("toDateTime", toDateTime);
+        
+        List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
+                new EnrollmentRowMapperCourseParticipant());
+        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+    	
+        return courseEnrolled;
     }
 
     
