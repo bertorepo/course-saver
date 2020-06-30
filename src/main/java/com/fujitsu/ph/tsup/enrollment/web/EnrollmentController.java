@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -40,35 +41,37 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //0.01    | 06/29/2020 | WS) M.Rivera    | Updated
 //0.01    | 06/29/2020 | WS) G.Cabiling  | Updated
 //0.01    | 06/30/2020 | WS) K.Freo      | Updated
+//0.01    | 06/30/2020 | WS) M.Lumontad  | Updated
 //=======================================================
 /**
-* <pre>
-* The implementation of Enrollment Controller
-* <pre>
-* @version 0.01
-* @author K.Freo
-*/
+ * <pre>
+ * The implementation of Enrollment Controller
+ * 
+ * <pre>
+ * 
+ * @version 0.01
+ * @author K.Freo
+ */
 @Controller
 @RequestMapping("/Enrollment")
 public class EnrollmentController {
-private static Logger logger = LoggerFactory.getLogger(EnrollmentController.class);
+    private static Logger logger = LoggerFactory.getLogger(EnrollmentController.class);
 
+    @Autowired
     private EnrollmentService enrollmentService;
 
     /**
      * <pre>
-     * US02. As a member, I can view all course that I can enroll. URL Value = /schedules , method = GET 
-     * 1. if bindingResult.hasErrors()
-     *      1.1. Return the course schedule list form and view
-     * 2. Set the following fields
-     *      Argument         | Condition          | Set Value
-     *  form.fromDateTime    | isBlank            | Date Today
-     *  form.toDateTime      | isBlank            | Date Today + 5 days
-     * 3. if form.toDateTime < cform.fromDateTime
-     *      3.1 Return the course schedule list form and view with a message "To Date should be 
-     *          greater than or equal to From Date"
-     * 4. Call enrollmentService.findAllScheduledCourses using the given form.fromDateTime, form.toDateTime
-     *      4.1. Return the course schedule list form and view
+     * US02. As a member, I can view all course that I can enroll. URL Value =
+     * /schedules , method = GET 1. if bindingResult.hasErrors() 1.1. Return the
+     * course schedule list form and view 2. Set the following fields Argument |
+     * Condition | Set Value form.fromDateTime | isBlank | Date Today
+     * form.toDateTime | isBlank | Date Today + 5 days 3. if form.toDateTime <
+     * cform.fromDateTime 3.1 Return the course schedule list form and view with a
+     * message "To Date should be greater than or equal to From Date" 4. Call
+     * enrollmentService.findAllScheduledCourses using the given form.fromDateTime,
+     * form.toDateTime 4.1. Return the course schedule list form and view
+     * 
      * <pre>
      * 
      * @param form
@@ -78,35 +81,36 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
      * @author J.yu
      */
     @GetMapping("/viewCourseEnroll")
-    public String viewAllCourseSchedule(@Valid @ModelAttribute
-            ("viewSchedule")CourseScheduleListForm courseScheduleListForm, BindingResult result, Model model) {  
+    public String viewAllCourseSchedule(
+            @Valid @ModelAttribute("viewSchedule") CourseScheduleListForm courseScheduleListForm, BindingResult result,
+            Model model) {
         logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", result);
-        
-        if(result.hasErrors()) {
+
+        if (result.hasErrors()) {
             model.addAttribute("errorMessage", result.getAllErrors());
-            return "enrollment/courseScheduleListForm"; 
+            return "enrollment/courseScheduleListForm";
         }
-        
+
         ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
-        if(courseScheduleListForm.getFromDateTime() == null) {
+        if (courseScheduleListForm.getFromDateTime() == null) {
             courseScheduleListForm.setFromDateTime(zoneDateTimeNow);
         }
-        if(courseScheduleListForm.getToDateTime() == null) {
+        if (courseScheduleListForm.getToDateTime() == null) {
             courseScheduleListForm.setToDateTime(zoneDateTimeNow.plusDays(5));
         }
         long difference = courseScheduleListForm.getToDateTime().compareTo(courseScheduleListForm.getFromDateTime());
-        
-        if(difference > 0 ) {
-            logger.debug("CourseScheduleListForm:{}",courseScheduleListForm);     
-            model.addAttribute("CourseScheduleListForm", courseScheduleListForm);   
-            return "enrollment/courseSCheduleListForm"; 
-        }      
-        
+
+        if (difference > 0) {
+            logger.debug("CourseScheduleListForm:{}", courseScheduleListForm);
+            model.addAttribute("CourseScheduleListForm", courseScheduleListForm);
+            return "enrollment/courseSCheduleListForm";
+        }
+
         Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
                 courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
         Set<CourseScheduleForm> courseScheduleFormSet = courseScheduleListForm.getCourseSchedules();
-        
+
         for (CourseSchedule courseSchedule : courseSchedules) {
             CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
 
@@ -128,9 +132,9 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
             courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
             courseScheduleFormSet.add(courseScheduleForm);
         }
-       return "view/courseScheduleListForm";
+        return "view/courseScheduleListForm";
     }
-    
+
     /**
      * 
      * @param courseEnrolledListForm
@@ -140,146 +144,143 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
      * 
      * @author g.cabiling
      */
-    
- 
 
-	@GetMapping("/mySchedules")
-	public String viewAllEnrolledCourses(CourseEnrolledListForm courseEnrolledListForm, BindingResult bindingResult,
-			Model model) {
+    @GetMapping("/mySchedules")
+    public String viewAllEnrolledCourses(CourseEnrolledListForm courseEnrolledListForm, BindingResult bindingResult,
+            Model model) {
 
-		if (bindingResult.hasErrors()) {
-			return "scheduling/myCourseSched";
-		}
+        if (bindingResult.hasErrors()) {
+            return "scheduling/myCourseSched";
+        }
 
-		ZonedDateTime fromDateTime = courseEnrolledListForm.getFromDateTime();
-		ZonedDateTime toDateTime = courseEnrolledListForm.getToDateTime();
+        ZonedDateTime fromDateTime = courseEnrolledListForm.getFromDateTime();
+        ZonedDateTime toDateTime = courseEnrolledListForm.getToDateTime();
 
-		if (fromDateTime == null || toDateTime == null) {
+        if (fromDateTime == null || toDateTime == null) {
 
-			courseEnrolledListForm.setFromDateTime(ZonedDateTime.now());
-			courseEnrolledListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
+            courseEnrolledListForm.setFromDateTime(ZonedDateTime.now());
+            courseEnrolledListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
 
-			if (courseEnrolledListForm.getToDateTime().isBefore(courseEnrolledListForm.getFromDateTime())) {
+            if (courseEnrolledListForm.getToDateTime().isBefore(courseEnrolledListForm.getFromDateTime())) {
 
-				model.addAttribute("myCourseSched", courseEnrolledListForm);
-				model.addAttribute("error", "To Date should be greater than or equal to From Date");
-				return "scheduling/myCourseSched";
-			}
-		}
+                model.addAttribute("myCourseSched", courseEnrolledListForm);
+                model.addAttribute("error", "To Date should be greater than or equal to From Date");
+                return "scheduling/myCourseSched";
+            }
+        }
 
-		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		Set<CourseParticipant> enrolledCourses = enrollmentService.findAllEnrolledCoursesByParticipantId(user.getId(),
-				fromDateTime, toDateTime);
+        Set<CourseParticipant> enrolledCourses = enrollmentService.findAllEnrolledCoursesByParticipantId(user.getId(),
+                fromDateTime, toDateTime);
 
-		Set<CourseEnrollmentForm> courseSchedules = courseEnrolledListForm.getCourseSchedules();
-		for (CourseParticipant enrolledCourse : enrolledCourses) {
+        Set<CourseEnrollmentForm> courseSchedules = courseEnrolledListForm.getCourseSchedules();
+        for (CourseParticipant enrolledCourse : enrolledCourses) {
 
-			CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
+            CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
 
-			courseEnrollmentForm.setId(enrolledCourse.getId());
-			courseEnrollmentForm.setCourseScheduleId(enrolledCourse.getCourseScheduleId());
-			courseEnrollmentForm.setCourseName(enrolledCourse.getCourseName());
-			courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
-			courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
-			courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
+            courseEnrollmentForm.setId(enrolledCourse.getId());
+            courseEnrollmentForm.setCourseScheduleId(enrolledCourse.getCourseScheduleId());
+            courseEnrollmentForm.setCourseName(enrolledCourse.getCourseName());
+            courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
+            courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
+            courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
 
-			Set<CourseScheduleDetail> courseSchedDetSet = enrolledCourse.getCourseScheduleDetails();
-			Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
-			
-			for(CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
-				
-				CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-				
-				courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
-				courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
-				courseScheduleDetailForm.setDuration(courseScheduleDetail.getDuration());
-				
-				
-				courseScheduleDetailFormSet.add(courseScheduleDetailForm);
-			}
-			
-			courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
+            Set<CourseScheduleDetail> courseSchedDetSet = enrolledCourse.getCourseScheduleDetails();
+            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
 
-			courseSchedules.add(courseEnrollmentForm);
-		}
+            for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
 
-		model.addAttribute("myCourseSched", courseEnrolledListForm);
+                CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
 
-		return "scheduling/myCourseSched";
+                courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+                courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+                courseScheduleDetailForm.setDuration(courseScheduleDetail.getDuration());
 
-	}
-    
-	/*
-	 * 	Method for showCourseDeclineForm
-	 * 
-	 * A member can decline course with reason.URL Value = /myschedules/{courseParticipantId}/decline, method = GET
-	 * Call enrollmentService.findCourseParticipantById using the given id
-	 * Set the values from the previous step into the CourseDeclineForm 
-	 * Return the Course decline form and view
-	 */
-	@GetMapping("/decline")
-	public String showCourseDeclineForm(Long id, Model model) {
-		logger.debug("Model:{}", model);
-		
-		  CourseDeclineForm courseDeclineForm = new  CourseDeclineForm () ; 
-		  
-		  CourseParticipant courseParticipant  = enrollmentService.findCourseParticipantById(id);
-		  
-		  courseDeclineForm.setId(courseParticipant.getId());
-		  courseDeclineForm.setCourseName(courseParticipant.getCourseName());
-		  courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
-		  courseDeclineForm.setVenueName(courseParticipant.getVenueName());
-		  courseDeclineForm.setParticipantName(courseParticipant.getVenueName());
-		  courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
-		  courseDeclineForm.setReason(courseParticipant.getReason());
-		 
-		  	model.addAttribute("courseDecline", courseDeclineForm);
-			return "enrollment-management/CourseDeclineForm";
-	}
-	
-	/*
-	 * 	Method for submitCourseDeclineForm
-	 * 
-	 * A member can decline course with reason URL Value = /myschedules/{courseParticipantId}/decline, method = DELETE
-	 * Transform the form to courseParticipant.
-	 *  Call enrollmentService.declineCourse using the courseParticipant
-	 *  Return the Course decline form and view. Return also a success message.
-	 */
-	@PostMapping("/decline")
-	public String submitCourseDeclineForm(@Valid @ModelAttribute ("enrollmentDecline") CourseDeclineForm form,
-			BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
-		
+                courseScheduleDetailFormSet.add(courseScheduleDetailForm);
+            }
 
-		logger.debug("courseDeclineForm:{}", form);		
-		logger.debug("BindingResult:{}", bindingresult);
+            courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
 
-		if (bindingresult.hasErrors()) {
+            courseSchedules.add(courseEnrollmentForm);
+        }
+
+        model.addAttribute("myCourseSched", courseEnrolledListForm);
+
+        return "scheduling/myCourseSched";
+
+    }
+
+    /*
+     * Method for showCourseDeclineForm
+     * 
+     * A member can decline course with reason.URL Value =
+     * /myschedules/{courseParticipantId}/decline, method = GET Call
+     * enrollmentService.findCourseParticipantById using the given id Set the values
+     * from the previous step into the CourseDeclineForm Return the Course decline
+     * form and view
+     */
+    @GetMapping("/decline")
+    public String showCourseDeclineForm(Long id, Model model) {
+        logger.debug("Model:{}", model);
+
+        CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
+
+        CourseParticipant courseParticipant = enrollmentService.findCourseParticipantById(id);
+
+        courseDeclineForm.setId(courseParticipant.getId());
+        courseDeclineForm.setCourseName(courseParticipant.getCourseName());
+        courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
+        courseDeclineForm.setVenueName(courseParticipant.getVenueName());
+        courseDeclineForm.setParticipantName(courseParticipant.getVenueName());
+        courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
+        courseDeclineForm.setReason(courseParticipant.getReason());
+
+        model.addAttribute("courseDecline", courseDeclineForm);
+        return "enrollment-management/CourseDeclineForm";
+    }
+
+    /*
+     * Method for submitCourseDeclineForm
+     * 
+     * A member can decline course with reason URL Value =
+     * /myschedules/{courseParticipantId}/decline, method = DELETE Transform the
+     * form to courseParticipant. Call enrollmentService.declineCourse using the
+     * courseParticipant Return the Course decline form and view. Return also a
+     * success message.
+     */
+    @PostMapping("/decline")
+    public String submitCourseDeclineForm(@Valid @ModelAttribute("enrollmentDecline") CourseDeclineForm form,
+            BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
+
+        logger.debug("courseDeclineForm:{}", form);
+        logger.debug("BindingResult:{}", bindingresult);
+
+        if (bindingresult.hasErrors()) {
             return "enrollment/courseDeclineForm";
         }
-		
-		logger.debug("Model:{}", model);
-		
-		CourseParticipant courseParticipant = new CourseParticipant.Builder(form.getId()).build();
-		
-		enrollmentService.declineCourse(courseParticipant);
-		 
-		 CourseDeclineForm   courseDeclineForm = new  CourseDeclineForm () ; 
- 
-		 courseDeclineForm.setId(courseParticipant.getId());
-		 courseDeclineForm.setCourseName(courseParticipant.getCourseName());
-		 courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
-		 courseDeclineForm.setVenueName(courseParticipant.getVenueName());
-		 courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
-		 courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
-		 courseDeclineForm.setReason(courseParticipant.getReason());
-		 
-		 redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
-		 return "redirect:/enrollment/CourseDeclineForm";
-	}
-	
-	
-	@GetMapping("/schedules/{courseScheduleId}/enroll")
+
+        logger.debug("Model:{}", model);
+
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(form.getId()).build();
+
+        enrollmentService.declineCourse(courseParticipant);
+
+        CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
+
+        courseDeclineForm.setId(courseParticipant.getId());
+        courseDeclineForm.setCourseName(courseParticipant.getCourseName());
+        courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
+        courseDeclineForm.setVenueName(courseParticipant.getVenueName());
+        courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
+        courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
+        courseDeclineForm.setReason(courseParticipant.getReason());
+
+        redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
+        return "redirect:/enrollment/CourseDeclineForm";
+    }
+
+    @GetMapping("/schedules/{courseScheduleId}/enroll")
     public String showCourseEnrollmentForm(Long id, Model model) {
         logger.debug("Model:{}", model);
         if (model.containsAttribute("courseEnrollmentForm")) {
@@ -287,32 +288,32 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
         }
 
         CourseSchedule courseSchedule = enrollmentService.findCourseScheduleById(id);
-        
-        Set<CourseScheduleDetail> courseScheduleDetail =  courseSchedule.getCourseScheduleDetail();
+
+        Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
-        
-        for(CourseScheduleDetail newCourseScheduleDetail: courseScheduleDetail){
+
+        for (CourseScheduleDetail newCourseScheduleDetail : courseScheduleDetail) {
 
             CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-            
+
             courseScheduleDetailForm.setId(newCourseScheduleDetail.getCourseScheduleId());
             courseScheduleDetailForm.setScheduledStartDateTime(newCourseScheduleDetail.getScheduledStartDateTime());
             courseScheduleDetailForm.setScheduledEndDateTime(newCourseScheduleDetail.getScheduledEndDateTime());
 
             courseScheduleDetailFormSet.add(courseScheduleDetailForm);
         }
-        
-        
+
         CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
 
         courseEnrollmentForm.setCourseScheduleId(courseSchedule.getId());
         courseEnrollmentForm.setCourseName(courseSchedule.getCourseName());
-        courseEnrollmentForm.setInstructorName(courseSchedule.getInstructorLastName()+", " +courseSchedule.getInstructorFirstName());
+        courseEnrollmentForm.setInstructorName(
+                courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
         courseEnrollmentForm.setVenueName(courseSchedule.getVenueName());
-        courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet); 
+        courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
         courseEnrollmentForm.setRegistrationDate(ZonedDateTime.now());
 
-        model.addAttribute("courseEnrollmentForm",courseEnrollmentForm);
+        model.addAttribute("courseEnrollmentForm", courseEnrollmentForm);
 
         return "enrollment-management/courseEnrollmentForm";
     }
@@ -332,11 +333,9 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
 
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        CourseParticipant courseParticipant = 
-            new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(), 
-            user.getId()).build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(),
+                user.getId()).build();
 
-        
         enrollmentService.enroll(courseParticipant);
 
         redirectAttributes.addFlashAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
@@ -344,6 +343,4 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
         return "redirect:/enrollment";
     }
 
-	
-	
 }
