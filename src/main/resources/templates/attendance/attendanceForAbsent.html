@@ -10,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Attendance for Absent</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -22,7 +22,7 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal">
+		<form class="form-horizontal" action="#" th:action="@{/attendance/generate/{courseScheduleDetailId}/absent}" th:object="${generateAbsent}" method="get">
 			<h3><i class="fa fa-list"></i> Attendance for Absent</h3>
 			<hr>
 			<div class="card">
@@ -30,20 +30,32 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course</label>
 						<div class="col-lg-5">
-							<select class="form-control">
+							<!-- <select class="form-control">
 								<option value="">Select...</option>
 								<option value="">Hello</option>
 								<option value="">World</option>
+							</select> -->
+							<select class="form-control" th:field="*{generateAbsent}">
+							<option value="">   </option>
+							<option th:each = "generateAttendanceForAbsent : *{generateAbsent}"
+							th:value="${generateAttendanceForAbsent.getCourseName()}"
+							th:text="${generateAttendanceForAbsent.getCourseName()}"/>
 							</select>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Schedule</label>
 						<div class="col-lg-5">
-							<select class="form-control">
+							<!-- <select class="form-control">
 								<option value="">Select...</option>
 								<option value="">Hello</option>
 								<option value="">World</option>
+							</select> -->
+							<select class="form-control" th:field="*{generateAbsent}">
+							<option value="">   </option>
+							<option th:each = "generateAttendanceForAbsent : *{generateAbsent}"
+							th:value="${generateAttendanceForAbsent.getScheduleStartDateTime()} '+' ${generateAttendanceForAbsent.getScheduleEndDateTime()}"
+							th:text="${generateAttendanceForAbsent.getScheduleStartDateTime()} '+' ${generateAttendanceForAbsent.getScheduleEndDateTime()}"/>
 							</select>
 						</div>
 					</div>
@@ -77,16 +89,19 @@
 		<!--Buttons for messages (delete these) End-->
 		<div class="card mt-5">
 			<div class="card-body">	
-				<div class="col-lg-12" style="overflow-x:auto;">				
+				<div class="col-lg-12" style="overflow-x:auto;">						
 					<table class="table table-bordered">
+					<th:block th:each="generateAttendanceForAbsent : *{generateAbsent}">
 						<tr>
 							<td colspan="3">
 								<label class="col-lg-6 col-form-label">COURSE TITLE</label>
-								<label class="col-lg-12 col-form-label text-center">The Course</label>
+								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getCourseName()}"></label>
+								<!-- <input type="text" class="form-control" name="courseName" th:value="*{generateAttendanceForAbsent.getCourseName()}"/>-->						
 							</td>
 							<td colspan="1">
 								<label class="col-lg-6 col-form-label">DURATION</label>
 								<label class="col-lg-12 col-form-label text-center">2 hours</label>
+								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getDuration()}"></label>
 							</td>
 						</tr>
 						<tr>
@@ -96,14 +111,17 @@
 							<td colspan="1">
 								<label class="col-lg-6 col-form-label">Start</label>
 								<label class="col-lg-12 col-form-label text-center">5/5/2020</label>
+								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getScheduleStartDateTime()}"></label>
 							</td>
 							<td colspan="1">
 								<label class="col-lg-6 col-form-label">End</label>
 								<label class="col-lg-12 col-form-label text-center">5/5/2020</label>
+								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getScheduleEndDateTime()}"></label>
 							</td>
 							<td colspan="1">
 								<label class="col-lg-6 col-form-label">VENUE</label>
 								<label class="col-lg-12 col-form-label text-center">Online Meeting</label>
+								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getVenueName()}"></label>
 							</td>
 						</tr>
 						<tr>
@@ -116,15 +134,18 @@
 							<td colspan="1">
 								<label class="col-lg-6 col-form-label">START TIME</label>
 								<label class="col-lg-12 col-form-label text-center">10:00 PHT</label>
+								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getScheduleStartDateTime()}"></label>
 							</td>
 							<td colspan="1">
 								<label class="col-lg-6 col-form-label">&nbsp;</label>
 								<label class="col-lg-12 col-form-label text-center">12:00 PHT</label>
+								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getScheduleEndDateTime()}"></label>
 							</td>
 							<td colspan="1" rowspan="2">
 								<label class="col-lg-6 col-form-label">INSTRUCTOR</label>
 								<div class="row mt-5">
 									<label class="col-lg-12 col-form-label text-center">Instructor Name</label>
+									<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getInstructorName()}"></label>
 								</div>
 								<div class="row mt-5">
 									<label class="col-lg-12 col-form-label text-center">___________________________________</label>
@@ -191,7 +212,9 @@
 								</div>
 							</td>
 						</tr>
+						</th:block>
 					</table>
+					</form>
 				</div>
 				<div class="col-lg-12 mt-5" style="overflow-x:auto;display: block; white-space: nowrap ">				
 					<table class="table table-bordered text-center" >
@@ -206,7 +229,7 @@
 						<thead>
 							<tr>
 								<th class="align-middle">8-Digit EMPLOYEE ID NUMBER<br>(if Applicable)</th>
-								<th class="align-middle">PARTICIPANT'S NAME<br>(Please <u>PRINT FULL NAME)</u></th>
+								<th class="align-middle">PARTICIPANT'S NAME<br>(Please <u>PRINT FULL NAME</u>)</th>
 								<th class="align-middle">COMPANY/BU/DEPT</th>
 								<th class="align-middle">TIME-IN</th>
 								<th class="align-middle">TIME-OUT</th>
@@ -214,53 +237,57 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr th:each="generateAttendanceForAbsent : *{generateAbsent}">
 								<td>1</td>
+								<!-- <td th:text="*{generateAttendanceForAbsent.getParticipantId()}"/> waiting din for Q.A tong employee number -->
 								<td>Tenorio, Arlene<br>a.tenorio@ph.fujitsu.com</td>
-								<td>G3CC</td>
+								<td th:text="*{generateAttendanceForAbsent.getParticipantName()}"/><br><td th:text="*{generateAttendanceForAbsent.getEmail()}"/> <!-- yung sa email nilagay ko lang waiting for Q.A -->
+								<td>G3CC</td>								
 								<td>SL</td>
+								<!-- <td th:text="*{generateAttendanceForAbsent.getLoginDateTime())}"/> not sure kung logInDateTime ba para dito sa time-in-->
 								<td></td>
 								<td></td>
-							</tr>
-							<tr>
+
+								<!--  
 								<td>2</td>
 								<td>Virtudazo, Aljohn Rey<br>a.virtudazo@ph.fujitsu.com</td>
+								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
 								<td>G3CC</td>
 								<td>VL</td>
 								<td></td>
 								<td></td>
-							</tr>
-							<tr>
+
 								<td>3</td>
 								<td>Avellana, Brex<br>b.avellana@ph.fujitsu.com</td>
+								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
 								<td>G3CC</td>
 								<td>SL</td>
 								<td></td>
 								<td></td>
-							</tr>
-							<tr>
+	
 								<td>4</td>
 								<td>Con-Ui, Jan Daryll Martin<br>j.conui@ph.fujitsu.com</td>
+								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
 								<td>G3CC</td>
 								<td>VL</td>
 								<td></td>
 								<td></td>
-							</tr>
-							<tr>
+
 								<td>5</td>
 								<td>Lorenzana, Joel<br>j.lorenzana@ph.fujitsu.com</td>
+								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
 								<td>G3CC</td>
 								<td>VL</td>
 								<td></td>
 								<td></td>
-							</tr>
-							<tr>
+
 								<td>6</td>
 								<td>Abella, Rixon Jeuz<br>r.abella@ph.fujitsu.com</td>
+								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
 								<td>G3CC</td>
 								<td>VL</td>
 								<td></td>
-								<td></td>
+								<td></td> -->
 							</tr>
 						</tbody>
 					</table>
