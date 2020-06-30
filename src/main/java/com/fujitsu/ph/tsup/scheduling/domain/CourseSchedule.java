@@ -83,11 +83,6 @@ public class CourseSchedule {
     private Set<CourseScheduleDetail> courseScheduleDetail;
     
     /**
-     * Number of total participants
-     */
-    private int totalParticipants;
-    
-    /**
      * Status
      */
     private char status;
@@ -112,7 +107,6 @@ public class CourseSchedule {
         this.minRequired = builder.minRequired;
         this.maxAllowed = builder.maxAllowed;
         this.courseScheduleDetail = builder.courseScheduleDetail;
-        this.totalParticipants = builder.totalParticipants;
         this.status = builder.status;
         
     }
@@ -166,10 +160,6 @@ public class CourseSchedule {
 
     public Set<CourseScheduleDetail> getCourseScheduleDetail() {
         return courseScheduleDetail;
-    }
-    
-    public int getTotalParticipants() {
-        return totalParticipants;
     }
 
     public char getStatus() {
@@ -244,11 +234,6 @@ public class CourseSchedule {
          * The course schedule detail
          */
         private Set<CourseScheduleDetail> courseScheduleDetail;
-        
-        /**
-         * Total number of Participants
-         */
-        private int totalParticipants;
         
         /**
          * Status
@@ -367,7 +352,6 @@ public class CourseSchedule {
         this.venueName = venueName;
         this.minRequired = minRequired;
         this.maxAllowed = maxAllowed;
-        this.totalParticipants = totalParticipants;
         this.status = status;
         
     }

@@ -62,6 +62,7 @@ public class ScheduleController {
 	@Autowired
     private ScheduleService scheduleService;
 
+	
     /**
      * Logger Factory
      */
@@ -116,7 +117,6 @@ public class ScheduleController {
             courseScheduleViewForm.setInstructorId(courseSched.getInstructorId());
             courseScheduleViewForm.setInstructorName(
                     courseSched.getInstructorLastName() + ", " + courseSched.getInstructorFirstName());
-            courseScheduleViewForm.setParticipants(courseSched.getTotalParticipants());
 
             Set<CourseScheduleDetail> courseSchedDetSet = courseSched.getCourseScheduleDetail();
             Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
