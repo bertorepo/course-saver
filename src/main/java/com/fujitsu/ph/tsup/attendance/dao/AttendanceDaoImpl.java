@@ -1,5 +1,9 @@
 package com.fujitsu.ph.tsup.attendance.dao;
 
+import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
+import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
+
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -12,12 +16,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
-import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
-import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
-
-
-
 //==================================================================================================
 //$Id:PR03$
 //Project Name : Training Sign up
@@ -28,10 +26,11 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 //Version | Date       | Updated By                                                | Content
 //--------+------------+---------------------------------------------------------+-----------------
 //0.01    | 06/26/2020 | WS) K.Abad, WS) H.Francisco, WS) J.Iwarat, WS) R.Ramos    | New Creation
+//0.02    | 06/30/2020 | WS) K.Abad                                                | Update
 //==================================================================================================
 /**
  * <pre>
-* The data access class for attendance related database access
+ * The data access class for attendance related database access
  * </pre>
  * 
  * @version 0.01
@@ -111,16 +110,18 @@ public class AttendanceDaoImpl implements AttendanceDao {
      */
     @Override
     public Set<CourseParticipant> findCourseScheduleById(Long id) {
-        String sql = "SELECT CSCHEDDET.SCHEDULED_START_DATETIME,"
-                +" CSCHEDDET.SCHEDULED_END_DATETIME,"
-                +" CSCHEDDET.DURATION,"
-                +" C.NAME," 
-                +" E.LAST_NAME," 
-                +" E.FIRST_NAME,"
-                +" V.NAME,"
-                +" CPART.COURSE_SCHEDULE_ID,"
-                + "CPART.PARTICIPANT_ID,"
-                + " CPART.REGISTRATION_DATE"
+        String sql = "SELECT CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME,"
+                +" CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME,"
+                +" CSCHEDDET.DURATION AS DURATION,"
+                +" C.NAME AS COURSE_NAME," 
+                +" E.LAST_NAME AS INSTRUCTOR_LAST_NAME," 
+                +" E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME,"
+                +" V.NAME AS VENUE_NAME,"
+                +" CPART.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID,"
+                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID,"
+                + "E.LAST_NAME AS PARTICIPANT_LAST_NAME,"
+                + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME,"
+                + " CPART.REGISTRATION_DATE AS REGISTRATION_DATE"
 
                 + "FROM COURSE_SCHEDULE AS CSCHED"
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID"
