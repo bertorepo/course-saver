@@ -1,13 +1,13 @@
 package com.fujitsu.ph.tsup.attendance.web;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,16 +16,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.fujitsu.ph.auth.model.FpiUser;
-
+import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
+import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.attendance.model.AttendanceParticipantDetail;
 import com.fujitsu.ph.tsup.attendance.model.ChangeStatusCourse;
 import com.fujitsu.ph.tsup.attendance.model.ChangeStatusForm;
 import com.fujitsu.ph.tsup.attendance.model.ChangeStatusParticipant;
-import com.fujitsu.ph.tsup.attendance.model.CourseAttendance;
 import com.fujitsu.ph.tsup.attendance.model.CourseAttendanceForm;
-import com.fujitsu.ph.tsup.attendance.model.CourseParticipant;
 import com.fujitsu.ph.tsup.attendance.model.CourseParticipantsForm;
-import com.fujitsu.ph.tsup.attendance.model.CourseSchedule;
 import com.fujitsu.ph.tsup.attendance.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.attendance.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.attendance.model.GenerateAttendanceCourse;
@@ -42,6 +41,7 @@ import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
 //Version | Date       | Updated By                                                              | Content
 //--------+------------+---------------------------------------------------------+-----------------
 //0.01    | 06/23/2020 | WS) K.Abad, WS) M.Angara, WS) H.Francisco, WS) J.Iwarat, WS) R.Ramos    | New Creation
+//0.02    | 06/29/2020 | WS) J.Iwarat                                                            | New Creation
 //==================================================================================================
 /**
  * <pre>
@@ -119,50 +119,50 @@ public class AttendanceController {
     @GetMapping("/schedules/{courseScheduleId}/participants")
     public String showCourseParticipantsForm(Long id, Model model,
             Set<CourseScheduleDetailForm> setCourseScheduleDetails) {
-        ZonedDateTime toDate = ZonedDateTime.now();
-        ZonedDateTime fromDate = ZonedDateTime.now().plusDays(5);
-        Long instructorId;
+        ZonedDateTime toDateTime = ZonedDateTime.now();
+        ZonedDateTime fromDateTime = ZonedDateTime.now().plusDays(5);
 
         logger.debug("Model:{}", model);
+
         CourseParticipantsForm courseParticipantsForm = new CourseParticipantsForm();
-
         CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
-        Set<CourseScheduleForm> setCourseScheduleForm = new HashSet<CourseScheduleForm>();
-
         CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-        Set<CourseScheduleDetailForm> setCourseScheduleDetailForm = new HashSet<CourseScheduleDetailForm>();
-
         AttendanceParticipantDetail attendanceParticipantDetail = new AttendanceParticipantDetail();
+
+        Set<CourseScheduleForm> setCourseScheduleForm = new HashSet<CourseScheduleForm>();
+        Set<CourseScheduleDetailForm> setCourseScheduleDetailForm = new HashSet<CourseScheduleDetailForm>();
         Set<AttendanceParticipantDetail> setAttendanceParticipantDetail = new HashSet<AttendanceParticipantDetail>();
 
-        Set<CourseSchedule> courseScheduleList = attendanceService.findAllScheduledCoursesByInstructor(fromDate, toDate,
-                instructorId);
-
+        Set<CourseSchedule> courseScheduleList = attendanceService.findAllScheduledCoursesByInstructor(fromDateTime,
+                toDateTime, user.getId());
         for (CourseSchedule courseSchedule : courseScheduleList) {
             courseScheduleForm.setCourseName(courseSchedule.getCourseName());
             setCourseScheduleForm.add(courseScheduleForm);
         }
 
         Set<CourseParticipant> courseParticipantList = attendanceService.findCourseScheduleById(id);
-        Set<CourseParticipant> setCourseParticipant = new HashSet<CourseParticipant>();
-
         for (CourseParticipant courseParticipant : courseParticipantList) {
             courseParticipantsForm.setCourseName(courseParticipant.getCourseName());
             courseParticipantsForm.setInstructorName(courseParticipant.getInstructorName());
-            courseParticipantsForm.setDuration(courseParticipant.getDuration());
 
             courseScheduleDetailForm.setScheduledStartDateTime(courseParticipant.getScheduledStartDateTime());
             courseScheduleDetailForm.setScheduledEndDateTime(courseParticipant.getScheduledEndDateTime());
+            setCourseScheduleDetailForm.add(courseScheduleDetailForm);
 
+            Duration totalDuration = Duration.between(courseScheduleDetailForm.getScheduledStartDateTime(),
+                    courseScheduleDetailForm.getScheduledEndDateTime());
+            model.addAttribute("duration", totalDuration);
+            
             attendanceParticipantDetail.setName(courseParticipant.getParticipantName());
             attendanceParticipantDetail.setEmail(courseParticipant.getEmail());
             attendanceParticipantDetail.setEmployeeNumber(courseParticipant.getEmployeeNumber());
+            setAttendanceParticipantDetail.add(attendanceParticipantDetail);
         }
         courseParticipantsForm.setCourseScheduleDetails(setCourseScheduleDetailForm);
         courseParticipantsForm.setParticipants(setAttendanceParticipantDetail);
         courseParticipantsForm.setCourseSchedules(setCourseScheduleForm);
-
-        model.addAttributes("courseParticipant", courseParticipantsForm);
+         
+        model.addAttribute("courseParticipant", courseParticipantsForm);
         return "attendance/viewInstructorCourseParticipants";
     }
 
@@ -184,7 +184,8 @@ public class AttendanceController {
      * @return
      */
     @GetMapping("/participants")
-    public String show(@Valid ChangeStatusForm form, BindingResult bindingResult, Model model) {
+    public String showChangeStatusParticipantsForm(@Valid ChangeStatusForm form, BindingResult bindingResult,
+            Model model) {
         ZonedDateTime toDateTime = ZonedDateTime.now();
         ZonedDateTime fromDateTime = toDateTime.minusDays(5);
         ChangeStatusForm statusForm = new ChangeStatusForm();
@@ -241,7 +242,8 @@ public class AttendanceController {
      * @return redirect:/participants
      */
     @PostMapping("/participants")
-    public String submit(@Valid ChangeStatusForm form, BindingResult bindingResult, Model model) {
+    public String submitChangeStatusParticipantsForm(@Valid ChangeStatusForm form, BindingResult bindingResult,
+            Model model) {
         ZonedDateTime toDateTime = ZonedDateTime.now();
         ZonedDateTime fromDateTime = toDateTime.minusDays(5);
         attendanceService.findAllScheduledCoursesByInstructor(fromDateTime, toDateTime, 1L);
@@ -255,19 +257,15 @@ public class AttendanceController {
         }
 
         Set<CourseAttendance> setCourseAttendance = new HashSet<CourseAttendance>();
-        for (ChangeStatusCourse changeStatCourse : form.getCourses()) {
-            for (ChangeStatusParticipant changeStatParticipant : form.getParticipants()) {
-                CourseAttendance courseAttendance = new CourseAttendance.Builder(form.getId(), changeStatCourse.getId(),
-                        changeStatCourse.getCourseName(), changeStatParticipant.getParticipantId(),
-                        changeStatParticipant.getName(), changeStatParticipant.getLoginDateTime()).build();
-                setCourseAttendance.add(courseAttendance);
-            }
+
+        for (ChangeStatusParticipant changeStatParticipant : form.getParticipants()) {
+            CourseAttendance courseAttendance = new CourseAttendance.Builder(form.getId(),
+                    changeStatParticipant.getParticipantId()).build();
+            setCourseAttendance.add(courseAttendance);
         }
 
         attendanceService.changeStatus(setCourseAttendance);
-
         return "redirect:/participants";
-
     }
 
     /**
@@ -302,7 +300,7 @@ public class AttendanceController {
          * <pre> Id is for authentication implementation <pre>
          */
         Set<CourseSchedule> courseScheduleList = attendanceService.findAllScheduledCoursesByInstructor(fromDate, toDate,
-                id);
+                user.getId());
 
         for (CourseSchedule courseSchedule : courseScheduleList) {
             generateAttendanceCourse.setCourseName(courseSchedule.getCourseName());// course schedule
@@ -331,8 +329,8 @@ public class AttendanceController {
                  * <pre> Email and EmployeeNumber is on Q.A.Does not exist Company name and
                  * Signature is on Q.A no. 11 and 14 in UI wireframe 画面レイアウト <pre>
                  */
-//                attendanceParticipantDetail.setEmail(CourseAttendance.getEmail());
-//                attendanceParticipantDetail.setEmployeeNumber(courseAttendance.getParticipantId());
+                // attendanceParticipantDetail.setEmail(CourseAttendance.getEmail());
+                // attendanceParticipantDetail.setEmployeeNumber(courseAttendance.getParticipantId());
                 attendanceParticipantDetail.setLoginDateTime(courseAttendance.getLoginDateTime());
                 attendanceParticipantDetail.setName(courseAttendance.getParticipantName());
                 setAttendanceParticipantDetail.add(attendanceParticipantDetail);
@@ -484,18 +482,17 @@ public class AttendanceController {
             return "attendance/attend";
         }
 
-        CourseAttendanceForm courseAttendanceForm = new CourseAttendanceForm();
-        Set<CourseAttendance> courseAttendanceSet = new HashSet<>();
-
         model.addAttribute("attend", form);
 
-        CourseAttendance courseAttendance = new CourseAttendance.Builder(courseAttendanceForm.getId(),
-                courseAttendanceForm.getCourseName(), courseAttendanceForm.getInstructorName(),
-                courseAttendanceForm.getVenueName(), courseAttendanceForm.getScheduledStartDateTime,
-                courseAttendanceForm.getScheduledEndDateTime()).build();
+        CourseAttendance courseAttendance = new CourseAttendance.Builder(form.getId(), form.getCourseScheduleDetailId(),
+                form.getCourseName(), form.getInstructorName(), form.getVenueName(), form.getParticipantId(), null,
+                form.getScheduledStartDateTime(), form.getScheduledEndDateTime(), form.getDuration(), null).build();
+
+        attendanceService.attend(courseAttendance);
 
         redirectAttributes.addFlashAttribute("attend", form);
         return "redirect:/attendance";
 
     }
+
 }
