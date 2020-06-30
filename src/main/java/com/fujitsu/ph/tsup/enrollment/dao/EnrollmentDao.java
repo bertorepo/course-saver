@@ -59,8 +59,8 @@ public interface EnrollmentDao {
      * @param fromDateTime
      * @param toDateTime
      */
-    Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, ZonedDateTime fromDateTime, 
-            ZonedDateTime toDateTime);
+    Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, 
+            ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
     
     /**
      * Finds the participant enrolled by id
