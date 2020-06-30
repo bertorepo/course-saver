@@ -10,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>View Instructor Course Participants</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -30,11 +30,12 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Schedule</label>
 						<div class="col-lg-5">
-							<select class="form-control">
-								<option value="">Select...</option>
-								<option value="">Hello</option>
-								<option value="">World</option>
+						<!-- DROPDOWN VALUES -->
+							<select class="form-control" th:field="*{id}">
+								<option value=""></option>
+								<option th:each = "courseNames : *{courseParticipant}" th:value="${courseNames.getCourseName()}" th:text="${courseNames.getCourseName()}"/>
 							</select>
+						<!-- DROPDOWN VALUES -->
 						</div>
 					</div>
 					<div class="float-right">
@@ -67,8 +68,10 @@
 		<!--Buttons for messages (delete these) End-->
 		<div class="card mt-5">
 			<div class="card-body">	
-				<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap">				
-					<table class="table table-bordered">
+				<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: no-wrap">
+				
+					<table th:each="participant : *{courseParticipant}" class="table table-bordered">
+					
 						<colgroup>
 							<col style="width:20%"/>
 							<col style="width:20%"/>
@@ -76,11 +79,12 @@
 						</colgroup>
 						<tr>
 							<td colspan="1">
-								<label class="col-lg-12 col-form-label">Course Name</label>
+								<label class="col-lg-12 col-form-label ">Course Name</label>
 								
 							</td>
 							<td colspan="2">
-								<label class="col-lg-12 col-form-label">Understanding UI</label>
+							<!-- th:text="${participant.getCourseName()}" -->
+								<label class="col-lg-12 col-form-label" th:value="${participant.getCourseName()}"></label>
 							</td>
 						</tr>
 						<tr>
@@ -89,7 +93,7 @@
 								
 							</td>
 							<td colspan="2">
-								<label class="col-lg-12 col-form-label">Dela Cruz, Anna</label>
+								<label class="col-lg-12 col-form-label" th:value="${participant.getInstructorName()}"></label>
 							</td>
 						</tr>
 						<tr>
@@ -106,34 +110,35 @@
 						</tr>
 						<tr>
 							<td colspan="1">
-								<label class="col-lg-12 col-form-label">2020/1/1 0800</label>
+								<label class="col-lg-12 col-form-label" th:value="${participant.getScheduledStartDateTime()}"></label>
 								
 							</td>
 							<td colspan="1">
-								<label class="col-lg-12 col-form-label">2020/1/1 1000</label>
+								<label class="col-lg-12 col-form-label" th:value="${participant.getScheduledStartEndTime()}"></label>
 							</td>
 							<td colspan="1">
-								<label class="col-lg-12 col-form-label">2 hours</label>
-								
+							<!-- th:value="*{totalDuration}" -->
+							<!-- Duration -->
+								<label class="col-lg-12 col-form-label" th:value="*{totalDuration}"></label>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="1">
-								<label class="col-lg-12 col-form-label">2020/1/2 1500</label>
-								
+								<label class="col-lg-12 col-form-label" th:value="${participant.getScheduledStartDateTime()}"></label>
 							</td>
 							<td colspan="1">
-								<label class="col-lg-12 col-form-label">2020/1/2 1700</label>
+								<label class="col-lg-12 col-form-label" th:value="${participant.getScheduledStartEndTime()}"></label>
 							</td>
 							<td colspan="1">
-								<label class="col-lg-12 col-form-label">2 hours</label>
-								
+							<!-- th:value="${participant.()}" -->
+							<!-- DURATION -->
+								<label class="col-lg-12 col-form-label" th:value="*{totalDuration}"></label>
 							</td>
 						</tr>
 					</table>
 				</div>
-				<div class="col-lg-12 mt-5" style="overflow-x:auto; display: block; white-space: nowrap">				
-					<table class="table table-bordered text-center" >
+				<div class="col-lg-12 mt-5" style="overflow-x:auto; display: block; white-space: no-wrap">				
+					<table class="table table-bordered text-center" th:each="participantsAttendance : *{courseParticipant}">
 						<colgroup >
 							<col style="width:20%"/>
 							<col style="width:20%"/>
@@ -148,34 +153,31 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>1</td>
-								<td>Tenorio, Arlene</td>
-								<td>a.tenorio@ph.fujitsu.com</td>
+							<!-- th:value="${participantsAttendance.get()}" -->
+							<!-- th:text="${participantsAttendance.get()}" -->
+								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
+								<td th:value="${participantsAttendance.getParticipantName()}"></td>
+								<td th:value="${participantsAttendance.getEmail()}"></td>
 							</tr>
 							<tr>
-								<td>2</td>
-								<td>Virtudazo, Aljohn Rey</td>
-								<td>a.virtudazo@ph.fujitsu.com</td>
+								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
+								<td th:value="${participantsAttendance.getParticipantName()}"></td>
+								<td th:value="${participantsAttendance.getEmail()}"></td>
 							</tr>
 							<tr>
-								<td>3</td>
-								<td>Avellana, Brex</td>
-								<td>b.avellana@ph.fujitsu.com</td>
+								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
+								<td th:value="${participantsAttendance.getParticipantName()}"></td>
+								<td th:value="${participantsAttendance.getEmail()}"></td>
 							</tr>
 							<tr>
-								<td>4</td>
-								<td>Con-Ui, Jan Daryll Martin</td>
-								<td>j.conui@ph.fujitsu.com</td>
+								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
+								<td th:value="${participantsAttendance.getParticipantName()}"></td>
+								<td th:value="${participantsAttendance.getEmail()}"></td>
 							</tr>
 							<tr>
-								<td>5</td>
-								<td>Lorenzana, Joel</td>
-								<td>j.lorenzana@ph.fujitsu.com</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>Abella, Rixon Jeuz</td>
-								<td>r.abella@ph.fujitsu.com</td>
+								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
+								<td th:value="${participantsAttendance.getParticipantName()}"></td>
+								<td th:value="${participantsAttendance.getEmail()}"></td>
 							</tr>
 						</tbody>
 					</table>
