@@ -94,25 +94,25 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      **/
     @Override
     public void saveCourseParticipant(CourseParticipant courseParticipant) {
-        String saveCourseParticipantSql = "INSERT INTO COURSE_PARTICIPANT"
-                + "(ID, COURSE_SCHEDULE_ID, COURSE_NAME, INSTRUCTOR_NAME, VENUE_NAME, PARTICIPANT_ID, PARTICIPANT_NAME,"
-                + "COURSE_SCHEDULE_DETAILS, REGISTRATION_DATE, REASON, DECLINE_DATE)"
-                + "VALUES (:id, :courseScheduleId, :courseName, :instructorName, :venueName, :participantId, :participantName,"
-                + ":courseScheduleDetails, :registrationDate, :reason, :declineDate)";
+    	 String saveCourseParticipantSql = "INSERT INTO COURSE_PARTICIPANT"
+                 + "(ID, COURSE_SCHEDULE_ID, COURSE_NAME, INSTRUCTOR_NAME, VENUE_NAME, PARTICIPANT_ID, PARTICIPANT_NAME,"
+                 + "COURSE_SCHEDULE_DETAILS, REGISTRATION_DATE, REASON, DECLINE_DATE)"
+                 + "VALUES (:id, :courseScheduleId, :courseName, :instructorName, :venueName, :participantId, :participantName,"
+                 + ":courseScheduleDetails, :registrationDate, :reason, :declineDate)";
 
-        SqlParameterSource saveCourseParticipantParameters = new MapSqlParameterSource()
-                .addValue(" id", courseParticipant.getId())
-                .addValue(" courseScheduleId", courseParticipant.getCourseScheduleId())
-                .addValue(" courseName", courseParticipant.getCourseName())
-                .addValue(" instructorName", courseParticipant.getInstructorName())
-                .addValue(" venueName", courseParticipant.getVenueName())
-                .addValue(" participantId", courseParticipant.getParticipantId())
-                .addValue(" participantName", courseParticipant.getParticipantName())
-                .addValue(" courseScheduleDetails", courseParticipant.getCourseScheduleDetails())
-                .addValue(" registrationDate", courseParticipant.getRegistrationDate())
-                .addValue(" reason", courseParticipant.getReason())
-                .addValue(" declineDate", courseParticipant.getDeclineDate());
-        template.update(saveCourseParticipantSql, saveCourseParticipantParameters);
+         SqlParameterSource saveCourseParticipantParameters = new MapSqlParameterSource()
+                 .addValue(" id", courseParticipant.getId())
+                 .addValue(" courseScheduleId", courseParticipant.getCourseScheduleId())
+                 .addValue(" courseName", courseParticipant.getCourseName())
+                 .addValue(" instructorName", courseParticipant.getInstructorName())
+                 .addValue(" venueName", courseParticipant.getVenueName())
+                 .addValue(" participantId", courseParticipant.getParticipantId())
+                 .addValue(" participantName", courseParticipant.getParticipantName())
+                 .addValue(" courseScheduleDetails", courseParticipant.getCourseScheduleDetails())
+                 .addValue(" registrationDate", courseParticipant.getRegistrationDate())
+                 .addValue(" reason", courseParticipant.getReason())
+                 .addValue(" declineDate", courseParticipant.getDeclineDate());
+         template.update(saveCourseParticipantSql, saveCourseParticipantParameters);
 
     }
 
@@ -123,10 +123,25 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         return null;
     }
 
+    
+    /**
+     * <pre>
+     *Finds the participant enrolled by id
+     *findCourseParticipantById
+     * <pre>
+     */
+    
     @Override
     public CourseParticipant findCourseParticipantById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+    	String findCourseParticipantByIdSql = "SELECT * FROM COURSE_SCHEDULE, COURSE_SCHEDULE_DETAIL, COURSE_PARTICIPANT, COURSE,  VENUE, EMPLOYEE" 
+				+ "WHERE COURSE_PARTICIANT.ID = :id" + "AND STATUS = 'A'";
+
+    	SqlParameterSource  NamedParameters = new MapSqlParameterSource()
+    				.addValue("id  ", id)
+    				.addValue("STATUS", 'A');
+
+    	return template.queryForObject(findCourseParticipantByIdSql, NamedParameters,
+    			new EnrollmentRowMapperCourseParticipant());
     }
 
     @Override
@@ -139,8 +154,24 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 
     @Override
     public void saveCourseNonParticipant(Long id) {
-        // TODO Auto-generated method stub
+    	 String courseParticipantSql = "INSERT INTO COURSE_NON_PARTICIPANT"
+	                + "(ID,  COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE, REASON, DECLINE_DATE)"
+	                + "VALUES (:id,COURSE_SCHEDULE_ID, :PARTICIPANT_ID, :REGISTRATION_DATE, :REASON, :DECLINE_DATE  )";
 
+		
+		 Set<CourseParticipant> courseParticipant =  courseParticipant.getCourseParticipant();
+		 
+		 for (CourseParticipant coursenonParticipant : courseParticipant) {
+	        SqlParameterSource coursenonpartParameters = new MapSqlParameterSource()
+	        		.addValue("id", coursenonParticipant.getId())
+	                .addValue("COURSE_SCHEDULE_ID", coursenonParticipant.getCourseScheduleId())
+	                .addValue("PARTICIPANT_ID", coursenonParticipant.getParticipantId())
+	                .addValue("REGISTRATION_DATE", coursenonParticipant.getRegistrationDate())
+	                .addValue("REASON", coursenonParticipant.getReason())
+	                .addValue("DECLINE_DATE", coursenonParticipant.getDeclineDate());
+	        template.update(courseParticipantSql, coursenonpartParameters);
+
+		 }
     }
 
     @Override
