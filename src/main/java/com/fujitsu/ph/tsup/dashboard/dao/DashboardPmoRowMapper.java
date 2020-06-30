@@ -37,14 +37,14 @@ public class DashboardPmoRowMapper implements RowMapper<DashboardPmoForm> {
     @Override
     public DashboardPmoForm mapRow(ResultSet rs, int rowNum) throws SQLException {
         
-        String courseName = rs.getString("c.name");
-        String instructorName = rs.getString("full_name");
-        ZonedDateTime startDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("csd.scheduled_start_datetime").toInstant(), ZoneId.of("Asia/Manila"));
-        ZonedDateTime endDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("csd.scheduled_end_datetime").toInstant(), ZoneId.of("Asia/Manila"));
-        int minRequired = rs.getInt("cs.min_required");
-        int maxAllowed = rs.getInt("cs.max_allowed");
-        int enrolled = rs.getInt("enrolled");
-        String status = rs.getString("cs.status");
+        String courseName = rs.getString("C.NAME");
+        String instructorName = rs.getString("FULL_NAME");
+        ZonedDateTime startDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("CSD.SCHEDULED_START_DATETIME").toInstant(), ZoneId.of("Asia/Manila"));
+        ZonedDateTime endDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("CSD.SCHEDULED_END_DATETIME").toInstant(), ZoneId.of("Asia/Manila"));
+        int minRequired = rs.getInt("CS.MIN_REQUIRED");
+        int maxAllowed = rs.getInt("CS.MAX_ALLOWED");
+        int enrolled = rs.getInt("ENROLLED");
+        String status = rs.getString("CS.STATUS");
         
         return new DashboardPmoForm.Builder(courseName,  instructorName, startDateTime, endDateTime, minRequired, maxAllowed, enrolled, status).build();
     }
