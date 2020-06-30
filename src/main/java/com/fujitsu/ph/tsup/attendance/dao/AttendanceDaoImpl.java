@@ -30,7 +30,7 @@ import org.springframework.jdbc.support.KeyHolder;
 //==================================================================================================
 /**
  * <pre>
-* The data access class for attendance related database access
+ * The data access class for attendance related database access
  * </pre>
  * 
  * @version 0.01
