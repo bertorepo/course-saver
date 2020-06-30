@@ -39,6 +39,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //0.01    | 06/29/2020 | WS) M.Lumontad  | Updated
 //0.01    | 06/29/2020 | WS) M.Rivera    | Updated
 //0.01    | 06/29/2020 | WS) G.Cabiling  | Updated
+//0.01    | 06/30/2020 | WS) K.Freo      | Updated
 //=======================================================
 /**
 * <pre>

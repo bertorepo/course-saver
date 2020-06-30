@@ -128,7 +128,7 @@ public class CourseDeclineForm {
     }
     
     public String toString() {
-        return "CourseScheduleDetailForm [id=" + id + ", courseName=" + courseName + ", instructorName=" + instructorName
+        return "CourseDeclineForm [id=" + id + ", courseName=" + courseName + ", instructorName=" + instructorName
         		+ ", venueName=" + venueName + ", participantName=" + participantName + ", courseScheduleDetailsForm=" 
         		+ courseScheduleDetailsForm + ", registrationDate=" + registrationDate + ", reason=" + reason + "]";
     }
