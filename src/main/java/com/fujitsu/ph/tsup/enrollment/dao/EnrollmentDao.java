@@ -1,9 +1,4 @@
-package com.fujitsu.ph.tsup.enrollment.dao;
-
-import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-import java.time.ZonedDateTime;
-import java.util.Set;
+package com.fujitsu.ph.tsup.enrollment.dao; 
 
 //====================================================
 //$Id:PR01$
@@ -16,6 +11,12 @@ import java.util.Set;
 //--------+------------+-----------------------+------
 //0.01    | 06/24/2020 |  WS) J.Yu  | New Creation
 //====================================================
+
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
+import java.time.ZonedDateTime;
+import java.util.Set;
+
 /**
  * <pre>
  * The data access interface for enrollment related database access
@@ -59,8 +60,8 @@ public interface EnrollmentDao {
      * @param fromDateTime
      * @param toDateTime
      */
-    Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, ZonedDateTime fromDateTime, 
-            ZonedDateTime toDateTime);
+    Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, 
+            ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
     
     /**
      * Finds the participant enrolled by id

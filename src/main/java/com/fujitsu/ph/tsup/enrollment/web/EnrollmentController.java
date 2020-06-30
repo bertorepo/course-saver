@@ -36,6 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //--------+------------+-----------------+---------------
 //0.01    | 06/25/2020 | WS) K.Freo      | New Creation
 //0.01    | 06/29/2020 | WS) M.Lumontad  | Updated
+//0.01    | 06/29/2020 | WS) M.Rivera    | Updated
 //=======================================================
 /**
 * <pre>
@@ -171,20 +172,19 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
 
         CourseSchedule courseSchedule = enrollmentService.findCourseScheduleById(id);
         
-        CourseScheduleDetail courseScheduleDetail = (CourseScheduleDetail) courseSchedule.getCourseScheduleDetail();
+        Set<CourseScheduleDetail> courseScheduleDetail =  courseSchedule.getCourseScheduleDetail();
+        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
+        
+        for(CourseScheduleDetail newCourseScheduleDetail: courseScheduleDetail){
 
-        
-        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<CourseScheduleDetailForm>();
-        
-        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-        
-        courseScheduleDetailForm.setId(courseScheduleDetail.getCourseScheduleId());
-        courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
-        courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
-        
-        
-        
-        courseScheduleDetailFormSet.add(courseScheduleDetailForm);
+            CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+            
+            courseScheduleDetailForm.setId(newCourseScheduleDetail.getCourseScheduleId());
+            courseScheduleDetailForm.setScheduledStartDateTime(newCourseScheduleDetail.getScheduledStartDateTime());
+            courseScheduleDetailForm.setScheduledEndDateTime(newCourseScheduleDetail.getScheduledEndDateTime());
+
+            courseScheduleDetailFormSet.add(courseScheduleDetailForm);
+        }
         
         
         CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
