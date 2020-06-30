@@ -87,6 +87,7 @@
                     </tr>
                 </thead>
                 <tbody>
+               
                     <tr th:each="instructorCourseSchedule : *{scheduleView}">
                         <td th:text="${instructorCourseSchedule.getCourseName()}"></td>
                         <td th:text="${instructorCourseSchedule.getIntstructorName()}"></td>
@@ -95,6 +96,7 @@
                         <td th:text="${instructorCourseSchedule.getScheduledEndDateTime()}"></td>
                         <td th:text="${instructorCourseSchedule.getDuration()}"></td>
                     </tr>
+                    
                 </tbody>
             </table>
         </div>      
