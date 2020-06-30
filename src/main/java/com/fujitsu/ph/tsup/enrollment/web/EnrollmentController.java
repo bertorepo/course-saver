@@ -210,10 +210,14 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
 
 	}
     
-	
-	 /*
-     * Method for showCourseDeclineForm			
-     */
+	/*
+	 * 	Method for showCourseDeclineForm
+	 * 
+	 * A member can decline course with reason.URL Value = /myschedules/{courseParticipantId}/decline, method = GET
+	 * Call enrollmentService.findCourseParticipantById using the given id
+	 * Set the values from the previous step into the CourseDeclineForm 
+	 * Return the Course decline form and view
+	 */
 	@GetMapping("/decline")
 	public String showCourseDeclineForm(Long id, Model model) {
 		logger.debug("Model:{}", model);
@@ -236,13 +240,18 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
 	
 	/*
 	 * 	Method for submitCourseDeclineForm
+	 * 
+	 * A member can decline course with reason URL Value = /myschedules/{courseParticipantId}/decline, method = DELETE
+	 * Transform the form to courseParticipant.
+	 *  Call enrollmentService.declineCourse using the courseParticipant
+	 *  Return the Course decline form and view. Return also a success message.
 	 */
 	@PostMapping("/decline")
-	public String submitCourseDeclineForm(@Valid @ModelAttribute ("enrollmentDecline")  CourseParticipant courseParticipant,
+	public String submitCourseDeclineForm(@Valid @ModelAttribute ("enrollmentDecline") CourseDeclineForm form,
 			BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
 		
 
-		logger.debug("courseDeclineForm:{}", courseParticipant);		
+		logger.debug("courseDeclineForm:{}", form);		
 		logger.debug("BindingResult:{}", bindingresult);
 
 		if (bindingresult.hasErrors()) {
@@ -251,6 +260,10 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
 		
 		logger.debug("Model:{}", model);
 		
+		CourseParticipant courseParticipant = new CourseParticipant.Builder(form.getId()).build();
+		
+		enrollmentService.declineCourse(courseParticipant);
+		 
 		 CourseDeclineForm   courseDeclineForm = new  CourseDeclineForm () ; 
  
 		 courseDeclineForm.setId(courseParticipant.getId());
@@ -260,18 +273,6 @@ private static Logger logger = LoggerFactory.getLogger(EnrollmentController.clas
 		 courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
 		 courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
 		 courseDeclineForm.setReason(courseParticipant.getReason());
-
-		  Set<CourseParticipant> courseParticipantFormSet=  courseParticipant.getCoureseParticipant;
-	        Set<CourseParticipant> courseParticipantSet = new HashSet<>();
-		 
-		 for (CourseParticipant coursePart: courseParticipantSet) {	 
-			 CourseParticipant courseParticipants = new CourseParticipant.Builder(coursePart.getId(), coursePart.getCourseScheduleId(), 
-					 coursePart.getCourseName(), coursePart.getInstructorName(), coursePart.getVenueName(), coursePart.getCourseScheduleDetails(),
-					 coursePart.getRegistrationDate(), coursePart.getReason(), coursePart.getDeclineDate(), coursePart.getParticipantId())
-					 .build();
-			 
-			 enrollmentService.declineCourse(courseParticipant);
-		 }
 		 
 		 redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
 		 return "redirect:/enrollment/CourseDeclineForm";
