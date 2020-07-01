@@ -43,6 +43,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //0.01    | 06/30/2020 | WS) K.Freo      | Updated
 //0.01    | 06/30/2020 | WS) M.Lumontad  | Updated
 //0.01    | 07/01/2020 | WS) G.Cabiling  | Updated
+//0.01    | 07/01/2020 | WS) T.Oviedo    | Updated
 //=======================================================
 /**
  * <pre>
@@ -343,5 +344,19 @@ public class EnrollmentController {
 
         return "redirect:/enrollment";
     }
-
+    
+    /**
+     * Cancel Course Schedule
+     * @param id
+     * @param model
+     * @param redirectAttributes
+     * @return
+     */
+    @PostMapping("/schedules/{courseScheduleId}/cancel")
+	public String submitCourseEnrollmentCancelForm(Long id, Model model, RedirectAttributes redirectAttributes) {
+		//call enrollmentService.cancel using the given id
+		enrollmentService.cancel(id);
+		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
+		return "redirect:/schedule";
+	}
 }
