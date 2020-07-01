@@ -53,7 +53,7 @@ public class DashboardInstructorDaoImpl implements DashboardInstructorDao {
                 "CSD.SCHEDULED_START_DATETIME AS \"CSD.SCHEDULED_START_DATETIME\", " +
                 "CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " +
                 "V.NAME AS \"V.NAME\", "+
-                "E.ID AS \"E.ID AS\", " +
+                "E.ID AS \"E.ID\", " +
                 "CS.STATUS  AS \"CS.STATUS\" " +
                 "FROM COURSE_SCHEDULE CS " +
                 "INNER JOIN COURSE C " +
