@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +42,8 @@ import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
 //Version | Date       | Updated By                                                              | Content
 //--------+------------+---------------------------------------------------------+-----------------
 //0.01    | 06/23/2020 | WS) K.Abad, WS) M.Angara, WS) H.Francisco, WS) J.Iwarat, WS) R.Ramos    | New Creation
-//0.02    | 06/29/2020 | WS) J.Iwarat                                                            | New Creation
+//0.02    | 06/29/2020 | WS) J.Iwarat                                                            | Update
+//0.03    | 06/30/2020 | WS) J.Iwarat                                                            | Update
 //==================================================================================================
 /**
  * <pre>
@@ -49,7 +51,7 @@ import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
 * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.01
+ * @version 0.03
  * @author k.abad
  * @author m.angara
  * @author h.francisco
@@ -67,6 +69,7 @@ public class AttendanceController {
      * 
      * <pre>
      */
+    @Autowired
     private AttendanceService attendanceService;
 
     /*
@@ -76,8 +79,6 @@ public class AttendanceController {
      * <pre>
      */
     private static Logger logger = LoggerFactory.getLogger(AttendanceController.class);
-
-    FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     /**
      * <pre>
@@ -119,6 +120,7 @@ public class AttendanceController {
     @GetMapping("/schedules/{courseScheduleId}/participants")
     public String showCourseParticipantsForm(Long id, Model model,
             Set<CourseScheduleDetailForm> setCourseScheduleDetails) {
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ZonedDateTime toDateTime = ZonedDateTime.now();
         ZonedDateTime fromDateTime = ZonedDateTime.now().plusDays(5);
 
@@ -186,6 +188,7 @@ public class AttendanceController {
     @GetMapping("/participants")
     public String showChangeStatusParticipantsForm(@Valid ChangeStatusForm form, BindingResult bindingResult,
             Model model) {
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ZonedDateTime toDateTime = ZonedDateTime.now();
         ZonedDateTime fromDateTime = toDateTime.minusDays(5);
         ChangeStatusForm statusForm = new ChangeStatusForm();
@@ -287,6 +290,7 @@ public class AttendanceController {
      */
     @GetMapping("/generate/{courseScheduleDetailId}/present")
     public String showGenerateAttendanceForm(Long id, Model model) {
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ZonedDateTime toDate = ZonedDateTime.now();
         ZonedDateTime fromDate = ZonedDateTime.now().minusDays(5);
 
@@ -367,6 +371,7 @@ public class AttendanceController {
      */
     @GetMapping("/generate/{courseScheduleDetailId}/absent")
     public String showGenerateAbsentForm(Long id, Model model) {
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ZonedDateTime toDate = ZonedDateTime.now();
         ZonedDateTime fromDate = ZonedDateTime.now().minusDays(5);
 
@@ -485,8 +490,9 @@ public class AttendanceController {
         model.addAttribute("attend", form);
 
         CourseAttendance courseAttendance = new CourseAttendance.Builder(form.getId(), form.getCourseScheduleDetailId(),
-                form.getCourseName(), form.getInstructorName(), form.getVenueName(), form.getParticipantId(), null,
-                form.getScheduledStartDateTime(), form.getScheduledEndDateTime(), form.getDuration(), null).build();
+                form.getCourseName(), form.getInstructorName(), form.getVenueName(), form.getParticipantId(), "",
+                form.getScheduledStartDateTime(), form.getScheduledEndDateTime(), form.getDuration(),
+                form.getScheduledStartDateTime()).build();
 
         attendanceService.attend(courseAttendance);
 

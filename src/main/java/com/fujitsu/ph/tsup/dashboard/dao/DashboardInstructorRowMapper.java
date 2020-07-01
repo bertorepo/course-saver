@@ -38,12 +38,12 @@ public class DashboardInstructorRowMapper implements RowMapper<DashboardInstruct
     @Override
     public DashboardInstructorForm mapRow(ResultSet rs, int rowNum) throws SQLException {
         
-        String courseName = rs.getString("c.name");
-        ZonedDateTime startDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("csd.scheduled_start_datetime").toInstant(), ZoneId.of("Asia/Manila"));
-        ZonedDateTime endDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("csd.scheduled_end_datetime").toInstant(), ZoneId.of("Asia/Manila"));
-        String venueName = rs.getString("v.name");
-        Long employeeId = rs.getLong("e.id");
-        String status = rs.getString("cs.status");
+        String courseName = rs.getString("C.NAME");
+        ZonedDateTime startDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("CSD.SCHEDULED_START_DATETIME").toInstant(), ZoneId.of("Asia/Manila"));
+        ZonedDateTime endDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("CSD.SCHEDULED_END_DATETIME").toInstant(), ZoneId.of("Asia/Manila"));
+        String venueName = rs.getString("V.NAME");
+        Long employeeId = rs.getLong("E.ID");
+        String status = rs.getString("CS.STATUS");
 
         return new DashboardInstructorForm.Builder(courseName, startDateTime, endDateTime, venueName, employeeId, status).build();
     }
