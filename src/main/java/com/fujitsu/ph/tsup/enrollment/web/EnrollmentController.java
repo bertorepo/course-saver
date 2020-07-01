@@ -344,6 +344,7 @@ public class EnrollmentController {
 
         return "redirect:/enrollment";
     }
+    
     /**
      * Cancel Course Schedule
      * @param id
