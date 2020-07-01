@@ -49,10 +49,10 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
 		String venueName = rs.getString("VENUE_NAME");
 		ZonedDateTime registrationDate = ZonedDateTime.ofInstant(rs.getTimestamp("REGISTRATION_DATE").toInstant(),
 				ZoneId.of("UTC"));
-		String reason = rs.getString("ID");
+		String reason = rs.getString("REASON");
 		ZonedDateTime declineDate = ZonedDateTime.ofInstant(rs.getTimestamp("DECLINE_DATE").toInstant(),
 				ZoneId.of("UTC"));
-		Long participantId = rs.getLong("ID");
+		Long participantId = rs.getLong("PARTICIPANT_ID");
 
 		ZonedDateTime scheduledStartDateTime = ZonedDateTime
 				.ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.of("UTC"));

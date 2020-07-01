@@ -21,8 +21,8 @@
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	
-	<div class="container mt-5">
-		<form class="form-horizontal">
+	<div class="container mt-5" action="#" th:action="@{/viewCourseEnroll}" th:object="${courseScheduleListForm}" method="get">
+		<form class="form-horizontal" >
 			<h3><i class="fa fa-pencil-square-o"></i> Enroll for a training!</h3>
 			<hr>
 			<div class="card">
@@ -124,6 +124,17 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr th:each="CourseScheduleListForm: ${courseScheduleListForm}" >
+						<td th:text="${courseScheduleListForm.getCourseName}" />
+						<td th:text="${courseScheduleListForm.getInstructorName}" />
+						<td th:text="${courseScheduleListForm.scheduledStartDateTime}"/>
+						<td th:text="${courseScheduleListForm.scheduledStartDateTime + ' - ' + CourseScheduleListForm.scheduledEndDateTime}"/>
+						<td th:text="${courseScheduleListForm.getVenue}" />
+						<td th:text="${courseScheduleListForm.getMinRequried}" />
+						<td th:text="${courseScheduleListForm.getMaxAllowed}" />
+						<td th:text="${courseScheduleListForm.getTotalParticipants}" />
+					</tr>
+					<!--  	
 					<tr>
 						<td>ABC-123</td>
 						<td>SpringBoot Training</td>
@@ -134,56 +145,13 @@
 						<td>10</td>
 						<td>20</td>
 						<td>5</td>
-					</tr>
-					<tr>
-						<td>ABC-123</td>
-						<td>SpringBoot Training</td>
-						<td>Jane Doe</td>
-						<td>Jun 01</td>
-						<td>08:00-17:30</td>
-						<td>WebEx Meeting</td>
-						<td>10</td>
-						<td>20</td>
-						<td>5</td>
-					</tr>
-					<tr>
-						<td>ABC-123</td>
-						<td>SpringBoot Training</td>
-						<td>Jane Doe</td>
-						<td>Jun 01</td>
-						<td>08:00-17:30</td>
-						<td>WebEx Meeting</td>
-						<td>10</td>
-						<td>20</td>
-						<td>5</td>
-					</tr>
-					<tr>
-						<td>ABC-123</td>
-						<td>SpringBoot Training</td>
-						<td>Jane Doe</td>
-						<td>Jun 01</td>
-						<td>08:00-17:30</td>
-						<td>WebEx Meeting</td>
-						<td>10</td>
-						<td>20</td>
-						<td>5</td>
-					</tr>
-					<tr>
-						<td>ABC-123</td>
-						<td>SpringBoot Training</td>
-						<td>Jane Doe</td>
-						<td>Jun 01</td>
-						<td>08:00-17:30</td>
-						<td>WebEx Meeting</td>
-						<td>10</td>
-						<td>20</td>
-						<td>5</td>
-					</tr>
+					</tr> 
+					-->
 				</tbody>
 			</table>
 		</div>               
 		<!--Register Modal-->
-		<form class="form-horizontal">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/{courseourseScheduleId}/enroll}" th:object="${courseEnrollmentForm}" method="get">
 			<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -197,21 +165,21 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course ID:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="ABC-123">
+									<input type="text" class="form-control-plaintext" id="" th:value="${courseEnrollmentForm.getCourseScheduleId}">
 								</div>
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="SpringBoot Basics">
+									<input type="text" class="form-control-plaintext" id="" th:value="${courseEnrollmentForm.getCourseName}">
 								</div>
 								<label class="col-lg-3 col-form-label">Instructor:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="Jane Doe">
+									<input type="text" class="form-control-plaintext" id="" th:value="${courseEnrollmentForm.getInstructorName}">
 								</div>
 								<label class="col-lg-3 col-form-label">Course Date(s):</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="" value="June 1, 2020">
 								</div>
-								<label class="col-lg-3 col-form-label">Timeslot:</label>
+								<label class="col-lg-3 col-form-label">Time slot:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="" value="8:00 AM to 17:30 PM PHT">
 								</div>
@@ -270,21 +238,21 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course ID:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="ABC-123">
+									<input type="text" class="form-control-plaintext" id="" th:value="${courseEnrollmentForm.getCourseScheduleId}">
 								</div>
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="SpringBoot Basics">
+									<input type="text" class="form-control-plaintext" id="" th:value="${courseEnrollmentForm.getCourseName}">
 								</div>
 								<label class="col-lg-3 col-form-label">Instructor:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="Jane Doe">
+									<input type="text" class="form-control-plaintext" id="" th:value="${courseEnrollmentForm.getInstructorName}">
 								</div>
 								<label class="col-lg-3 col-form-label">Course Date(s):</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="" value="June 1, 2020">
 								</div>
-								<label class="col-lg-3 col-form-label">Timeslot:</label>
+								<label class="col-lg-3 col-form-label">Time slot:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="" value="8:00 AM to 17:30 PM PHT">
 								</div>

@@ -137,6 +137,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.NAME AS COURSE_NAME, " 
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "V.VENUE_NAME AS VENUE_NAME, "
                 + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
                 + "CNONPART.REASON AS REASON, "
                 + "CNONPART.DECLINE_DATE AS DECLINE_DATE, "
@@ -200,25 +201,19 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     }
 
     @Override
-    public void saveCourseNonParticipant(Long id) {
+    public void saveCourseNonParticipant(CourseParticipant courseParticipant) {
     	 String courseParticipantSql = "INSERT INTO COURSE_NON_PARTICIPANT"
 	                + "(ID,  COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE, REASON, DECLINE_DATE)"
 	                + "VALUES (:id,COURSE_SCHEDULE_ID, :PARTICIPANT_ID, :REGISTRATION_DATE, :REASON, :DECLINE_DATE  )";
 
-		
-		 Set<CourseParticipant> courseParticipant =  courseParticipant.getCourseParticipant();
-		 
-		 for (CourseParticipant coursenonParticipant : courseParticipant) {
 	        SqlParameterSource coursenonpartParameters = new MapSqlParameterSource()
-	        		.addValue("id", coursenonParticipant.getId())
-	                .addValue("COURSE_SCHEDULE_ID", coursenonParticipant.getCourseScheduleId())
-	                .addValue("PARTICIPANT_ID", coursenonParticipant.getParticipantId())
-	                .addValue("REGISTRATION_DATE", coursenonParticipant.getRegistrationDate())
-	                .addValue("REASON", coursenonParticipant.getReason())
-	                .addValue("DECLINE_DATE", coursenonParticipant.getDeclineDate());
+	        		.addValue("id", courseParticipant.getId())
+	                .addValue("COURSE_SCHEDULE_ID", courseParticipant.getCourseScheduleId())
+	                .addValue("PARTICIPANT_ID", courseParticipant.getParticipantId())
+	                .addValue("REGISTRATION_DATE", courseParticipant.getRegistrationDate())
+	                .addValue("REASON", courseParticipant.getReason())
+	                .addValue("DECLINE_DATE", courseParticipant.getDeclineDate());
 	        template.update(courseParticipantSql, coursenonpartParameters);
-
-		 }
     }
 
     @Override
