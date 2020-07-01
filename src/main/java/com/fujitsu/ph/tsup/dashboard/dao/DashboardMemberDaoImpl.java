@@ -48,36 +48,36 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
      */
     @Override
     public Set<DashboardMemberForm> findCourses(Long employeeId) {
-        String sql = "SELECT c.name AS \"c.name\"," + 
-                "   CONCAT(e.last_name , ', ', e.first_name) AS \"full_name\", " + 
-                "    csd.scheduled_start_datetime AS \"csd.scheduled_start_datetime\"," + 
-                "    csd.scheduled_end_datetime AS \"csd.scheduled_end_datetime\", " + 
-                "    v.name AS \"v.name\", " + 
-                "     e.id AS \"e.id\", " +
-                "    cs.status AS \"cs.status\"" +
-                " FROM course_schedule cs" + 
-                " LEFT JOIN employee e ON cs.instructor_id = e.id" + 
-                " LEFT JOIN course_schedule_detail csd ON cs.id = csd.course_schedule_id" + 
-                " LEFT JOIN venue v ON cs.venue_id=v.id" + 
-                " LEFT JOIN course c ON cs.course_id = c.id" + 
-                " LEFT JOIN course_participant cp ON cs.id = cp.course_schedule_id" + 
-                " WHERE c.name NOT IN (SELECT c.name " + 
-                "                      FROM course_schedule cs" + 
-                "                      INNER JOIN course_participant cp" + 
-                "                      ON cs.id =cp.course_schedule_id" + 
-                "                      INNER JOIN course c" + 
-                "                      ON cs.course_id = c.id" + 
-                "                      WHERE cp.participant_id = :employeeId AND " +
-                "                      cs.status = :status)" + 
+        String sql = "SELECT C.NAME AS \"C.NAME\", " + 
+                "   CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME, " + 
+                "    CSD.SCHEDULED_START_DATETIME AS \"CSD.SCHEDULED_START_DATETIME\", " + 
+                "    CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " + 
+                "    V.NAME AS \"V.NAME\", " + 
+                "     E.ID AS \"E.ID\", " +
+                "    CS.STATUS AS \"CS.STATUS\" " +
+                " FROM COURSE_SCHEDULE CS " + 
+                " LEFT JOIN EMPLOYEE E ON CS.INSTRUCTOR_ID = E.ID " + 
+                " LEFT JOIN COURSE_SCHEDULE_DETAIL CSD ON CS.ID = CSD.COURSE_SCHEDULE_ID " + 
+                " LEFT JOIN VENUE V ON CS.VENUE_ID=V.ID " + 
+                " LEFT JOIN COURSE C ON CS.COURSE_ID = C.ID " + 
+                " LEFT JOIN COURSE_PARTICIPANT CP ON CS.ID = CP.COURSE_SCHEDULE_ID " + 
+                " WHERE C.NAME NOT IN (SELECT C.NAME " + 
+                "                      FROM COURSE_SCHEDULE CS " + 
+                "                      INNER JOIN COURSE_PARTICIPANT CP " + 
+                "                      ON CS.ID =CP.COURSE_SCHEDULE_ID " + 
+                "                      INNER JOIN COURSE C " + 
+                "                      ON CS.COURSE_ID = C.ID " + 
+                "                      WHERE CP.PARTICIPANT_ID = :employeeId AND " +
+                "                      CS.STATUS = :status)" + 
                 "    GROUP BY" + 
-                "    c.name, " + 
-                "    full_name, " + 
-                "    csd.scheduled_start_datetime, " + 
-                "    csd.scheduled_end_datetime, " + 
-                "    v.name," + 
-                "    e.id, " +
-                "    cs.status" +
-                "    ORDER BY csd.scheduled_start_datetime desc" +
+                "    C.NAME, " + 
+                "    FULL_NAME, " + 
+                "    CSD.SCHEDULED_START_DATETIME, " + 
+                "    CSD.SCHEDULED_END_DATETIME, " + 
+                "    V.NAME, " + 
+                "    E.ID, " +
+                "    CS.STATUS " +
+                "    ORDER BY CSD.SCHEDULED_START_DATETIME desc " +
                 "    LIMIT 5 ";
  
         SqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -99,14 +99,14 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
      */
     @Override
     public int getTrainingsToday(Long employeeId) {
-        String sql = "SELECT COUNT(course.name) AS count " + 
-                "FROM course_schedule " + 
-                "INNER JOIN course_participant ON course_schedule.id = course_participant.course_schedule_id " + 
-                "INNER JOIN course ON course_schedule.course_id = course.id " + 
-                "INNER JOIN course_schedule_detail ON course_schedule.id = course_schedule_detail.course_schedule_id " + 
-                "WHERE DATE(course_schedule_detail.scheduled_start_datetime) = :startDateTime " + 
-                "AND course_participant.participant_id = :employeeId " + 
-                "AND course_schedule.status = :status";
+        String sql = "SELECT COUNT(COURSE.NAME) AS COUNT " + 
+                "FROM COURSE_SCHEDULE " + 
+                "INNER JOIN COURSE_PARTICIPANT ON COURSE_SCHEDULE.ID = COURSE_PARTICIPANT.COURSE_SCHEDULE_ID " + 
+                "INNER JOIN COURSE ON COURSE_SCHEDULE.COURSE_ID = COURSE.ID " + 
+                "INNER JOIN COURSE_SCHEDULE_DETAIL ON COURSE_SCHEDULE.ID = COURSE_SCHEDULE_DETAIL.COURSE_SCHEDULE_ID " + 
+                "WHERE DATE(COURSE_SCHEDULE_DETAIL.SCHEDULED_START_DATETIME) = :startDateTime " + 
+                "AND COURSE_PARTICIPANT.PARTICIPANT_ID = :employeeId " + 
+                "AND COURSE_SCHEDULE.STATUS = :status";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("startDateTime", LocalDate.now())
                 .addValue("employeeId", employeeId)
@@ -124,13 +124,13 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
      */
     @Override
     public int getActiveCourses(Long employeeId) {
-        String sql = "SELECT COUNT(course.name) AS count " + 
-                "FROM course_schedule " + 
-                "INNER JOIN course_participant ON course_schedule.id = course_participant.course_schedule_id " + 
-                "INNER JOIN course ON course_schedule.course_id = course.id " + 
-                "INNER JOIN course_schedule_detail ON course_schedule.id = course_schedule_detail.course_schedule_id " + 
-                "WHERE course_participant.participant_id = :employeeId " + 
-                "AND course_schedule.status = :status ";
+        String sql = "SELECT COUNT(COURSE.NAME) AS COUNT " + 
+                "FROM COURSE_SCHEDULE " + 
+                "INNER JOIN COURSE_PARTICIPANT ON COURSE_SCHEDULE.ID = COURSE_PARTICIPANT.COURSE_SCHEDULE_ID " + 
+                "INNER JOIN COURSE ON COURSE_SCHEDULE.COURSE_ID = COURSE.ID " + 
+                "INNER JOIN COURSE_SCHEDULE_DETAIL ON COURSE_SCHEDULE.ID = COURSE_SCHEDULE_DETAIL.COURSE_SCHEDULE_ID " + 
+                "WHERE COURSE_PARTICIPANT.PARTICIPANT_ID = :employeeId " + 
+                "AND COURSE_SCHEDULE.STATUS = :status ";
         
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("employeeId", employeeId)

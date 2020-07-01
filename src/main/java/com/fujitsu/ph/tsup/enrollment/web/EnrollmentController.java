@@ -42,6 +42,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //0.01    | 06/29/2020 | WS) G.Cabiling  | Updated
 //0.01    | 06/30/2020 | WS) K.Freo      | Updated
 //0.01    | 06/30/2020 | WS) M.Lumontad  | Updated
+//0.01    | 07/01/2020 | WS) G.Cabiling  | Updated
 //=======================================================
 /**
  * <pre>
@@ -53,7 +54,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author K.Freo
  */
 @Controller
-@RequestMapping("/Enrollment")
+@RequestMapping("/enrollment")
 public class EnrollmentController {
     private static Logger logger = LoggerFactory.getLogger(EnrollmentController.class);
 
