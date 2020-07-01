@@ -11,6 +11,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //--------+------------+-----------------------+--------------------------------------------------
 //0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
 //0.01    | 06/29/2020 | WS) G.Cabiling        | Updated
+//0.02    | 06/30/2020 | WS) K.Freo            | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -111,7 +112,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                  .addValue(" venueName", courseParticipant.getVenueName())
                  .addValue(" participantId", courseParticipant.getParticipantId())
                  .addValue(" participantName", courseParticipant.getParticipantName())
-                 .addValue(" courseScheduleDetails", courseParticipant.getCourseScheduleDetails())
+                 .addValue(" courseScheduleDetail", courseParticipant.getCourseScheduleDetail())
                  .addValue(" registrationDate", courseParticipant.getRegistrationDate())
                  .addValue(" reason", courseParticipant.getReason())
                  .addValue(" declineDate", courseParticipant.getDeclineDate());
@@ -176,8 +177,10 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     
     /**
      * <pre>
-     *Finds the participant enrolled by id
-     *findCourseParticipantById
+     *
+     *FindCourseParticipantById
+     *
+     *@author k.freo
      * <pre>
      */
     
@@ -202,6 +205,15 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 		template.update(sql, namedParameters);
     }
 
+    
+    /**
+     * <pre>
+     *
+     *saveCourseNonParticipant
+     *
+     *@author k.freo
+     * <pre>
+     */
     @Override
     public void saveCourseNonParticipant(CourseParticipant courseParticipant) {
     	 String courseParticipantSql = "INSERT INTO COURSE_NON_PARTICIPANT"
