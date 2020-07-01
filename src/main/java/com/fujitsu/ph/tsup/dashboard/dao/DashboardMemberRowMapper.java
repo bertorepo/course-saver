@@ -40,7 +40,7 @@ public class DashboardMemberRowMapper implements RowMapper<DashboardMemberForm> 
         String courseName = rs.getString("C.NAME");
         String instructorName = rs.getString("FULL_NAME");
         ZonedDateTime startDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("CSD.SCHEDULED_START_DATETIME").toInstant(), ZoneId.of("Asia/Manila"));
-        ZonedDateTime endDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("CSD.SCHEDULED_START_DATETIME").toInstant(), ZoneId.of("Asia/Manila"));
+        ZonedDateTime endDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("CSD.SCHEDULED_END_DATETIME").toInstant(), ZoneId.of("Asia/Manila"));
         String venueName = rs.getString("V.NAME");
         Long employeeId = rs.getLong("E.ID");
         String status = rs.getString("CS.STATUS");

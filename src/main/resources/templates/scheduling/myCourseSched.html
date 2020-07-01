@@ -22,7 +22,7 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal">
+		<form class="form-horizontal" action="#" th:action="@{/enrollment/mySchedules}" th:object="${myCourseSched}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
 			<hr>
 			<div class="card">
@@ -30,11 +30,11 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
+							<input type="text" name="fromDateTime" th:field="*{fromDateTime}"/>
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
+							<input type="text" name="toDateTime" th:field="*{toDateTime}"/>
 						</div>
 					</div>
 					<div class="float-right">
@@ -85,41 +85,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
+					  <tr th:each="instructorCourseSchedule : *{scheduleView}">
+                        <td th:text="${instructorCourseSchedule.getCourseName()}"></td>
+                        <td th:text="${instructorCourseSchedule.getIntstructorName()}"></td>
+                        <td th:text="${instructorCourseSchedule.getScheduledStartDateTime()}"></td>
+                        <td th:text="${instructorCourseSchedule.getScheduledEndDateTime()}"></td>
+                        <td th:text="${instructorCourseSchedule.getDuration()}"></td>
+                    </tr>
 				</tbody>
 			</table>
 		</div>    	
@@ -137,3 +109,6 @@
 </body>
 
 </html>
+
+
+ 
