@@ -188,7 +188,7 @@ public class EnrollmentController {
             courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
             courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
 
-            Set<CourseScheduleDetail> courseSchedDetSet = enrolledCourse.getCourseScheduleDetails();
+            Set<CourseScheduleDetail> courseSchedDetSet = enrolledCourse.getCourseScheduleDetail();
             Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
 
             for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
@@ -254,7 +254,7 @@ public class EnrollmentController {
     @PostMapping("/decline")
     public String submitCourseDeclineForm(@Valid @ModelAttribute("enrollmentDecline") CourseDeclineForm form,
             BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
-
+    	
         logger.debug("courseDeclineForm:{}", form);
         logger.debug("BindingResult:{}", bindingresult);
 
@@ -262,7 +262,23 @@ public class EnrollmentController {
             return "enrollment/courseDeclineForm";
         }
 
-        logger.debug("Model:{}", model);
+        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+        
+        courseScheduleDetailForm.setId(courseScheduleDetailForm.getId());
+        courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetailForm.getScheduledStartDateTime());
+        courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetailForm.getScheduledEndDateTime());
+        
+        
+        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetailsForm();
+        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+        
+        for(CourseScheduleDetailForm courseSchedsDetail : courseScheduleDetailFormSet) {
+        CourseScheduleDetail courseScheduleDetail= new CourseScheduleDetail.Builder(courseSchedsDetail.getId(),
+        		courseSchedsDetail.getScheduledStartDateTime(), courseSchedsDetail.getScheduledEndDateTime())
+        					.build();
+        courseScheduleDetailSet.add(courseScheduleDetail);
+        	
+        }
 
         CourseParticipant courseParticipant = new CourseParticipant.Builder(form.getId()).build();
 
@@ -277,11 +293,13 @@ public class EnrollmentController {
         courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
         courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
         courseDeclineForm.setReason(courseParticipant.getReason());
-
+        
         redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
         return "redirect:/enrollment/CourseDeclineForm";
     }
 
+    
+    
     @GetMapping("/schedules/{courseScheduleId}/enroll")
     public String showCourseEnrollmentForm(Long id, Model model) {
         logger.debug("Model:{}", model);
