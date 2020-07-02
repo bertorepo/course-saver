@@ -37,10 +37,6 @@ public class EmployeeAuth {
 			this.authzSet = authzSet;
 		}
 
-		public Builder(String username2, String role) {
-			// TODO Auto-generated constructor stub
-		}
-
 		/**
 		 * Validates authorization
 		 * 
@@ -82,19 +78,19 @@ public class EmployeeAuth {
 
 	public Long getId() {
 		if (id == null || id.toString().isEmpty() || id == 0) {
-			throw new IllegalArgumentException("Username should not be empty");
+			throw new IllegalArgumentException("Id should not be empty");
 		}
 		return id;
 	}
 
-	public Set<String> getRole() {
+	public Set<String> getAuthzSet() {
 		if (authzSet == null || authzSet.isEmpty() || authzSet.size() == 0) {
 			throw new IllegalArgumentException("Authorization should not be empty");
 		}
 		return authzSet;
 	}
 
-	public String getusername() {
+	public String getUsername() {
 		if (username == null || username.isEmpty() || username.length() == 0) {
 			throw new IllegalArgumentException("Username should not be empty");
 		}

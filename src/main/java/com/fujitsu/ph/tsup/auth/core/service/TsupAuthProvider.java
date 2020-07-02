@@ -18,24 +18,24 @@ import com.fujitsu.ph.auth.provider.FpiLdapAuthenticationProvider;
 @Component
 public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
 	private Logger logger = LoggerFactory.getLogger(TsupAuthProvider.class);
-	
-	/* Uncomment this once the Class for AuthorizationService is created */ 
-	//@Autowired
-	//private AuthorizationService authorizationService;
-	
+
+	/* Uncomment this once the Class for AuthorizationService is created */
+//	@Autowired
+//	private AuthorizationService authorizationService;
+
 	@Override
 	protected FpiUser getUser(String username) {
 		FpiUser fpiUser = new FpiUser();
-		
+
 		fpiUser.setId(1L);
 		fpiUser.setUserName(username);
-		
-		/* Uncomment this once the Class for AuthorizationService is created */ 
-		//List<String> roles = authorizationService.findByUsername(username);
-		//fpiUser.setRoles(roles);
-		
+
+		/* Uncomment this once the Class for AuthorizationService is created */
+//		List<String> roles = authorizationService.findByUsername(username);
+//		fpiUser.setRoles(roles);
+
 		logger.debug("User:{}", fpiUser);
-		
+
 		return fpiUser;
 	}
 
