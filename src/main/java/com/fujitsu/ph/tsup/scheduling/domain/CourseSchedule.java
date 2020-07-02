@@ -491,7 +491,6 @@ public class CourseSchedule {
                 throw new IllegalArgumentException("Instructor Name should not be empty");
         }
     }
-    
         /**
          * <pre>
          * Validate the instructor first name based on the condition below. 
