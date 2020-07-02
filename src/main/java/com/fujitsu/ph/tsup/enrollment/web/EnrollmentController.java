@@ -84,14 +84,14 @@ public class EnrollmentController {
      */
     @GetMapping("/viewCourseEnroll")
     public String viewAllCourseSchedule(
-            @Valid @ModelAttribute("viewSchedule") CourseScheduleListForm courseScheduleListForm, BindingResult result,
+            @Valid @ModelAttribute("viewCourseEnroll") CourseScheduleListForm courseScheduleListForm, BindingResult result,
             Model model) {
         logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", result);
 
         if (result.hasErrors()) {
             model.addAttribute("errorMessage", result.getAllErrors());
-            return "enrollment/courseScheduleListForm";
+            return "enrollment/viewCourseEnroll";
         }
 
         ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
@@ -106,7 +106,7 @@ public class EnrollmentController {
         if (difference > 0) {
             logger.debug("CourseScheduleListForm:{}", courseScheduleListForm);
             model.addAttribute("CourseScheduleListForm", courseScheduleListForm);
-            return "enrollment/courseSCheduleListForm";
+            return "enrollment/viewCourseEnroll";
         }
 
         Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
@@ -134,7 +134,8 @@ public class EnrollmentController {
             courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
             courseScheduleFormSet.add(courseScheduleForm);
         }
-        return "view/courseScheduleListForm";
+        model.addAttribute("viewCourseEnroll", courseScheduleListForm);
+        return "enrollment/viewCourseEnroll";
     }
 
     /**
