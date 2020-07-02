@@ -54,7 +54,6 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         String venueName = cs.getString("VENUE_NAME");
         int minRequired = cs.getInt("MIN_REQUIRED");
         int maxAllowed = cs.getInt("MAX_ALLOWED");
-        int totalParticipants = cs.getInt("TOTAL_PARTICIPANTS");
         char status = cs.getString("STATUS").charAt(0);
         
         ZonedDateTime scheduledStartDateTime = 
@@ -73,8 +72,7 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         courseScheduleDetailSet.add(courseScheduleDetail);
        
         CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
-                instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed, 
-                totalParticipants, status)
+                instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed, status)
                 .addDetail(courseScheduleDetailSet)
                 .build();
         
