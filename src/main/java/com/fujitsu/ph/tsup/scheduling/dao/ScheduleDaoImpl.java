@@ -82,9 +82,6 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "V.NAME AS VENUE_NAME, "
                 + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED, " 
                 + "CSCHED.MAX_REQUIRED AS MAX_REQUIRED, "
-                + "(SELECT COUNT(CPART.PARTICIPANT_ID)" 
-                + " FROM COURSE_PARTICIPANT" 
-                + " WHERE CPART.COURSE_SCHEDULE_ID = CSCHED.ID) AS TOTAL_PARTICIPANTS, " 
                 + "CSCHED.STATUS AS STATUS "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME "
                 + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
@@ -172,15 +169,16 @@ public class ScheduleDaoImpl implements ScheduleDao {
     @Override
     public void saveCourseSchedule(CourseSchedule courseSchedule) {
         String courseScheduleSql = "INSERT INTO COURSE_SCHEDULE"
-                + "(ID, COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "
+                + "(COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "
                 + "VALUES (:id, :course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
 
-        SqlParameterSource courseSchedParameters = new MapSqlParameterSource().addValue("id", courseSchedule.getId())
+        SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
                 .addValue("course_id", courseSchedule.getCourseId())
                 .addValue("instructor_id", courseSchedule.getInstructorId())
                 .addValue("venue_id", courseSchedule.getVenueId())
                 .addValue("min_required", courseSchedule.getMinRequired())
-                .addValue("max_allowed", courseSchedule.getMaxAllowed()).addValue("status", courseSchedule.getStatus());
+                .addValue("max_allowed", courseSchedule.getMaxAllowed())
+                .addValue("status", courseSchedule.getStatus());
         template.update(courseScheduleSql, courseSchedParameters);
 
         String courseScheduleDetailSql = "INSERT INTO COURSE_SCHEDULE_DETAIL"
