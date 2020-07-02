@@ -50,7 +50,7 @@ public class CourseParticipant {
 	private String participantName;
 
 	/** courseScheduleDetails **/
-	private Set<CourseScheduleDetail> courseScheduleDetails;
+	private Set<CourseScheduleDetail> courseScheduleDetail;
 
 	/** registrationDate **/
 	private ZonedDateTime registrationDate;
@@ -73,7 +73,7 @@ public class CourseParticipant {
 		this.venueName = builder.venueName;
 		this.participantId = builder.participantId;
 		this.participantName = builder.participantName;
-		this.courseScheduleDetails = builder.courseScheduleDetails;
+		this.courseScheduleDetail = builder.courseScheduleDetail;
 		this.registrationDate = builder.registrationDate;
 		this.reason = builder.reason;
 		this.declineDate = builder.declineDate;
@@ -108,8 +108,8 @@ public class CourseParticipant {
 		return participantName;
 	}
 
-	public Set<CourseScheduleDetail> getCourseScheduleDetails() {
-		return courseScheduleDetails;
+	public Set<CourseScheduleDetail> getCourseScheduleDetail() {
+		return courseScheduleDetail;
 	}
 
 	public ZonedDateTime getRegistrationDate() {
@@ -159,7 +159,7 @@ public class CourseParticipant {
 		private String participantName;
 
 		/** The course schedule detail **/
-		private Set<CourseScheduleDetail> courseScheduleDetails;
+		private Set<CourseScheduleDetail> courseScheduleDetail;
 
 		/** Registration Date **/
 		private ZonedDateTime registrationDate;
@@ -261,7 +261,7 @@ public class CourseParticipant {
 		public CourseParticipant addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
 
 			validatecourseScheduleDetail(courseScheduleDetail);
-			this.courseScheduleDetails = courseScheduleDetail;
+			this.courseScheduleDetail = courseScheduleDetail;
 
 			CourseParticipant builder = new CourseParticipant.Builder(id).build();
 

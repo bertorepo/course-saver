@@ -22,7 +22,7 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal">
+		<form class="form-horizontal"action="#" th:action="@{/enrollment/decline}" th:object="${enrollmentdecline}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
 			<hr>
 			<div class="card">
@@ -30,7 +30,7 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
+							<input type="text" name="fromDateTime" th:field="*{fromDateTime}"/ >
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
@@ -38,7 +38,7 @@
 						</div>
 					</div>
 					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
+						<input type="text"  name="toDateTime" th:field="*{toDateTime}"/>
 					</div>
 				</div>
 			</div>
@@ -105,7 +105,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+					<tr th:each=>
 						<td>Understanding UI</td>
 						<td>Genevieve De Guzman</td>
 						<td>2020/01/01 08:00:00</td>

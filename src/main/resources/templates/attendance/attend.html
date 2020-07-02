@@ -44,12 +44,16 @@
 						</div>
 						<label class="col-lg-3 col-form-label">Course Date(s):</label>
 						<div class="col-lg-9">
-							<input type="text" name="courseDate" th:value="*{courseAttendance.getScheduleStartDateTime}"/>
+							<input type="text" name="scheduleStartDateTime" th:value="*{courseAttendance.getScheduleStartDateTime}"/>
 						</div>
 						<label class="col-lg-3 col-form-label">Timeslot:</label>
 						<div class="col-lg-9">
-							<input type="text" name="timeSlot" th:value="*{courseAttendance.getScheduleStartDateTime}"/>
+							<input type="text" name="duration" th:value="*{courseAttendance.getDuration}"/>
 						</div>
+						<label class="col-lg-3 col-form-label">Venue:</label>
+						<div class="col-lg-9">
+							<input type="text" name="venueName" th:value="*{courseAttendance.getVenueName}"/>
+						</div> 
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-3 col-form-label">Course Description:</label>
