@@ -43,7 +43,7 @@ public class InstructorRowMapper implements RowMapper<InstructorForm>{
 
 		Long instructorId = rs.getLong("ID");
 		String instructorLastName = rs.getString("LAST_NAME");
-		String instructorFirstName = rs.getNString("FIRST_NAME");
+		String instructorFirstName = rs.getString("FIRST_NAME");
 		
 		instructorForm.setId(instructorId);
 		instructorForm.setName(instructorLastName + "," + instructorFirstName);

@@ -169,10 +169,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
     @Override
     public void saveCourseSchedule(CourseSchedule courseSchedule) {
         String courseScheduleSql = "INSERT INTO COURSE_SCHEDULE"
-                + "(COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "
-                + "VALUES (:id, :course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
+                + "(ID,COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "
+                + "VALUES (:id,:course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
 
         SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
+        		.addValue("id", courseSchedule.getId())
                 .addValue("course_id", courseSchedule.getCourseId())
                 .addValue("instructor_id", courseSchedule.getInstructorId())
                 .addValue("venue_id", courseSchedule.getVenueId())

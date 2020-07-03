@@ -298,7 +298,7 @@ public class CourseSchedule {
         validateMinRequired(minRequired);
         validateCourseScheduleDetail(courseScheduleDetail);
         
-        this.courseId = id;
+        this.id = id;
         this.courseId = courseId;
         this.instructorId = instructorId;
         this.venueId = venueId;
@@ -341,7 +341,7 @@ public class CourseSchedule {
         validateMaxAllowed(maxAllowed);
         validateStatus(status);
         
-        this.courseId = id;
+        this.id = id;
         this.courseId = courseId;
         this.courseName = courseName;
         this.instructorId = instructorId;
