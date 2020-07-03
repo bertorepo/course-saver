@@ -49,7 +49,7 @@ class FindCourseParticipantByCourseScheduleIdAndParticipantId {
             return new EnrollmentDaoImpl();
         }
     }
-
+  //Test
     @Test
     void findCourseParticipantByCourseScheduleIdAndParticipantId() {
         Long courseScheduleId = 1L;

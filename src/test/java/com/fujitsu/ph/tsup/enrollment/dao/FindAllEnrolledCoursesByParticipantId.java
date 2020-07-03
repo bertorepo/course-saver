@@ -40,21 +40,23 @@ class FindAllEnrolledCoursesByParticipantId {
 
     @Autowired
     private EnrollmentDao enrollmentDao;
-    
+
     @TestConfiguration
     static class TestContextConfiguration {
-        
+
         @Bean
         public EnrollmentDao enrollmentDao() {
             return new EnrollmentDaoImpl();
         }
     }
 
+    //Test
     @Test
     void findAllEnrolledCoursesByParticipantId() {
         Long courseScheduleId = 1L;
         Long courseParticipantId = 0020L;
-        CourseParticipant courseIdandParticipantId = enrollmentDao.findCourseParticipantByCourseScheduleIdAndParticipantId(courseScheduleId, courseParticipantId);
+        CourseParticipant courseIdandParticipantId = enrollmentDao
+                .findCourseParticipantByCourseScheduleIdAndParticipantId(courseScheduleId, courseParticipantId);
         assertNotNull(courseIdandParticipantId);
     }
 

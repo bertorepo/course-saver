@@ -54,7 +54,7 @@ class FindAllEnrolledCoursesByParticipantId {
 
     @MockBean
     EnrollmentDao enrollmentDao;
-
+  //Test
     @Test
     void findCourseEnrolledParticipantById() {
         CourseParticipant result = findEnrolledCourseByParticipantId();
