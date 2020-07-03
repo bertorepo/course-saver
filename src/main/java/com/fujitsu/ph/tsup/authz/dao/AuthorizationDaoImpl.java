@@ -15,8 +15,6 @@ import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
  *
  */
 public class AuthorizationDaoImpl implements AuthorizationDao {
-//	@Autowired
-//	private EmployeeAuthRepository employeeAuthRepository;
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
