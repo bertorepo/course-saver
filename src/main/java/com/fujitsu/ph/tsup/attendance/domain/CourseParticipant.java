@@ -15,6 +15,7 @@ import java.time.ZonedDateTime;
 // 0.02   | 06/25/2020 | WS) M.Angara  | Updated
 // 0.03   | 06/26/2020 | WS) M.Angara  | Updated
 // 0.04   | 06/26/2020 | WS) R.Ramos   | Updated
+// 0.05   | 07/03/2020 | WS) R.Ramos   | Updated
 //=========================================================================================
 /**
  * <pre>
@@ -145,6 +146,16 @@ public class CourseParticipant {
     public String getEmployeeNumber() {
         return employeeNumber;
     }
+    
+	@Override
+	public String toString() {
+		return "CourseParticipant [id = " + id + ", courseScheduleId = " + courseScheduleId
+				+ ", courseName = " + courseName + ", instructorName = " + instructorName + ", venueName = " + venueName
+				+ ", participantId = " + participantId + ", participantName = " + participantName
+				+ ", scheduledStartDateTime = " + scheduledStartDateTime + ", scheduledEndDateTime = "
+				+ scheduledEndDateTime + ", duration = " + duration + ", registrationDate = " + registrationDate
+				+ ", email = " + email + ", employeeNumber = " + employeeNumber + "]";
+	}
 
     /**
      * <pre>
@@ -234,7 +245,8 @@ public class CourseParticipant {
             validateVenueName(venueName);
             validateParticipantName(participantName);
             validateScheduledStartDateTime(scheduledStartDateTime);
-            validateScheduledEndDateTime(scheduledEndDateTime);
+            validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
+            
 
             this.id = id;
             this.courseScheduleId = courseScheduleId;
@@ -399,7 +411,7 @@ public class CourseParticipant {
          * @param scheduledEndDateTime
          */
 
-        private void validateScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
+        private void validateScheduledEndDateTime(ZonedDateTime scheduledEndDateTime, ZonedDateTime scheduledStartDateTime) {
             if (scheduledEndDateTime == null) {
                 throw new IllegalArgumentException("Scheduled end date should not be empty");
             }

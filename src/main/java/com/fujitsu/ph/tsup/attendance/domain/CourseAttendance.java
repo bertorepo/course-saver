@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/22/2020 |  WS) R. Ramos   | New Creation
+//0.02 | 07/03/2020 |  WS) R. Ramos   | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -292,8 +293,7 @@ public class CourseAttendance {
             validateVenueName(venueName);
             validateParticipantName(participantName);
             validateScheduledStartDateTime(scheduledStartDateTime);
-            validateScheduledEndDateTime(scheduledEndDateTime);
-            validateScheduledEndDateTime(scheduledEndDateTime);
+            validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
 
             this.id = id;
             this.courseScheduleDetailId = courseScheduleDetailId;
@@ -341,8 +341,7 @@ public class CourseAttendance {
             validateVenueName(venueName);
             validateParticipantName(participantName);
             validateScheduledStartDateTime(scheduledStartDateTime);
-            validateScheduledEndDateTime(scheduledEndDateTime);
-            validateScheduledEndDateTime(scheduledEndDateTime);
+            validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
 
             this.id = id;
             this.courseScheduleDetailId = courseScheduleDetailId;
@@ -597,12 +596,12 @@ public class CourseAttendance {
          * @param scheduledEndDateTime
          */
 
-        private void validateScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
+        private void validateScheduledEndDateTime(ZonedDateTime scheduledEndDateTime, ZonedDateTime scheduledStartDateTime) {
             if (scheduledEndDateTime == null) {
                 throw new IllegalArgumentException("Scheduled end date should not be empty");
 
             } 
-            if (scheduledEndDateTime.isBefore(scheduledStartDateTime)) {
+            if (scheduledEndDateTime.isAfter(scheduledStartDateTime)) {
                 throw new IllegalArgumentException(
                         "Scheduled end date and time should be greater than or equal to Scheduled start date and time");
             }
