@@ -6,6 +6,9 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 //Version | Date       | Updated By                                              | Content
 //--------+------------+---------------------------------------------------------+-----------------
 //0.01    | 06/23/2020 | WS) K.Abad, WS) M.Angara, WS) J.Iwarat, WS) R.Ramos     | New Creation
+//0.02    | 07/03/2020 | WS) K.abad, WS) R.Ramos                                 | Update
 //==================================================================================================
 /**
  * <pre>
@@ -29,7 +33,7 @@ import org.springframework.stereotype.Service;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author k.abad
  * @author m.angara
  * @author j.iwarat
@@ -112,23 +116,25 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public Set<CourseAttendance> findCourseAttendanceByCourseScheduleDetailId(Long id) {
         Set<CourseAttendance> signedUp = attendanceDao.findCourseScheduleDetailParticipantsById(id);
-        Set<CourseAttendance> signedUpTwo = attendanceDao.findCourseScheduleDetailParticipantsById(id);
         Set<CourseAttendance> loggedIn = attendanceDao.findCourseAttendanceByCourseScheduleDetailId(id);
         try {
-            if (signedUp == null || signedUp.isEmpty()) {
-                if (loggedIn == null || loggedIn.isEmpty()) {
-                    throw new IllegalArgumentException("Employee not found.");
-                }
+            Map<Long, CourseAttendance> signUpAndLoggedIn = new HashMap<>();
+            
+            for (CourseAttendance p : signedUp) {
+                   signUpAndLoggedIn.put(p.getParticipantId(), p);
             }
-            if (signedUp.equals(signedUpTwo)) {
-                throw new IllegalArgumentException("Duplicate value found.");
+            
+            for (CourseAttendance l : loggedIn) {
+                   if (!signUpAndLoggedIn.containsKey(l.getParticipantId())) {
+                          signUpAndLoggedIn.put(l.getParticipantId(), l);
+                   }
             }
-            return loggedIn;
-
-        } catch (DataAccessException e) {
-            throw new IllegalArgumentException("No record found.", e);
-        }
-    }
+            
+            return new HashSet<>(signUpAndLoggedIn.values());
+       } catch (DataAccessException e) {
+           throw new IllegalArgumentException("No record found.", e);
+       }
+   }
 
     /**
      * <pre>
@@ -168,15 +174,20 @@ public class AttendanceServiceImpl implements AttendanceService {
      */
     @Override
     public Set<CourseAttendance> findCourseAbsentParticipantByCourseScheduleDetailId(Long id) {
-        try {
+        try { 
+            Map<Long, CourseAttendance> absentMap = new HashMap<>();       
             Set<CourseAttendance> signedUp = attendanceDao.findCourseScheduleDetailParticipantsById(id);
             Set<CourseAttendance> loggedIn = attendanceDao.findCourseAttendanceByCourseScheduleDetailId(id);
 
-            if (signedUp.isEmpty() || signedUp == null || loggedIn.isEmpty() || loggedIn == null) {
-                throw new IllegalArgumentException("Employee not found.");
+            for (CourseAttendance a : signedUp) {
+                absentMap.put(a.getParticipantId(), a);      
             }
-            signedUp.removeAll(loggedIn);
-            return signedUp;
+           
+            for (CourseAttendance l : loggedIn) {
+               absentMap.remove(l.getParticipantId());    
+            }
+            Set<CourseAttendance> valueSet = new HashSet<>(absentMap.values());
+            return valueSet;
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("No record found.", e);
         }
