@@ -15,7 +15,7 @@ public class EmployeeAuth {
 	private Long id;
 	private String username;
 	private Set<String> authzSet;
-	
+
 	protected EmployeeAuth() {
 	}
 
@@ -25,9 +25,10 @@ public class EmployeeAuth {
 		private Set<String> authzSet;
 
 		/**
-		 * Creates a new instance of Builder for creating an employee auth. 
-		 * It validates and sets the argument into the Builder instance variables. 
-		 * This method is used for creating an employee auth.
+		 * Creates a new instance of Builder for creating an employee auth. It validates
+		 * and sets the argument into the Builder instance variables. This method is
+		 * used for creating an employee auth.
+		 * 
 		 * @param username
 		 * @param authzSet
 		 */
@@ -37,11 +38,12 @@ public class EmployeeAuth {
 			this.username = username;
 			this.authzSet = authzSet;
 		}
-		
+
 		/**
-		 * Creates a new instance of employee authorization Builder.
-		 * Validates and sets the argument into the Builder instance variables. 
-		 * This method is used for setting the data from the database
+		 * Creates a new instance of employee authorization Builder. Validates and sets
+		 * the argument into the Builder instance variables. This method is used for
+		 * setting the data from the database
+		 * 
 		 * @param id
 		 * @param username
 		 * @param authzSet
