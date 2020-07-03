@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
+import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
@@ -41,12 +42,25 @@ class ScheduleDaoTest {
 	
 	
 	@Test
-	 void testCreateCourseSchedule() {
+	 void testSaveCourseSchedule() {
 		
 		CourseSchedule courseSchedule = new CourseSchedule.Builder(1L, 1L, "aaaa", 1L, "aaaa", "aaaa", 1L, "aaaa", 
 				10, 10,'A').build();
 
 		scheduleDao.saveCourseSchedule(courseSchedule);
+		
+		assertEquals(1L, courseSchedule.getId());
+		assertEquals(1L, courseSchedule.getCourseId());
+		assertEquals(1L, courseSchedule.getInstructorId());
+		assertEquals(1L, courseSchedule.getVenueId());
+		assertEquals(10, courseSchedule.getMinRequired());
+		assertEquals(10, courseSchedule.getMaxAllowed());
+		assertEquals('A', courseSchedule.getStatus());
+		
+		
+		//CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L, scheduledStartDateTime, 
+		//		scheduledEndDateTime).build();
+		
 	 }
 	
 	@Test
