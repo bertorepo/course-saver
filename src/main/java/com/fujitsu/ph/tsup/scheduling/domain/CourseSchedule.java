@@ -327,8 +327,7 @@ public class CourseSchedule {
          */
     
         public Builder(Long id, Long courseId,  String courseName,Long instructorId, String instructorLastName, 
-            String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed, 
-            int totalParticipants, char status) {
+            String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed, char status) {
         
         validateId(id);
         validateCourseId(courseId);
@@ -492,7 +491,6 @@ public class CourseSchedule {
                 throw new IllegalArgumentException("Instructor Name should not be empty");
         }
     }
-    
         /**
          * <pre>
          * Validate the instructor first name based on the condition below. 
@@ -543,7 +541,7 @@ public class CourseSchedule {
          * @param status
          */
         private void validateStatus(char status) {
-            if(status != 'A' || status != 'D' ) {
+            if(status != 'A' && status != 'D' ) {
                 throw new IllegalArgumentException("Status should be A or D only");
         }
     }
