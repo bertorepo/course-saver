@@ -50,7 +50,6 @@ class FindAllEnrolledCoursesByParticipantId {
         }
     }
 
-    //Test
     @Test
     void findAllEnrolledCoursesByParticipantId() {
         Long courseScheduleId = 1L;

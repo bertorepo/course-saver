@@ -49,7 +49,7 @@ class FindCourseScheduleById {
     private EnrollmentService service;
     @MockBean
     private EnrollmentDao dao;
-  //Test
+
     @Test
     void findCourseScheduleById() {
         CourseSchedule result = findCourseScheduleId();

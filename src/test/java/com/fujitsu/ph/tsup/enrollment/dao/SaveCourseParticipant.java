@@ -49,7 +49,7 @@ class SaveCourseParticipant {
             return new EnrollmentDaoImpl();
         }
     }
-  //Test
+
     @Test
     void saveParticipant() {
        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 10L).build();

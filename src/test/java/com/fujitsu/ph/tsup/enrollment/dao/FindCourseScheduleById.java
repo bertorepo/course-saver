@@ -50,7 +50,7 @@ class FindCourseScheduleById {
             return new EnrollmentDaoImpl();
         }
     }
-  //Test
+
     @Test
     void test() {
       Long courseScheduleId = 1L;
