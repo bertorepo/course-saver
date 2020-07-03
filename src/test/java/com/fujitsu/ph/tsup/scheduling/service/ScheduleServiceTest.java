@@ -53,7 +53,6 @@ public class ScheduleServiceTest {
         when(scheduleDao.findAllScheduledCourses(any(ZonedDateTime.class), any(ZonedDateTime.class))).thenReturn(courseScheduleSet);
         Set<CourseSchedule> anotherCourseSchedule = scheduleDao.findAllScheduledCourses(ZonedDateTime.now(), ZonedDateTime.now().plusHours(5));
         assertEquals(courseScheduleSet.size(), anotherCourseSchedule.size());
-        
     }
     
     @Test
@@ -66,7 +65,8 @@ public class ScheduleServiceTest {
         courses.add(courseForm);
         
         when(scheduleDao.findAllCourses()).thenReturn(courses);
-        assertEquals(scheduleDao.findAllCourses().size(), courses.size());
+        Set<CourseForm> service = scheduleService.findAllCourses();
+        assertEquals(service.size(), courses.size());
     }
     
     @Test
@@ -79,7 +79,8 @@ public class ScheduleServiceTest {
         instructors.add(instructorForm);
         
         when(scheduleDao.findAllInstructors()).thenReturn(instructors);
-        assertEquals(scheduleDao.findAllInstructors().size(), instructors.size());
+        Set<InstructorForm> service = scheduleService.findAllInstructors();
+        assertEquals(service.size(), instructors.size());
     }
     
     @Test
@@ -92,7 +93,9 @@ public class ScheduleServiceTest {
         venues.add(venueForm);
         
         when(scheduleDao.findAllVenues()).thenReturn(venues);
-        assertEquals(scheduleDao.findAllVenues().size(), venues.size());
+        
+        Set<VenueForm> service = scheduleService.findAllVenues();
+        assertEquals(service.size(), venues.size());
     }
     
     @Test
