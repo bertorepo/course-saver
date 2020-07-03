@@ -11,7 +11,8 @@ import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
  */
 public interface AuthorizationDao {
 	/**
-	 * It will find employee with the given username
+	 * The data access interface for authorization related database access
+	 * 
 	 * @param username
 	 * @return
 	 */
