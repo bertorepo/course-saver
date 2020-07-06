@@ -44,6 +44,9 @@ public class DashboardMemberServiceImpl implements DashboardMemberService{
     @Override
     public Set<DashboardMemberForm> findCourses(Long employeeId){
         Set<DashboardMemberForm> dashboardMember = dao.findCourses(employeeId);
+        if (dashboardMember.isEmpty() || dashboardMember == null) {
+            throw new IllegalArgumentException("No records found");
+        } 
         return dashboardMember;
     }
 
@@ -55,7 +58,8 @@ public class DashboardMemberServiceImpl implements DashboardMemberService{
      */
     @Override
     public int getTrainingsToday(Long employeeId) {
-        return dao.getTrainingsToday(employeeId);
+        int trainingsToday = dao.getTrainingsToday(employeeId);
+        return trainingsToday;
     }
     /**
      * Gets the number of active courses that the member has enrolled to
@@ -65,6 +69,8 @@ public class DashboardMemberServiceImpl implements DashboardMemberService{
      */
     @Override
     public int getActiveCourses(Long employeeId) {
-        return dao.getActiveCourses(employeeId);
+        int activeCourses = dao.getActiveCourses(employeeId);
+
+        return activeCourses;
     }
 }

@@ -40,6 +40,9 @@ public class DashboardPmoServiceImpl implements DashboardPmoService{
     @Override
     public Set<DashboardPmoForm> findCourses(){
         Set<DashboardPmoForm> dashboardPmo = dao.findCourses();
+        if (dashboardPmo.isEmpty() || dashboardPmo == null) {
+            throw new IllegalArgumentException("No records found");
+        } 
         return dashboardPmo;
     }
 

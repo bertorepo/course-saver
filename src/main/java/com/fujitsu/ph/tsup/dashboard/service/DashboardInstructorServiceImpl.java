@@ -44,6 +44,9 @@ public class DashboardInstructorServiceImpl implements DashboardInstructorServic
     @Override
     public Set<DashboardInstructorForm> findCourses(Long employeeId){
         Set<DashboardInstructorForm> dashboardInstructor = dao.findCourses(employeeId);
+        if (dashboardInstructor.isEmpty() || dashboardInstructor == null) {
+            throw new IllegalArgumentException("No records found");
+        } 
         return dashboardInstructor;
     }
 
@@ -54,6 +57,8 @@ public class DashboardInstructorServiceImpl implements DashboardInstructorServic
      */
     @Override
     public int getCoursesToday(Long employeeId) {
-        return dao.getCoursesToday(employeeId);
+        int coursesToday = dao.getCoursesToday(employeeId);
+
+        return coursesToday;
     }
 }
