@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/22/2020 |  WS) R. Ramos   | New Creation
 //0.02 | 07/03/2020 |  WS) R. Ramos   | Updated
+//0.03 | 07/06/2020 |  WS) R. Ramos   | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -306,6 +307,7 @@ public class CourseAttendance {
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
+            this.status = status;
         }
 
         /**
