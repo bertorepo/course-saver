@@ -12,18 +12,50 @@ import org.junit.jupiter.api.Test;
 public class CourseScheduleDetailTest {
 
     @Test
-    void testValid_CourseScheduleDetail() {
+    void testNotNull_CourseScheduleDetail() {
         CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
                 ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
                         .build();
 
         assertNotNull(courseScheduleDetail.getId());
-        assertEquals(1L, courseScheduleDetail.getId());
         assertNotNull(courseScheduleDetail.getCourseScheduleId());
-        assertEquals(1L, courseScheduleDetail.getCourseScheduleId());
         assertNotNull(courseScheduleDetail.getScheduledStartDateTime());
-        assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z"), courseScheduleDetail.getScheduledStartDateTime());
         assertNotNull(courseScheduleDetail.getScheduledEndDateTime());
+    }
+    
+    @Test
+    void testValid_courseScheduleDetailId() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
+        
+        assertEquals(1L, courseScheduleDetail.getId());    
+    }
+    
+    @Test
+    void testValid_courseScheduleId() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
+        
+        assertEquals(1L, courseScheduleDetail.getCourseScheduleId());
+    }
+    
+    @Test
+    void testValid_scheduledStartDateTime() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
+        
+        assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z"), courseScheduleDetail.getScheduledStartDateTime());
+    }
+    
+    @Test
+    void testValid_scheduledEndDateTime() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
+        
         assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5),
                 courseScheduleDetail.getScheduledEndDateTime());
     }
