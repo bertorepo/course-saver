@@ -300,6 +300,7 @@ public class CourseSchedule {
 			this.instructorFirstName = instructorFirstName;
 			this.venueName = venueName;
 			this.maxAllowed = maxAllowed;
+			this.status = status;
 
 		}
 

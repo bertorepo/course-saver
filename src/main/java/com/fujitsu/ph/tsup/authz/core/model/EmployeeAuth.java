@@ -25,7 +25,9 @@ public class EmployeeAuth {
 		private Set<String> authzSet;
 
 		/**
-		 * The builder is a public static member class of EmployeeAuth
+		 * Creates a new instance of Builder for creating an employee auth. It validates
+		 * and sets the argument into the Builder instance variables. This method is
+		 * used for creating an employee auth.
 		 * 
 		 * @param username
 		 * @param authzSet
@@ -35,6 +37,36 @@ public class EmployeeAuth {
 			validateRole(authzSet);
 			this.username = username;
 			this.authzSet = authzSet;
+		}
+
+		/**
+		 * Creates a new instance of employee authorization Builder. Validates and sets
+		 * the argument into the Builder instance variables. This method is used for
+		 * setting the data from the database
+		 * 
+		 * @param id
+		 * @param username
+		 * @param authzSet
+		 */
+		public Builder(Long id, String username, Set<String> authzSet) {
+			validateId(id);
+			validateUsername(username);
+			validateRole(authzSet);
+			this.id = id;
+			this.username = username;
+			this.authzSet = authzSet;
+		}
+
+		/**
+		 * Validates Employee Auth Id
+		 * 
+		 * @param id
+		 */
+		private void validateId(Long id) {
+			if (id == null || id == 0) {
+				throw new IllegalArgumentException("Id should not be empty");
+			}
+
 		}
 
 		/**

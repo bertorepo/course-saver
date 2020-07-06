@@ -2,10 +2,6 @@ package com.fujitsu.ph.tsup.authorization.infrastructure;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
 import com.fujitsu.ph.tsup.authz.dao.AuthorizationDao;
 import com.fujitsu.ph.tsup.authz.dao.AuthorizationDaoImpl;
-import com.fujitsu.ph.tsup.common.domain.Auth;
 
 @RunWith(SpringRunner.class)
 @JdbcTest
@@ -39,21 +34,12 @@ public class AuthorizationDaoTest {
 		}
 	}
 
-	@Before
-	public void setup() {
-		Set<String> role1 = new HashSet<String>();
-		role1.add(Auth.INSTRUCTOR.toString());
-		role1.add(Auth.PMO.toString());
-
-		new EmployeeAuth.Builder("l.lorenzo", role1).build();
-
-	}
-
 	@Test
 	public void testFindByUsername() {
 		String username = "l.lorenzo";
 		EmployeeAuth result = dao.findByUsername(username);
-
+		System.out.println(result);
+		assertTrue(result.getUsername().equals(username));
 		assertTrue(result.getAuthzSet().contains("PMO"));
 	}
 
