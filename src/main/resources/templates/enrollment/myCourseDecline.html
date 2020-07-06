@@ -30,15 +30,15 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="text" name="fromDateTime" th:field="*{fromDateTime}"/ >
+							<input type="text" name="fromDateTime" th:field="*{fromDateTime}" >
 						</div>
-						<label class="col-lg-2 col-form-label">To Date</label>
-						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
+						<label class="col-lg-2 col-form-label" "pull-right">To Date</label>
+						<div class="col-lg-3" "pull-right">
+							<input type="text" name="toDateTime" th:field="*{toDateTime}"/ >
 						</div>
 					</div>
-					<div class="float-right">
-						<input type="text"  name="toDateTime" th:field="*{toDateTime}"/>
+					<div class=" pull-right">
+						<input type="submit" class="btn btn-success" value="Submit">
 					</div>
 				</div>
 			</div>
@@ -105,41 +105,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each=>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
+					<tr th:each= "crsCourse: ${courseDecline}">
+						<td th:text="${CourseSchedule.getCourseName()}"></td>
+						<td th:text="${CourseSchedule.getIntstructorName()}"></td>
+						<td th:text="${CourseSchedule.getScheduledStartDateTime()}"></td>
+						<td th:text="${CourseSchedule.getScheduledEndDateTime()}"</td>
+						<td th:text="${CourseSchedule.getDuration()}"></td>
 					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
+					
 				</tbody>
 			</table>
 		</div>
