@@ -152,7 +152,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
         return venues;
     }
-
+    
     /**
      * <pre>
      * Saves the CourseSchedule and CourseScheduleDetail object
@@ -185,7 +185,6 @@ public class ScheduleDaoImpl implements ScheduleDao {
         Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
         
         Long key = (Long) generatedKeyHolder.getKeys().get("id");
-        
         System.out.println("\nGenerated Course Schedule ID: "+ key +"\n");
 
         for (CourseScheduleDetail courseSchedDetail : courseScheduleDetail) {
@@ -202,6 +201,5 @@ public class ScheduleDaoImpl implements ScheduleDao {
             Long courseSchedDetailKey = (Long) courseSchedDetailGeneratedKeyHolder.getKeys().get("id");
             System.out.println("\nGenerated Course Schedule Detail ID: "+ courseSchedDetailKey +"\n");
         } 
-
     }
 }
