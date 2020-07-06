@@ -36,18 +36,17 @@ public class ScheduleServiceTest {
     static class TestContextConfiguration {
         
         @Bean
-        
-        ScheduleService scheduleService() {
+        public ScheduleService scheduleService() {
             return new ScheduleServiceImpl();
         }
         
     }
     
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
     
     @MockBean
-    ScheduleDao scheduleDao;
+    private ScheduleDao scheduleDao;
     
     @Test
     void testFindAllScheduledCourses() {
@@ -244,5 +243,4 @@ public class ScheduleServiceTest {
         return new CourseSchedule.Builder(1L, 1L, "Dummy", 1L, "Dummy", "Dummy", 1L, "Dummy", 1, 10, "A".charAt(0))
                     .addDetail(courseScheduleDetailSet).build();
     }
-
 }
