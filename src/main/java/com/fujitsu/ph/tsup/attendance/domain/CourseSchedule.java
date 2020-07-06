@@ -12,6 +12,7 @@ import java.util.Set;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) R. Ramos   | New Creation
+//0.02 | 07/06/2020 |  WS) R. Ramos   | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -300,7 +301,7 @@ public class CourseSchedule {
 			this.instructorFirstName = instructorFirstName;
 			this.venueName = venueName;
 			this.maxAllowed = maxAllowed;
-
+			this.status = status;
 		}
 
 		/**
