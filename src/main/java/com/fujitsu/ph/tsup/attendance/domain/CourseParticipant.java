@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 // 0.03   | 06/26/2020 | WS) M.Angara  | Updated
 // 0.04   | 06/26/2020 | WS) R.Ramos   | Updated
 // 0.05   | 07/03/2020 | WS) R.Ramos   | Updated
+// 0.06   | 07/06/2020 | WS) R.Ramos   | Updated
 //=========================================================================================
 /**
  * <pre>
@@ -257,7 +258,9 @@ public class CourseParticipant {
             this.venueName = venueName;
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
-
+            this.participantName = participantName;
+            this.email = email;
+            this.employeeNumber = employeeNumber;
         }
 
         /*
