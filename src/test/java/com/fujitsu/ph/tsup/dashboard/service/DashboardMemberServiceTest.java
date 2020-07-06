@@ -1,5 +1,6 @@
 package com.fujitsu.ph.tsup.dashboard.service;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -40,21 +41,21 @@ class DashboardMemberServiceTest {
     private DashboardMemberDao dao;
 
     @Test
-    void testActiveCourses() {
+    void testActiveCourses_Valid() {
 
         int activeCourses = service.getActiveCourses(any(Long.class));
         assertEquals(0, activeCourses);
     }
 
     @Test
-    void testTrainingsToday() {
+    void testTrainingsToday_Valid() {
 
         int trainingsToday = service.getTrainingsToday(any(Long.class));
         assertEquals(0, trainingsToday);
     }
 
     @Test
-    void testFindCourses() {
+    void testFindCourses_Valid() {
         Set<DashboardMemberForm> dashboardSet = new HashSet<DashboardMemberForm>();
         DashboardMemberForm dashboardMember = new DashboardMemberForm.Builder("Understanding SS",
                 "de Guzman, Genevieve", ZonedDateTime.now(), ZonedDateTime.now().plus(2, ChronoUnit.HOURS), "Online",
@@ -62,8 +63,20 @@ class DashboardMemberServiceTest {
         dashboardSet.add(dashboardMember);
 
         when(dao.findCourses(any(Long.class))).thenReturn(dashboardSet);
-        
+
         assertEquals(dashboardSet, service.findCourses(1L));
+    }
+
+    @Test
+    void testFindCourses_Invalid() {
+        Set<DashboardMemberForm> dashboardSet = new HashSet<DashboardMemberForm>();
+        Exception error = assertThrows(IllegalArgumentException.class, () -> {
+            when(dao.findCourses(any(Long.class))).thenReturn(dashboardSet);
+            assertEquals(dashboardSet, service.findCourses(1L));
+        });
+
+        assertTrue(error.getMessage().equals("No records found"));
+
     }
 
 }

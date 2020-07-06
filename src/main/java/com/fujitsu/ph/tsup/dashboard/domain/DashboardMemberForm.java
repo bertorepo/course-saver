@@ -1,6 +1,5 @@
 package com.fujitsu.ph.tsup.dashboard.domain;
 
-
 import java.time.ZonedDateTime;
 
 /**
@@ -58,6 +57,7 @@ public class DashboardMemberForm {
     protected DashboardMemberForm() {
 
     }
+
     /**
      * <pre>
      * Creates an instance of the DashboardMemberForm using the given builder class.
@@ -79,25 +79,31 @@ public class DashboardMemberForm {
     public Long getEmployeeId() {
         return employeeId;
     }
-    
+
     public String getCourseName() {
         return courseName;
     }
+
     public String getInstructorName() {
         return instructorName;
     }
+
     public ZonedDateTime getStartDateTime() {
         return startDateTime;
     }
+
     public ZonedDateTime getEndDateTime() {
         return endDateTime;
     }
+
     public String getVenueName() {
         return venueName;
     }
+
     public String getStatus() {
         return status;
     }
+
     public static class Builder {
         /**
          * Employee ID
@@ -127,7 +133,7 @@ public class DashboardMemberForm {
          * Course Status
          */
         private String status;
-        
+
         /**
          * <pre>
          * Creates a new instance of course schedule Builder. Validates and sets the
@@ -143,8 +149,15 @@ public class DashboardMemberForm {
          * @param venueName
          * @param status
          */
-        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, 
-                ZonedDateTime endDateTime, String venueName, String status) {
+        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, ZonedDateTime endDateTime,
+                String venueName, String status) {
+            validateCourseName(courseName);
+            validateInstructorName(instructorName);
+            validateStartDateTime(startDateTime);
+            validateEndDateTime(endDateTime);
+            validateVenueName(venueName);
+            validateStatus(status);
+
             this.courseName = courseName;
             this.instructorName = instructorName;
             this.startDateTime = startDateTime;
@@ -152,6 +165,7 @@ public class DashboardMemberForm {
             this.venueName = venueName;
             this.status = status;
         }
+
         /**
          * <pre>
          * Creates a new instance of course schedule Builder. Validates and sets the
@@ -168,8 +182,16 @@ public class DashboardMemberForm {
          * @param employeeId
          * @param status
          */
-        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, 
-                ZonedDateTime endDateTime, String venueName, Long employeeId, String status) {
+        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, ZonedDateTime endDateTime,
+                String venueName, Long employeeId, String status) {
+            validateEmployeeId(employeeId);
+            validateCourseName(courseName);
+            validateInstructorName(instructorName);
+            validateStartDateTime(startDateTime);
+            validateEndDateTime(endDateTime);
+            validateVenueName(venueName);
+            validateStatus(status);
+
             this.employeeId = employeeId;
             this.courseName = courseName;
             this.instructorName = instructorName;
@@ -178,7 +200,7 @@ public class DashboardMemberForm {
             this.venueName = venueName;
             this.status = status;
         }
-        
+
         /**
          * Creates a new instance of the DashboardMemberForm.
          * 
@@ -187,17 +209,95 @@ public class DashboardMemberForm {
         public DashboardMemberForm build() {
             return new DashboardMemberForm(this);
         }
-}
+
+        /*
+         * Validates Employee ID
+         * 
+         * @param employeeId
+         */
+        private void validateEmployeeId(Long employeeId) {
+            if (employeeId == null || employeeId == 0L) {
+                throw new IllegalArgumentException("Employee ID should not be empty");
+            }
+        }
+
+        /*
+         * Validates Course Name
+         * 
+         * @param courseName
+         */
+        private void validateCourseName(String courseName) {
+            if (courseName == null || courseName.isEmpty()) {
+                throw new IllegalArgumentException("Course Name should not be empty");
+            }
+        }
+
+        /*
+         * Validates Instructor Name
+         * 
+         * @param instructorName
+         */
+        private void validateInstructorName(String instructorName) {
+            if (instructorName == null || instructorName.isEmpty()) {
+                throw new IllegalArgumentException("Instructor Name should not be empty");
+            }
+        }
+
+        /*
+         * Validates Start Date Time
+         * 
+         * @param startDateTime
+         */
+        private void validateStartDateTime(ZonedDateTime startDateTime) {
+            if (startDateTime == null) {
+                throw new IllegalArgumentException("Start Date Time should not be empty");
+            }
+        }
+
+        /*
+         * Validates EndDateTime
+         * 
+         * @param endDateTime
+         */
+        private void validateEndDateTime(ZonedDateTime endDateTime) {
+            if (endDateTime == null) {
+                throw new IllegalArgumentException("End Date Time should not be empty");
+            }
+        }
+
+        /*
+         * Validates Venue Name
+         * 
+         * @param venueName
+         */
+        private void validateVenueName(String venueName) {
+            if (venueName == null || venueName.isEmpty()) {
+                throw new IllegalArgumentException("Venue Name should not be empty");
+            }
+        }
+
+        /*
+         * Validates Status
+         * 
+         * @param status
+         */
+        private void validateStatus(String status) {
+            if (status == null || status.isEmpty()) {
+                throw new IllegalArgumentException("Status should not be empty");
+            }
+        }
+    }
+
     /**
      * Overrides toString()
      * 
-     * @return String containing employeeId, courseName, instructorName, startDateTime, endDateTime, 
-     * venueName, status
+     * @return String containing employeeId, courseName, instructorName,
+     *         startDateTime, endDateTime, venueName, status
      */
     @Override
     public String toString() {
-        return "DashboardMemberForm [employeeId=" + employeeId + ", courseName=" + courseName + 
-                ", instructorName= " + instructorName + ",startDateTime=" + startDateTime + 
-                ", endDateTime=" + endDateTime + ", venueName=" + venueName + ", status=" + status + "]";
+        return "DashboardMemberForm [employeeId=" + employeeId + ", courseName=" + courseName + ", instructorName= "
+                + instructorName + ",startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + ", venueName="
+                + venueName + ", status=" + status + "]";
     }
 }

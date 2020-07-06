@@ -1,6 +1,8 @@
 package com.fujitsu.ph.tsup.dashboard.service;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.time.ZonedDateTime;
@@ -37,20 +39,29 @@ class DashboardPmoServiceTest {
 
     @MockBean
     private DashboardPmoDao dao;
- 
-    
+
     @Test
-    void testFindCourses() {
+    void testFindCourses_Valid() {
         Set<DashboardPmoForm> dashboardSet = new HashSet<DashboardPmoForm>();
-        DashboardPmoForm dashboardPmo = new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", 
-                ZonedDateTime.now(), ZonedDateTime.now().plus(2, ChronoUnit.HOURS), 10, 20, 1, "A").build();
+        DashboardPmoForm dashboardPmo = new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", ZonedDateTime.now(),
+                ZonedDateTime.now().plus(2, ChronoUnit.HOURS), 10, 20, 1, "A").build();
         dashboardSet.add(dashboardPmo);
-        
+
         when(dao.findCourses()).thenReturn(dashboardSet);
-        
+
         assertEquals(dashboardSet, service.findCourses());
     }
-    
-    
+
+    @Test
+    void testFindCourses_Invalid() {
+        Set<DashboardPmoForm> dashboardSet = new HashSet<DashboardPmoForm>();
+        Exception error = assertThrows(IllegalArgumentException.class, () -> {
+            when(dao.findCourses()).thenReturn(dashboardSet);
+            assertEquals(dashboardSet, service.findCourses());
+        });
+
+        assertTrue(error.getMessage().equals("No records found"));
+
+    }
 
 }

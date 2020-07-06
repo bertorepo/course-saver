@@ -3,6 +3,8 @@
  */
 package com.fujitsu.ph.tsup.authz.dao;
 
+import java.util.Set;
+
 import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
 
 /**
@@ -11,10 +13,9 @@ import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
  */
 public interface AuthorizationDao {
 	/**
-	 * The data access interface for authorization related database access
-	 * 
+	 * It will find employee with the given username
 	 * @param username
-	 * @return
+	 * @return Set<EmployeeAuth>
 	 */
-	EmployeeAuth findByUsername(String username);
+	Set<EmployeeAuth> findByUsername(String username);
 }

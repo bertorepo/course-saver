@@ -1,7 +1,7 @@
 package com.fujitsu.ph.tsup.dashboard.domain;
 
-
 import java.time.ZonedDateTime;
+
 /**
  * <pre>
  * It is a JavaBean for Dashboard (PMO)
@@ -61,6 +61,7 @@ public class DashboardPmoForm {
     protected DashboardPmoForm() {
 
     }
+
     /**
      * <pre>
      * Creates an instance of the DashboardPmoForm using the given builder class.
@@ -80,32 +81,38 @@ public class DashboardPmoForm {
         this.status = builder.status;
     }
 
-    
     public String getCourseName() {
         return courseName;
     }
+
     public String getInstructorName() {
         return instructorName;
     }
+
     public ZonedDateTime getStartDateTime() {
         return startDateTime;
     }
+
     public ZonedDateTime getEndDateTime() {
         return endDateTime;
     }
+
     public int getMinRequired() {
         return minRequired;
     }
+
     public int getMaxAllowed() {
         return maxAllowed;
     }
+
     public int getEnrolled() {
         return enrolled;
     }
+
     public String getStatus() {
         return status;
     }
-    
+
     /**
      * <pre>
      * The builder class of the course schedule. The builder is a public static
@@ -165,9 +172,16 @@ public class DashboardPmoForm {
          * @param enrolled
          * @param status
          */
-        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, 
-                ZonedDateTime endDateTime, int minRequired, int maxAllowed, int enrolled, 
-                String status) {
+        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, ZonedDateTime endDateTime,
+                int minRequired, int maxAllowed, int enrolled, String status) {
+            validateCourseName(courseName);
+            validateInstructorName(instructorName);
+            validateStartDateTime(startDateTime);
+            validateEndDateTime(endDateTime);
+            validateMinRequired(minRequired);
+            validateMaxAllowed(maxAllowed);
+            validateStatus(status);
+
             this.courseName = courseName;
             this.instructorName = instructorName;
             this.startDateTime = startDateTime;
@@ -177,6 +191,7 @@ public class DashboardPmoForm {
             this.enrolled = enrolled;
             this.status = status;
         }
+
         /**
          * Creates a new instance of the DashboardPmoForm.
          * 
@@ -185,18 +200,95 @@ public class DashboardPmoForm {
         public DashboardPmoForm build() {
             return new DashboardPmoForm(this);
         }
-}
+
+        /*
+         * Validates Course Name
+         * 
+         * @param courseName
+         */
+        private void validateCourseName(String courseName) {
+            if (courseName == null || courseName.isEmpty()) {
+                throw new IllegalArgumentException("Course Name should not be empty");
+            }
+        }
+
+        /*
+         * Validates Instructor Name
+         * 
+         * @param instructorName
+         */
+        private void validateInstructorName(String instructorName) {
+            if (instructorName == null || instructorName.isEmpty()) {
+                throw new IllegalArgumentException("Instructor Name should not be empty");
+            }
+        }
+
+        /*
+         * Validates Start Date Time
+         * 
+         * @param startDateTime
+         */
+        private void validateStartDateTime(ZonedDateTime startDateTime) {
+            if (startDateTime == null) {
+                throw new IllegalArgumentException("Start Date Time should not be empty");
+            }
+        }
+
+        /*
+         * Validates End Date Time
+         * 
+         * @param endDateTime
+         */
+        private void validateEndDateTime(ZonedDateTime endDateTime) {
+            if (endDateTime == null) {
+                throw new IllegalArgumentException("End Date Time should not be empty");
+            }
+        }
+
+        /*
+         * Validates Minimum Required
+         * 
+         * @param minRequired
+         */
+        private void validateMinRequired(int minRequired) {
+            if (minRequired < 1) {
+                throw new IllegalArgumentException("Minimum required should not be zero");
+            }
+        }
+
+        /*
+         * Validates Maximum Allowed
+         * 
+         * @param maxAllowed
+         */
+        private void validateMaxAllowed(int maxAllowed) {
+            if (maxAllowed < 1) {
+                throw new IllegalArgumentException("Maximum allowed should not be zero");
+            }
+        }
+
+        /*
+         * Validates Status
+         * 
+         * @param status
+         */
+        private void validateStatus(String status) {
+            if (status == null || status.isEmpty()) {
+                throw new IllegalArgumentException("Status should not be empty");
+            }
+        }
+    }
+
     /**
      * Overrides toString()
      * 
-     * @return String containing courseName, instructorName, startDateTime, endDateTime, minRequired,
-     * maxAllowed, enrolled, status
+     * @return String containing courseName, instructorName, startDateTime,
+     *         endDateTime, minRequired, maxAllowed, enrolled, status
      */
     @Override
     public String toString() {
-        return "DashboardPmoForm [courseName=" + courseName + ", instructorName=" + instructorName + 
-                ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + ", minRequired=" + 
-                minRequired + ", maxAllowed=" + maxAllowed + ", enrolled=" + enrolled + ", status=" + 
-                status + "]";
+        return "DashboardPmoForm [courseName=" + courseName + ", instructorName=" + instructorName + ", startDateTime="
+                + startDateTime + ", endDateTime=" + endDateTime + ", minRequired=" + minRequired + ", maxAllowed="
+                + maxAllowed + ", enrolled=" + enrolled + ", status=" + status + "]";
     }
 }
