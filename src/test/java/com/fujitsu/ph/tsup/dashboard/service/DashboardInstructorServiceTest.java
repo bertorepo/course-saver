@@ -1,5 +1,6 @@
 package com.fujitsu.ph.tsup.dashboard.service;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -39,21 +40,33 @@ class DashboardInstructorServiceTest {
     private DashboardInstructorDao dao;
 
     @Test
-    void testCoursesToday() {
+    void testCoursesToday_Valid() {
         int coursesToday = service.getCoursesToday(any(Long.class));
         assertEquals(0, coursesToday);
     }
 
     @Test
-    void testFindCourses() {
+    void testFindCourses_Valid() {
         Set<DashboardInstructorForm> dashboardSet = new HashSet<DashboardInstructorForm>();
         DashboardInstructorForm dashboardInstructor = new DashboardInstructorForm.Builder("Understanding UI",
                 ZonedDateTime.now(), ZonedDateTime.now().plus(2, ChronoUnit.HOURS), "Online", 1L, "A").build();
         dashboardSet.add(dashboardInstructor);
 
         when(dao.findCourses(any(Long.class))).thenReturn(dashboardSet);
-        
+
         assertEquals(dashboardSet, service.findCourses(1L));
+
+    }
+
+    @Test
+    void testFindCourses_Invalid() {
+        Set<DashboardInstructorForm> dashboardSet = new HashSet<DashboardInstructorForm>();
+        Exception error = assertThrows(IllegalArgumentException.class, () -> {
+            when(dao.findCourses(any(Long.class))).thenReturn(dashboardSet);
+            assertEquals(dashboardSet, service.findCourses(1L));
+        });
+
+        assertTrue(error.getMessage().equals("No records found"));
 
     }
 
