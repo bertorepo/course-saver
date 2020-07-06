@@ -16,15 +16,16 @@ import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
  * @author j.macabudbud
  *
  */
-public class AuthzRowMapper implements RowMapper<EmployeeAuth>{
+public class AuthzRowMapper implements RowMapper<EmployeeAuth> {
 
 	@Override
 	public EmployeeAuth mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Long id = rs.getLong("id");
 		String username = rs.getString("username");
 		String auth_name = rs.getString("auth_name");
 		Set<String> roles = new HashSet<String>();
 		roles.add(auth_name);
-		EmployeeAuth employeeAuth = new EmployeeAuth.Builder(username, roles).build();
+		EmployeeAuth employeeAuth = new EmployeeAuth.Builder(id, username, roles).build();
 		return employeeAuth;
 	}
 
