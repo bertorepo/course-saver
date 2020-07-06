@@ -1,5 +1,7 @@
 package com.fujitsu.ph.tsup.scheduling.dao;
 
+import java.time.ZoneId;
+
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -54,11 +56,6 @@ public class ScheduleDaoImpl implements ScheduleDao {
     private NamedParameterJdbcTemplate template;
 
     /**
-     * Generated Key Holder
-     */
-    KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-
-    /**
      * <pre>
      * Finds the scheduled courses starting from today onwards
      * 
@@ -81,9 +78,9 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "CSCHED.VENUE_ID AS VENUE_ID, " 
                 + "V.NAME AS VENUE_NAME, "
                 + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED, " 
-                + "CSCHED.MAX_REQUIRED AS MAX_REQUIRED, "
-                + "CSCHED.STATUS AS STATUS "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME "
+                + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
+                + "CSCHED.STATUS AS STATUS, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
                 + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
                 + "FROM COURSE_SCHEDULE AS CSCHED " 
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
@@ -94,14 +91,12 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + " ON CSCHED.INSTRUCTOR_ID = E.ID " 
                 + "INNER JOIN VENUE AS V " 
                 + " ON CSCHED.VENUE_ID = V.ID "
-                + "INNER JOIN COURSE_PARTICIPANT AS CPART " 
-                + " ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
                 + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
-                + "ORDER BY CSCHED.ID AND CSCHEDDET.SCHEDULED_START_DATETIME";
+                + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
-                .addValue("fromDateTime", fromDateTime)
-                .addValue("toDateTime", toDateTime);
+                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
 
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                 new CourseScheduleRowMapper());
@@ -168,35 +163,40 @@ public class ScheduleDaoImpl implements ScheduleDao {
      */
     @Override
     public void saveCourseSchedule(CourseSchedule courseSchedule) {
+        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         String courseScheduleSql = "INSERT INTO COURSE_SCHEDULE"
-                + "(ID,COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "
-                + "VALUES (:id,:course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
+                + "(COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "
+                + "VALUES (:course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
 
         SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
-        		.addValue("id", courseSchedule.getId())
                 .addValue("course_id", courseSchedule.getCourseId())
                 .addValue("instructor_id", courseSchedule.getInstructorId())
                 .addValue("venue_id", courseSchedule.getVenueId())
                 .addValue("min_required", courseSchedule.getMinRequired())
                 .addValue("max_allowed", courseSchedule.getMaxAllowed())
-                .addValue("status", courseSchedule.getStatus());
-        template.update(courseScheduleSql, courseSchedParameters);
+                .addValue("status", String.valueOf(courseSchedule.getStatus()));
+        template.update(courseScheduleSql, courseSchedParameters, generatedKeyHolder);
 
         String courseScheduleDetailSql = "INSERT INTO COURSE_SCHEDULE_DETAIL"
-                + "(ID, COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, DURATION)"
-                + "VALUES (:id, :course_schedule_id, :scheduled_start_datetime, :scheduled_end_datetime, "
-                + ":duration";
+                + "(COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, DURATION)"
+                + "VALUES (:course_schedule_id, :scheduled_start_datetime, :scheduled_end_datetime, "
+                + ":duration)";
 
         Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
 
         for (CourseScheduleDetail courseSchedDetail : courseScheduleDetail) {
             SqlParameterSource courseSchedDetailParameters = new MapSqlParameterSource()
-                    .addValue("id", courseSchedDetail.getId())
                     .addValue("course_schedule_id", courseSchedDetail.getCourseScheduleId())
-                    .addValue("scheduled_start_datetime", courseSchedDetail.getScheduledStartDateTime())
-                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledEndDateTime())
+                    .addValue("scheduled_start_datetime", courseSchedDetail.getScheduledStartDateTime()
+                            .withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledStartDateTime()
+                            .withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                     .addValue("duration", courseSchedDetail.getDuration());
             template.update(courseScheduleDetailSql, courseSchedDetailParameters);
-        }
+        } 
+        
+        Long key = (Long) generatedKeyHolder.getKeys().get("id");
+        
+        System.out.println("\nGenerated Course Schedule ID: "+ key +"\n");
     }
 }
