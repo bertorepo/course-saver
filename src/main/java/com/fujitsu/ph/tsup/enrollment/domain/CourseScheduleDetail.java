@@ -230,7 +230,7 @@ public class CourseScheduleDetail {
               ZonedDateTime scheduledStartDateTime) {
           if (scheduledEndDateTime == null || String.valueOf(scheduledEndDateTime).isEmpty()) {
               throw new IllegalArgumentException("Scheduled End Date and Time should not be empty");
-          } else if (scheduledEndDateTime.isAfter(scheduledStartDateTime)) {
+          } else if (scheduledStartDateTime.isAfter(scheduledEndDateTime)) {
               throw new IllegalArgumentException("Scheduled end date and time should be greater than or "
                       + "equal to the the scheduled start date and time");
           }

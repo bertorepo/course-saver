@@ -152,7 +152,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
         return venues;
     }
-
+    
     /**
      * <pre>
      * Saves the CourseSchedule and CourseScheduleDetail object
@@ -183,20 +183,23 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + ":duration)";
 
         Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+        
+        Long key = (Long) generatedKeyHolder.getKeys().get("id");
+        System.out.println("\nGenerated Course Schedule ID: "+ key +"\n");
 
         for (CourseScheduleDetail courseSchedDetail : courseScheduleDetail) {
+            KeyHolder courseSchedDetailGeneratedKeyHolder = new GeneratedKeyHolder();
             SqlParameterSource courseSchedDetailParameters = new MapSqlParameterSource()
-                    .addValue("course_schedule_id", courseSchedDetail.getCourseScheduleId())
+                    .addValue("course_schedule_id", key)
                     .addValue("scheduled_start_datetime", courseSchedDetail.getScheduledStartDateTime()
                             .withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                     .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledStartDateTime()
                             .withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                     .addValue("duration", courseSchedDetail.getDuration());
-            template.update(courseScheduleDetailSql, courseSchedDetailParameters);
+            template.update(courseScheduleDetailSql, courseSchedDetailParameters, courseSchedDetailGeneratedKeyHolder);
+            
+            Long courseSchedDetailKey = (Long) courseSchedDetailGeneratedKeyHolder.getKeys().get("id");
+            System.out.println("\nGenerated Course Schedule Detail ID: "+ courseSchedDetailKey +"\n");
         } 
-        
-        Long key = (Long) generatedKeyHolder.getKeys().get("id");
-        
-        System.out.println("\nGenerated Course Schedule ID: "+ key +"\n");
     }
 }
