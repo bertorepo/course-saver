@@ -2,6 +2,9 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,14 +32,26 @@ class SaveCourseNonParticipant {
 	            return new EnrollmentDaoImpl();
 	        }
 	    }
-
 	    @Test
-		void saveCourseNonParticipanttest() {
-	   
-	       CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 10L).build();
-	       dao.saveCourseNonParticipant(courseParticipant);
-	       
-	       assertEquals(1L, courseParticipant.getCourseScheduleId());
-	       assertEquals(1L, courseParticipant.getParticipantId());
-	}
+	 		void testsaveCourseNonParticipant() {
+	 	   
+	 	    	CourseParticipant courseParticipant = createCourseParticipant();
+	 	    	
+	 	    	dao.saveCourseNonParticipant(courseParticipant );
+	 	    	
+	 	    	assertEquals(1L, courseParticipant.getId());
+	 	    	assertEquals(1L, courseParticipant.getCourseScheduleId());
+	 	}
+
+	 		private CourseParticipant createCourseParticipant() {
+	 			CourseParticipant courseParticipant =
+	 					new CourseParticipant.Builder(1L, 10L)
+	 						.build();
+	 						
+	 				Set<CourseParticipant> courseParticipantSet = new HashSet<>();
+	 					courseParticipantSet.add(courseParticipant);
+	 		
+	 					return  new CourseParticipant.Builder(1L, 10L).build();
+	 		}
+	 
 }
