@@ -16,20 +16,23 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 |  WS) J. Iwarat        | New Creation
+//0.01    | 06/23/2020 |  WS) J. Iwarat   | New Creation
+//0.02    | 06/23/2020 |  WS) J. Iwarat   | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access interface for attendance related database access
+ * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author j.iwarat
  */
 public interface AttendanceDao {
-    
+
     /**
      * Finds the scheduled courses starting from today onwards
+     * 
      * @param fromDateTime
      * @param toDateTime
      * @param instructorId
@@ -40,6 +43,7 @@ public interface AttendanceDao {
 
     /**
      * Finds the course schedule by id
+     * 
      * @param id
      * @return
      */
@@ -47,13 +51,15 @@ public interface AttendanceDao {
 
     /**
      * Finds the course participants by course schedule detail id
+     * 
      * @param id
      * @return
      */
     Set<CourseAttendance> findCourseScheduleDetailParticipantsById(Long id);
-    
+
     /**
      * Finds the course schedule by id
+     * 
      * @param id
      * @return
      */
@@ -61,20 +67,23 @@ public interface AttendanceDao {
 
     /**
      * Creates the course attendance
+     * 
      * @param courseAttendance
      * @return
      */
-    Set<CourseAttendance> saveAttendance(CourseAttendance courseAttendance);
+    void saveAttendance(CourseAttendance courseAttendance);
 
     /**
      * Updates the course attendance
+     * 
      * @param courseAttendance
      * @return
      */
-    Set<CourseAttendance> updateAttendance(CourseAttendance courseAttendance);
+    void updateAttendance(CourseAttendance courseAttendance);
 
     /**
      * Finds the course participants by course schedule detail id
+     * 
      * @param id
      * @return
      */
