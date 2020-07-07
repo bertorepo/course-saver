@@ -19,6 +19,7 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseScheduleDetail;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/26/2020 |  WS) J. Iwarat        | New Creation
+//0.02    | 07/07/2020 |  WS) J. Iwarat        | Update
 //==================================================================================================
 /**
 * <pre>
@@ -26,7 +27,7 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseScheduleDetail;
 * In this class, it maps the row of a resultset on a per row basis
 * </pre>
 * 
-* @version 0.01
+* @version 0.02
 * @author j.iwarat
 */
 public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
@@ -38,8 +39,8 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         Long courseId = rs.getLong("COURSE_ID");
         String courseName = rs.getString("COURSE_NAME");
         Long instructorId = rs.getLong("INSTRUCTOR_ID");
-        String instructorLastName = rs.getString("LAST_NAME");
-        String instructorFirstName = rs.getString("FIRST_NAME");
+        String instructorLastName = rs.getString("INSTRUCTOR_LAST_NAME");
+        String instructorFirstName = rs.getString("INSTRUCTOR_FIRST_NAME");
         Long venueId = rs.getLong("VENUE_ID");
         String venueName = rs.getString("VENUE_NAME");
         int minRequired = rs.getInt("MIN_REQUIRED");
