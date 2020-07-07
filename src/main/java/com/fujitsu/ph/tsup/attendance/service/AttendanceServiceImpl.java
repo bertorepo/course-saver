@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 //--------+------------+---------------------------------------------------------+-----------------
 //0.01    | 06/23/2020 | WS) K.Abad, WS) M.Angara, WS) J.Iwarat, WS) R.Ramos     | New Creation
 //0.02    | 07/03/2020 | WS) K.abad, WS) R.Ramos                                 | Update
+//0.03    | 07/07/2020 | WS) J.iwarat                                            | Update
 //==================================================================================================
 /**
  * <pre>
@@ -33,7 +34,7 @@ import org.springframework.stereotype.Service;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.02
+ * @version 0.03
  * @author k.abad
  * @author m.angara
  * @author j.iwarat
@@ -115,9 +116,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public Set<CourseAttendance> findCourseAttendanceByCourseScheduleDetailId(Long id) {
-        Set<CourseAttendance> signedUp = attendanceDao.findCourseScheduleDetailParticipantsById(id);
-        Set<CourseAttendance> loggedIn = attendanceDao.findCourseAttendanceByCourseScheduleDetailId(id);
         try {
+            Set<CourseAttendance> signedUp = attendanceDao.findCourseScheduleDetailParticipantsById(id);
+            Set<CourseAttendance> loggedIn = attendanceDao.findCourseAttendanceByCourseScheduleDetailId(id);
             Map<Long, CourseAttendance> signUpAndLoggedIn = new HashMap<>();
             
             for (CourseAttendance p : signedUp) {
@@ -207,14 +208,14 @@ public class AttendanceServiceImpl implements AttendanceService {
      */
     @Override
     public Set<CourseAttendance> findCourseScheduleDetailById(Long id) {
-        Set<CourseAttendance> courseAttendance = attendanceDao.findCourseScheduleDetailById(id);
         try {
-            if (((CourseAttendance) courseAttendance).getId() == 0);
+            Set<CourseAttendance> courseAttendance = attendanceDao.findCourseScheduleDetailById(id);
+            if (((CourseAttendance) courseAttendance).getId() == 0);     
+            return courseAttendance;
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("No records found.", e);
         }
-
-        return courseAttendance;
+       
     }
 
     /**
@@ -230,8 +231,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public void attend(CourseAttendance courseAttendance) {
-        attendanceDao.saveAttendance(courseAttendance);
         try {
+            attendanceDao.saveAttendance(courseAttendance);
             if (courseAttendance.getId() == null);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("No records found.", e);
