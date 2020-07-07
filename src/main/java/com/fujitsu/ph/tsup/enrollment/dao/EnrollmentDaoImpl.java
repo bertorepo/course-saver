@@ -12,6 +12,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
 //0.01    | 06/29/2020 | WS) G.Cabiling        | Updated
 //0.02    | 06/30/2020 | WS) K.Freo            | Updated
+//0.03    | 07/07/2020 | WS) J.Yu              | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -39,9 +40,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class EnrollmentDaoImpl implements EnrollmentDao {
+    
     @Autowired
     private NamedParameterJdbcTemplate template;
-
     
     /**
      * Finds the scheduled courses by the given fromDateTime and toDateTime
@@ -81,9 +82,11 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "WHERE CSD.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
                 +" ORDER BY C.NAME, CSD.SCHEDULED_START_DATETIME";
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
-                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC"))
+                        .toOffsetDateTime())
                 .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
-        List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters, new EnrollmentRowMapperCourseSchedule());
+        List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters, 
+                new EnrollmentRowMapperCourseSchedule());
         Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
     }
@@ -93,7 +96,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      **/
     @Override
     public CourseSchedule findCourseScheduleById(Long id) {
-        String findCourseScheduleByIdSql = "SELECT * FROM COURSE_SCHEDULE" + "WHERE ID = :id" + "AND STATUS = 'A'";
+        String findCourseScheduleByIdSql = "SELECT * FROM COURSE_SCHEDULE" + "WHERE ID = :id" + 
+                "AND STATUS = 'A'";
         SqlParameterSource findCourseScheduleByIdParameter = new MapSqlParameterSource().addValue("id  ", id);
         return template.queryForObject(findCourseScheduleByIdSql, findCourseScheduleByIdParameter,
                 new EnrollmentRowMapperCourseSchedule());
@@ -105,13 +109,14 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public CourseParticipant findCourseParticipantByCourseScheduleIdAndParticipantId(Long courseScheduleId,
             Long participantId) {
-        String findCourseParticipantByCourseScheduleIdAndParticipantIdSql = "SELECT *" + "FROM COURSE_PARTICIPANT "
+        String findCourseParticipantByCourseScheduleIdAndParticipantIdSql = "SELECT *" + 
+                "FROM COURSE_PARTICIPANT "
                 + "WHERE COURSE_SCHEDULE_ID = :courseScheduleId " + "AND PARTICIPANT_ID = :participantId )";
 
         SqlParameterSource NamedParameters = new MapSqlParameterSource()
                 .addValue("courseScheduleId  ", courseScheduleId).addValue("participantId", participantId);
-        return template.queryForObject(findCourseParticipantByCourseScheduleIdAndParticipantIdSql, NamedParameters,
-                new EnrollmentRowMapperCourseParticipant());
+        return template.queryForObject(findCourseParticipantByCourseScheduleIdAndParticipantIdSql, 
+                NamedParameters, new EnrollmentRowMapperCourseParticipant());
     }
     /** 
      * Method to Save Data to Table COURSE PARTICIPANT 
@@ -119,10 +124,10 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public void saveCourseParticipant(CourseParticipant courseParticipant) {
     	 String saveCourseParticipantSql = "INSERT INTO COURSE_PARTICIPANT"
-                 + "(ID, COURSE_SCHEDULE_ID, COURSE_NAME, INSTRUCTOR_NAME, VENUE_NAME, PARTICIPANT_ID, PARTICIPANT_NAME,"
-                 + "COURSE_SCHEDULE_DETAILS, REGISTRATION_DATE, REASON, DECLINE_DATE)"
-                 + "VALUES (:id, :courseScheduleId, :courseName, :instructorName, :venueName, :participantId, :participantName,"
-                 + ":courseScheduleDetails, :registrationDate, :reason, :declineDate)";
+                 + "(ID, COURSE_SCHEDULE_ID, COURSE_NAME, INSTRUCTOR_NAME, VENUE_NAME, PARTICIPANT_ID, "
+                 + "PARTICIPANT_NAME, COURSE_SCHEDULE_DETAILS, REGISTRATION_DATE, REASON, DECLINE_DATE)"
+                 + "VALUES (:id, :courseScheduleId, :courseName, :instructorName, :venueName, :participantId,"
+                 + ":participantName, :courseScheduleDetails, :registrationDate, :reason, :declineDate)";
 
          SqlParameterSource saveCourseParticipantParameters = new MapSqlParameterSource()
                  .addValue(" id", courseParticipant.getId())
@@ -152,8 +157,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 	 */
     
     @Override
-    public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, ZonedDateTime fromDateTime,
-            ZonedDateTime toDateTime) {
+    public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, 
+            ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
     	String query = "SELECT " 
     			+ "CSCHED.ID AS ID, " 
                 + "CSCHED.COURSE_ID AS COURSE_ID, "
@@ -206,7 +211,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     
     @Override
     public CourseParticipant findCourseParticipantById(Long id) {
-    	String findCourseParticipantByIdSql = "SELECT * FROM COURSE_SCHEDULE, COURSE_SCHEDULE_DETAIL, COURSE_PARTICIPANT, COURSE,  VENUE, EMPLOYEE" 
+    	String findCourseParticipantByIdSql = "SELECT * FROM COURSE_SCHEDULE, COURSE_SCHEDULE_DETAIL, "
+    	        + "COURSE_PARTICIPANT, COURSE,  VENUE, EMPLOYEE" 
 				+ "WHERE COURSE_PARTICIANT.ID = :id" + "AND STATUS = 'A'";
 
     	SqlParameterSource  NamedParameters = new MapSqlParameterSource()
@@ -238,7 +244,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public void saveCourseNonParticipant(CourseParticipant courseParticipant) {
     	 String courseParticipantSql = "INSERT INTO COURSE_NON_PARTICIPANT"
 	                + "(ID,  COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE, REASON, DECLINE_DATE)"
-	                + "VALUES (:id,COURSE_SCHEDULE_ID, :PARTICIPANT_ID, :REGISTRATION_DATE, :REASON, :DECLINE_DATE  )";
+	                + "VALUES (:id,COURSE_SCHEDULE_ID, :PARTICIPANT_ID, :REGISTRATION_DATE, :REASON, "
+	                + ":DECLINE_DATE  )";
 
 	        SqlParameterSource coursenonpartParameters = new MapSqlParameterSource()
 	        		.addValue("id", courseParticipant.getId())
@@ -254,7 +261,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public void changeCourseScheduleStatus(CourseSchedule courseSchedule) {
         // TODO Auto-generated method stub
     	String sql = "UPDATE COURSE_SCHEDULE SET status = :status WHERE id = :id";
-		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("status", courseSchedule.getStatus()).addValue("id", courseSchedule.getId());
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("status", courseSchedule
+		        .getStatus()).addValue("id", courseSchedule.getId());
 		template.update(sql, namedParameters);
     }
 
