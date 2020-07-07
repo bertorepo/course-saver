@@ -38,7 +38,7 @@
 					<col style="width:10%"/>
 					<col style="width:10%"/>
 				</colgroup>
-				<thead>
+				<thead >
 					<tr>
 						<th>Course Name</th>
 						<th>Instructor</th>
@@ -51,79 +51,19 @@
 						<th></th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>10</td>
-						<td>2020/01/01</td>
-						<td>10:00</td>
-						<td>2020/01/01</td>
-						<td>12:00</td>
-						<td>2 hours</td>
+				<tbody th:action="@/enrollment/viewCourseEnroll" th:object="${CourseScheduleListForm}">
+					<tr th:each="courseScheduleList : ${CourseScheduleListForm}">
+						<td th:value="${courseScheduleList.courseName}"></td>
+						<td th:value="${courseScheduleList.instructorName}"></td>
+						<td th:value="${courseScheduleList.totalParticiapnts}"></td>
+						<td th:value="${courseScheduleList.fromStartDate}"></td>
+						<td th:value="${courseScheduleList.startTime}"></td>
+						<td th:value="${courseScheduleList.toEndDate}"></td>
+						<td th:value="${courseScheduleList.endTime}"></td>
+						<td th:value="${courseScheduleList.duration}"></td>
 						<td>
 							<form class="form-inline" action="">
-								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
-							</form>
-						</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>10</td>
-						<td>2020/01/01</td>
-						<td>10:00</td>
-						<td>2020/01/01</td>
-						<td>12:00</td>
-						<td>2 hours</td>
-						<td>
-							<form class="form-inline" action="">
-								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
-							</form>
-						</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>10</td>
-						<td>2020/01/01</td>
-						<td>10:00</td>
-						<td>2020/01/01</td>
-						<td>12:00</td>
-						<td>2 hours</td>
-						<td>
-							<form class="form-inline" action="">
-								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
-							</form>
-						</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>10</td>
-						<td>2020/01/01</td>
-						<td>10:00</td>
-						<td>2020/01/01</td>
-						<td>12:00</td>
-						<td>2 hours</td>
-						<td>
-							<form class="form-inline" action="">
-								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
-							</form>
-						</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>10</td>
-						<td>2020/01/01</td>
-						<td>10:00</td>
-						<td>2020/01/01</td>
-						<td>12:00</td>
-						<td>2 hours</td>
-						<td>
-							<form class="form-inline" action="">
-								<button class="btn btn-danger" ><i class="fa fa-times"></i> Cancel</button>
+								<button class="btn btn-danger" th:action="@/enrollment/schedules/{courseScheduleId}/cancel" ><i class="fa fa-times"></i> Cancel</button>
 							</form>
 						</td>
 					</tr>

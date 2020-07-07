@@ -114,7 +114,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		if(courseSchedule.getId() == null) {
 			throw new IllegalArgumentException("This course{"+id+"} is not existing");
 		}
-		CourseSchedule courseScheduleInstance = new CourseSchedule.Builder(id).cancel();	
+		CourseSchedule courseScheduleInstance = new CourseSchedule.Builder(id).cancel().build();	
 		enrollmentDao.changeCourseScheduleStatus(courseScheduleInstance);
 	}
 
