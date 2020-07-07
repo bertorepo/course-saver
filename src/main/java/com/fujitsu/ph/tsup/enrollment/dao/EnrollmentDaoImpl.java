@@ -23,6 +23,8 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 */
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
+
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -39,7 +41,7 @@ import org.springframework.stereotype.Repository;
 public class EnrollmentDaoImpl implements EnrollmentDao {
     @Autowired
     private NamedParameterJdbcTemplate template;
-    KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+
     
     /**
      * Finds the scheduled courses by the given fromDateTime and toDateTime
@@ -51,18 +53,36 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      **/
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
-        String query = "SELECT C.NAME, E.FIRST_NAME, E.LAST_NAME, CSD.SCHEDULED_START_DATETIME, CSD.SCHEDULED_END_DATETIME, CSD.DURATION"
-                + "FROM COURSE_SCHEDULE_DETAIL AS CSD"
-                + "INNER JOIN COURSE_SCHEDULE AS CS"
-                + "ON CSD.COURSE_SCHEDULE_ID = C.ID"
-                + "INNER JOIN COURSE AS C"
-                + "ON CS.COURSE_ID = C.ID"
-                + "INNER JOIN EMPLOYEE AS E"
-                + "ON CS.INSTRUCTOR_ID = E.ID"
-                + "WHERE SCHEDULED_START_DATETIME = :fromDate AND SCHEDULE_END_DATETIME = :toDate";
+        String query = "SELECT C.NAME AS COURSE_NAME, "
+                + "CS.ID AS ID, "
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "CS.VENUE_ID AS VENUE_ID, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
+                + "CS.MAX_ALLOWED AS MAX_ALLOWED, "
+                    + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
+                    + "WHERE COURSE_SCHEDULE_ID = CS.ID), "
+                + "CS.STATUS AS STATUS, "
+                + "CSD.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSD.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CSD.DURATION AS DURATION "
+                + "FROM COURSE_SCHEDULE AS CS " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSD "
+                + "ON CS.ID = CSD.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CS.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CS.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V " 
+                + "ON CS.VENUE_ID = V.ID "
+                + "WHERE CSD.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
+                +" ORDER BY C.NAME, CSD.SCHEDULED_START_DATETIME";
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
-                .addValue("fromDateTime", fromDateTime)
-                .addValue("toDateTime", toDateTime);
+                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters, new EnrollmentRowMapperCourseSchedule());
         Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
