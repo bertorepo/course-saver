@@ -13,8 +13,9 @@ import java.util.Set;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 | WS) K.Freo            | New Creation
-//0.01    | 07/07/2020 | WS) T.Oviedo          | Update	
+//0.01    | 06/23/2020 | WS) K.Freo        | New Creation
+//0.01    | 07/06/2020 | WS) J.Macabugao   | Update
+//0.01	  | 07/07/2020 | WS) T.Oviedo	   | Update
 //==================================================================================================
 /**
 * <pre>
@@ -185,9 +186,11 @@ public class CourseParticipant {
 
 		public Builder(Long courseScheduleId, Long participantId) {
 
-			validatecourseScheduleId(courseScheduleId);
-			validateparticipantId(participantId);
+			validateCourseScheduleId(courseScheduleId);
+			validateParticipantId(participantId);
 
+			this.registrationDate = ZonedDateTime.now();
+			
 			this.courseScheduleId = courseScheduleId;
 			this.participantId = participantId;
 		}
@@ -202,9 +205,8 @@ public class CourseParticipant {
 		 * 
 		 * @param Id
 		 */
-
 		public Builder(Long id) {
-			validateid(id);
+			validateId(id);
 
 			this.id = id;
 		}
@@ -226,26 +228,32 @@ public class CourseParticipant {
 		 * @param venueName
 		 * @param participantName
 		 */
-
 		public Builder(Long id, Long courseScheduleId, String courseName, String instructorName, String venueName,
-				Set<CourseScheduleDetail> courseScheduleDetails, ZonedDateTime registrationDate, String reason,
-				ZonedDateTime declineDate, Long participantId) {
+				Long participantId, String participantName, ZonedDateTime registrationDate,
+				String reason, ZonedDateTime declineDate) {
 
-			validateid(id);
-			validatecourseScheduleId(courseScheduleId);
-			validateparticipantId(participantId);
-			validateregistrationDate(registrationDate);
-			validatecourseName(courseName);
-			validateinstructorName(instructorName);
-			validatevenueName(venueName);
+			validateId(id);
+			validateCourseScheduleId(courseScheduleId);
+			validateParticipantId(participantId);
+			validateRegistrationDate(registrationDate);
+			validateCourseName(courseName);
+			validateInstructorName(instructorName);
+			validateVenueName(venueName);
+			validateParticipantName(participantName);
+
 
 			this.id = id;
 			this.courseScheduleId = courseScheduleId;
-			this.participantId = participantId;
-			this.registrationDate = registrationDate;
 			this.courseName = courseName;
 			this.instructorName = instructorName;
 			this.venueName = venueName;
+			this.participantId = participantId;
+			this.participantName = participantName;
+			this.registrationDate = registrationDate;
+			this.reason = reason;
+			this.declineDate = declineDate;
+			
+	
 
 		}
 
@@ -258,13 +266,10 @@ public class CourseParticipant {
 		 * @param courseScheduleDetail
 		 * @return builder
 		 */
-
 		public Builder addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
 
-			validatecourseScheduleDetail(courseScheduleDetail);
+			validateCourseScheduleDetail(courseScheduleDetail);
 			this.courseScheduleDetail = courseScheduleDetail;
-
-//			CourseParticipant builder = new CourseParticipant.Builder(id).build();
 
 			return this;
 		}
@@ -278,7 +283,6 @@ public class CourseParticipant {
 		 * @param CourseParticipant
 		 * @return builder
 		 */
-
 		public Builder decline(String reason) {
 
 			validateReason(reason);
@@ -308,8 +312,7 @@ public class CourseParticipant {
 		 * 
 		 * @param id
 		 */
-
-		private void validateid(Long id) {
+		private void validateId(Long id) {
 			if (id == null || id == 0L) {
 				throw new IllegalArgumentException("Id should not be empty");
 			}
@@ -325,7 +328,7 @@ public class CourseParticipant {
 		 * 
 		 * @param courseScheduleId
 		 */
-		private void validatecourseScheduleId(Long courseScheduleId) {
+		private void validateCourseScheduleId(Long courseScheduleId) {
 			if (courseScheduleId == null || courseScheduleId == 0L) {
 				throw new IllegalArgumentException("Course Schedule Id should not be empty");
 			}
@@ -341,7 +344,7 @@ public class CourseParticipant {
 		 * 
 		 * @param participantId
 		 */
-		private void validateparticipantId(Long participantId) {
+		private void validateParticipantId(Long participantId) {
 			if (participantId == null || participantId == 0L) {
 				throw new IllegalArgumentException("Participant Id should not be empty");
 			}
@@ -357,7 +360,7 @@ public class CourseParticipant {
 		 * 
 		 * @param registrationDate
 		 */
-		private void validateregistrationDate(ZonedDateTime registrationDate) {
+		private void validateRegistrationDate(ZonedDateTime registrationDate) {
 			if (registrationDate == null) {
 				throw new IllegalArgumentException("Registration Date should not be empty");
 			}
@@ -372,7 +375,7 @@ public class CourseParticipant {
 		 * 
 		 * @param courseName
 		 */
-		private void validatecourseName(String courseName) {
+		private void validateCourseName(String courseName) {
 			if (courseName == null || courseName.isEmpty()) {
 				throw new IllegalArgumentException("Course name should not be empty");
 			}
@@ -388,7 +391,7 @@ public class CourseParticipant {
 		 * 
 		 * @param instructorName
 		 */
-		private void validateinstructorName(String instructorName) {
+		private void validateInstructorName(String instructorName) {
 			if (instructorName == null || instructorName.isEmpty()) {
 				throw new IllegalArgumentException("Instructor Name should not be empty");
 			}
@@ -403,11 +406,27 @@ public class CourseParticipant {
 		 * 
 		 * @param VenueName
 		 */
-		private void validatevenueName(String venueName) {
+		private void validateVenueName(String venueName) {
 			if (venueName == null || venueName.isEmpty()) {
-				throw new IllegalArgumentException("Venue should not be empty");
+				throw new IllegalArgumentException("Venue name should not be empty");
 			}
 		}
+		
+		/**
+		 * <pre>
+		 * Validate the Participant Name based on the condition below. If it is invalid then
+		 * throw an IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param participantName
+		 */
+		private void validateParticipantName(String participantName) {
+			if (participantName == null || participantName.isEmpty()) {
+				throw new IllegalArgumentException("Participant Name should not be empty");
+			}
+		}
+
 
 		/**
 		 * <pre>
@@ -419,7 +438,7 @@ public class CourseParticipant {
 		 * 
 		 * @param courseScheduleDetail
 		 */
-		private void validatecourseScheduleDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
+		private void validateCourseScheduleDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
 			if (courseScheduleDetail == null || courseScheduleDetail.isEmpty()) {
 				throw new IllegalArgumentException("Course Schedule Detail should have atleast 1 record");
 			}
