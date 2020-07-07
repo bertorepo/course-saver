@@ -10,68 +10,101 @@ import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
 public class CourseScheduleDetailTest {
-    
+
     @Test
-    void testValid_CourseScheduleDetail() {
-        CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(1L, 1L, ZonedDateTime.parse("2016-11-16T17:21:00Z"),
-                        ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5)).build();
-        
+    void testNotNull_CourseScheduleDetail() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
+
         assertNotNull(courseScheduleDetail.getId());
-        assertEquals(1L, courseScheduleDetail.getId());
         assertNotNull(courseScheduleDetail.getCourseScheduleId());
-        assertEquals(1L, courseScheduleDetail.getCourseScheduleId());
         assertNotNull(courseScheduleDetail.getScheduledStartDateTime());
-        assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z"), courseScheduleDetail.getScheduledStartDateTime());
         assertNotNull(courseScheduleDetail.getScheduledEndDateTime());
-        assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5), courseScheduleDetail.getScheduledEndDateTime());
     }
     
     @Test
-    void testInvalidId_isNull() {
+    void testValid_courseScheduleDetailId() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
         
+        assertEquals(1L, courseScheduleDetail.getId());    
+    }
+    
+    @Test
+    void testValid_courseScheduleId() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
+        
+        assertEquals(1L, courseScheduleDetail.getCourseScheduleId());
+    }
+    
+    @Test
+    void testValid_scheduledStartDateTime() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
+        
+        assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z"), courseScheduleDetail.getScheduledStartDateTime());
+    }
+    
+    @Test
+    void testValid_scheduledEndDateTime() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5))
+                        .build();
+        
+        assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5),
+                courseScheduleDetail.getScheduledEndDateTime());
+    }
+
+    @Test
+    void testInvalidId_isNull() {
+
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             new CourseScheduleDetail.Builder(null, 1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
         });
         assertTrue(error.getMessage().equals("Id should not be empty"));
     }
-    
+
     @Test
     void testInvalidId_isZero() {
-        
+
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             new CourseScheduleDetail.Builder(0L, 1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
         });
         assertTrue(error.getMessage().equals("Id should not be empty"));
     }
-    
+
     @Test
     void testInvalidCourseScheduleId_isNull() {
-        
+
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             new CourseScheduleDetail.Builder(1L, null, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
         });
         assertTrue(error.getMessage().equals("Course Schedule Id should not be empty"));
     }
-    
+
     @Test
     void testInvalidCourseScheduleId_isZero() {
-        
+
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             new CourseScheduleDetail.Builder(1L, 0L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
         });
         assertTrue(error.getMessage().equals("Course Schedule Id should not be empty"));
     }
-    
+
     @Test
     void testInvalidScheduledStartDateTime_isNull() {
-        
+
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             new CourseScheduleDetail.Builder(1L, 1L, null, ZonedDateTime.now().plusHours(5)).build();
         });
         assertTrue(error.getMessage().equals("Scheduled Start Date and Time should not be empty"));
     }
-    
+
     @Test
     void testInvalidScheduledEndDateTime_isNull() {
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
@@ -79,21 +112,13 @@ public class CourseScheduleDetailTest {
         });
         assertTrue(error.getMessage().equals("Scheduled End Date and Time should not be empty"));
     }
-    
+
     @Test
     void testInvalidScheduledEndDateTime_isBefore() {
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             new CourseScheduleDetail.Builder(1L, 1L, ZonedDateTime.now(), ZonedDateTime.now().minusDays(5)).build();
         });
-        assertTrue(error.getMessage().equals("Scheduled end date and time should be greater than or " + 
-                                       "equal to the the scheduled start date and time"));
-    }
-    
-    
-    
-    private CourseScheduleDetail validCourseScheduleDetail() {
-        CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(1L, 1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
-        return courseScheduleDetail;
+        assertTrue(error.getMessage().equals("Scheduled end date and time should be greater than or "
+                + "equal to the the scheduled start date and time"));
     }
 }
