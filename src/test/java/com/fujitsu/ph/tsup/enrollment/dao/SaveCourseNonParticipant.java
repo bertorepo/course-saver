@@ -18,8 +18,6 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 class SaveCourseNonParticipant {
 
-	
-
 	    @Autowired
 	    private EnrollmentDao dao;
 
@@ -40,6 +38,5 @@ class SaveCourseNonParticipant {
 	       
 	       assertEquals(1L, courseParticipant.getCourseScheduleId());
 	       assertEquals(1L, courseParticipant.getParticipantId());
-	    
 	}
 }
