@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/22/2020 |  WS) R. Ramos   | New Creation
 //0.02 | 07/03/2020 |  WS) R. Ramos   | Updated
+//0.03 | 07/07/2020 |  WS) R. Ramos   | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -24,151 +25,151 @@ import java.time.ZonedDateTime;
  * @author r.ramos
  */
 public class CourseAttendance {
-    /**
-     * Course Attendance Id
-     */
-    private Long id;
+	/**
+	 * Course Attendance Id
+	 */
+	private Long id;
 
-    /**
-     * from the Course Schedule detail id
-     */
-    private Long courseScheduleDetailId;
+	/**
+	 * from the Course Schedule detail id
+	 */
+	private Long courseScheduleDetailId;
 
-    /**
-     * Course Name
-     */
-    private String courseName;
+	/**
+	 * Course Name
+	 */
+	private String courseName;
 
-    /**
-     * Instructor Name (LASTNAME, FIRSTNAME)
-     */
-    private String instructorName;
+	/**
+	 * Instructor Name (LASTNAME, FIRSTNAME)
+	 */
+	private String instructorName;
 
-    /**
-     * Venue Name
-     */
-    private String venueName;
+	/**
+	 * Venue Name
+	 */
+	private String venueName;
 
-    /**
-     * from the Employee Id
-     */
-    private Long participantId;
+	/**
+	 * from the Employee Id
+	 */
+	private Long participantId;
 
-    /**
-     * Participant Name(LASTNAME, FIRSTNAME)
-     */
-    private String participantName;
+	/**
+	 * Participant Name(LASTNAME, FIRSTNAME)
+	 */
+	private String participantName;
 
-    /**
-     * Start Date and Time
-     */
-    private ZonedDateTime scheduledStartDateTime;
+	/**
+	 * Start Date and Time
+	 */
+	private ZonedDateTime scheduledStartDateTime;
 
-    /**
-     * End Date and Time
-     */
-    private ZonedDateTime scheduledEndDateTime;
+	/**
+	 * End Date and Time
+	 */
+	private ZonedDateTime scheduledEndDateTime;
 
-    /**
-     * Duration
-     */
-    private float duration;
+	/**
+	 * Duration
+	 */
+	private float duration;
 
-    /**
-     * Registration Date
-     */
-    private ZonedDateTime registrationDate;
+	/**
+	 * Registration Date
+	 */
+	private ZonedDateTime registrationDate;
 
-    /**
-     * Login Date and Time
-     */
-    private ZonedDateTime loginDateTime;
+	/**
+	 * Login Date and Time
+	 */
+	private ZonedDateTime loginDateTime;
 
-    /**
-     * Status
-     */
-    private char status;
+	/**
+	 * Status
+	 */
+	private char status;
 
-    protected CourseAttendance() {
-    }
+	protected CourseAttendance() {
+	}
 
-    /**
-     * <pre>
-     * Creates an instance of the CourseAttendance using the given builder class.
-     * 
-     * <pre>
-     * 
-     * @param builder
-     */
+	/**
+	 * <pre>
+	 * Creates an instance of the CourseAttendance using the given builder class.
+	 * 
+	 * <pre>
+	 * 
+	 * @param builder
+	 */
 
-    private CourseAttendance(Builder builder) {
-        this.id = builder.id;
-        this.courseScheduleDetailId = builder.courseScheduleDetailId;
-        this.courseName = builder.courseName;
-        this.instructorName = builder.instructorName;
-        this.venueName = builder.venueName;
-        this.participantId = builder.participantId;
-        this.participantName = builder.participantName;
-        this.scheduledStartDateTime = builder.scheduledStartDateTime;
-        this.scheduledEndDateTime = builder.scheduledEndDateTime;
-        this.duration = builder.duration;
-        this.registrationDate = builder.registrationDate;
-        this.loginDateTime = builder.loginDateTime;
-        this.status = builder.status;
-    }
+	private CourseAttendance(Builder builder) {
+		this.id = builder.id;
+		this.courseScheduleDetailId = builder.courseScheduleDetailId;
+		this.courseName = builder.courseName;
+		this.instructorName = builder.instructorName;
+		this.venueName = builder.venueName;
+		this.participantId = builder.participantId;
+		this.participantName = builder.participantName;
+		this.scheduledStartDateTime = builder.scheduledStartDateTime;
+		this.scheduledEndDateTime = builder.scheduledEndDateTime;
+		this.duration = builder.duration;
+		this.registrationDate = builder.registrationDate;
+		this.loginDateTime = builder.loginDateTime;
+		this.status = builder.status;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Long getCourseScheduleDetailId() {
-        return courseScheduleDetailId;
-    }
+	public Long getCourseScheduleDetailId() {
+		return courseScheduleDetailId;
+	}
 
-    public String getCourseName() {
-        return courseName;
-    }
+	public String getCourseName() {
+		return courseName;
+	}
 
-    public String getInstructorName() {
-        return instructorName;
-    }
+	public String getInstructorName() {
+		return instructorName;
+	}
 
-    public String getVenueName() {
-        return venueName;
-    }
+	public String getVenueName() {
+		return venueName;
+	}
 
-    public Long getParticipantId() {
-        return participantId;
-    }
+	public Long getParticipantId() {
+		return participantId;
+	}
 
-    public String getParticipantName() {
-        return participantName;
-    }
+	public String getParticipantName() {
+		return participantName;
+	}
 
-    public ZonedDateTime getScheduleStartDateTime() {
-        return scheduledStartDateTime;
-    }
+	public ZonedDateTime getScheduleStartDateTime() {
+		return scheduledStartDateTime;
+	}
 
-    public ZonedDateTime getScheduleEndDateTime() {
-        return scheduledEndDateTime;
-    }
+	public ZonedDateTime getScheduleEndDateTime() {
+		return scheduledEndDateTime;
+	}
 
-    public float getDuration() {
-        return duration;
-    }
+	public float getDuration() {
+		return duration;
+	}
 
-    public ZonedDateTime getRegistrationDate() {
-        return registrationDate;
-    }
+	public ZonedDateTime getRegistrationDate() {
+		return registrationDate;
+	}
 
-    public ZonedDateTime getLoginDateTime() {
-        return loginDateTime;
-    }
+	public ZonedDateTime getLoginDateTime() {
+		return loginDateTime;
+	}
 
-    public char getStatus() {
-        return status;
-    }
-    
+	public char getStatus() {
+		return status;
+	}
+
 	@Override
 	public String toString() {
 		return "CourseAttendance [id = " + id + ", courseScheduleDetailId = " + courseScheduleDetailId
@@ -179,432 +180,435 @@ public class CourseAttendance {
 				+ ", loginDateTime = " + loginDateTime + ", status = " + status + "]";
 	}
 
-    /**
-     * <pre>
-     * The builder class of the course attendance. The builder is a public static
-     * member class of CourseAttendance
-     * 
-     * <pre>
-     * 
-     * @author r.ramos
-     *
-     */
+	/**
+	 * <pre>
+	 * The builder class of the course attendance. The builder is a public static
+	 * member class of CourseAttendance
+	 * 
+	 * <pre>
+	 * 
+	 * @author r.ramos
+	 *
+	 */
 
-    public static class Builder {
+	public static class Builder {
 
-        /**
-         * Course Attendance Id
-         */
-        private Long id;
+		/**
+		 * Course Attendance Id
+		 */
+		private Long id;
 
-        /**
-         * from the Course Schedule detail id
-         */
-        private Long courseScheduleDetailId;
+		/**
+		 * from the Course Schedule detail id
+		 */
+		private Long courseScheduleDetailId;
 
-        /**
-         * Course Name
-         */
-        private String courseName;
+		/**
+		 * Course Name
+		 */
+		private String courseName;
 
-        /**
-         * Instructor Name (LASTNAME, FIRSTNAME)
-         */
-        private String instructorName;
+		/**
+		 * Instructor Name (LASTNAME, FIRSTNAME)
+		 */
+		private String instructorName;
 
-        /**
-         * Venue Name
-         */
-        private String venueName;
+		/**
+		 * Venue Name
+		 */
+		private String venueName;
 
-        /**
-         * from the Employee Id
-         */
-        private Long participantId;
+		/**
+		 * from the Employee Id
+		 */
+		private Long participantId;
 
-        /**
-         * Participant Name(LASTNAME, FIRSTNAME)
-         */
-        private String participantName;
+		/**
+		 * Participant Name(LASTNAME, FIRSTNAME)
+		 */
+		private String participantName;
 
-        /**
-         * Start Date and Time
-         */
-        private ZonedDateTime scheduledStartDateTime;
+		/**
+		 * Start Date and Time
+		 */
+		private ZonedDateTime scheduledStartDateTime;
 
-        /**
-         * End Date and Time
-         */
-        private ZonedDateTime scheduledEndDateTime;
+		/**
+		 * End Date and Time
+		 */
+		private ZonedDateTime scheduledEndDateTime;
 
-        /**
-         * Duration
-         */
-        private float duration;
+		/**
+		 * Duration
+		 */
+		private float duration;
 
-        /**
-         * Registration Date
-         */
-        private ZonedDateTime registrationDate;
+		/**
+		 * Registration Date
+		 */
+		private ZonedDateTime registrationDate;
 
-        /**
-         * Login Date and Time
-         */
-        private ZonedDateTime loginDateTime;
+		/**
+		 * Login Date and Time
+		 */
+		private ZonedDateTime loginDateTime;
 
-        /**
-         * Status
-         */
-        private char status;
+		/**
+		 * Status
+		 */
+		private char status;
 
-        /**
-         * <pre>
-         * Creates a new instance of course attendance Builder. Validates and sets the
-         * argument into the Builder instance variables. This method is used for setting
-         * the data from the database
-         * 
-         * <pre>
-         * 
-         * @param id
-         * @param courseScheduleDetailId
-         * @param courseName
-         * @param venueName
-         * @param participantId
-         * @param participantName
-         * @param scheduledStartDateTime
-         * @param scheduledEndDateTime
-         * @param duration
-         * @param registrationDate
-         * @param loginDateTime
-         * @param status
-         */
+		/**
+		 * <pre>
+		 * Creates a new instance of course attendance Builder. Validates and sets the
+		 * argument into the Builder instance variables. This method is used for setting
+		 * the data from the database
+		 * 
+		 * <pre>
+		 * 
+		 * @param id
+		 * @param courseScheduleDetailId
+		 * @param courseName
+		 * @param venueName
+		 * @param participantId
+		 * @param participantName
+		 * @param scheduledStartDateTime
+		 * @param scheduledEndDateTime
+		 * @param duration
+		 * @param registrationDate
+		 * @param loginDateTime
+		 * @param status
+		 */
 
-        public Builder(Long id, Long courseScheduleDetailId, String courseName, String instructorName, String venueName,
-                Long participantId, String participantName, ZonedDateTime scheduledStartDateTime,
-                ZonedDateTime scheduledEndDateTime, float duration, ZonedDateTime registrationDate,
-                ZonedDateTime loginDateTime, char status) {
+		public Builder(Long id, Long courseScheduleDetailId, String courseName, String instructorName, String venueName,
+				Long participantId, String participantName, ZonedDateTime scheduledStartDateTime,
+				ZonedDateTime scheduledEndDateTime, float duration, ZonedDateTime registrationDate,
+				ZonedDateTime loginDateTime, char status) {
 
-            validateId(id);
-            validateCourseScheduleDetailId(courseScheduleDetailId);
-            validateParticipantId(participantId);
-            validateRegistrationDate(registrationDate);
-            validateCourseName(courseName);
-            validateInstructorName(instructorName);
-            validateVenueName(venueName);
-            validateParticipantName(participantName);
-            validateScheduledStartDateTime(scheduledStartDateTime);
-            validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
+			validateId(id);
+			validateCourseScheduleDetailId(courseScheduleDetailId);
+			validateParticipantId(participantId);
+			validateRegistrationDate(registrationDate);
+			validateCourseName(courseName);
+			validateInstructorName(instructorName);
+			validateVenueName(venueName);
+			validateParticipantName(participantName);
+			validateScheduledStartDateTime(scheduledStartDateTime);
+			validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
 
-            this.id = id;
-            this.courseScheduleDetailId = courseScheduleDetailId;
-            this.participantId = participantId;
-            this.registrationDate = registrationDate;
-            this.courseName = courseName;
-            this.instructorName = instructorName;
-            this.venueName = venueName;
-            this.participantName = participantName;
-            this.scheduledStartDateTime = scheduledStartDateTime;
-            this.scheduledEndDateTime = scheduledEndDateTime;
-            this.scheduledEndDateTime = scheduledEndDateTime;
-        }
+			this.id = id;
+			this.courseScheduleDetailId = courseScheduleDetailId;
+			this.participantId = participantId;
+			this.registrationDate = registrationDate;
+			this.courseName = courseName;
+			this.instructorName = instructorName;
+			this.venueName = venueName;
+			this.participantName = participantName;
+			this.scheduledStartDateTime = scheduledStartDateTime;
+			this.scheduledEndDateTime = scheduledEndDateTime;
+			this.scheduledEndDateTime = scheduledEndDateTime;
+			this.status = status;
+			this.loginDateTime = loginDateTime;
+			this.duration = duration;
+		}
 
-        /**
-         * <pre>
-         * Creates a new instance of course attendance Builder. Validates and sets the
-         * argument into the Builder instance variables. This method is used for setting
-         * the data from the database
-         * 
-         * <pre>
-         * 
-         * @param id
-         * @param courseScheduleDetailId
-         * @param courseName
-         * @param venueName
-         * @param participantId
-         * @param participantName
-         * @param scheduledStartDateTime
-         * @param scheduledEndDateTime
-         * @param duration
-         * @param registrationDate
-         */
+		/**
+		 * <pre>
+		 * Creates a new instance of course attendance Builder. Validates and sets the
+		 * argument into the Builder instance variables. This method is used for setting
+		 * the data from the database
+		 * 
+		 * <pre>
+		 * 
+		 * @param id
+		 * @param courseScheduleDetailId
+		 * @param courseName
+		 * @param venueName
+		 * @param participantId
+		 * @param participantName
+		 * @param scheduledStartDateTime
+		 * @param scheduledEndDateTime
+		 * @param duration
+		 * @param registrationDate
+		 */
 
-        public Builder(Long id, Long courseScheduleDetailId, String courseName, String instructorName, String venueName,
-                Long participantId, String participantName, ZonedDateTime scheduledStartDateTime,
-                ZonedDateTime scheduledEndDateTime, float duration, ZonedDateTime registrationDate) {
+		public Builder(Long id, Long courseScheduleDetailId, String courseName, String instructorName, String venueName,
+				Long participantId, String participantName, ZonedDateTime scheduledStartDateTime,
+				ZonedDateTime scheduledEndDateTime, float duration, ZonedDateTime registrationDate) {
 
-            validateId(id);
-            validateCourseScheduleDetailId(courseScheduleDetailId);
-            validateParticipantId(participantId);
-            validateRegistrationDate(registrationDate);
-            validateCourseName(courseName);
-            validateInstructorName(instructorName);
-            validateVenueName(venueName);
-            validateParticipantName(participantName);
-            validateScheduledStartDateTime(scheduledStartDateTime);
-            validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
+			validateId(id);
+			validateCourseScheduleDetailId(courseScheduleDetailId);
+			validateParticipantId(participantId);
+			validateRegistrationDate(registrationDate);
+			validateCourseName(courseName);
+			validateInstructorName(instructorName);
+			validateVenueName(venueName);
+			validateParticipantName(participantName);
+			validateScheduledStartDateTime(scheduledStartDateTime);
+			validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
 
-            this.id = id;
-            this.courseScheduleDetailId = courseScheduleDetailId;
-            this.participantId = participantId;
-            this.registrationDate = registrationDate;
-            this.courseName = courseName;
-            this.instructorName = instructorName;
-            this.venueName = venueName;
-            this.participantName = participantName;
-            this.scheduledStartDateTime = scheduledStartDateTime;
-            this.scheduledEndDateTime = scheduledEndDateTime;
-            this.scheduledEndDateTime = scheduledEndDateTime;
-        }
+			this.id = id;
+			this.courseScheduleDetailId = courseScheduleDetailId;
+			this.participantId = participantId;
+			this.registrationDate = registrationDate;
+			this.courseName = courseName;
+			this.instructorName = instructorName;
+			this.venueName = venueName;
+			this.participantName = participantName;
+			this.scheduledStartDateTime = scheduledStartDateTime;
+			this.scheduledEndDateTime = scheduledEndDateTime;
+			this.scheduledEndDateTime = scheduledEndDateTime;
+		}
 
-        /**
-         * <pre>
-         * Creates a new instance of course attendance Builder. Validates and sets the
-         * argument into the Builder instance variables. This method is used for setting
-         * the data from the database
-         * 
-         * <pre>
-         * 
-         * @param id
-         */
+		/**
+		 * <pre>
+		 * Creates a new instance of course attendance Builder. Validates and sets the
+		 * argument into the Builder instance variables. This method is used for setting
+		 * the data from the database
+		 * 
+		 * <pre>
+		 * 
+		 * @param id
+		 */
 
-        public Builder(Long id) {
-            validateId(id);
+		public Builder(Long id) {
+			validateId(id);
 
-            this.id = id;
-        }
+			this.id = id;
+		}
 
-        /**
-         * <pre>
-         * Creates a new instance of course attendance Builder. Validates and sets the
-         * argument into the Builder instance variables. This method is used for setting
-         * the data from the database
-         * 
-         * <pre>
-         * 
-         * @param courseScheduleDetailId
-         * @param particiantId
-         */
+		/**
+		 * <pre>
+		 * Creates a new instance of course attendance Builder. Validates and sets the
+		 * argument into the Builder instance variables. This method is used for setting
+		 * the data from the database
+		 * 
+		 * <pre>
+		 * 
+		 * @param courseScheduleDetailId
+		 * @param particiantId
+		 */
 
-        public Builder(Long courseScheduleDetailId, Long particiantId) {
-            validateCourseScheduleDetailId(courseScheduleDetailId);
-            validateParticipantId(particiantId);
+		public Builder(Long courseScheduleDetailId, Long particiantId) {
+			validateCourseScheduleDetailId(courseScheduleDetailId);
+			validateParticipantId(particiantId);
 
-            this.courseScheduleDetailId = courseScheduleDetailId;
-            this.participantId = particiantId;
-        }
+			this.courseScheduleDetailId = courseScheduleDetailId;
+			this.participantId = particiantId;
+		}
 
-        /**
-         * <pre>
-         * Set the status to absent
-         * 
-         * <pre>
-         * 
-         * @return builder
-         */
+		/**
+		 * <pre>
+		 * Set the status to absent
+		 * 
+		 * <pre>
+		 * 
+		 * @return builder
+		 */
 
-        public Builder absent() {
-            this.status = 'A';
-            this.loginDateTime = null;
+		public Builder absent() {
+			this.status = 'A';
+			this.loginDateTime = null;
 
-            return this;
-        }
+			return this;
+		}
 
-        /**
-         * <pre>
-         * Set the status to present
-         * 
-         * <pre>
-         * 
-         * @param loginDateTime
-         * @return builder
-         */
+		/**
+		 * <pre>
+		 * Set the status to present
+		 * 
+		 * <pre>
+		 * 
+		 * @param loginDateTime
+		 * @return builder
+		 */
 
-        public Builder present(ZonedDateTime loginDateTime) {
-            this.status = 'P';
-            this.loginDateTime = loginDateTime;
+		public Builder present(ZonedDateTime loginDateTime) {
+			this.status = 'P';
+			this.loginDateTime = loginDateTime;
 
-            return this;
-        }
+			return this;
+		}
 
-        /**
-         * <pre>
-         * Creates a new instance
-         * 
-         * <pre>
-         * 
-         * @return builder
-         */
+		/**
+		 * <pre>
+		 * Creates a new instance
+		 * 
+		 * <pre>
+		 * 
+		 * @return builder
+		 */
 
-        public CourseAttendance build() {
-            return new CourseAttendance(this);
-        }
+		public CourseAttendance build() {
+			return new CourseAttendance(this);
+		}
 
-        /**
-         * <pre>
-         * Validate the id based on the condition below. If it is invalid then throw an
-         * IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param id
-         */
+		/**
+		 * <pre>
+		 * Validate the id based on the condition below. If it is invalid then throw an
+		 * IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param id
+		 */
 
-        private void validateId(Long id) {
-            if (id == null || id == 0) {
-                throw new IllegalArgumentException("Id should not be empty");
-            }
-        }
+		private void validateId(Long id) {
+			if (id == null || id == 0) {
+				throw new IllegalArgumentException("Id should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the course schedule detail id based on the condition below. If it is
-         * invalid then throw an IllegalArgumentException with the corresponding
-         * message.
-         * 
-         * <pre>
-         * 
-         * @param courseScheduleDetailId
-         */
+		/**
+		 * <pre>
+		 * Validate the course schedule detail id based on the condition below. If it is
+		 * invalid then throw an IllegalArgumentException with the corresponding
+		 * message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param courseScheduleDetailId
+		 */
 
-        private void validateCourseScheduleDetailId(Long courseScheduleDetailId) {
-            if (courseScheduleDetailId == null || courseScheduleDetailId == 0) {
-                throw new IllegalArgumentException("Course schedule detail id should not be empty");
-            }
-        }
+		private void validateCourseScheduleDetailId(Long courseScheduleDetailId) {
+			if (courseScheduleDetailId == null || courseScheduleDetailId == 0) {
+				throw new IllegalArgumentException("Course schedule detail id should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the participant id based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param participantId
-         */
+		/**
+		 * <pre>
+		 * Validate the participant id based on the condition below. If it is invalid
+		 * then throw an IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param participantId
+		 */
 
-        private void validateParticipantId(Long participantId) {
-            if (participantId == null || participantId == 0) {
-                throw new IllegalArgumentException("Participant should not be empty");
-            }
-        }
+		private void validateParticipantId(Long participantId) {
+			if (participantId == null || participantId == 0) {
+				throw new IllegalArgumentException("Participant should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the registration date based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param registrationDate
-         */
+		/**
+		 * <pre>
+		 * Validate the registration date based on the condition below. If it is invalid
+		 * then throw an IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param registrationDate
+		 */
 
-        private void validateRegistrationDate(ZonedDateTime registrationDate) {
-            if (registrationDate == null) {
-                throw new IllegalArgumentException("Registration date should not be empty");
-            }
-        }
+		private void validateRegistrationDate(ZonedDateTime registrationDate) {
+			if (registrationDate == null) {
+				throw new IllegalArgumentException("Registration date should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the course name based on the condition below. If it is invalid then
-         * throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param courseName
-         */
+		/**
+		 * <pre>
+		 * Validate the course name based on the condition below. If it is invalid then
+		 * throw an IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param courseName
+		 */
 
-        private void validateCourseName(String courseName) {
-            if (courseName == null || courseName.isEmpty()) {
-                throw new IllegalArgumentException("Course Name should not be empty");
-            }
-        }
+		private void validateCourseName(String courseName) {
+			if (courseName == null || courseName.isEmpty()) {
+				throw new IllegalArgumentException("Course Name should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the instructor name based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param instructorName
-         */
+		/**
+		 * <pre>
+		 * Validate the instructor name based on the condition below. If it is invalid
+		 * then throw an IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param instructorName
+		 */
 
-        private void validateInstructorName(String instructorName) {
-            if (instructorName == null || instructorName.isEmpty()) {
-                throw new IllegalArgumentException("Instructor Name should not be empty");
-            }
-        }
+		private void validateInstructorName(String instructorName) {
+			if (instructorName == null || instructorName.isEmpty()) {
+				throw new IllegalArgumentException("Instructor Name should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the venue name based on the condition below. If it is invalid then
-         * throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param venueName
-         */
+		/**
+		 * <pre>
+		 * Validate the venue name based on the condition below. If it is invalid then
+		 * throw an IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param venueName
+		 */
 
-        private void validateVenueName(String venueName) {
-            if (venueName == null || venueName.isEmpty()) {
-                throw new IllegalArgumentException("Venue Name should not be empty");
-            }
-        }
+		private void validateVenueName(String venueName) {
+			if (venueName == null || venueName.isEmpty()) {
+				throw new IllegalArgumentException("Venue Name should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the participant name based on the condition below. If it is invalid
-         * then throw an IllegalArgumentException with the corresponding message.
-         * 
-         * <pre>
-         * 
-         * @param participantName
-         */
+		/**
+		 * <pre>
+		 * Validate the participant name based on the condition below. If it is invalid
+		 * then throw an IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param participantName
+		 */
 
-        private void validateParticipantName(String participantName) {
-            if (participantName == null || participantName.isEmpty()) {
-                throw new IllegalArgumentException("Participant Name should not be empty");
-            }
-        }
+		private void validateParticipantName(String participantName) {
+			if (participantName == null || participantName.isEmpty()) {
+				throw new IllegalArgumentException("Participant Name should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the scheduled start date time based on the condition below. If it is
-         * invalid then throw an IllegalArgumentException with the corresponding
-         * message.
-         * 
-         * <pre>
-         * 
-         * @param scheduledStartDateTime
-         */
+		/**
+		 * <pre>
+		 * Validate the scheduled start date time based on the condition below. If it is
+		 * invalid then throw an IllegalArgumentException with the corresponding
+		 * message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param scheduledStartDateTime
+		 */
 
-        private void validateScheduledStartDateTime(ZonedDateTime scheduledStartDateTime) {
-            if (scheduledStartDateTime == null) {
-                throw new IllegalArgumentException("Scheduled start date should not be empty");
-            }
-        }
+		private void validateScheduledStartDateTime(ZonedDateTime scheduledStartDateTime) {
+			if (scheduledStartDateTime == null) {
+				throw new IllegalArgumentException("Scheduled start date should not be empty");
+			}
+		}
 
-        /**
-         * <pre>
-         * Validate the scheduled end date time based on the condition below. If it is
-         * invalid then throw an IllegalArgumentException with the corresponding
-         * message.
-         * 
-         * <pre>
-         * 
-         * @param scheduledEndDateTime
-         */
+		/**
+		 * <pre>
+		 * Validate the scheduled end date time based on the condition below. If it is
+		 * invalid then throw an IllegalArgumentException with the corresponding
+		 * message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param scheduledEndDateTime
+		 */
 
-        private void validateScheduledEndDateTime(ZonedDateTime scheduledEndDateTime, ZonedDateTime scheduledStartDateTime) {
-            if (scheduledEndDateTime == null) {
-                throw new IllegalArgumentException("Scheduled end date should not be empty");
+		private void validateScheduledEndDateTime(ZonedDateTime scheduledEndDateTime,
+				ZonedDateTime scheduledStartDateTime) {
+			if (scheduledEndDateTime == null || String.valueOf(scheduledEndDateTime).isEmpty()) {
+				throw new IllegalArgumentException("Scheduled end date and time should not be empty");
+			} else if (scheduledStartDateTime.isAfter(scheduledEndDateTime)) {
+				throw new IllegalArgumentException(
+						"Scheduled end date and time should be greater than or equal to the the scheduled start date and time");
 
-            } 
-            if (scheduledEndDateTime.isAfter(scheduledStartDateTime)) {
-                throw new IllegalArgumentException(
-                        "Scheduled end date and time should be greater than or equal to Scheduled start date and time");
-            }
-        }
-    }
+			}
+		}
+	}
 }

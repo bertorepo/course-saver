@@ -9,7 +9,7 @@ package com.fujitsu.ph.tsup.enrollment.domain;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/23/2020 | WS) G.Cabiling | New Creation
-//
+//0.01    | 07/07/2020 | WS) T.Oviedo   | Update	
 //
 //=======================================================
 
@@ -327,16 +327,16 @@ public class CourseSchedule {
 		 * @param maxAllowed
 		 * @return builder
 		 */
-		public CourseSchedule maxAllowed(int maxAllowed) {
+		public Builder maxAllowed(int maxAllowed) {
 
 			validateMaxAllowed(maxAllowed);
 			this.maxAllowed = maxAllowed;
 
-			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
-					instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed,
-					totalParticipants, status).build();
+//			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
+//					instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed,
+//					totalParticipants, status).build();
 
-			return builder;
+			return this;
 		}
 
 		/**
@@ -348,16 +348,16 @@ public class CourseSchedule {
 		 * @param courseScheduleDetail
 		 * @return builder
 		 */
-		public CourseSchedule addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
+		public Builder addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
 
 			validateCourseScheduleDetail(courseScheduleDetail);
 			this.courseScheduleDetail = courseScheduleDetail;
 
-			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
-					instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed,
-					totalParticipants, status).build();
+//			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
+//					instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed,
+//					totalParticipants, status).build();
 
-			return builder;
+			return this;
 		}
 
 		/**
@@ -369,15 +369,15 @@ public class CourseSchedule {
 		 * @param cancel
 		 * @return builder
 		 */
-		public CourseSchedule cancel() {
+		public Builder cancel() {
 
 			this.status = 'C';
 
-			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
-					instructorLastName, instructorFirstName, venueId, venueName, maxAllowed, maxAllowed,
-					totalParticipants, status).build();
-
-			return builder;
+//			CourseSchedule builder = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
+//					instructorLastName, instructorFirstName, venueId, venueName, maxAllowed, maxAllowed,
+//					totalParticipants, status).build();
+//
+			return this;
 		}
 
 		/**
@@ -388,7 +388,7 @@ public class CourseSchedule {
 		 public CourseSchedule build() {
 		     
 		        return new CourseSchedule(this);
-		    }
+		}
 
 		/**
 		 * <pre>
@@ -569,7 +569,8 @@ public class CourseSchedule {
      * 
      * @return new CourseSchedule(this)
      */
-    public CourseSchedule build() {
-        return new CourseSchedule(this);
-    }
+//    public CourseSchedule build() {
+//        return new CourseSchedule(this);
+//    }
+
 }
