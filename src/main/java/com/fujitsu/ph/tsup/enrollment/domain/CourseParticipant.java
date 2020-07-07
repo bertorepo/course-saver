@@ -13,7 +13,8 @@ import java.util.Set;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 | WS) K.Freo        | New Creation
+//0.01    | 06/23/2020 | WS) K.Freo            | New Creation
+//0.01    | 07/07/2020 | WS) T.Oviedo          | Update	
 //==================================================================================================
 /**
 * <pre>
@@ -258,14 +259,14 @@ public class CourseParticipant {
 		 * @return builder
 		 */
 
-		public CourseParticipant addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
+		public Builder addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
 
 			validatecourseScheduleDetail(courseScheduleDetail);
 			this.courseScheduleDetail = courseScheduleDetail;
 
-			CourseParticipant builder = new CourseParticipant.Builder(id).build();
+//			CourseParticipant builder = new CourseParticipant.Builder(id).build();
 
-			return builder;
+			return this;
 		}
 
 		/**
