@@ -37,13 +37,13 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 @ExtendWith(SpringExtension.class)
 class FindCourseParticipantById {
 
-    /**
+    /*
      * Used to define Bean
      */
     @TestConfiguration
     static class CourseServiceImplestContextConfiguration {
 
-        /**
+        /*
          * Test Specific Bean
          */
         @Bean
@@ -52,20 +52,20 @@ class FindCourseParticipantById {
         }
     }
 
-    /**
+    /*
      * Test Specific Bean
      */
     @Autowired
     private EnrollmentService service;
 
-    /**
+    /*
      * Allows to mock classes or interface,
      * to record or verify behaviors
      */
     @MockBean
     private EnrollmentDao dao;
 
-    /**
+    /*
      * JUnit Assertion without Errors in Mock Bean data and Test Specific Data 
      */
     @Test
@@ -78,7 +78,7 @@ class FindCourseParticipantById {
     }
 
 
-    /**
+    /*
      * JUnit Assertion with Errors in Mock Bean data and Test Specific Data 
      */
     @Test
@@ -92,7 +92,7 @@ class FindCourseParticipantById {
 
     }
 
-    /**
+    /*
      * JUnit Assertion with Errors in Mock Bean data and Test Specific Data
      * the return value is null 
      */
