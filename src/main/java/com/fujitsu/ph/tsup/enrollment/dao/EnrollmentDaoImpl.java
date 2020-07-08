@@ -211,17 +211,47 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     
     @Override
     public CourseParticipant findCourseParticipantById(Long id) {
-    	String findCourseParticipantByIdSql = "SELECT * FROM COURSE_SCHEDULE, COURSE_SCHEDULE_DETAIL, "
-    	        + "COURSE_PARTICIPANT, COURSE,  VENUE, EMPLOYEE" 
-				+ "WHERE COURSE_PARTICIANT.ID = :id" + "AND STATUS = 'A'";
+        String sql = "SELECT " 
+                +"CSCHED.ID AS ID,  "
+                +"CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, " 
+                +"C.NAME AS COURSE_NAME,  " 
+                +"E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                +"E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, " 
+                +"V.NAME AS VENUE_NAME, " 
+                +"CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
+                  +"(SELECT LAST_NAME  " 
+                  +"FROM tsup.EMPLOYEE  "
+                  +"WHERE ID = CPART.PARTICIPANT_ID) AS PARTICIPANT_LAST_NAME, " 
+                  +"(SELECT FIRST_NAME  "
+                  +"FROM tsup.EMPLOYEE " 
+                  +"WHERE ID = CPART.PARTICIPANT_ID) AS PARTICIPANT_FIRST_NAME,"
+                +"(SELECT REASON FROM tsup.COURSE_NON_PARTICIPANT " 
+                +" WHERE ID = CPART.PARTICIPANT_ID) AS REASON, " 
+                +"(SELECT DECLINE_DATE FROM tsup.COURSE_NON_PARTICIPANT " 
+                +" WHERE ID = CPART.PARTICIPANT_ID) AS DECLINE_DATE, "  
+                +"CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                +"CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, " 
+                +"CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
+                +"FROM tsup.COURSE_SCHEDULE AS CSCHED " 
+                +"INNER JOIN tsup.COURSE_SCHEDULE_DETAIL AS CSCHEDDET " 
+                +"ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID " 
+                +"INNER JOIN tsup.COURSE AS C " 
+                +"ON CSCHED.COURSE_ID = C.ID " 
+                +"INNER JOIN tsup.EMPLOYEE AS E "
+                +"ON CSCHED.INSTRUCTOR_ID = E.ID  " 
+                +"INNER JOIN tsup.VENUE AS V  " 
+                +"ON CSCHED.VENUE_ID = V.ID " 
+                +"INNER JOIN tsup.COURSE_PARTICIPANT AS CPART  "
+                +"ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID " 
+                +"WHERE CPART.PARTICIPANT_ID = :id " 
+                +"AND STATUS = 'A'";
+        
+        SqlParameterSource  NamedParameters = new MapSqlParameterSource()
+                          .addValue("id", id);
+       return template.queryForObject(sql, NamedParameters, new EnrollmentRowMapperCourseParticipant());
+             
+      }
 
-    	SqlParameterSource  NamedParameters = new MapSqlParameterSource()
-    				.addValue("id  ", id)
-    				.addValue("STATUS", 'A');
-
-    	return template.queryForObject(findCourseParticipantByIdSql, NamedParameters,
-    			new EnrollmentRowMapperCourseParticipant());
-    }
 
     @Override
     public void deleteCourseParticipantById(Long id) {
