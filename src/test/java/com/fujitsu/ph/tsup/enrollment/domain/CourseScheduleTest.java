@@ -8,11 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.junit.jupiter.api.Test;
-
-import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 
 public class CourseScheduleTest {
 	
