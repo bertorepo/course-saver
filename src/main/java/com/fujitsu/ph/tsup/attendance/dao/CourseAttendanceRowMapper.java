@@ -1,11 +1,11 @@
 package com.fujitsu.ph.tsup.attendance.dao;
 
+import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.ZoneId;
 import org.springframework.jdbc.core.RowMapper;
-import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 
 //==================================================================================================
 //$Id:PR03$
@@ -18,6 +18,7 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/26/2020 |  WS) J. Iwarat        | New Creation
 //0.02    | 07/07/2020 |  WS) J. Iwarat        | Update
+//0.02    | 07/08/2020 |  WS) J. Iwarat        | Update
 //==================================================================================================
 /**
  * <pre>
@@ -49,15 +50,12 @@ public class CourseAttendanceRowMapper implements RowMapper<CourseAttendance> {
         ZonedDateTime scheduledEndDateTime = ZonedDateTime
                 .ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(), ZoneId.of("UTC"));
 
-        ZonedDateTime registrationDate = ZonedDateTime.ofInstant(rs.getTimestamp("REGISTRATION_DATE").toInstant(),
-                ZoneId.of("UTC"));
-
         ZonedDateTime loginDateTime = ZonedDateTime.ofInstant(rs.getTimestamp("LOG_IN_DATETIME").toInstant(),
                 ZoneId.of("UTC"));
 
         CourseAttendance courseAttendance = new CourseAttendance.Builder(id, courseScheduleDetailId, courseName,
                 instructorName, venueName, participantId, participantName, scheduledStartDateTime, scheduledEndDateTime,
-                duration, registrationDate, loginDateTime, status).build();
+                duration, loginDateTime, status).build();
 
         return courseAttendance;
     }
