@@ -6,16 +6,20 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+
 import org.springframework.stereotype.Repository;
 
 //==================================================================================================
