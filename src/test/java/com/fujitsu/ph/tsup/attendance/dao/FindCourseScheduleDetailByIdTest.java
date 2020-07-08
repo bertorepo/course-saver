@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 //Version | Date       | Updated By                                      | Content
 //--------+------------+-------------------------------------------------+--------------------------
 //0.01    | 07/06/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | New Creation
+//0.02    | 07/08/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | Update
 //==================================================================================================
 /**
 * <pre>
@@ -42,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 * 
 * <pre>
 * 
-* @version 0.01
+* @version 0.02
 * @author k.abad
 * @author j.iwarat
 * @author r.ramos
@@ -87,7 +88,7 @@ public class FindCourseScheduleDetailByIdTest {
      */   
     @Test
     void testFindCourseScheduleDetailById() {
-        Set<CourseAttendance> courseAttendanceSet = attendanceDao.findCourseScheduleDetailById(2L);
+        Set<CourseAttendance> courseAttendanceSet = attendanceDao.findCourseScheduleDetailById(1L);
         
         for(CourseAttendance courseAttendance : courseAttendanceSet) {
             System.out.println("ID: " + courseAttendance.getId());
@@ -106,9 +107,9 @@ public class FindCourseScheduleDetailByIdTest {
             assertTrue(!courseAttendance.getScheduleEndDateTime()
                     .isBefore(courseAttendance.getScheduleStartDateTime()));
             assertNotNull(courseAttendanceSet.size());
-            assertEquals("DE LEON, JC", courseAttendance.getInstructorName());
+            assertEquals("LORENZO, LOYCE", courseAttendance.getInstructorName());
             assertNotEquals("ONLINE", courseAttendance.getVenueName());
-            assertNotSame("LORENZO, LOYCE", courseAttendance.getParticipantName());
+            assertNotSame("DE LEON, JC", courseAttendance.getParticipantName());
         }
     }
 }

@@ -43,6 +43,7 @@ import static org.mockito.Mockito.when;
 //Version | Date       | Updated By                                      | Content
 //--------+------------+-------------------------------------------------+--------------------------
 //0.01    | 07/08/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | New Creation
+//0.02    | 07/08/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | Update
 //==================================================================================================
 /**
 * <pre>
@@ -51,7 +52,7 @@ import static org.mockito.Mockito.when;
 * 
 * <pre>
 * 
-* @version 0.01
+* @version 0.02
 * @author k.abad
 * @author j.iwarat
 * @author r.ramos
@@ -101,10 +102,11 @@ public class FindCourseScheduleByIdTest {
         Set<CourseParticipant> courseParticipant = new HashSet<CourseParticipant>();
         
         courseParticipant.add(new CourseParticipant.Builder(12345L, 1000L, "java", 
-            "Lorenzo, Loyce", "WFH", 22L, "Abad, Kenneth", ZonedDateTime.now(), ZonedDateTime.now().plusDays(5), 2.0f, 
-            ZonedDateTime.now(), "k.abad@fujitsu.com", "220054288").build());
+                "Lorenzo, Loyce", "WFH", 22L, "Abad, Kenneth", ZonedDateTime.now(), ZonedDateTime.now()
+                .plusDays(5), 2.0f, ZonedDateTime.now(), "k.abad@fujitsu.com", "220054288").build());
         
-        when(attendanceDao.findCourseScheduleById(any(Long.class))).thenReturn(courseParticipant);
+        when(attendanceDao.findCourseScheduleById(any(Long.class)))
+                .thenReturn(courseParticipant);
         
         Set<CourseParticipant> course = attendanceService.findCourseScheduleById(any(Long.class));
         
@@ -122,13 +124,13 @@ public class FindCourseScheduleByIdTest {
     @Test
     void testFindCourseScheduleById_Error() {
         when(attendanceDao.findCourseScheduleById(any(Long.class)))
-            .thenThrow(new DataRetrievalFailureException("error"));
+                .thenThrow(new DataRetrievalFailureException("error"));
     
-    Exception exception = assertThrows(IllegalArgumentException.class, () ->
-        attendanceService.findCourseScheduleById(1L));
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                attendanceService.findCourseScheduleById(1L));
     
-    String expectedMessage = "Course Schedule not found.";
-    String actualMessage = exception.getMessage();
-    assertTrue(actualMessage.contains(expectedMessage));
+        String expectedMessage = "Course Schedule not found.";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }
