@@ -21,14 +21,13 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 //
 //
 //=======================================================
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -42,16 +41,12 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
-import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
-import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
-import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
-
 
 @JdbcTest
 @ActiveProfiles({ "postgres" })
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 
-class ScheduleDaoTest {
+class FindAllScheduledCoursesTest {
 
 	/**
      * ScheduleDao as dependency
@@ -75,27 +70,6 @@ class ScheduleDaoTest {
         }
     }
 	
-	
-    /**
-     * <pre>
-     * testSaveCourseSchedule with valid values
-     * Call scheduleDao.saveCourseSchedule and test if course schedule is save in the database
-     * <pre>
-     */
-	@Test
-	 void testSaveCourseSchedule() {
-	    
-		CourseSchedule courseSchedule = createCourseSchedule();
-
-		scheduleDao.saveCourseSchedule(courseSchedule);
-		
-		assertEquals(1L, courseSchedule.getCourseId());
-		assertEquals(1L, courseSchedule.getInstructorId());
-		assertEquals(1L, courseSchedule.getVenueId());
-		assertEquals(1, courseSchedule.getMinRequired());
-		assertEquals(10, courseSchedule.getMaxAllowed());
-		assertEquals('A', courseSchedule.getStatus());
-	 }
 	
     /**
      * <pre>
@@ -143,74 +117,5 @@ class ScheduleDaoTest {
 		System.out.println("Course Schedule Size:" + courseScheduleSet.size()+"\n");
 		assertNotNull(courseScheduleSet.size());
 	}
-	
-
-	/**
-     * <pre>
-     * testFindAllCourses with valid values
-     * scheduleDao.findAllCourses and test if the methods find all the courses
-     * <pre>
-     */
-	@Test
-    void testFindAllCourses() {
-		Set<CourseForm> courseFormSet = scheduleDao.findAllCourses();
-		
-		for(CourseForm courses : courseFormSet) {
-		    System.out.println("Course ID:" + courses.getId());
-		    System.out.println("Course Name:" + courses.getName()+"\n");
-		}
-		System.out.println("CourseForm Size:"+ courseFormSet.size()+"\n");
-		assertNotNull(courseFormSet.size());
-	}
-	
-	/**
-     * <pre>
-     * testFindAllInstructors with valid values
-     * scheduleDao.findAllInstructors and test if the methods find all the instrutors
-     * <pre>
-     */
-	@Test
-    void testFindAllInstructors() {
-		Set<InstructorForm> instructorFormSet = scheduleDao.findAllInstructors();
-		
-		for(InstructorForm instructors : instructorFormSet) {
-		    System.out.println("Instructor ID: "+ instructors.getId());
-		    System.out.println("Instructor Name: "+ instructors.getName()+"\n");
-		}
-		System.out.println("InstructorForm Size:"+ instructorFormSet.size()+"\n");
-		assertNotNull(instructorFormSet.size());
-	}
-	
-	/**
-     * <pre>
-     * testFindAllVenues with valid values
-     * scheduleDao.findAllVenues and test if the methods find all the venues
-     * <pre>
-     */
-	@Test
-	 void testFindAllVenues() {
-		Set<VenueForm> venueFormSet = scheduleDao.findAllVenues();
-		
-		for(VenueForm venues : venueFormSet) {
-		    System.out.println("Venue ID: "+ venues.getId());
-		    System.out.println("Venue Name: "+ venues.getName()+"\n");
-		}
-		System.out.println("VenueForm Size:" + venueFormSet.size()+"\n");
-		assertNotNull(venueFormSet.size());
-		 
-	 }
-	
-	/**
-     * <pre>
-     * Builded data for create course schedule
-     * <pre>
-     */
-	private CourseSchedule createCourseSchedule() {
-        CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-        courseScheduleDetailSet.add(courseScheduleDetail);
-        return new CourseSchedule.Builder(1L, 1L, 1L, 1, courseScheduleDetailSet).maxAllowed(10).build();
-    }
-	 
 }
+	

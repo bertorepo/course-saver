@@ -13,6 +13,7 @@ import java.util.Set;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) R. Ramos   | New Creation
 //0.02 | 07/06/2020 |  WS) R. Ramos   | Updated
+//0.03 | 07/08/2020 |  WS) R. Ramos   | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -20,7 +21,7 @@ import java.util.Set;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.03
  * @author r.ramos
  */
 public class CourseSchedule {
@@ -318,7 +319,7 @@ public class CourseSchedule {
 
 			validateId(id);
 
-			this.courseId = id;
+			this.id = id;
 		}
 
 		/**
