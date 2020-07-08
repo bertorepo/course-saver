@@ -1,12 +1,4 @@
 package com.fujitsu.ph.tsup.enrollment.domain;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.jupiter.api.Test;
 //==================================================================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -27,8 +19,19 @@ import org.junit.jupiter.api.Test;
 * @version 0.01
 * @author J.Macabugao
 */
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.junit.jupiter.api.Test;
+
 class CourseParticipantTest {
 
+	/**
+	 * Test case for when Id is null
+	 */
 	@Test
 	void testId_isNull() {
 
@@ -40,6 +43,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Id should not be empty"));
 	}
 
+	/**
+	 * Test case for when Id is zero
+	 */
 	@Test
 	void testdId_isZero() {
 
@@ -51,6 +57,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Id should not be empty"));
 	}
 
+	/**
+	 * Test case for when Id is valid
+	 */
 	@Test
 	void testdId_isValid() {
 
@@ -62,6 +71,9 @@ class CourseParticipantTest {
 		assertEquals(1L, courseParticipant.getId());
 	}
 
+	/**
+	 * Test case for when course schedule id is null
+	 */
 	@Test
 	void testCourseScheduleId_isNull() {
 
@@ -73,6 +85,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Course Schedule Id should not be empty"));
 	}
 
+	/**
+	 * Test case for when course schedule id is zero
+	 */
 	@Test
 	void testCourseScheduleId_isZero() {
 
@@ -84,6 +99,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Course Schedule Id should not be empty"));
 	}
 	
+	/**
+	 * Test case for when course schedule id is valid
+	 */
 	@Test
 	void testCourseScheduleId_isValid() {
 		CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1L, "DUMMY", "DUMMY", "DUMMY", 1L,
@@ -94,6 +112,9 @@ class CourseParticipantTest {
 		assertEquals(1L, courseParticipant.getCourseScheduleId());
 	}
 
+	/**
+	 * Test case for when course name is null
+	 */
 	@Test
 	void testCourseName_isNull() {
 
@@ -105,6 +126,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Course name should not be empty"));
 	}
 
+	/**
+	 * Test case for when course name is empty
+	 */
 	@Test
 	void testCourseName_isEmpty() {
 
@@ -116,6 +140,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Course name should not be empty"));
 	}
 	
+	/**
+	 * Test case for when course name is valid
+	 */
 	@Test
 	void testCourseName_isValid() {
 
@@ -127,6 +154,9 @@ class CourseParticipantTest {
 		assertEquals("DUMMY", courseParticipant.getCourseName());
 	}
 
+	/**
+	 * Test case for when instructor name is null
+	 */
 	@Test
 	void testInstructorName_isNull() {
 
@@ -138,6 +168,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
 	}
 
+	/**
+	 * Test case for when instructor name is empty
+	 */
 	@Test
 	void testInstructorName_isEmpty() {
 
@@ -149,6 +182,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
 	}
 	
+	/**
+	 * Test case for when instructor name is valid
+	 */
 	@Test
 	void testInstructorName_isValid() {
 
@@ -161,6 +197,9 @@ class CourseParticipantTest {
 	}
 
 
+	/**
+	 * Test case for when venue name is null
+	 */
 	@Test
 	void testVenueName_isNull() {
 
@@ -172,6 +211,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Venue name should not be empty"));
 	}
 
+	/**
+	 * Test case for when venue name is empty
+	 */
 	@Test
 	void testVenueName_isEmpty() {
 
@@ -183,6 +225,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Venue name should not be empty"));
 	}
 	
+	/**
+	 * Test case for when venue name is valid
+	 */
 	@Test
 	void testVenueName_isValid() {
 		CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1L, "DUMMY", "DUMMY", "DUMMY", 1L,
@@ -194,6 +239,9 @@ class CourseParticipantTest {
 	}
 
 
+	/**
+	 * Test case for when participant id is null
+	 */
 	@Test
 	void testParticipantId_isNull() {
 
@@ -205,6 +253,10 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Participant Id should not be empty"));
 	}
 
+	
+	/**
+	 * Test case for when participant id is zero
+	 */
 	@Test
 	void testParticipantId_isZero() {
 
@@ -216,6 +268,10 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Participant Id should not be empty"));
 	}
 
+	
+	/**
+	 * Test case for when participant id is valid
+	 */
 	@Test
 	void testParticipantId_isValid() {
 		CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1L, "DUMMY", "DUMMY", "DUMMY", 1L,
@@ -224,11 +280,14 @@ class CourseParticipantTest {
 
 		assertNotNull(courseParticipant.getParticipantId());
 		assertEquals(1L, courseParticipant.getParticipantId());
-
-		
+	
 	}
+	
+	/**
+	 * Test case for when participant name is null
+	 */
 	@Test
-	void testParticipatName_isNull() {
+	void testParticipantName_isNull() {
 
 		Exception error = assertThrows(IllegalArgumentException.class, () -> {
 			new CourseParticipant.Builder(1L, 1L, "DUMMY", "DUMMY", "DUMMY", 1L, null,
@@ -238,6 +297,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Participant Name should not be empty"));
 	}
 
+	/**
+	 * Test case for when participant name is empty
+	 */
 	@Test
 	void testParticipantName_isEmpty() {
 
@@ -249,6 +311,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Participant Name should not be empty"));
 	}
 	
+	/**
+	 * Test case for when participant name is valid
+	 */
 	@Test
 	void testParticipantName_isValid() {
 		CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1L, "DUMMY", "DUMMY", "DUMMY", 1L,
@@ -259,6 +324,9 @@ class CourseParticipantTest {
 		assertEquals("DUMMY", courseParticipant.getParticipantName());
 	}
 
+	/**
+	 * Test case for when registration date is null
+	 */
 	@Test
 	void testRegistrationDate_isNull() {
 
@@ -269,6 +337,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Registration Date should not be empty"));
 	}
 	
+	/**
+	 * Test case for when registration date is valid
+	 */
 	@Test
 	void testRegistrationDate_isValid() {
 
@@ -280,6 +351,9 @@ class CourseParticipantTest {
 		assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z"), courseParticipant.getRegistrationDate());
 	}
 
+	/**
+	 * Test case for when reason is null
+	 */
 	@Test
 	void testReason_isNull() {
 
@@ -291,6 +365,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Reason should not be empty"));
 	}
 
+	/**
+	 * Test case for when reason is empty
+	 */
 	@Test
 	void testReason_isEmpty() {
 
@@ -302,6 +379,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Reason should not be empty"));
 	}
 	
+	/**
+	 * Test case for when reason is valid
+	 */
 	@Test
 	void testReason_isValid() {
 		
@@ -312,7 +392,11 @@ class CourseParticipantTest {
 		assertNotNull(courseParticipant.getReason());
 		assertEquals("DUMMY", courseParticipant.getReason());
 	}
+	
 
+	/**
+	 * Test case for when course schedule detail is null
+	 */
 	@Test
 	void testInvalidCourseScheduleDetail_isNull() {
 
@@ -326,6 +410,9 @@ class CourseParticipantTest {
 		assertTrue(error.getMessage().equals("Course Schedule Detail should have atleast 1 record"));
 	}
 	
+	/**
+	 * Test case for when course schedule detail is valid
+	 */
 	@Test
 	void testCourseScheduleDetail_isValid() {
 
