@@ -21,6 +21,7 @@ public class CourseScheduleDetailTest {
         assertNotNull(courseScheduleDetail.getCourseScheduleId());
         assertNotNull(courseScheduleDetail.getScheduledStartDateTime());
         assertNotNull(courseScheduleDetail.getScheduledEndDateTime());
+        assertNotNull(courseScheduleDetail.getDuration());
     }
     
     @Test
@@ -58,6 +59,15 @@ public class CourseScheduleDetailTest {
         
         assertEquals(ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5),
                 courseScheduleDetail.getScheduledEndDateTime());
+    }
+    
+    @Test
+    void testValid_Duration() {
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L, 1L,
+                ZonedDateTime.parse("2016-11-15T17:21:00Z"), ZonedDateTime.parse("2016-11-16T23:45:00Z"))
+                        .build();
+        
+        assertEquals(30.4f, courseScheduleDetail.getDuration());
     }
 
     @Test
@@ -121,4 +131,5 @@ public class CourseScheduleDetailTest {
         assertTrue(error.getMessage().equals("Scheduled end date and time should be greater than or "
                 + "equal to the the scheduled start date and time"));
     }
+    
 }

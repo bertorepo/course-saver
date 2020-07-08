@@ -151,7 +151,7 @@ public class CourseScheduleDetail {
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = computeDuration(scheduledEndDateTime, scheduledStartDateTime);
+            this.duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
         }
         
         /**
@@ -174,7 +174,7 @@ public class CourseScheduleDetail {
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = computeDuration(scheduledEndDateTime, scheduledStartDateTime);
+            this.duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
         }
         
         /**
@@ -264,12 +264,9 @@ public class CourseScheduleDetail {
             Long durationToHours = Duration.between(scheduledStartDateTime, scheduledEndDateTime).toHours();
             Long durationToMinutes = Duration.between(scheduledStartDateTime, scheduledEndDateTime).toMinutes();
             
-            if(durationToMinutes % 60 == 0) {
-                return (float) durationToHours;
-            } else {
-                float minutePercentage = (durationToMinutes % 60 ) / 60;
-                duration = durationToHours + minutePercentage;
-                return duration;
+            float minutePercentage = durationToMinutes.floatValue() % 60 / 60;
+            duration = durationToHours + minutePercentage;
+            return duration;
             }
         }
         
@@ -280,5 +277,4 @@ public class CourseScheduleDetail {
                     + " scheduledEndDateTime="+ scheduledEndDateTime + " duration="+ duration +"]";
         }
         
-    }
 }
