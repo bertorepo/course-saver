@@ -1,5 +1,26 @@
 package com.fujitsu.ph.tsup.scheduling.dao;
+/**
+* <pre>
+* The Unit Testing of schedule dao
+* <pre>
+* @version 0.01
+* @author jc.jimenez
+* @author j.macabugao
+*/
 
+//=======================================================
+//$Id: PR02$
+//Project Name: Training Sign Up
+//Class Name: ScheduleServiceTest.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by       | Content
+//--------+------------+-----------------+---------------
+//0.01    | 07/02/2020 | WS) J. Macabugao | New Creation
+//0.01    | 07/03/2020 | WS) JC. Jimenez  | Update
+//
+//
+//=======================================================
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,18 +53,35 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 class ScheduleDaoTest {
 
+	/**
+     * ScheduleDao as dependency
+     */
 	@Autowired
 	private ScheduleDao scheduleDao;
 	
+	/**
+     * Test Configuration
+     */
 	@TestConfiguration
     static class TestContextConfiguration {
         
+		/**
+    	 * ScheduleDao
+    	 * @return ScheduleDaoImpl
+    	 */
         @Bean
         public ScheduleDao scheduleDao() {
         	return new ScheduleDaoImpl();
         }
     }
 	
+	
+    /**
+     * <pre>
+     * testSaveCourseSchedule with valid values
+     * Call scheduleDao.saveCourseSchedule and test if course schedule is save in the database
+     * <pre>
+     */
 	@Test
 	 void testSaveCourseSchedule() {
 	    
@@ -59,6 +97,12 @@ class ScheduleDaoTest {
 		assertEquals('A', courseSchedule.getStatus());
 	 }
 	
+    /**
+     * <pre>
+     * testFindAllScheduledCourses with valid values
+     * Call scheduleDao.findAllScheduledCourses and test if the methods find all the scheduled courses
+     * <pre>
+     */
 	@Test
 	void testFindAllScheduledCourses() {
 		
@@ -101,6 +145,12 @@ class ScheduleDaoTest {
 	}
 	
 
+	/**
+     * <pre>
+     * testFindAllCourses with valid values
+     * scheduleDao.findAllCourses and test if the methods find all the courses
+     * <pre>
+     */
 	@Test
     void testFindAllCourses() {
 		Set<CourseForm> courseFormSet = scheduleDao.findAllCourses();
@@ -113,6 +163,12 @@ class ScheduleDaoTest {
 		assertNotNull(courseFormSet.size());
 	}
 	
+	/**
+     * <pre>
+     * testFindAllInstructors with valid values
+     * scheduleDao.findAllInstructors and test if the methods find all the instrutors
+     * <pre>
+     */
 	@Test
     void testFindAllInstructors() {
 		Set<InstructorForm> instructorFormSet = scheduleDao.findAllInstructors();
@@ -125,7 +181,12 @@ class ScheduleDaoTest {
 		assertNotNull(instructorFormSet.size());
 	}
 	
-	
+	/**
+     * <pre>
+     * testFindAllVenues with valid values
+     * scheduleDao.findAllVenues and test if the methods find all the venues
+     * <pre>
+     */
 	@Test
 	 void testFindAllVenues() {
 		Set<VenueForm> venueFormSet = scheduleDao.findAllVenues();
@@ -139,6 +200,11 @@ class ScheduleDaoTest {
 		 
 	 }
 	
+	/**
+     * <pre>
+     * Builded data for create course schedule
+     * <pre>
+     */
 	private CourseSchedule createCourseSchedule() {
         CourseScheduleDetail courseScheduleDetail = 
                 new CourseScheduleDetail.Builder(1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
