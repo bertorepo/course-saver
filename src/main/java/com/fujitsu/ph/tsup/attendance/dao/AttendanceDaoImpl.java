@@ -32,13 +32,14 @@ import org.springframework.stereotype.Repository;
 //0.03    | 06/30/2020 | WS) J.Iwarat                                              | Update
 //0.04    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.05    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
+//0.06    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access class for attendance related database access
  * </pre>
  * 
- * @version 0.05
+ * @version 0.06
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
@@ -246,6 +247,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
     public Set<CourseAttendance> findCourseAttendanceByCourseScheduleDetailId(Long id) {
         String sql = "SELECT " 
                 + "CSCHED.ID AS ID,  " 
+                + "C.NAME AS COURSE_NAME,  "  
                 + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, " 
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME,   " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME,   " 
