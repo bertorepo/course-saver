@@ -139,19 +139,12 @@ public class EnrollmentServiceImpl implements EnrollmentService {
      **/
     @Override
     public void declineCourse(CourseParticipant courseParticipant) {
-        
+
         try {
                 CourseParticipant findCourseParticipant = enrollmentDao.findCourseParticipantById
                         (courseParticipant.getId());
                 CourseParticipant dbCourseParticipant = new CourseParticipant
-                        .Builder(findCourseParticipant.getId(), findCourseParticipant.getCourseScheduleId(),
-                                findCourseParticipant.getCourseName(), findCourseParticipant
-                                    .getInstructorName(), 
-                                findCourseParticipant.getVenueName(), findCourseParticipant
-                                    .getParticipantId(), 
-                                findCourseParticipant.getParticipantName(), findCourseParticipant
-                                    .getRegistrationDate(), 
-                                findCourseParticipant.getReason(), findCourseParticipant.getDeclineDate())
+                        .Builder(findCourseParticipant.getId())
                                 .decline(courseParticipant.getReason()).build();
                 
                 enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
