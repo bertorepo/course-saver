@@ -140,6 +140,32 @@ class ChangeStatusTest {
      */
     void testChangeStatusUpdateAttendance_Error() {
         doThrow(new DataRetrievalFailureException("error")).when(attendanceDao)
+                .saveAttendance(any(CourseAttendance.class));
+
+        CourseAttendance courseAttendance1 = createCourseAttendance1();
+        CourseAttendance courseAttendance2 = createCourseAttendance2();
+
+        Set<CourseAttendance> courseAttendanceSet = new HashSet<CourseAttendance>();
+        courseAttendanceSet.add(courseAttendance1);
+        courseAttendanceSet.add(courseAttendance2);
+
+        Exception courseAttendanceException = assertThrows(IllegalArgumentException.class,
+                () -> attendanceService.changeStatus(courseAttendanceSet));
+
+        String expectedMessage = "Cannot insert/update data";
+        String actualMessage = courseAttendanceException.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+    
+    /**
+     * <pre>
+     * ChangeStatus with Error values Call attendanceDao..updateAttendance to test
+     * the error catch.
+     * 
+     * <pre>
+     */
+    void testChangeStatusSaveAttendance_Error() {
+        doThrow(new DataRetrievalFailureException("error")).when(attendanceDao)
                 .updateAttendance(any(CourseAttendance.class));
 
         CourseAttendance courseAttendance1 = createCourseAttendance1();
