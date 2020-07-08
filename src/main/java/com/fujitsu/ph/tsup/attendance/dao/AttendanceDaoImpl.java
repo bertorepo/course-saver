@@ -4,6 +4,7 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -29,13 +30,14 @@ import org.springframework.stereotype.Repository;
 //0.01    | 06/26/2020 | WS) K.Abad, WS) H.Francisco, WS) J.Iwarat, WS) R.Ramos    | New Creation
 //0.02    | 06/30/2020 | WS) K.Abad                                                | Update
 //0.03    | 06/30/2020 | WS) J.Iwarat                                              | Update
+//0.04    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access class for attendance related database access
  * </pre>
  * 
- * @version 0.03
+ * @version 0.04
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
@@ -62,8 +64,8 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime,
             Long instructorId) {
-        String sql = "SELECT " 
-                + "CSCHED.ID AS ID," 
+                String sql = "SELECT " 
+                + "CSCHED.ID AS ID, " 
                 + "CSCHED.COURSE_ID AS COURSE_ID," 
                 + "C.NAME AS COURSE_NAME,"
                 + "CSCHED.INSTRUCTOR_ID AS INSTRUCTOR_ID," 
@@ -72,28 +74,35 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "CSCHED.VENUE_ID AS VENUE_ID," 
                 + "V.NAME AS VENUE_NAME,"
                 + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED," 
-                + "CSCHED.MAX_REQUIRED AS MAX_REQUIRED,"
-                + "COUNT(CPART.PARTICIPANT_ID) AS TOTAL_PARTICIPANTS," 
-                + "CSCHED.STATUS AS STATUS"
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME"
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME"
+                + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED,"
+                + "("
+                + "SELECT COUNT(PARTICIPANT_ID) "
+                + "    FROM COURSE_PARTICIPANT"
+                + "    WHERE COURSE_SCHEDULE_ID = CSCHED.ID"
+                + ") AS PARTICIPANT_ID,"
+                + "CSCHED.STATUS AS STATUS,"
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME,"
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
+                + "FROM COURSE_SCHEDULE AS CSCHED " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID " 
+                + "INNER JOIN COURSE AS C "
+                + "ON CSCHED.COURSE_ID = C.ID " 
+                + "INNER JOIN EMPLOYEE AS E " 
+                + "ON CSCHED.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V " 
+                + "ON CSCHED.VENUE_ID = V.ID " 
+                + "LEFT JOIN COURSE_PARTICIPANT AS CPART "
+                + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
+                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
+                + "AND CSCHED.INSTRUCTOR_ID = :instructorId "
+                + "AND CSCHED.STATUS = 'A' "
+                + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
 
-                + "FROM COURSE_SCHEDULE AS CSCHED" 
-                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET"
-                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID" 
-                + "INNER JOIN COURSE AS C"
-                + "ON CSCHED.COURSE_ID = C.ID" 
-                + "INNER JOIN EMPLOYEE AS E" 
-                + "ON CSCHED.INSTRUCTOR_ID = E.ID"
-                + "INNER JOIN VENUE AS V" 
-                + "ON CSCHED.VENUE_ID = V.ID" 
-                + "INNER JOIN COURSE_PARTICIPANT AS CPART"
-                + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID"
-                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime"
-                + "ORDER BY CSCHED.ID AND CSCHEDDET.SCHEDULED_START_DATETIME";
-
-        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource().addValue("fromDateTime", fromDateTime)
-                .addValue("toDateTime", toDateTime);
+        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .addValue("instructorId", instructorId);
 
         List<CourseSchedule> listCourseSchedule = template.query(sql, courseScheduleParameters,
                 new CourseScheduleRowMapper());
@@ -113,30 +122,52 @@ public class AttendanceDaoImpl implements AttendanceDao {
      */
     @Override
     public Set<CourseParticipant> findCourseScheduleById(Long id) {
-        String sql = "SELECT CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME,"
-                +" CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME,"
-                +" CSCHEDDET.DURATION AS DURATION,"
-                +" C.NAME AS COURSE_NAME," 
-                +" E.LAST_NAME AS INSTRUCTOR_LAST_NAME," 
-                +" E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME,"
-                +" V.NAME AS VENUE_NAME,"
-                +" CPART.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID,"
-                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID,"
-                + "E.LAST_NAME AS PARTICIPANT_LAST_NAME,"
-                + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME,"
-                + " CPART.REGISTRATION_DATE AS REGISTRATION_DATE"
+        String sql = "SELECT "
+                + "CSCHED.ID AS ID, " 
+                + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, "
+                + "C.NAME AS COURSE_NAME, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME,"            
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "("
+                + "SELECT LAST_NAME "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + ") AS PARTICIPANT_LAST_NAME, "
+                + "("
+                + "    SELECT FIRST_NAME "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + ") AS PARTICIPANT_FIRST_NAME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.DURATION AS DURATION, "
+                + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
+                + "E.EMAIL_ADDRESS AS EMAIL, "
+                + "E.NUMBER AS EMPLOYEE_NUMBER "
 
-                + "FROM COURSE_SCHEDULE AS CSCHED"
-                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID"
-                + "INNER JOIN COURSE AS C ON CSCHED.COURSE_ID = C.ID"
-                + "INNER JOIN EMPLOYEE AS E ON CSCHED.INSTRUCTOR_ID = E.ID"
-                + "INNER JOIN VENUE AS V ON CSCHED.VENUE_ID = V.ID"
-                + "INNER JOIN COURSE_PARTICIPANT AS CPART ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID"
+                + "FROM COURSE_SCHEDULE AS CSCHED "
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CSCHED.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CSCHED.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V "
+                + "ON CSCHED.VENUE_ID = V.ID "
+                + "INNER JOIN COURSE_PARTICIPANT AS CPART "
+                + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
                 + "WHERE CSCHED.ID = :id AND CSCHED.STATUS = 'A'";
 
-        List<CourseParticipant> courseList = template.query(sql, new CourseParticipantRowMapper());
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("id", id);
+        
+        List<CourseParticipant> courseList = template
+                .query(sql, namedParameters, new CourseParticipantRowMapper());
+        
         Set<CourseParticipant> course = new HashSet<CourseParticipant>(courseList);
-        return course;
+        return course; 
     }
 
     /**
@@ -147,32 +178,56 @@ public class AttendanceDaoImpl implements AttendanceDao {
      * @param id
      * @return courseAttendanceSet
      * @author r.ramos
+     * @author k.abad
      */
     @Override
     public Set<CourseAttendance> findCourseScheduleDetailParticipantsById(Long id) {
-        String sql = " SELECT CSCHED.ID AS ID,"
-                + " CSCHEDDET.ID AS CSCHEDDET_ID,"
-                + " C.NAME AS COURSE_NAME, "
-                + " CSCHED.INSTRUCTOR_ID AS INSTRUCTOR_ID,"
-                + " E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
-                + " E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME"
-                + ", CSCHED.VENUE_ID AS VENUE_ID,"
-                + " V.NAME AS VENUE_NAME,"
-                + " COUNT(CPART.PARTICIPANT_ID) AS TOTAL_PARTICIPANTS, "
-                + " CSCHED.STATUS AS STATUS,"
-                + " CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + " CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
+        String sql = "SELECT "
+                + "CSCHED.ID AS ID, "
+                + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, "
+                + "C.NAME AS COURSE_NAME, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "("
+                + "SELECT LAST_NAME "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + ") AS PARTICIPANT_LAST_NAME, "
+                + "("
+                + "    SELECT FIRST_NAME "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + ") AS PARTICIPANT_FIRST_NAME, "
+                + "CSCHED.STATUS AS STATUS, "
+                + "CSCHEDDET.DURATION AS DURATION, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
+                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME "
 
-                + " FROM COURSE_SCHEDULE AS CSCHED "
-                + " INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
-                + " INNER JOIN COURSE AS C ON CSCHED.COURSE_ID = C.ID "
-                + " INNER JOIN EMPLOYEE AS E ON CSCHED.INSTRUCTOR_ID = E.ID "
-                + " INNER JOIN VENUE AS V ON CSCHED.VENUE_ID = V.ID "
-                + " INNER JOIN COURSE_PARTICIPANT AS CPART ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
-                + " WHERE COURSE_SCHEDULE_DETAIL.id = :id " 
-                + " AND status = A ";
+                + "FROM COURSE_SCHEDULE AS CSCHED "
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CSCHED.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CSCHED.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V "
+                + "ON CSCHED.VENUE_ID = V.ID "
+                + "INNER JOIN COURSE_PARTICIPANT AS CPART "
+                + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE_ATTENDANCE AS CATTEN "
+                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID " 
+                + "WHERE CSCHEDDET.ID = :id AND CSCHED.STATUS = 'A'";
 
-        List<CourseAttendance> listCourseAttendance = template.query(sql, new CourseAttendanceRowMapper());
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("id", id);
+        
+        List<CourseAttendance> listCourseAttendance = template
+                .query(sql, namedParameters, new CourseAttendanceRowMapper());
+        
         Set<CourseAttendance> courseAttendanceSet = new HashSet<CourseAttendance>(listCourseAttendance);
         return courseAttendanceSet;
     }
@@ -190,37 +245,47 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public Set<CourseAttendance> findCourseAttendanceByCourseScheduleDetailId(Long id) {
         String sql = "SELECT " 
-                + "CSCHED.ID AS ID," 
-                + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID,"
-                + "C.NAME AS COURSE_NAME," 
-                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME,"
-                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME," 
-                + "V.NAME AS VENUE_NAME,"
-                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID" 
-                + "E.LAST_NAME AS PARTICIPANT_LAST_NAME,"
-                + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME," 
-                + "CSCHEDDET.DURATION AS DURATION"
-                + "CSCHED.STATUS AS STATUS" 
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME"
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME"
-                + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE" 
-                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME"
-
-                + "FROM COURSE_SCHEDULE AS CSCHED" 
-                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET"
-                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID" 
-                + "INNER JOIN COURSE AS C"
-                + "ON CSCHED.COURSE_ID = C.ID" 
-                + "INNER JOIN EMPLOYEE AS E" 
-                + "ON CSCHED.INSTRUCTOR_ID = E.ID"
-                + "INNER JOIN VENUE AS V" 
-                + "ON CSCHED.VENUE_ID = V.ID" 
-                + "INNER JOIN COURSE_ATTENDANCE AS CATTEN"
-                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID" 
-                + "WHERE COURSE_SCHEDULE_DETAIL.id = argument.id"
-                + "AND status = A";
-
-        List<CourseAttendance> listCourseAttendance = template.query(sql, new CourseAttendanceRowMapper());
+                + "CSCHED.ID AS ID,  " 
+                + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, " 
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME,   " 
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME,   " 
+                + "V.NAME AS VENUE_NAME, " 
+                + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, " 
+                + "("
+                + "SELECT LAST_NAME "
+                + "    FROM tsup.EMPLOYEE  "
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
+                + ") AS PARTICIPANT_LAST_NAME, " 
+                + "("
+                + "    SELECT FIRST_NAME "
+                + "    FROM tsup.EMPLOYEE " 
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
+                + ") AS PARTICIPANT_FIRST_NAME, " 
+                + "CSCHEDDET.DURATION AS DURATION, " 
+                + "CSCHED.STATUS AS STATUS, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, " 
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, " 
+                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME " 
+                + "FROM COURSE_SCHEDULE AS CSCHED  "
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID  " 
+                + "INNER JOIN COURSE AS C " 
+                + "ON CSCHED.COURSE_ID = C.ID   "
+                + "INNER JOIN EMPLOYEE AS E  "
+                + "ON CSCHED.INSTRUCTOR_ID = E.ID " 
+                + "INNER JOIN VENUE AS V  " 
+                + "ON CSCHED.VENUE_ID = V.ID " 
+                + "INNER JOIN COURSE_ATTENDANCE AS CATTEN  " 
+                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID " 
+                + "WHERE COURSE_SCHEDULE_DETAIL_ID = :id " 
+                + "AND CSCHED.STATUS = 'A'";
+        
+        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                .addValue("id", id);
+        
+        List<CourseAttendance> listCourseAttendance = template.query(sql, courseScheduleParameters, 
+                new CourseAttendanceRowMapper());
+        
         Set<CourseAttendance> setCourseAttendance = new HashSet<CourseAttendance>(listCourseAttendance);
         return setCourseAttendance;
 
@@ -234,36 +299,27 @@ public class AttendanceDaoImpl implements AttendanceDao {
      * 
      * @param courseAttendance
      * @return CourseAttendance
-     * @author @author h.francisco
+     * @author h.francisco
+     * @author r.ramos
      */
     @Override
-    public Set<CourseAttendance> saveAttendance(CourseAttendance courseAttendance) {
+    public void saveAttendance(CourseAttendance courseAttendance) {
         String sql = "INSERT INTO "
-                + "COURSE_ATTENDANCE(course_schedule_detail_id, course_name, instructor_name, "
-                + "venue_name, participant_id, participant_name, scheduled_start_date_time, "
-                + "scheduled_end_date_time, duration, registration_date, login_date_time, status)"
-                + "VALUES(:courseScheduleDetailId, :courseName, :instructorName, :venueName, "
-                + ":participantId, :participantName, :scheduledStartDateTime, :scheduledEndDateTime, "
-                + ":duration, :registrationDate, :loginDateTime, :status)";
+                + "COURSE_ATTENDANCE(COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT_ID, "
+                + "STATUS, LOG_IN_DATETIME, LOG_OUT_DATETIME, EMAIL)"
+                + "VALUES(:courseScheduleDetailId, :participantId, :status, "
+                + ":loginDateTime, '2020-07-01 10:00:00+08', 'r.ramos@fujitsu.com')";
 
+        
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("courseScheduleDetailId", courseAttendance.getCourseScheduleDetailId())
-                .addValue("courseName", courseAttendance.getCourseName())
-                .addValue("instructorName", courseAttendance.getInstructorName())
-                .addValue("venueName", courseAttendance.getVenueName())
                 .addValue("participantId", courseAttendance.getParticipantId())
-                .addValue("participantName", courseAttendance.getParticipantName())
-                .addValue("scheduledStartDateTime", courseAttendance.getScheduleStartDateTime())
-                .addValue("scheduledEndDateTime", courseAttendance.getScheduleEndDateTime())
-                .addValue("duration", courseAttendance.getDuration())
-                .addValue("registrationDate", courseAttendance.getRegistrationDate())
-                .addValue("loginDateTime", courseAttendance.getLoginDateTime())
-                .addValue("status", courseAttendance.getStatus());
+                .addValue("status", courseAttendance.getStatus())
+                .addValue("loginDateTime", courseAttendance.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         template.update(sql, namedParameters, generatedKeyHolder);
         generatedKeyHolder.getKeys().get("id");
-        return null;
     }
 
     /**
@@ -274,36 +330,27 @@ public class AttendanceDaoImpl implements AttendanceDao {
      * 
      * @param courseAttendance
      * @return CourseAttendance
-     * @author @author h.francisco
+     * @author h.francisco
+     * @author r.ramos
      */
     @Override
-    public Set<CourseAttendance> updateAttendance(CourseAttendance courseAttendance) {
+    public void updateAttendance(CourseAttendance courseAttendance) {
         String sql = "UPDATE COURSE_ATTENDANCE SET course_schedule_detail_id = :courseScheduleDetailId, "
-                + "course_name = :courseName, instructor_name = :instructorName, venue_name = :venueName, "
-                + "participant_id = :participantId, participant_name = :participantName, "
-                + "scheduled_start_date_time = :scheduledStartDateTime, scheduled_end_date_time = :scheduledEndDateTime, "
-                + "duration = :duration, registration_date = :registrationDate, login_date_time = :loginDateTime, "
-                + "status = :status)"
-                + "WHERE id = " + courseAttendance.getId();
+                + "participant_id = :participantId, status = :status, "
+                + "log_in_datetime = :loginDateTime, log_out_datetime = '2020-07-01 10:00:00+08', "
+                + "email = 'r.ramos@fujitsu.com' "
+                + "WHERE id = :id ";
 
         SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("id", courseAttendance.getId())
                 .addValue("courseScheduleDetailId", courseAttendance.getCourseScheduleDetailId())
-                .addValue("courseName", courseAttendance.getCourseName())
-                .addValue("instructorName", courseAttendance.getInstructorName())
-                .addValue("venueName", courseAttendance.getVenueName())
                 .addValue("participantId", courseAttendance.getParticipantId())
-                .addValue("participantName", courseAttendance.getParticipantName())
-                .addValue("scheduledStartDateTime", courseAttendance.getScheduleStartDateTime())
-                .addValue("scheduledEndDateTime", courseAttendance.getScheduleEndDateTime())
-                .addValue("duration", courseAttendance.getDuration())
-                .addValue("registrationDate", courseAttendance.getRegistrationDate())
-                .addValue("loginDateTime", courseAttendance.getLoginDateTime())
-                .addValue("status", courseAttendance.getStatus());
+                .addValue("status", courseAttendance.getStatus())
+                .addValue("loginDateTime", courseAttendance.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         template.update(sql, namedParameters, generatedKeyHolder);
         generatedKeyHolder.getKeys().get("id");
-        return null;
     }
 
     /**
@@ -314,31 +361,58 @@ public class AttendanceDaoImpl implements AttendanceDao {
      * 
      * @param id
      * @return CourseAttendance
-     * @author @author h.francisco
+     * @author h.francisco
+     * @author k.abad
      */
     @Override
     public Set<CourseAttendance> findCourseScheduleDetailById(Long id) {
-        String sql = "SELECT CSCHEDDET.SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME,"
-                + "CSCHEDDET.DURATION, "
-                + "C.NAME, "
-                + "E.LAST_NAME, "
-                + "E.FIRST_NAME,"
-                + "V.NAME, CPART.COURSE_SCHEDULE_ID,"
-                + "CPART.PARTICIPANT_ID, "
-                + "CPART.REGISTRATION_DATE"
+        String sql = "SELECT "
+                + "CSCHED.ID AS ID, "
+                + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, "
+                + "C.NAME AS COURSE_NAME, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "("
+                + "SELECT LAST_NAME "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + ") AS PARTICIPANT_LAST_NAME, "
+                + "("
+                + "    SELECT FIRST_NAME "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + ") AS PARTICIPANT_FIRST_NAME, "
+                + "CSCHEDDET.DURATION AS DURATION, "
+                + "CSCHED.STATUS AS STATUS, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
+                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME "
 
-                + "FROM COURSE_SCHEDULE AS CSCHED"
-                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID"
-                + "INNER JOIN COURSE AS C ON CSCHED.COURSE_ID = C.ID"
-                + "INNER JOIN EMPLOYEE AS E ON CSCHED.INSTRUCTOR_ID = E.ID"
-                + "INNER JOIN VENUE AS V ON CSCHED.VENUE_ID = V.ID"
-                + "INNER JOIN COURSE_PARTICIPANT AS CPART ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID"
-                + "WHERE CSCHED.ID = :id AND CSCHED.STATUS = 'A'";
+                + "FROM COURSE_SCHEDULE AS CSCHED "
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CSCHED.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CSCHED.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V "
+                + "ON CSCHED.VENUE_ID = V.ID "
+                + "INNER JOIN COURSE_PARTICIPANT AS CPART "
+                + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE_ATTENDANCE AS CATTEN "
+                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID " 
+                + "WHERE CSCHEDDET.ID = :id AND CSCHED.STATUS = 'A'";
 
-        List<CourseAttendance> attendanceList = template.query(sql, new CourseAttendanceRowMapper());
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("id", id);
+        
+        List<CourseAttendance> attendanceList = template
+                .query(sql, namedParameters, new CourseAttendanceRowMapper());
+        
         Set<CourseAttendance> setCourse = new HashSet<CourseAttendance>(attendanceList);
         return setCourse;
     }
-
 }
