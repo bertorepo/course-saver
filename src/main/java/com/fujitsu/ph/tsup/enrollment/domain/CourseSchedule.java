@@ -278,7 +278,7 @@ public class CourseSchedule {
 		public Builder(Long id, Long courseId, String courseName, Long instructorId, String instructorLastName,
 				String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed,
 				int totalParticipants, char status) {
-
+			
 			validateId(id);
 			validateCourseId(courseId);
 			validateCourseName(courseName);
@@ -303,7 +303,37 @@ public class CourseSchedule {
 			this.status = status;
 
 		}
+		//TEMPORARY
+		public Builder(Long id, Long courseId, String courseName, Long instructorId, String instructorLastName,
+				String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed,
+				 char status) {/*int totalParticipants,*/
+			
+			validateId(id);
+			validateCourseId(courseId);
+			validateCourseName(courseName);
+			validateInstructorId(instructorId);
+			validateInstructorLastName(instructorLastName);
+			validateInstructorFirstName(instructorFirstName);
+			validateVenueId(venueId);
+			validateVenueName(venueName);
+			validateMinRequired(minRequired);
+			validateMaxAllowed(maxAllowed);
 
+			this.id = id;
+			this.courseId = courseId;
+			this.instructorId = instructorId;
+			this.venueId = venueId;
+			this.minRequired = minRequired;
+			this.courseName = courseName;
+			this.instructorLastName = instructorLastName;
+			this.instructorFirstName = instructorFirstName;
+			this.venueName = venueName;
+			this.maxAllowed = maxAllowed;
+			this.status = status;
+
+		}
+		
+		
 		/**
 		 * <pre>
 		 * Validates and sets the argument into the Builder instance variables
