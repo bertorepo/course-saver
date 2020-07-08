@@ -85,7 +85,6 @@ class FindCourseParticipantByIdTest  {
         System.out.println("Duration:" + courseParticipant.getRegistrationDate());
         System.out.println("Registration Date:" + courseParticipant.getRegistrationDate());
 
-        
         for (CourseScheduleDetail courseSchedDet : courseParticipant.getCourseScheduleDetail()) {
             /**
              * Checks if Scheduled Start DateTime is in between fromDateTime and toDateTime
