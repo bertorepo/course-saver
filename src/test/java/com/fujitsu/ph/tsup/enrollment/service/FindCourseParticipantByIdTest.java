@@ -35,7 +35,7 @@ import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 
 @ExtendWith(SpringExtension.class)
-class FindCourseParticipantById {
+class FindCourseParticipantByIdTest {
 
     /*
      * Used to define Bean
