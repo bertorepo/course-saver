@@ -131,5 +131,4 @@ public class CourseScheduleDetailTest {
         assertTrue(error.getMessage().equals("Scheduled end date and time should be greater than or "
                 + "equal to the the scheduled start date and time"));
     }
-    
 }

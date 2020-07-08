@@ -276,5 +276,4 @@ public class CourseScheduleDetail {
                     " courseScheduleId="+ courseScheduleId+" scheduledStartDateTime="+ scheduledStartDateTime 
                     + " scheduledEndDateTime="+ scheduledEndDateTime + " duration="+ duration +"]";
         }
-        
 }
