@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 //0.01    | 06/23/2020 | WS) K.Abad, WS) M.Angara, WS) J.Iwarat, WS) R.Ramos     | New Creation
 //0.02    | 07/03/2020 | WS) K.abad, WS) R.Ramos                                 | Update
 //0.03    | 07/07/2020 | WS) J.iwarat                                            | Update
+//0.04    | 07/08/2020 | WS) J.iwarat                                            | Update
 //==================================================================================================
 /**
  * <pre>
@@ -34,7 +35,7 @@ import org.springframework.stereotype.Service;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.03
+ * @version 0.04
  * @author k.abad
  * @author m.angara
  * @author j.iwarat
@@ -73,7 +74,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("Can't find from date time, to date time and instructor Id.", e);
         }
-        
+
     }
 
     /**
@@ -120,22 +121,22 @@ public class AttendanceServiceImpl implements AttendanceService {
             Set<CourseAttendance> signedUp = attendanceDao.findCourseScheduleDetailParticipantsById(id);
             Set<CourseAttendance> loggedIn = attendanceDao.findCourseAttendanceByCourseScheduleDetailId(id);
             Map<Long, CourseAttendance> signUpAndLoggedIn = new HashMap<>();
-            
+
             for (CourseAttendance p : signedUp) {
-                   signUpAndLoggedIn.put(p.getParticipantId(), p);
+                signUpAndLoggedIn.put(p.getParticipantId(), p);
             }
-            
+
             for (CourseAttendance l : loggedIn) {
-                   if (!signUpAndLoggedIn.containsKey(l.getParticipantId())) {
-                          signUpAndLoggedIn.put(l.getParticipantId(), l);
-                   }
+                if (!signUpAndLoggedIn.containsKey(l.getParticipantId())) {
+                    signUpAndLoggedIn.put(l.getParticipantId(), l);
+                }
             }
-            
+
             return new HashSet<>(signUpAndLoggedIn.values());
-       } catch (DataAccessException e) {
-           throw new IllegalArgumentException("No record found.", e);
-       }
-   }
+        } catch (DataAccessException e) {
+            throw new IllegalArgumentException("No record found.", e);
+        }
+    }
 
     /**
      * <pre>
@@ -152,12 +153,16 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public void changeStatus(Set<CourseAttendance> courseAttendanceSet) {
         try {
+            CourseAttendance courseAttendance = (CourseAttendance) courseAttendanceSet;
+            attendanceDao.saveAttendance(courseAttendance);
             if (((CourseAttendance) courseAttendanceSet).getId() == null) {
                 throw new IllegalArgumentException("Id not found.");
             }
+            attendanceDao.updateAttendance(courseAttendance);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("No record found.", e);
         }
+
     }
 
     /**
@@ -175,17 +180,17 @@ public class AttendanceServiceImpl implements AttendanceService {
      */
     @Override
     public Set<CourseAttendance> findCourseAbsentParticipantByCourseScheduleDetailId(Long id) {
-        try { 
-            Map<Long, CourseAttendance> absentMap = new HashMap<>();       
+        try {
+            Map<Long, CourseAttendance> absentMap = new HashMap<>();
             Set<CourseAttendance> signedUp = attendanceDao.findCourseScheduleDetailParticipantsById(id);
             Set<CourseAttendance> loggedIn = attendanceDao.findCourseAttendanceByCourseScheduleDetailId(id);
 
             for (CourseAttendance a : signedUp) {
-                absentMap.put(a.getParticipantId(), a);      
+                absentMap.put(a.getParticipantId(), a);
             }
-           
+
             for (CourseAttendance l : loggedIn) {
-               absentMap.remove(l.getParticipantId());    
+                absentMap.remove(l.getParticipantId());
             }
             Set<CourseAttendance> valueSet = new HashSet<>(absentMap.values());
             return valueSet;
@@ -210,12 +215,13 @@ public class AttendanceServiceImpl implements AttendanceService {
     public Set<CourseAttendance> findCourseScheduleDetailById(Long id) {
         try {
             Set<CourseAttendance> courseAttendance = attendanceDao.findCourseScheduleDetailById(id);
-            if (((CourseAttendance) courseAttendance).getId() == 0);     
+            if (((CourseAttendance) courseAttendance).getId() == 0)
+                ;
             return courseAttendance;
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("No records found.", e);
         }
-       
+
     }
 
     /**
@@ -233,7 +239,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     public void attend(CourseAttendance courseAttendance) {
         try {
             attendanceDao.saveAttendance(courseAttendance);
-            if (courseAttendance.getId() == null);
+            if (courseAttendance.getId() == null)
+                ;
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("No records found.", e);
         }
