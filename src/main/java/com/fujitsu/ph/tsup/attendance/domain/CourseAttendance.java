@@ -14,6 +14,7 @@ import java.time.ZonedDateTime;
 //0.01 | 06/22/2020 |  WS) R. Ramos   | New Creation
 //0.02 | 07/03/2020 |  WS) R. Ramos   | Updated
 //0.03 | 07/07/2020 |  WS) R. Ramos   | Updated
+//0.04 | 07/08/2020 |  WS) R. Ramos   | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -21,7 +22,7 @@ import java.time.ZonedDateTime;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.04
  * @author r.ramos
  */
 public class CourseAttendance {
@@ -76,11 +77,6 @@ public class CourseAttendance {
 	private float duration;
 
 	/**
-	 * Registration Date
-	 */
-	private ZonedDateTime registrationDate;
-
-	/**
 	 * Login Date and Time
 	 */
 	private ZonedDateTime loginDateTime;
@@ -113,7 +109,6 @@ public class CourseAttendance {
 		this.scheduledStartDateTime = builder.scheduledStartDateTime;
 		this.scheduledEndDateTime = builder.scheduledEndDateTime;
 		this.duration = builder.duration;
-		this.registrationDate = builder.registrationDate;
 		this.loginDateTime = builder.loginDateTime;
 		this.status = builder.status;
 	}
@@ -158,10 +153,6 @@ public class CourseAttendance {
 		return duration;
 	}
 
-	public ZonedDateTime getRegistrationDate() {
-		return registrationDate;
-	}
-
 	public ZonedDateTime getLoginDateTime() {
 		return loginDateTime;
 	}
@@ -176,8 +167,8 @@ public class CourseAttendance {
 				+ ", courseName = " + courseName + ", instructorName = " + instructorName + ", venueName = " + venueName
 				+ ", participantId = " + participantId + ", participantName = " + participantName
 				+ ", scheduledStartDateTime = " + scheduledStartDateTime + ", scheduledEndDateTime = "
-				+ scheduledEndDateTime + ", duration = " + duration + ", registrationDate = " + registrationDate
-				+ ", loginDateTime = " + loginDateTime + ", status = " + status + "]";
+				+ scheduledEndDateTime + ", duration = " + duration + ", loginDateTime = " + loginDateTime
+				+ ", status = " + status + "]";
 	}
 
 	/**
@@ -244,11 +235,6 @@ public class CourseAttendance {
 		private float duration;
 
 		/**
-		 * Registration Date
-		 */
-		private ZonedDateTime registrationDate;
-
-		/**
 		 * Login Date and Time
 		 */
 		private ZonedDateTime loginDateTime;
@@ -275,20 +261,17 @@ public class CourseAttendance {
 		 * @param scheduledStartDateTime
 		 * @param scheduledEndDateTime
 		 * @param duration
-		 * @param registrationDate
 		 * @param loginDateTime
 		 * @param status
 		 */
 
 		public Builder(Long id, Long courseScheduleDetailId, String courseName, String instructorName, String venueName,
 				Long participantId, String participantName, ZonedDateTime scheduledStartDateTime,
-				ZonedDateTime scheduledEndDateTime, float duration, ZonedDateTime registrationDate,
-				ZonedDateTime loginDateTime, char status) {
+				ZonedDateTime scheduledEndDateTime, float duration, ZonedDateTime loginDateTime, char status) {
 
 			validateId(id);
 			validateCourseScheduleDetailId(courseScheduleDetailId);
 			validateParticipantId(participantId);
-			validateRegistrationDate(registrationDate);
 			validateCourseName(courseName);
 			validateInstructorName(instructorName);
 			validateVenueName(venueName);
@@ -299,7 +282,6 @@ public class CourseAttendance {
 			this.id = id;
 			this.courseScheduleDetailId = courseScheduleDetailId;
 			this.participantId = participantId;
-			this.registrationDate = registrationDate;
 			this.courseName = courseName;
 			this.instructorName = instructorName;
 			this.venueName = venueName;
@@ -329,17 +311,15 @@ public class CourseAttendance {
 		 * @param scheduledStartDateTime
 		 * @param scheduledEndDateTime
 		 * @param duration
-		 * @param registrationDate
 		 */
 
 		public Builder(Long id, Long courseScheduleDetailId, String courseName, String instructorName, String venueName,
 				Long participantId, String participantName, ZonedDateTime scheduledStartDateTime,
-				ZonedDateTime scheduledEndDateTime, float duration, ZonedDateTime registrationDate) {
+				ZonedDateTime scheduledEndDateTime, float duration) {
 
 			validateId(id);
 			validateCourseScheduleDetailId(courseScheduleDetailId);
 			validateParticipantId(participantId);
-			validateRegistrationDate(registrationDate);
 			validateCourseName(courseName);
 			validateInstructorName(instructorName);
 			validateVenueName(venueName);
@@ -350,7 +330,6 @@ public class CourseAttendance {
 			this.id = id;
 			this.courseScheduleDetailId = courseScheduleDetailId;
 			this.participantId = participantId;
-			this.registrationDate = registrationDate;
 			this.courseName = courseName;
 			this.instructorName = instructorName;
 			this.venueName = venueName;
@@ -489,22 +468,6 @@ public class CourseAttendance {
 		private void validateParticipantId(Long participantId) {
 			if (participantId == null || participantId == 0) {
 				throw new IllegalArgumentException("Participant should not be empty");
-			}
-		}
-
-		/**
-		 * <pre>
-		 * Validate the registration date based on the condition below. If it is invalid
-		 * then throw an IllegalArgumentException with the corresponding message.
-		 * 
-		 * <pre>
-		 * 
-		 * @param registrationDate
-		 */
-
-		private void validateRegistrationDate(ZonedDateTime registrationDate) {
-			if (registrationDate == null) {
-				throw new IllegalArgumentException("Registration date should not be empty");
 			}
 		}
 
