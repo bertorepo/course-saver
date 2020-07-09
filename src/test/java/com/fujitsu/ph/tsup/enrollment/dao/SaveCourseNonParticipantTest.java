@@ -1,9 +1,21 @@
 package com.fujitsu.ph.tsup.enrollment.dao;
 
+
+//=================================================================================================
+//$Id:PR01$
+//Project Name :Training Sign Up
+//System Name  :Enroll Course
+//Class Name   :SaveCourseNonParticipantTest.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+--------------------------------------------------
+//0.02    | 07/07/2020 | WS) K.Freo            | New Creation
+//=================================================================================================
+
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +28,18 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 
+/**
+* <pre>
+* SaveCourseNonParticipantTest.java
+* <pre>
+* 
+* @version 0.01
+* @author k.freo                    
+*/
 @JdbcTest
 @ActiveProfiles({ "postgres" })
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class SaveCourseNonParticipant {
+class SaveCourseNonParticipantTest {
 
 	    @Autowired
 	    private EnrollmentDao dao;
@@ -32,26 +52,17 @@ class SaveCourseNonParticipant {
 	            return new EnrollmentDaoImpl();
 	        }
 	    }
+	    
 	    @Test
-	 		void testsaveCourseNonParticipant() {
-	 	   
-	 	    	CourseParticipant courseParticipant = createCourseParticipant();
-	 	    	
-	 	    	dao.saveCourseNonParticipant(courseParticipant );
-	 	    	
-	 	    	assertEquals(1L, courseParticipant.getId());
-	 	    	assertEquals(1L, courseParticipant.getCourseScheduleId());
-	 	}
+ 		void testsaveCourseNonParticipant() {
+ 	   
+    	CourseParticipant courseParticipant = createCourseParticipant();
+	    	
+	    	dao.saveCourseNonParticipant(courseParticipant);
+	    	assertEquals(10L, courseParticipant.getId());
+	}
 
-	 		private CourseParticipant createCourseParticipant() {
-	 			CourseParticipant courseParticipant =
-	 					new CourseParticipant.Builder(1L, 10L)
-	 						.build();
-	 						
-	 				Set<CourseParticipant> courseParticipantSet = new HashSet<>();
-	 					courseParticipantSet.add(courseParticipant);
-	 		
-	 					return  new CourseParticipant.Builder(1L, 10L).build();
-	 		}
-	 
-}
+	    private CourseParticipant createCourseParticipant() {		
+		return  new CourseParticipant.Builder(10L).decline("TEST").build();
+	    }
+	}
