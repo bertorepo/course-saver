@@ -57,47 +57,31 @@ class DeclineCourseTest {
 		private EnrollmentDao dao;
 
 
-	@Test
-	  void testsaveCourseNonParticipant() {
-	        
-		 CourseParticipant courseParticipant = courseParticipant();
-	        enrollmentService.declineCourse(courseParticipant);
-	        
-	        assertEquals(courseParticipant.getId(),10L);
-	   
+	  @Test
+	  void testDeclineCourse() {
+		
+		CourseParticipant courseParticipantSet = courseParticipant();
+			when(dao.findCourseParticipantById(any(Long.class))).thenReturn(courseParticipantSet);
+			doThrow(new DataRetrievalFailureException("error")).when(dao).saveCourseNonParticipant(null);
+			doThrow(new DataRetrievalFailureException("error")).when(dao).deleteCourseParticipantById(null); 
+			
+			enrollmentService.declineCourse(courseParticipantSet);
+			assertEquals(courseParticipantSet.getId(), 10L);
 	  }
 	  
 	  @Test
-	  void testsaveCourseNonParticipantwithError(){
-		  doThrow(new DataRetrievalFailureException("error")).when(dao).saveCourseParticipant(any(CourseParticipant.class));
-	        
-		  CourseParticipant courseParticipant = courseParticipant();
-	        
-	        Exception  courseParticipantException = assertThrows(IllegalArgumentException.class, () 
-	                -> enrollmentService.declineCourse(courseParticipant));
-	        
-	        String expectedMessage = "Can't save Course non-participant";
-	        String actualMessage = courseParticipantException.getMessage();
-	        assertTrue(actualMessage.contains(expectedMessage));
-	  }
-	  
-	     @Test
-	  void saveCourseNonParticipant_Null(){
-		  doThrow(new DataRetrievalFailureException("error")).when(dao).saveCourseNonParticipant(any(CourseParticipant.class)); 
+	  void testDeclineCoursewithError(){
+		  when(dao.findCourseParticipantById(any(Long.class))).thenReturn(courseParticipant());
+		  doThrow(new DataRetrievalFailureException("error")).when(dao).saveCourseNonParticipant(any(CourseParticipant.class));
+		  doThrow(new DataRetrievalFailureException("error")).when(dao).deleteCourseParticipantById(any(Long.class)); 
 		  
-		  Exception courseParticipantException = assertThrows(IllegalArgumentException.class, () 
-          -> enrollmentService.declineCourse(courseParticipant()));
-  
-		  String expectedMessage = "Can't find Course Non-Participant";
-		  String actualMessage = courseParticipantException.getMessage();
-		  assertTrue(actualMessage.contains(expectedMessage)); 
+		  Exception exception = assertThrows(IllegalArgumentException.class,() 
+				  -> enrollmentService.declineCourse(courseParticipant()));
+				
+		  assertTrue(exception.getMessage().equals(" Can't decline Course."));
 	  }
-	  
-
-	private  CourseParticipant courseParticipant() {
-            new  CourseParticipant.Builder(10L).build();
-            
-		return  new CourseParticipant.Builder(10L).build();
-		
-	}
+	
+	  private CourseParticipant courseParticipant() {
+			return new CourseParticipant.Builder(10L).decline("DUMMY").build();
+		}  
 }
