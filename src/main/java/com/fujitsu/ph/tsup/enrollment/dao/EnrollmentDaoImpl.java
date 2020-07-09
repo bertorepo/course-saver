@@ -276,7 +276,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     
     @Override
     public CourseParticipant findCourseParticipantById(Long id) {
-        String sql = "SELECT " 
+    	String sql = "SELECT " 
                 +"CSCHED.ID AS ID,  "
                 +"CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, " 
                 +"C.NAME AS COURSE_NAME,  " 
@@ -310,20 +310,30 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 +"ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID " 
                 +"WHERE CPART.PARTICIPANT_ID = :id " 
                 +"AND STATUS = 'A'";
-        
+    	
         SqlParameterSource  NamedParameters = new MapSqlParameterSource()
                           .addValue("id", id);
        return template.queryForObject(sql, NamedParameters, new EnrollmentRowMapperCourseParticipant());
              
       }
-
-
+    
+    /**
+     * <pre>
+     *
+     *deleteCourseParticipantById
+     *
+     *@author k.freo
+     * <pre>
+     */
     @Override
     public void deleteCourseParticipantById(Long id) {
-        // TODO Auto-generated method stub
+    	KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
     	String sql = "DELETE FROM COURSE_PARTICIPANT WHERE id = :id";
 		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-		template.update(sql, namedParameters);
+		template.update(sql, namedParameters, generatedKeyHolder);
+		
+		   Long key = (Long) generatedKeyHolder.getKeys().get("id");
+	       System.out.println("\nCourse Participant ID to be deleted: "+ key +"\n");
     }
 
     
@@ -337,21 +347,24 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      */
     @Override
     public void saveCourseNonParticipant(CourseParticipant courseParticipant) {
-    	 String courseParticipantSql = "INSERT INTO COURSE_NON_PARTICIPANT"
-	                + "(ID,  COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE, REASON, DECLINE_DATE)"
-	                + "VALUES (:id,COURSE_SCHEDULE_ID, :PARTICIPANT_ID, :REGISTRATION_DATE, :REASON, "
-	                + ":DECLINE_DATE  )";
 
+   	 	String courseParticipantSql = "INSERT INTO COURSE_NON_PARTICIPANT\r\n" + 
+   	 		"( COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE, REASON, DECLINE_DATE)\r\n" + 
+   	 		"SELECT  COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE, :reason, :declineDate\r\n" + 
+   	 		"FROM COURSE_PARTICIPANT\r\n" + 
+   	 		"WHERE ID = :id;";
+   	
 	        SqlParameterSource coursenonpartParameters = new MapSqlParameterSource()
 	        		.addValue("id", courseParticipant.getId())
-	                .addValue("COURSE_SCHEDULE_ID", courseParticipant.getCourseScheduleId())
-	                .addValue("PARTICIPANT_ID", courseParticipant.getParticipantId())
-	                .addValue("REGISTRATION_DATE", courseParticipant.getRegistrationDate())
-	                .addValue("REASON", courseParticipant.getReason())
-	                .addValue("DECLINE_DATE", courseParticipant.getDeclineDate());
+	                .addValue("reason", courseParticipant.getReason())
+	                .addValue("declineDate", courseParticipant.getDeclineDate().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime() ); 
 	        template.update(courseParticipantSql, coursenonpartParameters);
+	        
+	       
+		    System.out.println("\nCourse Participant ID who decline: "+ courseParticipant.getId() +"\n"); 
     }
 
+    
     @Override
     public void changeCourseScheduleStatus(CourseSchedule courseSchedule) {
     	String sql = "UPDATE COURSE_SCHEDULE SET status = :status WHERE id = :id";
