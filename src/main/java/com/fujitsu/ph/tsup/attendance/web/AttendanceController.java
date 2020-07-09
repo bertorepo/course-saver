@@ -44,6 +44,7 @@ import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
 //0.01    | 06/23/2020 | WS) K.Abad, WS) M.Angara, WS) H.Francisco, WS) J.Iwarat, WS) R.Ramos    | New Creation
 //0.02    | 06/29/2020 | WS) J.Iwarat                                                            | Update
 //0.03    | 06/30/2020 | WS) J.Iwarat                                                            | Update
+//0.04    | 07/08/2020 | WS) R.Ramos                                                             | Update
 //==================================================================================================
 /**
  * <pre>
@@ -491,8 +492,7 @@ public class AttendanceController {
 
         CourseAttendance courseAttendance = new CourseAttendance.Builder(form.getId(), form.getCourseScheduleDetailId(),
                 form.getCourseName(), form.getInstructorName(), form.getVenueName(), form.getParticipantId(), "",
-                form.getScheduledStartDateTime(), form.getScheduledEndDateTime(), form.getDuration(),
-                form.getScheduledStartDateTime()).build();
+                form.getScheduledStartDateTime(), form.getScheduledEndDateTime(), form.getDuration()).build();
 
         attendanceService.attend(courseAttendance);
 
