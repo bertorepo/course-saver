@@ -99,19 +99,32 @@ public class FindCourseScheduleByIdTest {
      */
     @Test
     void testFindCourseScheduleById() {
-        Set<CourseParticipant> courseParticipant = new HashSet<CourseParticipant>();
+        CourseParticipant courseParticipant = createCourseParticipant();
         
-        courseParticipant.add(new CourseParticipant.Builder(12345L, 1000L, "java", 
-                "Lorenzo, Loyce", "WFH", 22L, "Abad, Kenneth", ZonedDateTime.now(), ZonedDateTime.now()
-                .plusDays(5), 2.0f, ZonedDateTime.now(), "k.abad@fujitsu.com", "220054288").build());
+        Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>();
+        courseParticipantSet.add(courseParticipant);
         
         when(attendanceDao.findCourseScheduleById(any(Long.class)))
-                .thenReturn(courseParticipant);
+                .thenReturn(courseParticipantSet);
         
-        Set<CourseParticipant> course = attendanceService.findCourseScheduleById(any(Long.class));
-        
-        assertNotNull(course.size());
-        assertEquals(1, course.size());
+        assertNotNull(courseParticipantSet.size());
+        assertEquals(1, courseParticipantSet.size());
+        assertEquals(1L, courseParticipant.getId());
+        assertEquals(2L, courseParticipant.getCourseScheduleId());
+        assertEquals("Java", courseParticipant.getCourseName());
+        assertEquals("Lorenzo, Loyce", courseParticipant.getInstructorName());
+        assertEquals("WFH", courseParticipant.getVenueName());
+        assertEquals(22L, courseParticipant.getParticipantId());
+        assertEquals("Abad, Kenneth", courseParticipant.getParticipantName());
+        assertEquals(ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 
+                courseParticipant.getScheduledStartDateTime());
+        assertEquals(ZonedDateTime.parse("2020-07-06T17:30:34.983+08:00"), 
+                courseParticipant.getScheduledEndDateTime());
+        assertEquals(2.0f, courseParticipant.getDuration());
+        assertEquals(ZonedDateTime.parse("2019-08-08T09:15:24.983+08:00"), 
+                courseParticipant.getRegistrationDate());
+        assertEquals("k.abad@fujitsu.com", courseParticipant.getEmail());
+        assertEquals("220054288", courseParticipant.getEmployeeNumber());   
     }
     
     /**
@@ -132,5 +145,18 @@ public class FindCourseScheduleByIdTest {
         String expectedMessage = "Course Schedule not found.";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
+    }
+    
+    /**
+     * <pre>
+     * Creates a builder method instance for the CourseParticipant
+     * 
+     * <pre>
+     * 
+     */
+    private CourseParticipant createCourseParticipant() {
+        return new CourseParticipant.Builder(1L, 2L, "Java", "Lorenzo, Loyce", "WFH", 22L, "Abad, Kenneth", 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), ZonedDateTime.parse("2020-07-06T17:30:34.983+08:00"), 
+                2.0f, ZonedDateTime.parse("2019-08-08T09:15:24.983+08:00"), "k.abad@fujitsu.com", "220054288").build();
     }
 }
