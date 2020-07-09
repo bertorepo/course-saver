@@ -141,17 +141,19 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public void declineCourse(CourseParticipant courseParticipant) {
 
         try {
-                CourseParticipant findCourseParticipant = enrollmentDao.findCourseParticipantById
-                        (courseParticipant.getId());
-                CourseParticipant dbCourseParticipant = new CourseParticipant
-                        .Builder(findCourseParticipant.getId())
-                                .decline(courseParticipant.getReason()).build();
-                
-                enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
-                enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
-            } catch (DataAccessException ex) {
-                throw new IllegalArgumentException(" Can't decline Course.");
-            }
+        CourseParticipant findCourseParticipant = enrollmentDao.findCourseParticipantById(courseParticipant.getId());
+             
+        CourseParticipant dbCourseParticipant = 
+                 new CourseParticipant
+                           .Builder(findCourseParticipant.getId())
+                           .decline(courseParticipant.getReason())
+                           .build();
+             
+         enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
+         enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
+         } catch (DataAccessException ex) {
+             throw new IllegalArgumentException(" Can't decline Course.");       
+                 }     
     } 
     
     @Override
