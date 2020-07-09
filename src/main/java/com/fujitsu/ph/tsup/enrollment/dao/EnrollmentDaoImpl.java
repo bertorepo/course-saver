@@ -206,7 +206,6 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                  .addValue(" reason", courseParticipant.getReason())
                  .addValue(" declineDate", courseParticipant.getDeclineDate());
          template.update(saveCourseParticipantSql, saveCourseParticipantParameters);
-
     }
 
     
