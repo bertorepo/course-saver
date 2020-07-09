@@ -1,11 +1,29 @@
+//==================================================================================================
+// Project Name :  Training Sign Up Project
+// System Name  : Training Sign Up Project
+// Class Name   : TsupAuthProvider.java
+//
+// <<Modification History>>
+// Version | Date       | Updated By            | Content
+// --------+------------+-----------------------+---------------------------------------------------
+// 1.0.0   | 2020/07/29 | WS) J.Macabudbud      | Initial Version
+//==================================================================================================
 package com.fujitsu.ph.tsup.auth.core.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.auth.provider.FpiLdapAuthenticationProvider;
+import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
+import com.fujitsu.ph.tsup.authz.core.service.AuthorizationService;
+import com.fujitsu.ph.tsup.employee.management.model.Employee;
 
 /**
  * <pre>
@@ -13,26 +31,37 @@ import com.fujitsu.ph.auth.provider.FpiLdapAuthenticationProvider;
  * </pre>
  * 
  * @version 0.01
- * @author j.macabudbud
+ * @author WS) J.Macabudbud
  */
 @Component
 public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
 	private Logger logger = LoggerFactory.getLogger(TsupAuthProvider.class);
 
-	/* Uncomment this once the Class for AuthorizationService is created */
-//	@Autowired
-//	private AuthorizationService authorizationService;
+	@Autowired
+	private AuthorizationService authorizationService;
 
 	@Override
+	/**
+	 * Setting the user details in FpiUser
+	 * 
+	 * @param username
+	 * @return FpiUser details
+	 */
 	protected FpiUser getUser(String username) {
 		FpiUser fpiUser = new FpiUser();
 
-		fpiUser.setId(1L);
+		Employee employee = authorizationService.findDetailsByUsername(username);
+
+		fpiUser.setId(employee.getId());
+		fpiUser.setEmployeeNumber(employee.getNumber());
+		fpiUser.setFirstName(employee.getFirstName());
+		fpiUser.setLastName(employee.getLastName());
 		fpiUser.setUserName(username);
 
-		/* Uncomment this once the Class for AuthorizationService is created */
-//		List<String> roles = authorizationService.findByUsername(username);
-//		fpiUser.setRoles(roles);
+		Set<EmployeeAuth> roles = authorizationService.findByUsername(username);
+		List<String> rolesList = new ArrayList<>();
+		rolesList.add(roles.toString());
+		fpiUser.setRoles(rolesList);
 
 		logger.debug("User:{}", fpiUser);
 
