@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 //0.03    | 07/07/2020 | WS) J.iwarat                                            | Update
 //0.04    | 07/08/2020 | WS) J.iwarat                                            | Update
 //0.05    | 07/08/2020 | WS) R.ramos                                             | Update
+//0.06    | 07/09/2020 | WS) R.ramos                                             | Update
 //==================================================================================================
 /**
  * <pre>
@@ -36,7 +37,7 @@ import org.springframework.stereotype.Service;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.05
+ * @version 0.06
  * @author k.abad
  * @author m.angara
  * @author j.iwarat
@@ -217,10 +218,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	@Override
 	public Set<CourseAttendance> findCourseScheduleDetailById(Long id) {
 		try {
-			Set<CourseAttendance> courseAttendance = attendanceDao.findCourseScheduleDetailById(id);
-			if (((CourseAttendance) courseAttendance).getId() == 0)
-				;
-			return courseAttendance;
+			return attendanceDao.findCourseScheduleDetailById(id);
 		} catch (DataAccessException e) {
 			throw new IllegalArgumentException("No records found.", e);
 		}
