@@ -107,8 +107,10 @@ public class FindCourseScheduleByIdTest {
         when(attendanceDao.findCourseScheduleById(any(Long.class)))
                 .thenReturn(courseParticipantSet);
         
-        assertNotNull(courseParticipantSet.size());
-        assertEquals(1, courseParticipantSet.size());
+        Set<CourseParticipant> participant = attendanceService.findCourseScheduleById(1L);
+        
+        assertNotNull(participant.size());
+        assertEquals(1, participant.size());
         assertEquals(1L, courseParticipant.getId());
         assertEquals(2L, courseParticipant.getCourseScheduleId());
         assertEquals("Java", courseParticipant.getCourseName());
