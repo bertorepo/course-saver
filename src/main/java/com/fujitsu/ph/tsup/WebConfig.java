@@ -12,11 +12,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * </pre>
  * 
  * @version 0.01
- * @author j.macabudbud
+ * @author WS) J.Macabudbud
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    
+	/**
+	 * <pre>
+	 * Configure content negotiation options.
+	 * </pre>
+	 * 
+	 * @param configurer ContentNegotiationConfigurer Object
+	 * @return void
+	 */
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 
@@ -27,7 +34,16 @@ public class WebConfig implements WebMvcConfigurer {
             .mediaType("xml", MediaType.APPLICATION_XML)
             .mediaType("json", MediaType.APPLICATION_JSON);
     }
-
+    
+	/**
+	 * <pre>
+	 * Configure simple automated controllers pre-configured with the response status code 
+	 * and/or a view to render the response body.
+	 * </pre>
+	 * 
+	 * @param registry ViewControllerRegistry Object
+	 * @return void
+	 */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("login");

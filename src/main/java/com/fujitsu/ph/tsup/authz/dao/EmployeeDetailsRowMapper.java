@@ -1,7 +1,7 @@
 //==================================================================================================
 // Project Name :  Training Sign Up Project
 // System Name  : Training Sign Up Project
-// Class Name   : AuthzRowMapper.java
+// Class Name   : EmployeeDetailsRowMapper.java
 //
 // <<Modification History>>
 // Version | Date       | Updated By            | Content
@@ -12,33 +12,32 @@ package com.fujitsu.ph.tsup.authz.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
+import com.fujitsu.ph.tsup.employee.management.model.Employee;
 
 /**
  * <pre>
- * Mapper Class for User Authorization
+ * Mapper Class for User Details
  * </pre>
  * 
  * @author WS) J.Macabudbud
  * @version 0.01
  * 
  */
-public class AuthzRowMapper implements RowMapper<EmployeeAuth> {
-	
+public class EmployeeDetailsRowMapper implements RowMapper<Employee> {
+
 	@Override
-	public EmployeeAuth mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
+		String number = rs.getString("number");
+		String firstName = rs.getString("first_name");
+		String lastName = rs.getString("last_name");
+		String emailAddress = rs.getString("email_address");
 		String username = rs.getString("username");
-		String auth_name = rs.getString("auth_name");
-		Set<String> roles = new HashSet<String>();
-		roles.add(auth_name);
-		EmployeeAuth employeeAuth = new EmployeeAuth.Builder(id, username, roles).build();
-		return employeeAuth;
+		Employee employee = new Employee.Builder(id, number, firstName, lastName, emailAddress, username).build();
+		return employee;
 	}
 
 }
