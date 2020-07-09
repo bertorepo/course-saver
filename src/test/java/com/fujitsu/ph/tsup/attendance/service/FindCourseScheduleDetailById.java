@@ -13,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -30,13 +33,14 @@ import static org.mockito.Mockito.when;
 //Version | Date       | Updated By                            | Content
 //--------+------------+---------------------------------------+-----------------
 //0.01    | 07/08/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos | New Creation
+//0.02    | 07/09/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos | Updated
 //===============================================================================
 /**
  * <pre>
 * The test case for AttendanceService FindCourseScheduleDetailById
  * </pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author k.abad
  * @author j.iwarat
  * @author r.ramos
@@ -101,24 +105,26 @@ public class FindCourseScheduleDetailById {
 	void testFindCourseScheduleDetailById() {
 		CourseAttendance courseAttendance = createCourseAttendance();
 
-		Set<CourseAttendance> courseAttendanceSet = new HashSet<CourseAttendance>();
+		Set<CourseAttendance> courseAttendanceSet = new HashSet<>();
 		courseAttendanceSet.add(courseAttendance);
 
 		when(attendanceDao.findCourseScheduleDetailById(any(Long.class))).thenReturn(courseAttendanceSet);
+		Set<CourseAttendance> coursesAttendance = attendanceService.findCourseScheduleDetailById(1L);
 
-		assertNotNull(courseAttendance);
-		assertEquals(1L, courseAttendance.getId());
-		assertEquals(2L, courseAttendance.getCourseScheduleDetailId());
-		assertEquals("JAVA", courseAttendance.getCourseName());
-		assertEquals("Lorenzo, Loyce", courseAttendance.getInstructorName());
-		assertEquals("TWO/Neo Bldg.", courseAttendance.getVenueName());
-		assertEquals(3L, courseAttendance.getParticipantId());
-		assertEquals("Abad, Kenneth", courseAttendance.getParticipantName());
-		assertEquals(ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), courseAttendance.getScheduleStartDateTime());
-		assertEquals(ZonedDateTime.parse("2020-07-06T17:30:34.983+08:00"), courseAttendance.getScheduleEndDateTime());
-		assertEquals(3.0f, courseAttendance.getDuration());
-		assertEquals(ZonedDateTime.parse("2019-08-08T09:15:24.983+08:00"), courseAttendance.getLoginDateTime());
-		assertEquals('P', courseAttendance.getStatus());
+		assertNotNull(coursesAttendance);
+		assertEquals(1, coursesAttendance.size());
+	}
+	
+	@Test
+	void testFindCourseScheduleDetailById_Error() {
+		when(attendanceDao.findCourseScheduleDetailById(any(Long.class))).thenThrow(new DataRetrievalFailureException("Error"));
+
+		Exception attendanceException = assertThrows(IllegalArgumentException.class, () -> attendanceService
+				.findCourseScheduleDetailById(1L));
+
+		String expectedMessage = "No records found.";
+		String actualMessage = attendanceException.getMessage();
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 
 	/**
