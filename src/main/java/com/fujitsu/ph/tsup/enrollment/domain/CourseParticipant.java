@@ -253,8 +253,17 @@ public class CourseParticipant {
 			this.reason = reason;
 			this.declineDate = declineDate;
 			
-	
-
+		}
+		public Builder(Long id, Long courseScheduleId, Long participantId, ZonedDateTime registrationDate) {
+			validateId(id);
+			validateCourseScheduleId(courseScheduleId);
+			validateParticipantId(participantId);
+			validateRegistrationDate(registrationDate);
+			
+			this.id = id;
+			this.courseScheduleId = courseScheduleId;
+			this.participantId = participantId;
+			this.registrationDate = registrationDate;
 		}
 
 		/**
