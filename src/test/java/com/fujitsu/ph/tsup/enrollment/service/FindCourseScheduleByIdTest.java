@@ -10,6 +10,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) M. Lumontad       | New Creation
+//0.01    | 07/08/2020 | WS) M. Lumontad       | Update
 //==================================================================================================
 /**
 * <pre>
@@ -35,7 +36,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 @ExtendWith(SpringExtension.class)
-class FindCourseScheduleById {
+class FindCourseScheduleByIdTest {
 
     @TestConfiguration
     static class CourseServiceImplestContextConfiguration {
@@ -54,6 +55,23 @@ class FindCourseScheduleById {
     void findCourseScheduleById() {
         CourseSchedule result = findCourseScheduleId();
         when(dao.findCourseScheduleById(any(Long.class))).thenReturn(result);
+        
+        CourseSchedule courseSchedule = service.findCourseScheduleById(1L);
+        assertEquals(result.getCourseId() , courseSchedule.getCourseId());
+    }
+    
+    @Test
+    void findCourseScheduleById_DaoNull() {
+        CourseSchedule result = findCourseScheduleId();
+        when(dao.findCourseScheduleById(null)).thenReturn(result);
+        
+        CourseSchedule courseSchedule = service.findCourseScheduleById(1L);
+        assertEquals(result.getCourseId() , courseSchedule.getCourseId());
+    }
+    @Test
+    void findCourseScheduleById_Error() {
+        CourseSchedule result = findCourseScheduleId();
+        when(dao.findCourseScheduleById(60L)).thenReturn(result);
         
         CourseSchedule courseSchedule = service.findCourseScheduleById(1L);
         assertEquals(result.getCourseId() , courseSchedule.getCourseId());

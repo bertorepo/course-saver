@@ -10,6 +10,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) M. Lumontad       | New Creation
+//0.01    | 07/08/2020 | WS) M. Lumontad       | Update
 //==================================================================================================
 /**
 * <pre>
@@ -36,7 +37,7 @@ import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 
 @ExtendWith(SpringExtension.class)
-class FindAllEnrolledCoursesByParticipantId {
+class FindAllEnrolledCoursesByParticipantIdTest {
 
     @TestConfiguration
     static class TestContextConfiguration {
@@ -59,6 +60,24 @@ class FindAllEnrolledCoursesByParticipantId {
     void findCourseEnrolledParticipantById() {
         CourseParticipant result = findEnrolledCourseByParticipantId();
         when(enrollmentDao.findCourseParticipantById(any(Long.class))).thenReturn(result);
+
+        CourseParticipant courseParticipant = enrollmentService.findCourseParticipantById(1L);
+        assertEquals(result.getParticipantId(), courseParticipant.getParticipantId());
+    }
+
+    @Test
+    void findCourseEnrolledParticipantById_DaoNull() {
+        CourseParticipant result = findEnrolledCourseByParticipantId();
+        when(enrollmentDao.findCourseParticipantById(null)).thenReturn(result);
+
+        CourseParticipant courseParticipant = enrollmentService.findCourseParticipantById(1L);
+        assertEquals(result.getParticipantId(), courseParticipant.getParticipantId());
+    }
+
+    @Test
+    void findCourseEnrolledParticipantById_Error() {
+        CourseParticipant result = findEnrolledCourseByParticipantId();
+        when(enrollmentDao.findCourseParticipantById(10L)).thenReturn(result);
 
         CourseParticipant courseParticipant = enrollmentService.findCourseParticipantById(1L);
         assertEquals(result.getParticipantId(), courseParticipant.getParticipantId());
