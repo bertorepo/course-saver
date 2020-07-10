@@ -10,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>View Course Enroll</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -22,7 +22,7 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal">
+		<form class="form-horizontal" action="#" th:action="@{/enrollment/viewCourseEnroll}" th:object="${viewCourseEnroll}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
 			<hr>
 			<div class="card">
@@ -30,11 +30,11 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
+							<input type="datetime-local" class="form-control" id="" th:field="*{fromDateTime}">
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
+							<input type="datetime-local" class="form-control" id="" th:field="*{toDateTime}">
 						</div>
 					</div>
 					<div class="float-right">
@@ -85,40 +85,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
+					<tr th:each="CourseScheduleListForm: ${courseScheduleListForm}">
+						<td th:text="${CourseScheduleListForm.courseName}" />
+						<td th:text="${CourseScheduleListForm.instructorName}" />
+						<td th:text="${CourseScheduleListForm.scheduledStartDateTime}" />
+						<td th:text="${CourseScheduleListForm.scheduledEndDateTime}" />
+						<td th:text="${CourseScheduleListForm.duration}" />
 					</tr>
 				</tbody>
 			</table>
