@@ -27,10 +27,12 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarColor01">
 				<ul class="navbar-nav mr-auto">
+					
+					<!--Member-->
+					<th:block sec:authorize="hasAuthority('Member')">
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{/dashboard}">Home </a>
 					</li>
-					<!--Member-->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enroll<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
@@ -48,8 +50,13 @@
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{/attendance/signin/{courseScheduleDetailId}}">Attend</a>
 					</li>
+					</th:block>
 					<!--Member end-->
 					<!--PMO-->
+					<th:block sec:authorize="hasAuthority('PMO')">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/dashboard}">Home </a>
+					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
@@ -64,8 +71,13 @@
 							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/absent}">Attendance for Absent</a>
 						</div>
 					</li>
+					</th:block>
 					<!--PMO end-->
 					<!--Instructor-->
+					<th:block sec:authorize="hasAuthority('Instructor')">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/dashboard}">Home </a>
+					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
@@ -80,9 +92,10 @@
 							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/present}">Generate Attendance Sheet</a>
 						</div>
 					</li>
+					</th:block>
 					<!--Instructor end-->
 				</ul>
-				<form class="form-inline my-2 my-lg-0" th:action="@{/logout}">
+				<form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()"  th:action="@{/logout}" method="post">
 					<button class="btn btn-primary my-2 my-sm-0" ><i class="fa fa-sign-out"></i> Logout</button>
 				</form>
 			</div>
