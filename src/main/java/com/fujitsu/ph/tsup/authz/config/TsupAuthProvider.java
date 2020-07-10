@@ -60,9 +60,16 @@ public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
 
 		Set<EmployeeAuth> roles = authorizationService.findByUsername(username);
 		List<String> rolesList = new ArrayList<>();
-		rolesList.add(roles.toString());
-		fpiUser.setRoles(rolesList);
 
+		for (EmployeeAuth role : roles) {
+			Set<String> itr = role.getAuthzSet();
+			for (String i : itr) {
+				rolesList.add(i);
+			}
+		}
+		
+		fpiUser.setRoles(rolesList);
+		
 		logger.debug("User:{}", fpiUser);
 
 		return fpiUser;
