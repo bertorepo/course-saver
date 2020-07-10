@@ -132,7 +132,7 @@ public class CourseScheduleDetail {
           this.courseScheduleId = courseScheduleId;
           this.scheduledStartDateTime = scheduledStartDateTime;
           this.scheduledEndDateTime = scheduledEndDateTime;
-          this.duration = computeDuration(scheduledEndDateTime, scheduledStartDateTime);
+          this.duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
       }
 
       /**
@@ -156,7 +156,7 @@ public class CourseScheduleDetail {
           this.courseScheduleId = courseScheduleId;
           this.scheduledStartDateTime = scheduledStartDateTime;
           this.scheduledEndDateTime = scheduledEndDateTime;
-          this.duration = computeDuration(scheduledEndDateTime, scheduledStartDateTime);
+          this.duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
       }
 
       /**
