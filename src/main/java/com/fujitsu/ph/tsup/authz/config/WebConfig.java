@@ -1,4 +1,4 @@
-package com.fujitsu.ph.tsup;
+package com.fujitsu.ph.tsup.authz.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

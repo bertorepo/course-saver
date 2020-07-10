@@ -1,4 +1,4 @@
-package com.fujitsu.ph.tsup.authz.core.model;
+package com.fujitsu.ph.tsup.authz.domain;
 
 import java.util.Set;
 

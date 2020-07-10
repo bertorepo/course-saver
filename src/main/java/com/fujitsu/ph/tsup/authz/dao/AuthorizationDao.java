@@ -12,8 +12,8 @@ package com.fujitsu.ph.tsup.authz.dao;
 
 import java.util.Set;
 
-import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
-import com.fujitsu.ph.tsup.employee.management.model.Employee;
+import com.fujitsu.ph.tsup.authz.domain.EmployeeAuth;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * <pre>

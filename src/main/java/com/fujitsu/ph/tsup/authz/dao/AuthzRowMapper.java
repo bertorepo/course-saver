@@ -17,7 +17,7 @@ import java.util.Set;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
+import com.fujitsu.ph.tsup.authz.domain.EmployeeAuth;
 
 /**
  * <pre>

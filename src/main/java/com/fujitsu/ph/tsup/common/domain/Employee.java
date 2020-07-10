@@ -8,7 +8,7 @@
 // --------+------------+-----------------------+---------------------------------------------------
 // 1.0.0   | 06/24/2020 | WS) J.Macabudbud      | Initial Version
 //==================================================================================================
-package com.fujitsu.ph.tsup.employee.management.model;
+package com.fujitsu.ph.tsup.common.domain;
 
 /**
  * <pre>
