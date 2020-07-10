@@ -23,6 +23,7 @@
 	
 	<div class="container mt-5">
 		<!--Member-->
+		<div sec:authorize="hasAuthority('Member')">
 		<div class="row h-100">
 			<div class="card mb-5 col-lg-4 bg-danger text-white mx-auto">
 				<div class="card-body text-center align-items-center d-flex justify-content-center">
@@ -73,8 +74,10 @@
 				</div>
 			</div>
 		</div>
+		</div>
 		<!--Member end-->
 		<!--Instructor-->
+		<div sec:authorize="hasAuthority('Instructor')">
 		<div class="row h-100">
 			<div class="card mb-5 col-lg-4 bg-danger text-white mx-auto">
 				<div class="card-body text-center align-items-center d-flex justify-content-center">
@@ -114,9 +117,11 @@
 				</div>
 			</div>
 		</div>
+		</div>
 		<!--Instructor end-->
 		
 		<!--PMO-->
+		<div sec:authorize="hasAuthority('PMO')">
 		<div class="card mb-5">
 			<div class="card-header">
 				<h3><i class="fa fa-exclamation-triangle"></i> Courses to Cancel</h3>
@@ -150,6 +155,7 @@
 						<a th:href="@{/enrollment/schedules}">View More <i class="fa fa-arrow-circle-right"></i></a>
 				</div>
 			</div>
+		</div>
 		</div>
 		<!--PMO end-->
 		
