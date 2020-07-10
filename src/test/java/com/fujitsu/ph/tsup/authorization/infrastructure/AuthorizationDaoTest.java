@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
 import com.fujitsu.ph.tsup.authz.dao.AuthorizationDao;
 import com.fujitsu.ph.tsup.authz.dao.AuthorizationDaoImpl;
+import com.fujitsu.ph.tsup.authz.domain.EmployeeAuth;
 import com.fujitsu.ph.tsup.common.domain.Auth;
 
 @RunWith(SpringRunner.class)

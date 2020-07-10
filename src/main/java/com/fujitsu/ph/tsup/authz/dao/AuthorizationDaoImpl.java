@@ -13,8 +13,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
-import com.fujitsu.ph.tsup.employee.management.model.Employee;
+import com.fujitsu.ph.tsup.authz.domain.EmployeeAuth;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * @author j.macabudbud

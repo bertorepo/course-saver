@@ -8,12 +8,12 @@
 // --------+------------+-----------------------+---------------------------------------------------
 // 1.0.0   | 2020/07/29 | WS) J.Macabudbud      | Initial Version
 //==================================================================================================
-package com.fujitsu.ph.tsup.authz.core.service;
+package com.fujitsu.ph.tsup.authz.service;
 
 import java.util.Set;
 
-import com.fujitsu.ph.tsup.authz.core.model.EmployeeAuth;
-import com.fujitsu.ph.tsup.employee.management.model.Employee;
+import com.fujitsu.ph.tsup.authz.domain.EmployeeAuth;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * <pre>

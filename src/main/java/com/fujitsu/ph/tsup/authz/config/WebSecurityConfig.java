@@ -8,7 +8,7 @@
 // --------+------------+-----------------------+---------------------------------------------------
 // 1.0.0   | 2020/07/29 | WS) J.Macabudbud      | Initial Version
 //==================================================================================================
-package com.fujitsu.ph.tsup;
+package com.fujitsu.ph.tsup.authz.config;
 
 import java.io.IOException;
 

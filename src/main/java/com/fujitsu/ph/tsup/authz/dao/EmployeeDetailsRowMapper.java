@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.fujitsu.ph.tsup.employee.management.model.Employee;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * <pre>
