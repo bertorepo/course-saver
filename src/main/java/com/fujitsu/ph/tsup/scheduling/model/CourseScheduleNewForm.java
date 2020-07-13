@@ -160,6 +160,7 @@ public class CourseScheduleNewForm {
     public String toString() {
         return "CourseScheduleNewForm [id = " + id + ", courseId = " + courseId + ", instructorId = " 
     + instructorId + ", venueId = " + venueId + ", minRequired = " + minRequired + ", maxAllowed = " 
-    + maxAllowed + ", courses = " + courses + ", instructors = " + instructors + ", venues = " + venues +"]";
+    + maxAllowed + ", courseScheduleDetails = "+ courseScheduleDetails + ", courses = " + courses + 
+    ", instructors = " + instructors + ", venues = " + venues +"]";
     }
 }
