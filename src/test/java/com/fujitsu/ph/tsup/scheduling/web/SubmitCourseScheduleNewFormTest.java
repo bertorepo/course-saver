@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,8 +48,8 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@WebAppConfiguration
 @AutoConfigureMockMvc
 public class SubmitCourseScheduleNewFormTest {
     
@@ -67,7 +68,7 @@ public class SubmitCourseScheduleNewFormTest {
         
         mockMvc.perform(post("/schedules/new"))
                .andDo(print())
-               .andExpect(status().isOk())
+               .andExpect(status().isFound())
                .andExpect(view().name("redirect:/schedules/new"))
                .andExpect(redirectedUrl("/schedules/new"))
                .andExpect(model().attributeDoesNotExist("scheduleNew"))
