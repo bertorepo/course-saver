@@ -1,8 +1,7 @@
-package com.fujitsu.ph.tsup.authorization.infrastructure;
+package com.fujitsu.ph.tsup.authz.dao;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Set;
 
 import org.junit.Test;
@@ -16,10 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fujitsu.ph.tsup.authz.dao.AuthorizationDao;
-import com.fujitsu.ph.tsup.authz.dao.AuthorizationDaoImpl;
 import com.fujitsu.ph.tsup.authz.domain.EmployeeAuth;
 import com.fujitsu.ph.tsup.common.domain.Auth;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 @RunWith(SpringRunner.class)
 @JdbcTest
@@ -52,6 +50,19 @@ public class AuthorizationDaoTest {
 				assertEquals(value.getAuthzSet().toString(), Auth.MEMBER.toString());
 			}
 		}
+	}
+	
+	@Test
+	public void testFindDetailsByUsername() {
+		String username = "j.macabudbud";
+		Employee employee = dao.findDetailsByUsername(username);
+		assertEquals(employee.getId(), 4L);
+		assertEquals(employee.getUsername(), username);
+		assertEquals(employee.getEmailAddress(), "j.macabudbud@fujitsu.com");
+		assertEquals(employee.getFirstName(), "JAY IAN");
+		assertEquals(employee.getLastName(), "MACABUDBUD");
+		assertEquals(employee.getNumber(), "A15893");
+		
 	}
 
 }
