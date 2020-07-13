@@ -48,8 +48,8 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 
 
-@ExtendWith(SpringExtension.class)
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest (classes = ScheduleController.class)
 @AutoConfigureMockMvc
 public class SubmitCourseScheduleNewFormTest {
     
