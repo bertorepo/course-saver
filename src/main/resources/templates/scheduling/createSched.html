@@ -17,7 +17,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<style type="text/css">
 		[list]::-webkit-calendar-picker-indicator {
-    		display: none;
+    		opacity: 0;
   		}
 	</style>
 </head>
@@ -25,7 +25,7 @@
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object=${scheduleNew} method="post">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
 			<div class="card">
@@ -34,7 +34,7 @@
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5" style="">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
-							<input type="text" list="courses" class="form-control" id="courses" th:field="*{courseId}">
+							<input list="courses" class="form-control" id="courses" th:field="*{courseId}">
 							<datalist id="courses">
 							 	<option th:each="courses : *{courses}"
 							 			th:value="${courses.id}"
@@ -59,7 +59,7 @@
 						<div class="col-lg-5">
 							<select class="form-control" th:field="*{venueId}" id="venueId">
 								<option value=""></option>
-								<option th:each="venues : {venues}" 
+								<option th:each="venues : *{venues}" 
 										th:value="${venues.id}"
 										th:text="${venues.name}"
 										th:selected="${venues.id} eq *{venueId}"></option>
