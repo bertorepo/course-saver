@@ -34,11 +34,13 @@
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5" style="">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
-							<input list="courses" class="form-control" id="courses" th:field="*{courseId}">
+							<input type="text" list="courses" class="form-control" id="courses" th:field="*{courseId}">
 							<datalist id="courses">
+								<option value=""></option>
 							 	<option th:each="courses : *{courses}"
 							 			th:value="${courses.id}"
-							 			th:text="${courses.name}"></option>
+							 			th:text="${courses.name}"
+							 			th:selected="${course.id} eq *{courseId}"></option>
 							</datalist>
 						</div>
 					</div>
