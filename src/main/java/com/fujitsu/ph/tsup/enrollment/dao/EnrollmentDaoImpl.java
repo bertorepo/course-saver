@@ -27,6 +27,7 @@ import org.springframework.stereotype.Repository;
 //0.01    | 06/29/2020 | WS) G.Cabiling        | Updated
 //0.02    | 06/30/2020 | WS) K.Freo            | Updated
 //0.03    | 07/07/2020 | WS) J.Yu              | Updated
+//0.03    | 07/14/2020 | WS) T.Oviedo          | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -57,6 +58,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
         String query = "SELECT C.NAME AS COURSE_NAME, "
                 + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
@@ -103,6 +105,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         
         String query = "SELECT C.NAME AS COURSE_NAME, "
                 + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "

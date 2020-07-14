@@ -11,6 +11,9 @@ import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
+
+import java.sql.Timestamp;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -84,9 +87,9 @@ public class EnrollmentController {
      */
     @GetMapping("/viewCourseEnroll")
     public String viewAllCourseSchedule(
-            @Valid @ModelAttribute("viewCourseEnroll") CourseScheduleListForm courseScheduleListForm, BindingResult result,
+            @Valid @ModelAttribute("viewCourseEnroll") CourseScheduleListForm form, BindingResult result,
             Model model) {
-        logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
+        logger.debug("CourseScheduleListForm: {}", form);
         logger.debug("Result: {}", result);
 
         if (result.hasErrors()) {
@@ -94,28 +97,27 @@ public class EnrollmentController {
             return "enrollment/viewCourseEnroll";
         }
 
-        ZonedDateTime zoneDateTimeNow = ZonedDateTime.now();
-        if (courseScheduleListForm.getFromDateTime() == null) {
-            courseScheduleListForm.setFromDateTime(zoneDateTimeNow);
+        if (form.getFromDateTime() == null) {
+        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
         }
-        if (courseScheduleListForm.getToDateTime() == null) {
-            courseScheduleListForm.setToDateTime(zoneDateTimeNow.plusDays(5));
+        if (form.getToDateTime() == null) {
+        	form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
         }
-        long difference = courseScheduleListForm.getToDateTime().compareTo(courseScheduleListForm.getFromDateTime());
-
-        if (difference > 0) {
-            logger.debug("CourseScheduleListForm:{}", courseScheduleListForm);
-            model.addAttribute("CourseScheduleListForm", courseScheduleListForm);
-            return "enrollment/viewCourseEnroll";
+        
+        if(form.getFromDateTime().isAfter(form.getToDateTime())) {
+        	  model.addAttribute(form);
+              model.addAttribute("error", "To Date should be greater than or equal to From Date");
+              return "enrollment/viewCourseEnroll";
         }
 
         Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
-                courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
-        Set<CourseScheduleForm> courseScheduleFormSet = courseScheduleListForm.getCourseSchedules();
+        		form.getFromDateTime(), form.getToDateTime());
+        
+        Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
         for (CourseSchedule courseSchedule : courseSchedules) {
             CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
-
+            courseScheduleForm.setId(courseSchedule.getId());
             courseScheduleForm.setCourseName(courseSchedule.getCourseName());
             courseScheduleForm.setInstructorName(
                     courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
@@ -125,7 +127,7 @@ public class EnrollmentController {
 
             for (CourseScheduleDetail courseScheduleDetail : courseScheduleDetailFormSets) {
                 CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
-
+                
                 courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
                 courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
                 courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
@@ -133,10 +135,13 @@ public class EnrollmentController {
             }
             courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
             courseScheduleFormSet.add(courseScheduleForm);
+            form.setCourseSchedules(courseScheduleFormSet);
         }
-        model.addAttribute("viewCourseEnroll", courseScheduleListForm);
+        
+        model.addAttribute("viewCourseEnroll",form);
+        logger.debug("courseScheduleListForm: {}", form);
         return "enrollment/viewCourseEnroll";
-    }
+    } 
 
     /**
      * 
