@@ -40,7 +40,7 @@
 							 	<option th:each="courses : *{courses}"
 							 			th:value="${courses.id}"
 							 			th:text="${courses.name}"
-							 			th:selected="${course.id} eq *{courseId}"></option>
+							 			th:selected="${courses.id} eq *{courseId}"></option>
 							</datalist>
 						</div>
 					</div>
