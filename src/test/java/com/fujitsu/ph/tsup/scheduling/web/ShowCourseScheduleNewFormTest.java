@@ -54,6 +54,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -106,6 +107,7 @@ public class ShowCourseScheduleNewFormTest {
 				.createCourseSchedule(any(CourseSchedule.class));
 
 		mockMvc.perform(get("/schedules/new"))
+		        .andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(view().name("scheduling/createSched")) 
 				.andExpect(model().attributeExists("scheduleNew")) 

@@ -10,6 +10,6 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 @Retention(RUNTIME)
 @WithSecurityContext(factory = WithMockCustomUserSecurityContextFactory.class)
 public @interface WithMockCustomUser {
-    long id();
-    String username();
+    long id() default 1L;
+    String username() default "l.lorenzo";
 }
