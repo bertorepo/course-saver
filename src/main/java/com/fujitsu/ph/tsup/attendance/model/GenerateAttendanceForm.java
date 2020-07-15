@@ -1,18 +1,7 @@
 package com.fujitsu.ph.tsup.attendance.model;
 
-import java.util.Set;
 import java.time.ZonedDateTime;
-
-/**
- * <pre>
- * It is a JavaBean for GenerateAttendanceForm
- * In this class, Instances of the List Data required for the Initial setting of the database
- * </pre>
- * 
- * @version 0.01
- * @author k.abad
- *
- */
+import java.util.Set;
 
 //==================================================================================================
 //$Id:PR03$
@@ -24,7 +13,18 @@ import java.time.ZonedDateTime;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/22/2020 | WS) K.Abad            | New Creation
-
+//0.02    | 07/15/2020 | WS) K.Abad            | Update
+//==================================================================================================
+/**
+ * <pre>
+ * It is a JavaBean for GenerateAttendanceForm
+ * In this class, Instances of the List Data required for the Initial setting of the database
+ * </pre>
+ * 
+ * @version 0.02
+ * @author k.abad
+ *
+ */
 public class GenerateAttendanceForm {
     /**
      * Course Schedule Detail Id
@@ -128,7 +128,8 @@ public class GenerateAttendanceForm {
     
     @Override
     public String toString() {
-        return "GenerateAttendanceForm [id=" + id + ", courses=" + courses + ", courseName=" + courseName + ", instructorName="
-                + instructorName + ", venueName=" + venueName + ", scheduledStartDateTime=" + scheduledStartDateTime + ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration=" + duration + ", participants=" + participants + ", ]";
+        return "GenerateAttendanceForm [id=" + id + ", courses=" + courses + ", courseName=" + courseName + 
+                ", instructorName=" + instructorName + ", venueName=" + venueName + ", scheduledStartDateTime=" + scheduledStartDateTime + 
+                ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration=" + duration + ", participants=" + participants + "]";
     }
 }
