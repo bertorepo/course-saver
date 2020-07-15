@@ -9,8 +9,9 @@ package com.fujitsu.ph.tsup.attendance.model;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01 | 06/19/2020 |  WS) J. Iwarat   | New Creation
-//0.01 | 06/25/2020 |  WS) J. Iwarat   | Update
+//0.01    | 06/19/2020 |  WS) J. Iwarat        | New Creation
+//0.02    | 06/25/2020 |  WS) J. Iwarat        | Update
+//0.03    | 07/15/2020 |  WS) K. Abad          | Update
 //==================================================================================================
 /**
  * <pre>
@@ -18,8 +19,9 @@ package com.fujitsu.ph.tsup.attendance.model;
  * In this Class,Instances or fields of the List of the data for the initial setting of the data base 
  * <pre>
  * 
- * @version 0.01
- * @author j.iwarat                           
+ * @version 0.03
+ * @author j.iwarat  
+ * @author k.abad                         
  */
 import java.time.ZonedDateTime;
 
@@ -104,7 +106,7 @@ public class AttendanceParticipantDetail {
 
     @Override
     public String toString() {
-        return "AttendanceParticipantDetail [id=" + id + ", name=" + name + ", status" + status + ", loginDateTime="
+        return "AttendanceParticipantDetail [id=" + id + ", name=" + name + ", status=" + status + ", loginDateTime="
                 + loginDateTime + ", email=" + email + ", employeeNumber=" + employeeNumber + "]";
     }
 
