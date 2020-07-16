@@ -219,7 +219,7 @@ public class EnrollmentController {
 
     }
 
-    /**
+    /*
      * Method for showCourseDeclineForm
      * 
      * A member can decline course with reason.URL Value =
@@ -245,10 +245,10 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
 
         model.addAttribute("courseDecline", courseDeclineForm);
-        return "enrollment-management/CourseDeclineForm";
+        return "enrollment/myCourseDecline";
     }
 
-    /**
+    /*
      * Method for submitCourseDeclineForm
      * 
      * A member can decline course with reason URL Value =
@@ -258,14 +258,15 @@ public class EnrollmentController {
      * success message.
      */
     @PostMapping("/decline")
-    public String submitCourseDeclineForm(@Valid @ModelAttribute("enrollmentDecline") CourseDeclineForm form,
+    public String submitCourseDeclineForm(@Valid @ModelAttribute("courseDecline") CourseDeclineForm form,
             BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
     	
         logger.debug("courseDeclineForm:{}", form);
         logger.debug("BindingResult:{}", bindingresult);
 
         if (bindingresult.hasErrors()) {
-            return "enrollment/courseDeclineForm";
+        	model.addAttribute("courseDecline", form);
+            return "enrollment/myCourseDecline";
         }
 
         CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
@@ -301,7 +302,7 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
         
         redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
-        return "redirect:/enrollment/CourseDeclineForm";
+        return "redirect:/enrollment/myCourseDecline";
     }
 
     
