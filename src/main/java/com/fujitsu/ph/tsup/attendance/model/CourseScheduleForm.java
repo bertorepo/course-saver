@@ -11,8 +11,8 @@ import java.util.Set;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01 | 06/23/2020 |  WS) J. Iwarat   | New Creation
-//0.01 | 06/25/2020 |  WS) J. Iwarat   | Update
+//0.01 | 06/23/2020 |  WS) J. Iwarat           | New Creation
+//0.01 | 06/23/2020 |  WS) J. Iwarat           | Update
 //==================================================================================================
 /**
  * <pre>
@@ -20,7 +20,7 @@ import java.util.Set;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author j.iwarat
  */
 public class CourseScheduleForm {
@@ -170,10 +170,11 @@ public class CourseScheduleForm {
 
     @Override
     public String toString() {
-        return "CourseScheduleForm [id=" + id + ", courseId=" + courseId + ", courseName" + courseName
-                + ", instructorId=" + instructorId + ", instructorName=" + instructorName + ", venueId=" + venueId
-                + ", venueName=" + venueName + ", courseScheduleDetails=" + courseScheduleDetails + ", minRequired="
-                + minRequired + ", maxAllowed=" + maxAllowed + ", totalParticipants=" + totalParticipants + "]";
+        return "CourseScheduleForm [id = " + id + ", courseId = " + courseId + ", courseName = " + courseName
+                + ", instructorId = " + instructorId + ", instructorName = " + instructorName + ", venueId = " + venueId
+                + ", venueName = " + venueName + ", courseScheduleDetails = " + courseScheduleDetails
+                + ", minRequired = " + minRequired + ", maxAllowed = " + maxAllowed + ", totalParticipants = "
+                + totalParticipants + "]";
     }
 
 }
