@@ -219,7 +219,7 @@ public class EnrollmentController {
 
     }
 
-    /*
+    /**
      * Method for showCourseDeclineForm
      * 
      * A member can decline course with reason.URL Value =
@@ -240,7 +240,7 @@ public class EnrollmentController {
         courseDeclineForm.setCourseName(courseParticipant.getCourseName());
         courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
         courseDeclineForm.setVenueName(courseParticipant.getVenueName());
-        courseDeclineForm.setParticipantName(courseParticipant.getVenueName());
+        courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
         courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
         courseDeclineForm.setReason(courseParticipant.getReason());
 
@@ -248,7 +248,7 @@ public class EnrollmentController {
         return "enrollment-management/CourseDeclineForm";
     }
 
-    /*
+    /**
      * Method for submitCourseDeclineForm
      * 
      * A member can decline course with reason URL Value =
