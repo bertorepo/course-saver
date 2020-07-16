@@ -248,6 +248,7 @@ public class EnrollmentController {
         return "enrollment/myCourseDecline";
     }
 
+   
     /*
      * Method for submitCourseDeclineForm
      * 
