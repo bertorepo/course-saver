@@ -34,7 +34,7 @@
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5" style="">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
-							<input type="text" list="courses" class="form-control" th:field="*{courseId}">
+							<input type="text" list="courses" id=courseName class="form-control" th:field="*{courseId}">
 							<datalist id="courses">
 								<option value=""></option>
 							 	<option th:each="courses : *{courses}"
@@ -219,7 +219,7 @@
 <script>
 $('input[name="success"]').on('click', function() {
 
-    var courseName = $('#courses').val();
+    var courseName = $('#courseName').val();
 
     if (courseName == "") {
 
@@ -366,7 +366,7 @@ $('input[name="success"]').on('click', function() {
 
 $('input[name="success"]').on('click', function() {
 
-	var courseName = $('#courses').val();
+	var courseName = $('#courseName').val();
 	var instructor = $('#instructorId').val();
 	var venue = $('#venueId').val();
 	var minRequired = $('#minRequired').val();
