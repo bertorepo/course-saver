@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Dashboard</title>
+	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+	<div th:insert="fragments/general.html :: header"> </div>
+	
+	<div class="container mt-5">
+		<!--Member-->
+		<div sec:authorize="hasAuthority('Member')">
+		<div class="row h-100">
+			<div class="card mb-5 col-lg-4 bg-danger text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2 th:text="${memberTrainingsToday}"></h2>
+						<h4>training/s today</h3>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-5 col-lg-4 bg-success text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have enrolled to</h4>
+						<h2 th:text="${memberActiveCourses}"></h2>
+						<h4>active course/s</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-circle"></i> Enroll now!</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Venue</th>
+						</thead>
+						<tbody>
+							<tr th:each="memberCourse : *{memberCourses}">
+								<td th:text="${memberCourse.getCourseName()}"></td>
+								<td th:text="${memberCourse.getInstructorName()}"></td>
+								<td th:text="${memberCourse.getStartDateTime()}"></td>
+								<td th:text="${memberCourse.getEndDateTime()}"></td>
+								<td th:text="${memberCourse.getVenueName()}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/schedules/{courseScheduleId}/enroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!--Member end-->
+		<!--Instructor-->
+		<div sec:authorize="hasAuthority('Instructor')">
+		<div class="row h-100">
+			<div class="card mb-5 col-lg-4 bg-danger text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2 th:text="${instructorCoursesToday}"></h2>
+						<h4>training/s today</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-list"></i> Your Courses</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Venue</th>
+						</thead>
+						<tbody>
+							<tr th:each="instructorCourse : *{instructorCourses}">
+								<td th:text="${instructorCourse.getCourseName()}"></td>
+								<td th:text="${instructorCourse.getStartDateTime()}"></td>
+								<td th:text="${instructorCourse.getEndDateTime()}"></td>
+								<td th:text="${instructorCourse.getVenueName()}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/schedules/view}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!--Instructor end-->
+		
+		<!--PMO-->
+		<div sec:authorize="hasAuthority('PMO')">
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-triangle"></i> Courses to Cancel</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Min Required</th>
+							<th>Max Allowed</th>
+							<th>Enrolled</th>
+						</thead>
+						<tbody>
+							<tr th:each="pmoCourse : *{pmoCourses}">
+								<td th:text="${pmoCourse.getCourseName()}"></td>
+								<td th:text="${pmoCourse.getInstructorName()}"></td>
+								<td th:text="${pmoCourse.getStartDateTime()}"></td>
+								<td th:text="${pmoCourse.getEndDateTime()}"></td>
+								<td th:text="${pmoCourse.getMinRequired()}"></td>
+								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
+								<td th:text="${pmoCourse.getEnrolled()}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/schedules}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!--PMO end-->
+		
+	</div>
+
+	<footer th:replace="fragments/general.html :: footer"></footer>
+
+</body>
+
+</html>

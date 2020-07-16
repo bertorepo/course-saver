@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Instructor Course Schedule List</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+</head>
+
+<body>
+    <div th:insert="fragments/general.html :: header"> </div>
+    
+    <div class="container mt-5">
+        <form class="form-horizontal" action="#" th:action="@{/schedules/view}" th:object="${scheduleView}" method="get">
+            <h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">From Date</label>
+                        <div class="col-lg-3">
+                            <input type="text" name="fromDateTime" th:field="*{fromDateTime}"/>
+                        </div>
+                        <label class="col-lg-2 col-form-label">To Date</label>
+                        <div class="col-lg-3">
+                            <input type="text" name="toDateTime" th:field="*{toDateTime}"/>
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--Error Modal-->
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm text-center">
+                <div class="modal-content">
+                    <div class="modal-header alert-danger">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-lg-12 col-form-label">To Date can't be less than From Date.</label>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Error Modal End-->
+        <!--Buttons for messages (delete these)-->
+            <input type="button" name="error" class="btn btn-danger" value="Error">
+        <!--Buttons for messages (delete these) End-->  
+        <div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
+            <h3><i class="fa fa-list"></i> My Courses</h3>
+            <table id="data" class="table table-bordered text-center" style="width:100%">
+                <colgroup >
+                    <col style="width:20%"/>
+                    <col style="width:20%"/>
+                    <col style="width:10%"/>
+                    <col style="width:20%"/>
+                    <col style="width:20%"/>
+                    <col style="width:10%"/>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Instructor</th>
+                        <th>Participants</th>
+                        <th>Start Date/Time</th>
+                        <th>End Date/Time</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+               
+                    <tr th:each="instructorCourseSchedule : *{scheduleView}">
+                        <td th:text="${instructorCourseSchedule.getCourseName()}"></td>
+                        <td th:text="${instructorCourseSchedule.getIntstructorName()}"></td>
+                        <td></td>
+                        <td th:text="${instructorCourseSchedule.getScheduledStartDateTime()}"></td>
+                        <td th:text="${instructorCourseSchedule.getScheduledEndDateTime()}"></td>
+                        <td th:text="${instructorCourseSchedule.getDuration()}"></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>      
+    </div>
+    
+    <footer th:replace="fragments/general.html :: footer"></footer>
+<script>
+    <!--Message alert-->
+    //add if statement for the success/fail messages
+    $('input[name="error"]').on('click', function() {
+        $('#errorModal').modal('show');
+    });
+    <!--Message alert End-->
+</script>
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Create Sched</title>
+	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<style type="text/css">
+		[list]::-webkit-calendar-picker-indicator {
+    		display: none;
+  		}
+	</style>
+</head>
+
+<body>
+	<div th:insert="fragments/general.html :: header"> </div>
+	<div class="container mt-5">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object=${scheduleNew} method="post">
+			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
+			<hr>
+			<div class="card">
+				<div class="card-body">
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Course Name</label>
+						<div class="col-lg-5" style="">
+							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
+							<input type="text" list="courses" class="form-control" id="courses" th:field="*{courseId}">
+							<datalist id="courses">
+							 	<option th:each="courses : *{courses}"
+							 			th:value="${courses.id}"
+							 			th:text="${courses.name}"></option>
+							</datalist>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Instructor</label>
+						<div class="col-lg-5">
+							<select class="form-control" th:field="*{instructorId}"  id="instructorId" >
+								<option value=""></option>
+								<option th:each="instructors : *{instructors}" 
+										th:value="${instructors.id}"
+										th:text="${instructors.name}"
+										th:selected="${instructors.id} eq *{instructorId}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Venue</label>
+						<div class="col-lg-5">
+							<select class="form-control" th:field="*{venueId}" id="venueId">
+								<option value=""></option>
+								<option th:each="venues : {venues}" 
+										th:value="${venues.id}"
+										th:text="${venues.name}"
+										th:selected="${venues.id} eq *{venueId}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Participants</label>
+						<div class="col-lg-2">
+							<input type="text" class="form-control" th:field="*{minRequired}" id="minRequired" >
+						</div>
+						<div class="col-lg-1 text-center">—</div>
+						<div class="col-lg-2">
+							<input type="text" class="form-control" th:field="*{maxAllowed}" id="maxAllowed" >
+						</div>
+					</div>
+					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap">
+						<table class="table table-responsive table-borderless text-center"  >
+							<colgroup >
+								<col style="width:55%"/>
+								<col style="width:55%"/>
+							</colgroup>
+							<tr>
+								<td>
+									<label class="col-lg-6 col-form-label">Start/End Date</label>
+								</td>
+								<td>
+									<label class="col-lg-6 col-form-label">Start/End Time</label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="form-group row">
+										<div class="col-lg-6">
+											<input type="date" class="form-control" id="" >
+										</div>
+										<div class="col-lg-6">
+											<input type="date" class="form-control" id="" >
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group row">
+										<div class="col-lg-2"></div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" id="" >
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" id="" >
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="form-group row">
+										<div class="col-lg-6">
+											<input type="date" class="form-control" id="" >
+										</div>
+										<div class="col-lg-6">
+											<input type="date" class="form-control" id="" >
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group row">
+										<div class="col-lg-2"></div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" id="" >
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" id="" >
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="form-group row">
+										<div class="col-lg-6">
+											<input type="date" class="form-control" id="" >
+										</div>
+										<div class="col-lg-6">
+											<input type="date" class="form-control" id="" >
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="form-group row">
+										<div class="col-lg-2"></div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" id="" >
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" id="" >
+										</div>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="float-right">
+						<input type="submit" class="btn btn-success" value="Create">
+						<input type="button" class="btn btn-danger" value="Cancel">
+					</div>
+				</div>
+			</div>
+		</form>  
+		<!--Success Modal-->
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Schedule has been created</label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Success Modal End-->
+		<!--Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">{error message}</label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Error Modal End-->
+		<!--Buttons for messages (delete these)-->
+			<input type="button" name="success" class="btn btn-success" value="Success">
+			<input type="button" name="error" class="btn btn-danger" value="Error">
+		<!--Buttons for messages (delete these) End-->
+		
+	</div>
+
+	
+	<footer th:replace="fragments/general.html :: footer"></footer>
+<script>
+	<!--Message alert-->
+	//add if statement for the success/fail messages
+	$('input[name="success"]').on('click', function() {
+		$('#successModal').modal('show');
+	});
+	$('input[name="error"]').on('click', function() {
+		$('#errorModal').modal('show');
+	});
+	<!--Message alert End-->
+</script>
+</body>
+
+</html>

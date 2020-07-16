@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+	<div th:fragment="header">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand mx-4" th:href="@{/dashboard}">TS-Up</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarColor01">
+				<ul class="navbar-nav mr-auto">
+					
+					<!--Member-->
+					<th:block sec:authorize="hasAuthority('Member')">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/dashboard}">Home </a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enroll<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/enrollment/schedules/{courseScheduleId}/enroll}">Enroll</a>
+							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">My Courses<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/enrollment/mySchedules}">My Course Schedule</a>
+							<a class="dropdown-item" th:href="@{/enrollment/myschedules/{courseParticipantId}/decline}">My Course Decline</a>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/attendance/signin/{courseScheduleDetailId}}">Attend</a>
+					</li>
+					</th:block>
+					<!--Member end-->
+					<!--PMO-->
+					<th:block sec:authorize="hasAuthority('PMO')">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/dashboard}">Home </a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
+							<a class="dropdown-item" th:href="@{/enrollment/schedules}">Cancel Course Schedule</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/present}">Generate Attendance Sheet</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/absent}">Attendance for Absent</a>
+						</div>
+					</li>
+					</th:block>
+					<!--PMO end-->
+					<!--Instructor-->
+					<th:block sec:authorize="hasAuthority('Instructor')">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/dashboard}">Home </a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/schedules/view}">Instructor Course Schedule List</a>
+							<a class="dropdown-item" th:href="@{/schedules/{courseScheduleId}/participants}">View Instructor Course Participants</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/attendance/participants}">Change Attendance Status</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/present}">Generate Attendance Sheet</a>
+						</div>
+					</li>
+					</th:block>
+					<!--Instructor end-->
+				</ul>
+				<form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()"  th:action="@{/logout}" method="post">
+					<button class="btn btn-primary my-2 my-sm-0" ><i class="fa fa-sign-out"></i> Logout</button>
+				</form>
+			</div>
+		</nav>
+	</div>
+
+	<footer th:fragment="footer">
+		<div class="footer-copyright text-center py-3">
+			© 2020 Copyright
+		</div>
+	</footer>
+
+
+</body>
+
+</html>
