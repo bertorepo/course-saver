@@ -48,9 +48,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         try {
                Set<CourseSchedule> courseScheduleSet = enrollmentDao
                        .findAllScheduledCourses(fromDateTime, toDateTime);
-                 if (courseScheduleSet.isEmpty() || courseScheduleSet == null) {
-                        throw new IllegalArgumentException("No schedules found");
-                    }
+//                 if (courseScheduleSet.isEmpty() || courseScheduleSet == null) {
+//                        throw new IllegalArgumentException("No schedules found");
+//                  }
                 return courseScheduleSet;
            } catch(DataAccessException ex) {
                throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
