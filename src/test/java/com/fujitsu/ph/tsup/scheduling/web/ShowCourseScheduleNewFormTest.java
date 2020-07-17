@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
-import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
+
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
@@ -52,9 +52,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -96,10 +98,11 @@ public class ShowCourseScheduleNewFormTest {
      * <pre>
      * 
      */
+    @Test
     @WithMockCustomUser(id = 1L, username = "l.lorenzo")
-	@Test
 	void showCourseScheduleNewFormTest() throws Exception{
-    
+   
+    	
 		when(scheduleService.findAllCourses()).thenReturn(setCourses());
 		when(scheduleService.findAllInstructors()).thenReturn(setInstructors());
 		when(scheduleService.findAllVenues()).thenReturn(setVenues());
@@ -110,7 +113,8 @@ public class ShowCourseScheduleNewFormTest {
 		        .andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(view().name("scheduling/createSched")) 
-				.andExpect(model().attributeExists("scheduleNew")) 
+				.andExpect(model().attributeExists("scheduleNew"))
+				.andExpect(model().attributeDoesNotExist("errorMessages"))
 				.andExpect(model().attribute("scheduleNew", allOf( 
 						hasProperty("id"), 
 						hasProperty("courseId"), 
@@ -121,33 +125,15 @@ public class ShowCourseScheduleNewFormTest {
 						hasProperty("courses"), 
 						hasProperty("instructors"), 
 						hasProperty("venues"))))
-				.andExpect(model().attributeDoesNotExist("errorMessages"))
-				.andReturn();
+		.andExpect(model().attributeDoesNotExist("errorMessages"))
+		.andReturn();
         
-
-		
        verify(scheduleService, times(1)).findAllCourses(); 
        verify(scheduleService, times(1)).findAllInstructors();
        verify(scheduleService, times(1)).findAllVenues();
        verifyNoMoreInteractions(scheduleService);
-       
-       
-       CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
-
-		courseScheduleNewForm.setCourses(setCourses());
-		courseScheduleNewForm.setInstructors(setInstructors());
-		courseScheduleNewForm.setVenues(setVenues());
-		
-       
-       System.out.println(setVenues());
-       System.out.println(setInstructors());
-       System.out.println(setCourses());
-   	  
-       System.out.println(courseScheduleNewForm);
-       
 	}
-	
-	
+
     /**
      * <pre>
      * Mock data for CourseForm
@@ -158,7 +144,7 @@ public class ShowCourseScheduleNewFormTest {
 		Set<CourseForm> courses = new HashSet<>();
 		CourseForm courseForm = new CourseForm();
 		courseForm.setId(1L);
-		courseForm.setName("Programming");
+		courseForm.setName("Springboot");
 		courses.add(courseForm);
 		return courses;
 	}
