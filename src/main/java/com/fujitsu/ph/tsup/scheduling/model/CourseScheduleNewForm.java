@@ -23,7 +23,10 @@ package com.fujitsu.ph.tsup.scheduling.model;
 
 import java.util.Set;
 
-public class CourseScheduleNewForm {
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+public class CourseScheduleNewForm{
 
     /**
      * Course Schedule Id
@@ -33,27 +36,33 @@ public class CourseScheduleNewForm {
     /**
      * Course Id
      */
+    @NotNull(message = "Please fill up course name")
     private Long courseId;
     
     /**
      * Instructor Id
      */
+    @NotNull(message = "Please fill up instructors")
     private Long instructorId;
     
     /**
      * Venue Id
      */
+    @NotNull(message = "Please fill up venues")
     private Long venueId;
     
     /**
      * Minimum Required Participants
      */
+    @Min(value = 1, message = "Please fill up minimum no. of participants")
     private int minRequired;
     
     /**
      * Maximum Allowed Participants
      */
+    @Min(value = 1, message = "Please fill up maximum no. of participants")
     private int maxAllowed;
+    
     
     /**
      * Set of Course Schedule Details
@@ -154,7 +163,6 @@ public class CourseScheduleNewForm {
     public Set<VenueForm> getVenues() {
         return venues;
     }
-    
     
     @Override
     public String toString() {

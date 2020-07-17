@@ -22,6 +22,8 @@ package com.fujitsu.ph.tsup.scheduling.model;
 */
 import java.time.ZonedDateTime;
 
+import javax.validation.constraints.NotNull;
+
 public class CourseScheduleDetailForm {
 
 	/**
@@ -32,11 +34,13 @@ public class CourseScheduleDetailForm {
 	/**
      *	Start Date and Time
      */
+	@NotNull
 	private ZonedDateTime scheduledStartDateTime;
 	
 	/**
      *	End Date and Time
      */
+	@NotNull
 	private ZonedDateTime scheduledEndDateTime;
 	
 	/**     
@@ -74,5 +78,4 @@ public class CourseScheduleDetailForm {
 		return "CourseScheduleDetailForm [id=" + id + ", scheduledStartDateTime=" + scheduledStartDateTime
 				+ ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration = " + duration + "]";
 	}
-
 }

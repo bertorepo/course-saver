@@ -209,7 +209,7 @@ public class ScheduleController {
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
 
         for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
-            CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseSchedDetForm.getId(),
+            CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L,
                     courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime())
                             .build();
             courseScheduleDetailSet.add(courseScheduleDetail);
