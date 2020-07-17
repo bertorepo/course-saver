@@ -10,6 +10,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //--------+------------+-----------------------+--------------------------------------------------
 //0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
 //0.01    | 06/29/2020 | WS) J.Yu              | Update
+//0.01    | 07/15/2020 | WS) T.Oviedo          | Update
 //=================================================================================================
 /**
 * <pre>
@@ -34,6 +35,7 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
     @Override
     public CourseSchedule mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         Long id = resultSet.getLong("ID");
+        Long courseScheduleDetailId = resultSet.getLong("COURSE_SCHEDULE_DETAIL_ID");//Added
         Long courseId = resultSet.getLong("COURSE_ID");
         String courseName = resultSet.getString("COURSE_NAME");
         Long instructorId = resultSet.getLong("INSTRUCTOR_ID");
@@ -49,9 +51,10 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
                 ZoneId.of("UTC"));
         ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(resultSet.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
                 ZoneId.of("UTC"));
+        float duration = resultSet.getFloat("DURATION");//Added
         
         CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(id, scheduledStartDateTime, scheduledEndDateTime).build();
+                new CourseScheduleDetail.Builder(id, courseScheduleDetailId, scheduledStartDateTime, scheduledEndDateTime,duration).build();
         
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
         courseScheduleDetailSet.add(courseScheduleDetail);
