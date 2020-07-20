@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //=======================================================
@@ -99,10 +100,12 @@ public class EnrollmentController {
         }
 
         if (form.getFromDateTime() == null) {
-        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
+//        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
+        	form.setFromDateTime(ZonedDateTime.now().minusMonths(1));
         }
         if (form.getToDateTime() == null) {
-        	form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
+//        	form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
+        	form.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
         
         if(form.getFromDateTime().isAfter(form.getToDateTime())) {
@@ -113,6 +116,11 @@ public class EnrollmentController {
 
         Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
         		form.getFromDateTime(), form.getToDateTime());
+        
+        if(courseSchedules.isEmpty()) {
+        	model.addAttribute("nullMessage","No Record Found");
+        	return "enrollment/viewCourseEnroll";
+        }
         
         Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
@@ -387,10 +395,11 @@ public class EnrollmentController {
      * @return
      */
     @PostMapping("/schedules/{courseScheduleId}/cancel")
-	public String submitCourseEnrollmentCancelForm(Long id, Model model, RedirectAttributes redirectAttributes) {
-		//call enrollmentService.cancel using the given id
+	public String submitCourseEnrollmentCancelForm(@RequestParam Long id, Model model, 
+			RedirectAttributes redirectAttributes) {
 		enrollmentService.cancel(id);
 		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
-		return "redirect:/schedule";
+//		return "redirect:/schedule";
+		return "redirect:/enrollment/viewCourseEnroll";
 	}
 }
