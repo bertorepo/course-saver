@@ -137,7 +137,7 @@ public class ScheduleController {
         }
 
         model.addAttribute("scheduleView", courseScheduleListForm);
-        return "scheduling/scheduleView";
+        return "scheduling/instructorCourseScheduleList";
     }
 
     /**
@@ -163,6 +163,8 @@ public class ScheduleController {
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
 
         CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
+        
+        
 
         courseScheduleNewForm.setInstructors(instructorFormList);
         courseScheduleNewForm.setVenues(venueFormList);
@@ -218,6 +220,7 @@ public class ScheduleController {
         CourseSchedule courseSchedule = new CourseSchedule.Builder(form.getCourseId(), form.getInstructorId(),
                 form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet).maxAllowed(form.getMaxAllowed())
                         .build();
+        
         scheduleService.createCourseSchedule(courseSchedule);
 
         redirectAttributes.addFlashAttribute("scheduleNew", form);

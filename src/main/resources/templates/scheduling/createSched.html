@@ -92,7 +92,7 @@
 									<label class="col-lg-6 col-form-label">Start/End Time</label>
 								</td>
 							</tr>
-							<tr>
+							<tr th:each = "courseScheduleDetails, stat : *{courseScheduleDetails}">
 								<td>
 									<div class="form-group row">
 										<div class="col-lg-6">
@@ -113,6 +113,12 @@
 											<input type="text" class="form-control" placeholder="End Time" id="endTime" >
 										</div>
 									</div>
+								</td>
+								<td style="display:none;">
+									<!-- <input type=hidden 
+										   th:field = "*{courseScheduleDetails[0].scheduledStartDateTime}">
+									<input type=hidden 
+										   th:field = "*{courseScheduleDetails[0].scheduledEndDateTime}"> -->
 								</td>
 							</tr>
 							<tr>
@@ -137,6 +143,12 @@
 										</div>
 									</div>
 								</td>
+								<td style="display:none;">
+									<!-- <input type=hidden 
+										   th:field = "*{courseScheduleDetails[1].scheduledStartDateTime}">
+									<input type=hidden 
+										   th:field = "*{courseScheduleDetails[1].scheduledEndDateTime}"> -->
+								</td>
 							</tr>
 							<tr>
 								<td>
@@ -159,6 +171,12 @@
 											<input type="text" class="form-control" placeholder="End Time" id="endTime3" >
 										</div>
 									</div>
+								</td>
+								<td style="display:none;">
+									<!-- <input type=hidden 
+										   th:field = "*{courseScheduleDetails[2].scheduledStartDateTime}">
+									<input type=hidden 
+										   th:field = "*{courseScheduleDetails[2].scheduledEndDateTime}"> -->
 								</td>
 							</tr>
 						</table>
