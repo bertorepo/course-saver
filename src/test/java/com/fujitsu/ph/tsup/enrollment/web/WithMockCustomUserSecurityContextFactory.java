@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
 import com.fujitsu.ph.auth.model.FpiUser;
-import com.fujitsu.ph.tsup.scheduling.web.WithMockCustomUser;
+
 
 public class WithMockCustomUserSecurityContextFactory implements WithSecurityContextFactory <WithMockCustomUser> {
 	
