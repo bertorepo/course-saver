@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -219,7 +220,7 @@ public class EnrollmentController {
 
     }
 
-    /*
+    /**
      * Method for showCourseDeclineForm
      * 
      * A member can decline course with reason.URL Value =
@@ -227,9 +228,14 @@ public class EnrollmentController {
      * enrollmentService.findCourseParticipantById using the given id Set the values
      * from the previous step into the CourseDeclineForm Return the Course decline
      * form and view
+     * 
+     * @author k.freo
      */
-    @GetMapping("/decline")
+    @GetMapping("/myschedules/{courseParticipantId}/decline")
     public String showCourseDeclineForm(Long id, Model model) {
+    	
+    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	
         logger.debug("Model:{}", model);
 
         CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
@@ -249,7 +255,7 @@ public class EnrollmentController {
     }
 
    
-    /*
+    /**
      * Method for submitCourseDeclineForm
      * 
      * A member can decline course with reason URL Value =
@@ -257,8 +263,10 @@ public class EnrollmentController {
      * form to courseParticipant. Call enrollmentService.declineCourse using the
      * courseParticipant Return the Course decline form and view. Return also a
      * success message.
+     * 
+     * @author k.freo
      */
-    @PostMapping("/decline")
+    @DeleteMapping("/myschedules/{courseParticipantId}/decline")
     public String submitCourseDeclineForm(@Valid @ModelAttribute("courseDecline") CourseDeclineForm form,
             BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
     	
@@ -303,7 +311,7 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
         
         redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
-        return "redirect:/enrollment/myCourseDecline";
+        return "/enrollment /myschedules/{courseParticipantId}/decline";
     }
 
     
