@@ -34,7 +34,7 @@
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5" style="">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
-							<input type="text" list="courses" id=courseName class="form-control" th:field="*{courseId}">
+							<input type="text" list="courses" id=courseName placeholder="Enter Course Name" class="form-control" th:field="*{courseId}">
 							<datalist id="courses">
 								<option value=""></option>
 							 	<option th:each="courses : *{courses}"
@@ -47,8 +47,8 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Instructor</label>
 						<div class="col-lg-5">
-							<select class="form-control" th:field="*{instructorId}"  id="instructorId" >
-								<option value=""></option>
+							<select class="form-control" th:field="*{instructorId}" id="instructorId" >
+								<option value="" selected>Select Instructor</option>
 								<option th:each="instructors : *{instructors}" 
 										th:value="${instructors.id}"
 										th:text="${instructors.name}"
@@ -60,7 +60,7 @@
 						<label class="col-lg-2 col-form-label">Venue</label>
 						<div class="col-lg-5">
 							<select class="form-control" th:field="*{venueId}" id="venueId">
-								<option value=""></option>
+								<option value="" selected>Select Venue</option>
 								<option th:each="venues : *{venues}" 
 										th:value="${venues.id}"
 										th:text="${venues.name}"
@@ -71,11 +71,11 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Participants</label>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" th:value="*{minRequired}" id="minRequired" >
+							<input type="text" class="form-control" placeholder="Minimum Required" th:field="*{minRequired}"id="minRequired" >
 						</div>
 						<div class="col-lg-1 text-center">—</div>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" th:value="*{maxAllowed}" id="maxAllowed" >
+							<input type="text" class="form-control" placeholder="Maximum Allowed" th:field="*{maxAllowed}" id="maxAllowed" >
 						</div>
 					</div>
 					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap">
@@ -92,14 +92,14 @@
 									<label class="col-lg-6 col-form-label">Start/End Time</label>
 								</td>
 							</tr>
-							<tr>
+							<tr th:each = "courseScheduleDetails, stat : *{courseScheduleDetails}">
 								<td>
 									<div class="form-group row">
 										<div class="col-lg-6">
-											<input type="date" class="form-control" id="startDate" >
+											<input type="date" class="form-control" placeholder="Enter Start Date" id="startDate" >
 										</div>
 										<div class="col-lg-6">
-											<input type="date" class="form-control" id="endDate" >
+											<input type="date" class="form-control" placeholder="Enter End Date" id="endDate" >
 										</div>
 									</div>
 								</td>
@@ -107,58 +107,18 @@
 									<div class="form-group row">
 										<div class="col-lg-2"></div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" id="startTime" >
+											<input type="text" class="form-control" placeholder="Start Time " id="startTime" >
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" id="endTime" >
+											<input type="text" class="form-control" placeholder="End Time" id="endTime" >
 										</div>
 									</div>
 								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="startDate2" >
-										</div>
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="endDate2" >
-										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="startTime2" >
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="endTime2" >
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="startDate3" >
-										</div>
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="endDate3" >
-										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="startTime3" >
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="endTime3" >
-										</div>
-									</div>
+								<td style="display:none;">
+								    <input type=hidden 
+										   th:field = "*{courseScheduleDetails[__${stat.index}__].scheduledStartDateTime}">
+									<input type=hidden 
+										   th:field = "*{courseScheduleDetails[__${stat.index}__].scheduledEndDateTime}"> 
 								</td>
 							</tr>
 						</table>
@@ -217,7 +177,7 @@
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 <script>
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var courseName = $('#courseName').val();
 
@@ -231,7 +191,7 @@ $('input[name="success"]').on('click', function() {
     }
 });
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var instructor = $('#instructorId').val();
 
@@ -245,7 +205,7 @@ $('input[name="success"]').on('click', function() {
 });
 
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var venue = $('#venueId').val();
 
@@ -258,7 +218,7 @@ $('input[name="success"]').on('click', function() {
     }
 });
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var minRequired = $('#minRequired').val();
 
@@ -271,7 +231,7 @@ $('input[name="success"]').on('click', function() {
     }
 });
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var maxAllowed = $('#maxAllowed').val();
 
@@ -285,7 +245,7 @@ $('input[name="success"]').on('click', function() {
 });
 
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var maxAllowed = $('#maxAllowed').val();
 
@@ -298,7 +258,7 @@ $('input[name="success"]').on('click', function() {
     }
 });
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var maxAllowed = $('#maxAllowed').val();
 
@@ -311,7 +271,7 @@ $('input[name="success"]').on('click', function() {
     }
 });
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var startDate = $('#startDate').val();
 
@@ -324,7 +284,7 @@ $('input[name="success"]').on('click', function() {
     }
 });
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var endDate = $('#endDate').val();
 
@@ -337,7 +297,7 @@ $('input[name="success"]').on('click', function() {
     }
 });
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var startTime = $('#startTime').val();
 
@@ -350,7 +310,7 @@ $('input[name="success"]').on('click', function() {
     }
 });
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
     var endTime = $('#endTime').val();
 
@@ -364,7 +324,7 @@ $('input[name="success"]').on('click', function() {
 });
 
 
-$('input[name="success"]').on('click', function() {
+$('input[name="create"]').on('click', function() {
 
 	var courseName = $('#courseName').val();
 	var instructor = $('#instructorId').val();
