@@ -115,68 +115,10 @@
 									</div>
 								</td>
 								<td style="display:none;">
-									<!-- <input type=hidden 
-										   th:field = "*{courseScheduleDetails[0].scheduledStartDateTime}">
+								    <input type=hidden 
+										   th:field = "*{courseScheduleDetails[__${stat.index}__].scheduledStartDateTime}">
 									<input type=hidden 
-										   th:field = "*{courseScheduleDetails[0].scheduledEndDateTime}"> -->
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="startDate2" >
-										</div>
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="endDate2" >
-										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" placeholder="Start Time" id="startTime2" >
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control"placeholder="End Time" id="endTime2" >
-										</div>
-									</div>
-								</td>
-								<td style="display:none;">
-									<!-- <input type=hidden 
-										   th:field = "*{courseScheduleDetails[1].scheduledStartDateTime}">
-									<input type=hidden 
-										   th:field = "*{courseScheduleDetails[1].scheduledEndDateTime}"> -->
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="startDate3" >
-										</div>
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="endDate3" >
-										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" placeholder="Start Time" id="startTime3" >
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" placeholder="End Time" id="endTime3" >
-										</div>
-									</div>
-								</td>
-								<td style="display:none;">
-									<!-- <input type=hidden 
-										   th:field = "*{courseScheduleDetails[2].scheduledStartDateTime}">
-									<input type=hidden 
-										   th:field = "*{courseScheduleDetails[2].scheduledEndDateTime}"> -->
+										   th:field = "*{courseScheduleDetails[__${stat.index}__].scheduledEndDateTime}"> 
 								</td>
 							</tr>
 						</table>

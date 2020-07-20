@@ -161,14 +161,18 @@ public class ScheduleController {
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+        
+        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
+        for(int i=1; i<=5; i++) {
+            courseScheduleDetailFormSet.add(new CourseScheduleDetailForm());
+        }
 
         CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
         
-        
-
         courseScheduleNewForm.setInstructors(instructorFormList);
         courseScheduleNewForm.setVenues(venueFormList);
         courseScheduleNewForm.setCourses(courseFormList);
+        courseScheduleNewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
 
         model.addAttribute("scheduleNew", courseScheduleNewForm);
 

@@ -65,7 +65,7 @@ import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ScheduleController.class)
 @AutoConfigureMockMvc
-public class ViewAllCourseScheduleTest {
+class ViewAllCourseScheduleTest {
 
     /**
      * MockMvc for dependency
@@ -124,6 +124,13 @@ public class ViewAllCourseScheduleTest {
      * <pre>
      * 
      */
+    
+    private CourseScheduleListForm list() {
+        CourseScheduleListForm list = new CourseScheduleListForm();
+        list.setFromDateTime(ZonedDateTime.now());
+        list.setToDateTime(ZonedDateTime.now().plusDays(3));
+        return list;
+    }
     
     private Set<CourseSchedule> courseSchedules() {
         Set<CourseSchedule> courseSchedules = new HashSet<>();
