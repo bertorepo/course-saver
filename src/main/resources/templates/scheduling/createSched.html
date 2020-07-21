@@ -116,9 +116,13 @@
 								</td>
 								<td style="display:none;">
 								    <input type=hidden 
-										   th:field = "*{courseScheduleDetails[__${stat.index}__].scheduledStartDateTime}">
+										   th:name  = "|courseScheduleDetails[$(stat.index)].scheduledStartDateTime|"
+										   th:value = "${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 
+										   					'dd-MM-yyyy HH:mm', locale)}">
 									<input type=hidden 
-										   th:field = "*{courseScheduleDetails[__${stat.index}__].scheduledEndDateTime}"> 
+										   th:name  = "|courseScheduleDetails[$(stat.index)].scheduledEndDateTime|"
+										   th:value = "${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 
+										   					'dd-MM-yyyy HH:mm', locale)}"> 
 								</td>
 							</tr>
 						</table>
