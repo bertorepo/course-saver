@@ -227,6 +227,7 @@ public class EnrollmentController {
         return "scheduling/myCourseSched";
 
     }
+    
 
     /**
      * Method for showCourseDeclineForm
@@ -239,6 +240,7 @@ public class EnrollmentController {
      * 
      * @author k.freo
      */
+    
     @GetMapping("/myschedules/{courseParticipantId}/decline")
     public String showCourseDeclineForm(Long id, Model model) {
     	
@@ -300,8 +302,7 @@ public class EnrollmentController {
         CourseScheduleDetail courseScheduleDetail= new CourseScheduleDetail.Builder(courseSchedsDetail.getId(),
         		courseSchedsDetail.getScheduledStartDateTime(), courseSchedsDetail.getScheduledEndDateTime())
         					.build();
-        courseScheduleDetailSet.add(courseScheduleDetail);
-        	
+        courseScheduleDetailSet.add(courseScheduleDetail);	
         }
 
         CourseParticipant courseParticipant = new CourseParticipant.Builder(form.getId()).build();
@@ -322,7 +323,6 @@ public class EnrollmentController {
         return "/enrollment /myschedules/{courseParticipantId}/decline";
     }
 
-    
     
     @GetMapping("/schedules/{courseScheduleId}/enroll")
     public String showCourseEnrollmentForm(Long id, Model model) {
