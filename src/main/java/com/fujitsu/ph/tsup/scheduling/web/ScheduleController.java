@@ -227,7 +227,9 @@ public class ScheduleController {
         
         scheduleService.createCourseSchedule(courseSchedule);
 
-        redirectAttributes.addFlashAttribute("scheduleNew", form);
+        redirectAttributes.addFlashAttribute("message", "Success!! Schedule has been created");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+        
         return "redirect:/schedules/new";
 
     }
