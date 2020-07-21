@@ -69,16 +69,19 @@ public class DashboardController {
         logger.debug("Model:{}", model);
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         employeeId = user.getId();
-
-        if (user.getRoles().contains("Member")) {
-            model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
-            model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
-            model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
-        } else if (user.getRoles().contains("Instructor")) {
-            model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
-            model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
-        } else if (user.getRoles().contains("PMO")) {
-            model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+        try {
+            if (user.getRoles().contains("Member")) {
+                model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
+                model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
+                model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+            } else if (user.getRoles().contains("Instructor")) {
+                model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
+                model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
+            } else if (user.getRoles().contains("PMO")) {
+                model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+            }
+        } catch (Exception e) {
+            model.addAttribute("Errors", e.getMessage());
         }
 
         return "dashboard";

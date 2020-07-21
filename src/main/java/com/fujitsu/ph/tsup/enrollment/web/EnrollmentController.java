@@ -25,10 +25,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //=======================================================
@@ -98,10 +100,12 @@ public class EnrollmentController {
         }
 
         if (form.getFromDateTime() == null) {
-        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
+//        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
+        	form.setFromDateTime(ZonedDateTime.now().minusMonths(1));
         }
         if (form.getToDateTime() == null) {
-        	form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
+//        	form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
+        	form.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
         
         if(form.getFromDateTime().isAfter(form.getToDateTime())) {
@@ -112,6 +116,11 @@ public class EnrollmentController {
 
         Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
         		form.getFromDateTime(), form.getToDateTime());
+        
+        if(courseSchedules.isEmpty()) {
+        	model.addAttribute("nullMessage","No Record Found");
+        	return "enrollment/viewCourseEnroll";
+        }
         
         Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
@@ -227,9 +236,14 @@ public class EnrollmentController {
      * enrollmentService.findCourseParticipantById using the given id Set the values
      * from the previous step into the CourseDeclineForm Return the Course decline
      * form and view
+     * 
+     * @author k.freo
      */
-    @GetMapping("/decline")
+    @GetMapping("/myschedules/{courseParticipantId}/decline")
     public String showCourseDeclineForm(Long id, Model model) {
+    	
+    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	
         logger.debug("Model:{}", model);
 
         CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
@@ -245,9 +259,10 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
 
         model.addAttribute("courseDecline", courseDeclineForm);
-        return "enrollment-management/CourseDeclineForm";
+        return "enrollment/myCourseDecline";
     }
 
+   
     /**
      * Method for submitCourseDeclineForm
      * 
@@ -256,16 +271,19 @@ public class EnrollmentController {
      * form to courseParticipant. Call enrollmentService.declineCourse using the
      * courseParticipant Return the Course decline form and view. Return also a
      * success message.
+     * 
+     * @author k.freo
      */
-    @PostMapping("/decline")
-    public String submitCourseDeclineForm(@Valid @ModelAttribute("enrollmentDecline") CourseDeclineForm form,
+    @DeleteMapping("/myschedules/{courseParticipantId}/decline")
+    public String submitCourseDeclineForm(@Valid @ModelAttribute("courseDecline") CourseDeclineForm form,
             BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
     	
         logger.debug("courseDeclineForm:{}", form);
         logger.debug("BindingResult:{}", bindingresult);
 
         if (bindingresult.hasErrors()) {
-            return "enrollment/courseDeclineForm";
+        	model.addAttribute("courseDecline", form);
+            return "enrollment/myCourseDecline";
         }
 
         CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
@@ -301,7 +319,7 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
         
         redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
-        return "redirect:/enrollment/CourseDeclineForm";
+        return "/enrollment /myschedules/{courseParticipantId}/decline";
     }
 
     
@@ -377,10 +395,11 @@ public class EnrollmentController {
      * @return
      */
     @PostMapping("/schedules/{courseScheduleId}/cancel")
-	public String submitCourseEnrollmentCancelForm(Long id, Model model, RedirectAttributes redirectAttributes) {
-		//call enrollmentService.cancel using the given id
+	public String submitCourseEnrollmentCancelForm(@RequestParam Long id, Model model, 
+			RedirectAttributes redirectAttributes) {
 		enrollmentService.cancel(id);
 		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
-		return "redirect:/schedule";
+//		return "redirect:/schedule";
+		return "redirect:/enrollment/viewCourseEnroll";
 	}
 }
