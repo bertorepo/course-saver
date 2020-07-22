@@ -1,6 +1,7 @@
 package com.fujitsu.ph.tsup.scheduling.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //=======================================================
@@ -90,7 +91,8 @@ public class CourseScheduleNewForm{
     /**
      * List used to Bind Course Schedule Detail Inputs
      */
-    private List<CourseScheduleDetailForm> courseScheduleDetailsAsList;
+    private List<CourseScheduleDetailForm> courseScheduleDetailsAsList = 
+                new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[5]));
     
     public void setId(Long id) {
         this.id = id;
@@ -178,8 +180,8 @@ public class CourseScheduleNewForm{
      * @return courseScheduleDetailsAsList
      */
     
-    public void setCourseScheduleDetailsAsList(List<CourseScheduleDetailForm> courseScheduleDetailAsList) {
-        this.courseScheduleDetailsAsList = courseScheduleDetailAsList;
+    public void setCourseScheduleDetailsAsList(List<CourseScheduleDetailForm> courseScheduleDetailsAsList) {
+        this.courseScheduleDetailsAsList = courseScheduleDetailsAsList;
     }
     
     public List<CourseScheduleDetailForm> getCourseScheduleDetailsAsList() {
