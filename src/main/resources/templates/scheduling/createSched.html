@@ -176,176 +176,18 @@
 
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
-<script>
-$('input[name="create"]').on('click', function() {
+<script th:inline="javascript">
+/*<![CDATA[*/
 
-    var courseName = $('#courseName').val();
+    var message = /*[[${message}]]*/ 'message';
+    console.log(message);
+    alert(message);
+    
+    var element = document.getElementById('successModal').innerHTML;
+    console.log(element);
+    
 
-    if (courseName == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-  
-            $('#errorModal').find('.modal-body').html('<p>Please fill up course name</p>');
-        });
-    }
-});
-
-$('input[name="create"]').on('click', function() {
-
-    var instructor = $('#instructorId').val();
-
-    if (instructor == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p>Please fill up instructors</p>');
-        });
-    }
-});
-
-
-$('input[name="create"]').on('click', function() {
-
-    var venue = $('#venueId').val();
-
-    if (venue == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up venues</p>');
-        });
-    }
-});
-
-$('input[name="create"]').on('click', function() {
-
-    var minRequired = $('#minRequired').val();
-
-    if (minRequired == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up minimum no. of participants</p>');
-        });
-    }
-});
-
-$('input[name="create"]').on('click', function() {
-
-    var maxAllowed = $('#maxAllowed').val();
-
-    if (maxAllowed == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up maximum no. of participants</p>');
-        });
-    }
-});
-
-
-$('input[name="create"]').on('click', function() {
-
-    var maxAllowed = $('#maxAllowed').val();
-
-    if (maxAllowed == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up maximum no. of participants</p>');
-        });
-    }
-});
-
-$('input[name="create"]').on('click', function() {
-
-    var maxAllowed = $('#maxAllowed').val();
-
-    if (maxAllowed == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up maximum no. of participants</p>');
-        });
-    }
-});
-
-$('input[name="create"]').on('click', function() {
-
-    var startDate = $('#startDate').val();
-
-    if (startDate == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
-        });
-    }
-});
-
-$('input[name="create"]').on('click', function() {
-
-    var endDate = $('#endDate').val();
-
-    if (endDate == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
-        });
-    }
-});
-
-$('input[name="create"]').on('click', function() {
-
-    var startTime = $('#startTime').val();
-
-    if (startTime == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
-        });
-    }
-});
-
-$('input[name="create"]').on('click', function() {
-
-    var endTime = $('#endTime').val();
-
-    if (endTime == "") {
-
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
-        });
-    }
-});
-
-
-$('input[name="create"]').on('click', function() {
-
-	var courseName = $('#courseName').val();
-	var instructor = $('#instructorId').val();
-	var venue = $('#venueId').val();
-	var minRequired = $('#minRequired').val();
-    var maxAllowed = $('#maxAllowed').val();
-    var startDate = $('#startDate').val();
-    var endDate = $('#endDate').val();
-    var startTime = $('#startTime').val();
-    var endTime = $('#endTime').val();
-
-    if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") && (maxAllowed !== "")
-    		&& (startDate !== "") && (endDate !== "") && (startTime !== "") && (endTime !== "")) {
-
-        $('#successModal').modal('show');
-      
-    }
-});
-
-
-
+/*]]>*/
 </script>
 </body>
 
