@@ -1,5 +1,8 @@
 package com.fujitsu.ph.tsup.scheduling.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -84,6 +87,11 @@ public class CourseScheduleNewForm{
      */
     private Set<VenueForm> venues;
     
+    /**
+     * List used to Bind Course Schedule Detail Inputs
+     */
+    private List<CourseScheduleDetailForm> courseScheduleDetailsAsList;
+    
     public void setId(Long id) {
         this.id = id;
     }
@@ -164,11 +172,26 @@ public class CourseScheduleNewForm{
         return venues;
     }
     
+    /**
+     * List to be bound in HTML
+     * 
+     * @return courseScheduleDetailsAsList
+     */
+    
+    public void setCourseScheduleDetailsAsList(List<CourseScheduleDetailForm> courseScheduleDetailAsList) {
+        this.courseScheduleDetailsAsList = courseScheduleDetailAsList;
+    }
+    
+    public List<CourseScheduleDetailForm> getCourseScheduleDetailsAsList() {
+        return courseScheduleDetailsAsList;
+    }
+    
     @Override
     public String toString() {
         return "CourseScheduleNewForm [id = " + id + ", courseId = " + courseId + ", instructorId = " 
     + instructorId + ", venueId = " + venueId + ", minRequired = " + minRequired + ", maxAllowed = " 
-    + maxAllowed + ", courseScheduleDetails = "+ courseScheduleDetails + ", courses = " + courses + 
-    ", instructors = " + instructors + ", venues = " + venues +"]";
+    + maxAllowed + ", courseScheduleDetails = "+ courseScheduleDetails + ", courseScheduleDetailsAsList = " 
+    + courseScheduleDetailsAsList + ", courses = " + courses + ", instructors = " + instructors + 
+    ", venues = " + venues +"]";
     }
 }

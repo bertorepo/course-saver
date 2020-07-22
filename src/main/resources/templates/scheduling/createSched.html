@@ -111,7 +111,7 @@
 									<label class="col-lg-6 col-form-label">Start/End Time</label>
 								</td>
 							</tr>
-							<tr th:each = "courseScheduleDetails, stat : *{courseScheduleDetails}">
+							<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailsAsList}">
 								<td>
 									<div class="form-group row">
 										<div class="col-lg-6">
@@ -135,13 +135,9 @@
 								</td>
 								<td style="display:none;">
 								    <input type=hidden 
-										   th:name  = "|courseScheduleDetails[$(stat.index)].scheduledStartDateTime|"
-										   th:value = "${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 
-										   					'dd-MM-yyyy HH:mm', locale)}">
+										   th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledStartDateTime}">
 									<input type=hidden 
-										   th:name  = "|courseScheduleDetails[$(stat.index)].scheduledEndDateTime|"
-										   th:value = "${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 
-										   					'dd-MM-yyyy HH:mm', locale)}"> 
+										   th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledEndDateTime}"> 
 								</td>
 							</tr>
 						</table>
