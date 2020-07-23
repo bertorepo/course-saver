@@ -26,25 +26,9 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	<div class="container mt-5">
 		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
-		<!--Success Modal-->
-		<div class="modal fade" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-success">
-						<h5 class="modal-title"></h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">Schedule has been created</label>
-						</div>	
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--Success Modal End-->
+		<!--Success Message-->
+		<div class="modal fade" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+		<!--Success Message End-->
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
 			<div class="card">
@@ -143,49 +127,131 @@
 						</table>
 					</div>
 					<div class="float-right">
-						<input type="submit" name="create" class="btn btn-success" value="Create">
+						<input type="button" class="btn btn-success" th:attr="onclick=|validations()|" value="Create">
 						<input type="button" class="btn btn-danger" value="Cancel">
 					</div>
 				</div>
 			</div>
-		</form>  
-		<!--Error Modal-->
-		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<!--Confirmation Modal-->
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-danger">
-						<h5 class="modal-title"></h5>
+						<h5 class="modal-title">Confirmation</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">{error message}</label>
+							<label class="col-lg-12 col-form-label">Are you sure you want to submit this form?
+								<strong id="courseName"></strong>
+							</label>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
+							<!-- 	<input type="text" id="courseId" name="courseId"> -->
+								<input type="hidden" name="id" id="id" />
+								<button type="submit" name="submit" value="submit" class="btn btn-primary"> Yes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!--Confirmation Modal End-->
+		</form>  
+		<!--Success Modal-->
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<h5 class="modal-title">Success</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Schedule has been created</label>
 						</div>	
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--Error Modal End-->
-		<!--Buttons for messages (delete these)-->
-			<input type="button" name="success" class="btn btn-success" value="Test Button">
-		<!--Buttons for messages (delete these) End-->
-		
+		<!--Success Modal End-->
+		<!--Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title">Error</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label"></label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Error Modal End-->	
 	</div>
 
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
+	
 <script th:inline="javascript">
+
+function validations() {
+
+    var courseName = $('#courseName').val();
+    var instructor = $('#instructorId').val();
+    var venue = $('#venueId').val();
+
+    if (courseName == "") {
+
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+
+            $('#errorModal').find('.modal-body').html('<p>Please fill up course name</p>');
+        });
+    }
+    
+    if (instructor == "") {
+
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+            $('#errorModal').find('.modal-body').html('<p>Please fill up instructors</p>');
+        });
+    }
+
+    if (venue == "") {
+
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+            $('#errorModal').find('.modal-body').html('<p> Please fill up venues</p>');
+        });
+    }
+
+    if ((courseName !== "" && instructor !== "" && venue !== "")) {
+        $('#confirmModal').modal('show');
+    }
+};
+
 /*<![CDATA[*/
+var successMessage = /*[[${message}]]*/ 'default';
+var element = document.getElementById('successMessage').innerHTML;
 
-    var message = /*[[${message}]]*/ 'default';
-    console.log(message);
-    
-    var element = document.getElementById('successModal').innerHTML;
-    console.log(element);
-    
+console.log(successMessage);
+console.log(element);
 
+if (successMessage == element) {
+
+    $('#successModal').modal('show');
+}
 /*]]>*/
 </script>
 </body>
