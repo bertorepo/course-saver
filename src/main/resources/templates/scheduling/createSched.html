@@ -266,7 +266,7 @@ function validations() {
         var endTime =  $("#endTime"+i).val();
         
         if([startDate, endDate, startTime, endTime].includes(null) == false ||
-        		[startDate, endDate, startTime, endTime].includes("") ||) == false{
+        		[startDate, endDate, startTime, endTime].includes("") == false ){
         	if (startDate == "") {
 
                 $('#errorModal').modal('show');
@@ -296,12 +296,18 @@ function validations() {
     }
     
 	//Not Empty Fields Validation
-     if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") && (maxAllowed !== "")
-    		&& (startDate !== "") && (endDate !== "") && (startTime !== "") && (endTime !== "")) {
-
-        $('#confirmModal').modal('show');
-      
-    }
+    $("#dateTime input").filter( function () {
+    	if($.trim($(this).val()).length == 0){
+    		 $('#errorModal').modal('show');
+             $('#errorModal').on('shown.bs.modal', function() {
+                 $('#errorModal').find('.modal-body').html('<p> Please fill up Date Time entries below</p>');
+             });
+    	}
+    	else if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") 
+    				&& (maxAllowed !== "") && ($.trim($(this).val()).length > 0)) {
+	        $('#confirmModal').modal('show');
+		} 
+    });
 };
 
 /*<![CDATA[*/
