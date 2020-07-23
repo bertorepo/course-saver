@@ -160,7 +160,7 @@
 		</div>  
 		
 		<!--Cancel Registration Modal-->
-		<form class="form-horizontal">
+		<form class="form-horizontal"  th:object="${courseDecline}" th:action"@{/enrollment/myschedules/{courseParticipantId}/decline}"  method="delete">
 			<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -174,29 +174,37 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course ID:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="ABC-123">
+									<input type="text" class="form-control-plaintext" id="" value="ABC-123" th:field= "*{id}">
 								</div>
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="Understanding SS">
+									<input type="text" class="form-control-plaintext" id="" value="Understanding SS"  th:field="*{courseName}">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Instructor:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="JC">
+									<input type="text" class="form-control-plaintext" id="" value="JC" th:field="*{instructorName}">
 								</div>
 								<label class="col-lg-3 col-form-label">Course Date(s):</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="January 2, 2020">
+								<div class="col-lg-9"  th:each="courseScheduleDetailsForm : *{courseScheduleDetailsForm}">
+									<input type="text" class="form-control-plaintext" id="" value="January 2, 2020" th:text="${#temporals.format(courseScheduleDetailsForm.scheduledStartDateTime, 'dd-MM-yyyy')}">
+									<p> - </p>
+									<input type="text" class="form-control-plaintext" id="" value="January 2, 2020" th:text="${#temporals.format(courseScheduleDetailsForm.scheduledEndDateTime, 'dd-MM-yyyy')}">
 								</div>
 								<label class="col-lg-3 col-form-label">Timeslot:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="8:00 - 10:00">
+									<input type="text" class="form-control-plaintext" id="" value="8:00 - 10:00" th:text="${#temporals.format(courseScheduleDetailsForm.scheduledStartDateTime, 'HH:mm')}">
+									<p> - </p>
+									<input type="text" class="form-control-plaintext" id="" value="8:00 - 10:00" th:text="${#temporals.format(courseScheduleDetailsForm.scheduledEndDateTime, 'HH:mm')}">
+								</div>
+								<div>
+								 <input type="hidden" class="form-control-plaintext" id="" value="8:00 - 10:00" th:field="${#temporals.formatISO(courseScheduleDetailsForm.scheduledStartDateTime)}">
+							 	 <input type="hidden" class="form-control-plaintext" id="" value="8:00 - 10:00" th:field="${#temporals.formatISO(courseScheduleDetailsForm.scheduledEndDateTime)}>
 								</div>
 								<label class="col-lg-3 col-form-label">Venue:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="WebEx Training">
+									<input type="text" class="form-control-plaintext" id="" value="WebEx Training" th:field="*{venueName}">
 								</div>
 							</div>	
 							<div class="form-group row">
@@ -206,6 +214,32 @@
 								</div>
 							</div>
 						</div>
+						<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Are you sure you want to cancel your registration for this training - {courseName}?</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label class="col-lg-12 col-form-label">Please write the reason for your cancellation.
+									<p class="text-danger">*This is a required field.</p>
+								</label>
+								<div class="col-lg-9">
+									<textarea cols="100" rows="10" th:field= "*{reason}"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="submit" name="success" class="btn btn-success" data-dismiss="modal" value="Confirm Cancellation">
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
 						<div class="modal-footer">
 							<input type="submit" name="cancel" class="btn btn-success" data-dismiss="modal" value="Cancel Registration">
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
@@ -214,8 +248,10 @@
 				</div>
 			</div>
 		</form>
-		<!--Cancel Regsitration Modal End-->
-		<!--Confirm Cancellation Modal-->
+		
+		
+	<!--	<!--Cancel Regsitration Modal End
+		<!--Confirm Cancellation Modal
 		<form class="form-horizontal">
 			<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -244,8 +280,9 @@
 				</div>
 			</div>
 		</form>      
-		<!--Confirm Cancellation Modal End-->	  	
+		<!--Confirm Cancellation Modal End	  	-->
 	</div>
+	
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 <script>
