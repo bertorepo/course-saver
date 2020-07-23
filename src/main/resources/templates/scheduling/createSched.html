@@ -99,10 +99,12 @@
 								<td>
 									<div class="form-group row">
 										<div class="col-lg-6">
-											<input type="date" class="form-control" placeholder="Enter Start Date" id="startDate" >
+											<input type="date" class="form-control" placeholder="Enter Start Date" 
+												   th:id="${'startDate' + (stat.index + 1)}" >
 										</div>
 										<div class="col-lg-6">
-											<input type="date" class="form-control" placeholder="Enter End Date" id="endDate" >
+											<input type="date" class="form-control" placeholder="Enter End Date" 
+												   th:id="${'endDate' + (stat.index + 1)}" >
 										</div>
 									</div>
 								</td>
@@ -110,10 +112,12 @@
 									<div class="form-group row">
 										<div class="col-lg-2"></div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" placeholder="Start Time " id="startTime" >
+											<input type="text" class="form-control" placeholder="Start Time" 
+												   th:id="${'startTime' + (stat.index + 1)}" >
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" placeholder="End Time" id="endTime" >
+											<input type="text" class="form-control" placeholder="End Time" 
+												   th:id="${'endTime' + (stat.index + 1)}" >
 										</div>
 									</div>
 								</td>
