@@ -99,11 +99,11 @@
 								<td>
 									<div class="form-group row">
 										<div class="col-lg-6">
-											<input type="date" class="form-control" placeholder="Enter Start Date" 
-												   th:id="${'startDate' + (stat.index + 1)}" >
+											<input type="date" name="startDate" class="form-control" placeholder="Enter Start Date"
+												   th:id="${'startDate' + (stat.index + 1)}">
 										</div>
 										<div class="col-lg-6">
-											<input type="date" class="form-control" placeholder="Enter End Date" 
+											<input type="date" name="endDate" class="form-control" placeholder="Enter End Date" 
 												   th:id="${'endDate' + (stat.index + 1)}" >
 										</div>
 									</div>
@@ -112,11 +112,11 @@
 									<div class="form-group row">
 										<div class="col-lg-2"></div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" placeholder="Start Time" 
+											<input type="text" name="startTime" class="form-control" placeholder="Start Time" 
 												   th:id="${'startTime' + (stat.index + 1)}" >
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" placeholder="End Time" 
+											<input type="text" name="endTime" class="form-control" placeholder="End Time" 
 												   th:id="${'endTime' + (stat.index + 1)}" >
 										</div>
 									</div>
@@ -214,7 +214,14 @@ function validations() {
     var courseName = $('#courseName').val();
     var instructor = $('#instructorId').val();
     var venue = $('#venueId').val();
-
+    var minRequired = $('#minRequired').val();
+    var maxAllowed = $('#maxAllowed').val();
+    var startDate =  $("input[name=startDate]").val();
+    var endDate =  $("input[name=endDate]").val();
+    var startTime =  $("input[name=startTime]").val();
+    var endTime =  $("input[name=endTime]").val();
+    
+    //Empty Fields Validations
     if (courseName == "") {
 
         $('#errorModal').modal('show');
@@ -239,9 +246,61 @@ function validations() {
             $('#errorModal').find('.modal-body').html('<p> Please fill up venues</p>');
         });
     }
+    
+    if (minRequired == "") {
 
-    if ((courseName !== "" && instructor !== "" && venue !== "")) {
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+            $('#errorModal').find('.modal-body').html('<p> Please fill up minimum no. of participants</p>');
+        });
+    }
+    
+    if (maxAllowed == "") {
+
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+            $('#errorModal').find('.modal-body').html('<p> Please fill up maximum no. of participants</p>');
+        });
+    }
+    
+    if (startDate == "") {
+
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+            $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
+        });
+    }
+    
+    if (endDate == "") {
+
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+            $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
+        });
+    }
+    
+    if (startTime == "") {
+
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+            $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
+        });
+    }
+    
+    if (endTime == "") {
+
+        $('#errorModal').modal('show');
+        $('#errorModal').on('shown.bs.modal', function() {
+            $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
+        });
+    }
+    
+	//Not Empty Fields Validation
+     if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") && (maxAllowed !== "")
+    		&& (startDate !== "") && (endDate !== "") && (startTime !== "") && (endTime !== "")) {
+
         $('#confirmModal').modal('show');
+      
     }
 };
 
