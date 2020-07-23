@@ -216,10 +216,6 @@ function validations() {
     var venue = $('#venueId').val();
     var minRequired = $('#minRequired').val();
     var maxAllowed = $('#maxAllowed').val();
-    var startDate =  $("input[name=startDate]").val();
-    var endDate =  $("input[name=endDate]").val();
-    var startTime =  $("input[name=startTime]").val();
-    var endTime =  $("input[name=endTime]").val();
     
     //Empty Fields Validations
     if (courseName == "") {
@@ -263,36 +259,40 @@ function validations() {
         });
     }
     
-    if (startDate == "") {
+    for(var i = 1; i<=5; i++){
+        var startDate =  $("#startDate"+i).val();
+        var endDate =  $("#endDate"+i).val();
+        var startTime =  $("#startTime"+i).val();
+        var endTime =  $("#endTime"+i).val();
+        
+        if([startDate, endDate, startTime, endTime].includes(null) == false ||
+        		[startDate, endDate, startTime, endTime].includes("") ||) == false{
+        	if (startDate == "") {
 
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
-        });
-    }
-    
-    if (endDate == "") {
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
+                });
+            } else if (endDate == "") {
 
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
-        });
-    }
-    
-    if (startTime == "") {
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
+                });
+            } else if (startTime == "") {
 
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
-        });
-    }
-    
-    if (endTime == "") {
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
+                });
+            } else if (endTime == "") {
 
-        $('#errorModal').modal('show');
-        $('#errorModal').on('shown.bs.modal', function() {
-            $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
-        });
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
+                });
+            }
+        }
     }
     
 	//Not Empty Fields Validation
