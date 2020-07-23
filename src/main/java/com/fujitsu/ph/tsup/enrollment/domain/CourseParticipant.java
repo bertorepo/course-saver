@@ -265,6 +265,17 @@ public class CourseParticipant {
 			this.participantId = participantId;
 			this.registrationDate = registrationDate;
 		}
+		
+		public Builder(Long courseScheduleId, Long participantId, ZonedDateTime registrationDate) {
+
+			validateCourseScheduleId(courseScheduleId);
+			validateParticipantId(participantId);
+			validateRegistrationDate(registrationDate);
+			
+			this.courseScheduleId = courseScheduleId;
+			this.participantId = participantId;
+			this.registrationDate = registrationDate;
+		}
 
 		/**
 		 * <pre>
