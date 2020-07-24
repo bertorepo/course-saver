@@ -82,30 +82,30 @@ class ShowCourseDeclineFormTest {
 
 	private Long id;
     
-	@WithMockCustomUser (id = 1L, username = "l.lorenzo")
+	@WithMockCustomUser (id = 1L, username = "jc.deleon")
     @Test
 	void showCourseDeclineFormTest() throws Exception{
     
     	when(enrollmentService.findCourseParticipantById(1L)).thenReturn(courseParticipant());
-		//doThrow(new DataRetrievalFailureException("error")).when(enrollmentService)
+    	//doThrow(new DataRetrievalFailureException("error")).when(enrollmentService)
 		//.declineCourse(any(CourseParticipant.class));
 
-		mockMvc.perform(get("/enrollment/mySchedules/{courseParticipantId}/decline", 1L)) 
+		mockMvc.perform(get("/enrollment/myschedules/{courseParticipantId}/decline", 1L)) 
 				.andDo(print())
 				.andExpect(status().isOk()) 
-				.andExpect(view().name("enrollment/myCourseDecline"))
-				.andExpect(model().attributeExists("enrollment/myCourseDecline")) 
+				.andExpect(view().name("enrollment/myCourseSched"))
+				.andExpect(model().attributeExists("courseDecline")) 
 				.andExpect(model().attribute("courseDecline", allOf( 
 								hasProperty("id"), 
-								hasProperty("CourseName"), 
-								hasProperty("InstructorName"),
-								hasProperty("VenueName"), 
-								hasProperty("ParticipantName"), 
-								hasProperty("RegistrationDate"),
-								hasProperty("Reason")))) 
+								hasProperty("courseName"), 
+								hasProperty("instructorName"),
+								hasProperty("venueName"), 
+								hasProperty("participantName"), 
+								hasProperty("registrationDate"),
+								hasProperty("reason")))) 
 				.andExpect(model().attributeDoesNotExist("errorMessages")).andReturn();
  
-       verify(enrollmentService, times(1)).findCourseParticipantById(id); 
+       verify(enrollmentService, times(1)).findCourseParticipantById(1L); 
        verifyNoMoreInteractions(enrollmentService);
     
        CourseDeclineForm courseParticipant= new CourseDeclineForm();
@@ -115,6 +115,4 @@ class ShowCourseDeclineFormTest {
        private CourseParticipant courseParticipant() {
            return new CourseParticipant.Builder(1L, 1L, "DUMMY", "DUMMY", "DUMMY", 1L, "DUMMY", ZonedDateTime.now(), "DUMMY", ZonedDateTime.now()).build();
        }	
-
-
 }
