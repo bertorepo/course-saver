@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>My Course Schedules</title>
+<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	
+</head>
+
+<body>
+	<div th:insert="fragments/general.html :: header"> </div>
+	
+	<div class="container mt-5">
+		<form class="form-horizontal" action="#" th:action="@{/enrollment/mySchedules}" th:object="${myCourseSched}" method="get">
+			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
+			<hr>
+		       <div class="card">
+				<div class="card-body">
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">From Date</label>
+						<div class="col-lg-3">
+							<input type="datetime" class="form-control" name="fromDateTime" id="" th:field="*{fromDateTime}">
+						</div>
+						<label class="col-lg-2 col-form-label">To Date</label>
+						<div class="col-lg-3">
+							<input type="datetime" class="form-control" name="toDateTime" id="" th:field="*{toDateTime}">
+						</div>
+					</div>
+					<div class="float-right">
+						<input type="submit" class="btn btn-success" value="Submit">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" id="message"></label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Error Modal End-->
+
+	<!--Decline Modal-->
+		<div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title">Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Are you sure you want to Decline
+								<strong id="courseName"></strong>?
+							</label>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
+							<form   id="form" action="#" 
+								th:action="@{/enrollment/myschedules/{courseParticipantId}/decline}"  method="post">
+							 	<input type="hidden" name="id" id="id" />
+								<button type="submit" name="submit" value="submit" class="btn btn-primary" 
+									> Yes
+								</button>
+							</form>
+								
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Decline Modal End-->
+		
+		
+		<!--Success Modal-->
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<h5 class="modal-title">Success</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" id="successMessage"> <p id="cancelledCourseName"></p></label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Success Modal End-->	
+		
+
+		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
+			<h3><i class="fa fa-list"></i> List of Available Training</h3>
+			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%"  th:object="${myCourseSched}">
+				<colgroup >
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:10%"/>
+					<col style="width:15%"/>
+				
+			
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Course Name</th>
+						<th>Instructor</th>
+						<th>Start Date/Time</th>
+						<th>End Date/Time</th>
+						<th>Duration</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody th:each="courseSchedules : *{courseSchedules}" >
+					  <tr th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
+                        <td th:text="${courseSchedules.courseName}"></td>
+                        <td th:text="${courseSchedules.instructorName}"></td>
+                        <td th:text="${courseEnrollmentForm.scheduledStartDateTime}"></td>
+                        <td th:text="${courseEnrollmentForm.scheduledEndDateTime}"></td>
+                        <td th:text="${courseEnrollmentForm.duration}"></td>
+                   			<td>
+<!-- 							@RequestParam -->
+							<button th:attr="onclick=|decline('${id}','${courseSchedules.courseName}')|" class="btn btn-danger" name="" >
+								<i class="fa fa-times"></i> Decline
+							</button>
+						</td>
+                    </tr>
+				</tbody>
+			</table>
+		</div>    	
+	</div>
+	
+	<footer th:replace="fragments/general.html :: footer"></footer>
+<script>
+	<!--Message alert-->
+	//Decline
+	var declineCourseName;
+	var declineCourseId;
+	function decline(courseId,courseName){
+		declineCourseId = courseId;
+		declineCourseName = courseName;
+		$('#declineModal').modal('show');
+		document.getElementById("courseName").innerHTML = declineCourseName ;
+		var input = document.getElementById("id");
+		input.value=courseId
+	}
+	
+	//FromDateTime is Higher that ToDateTime
+	/*<![CDATA[*/
+	var errorMessage = /*[[${error}]]*/ 'default';
+	if(errorMessage ==  "To Date should be greater than or equal to From Date"){
+		document.getElementById("message").innerHTML = errorMessage;
+		$('#errorModal').modal('show');
+	}
+	/*]]>*/
+	
+	//Successfuly canceled a Course Schedule
+	/*<![CDATA[*/
+	var successMessage = /*[[${successMessage}]]*/ 'default';
+	if(successMessage == "Successfully Canceled the Course Schedule"){
+		document.getElementById("successMessage").innerHTML = successMessage;
+		$('#successModal').modal('show');
+	}
+	/*]]>*/
+	
+	//No Record Found
+	/*<![CDATA[*/
+	var nullMessage = /*[[${nullMessage}]]*/ 'default';
+	if(nullMessage == "No Record Found"){
+		document.getElementById("message").innerHTML = nullMessage;
+		$('#errorModal').modal('show');
+	}
+	/*]]>*/
+<!--Message alert End-->
+</script>
+</body>
+
+</html>
