@@ -243,11 +243,7 @@ public class EnrollmentController {
     @GetMapping("/myschedules/{courseParticipantId}/decline")
     public String showCourseDeclineForm(Long id, Model model) {
         
-        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
-        logger.debug("Model:{}", model);
-
-        CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
+    	CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
 
         CourseParticipant courseParticipant = enrollmentService.findCourseParticipantById(id);
 
@@ -255,12 +251,12 @@ public class EnrollmentController {
         courseDeclineForm.setCourseName(courseParticipant.getCourseName());
         courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
         courseDeclineForm.setVenueName(courseParticipant.getVenueName());
-        courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
+        courseDeclineForm.setParticipantName(courseParticipant.getVenueName());
         courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
         courseDeclineForm.setReason(courseParticipant.getReason());
 
         model.addAttribute("courseDecline", courseDeclineForm);
-        return "enrollment/myCourseDecline";
+        return "enrollment/myCourseSched";
     }
 
    
@@ -284,7 +280,7 @@ public class EnrollmentController {
 
         if (bindingresult.hasErrors()) {
             model.addAttribute("courseDecline", form);
-            return "enrollment/myCourseDecline";
+            return "/enrollment/myCourseSched";
         }
 
         CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
@@ -319,7 +315,7 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
         
         redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
-        return "/enrollment/myschedules/{courseParticipantId}/decline";
+        return "/enrollment/myCourseSched";
     }
 
     
