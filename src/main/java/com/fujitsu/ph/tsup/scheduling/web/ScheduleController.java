@@ -24,7 +24,9 @@
 *
 */
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -161,18 +163,12 @@ public class ScheduleController {
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
-        
-        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
-        for(int i=1; i<=5; i++) {
-            courseScheduleDetailFormSet.add(new CourseScheduleDetailForm());
-        }
 
         CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
         
         courseScheduleNewForm.setInstructors(instructorFormList);
         courseScheduleNewForm.setVenues(venueFormList);
         courseScheduleNewForm.setCourses(courseFormList);
-        courseScheduleNewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
 
         model.addAttribute("scheduleNew", courseScheduleNewForm);
 
@@ -210,6 +206,8 @@ public class ScheduleController {
             model.addAttribute("scheduleNew", form);
             return "scheduling/createSched";
         }
+        
+        form.setCourseScheduleDetails(new HashSet<>(form.getCourseScheduleDetailsAsList()));
 
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
@@ -227,6 +225,8 @@ public class ScheduleController {
         
         scheduleService.createCourseSchedule(courseSchedule);
 
+        redirectAttributes.addFlashAttribute("message", "Success!! Schedule has been created");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         redirectAttributes.addFlashAttribute("scheduleNew", form);
         return "redirect:/schedules/new";
 

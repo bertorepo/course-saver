@@ -23,16 +23,20 @@ package com.fujitsu.ph.tsup.scheduling.model;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CourseScheduleListForm {
 	
 	/**
      *	From Date and Time
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private ZonedDateTime fromDateTime;
 	
 	/**
      *	To Date and Time
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private ZonedDateTime toDateTime;
 	
 	/**

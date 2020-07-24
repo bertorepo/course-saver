@@ -62,7 +62,7 @@ import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleViewForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = ScheduleController.class)
 @AutoConfigureMockMvc
 class ViewAllCourseScheduleTest {
@@ -95,8 +95,7 @@ class ViewAllCourseScheduleTest {
 
         mockMvc.perform(get("/schedules/view")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("fromDateTime", String.valueOf(ZonedDateTime.now()))
-                .param("toDateTime", String.valueOf(ZonedDateTime.now().plusDays(3))))
+                .flashAttr("scheduleView", list()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("scheduling/instructorCourseScheduleList"))
