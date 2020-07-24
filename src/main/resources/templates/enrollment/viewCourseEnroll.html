@@ -81,14 +81,13 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
+							
 							<form   id="form" action="#" 
 								th:action="@{/enrollment/schedules/{courseScheduleId}/cancel}"  method="post">
-							 	<input type="hidden" name="id" id="id" />
-								<button type="submit" name="submit" value="submit" class="btn btn-primary" 
-									> Yes
-								</button>
+								<input type="hidden" name="courseScheduleId" id="id" />
+								<button type="submit" name="submit" value="submit" class="btn btn-primary" >Yes</button>
 							</form>
-								
+							
 						</div>
 					</div>
 				</div>
@@ -108,13 +107,94 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label" id="successMessage"> <p id="cancelledCourseName"></p></label>
+							<label class="col-lg-12 col-form-label" id="successMessage"> <span id="cancelledCourseName"></span></label>
 						</div>	
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Success Modal End-->	
+
+
+		<!--Register Modal-->
+		
+			<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Course Details</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Course Schedule ID:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="courseRegistrationId"
+											 disabled >
+								</div>
+								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="courseRegistrationName" name="" disabled >
+								</div>
+								<label class="col-lg-3 col-form-label">Instructor:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="courseRegistrationInstructorName"  disabled >
+								</div>
+								<label class="col-lg-3 col-form-label">Course Date(s):</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="" value="June 1, 2020"  disabled>
+								</div>
+								<label class="col-lg-3 col-form-label">Time slot:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="" value="8:00 AM to 17:30 PM PHT"  disabled>
+								</div>
+							</div>
+							<div class="alert alert-danger text-center">
+								<h5>This is a REQUIRED training</h5>
+							</div>	
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Course Description:</label>
+								<div class="col-lg-9">
+									<label class="col-form-label">Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World</label>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<form class="form-horizontal" action="#" 
+									th:action="@{/enrollment/schedules/{courseScheduleId}/enroll}" 
+									th:object="${courseEnrollmentForm}" method="post">
+								<input type="hidden" id="courseScheduleIdHidden" name="courseScheduleId">
+								<button type="submit" name="submit" value="submit" class="btn btn-success" onclick="">Register</button>
+							</form>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<!--Register Modal End-->
+		<!--Confirm Modal-->
+		<form class="form-horizontal">
+			<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-sm text-center">
+					<div class="modal-content">
+						
+						<div class="modal-body">
+							<div class="form-group row">
+								<label class="col-lg-12 col-form-label">Are you sure you would like to register to this training?</label>
+							</div>	
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn btn-success" value="Yes" name="confirm" data-dismiss="modal">
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--Confirm Modal End-->
 
 		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
@@ -130,39 +210,49 @@
 				</colgroup>
 				<thead>
 					<tr>
+						<th>Course ID</th>
 						<th>Course Name</th>
 						<th>Instructor</th>
 						<th>Start Date Time</th>
 						<th>End Date Time</th>
 						<th>Duration</th>
-						<th></th>
+						<th>Venue</th>
+						<th>Minimum Number of Participants</th>
+						<th>Maximum Number of Participants</th>
+						<th>Total Number of Participants</th>
+					
 					</tr>
 				</thead>
 				<tbody th:if="${courseSchedule} != null"
 						 th:each="courseSchedule : *{courseSchedules}"
 						th:with="courseScheduleDetails = ${courseSchedule.getCourseScheduleDetails()}">
 					<tr th:each=" courseScheduleDetail : ${courseScheduleDetails}"
-							th:with="id = ${courseSchedule.id}">
-						<td th:text="${courseSchedule.getCourseName()}"/>
-						<td th:text="${courseSchedule.instructorName}"/> 
+							th:with="courseScheduleId = ${courseSchedule.id}">
+						<td th:text="${courseScheduleId}"/>
+						<td th:text="${courseSchedule.getCourseName()}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
 						<td th:text="${courseScheduleDetail.scheduledStartDateTime}" />
 						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"/>
 						<td th:text="${courseScheduleDetail.duration}"/>
-						<td>
-						
-<!-- 							@PathVariable = variable declartion inline with the th:action -->
-<!-- 							<form action="#"th:action="@{/enrollment/schedules/{id}/cancel (id = ${id})}"  -->
-<!-- 									method="post"> -->
-<!-- 								<button type="submit" name="submit" value="submit" class="btn btn-danger" > -->
-<!-- 									<i class="fa fa-times"></i> Cancel -->
-<!-- 								</button> -->
-<!-- 							</form> -->
-<!-- 							TODO SHOW CONFIRMATION FIRST -->
+						<td sec:authorize="hasAuthority('PMO')">
+						<td th:text="${courseSchedule.venueName}"/>
+						<td th:text="${courseSchedule.minRequired}"/>
+						<td th:text="${courseSchedule.maxAllowed}"/>
+						<td th:text="${courseSchedule.totalParticipants}"/>
 
-<!-- 							@RequestParam -->
-							<button th:attr="onclick=|cancellation('${id}','${courseSchedule.courseName}')|" class="btn btn-danger" name="" >
+						<td sec:authorize="hasAuthority('PMO')">
+							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|" >
 								<i class="fa fa-times"></i> Cancel
 							</button>
+						</td>
+
+						<td sec:authorize="hasAuthority('Member')">
+							<form action="#"
+									th:action="@{/enrollment/schedules/{courseScheduleId}/enroll (courseScheduleId = ${courseScheduleId})}"
+									th:object="${courseEnrollmentForm}" method="get">
+								<button th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}')|" 
+										type="button" class="btn btn-success">Register</button>
+							</form>
 						</td>
 					</tr>
 				</tbody>
@@ -203,6 +293,36 @@
 		var input = document.getElementById("id");
 		input.value=courseId
 	}
+
+	//SHOW REGISTRATION POP UP
+	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName){
+// 		alert(courseScheduleId + courseScheduleName + courseScheduleInstructorName);
+		
+		var idInput = document.getElementById('courseRegistrationId');
+		idInput.value = courseScheduleId;
+		
+		var idHiddenInput = document.getElementById('courseScheduleIdHidden');
+		idHiddenInput.value = courseScheduleId;
+		
+		var courseNameInput = document.getElementById('courseRegistrationName');
+		courseNameInput.value = courseScheduleName;
+		
+		var courseInstructorNameInput = document.getElementById('courseRegistrationInstructorName');
+		courseInstructorNameInput.value = courseScheduleInstructorName;
+		
+		$('#registerModal').modal('show');
+	}
+	//SHOW REGISTRATION POP UP
+	
+	//SHOW REGISTRATION CONFIRMATION POP UP
+	function showRegistrationConfirmation(){
+		alert("wat f");
+// 		var idInput = document.getElementById('idRegCon');
+// 		idInput.value = id;
+// 		document.getElementById('courseNameRegCon').innerHTML = name;
+// 		$('#registrationConfirmModal').modal('show');
+	}
+	//SHOW REGISTRATION CONFIRMATION POP UP
 	
 	//FromDateTime is Higher that ToDateTime
 	/*<![CDATA[*/
@@ -230,6 +350,30 @@
 		$('#errorModal').modal('show');
 	}
 	/*]]>*/
+	
+	
+	//REGISTRATION START
+	//SUCCESS ENROLL
+	/*<![CDATA[*/
+	var successMsg = /*[[${successMsg}]]*/ 'default';
+	if(successMsg == "Successfully Enrolled a Course!!!"){
+		document.getElementById("successMessage").innerHTML = successMsg;
+		$('#successModal').modal('show');
+	}
+	/*]]>*/
+	
+	
+	//ERROR ENROLL
+	/*<![CDATA[*/
+	var errorMsg = /*[[${errorMsg}]]*/ 'default';
+	if(errorMsg == "Failed to enroll a course!!!"){
+		document.getElementById("message").innerHTML = errorMsg;
+		$('#errorModal').modal('show');
+	}
+	
+	/*]]>*/
+	
+	//REGISTRATION END
 </script>
 
 </body>
