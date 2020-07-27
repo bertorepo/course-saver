@@ -90,18 +90,10 @@ public class ScheduleController {
         if (bindingResult.hasErrors()) {
             return "scheduling/scheduleView";
         }
-        
-        if (courseScheduleListForm.getFromDateTime() == null) {
-//                  form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
-            courseScheduleListForm.setFromDateTime(ZonedDateTime.now().minusMonths(1));
-                }
-                if (courseScheduleListForm.getToDateTime() == null) {
-//                  form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
-                    courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
-                }
 
-      /*  if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
-            courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
+        if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
+//            courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
+            courseScheduleListForm.setFromDateTime(ZonedDateTime.now().minusMonths(1));
             courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
 
@@ -109,7 +101,7 @@ public class ScheduleController {
             model.addAttribute("scheduleView", courseScheduleListForm);
             model.addAttribute("error", "To Date should be greater than or equal to From Date");
             return "scheduling/scheduleView";
-        } */
+        } 
 
         Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
                 courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
@@ -215,6 +207,8 @@ public class ScheduleController {
             model.addAttribute("scheduleNew", form);
             return "scheduling/createSched";
         }
+        
+        form.setCourseScheduleDetails(new HashSet<>(form.getCourseScheduleDetailsAsList()));
 
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
@@ -232,6 +226,8 @@ public class ScheduleController {
         
         scheduleService.createCourseSchedule(courseSchedule);
 
+        redirectAttributes.addFlashAttribute("message", "Success!! Schedule has been created");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         redirectAttributes.addFlashAttribute("scheduleNew", form);
         return "redirect:/schedules/new";
 
