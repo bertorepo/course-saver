@@ -23,6 +23,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,9 +48,9 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         int maxAllowed = resultSet.getInt("MAX_ALLOWED");
         int totalParticipants = resultSet.getInt("TOTAL_PARTICIPANTS");
         char status = resultSet.getString("STATUS").charAt(0);
-        ZonedDateTime scheduledStartDateTime = ZonedDateTime.ofInstant(resultSet.getTimestamp("SCHEDULED_START_DATETIME").toInstant(),
+        ZonedDateTime scheduledStartDateTime = ZonedDateTime.ofInstant(resultSet.getTimestamp("SCHEDULED_START_DATETIME").toLocalDateTime().toInstant(ZoneOffset.UTC),
                 ZoneId.of("UTC"));
-        ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(resultSet.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
+        ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(resultSet.getTimestamp("SCHEDULED_END_DATETIME").toLocalDateTime().toInstant(ZoneOffset.UTC),
                 ZoneId.of("UTC"));
         float duration = resultSet.getFloat("DURATION");//Added
         
