@@ -11,9 +11,6 @@ import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
-
-import java.sql.Timestamp;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +25,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,6 +46,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //0.01    | 06/30/2020 | WS) M.Lumontad  | Updated
 //0.01    | 07/01/2020 | WS) G.Cabiling  | Updated
 //0.01    | 07/01/2020 | WS) T.Oviedo    | Updated
+//0.02    | 07/23/2020 | WS) M.Lumontad  | Updated
 //=======================================================
 /**
  * <pre>
@@ -85,7 +82,7 @@ public class EnrollmentController {
      * @param form
      * @param bindingResult
      * @param model
-     * @return String 
+     * @return String
      * @author J.yu
      */
     @GetMapping("/viewCourseEnroll")
@@ -101,26 +98,26 @@ public class EnrollmentController {
         }
 
         if (form.getFromDateTime() == null) {
-//        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
-        	form.setFromDateTime(ZonedDateTime.now().minusMonths(1));
+//          form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
+            form.setFromDateTime(ZonedDateTime.now().minusMonths(1));
         }
         if (form.getToDateTime() == null) {
-//        	form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
-        	form.setToDateTime(ZonedDateTime.now().plusDays(5));
+//          form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
+            form.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
         
         if(form.getFromDateTime().isAfter(form.getToDateTime())) {
-        	  model.addAttribute(form);
+              model.addAttribute(form);
               model.addAttribute("error", "To Date should be greater than or equal to From Date");
               return "enrollment/viewCourseEnroll";
         }
 
         Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
-        		form.getFromDateTime(), form.getToDateTime());
+                form.getFromDateTime(), form.getToDateTime());
         
         if(courseSchedules.isEmpty()) {
-        	model.addAttribute("nullMessage","No Record Found");
-        	return "enrollment/viewCourseEnroll";
+            model.addAttribute("nullMessage","No Record Found");
+            return "enrollment/viewCourseEnroll";
         }
         
         Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
@@ -131,10 +128,7 @@ public class EnrollmentController {
             courseScheduleForm.setCourseName(courseSchedule.getCourseName());
             courseScheduleForm.setInstructorName(
                     courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
-            courseScheduleForm.setVenueName(courseSchedule.getVenueName());
-            courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
-            courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
-            courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
+
             Set<CourseScheduleDetail> courseScheduleDetailFormSets = courseSchedule.getCourseScheduleDetail();
             Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
 
@@ -171,64 +165,65 @@ public class EnrollmentController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            return "scheduling/myCourseSched";
+            return "enrollment/myCourseSched";
         }
 
-        if (courseEnrolledListForm.getFromDateTime() == null) {
-        	courseEnrolledListForm.setFromDateTime(ZonedDateTime.now().minusMonths(1));
-//        	courseEnrolledListForm.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-06-01 08:30:00").toInstant(),ZoneId.of("UTC")));
-        }
-        if (courseEnrolledListForm.getToDateTime() == null) {
-        	courseEnrolledListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
-//        	courseEnrolledListForm.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-12-31 17:30:00").toInstant(),ZoneId.of("UTC")));
+        if (courseEnrolledListForm.getFromDateTime() == null || courseEnrolledListForm.getToDateTime() == null) {
+
+            courseEnrolledListForm.setFromDateTime(ZonedDateTime.now().minusMonths(1));
+            courseEnrolledListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
         
-		if (courseEnrolledListForm.getToDateTime().isBefore(courseEnrolledListForm.getFromDateTime())) {
-		
-		    model.addAttribute("myCourseSched", courseEnrolledListForm);
-		    model.addAttribute("error", "To Date should be greater than or equal to From Date");
-		    return "scheduling/myCourseSched";
-		}
+        if (courseEnrolledListForm.getToDateTime().isBefore(courseEnrolledListForm.getFromDateTime())) {
+
+            model.addAttribute("myCourseSched", courseEnrolledListForm);
+            model.addAttribute("error", "To Date should be greater than or equal to From Date");
+            return "enrollment/myCourseSched";
+        }
 
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Set<CourseParticipant> enrolledCourses = enrollmentService.findAllEnrolledCoursesByParticipantId(user.getId(),
-        		courseEnrolledListForm.getFromDateTime(), courseEnrolledListForm.getToDateTime());
-//
-        Set<CourseEnrollmentForm> courseSchedules = courseEnrolledListForm.getCourseSchedules();
-        for (CourseParticipant enrolledCourse : enrolledCourses) {
+                courseEnrolledListForm.getFromDateTime(), courseEnrolledListForm.getToDateTime());
 
-            CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
-
-            courseEnrollmentForm.setId(enrolledCourse.getId());
-            courseEnrollmentForm.setCourseScheduleId(enrolledCourse.getCourseScheduleId());
-            courseEnrollmentForm.setCourseName(enrolledCourse.getCourseName());
-            courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
-            courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
-            courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
-
-            Set<CourseScheduleDetail> courseSchedDetSet = enrolledCourse.getCourseScheduleDetail();
-            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
-
-            for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
-
-                CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-
-                courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
-                courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
-                courseScheduleDetailForm.setDuration(courseScheduleDetail.getDuration());
-
-                courseScheduleDetailFormSet.add(courseScheduleDetailForm);
-            }
-
-            courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
-
-            courseSchedules.add(courseEnrollmentForm);
-        }
-        model.addAttribute("scheduleView", enrolledCourses);
-        model.addAttribute("myCourseSched", courseEnrolledListForm);
-
-        return "scheduling/myCourseSched";
+        Set<CourseEnrollmentForm> courseSchedules = new HashSet<CourseEnrollmentForm>(); 
+        
+          for (CourseParticipant enrolledCourse : enrolledCourses) {
+          
+          CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
+          
+          courseEnrollmentForm.setId(enrolledCourse.getId());
+          courseEnrollmentForm.setCourseScheduleId(enrolledCourse.getCourseScheduleId()
+          ); courseEnrollmentForm.setCourseName(enrolledCourse.getCourseName());
+          courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
+          courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
+          courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate()
+          );
+          
+          Set<CourseScheduleDetail> courseSchedDetSet =
+          enrolledCourse.getCourseScheduleDetail(); Set<CourseScheduleDetailForm>
+          courseScheduleDetailFormSet = new HashSet<>();
+          
+          for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
+          
+          CourseScheduleDetailForm courseScheduleDetailForm = new
+          CourseScheduleDetailForm();
+          
+          courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.
+          getScheduledStartDateTime());
+          courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.
+          getScheduledEndDateTime());
+          courseScheduleDetailForm.setDuration(courseScheduleDetail.getDuration());
+          
+          courseScheduleDetailFormSet.add(courseScheduleDetailForm); }
+          
+          courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
+          courseSchedules.add(courseEnrollmentForm);
+          courseEnrolledListForm.setCourseScheduleDetailForm(courseSchedules);
+          
+          }
+        model.addAttribute("myCourseSched", courseEnrolledListForm);   
+        return "enrollment/myCourseSched";
 
     }
     
@@ -247,12 +242,8 @@ public class EnrollmentController {
     
     @GetMapping("/myschedules/{courseParticipantId}/decline")
     public String showCourseDeclineForm(Long id, Model model) {
-    	
-    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	
-        logger.debug("Model:{}", model);
-
-        CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
+        
+    	CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
 
         CourseParticipant courseParticipant = enrollmentService.findCourseParticipantById(id);
 
@@ -260,12 +251,12 @@ public class EnrollmentController {
         courseDeclineForm.setCourseName(courseParticipant.getCourseName());
         courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
         courseDeclineForm.setVenueName(courseParticipant.getVenueName());
-        courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
+        courseDeclineForm.setParticipantName(courseParticipant.getVenueName());
         courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
         courseDeclineForm.setReason(courseParticipant.getReason());
 
         model.addAttribute("courseDecline", courseDeclineForm);
-        return "enrollment/myCourseDecline";
+        return "enrollment/myCourseSched";
     }
 
    
@@ -283,13 +274,13 @@ public class EnrollmentController {
     @DeleteMapping("/myschedules/{courseParticipantId}/decline")
     public String submitCourseDeclineForm(@Valid @ModelAttribute("courseDecline") CourseDeclineForm form,
             BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
-    	
+        
         logger.debug("courseDeclineForm:{}", form);
         logger.debug("BindingResult:{}", bindingresult);
 
         if (bindingresult.hasErrors()) {
-        	model.addAttribute("courseDecline", form);
-            return "enrollment/myCourseDecline";
+            model.addAttribute("courseDecline", form);
+            return "/enrollment/myCourseSched";
         }
 
         CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
@@ -304,9 +295,9 @@ public class EnrollmentController {
         
         for(CourseScheduleDetailForm courseSchedsDetail : courseScheduleDetailFormSet) {
         CourseScheduleDetail courseScheduleDetail= new CourseScheduleDetail.Builder(courseSchedsDetail.getId(),
-        		courseSchedsDetail.getScheduledStartDateTime(), courseSchedsDetail.getScheduledEndDateTime())
-        					.build();
-        courseScheduleDetailSet.add(courseScheduleDetail);	
+                courseSchedsDetail.getScheduledStartDateTime(), courseSchedsDetail.getScheduledEndDateTime())
+                            .build();
+        courseScheduleDetailSet.add(courseScheduleDetail);  
         }
 
         CourseParticipant courseParticipant = new CourseParticipant.Builder(form.getId()).build();
@@ -324,15 +315,15 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
         
         redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
-        return "/enrollment /myschedules/{courseParticipantId}/decline";
+        return "/enrollment/myCourseSched";
     }
 
     
     @GetMapping("/schedules/{courseScheduleId}/enroll")
-    public String showCourseEnrollmentForm(@PathVariable("courseScheduleId")Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String showCourseEnrollmentForm(Long id, Model model) {
         logger.debug("Model:{}", model);
         if (model.containsAttribute("courseEnrollmentForm")) {
-            return "enrollment/viewCourseEnroll";
+            return "enrollment-management/CourseEnrollmentForm";
         }
 
         CourseSchedule courseSchedule = enrollmentService.findCourseScheduleById(id);
@@ -363,8 +354,7 @@ public class EnrollmentController {
 
         model.addAttribute("courseEnrollmentForm", courseEnrollmentForm);
 
-        logger.debug("courseEnrollmentForm: {}", courseEnrollmentForm);
-        return "redirect:/enrollment/viewCourseEnroll";
+        return "enrollment-management/courseEnrollmentForm";
     }
 
     @PostMapping("/schedules/{courseScheduleId}/enroll")
@@ -373,26 +363,23 @@ public class EnrollmentController {
 
         logger.debug("submitCourseEnrollmentForm:{}", courseEnrollmentForm);
         logger.debug("Result:{}", result);
-        
+
         if (result.hasErrors()) {
-        	redirectAttributes.addFlashAttribute("errorMsg", result.getAllErrors());
-        	return "redirect:/enrollment/viewCourseEnroll";
+            return "enrollment-management/courseEnrollmentForm";
         }
 
-//      model.addAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
+        model.addAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
 
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("MY COURSE ID: " +courseEnrollmentForm.getCourseScheduleId());
-        System.out.println("FPI USER ID: "+user.getId());
+
         CourseParticipant courseParticipant = new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(),
-                user.getId(), ZonedDateTime.now()).build();
+                user.getId()).build();
 
         enrollmentService.enroll(courseParticipant);
-        redirectAttributes.addFlashAttribute("successMsg", "Successfully Enrolled a Course!!!");
-//      redirectAttributes.addFlashAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
 
-        return "redirect:/enrollment/viewCourseEnroll";
-        
+        redirectAttributes.addFlashAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
+
+        return "redirect:/enrollment";
     }
     
     /**
@@ -403,11 +390,11 @@ public class EnrollmentController {
      * @return
      */
     @PostMapping("/schedules/{courseScheduleId}/cancel")
-	public String submitCourseEnrollmentCancelForm(@RequestParam("courseScheduleId") Long id, Model model, 
-			RedirectAttributes redirectAttributes) {
-		enrollmentService.cancel(id);
-		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
-//		return "redirect:/schedule";
-		return "redirect:/enrollment/viewCourseEnroll";
-	}
+    public String submitCourseEnrollmentCancelForm(@RequestParam Long id, Model model, 
+            RedirectAttributes redirectAttributes) {
+        enrollmentService.cancel(id);
+        redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
+//      return "redirect:/schedule";
+        return "redirect:/enrollment/viewCourseEnroll";
+    }
 }

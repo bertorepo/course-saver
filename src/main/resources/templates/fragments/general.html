@@ -34,12 +34,8 @@
 					</th:block>
 					<!--Member-->
 					<th:block sec:authorize="hasAuthority('Member')">
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enroll<span class="caret"></span></a>
-						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" th:href="@{/enrollment/schedules/{courseScheduleId}/enroll}">Enroll</a>
-							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
-						</div>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">My Courses<span class="caret"></span></a>
@@ -59,7 +55,7 @@
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
-							<a class="dropdown-item" th:href="@{/enrollment/schedules}">Cancel Course Schedule</a>
+							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
