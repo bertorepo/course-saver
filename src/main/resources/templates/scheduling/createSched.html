@@ -260,15 +260,15 @@ function validations() {
     }
     
     for(var i = 1; i<=5; i++){
-        var startDate =  $("#startDate"+i).val();
+        var startDate = $("#startDate"+i).val();
         var endDate =  $("#endDate"+i).val();
         var startTime =  $("#startTime"+i).val();
         var endTime =  $("#endTime"+i).val();
         
+        
         if([startDate, endDate, startTime, endTime].includes(null) == false ||
         		[startDate, endDate, startTime, endTime].includes("") == false ){
         	if (startDate == "") {
-
                 $('#errorModal').modal('show');
                 $('#errorModal').on('shown.bs.modal', function() {
                     $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
@@ -296,18 +296,17 @@ function validations() {
         	if (startTime > endTime) {
                 $('#errorModal').modal('show');
                 $('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> End time cant be greater than start time</p>');
+                    $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
                 });
             }
-        }
-        
-    	//Start and End Time Validation
-    	if (startTime > endTime) {
-            $('#errorModal').modal('show');
-            $('#errorModal').on('shown.bs.modal', function() {
-                $('#errorModal').find('.modal-body').html('<p> End time cant be greater than start time</p>');
-            });
-        }
+        	//Start and End Date Validation
+        	if (startDate > endDate) {
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
+                });
+            }
+        }    	
     }
     
 	//Not Empty Fields Validation
