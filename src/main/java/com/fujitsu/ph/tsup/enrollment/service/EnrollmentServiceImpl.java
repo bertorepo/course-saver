@@ -84,14 +84,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             	 throw new IllegalArgumentException("This course schedule id " +courseParticipant
                          .getCourseScheduleId()+ " is not existing");
             }
-            System.out.println("COURSE NAME: "+courseRecord.getCourseName());
+//            System.out.println("COURSE NAME: "+courseRecord.getCourseName());
             CourseParticipant participantRecord = enrollmentDao
                     .findCourseParticipantByCourseScheduleIdAndParticipantId
                     (courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
-            System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
+//            System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
             if(participantRecord != null){
-                throw new IllegalArgumentException("You are already enrolled to the course: " 
-                        +courseParticipant.getCourseName()+ ".");
+                throw new IllegalArgumentException("You are already enrolled in this course.");
             }
             
             enrollmentDao.saveCourseParticipant(courseParticipant);

@@ -22,11 +22,15 @@ package com.fujitsu.ph.tsup.enrollment.model;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CourseScheduleListForm {
     /* From Date and Time */
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private ZonedDateTime fromDateTime;
 
     /* To Date and Time */
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private ZonedDateTime toDateTime;
 
     /* Set of Course Schedule Form */
