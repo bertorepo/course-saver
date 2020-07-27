@@ -113,11 +113,11 @@
 										<div class="col-lg-2"></div>
 										<div class="col-lg-4">
 											<input type="text" name="startTime" class="form-control" placeholder="Start Time" 
-												   th:id="${'startTime' + (stat.index + 1)}" >
+												   th:id="${'startTime' + (stat.index + 1)}" maxlength="5">
 										</div>
 										<div class="col-lg-4">
 											<input type="text" name="endTime" class="form-control" placeholder="End Time" 
-												   th:id="${'endTime' + (stat.index + 1)}" >
+												   th:id="${'endTime' + (stat.index + 1)}" maxlength="5">
 										</div>
 									</div>
 								</td>
@@ -290,6 +290,13 @@ function validations() {
                 $('#errorModal').modal('show');
                 $('#errorModal').on('shown.bs.modal', function() {
                     $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
+                });
+            }
+        	//Start and End Time Validation
+        	if (startTime > endTime) {
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> End time cant be greater than start time</p>');
                 });
             }
         }
