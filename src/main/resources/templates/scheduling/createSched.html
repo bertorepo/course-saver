@@ -293,6 +293,14 @@ function validations() {
                 });
             }
         }
+        
+    	//Start and End Time Validation
+    	if (startTime > endTime) {
+            $('#errorModal').modal('show');
+            $('#errorModal').on('shown.bs.modal', function() {
+                $('#errorModal').find('.modal-body').html('<p> End time cant be greater than start time</p>');
+            });
+        }
     }
     
 	//Not Empty Fields Validation
@@ -308,6 +316,7 @@ function validations() {
 	        $('#confirmModal').modal('show');
 		} 
     });
+	
 };
 
 /*<![CDATA[*/
