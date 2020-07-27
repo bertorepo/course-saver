@@ -31,12 +31,14 @@ public class CourseScheduleListForm {
      *	From Date and Time
      */
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private ZonedDateTime fromDateTime;
 	
 	/**
      *	To Date and Time
      */
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private ZonedDateTime toDateTime;
 	
 	/**

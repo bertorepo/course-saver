@@ -106,7 +106,7 @@ public class ScheduleController {
         Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
                 courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
 
-        Set<CourseScheduleViewForm> courseScheduleViewFormSet = courseScheduleListForm.getCourseSchedules();
+        Set<CourseScheduleViewForm> courseScheduleViewFormSet = new HashSet<>();
 
         for (CourseSchedule courseSched : courseSchedule) {
             CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
@@ -136,7 +136,8 @@ public class ScheduleController {
 
             courseScheduleViewFormSet.add(courseScheduleViewForm);
         }
-
+        
+        courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/instructorCourseScheduleList";
     }
@@ -164,8 +165,6 @@ public class ScheduleController {
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
 
         CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
-        
-        
 
         courseScheduleNewForm.setInstructors(instructorFormList);
         courseScheduleNewForm.setVenues(venueFormList);
