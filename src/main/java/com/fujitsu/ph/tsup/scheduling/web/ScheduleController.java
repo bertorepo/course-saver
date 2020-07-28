@@ -100,7 +100,7 @@ public class ScheduleController {
         if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())) {
             model.addAttribute("scheduleView", courseScheduleListForm);
             model.addAttribute("error", "To Date should be greater than or equal to From Date");
-            return "scheduling/scheduleView";
+            return "scheduling/instructorCourseScheduleList";
         } 
 
         Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(

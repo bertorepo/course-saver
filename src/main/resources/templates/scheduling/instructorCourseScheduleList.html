@@ -29,15 +29,16 @@
                     <div class="form-group row">
                         <label class="col-lg-2 col-form-label">From Date</label>
                         <div class="col-lg-3">
-                            <input type="text" th:field="*{{fromDateTime}}" onfocus="(this.type='date')" onblur="(this.type='text')"/>
+                           <input type="date" th:field="*{fromDateTime}" 
+                           th:attr="placeholder='yyyy-MM-dd'"/>
                         </div>
                         <label class="col-lg-2 col-form-label">To Date</label>
                         <div class="col-lg-3">
-                            <input type="text" th:field="*{{toDateTime}}" onfocus="(this.type='date')" onblur="(this.type='text')"/>
+                            <input type="date" th:field="*{toDateTime}"/>
                         </div>
                     </div>
                     <div class="float-right">
-                        <input type="submit" class="btn btn-success" value="Submit">
+                        <input type="submit" class="btn btn-success" value="Submit" th:attr="onclick=|isValid()|">
                     </div>
                 </div>
             </div>
@@ -99,8 +100,62 @@
         <!--Buttons for messages (delete these) End-->     
     </div>
     <footer th:replace="fragments/general.html :: footer"></footer>
-<script>
-</script>
+	<script th:inline="javascript">
+	
+		/*<![CDATA[*/
+			var errorMessage = /*[[${error}]]*/ 'default';
+			if(errorMessage == "To Date should be greater than or equal to From Date"){
+				$('#errorModal').modal('show');
+			}
+		/*<![CDATA[*/
+			
+		$("#fromDateTime").focus(function (){
+			$(this).prop('type', 'date')
+		});
+		
+		$("#fromDateTime").blur(function () {
+			var formDate = document.getElementById("fromDateTime").value;
+			var newDate = new Date(formDate);
+			var dateConcat = newDate.toISO().toString();
+			if (formDate == "") {
+				$(this).prop('type', 'text')
+				$(this).prop('value', null);
+			} else {
+				$(this).prop('type', 'text')
+				$(this).prop('value', dateConcat);
+			}
+		}); 
+		
+		$("#toDateTime").focus(function (){
+			$(this).prop('type', 'date')
+		});
+		
+		$("#toDateTime").blur(function () {
+			var formDate = document.getElementById("toDateTime").value;
+			var newDate = new Date(formDate);
+			var dateConcat = newDate.toISO().toString(); 
+			if (formDate == "") {
+				$(this).prop('type', 'text')
+				$(this).prop('value', null);
+			} else {
+				$(this).prop('type', 'text')
+				$(this).prop('value', dateConcat);
+			}
+		}); 
+		
+		//Format Date Inputs
+		Date.prototype.toISO = function() {
+			 return this.getUTCFullYear() +
+		        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+		        '-' + String(this.getUTCDate()).padStart(2, "0") +
+		        'T' + String(this.getUTCHours()).padStart(2, "0") +
+		        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
+		        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
+		        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+		        'Z';
+		};
+		
+	</script>
 </body>
 
 </html>
