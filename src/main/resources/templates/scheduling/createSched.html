@@ -266,6 +266,7 @@ function validations() {
         var endTime =  $("#endTime"+i).val();
         
         
+        
         if([startDate, endDate, startTime, endTime].includes(null) == false ||
         		[startDate, endDate, startTime, endTime].includes("") == false ){
         	if (startDate == "") {
@@ -292,13 +293,17 @@ function validations() {
                     $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
                 });
             }
-        	//Start and End Time Validation
-        	if (startTime > endTime) {
-                $('#errorModal').modal('show');
-                $('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
-                });
-            }
+        	
+        	//Checks if Start Date and End Date is equal
+        	if(startDate === endDate){
+        		//Start and End Time Validation
+        		if (startTime > endTime) {
+                    $('#errorModal').modal('show');
+                    $('#errorModal').on('shown.bs.modal', function() {
+                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
+                    });
+                }
+        	}
         	//Start and End Date Validation
         	if (startDate > endDate) {
                 $('#errorModal').modal('show');
@@ -309,6 +314,14 @@ function validations() {
         }    	
     }
     
+  /*   //Checks if Date is Today
+    function isToday(date){
+    	var today = new Date();
+    	return date.getDate() === today.getDate() &&
+    	date.getMonth() === today.getMonth() &&
+    	date.getYear() === today.getYear();
+    }  */
+       
 	//Not Empty Fields Validation
     $("#dateTime input").filter( function () {
     	if($.trim($(this).val()).length == 0){
