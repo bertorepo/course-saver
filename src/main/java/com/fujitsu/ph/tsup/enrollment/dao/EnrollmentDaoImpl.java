@@ -187,43 +187,35 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 	 * @param fromDateTime
 	 * @param toDateTime
 	 * 
-	 * @author g.cabiling
+	 * @author m.lumontad
 	 */
     
     @Override
     public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, 
             ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
-    	String query = "SELECT " 
-    			+ "CSCHED.ID AS COURSE_SCHEDULE_ID, "
-    			+ "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-    			+ "CSCHEDDET.DURATION AS DURATION, "
-                + "CSCHED.COURSE_ID AS COURSE_ID, "
-                + "C.NAME AS COURSE_NAME, " 
-                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
+        String query = "SELECT CPART.ID AS COURSE_PARTICIPANT_ID,"
+                + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, CSCHED.ID AS COURSE_SCHEDULE_ID, C.NAME AS COURSE_NAME, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "V.NAME AS VENUE_NAME, "
-                + "CPART.ID AS COURSE_PARTICIPANT_ID, "
+                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "(SELECT LAST_NAME FROM tsup.EMPLOYEE WHERE ID = CPART.PARTICIPANT_ID) AS PARTICIPANT_LAST_NAME, "
+                + "(SELECT FIRST_NAME FROM tsup.EMPLOYEE WHERE ID = CPART.PARTICIPANT_ID) AS PARTICIPANT_FIRST_NAME, "
+                + "CSCHEDDET.DURATION AS DURATION, "
                 + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
-                + "CNONPART.REASON AS REASON, "
-                + "CNONPART.DECLINE_DATE AS DECLINE_DATE, "
-                + "E.ID AS PARTICIPANT_ID, "
-                + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME, "
-                + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
                 + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
-                + "FROM COURSE_SCHEDULE AS CSCHED " 
-                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
-                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
-                + "INNER JOIN COURSE AS C "
-                + "ON CSCHED.COURSE_ID = C.ID "
-                + "INNER JOIN EMPLOYEE AS E "
-                + "ON CSCHED.INSTRUCTOR_ID = E.ID " 
-                + "INNER JOIN VENUE AS V " 
-                + "ON CSCHED.VENUE_ID = V.ID "
-                + "INNER JOIN COURSE_PARTICIPANT AS CPART "
-                + "ON E.ID = CPART.PARTICIPANT_ID "
-                + "INNER JOIN COURSE_NON_PARTICIPANT AS CNONPART "
-                + "ON CSCHED.ID = CNONPART.COURSE_SCHEDULE_ID " //Added this line
+                + "FROM tsup.COURSE_SCHEDULE AS CSCHED  "
+                + "INNER JOIN tsup.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + "ON CSCHEDDET.COURSE_SCHEDULE_ID = CSCHED.ID "
+                + "INNER JOIN tsup.COURSE_PARTICIPANT AS CPART "
+                + "ON CPART.COURSE_SCHEDULE_ID = CSCHED.ID "
+                + "INNER JOIN tsup.COURSE AS C "
+                + "ON C.ID = CSCHED.COURSE_ID "
+                + "INNER JOIN tsup.EMPLOYEE AS E "
+                + "ON E.ID = CSCHED.INSTRUCTOR_ID "
+                + "INNER JOIN tsup.VENUE AS V "
+                + "ON V.ID = CSCHED.VENUE_ID "
                 + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
                 + "AND CPART.PARTICIPANT_ID = :participantId "
                 + "AND CSCHED.STATUS = 'A' ";
