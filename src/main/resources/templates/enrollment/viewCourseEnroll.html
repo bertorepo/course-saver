@@ -33,11 +33,11 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control" th:value = "*{{fromDateTime}}">
+							<input type="datetime-local" class="form-control" id="fromDateTime" name="fromDateTime"  th:field="*{fromDateTime}">
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control"  th:value = "*{{toDateTime}}">
+							<input type="datetime-local" class="form-control" id="toDateTime" name="toDateTime"  th:field="*{toDateTime}">
 						</div>
 					</div>
 					<div class="float-right">
@@ -327,6 +327,53 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 <script th:inline="javascript">
+
+	$("#fromDateTime").focus(function (){
+		$(this).prop('type', 'date')
+	});
+	
+	$("#fromDateTime").blur(function () {
+		var formDate = document.getElementById("fromDateTime").value;
+		var newDate = new Date(formDate);
+		var dateConcat = newDate.toISO().toString();
+		if (formDate == "") {
+			$(this).prop('type', 'text')
+			$(this).prop('value', null);
+		} else {
+			$(this).prop('type', 'text')
+			$(this).prop('value', dateConcat);
+		}
+	}); 
+	
+	$("#toDateTime").focus(function (){
+		$(this).prop('type', 'date')
+	});
+	
+	$("#toDateTime").blur(function () {
+		var formDate = document.getElementById("toDateTime").value;
+		var newDate = new Date(formDate);
+		var dateConcat = newDate.toISO().toString(); 
+		if (formDate == "") {
+			$(this).prop('type', 'text')
+			$(this).prop('value', null);
+		} else {
+			$(this).prop('type', 'text')
+			$(this).prop('value', dateConcat);
+		}
+	}); 
+	
+	//Format Date Inputs
+	Date.prototype.toISO = function() {
+		 return this.getUTCFullYear() +
+	        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+	        '-' + String(this.getUTCDate()).padStart(2, "0") +
+	        'T' + String(this.getUTCHours()).padStart(2, "0") +
+	        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
+	        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
+	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+	        'Z';
+	}; 
+	
 	<!--Message alert-->
 // 	$('tbody').on('dblclick', function() {
 // 		$('#infoModal').modal('show');
