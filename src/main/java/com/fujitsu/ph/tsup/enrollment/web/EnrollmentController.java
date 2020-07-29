@@ -103,12 +103,12 @@ public class EnrollmentController {
         if (form.getFromDateTime() == null) {
 //        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
         	form.setFromDateTime(ZonedDateTime.now().minusMonths(1));
-        	System.out.println("SECOND FROM DATE TIME: "+form.getFromDateTime());
+//        	System.out.println("SECOND FROM DATE TIME: "+form.getFromDateTime());
         }
         if (form.getToDateTime() == null) {
 //        	form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
         	form.setToDateTime(ZonedDateTime.now().plusDays(5));
-            System.out.println("SECOND TO DATE TIME: "+form.getToDateTime());
+//            System.out.println("SECOND TO DATE TIME: "+form.getToDateTime());
         }
         
         if(form.getFromDateTime().isAfter(form.getToDateTime())) {
@@ -117,14 +117,15 @@ public class EnrollmentController {
               return "enrollment/viewCourseEnroll";
         }
 
-        Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
-        		form.getFromDateTime(), form.getToDateTime());
-        
-        if(courseSchedules.isEmpty()) {
-        	model.addAttribute("nullMessage","No Record Found");
-        	return "enrollment/viewCourseEnroll";
-        }
-        
+        try {
+        	Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
+            		form.getFromDateTime(), form.getToDateTime());
+
+            if(courseSchedules.isEmpty()) {
+            	model.addAttribute("nullMessage","No Record Found");
+            	return "enrollment/viewCourseEnroll";
+            }
+
         Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
         for (CourseSchedule courseSchedule : courseSchedules) {
@@ -155,6 +156,10 @@ public class EnrollmentController {
         
         model.addAttribute("viewCourseEnroll",form);
         logger.debug("courseScheduleListForm: {}", form);
+        
+        }catch(Exception e){
+        	model.addAttribute("nullMessage", e.getMessage());
+        }
         return "enrollment/viewCourseEnroll";
     } 
 
@@ -371,29 +376,20 @@ public class EnrollmentController {
         	redirectAttributes.addFlashAttribute("errorMsg", result.getAllErrors());
         	return "redirect:/enrollment/viewCourseEnroll";
         }
-        System.out.println("COURSE ID: "+ courseEnrollmentForm.getCourseScheduleId());
-        System.out.println("COURSE Name: "+ courseEnrollmentForm.getCourseName());
-        System.out.println("Instructor Name: "+ courseEnrollmentForm.getInstructorName());
-//      model.addAttribute("submitCourseEnrollmentForm", courseEnrollmentForm);
-        
+
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         CourseParticipant courseParticipant = new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(),
                 user.getId(), ZonedDateTime.now()).build();
+        try {
+        	  enrollmentService.enroll(courseParticipant);
 
-        enrollmentService.enroll(courseParticipant);
-
-        redirectAttributes.addFlashAttribute("successMsg", "Successfully Enrolled a Course!!!");
-        redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        
-//        try {
-//			redirectAttributes.addFlashAttribute("courseEnrollmentForm", objectMapper.writeValueAsString(courseEnrollmentForm));
-//		} catch (JsonProcessingException e) {
-//			throw new IllegalArgumentException("Cant Parse Object");
-//		}
+              redirectAttributes.addFlashAttribute("successMsg", "Successfully Enrolled a Course!!!");
+              redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
+        }catch(Exception e) {
+        	redirectAttributes.addFlashAttribute("duplicateMessage", e.getMessage());
+        }
 
         return "redirect:/enrollment/viewCourseEnroll";
-        
     }
     
     /**

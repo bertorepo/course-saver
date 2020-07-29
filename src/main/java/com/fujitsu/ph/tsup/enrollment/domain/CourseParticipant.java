@@ -277,7 +277,6 @@ public class CourseParticipant {
 			this.registrationDate = registrationDate;
 		}
 		
-		
 		//added a builder
 		public Builder(Long id, Long courseScheduleId, String courseName, String instructorName, String venueName,
                 Long participantId, String participantName, ZonedDateTime registrationDate) {
