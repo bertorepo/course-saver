@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -242,8 +243,8 @@ public class EnrollmentController {
      * from the previous step into the CourseDeclineForm Return the Course decline
      * form and view
      */
-    @GetMapping("/decline")
-    public String showCourseDeclineForm(Long id, Model model) {
+    @GetMapping("/myschedules/{courseParticipantId}/decline")
+    public String showCourseDeclineForm(@PathVariable("courseParticipantId") Long id, Model model) {
         logger.debug("Model:{}", model);
 
         CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
@@ -259,7 +260,7 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
 
         model.addAttribute("courseDecline", courseDeclineForm);
-        return "enrollment-management/CourseDeclineForm";
+        return "enrollment/myCourseSched";
     }
 
     /**
@@ -271,18 +272,19 @@ public class EnrollmentController {
      * courseParticipant Return the Course decline form and view. Return also a
      * success message.
      */
-    @PostMapping("/decline")
-    public String submitCourseDeclineForm(@Valid @ModelAttribute("enrollmentDecline") CourseDeclineForm form,
+    @DeleteMapping("/myschedules/{courseParticipantId}/decline")
+    public String submitCourseDeclineForm(@Valid @ModelAttribute("courseDecline") CourseDeclineForm form,
             BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
     	
         logger.debug("courseDeclineForm:{}", form);
         logger.debug("BindingResult:{}", bindingresult);
 
         if (bindingresult.hasErrors()) {
-            return "enrollment/courseDeclineForm";
+        	model.addAttribute("courseDecline", form);
+            return "/enrollment/myCourseSched";
         }
 
-        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+ CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
         
         courseScheduleDetailForm.setId(courseScheduleDetailForm.getId());
         courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetailForm.getScheduledStartDateTime());
@@ -294,10 +296,9 @@ public class EnrollmentController {
         
         for(CourseScheduleDetailForm courseSchedsDetail : courseScheduleDetailFormSet) {
         CourseScheduleDetail courseScheduleDetail= new CourseScheduleDetail.Builder(courseSchedsDetail.getId(),
-        		courseSchedsDetail.getScheduledStartDateTime(), courseSchedsDetail.getScheduledEndDateTime())
-        					.build();
-        courseScheduleDetailSet.add(courseScheduleDetail);
-        	
+                courseSchedsDetail.getScheduledStartDateTime(), courseSchedsDetail.getScheduledEndDateTime())
+                            .build();
+        courseScheduleDetailSet.add(courseScheduleDetail);  
         }
 
         CourseParticipant courseParticipant = new CourseParticipant.Builder(form.getId()).build();
@@ -315,7 +316,7 @@ public class EnrollmentController {
         courseDeclineForm.setReason(courseParticipant.getReason());
         
         redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
-        return "redirect:/enrollment/CourseDeclineForm";
+        return "/enrollment/myCourseSched";
     }
 
     
