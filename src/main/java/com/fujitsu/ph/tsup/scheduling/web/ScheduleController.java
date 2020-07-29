@@ -207,7 +207,17 @@ public class ScheduleController {
             return "scheduling/createSched";
         }
         
-        form.setCourseScheduleDetails(new HashSet<>(form.getCourseScheduleDetailsAsList()));
+        Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
+        
+        //For looping inside the binded List
+        for (CourseScheduleDetailForm courseSchedDetForm : form.getCourseScheduleDetailsAsList()) {
+            if((courseSchedDetForm.getScheduledStartDateTime() != null) 
+                    && (courseSchedDetForm.getScheduledEndDateTime() != null)) {
+               courseScheduleDetailsAsListSet.add(courseSchedDetForm);
+            }
+        }
+        
+        form.setCourseScheduleDetails(courseScheduleDetailsAsListSet);
 
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
@@ -224,6 +234,10 @@ public class ScheduleController {
                         .build();
         
         scheduleService.createCourseSchedule(courseSchedule);
+        
+        form.setCourses(courseFormList);
+        form.setVenues(venueFormList);
+        form.setInstructors(instructorFormList);
 
         redirectAttributes.addFlashAttribute("message", "Success!! Schedule has been created");
         redirectAttributes.addFlashAttribute("alertClass", "alert-success");
