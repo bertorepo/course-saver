@@ -12,6 +12,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
 //0.01    | 06/29/2020 | WS) G.Cabiling        | Updated
 //0.01    | 07/08/2020 | WS) K.Freo            | Updated
+//0.01    | 07/29/2020 | WS) K.Freo            | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -47,13 +48,16 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         String venueName = rs.getString("VENUE_NAME");
         Long participantId = rs.getLong("PARTICIPANT_ID");
         String participantName = rs.getString("PARTICIPANT_LAST_NAME") + ", " + rs.getString("PARTICIPANT_FIRST_NAME");
-        String reason = rs.getString("REASON");
+        /* String reason = rs.getString("REASON"); */
         float duration = rs.getFloat("DURATION");
         ZonedDateTime registrationDate = ZonedDateTime.ofInstant(rs.getTimestamp("REGISTRATION_DATE").toInstant(),
                 ZoneId.of("UTC"));
 
-        ZonedDateTime declineDate = ZonedDateTime.ofInstant(rs.getTimestamp("DECLINE_DATE").toInstant(),
-                ZoneId.of("UTC"));
+        /*
+         * ZonedDateTime declineDate =
+         * ZonedDateTime.ofInstant(rs.getTimestamp("DECLINE_DATE").toInstant(),
+         * ZoneId.of("UTC"));
+         */
 
         ZonedDateTime scheduledStartDateTime = ZonedDateTime
                 .ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.of("UTC"));
@@ -69,7 +73,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         courseScheduleDetailSet.add(courseScheduleDetail);
 
         CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseScheduleId, courseName,
-                instructorName, venueName, participantId, participantName, registrationDate, reason, declineDate)
+                instructorName, venueName, participantId, participantName, registrationDate)
                         .addDetail(courseScheduleDetailSet).build();
 
         return courseParticipant;

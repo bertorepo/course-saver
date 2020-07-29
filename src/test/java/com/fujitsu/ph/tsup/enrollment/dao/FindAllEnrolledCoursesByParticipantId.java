@@ -1,26 +1,9 @@
 package com.fujitsu.ph.tsup.enrollment.dao;
 
-//==================================================================================================
-//$Id:PR01$
-//Project Name :Training Sign Up
-//System Name  :Enroll Course
-//Class Name   :FindAllEnrolledCoursesByParticipantId.java
-//
-//<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 | WS) M. Lumontad       | New Creation
-//==================================================================================================
-/**
-* <pre>
-* FindAllEnrolledCoursesByParticipantId.java is a method under EnrollmentDao
-* <pre>
-* 
-* @version 0.01
-* @author m.lumontad                          
-*/
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +33,23 @@ class FindAllEnrolledCoursesByParticipantId {
         }
     }
 
-    @Test
-    void findAllEnrolledCoursesByParticipantId() {
-        Long courseScheduleId = 1L;
-        Long courseParticipantId = 0020L;
-        CourseParticipant courseIdandParticipantId = enrollmentDao
-                .findCourseParticipantByCourseScheduleIdAndParticipantId(courseScheduleId, courseParticipantId);
-        assertNotNull(courseIdandParticipantId);
-    }
+
+        @Test
+            void findAllEnrolledCourseByParticipantId() {
+                ZonedDateTime fromDateTime =  ZonedDateTime.ofInstant
+                        (Timestamp.valueOf("2020-06-01 08:30:00").toInstant(),ZoneId.of("UTC"));
+                ZonedDateTime toDateTime = ZonedDateTime.ofInstant
+                        (Timestamp.valueOf("2020-12-31 17:30:00").toInstant(),ZoneId.of("UTC"));
+                Set<CourseParticipant> courseParticipantSet = enrollmentDao.findAllEnrolledCoursesByParticipantId(4L, fromDateTime, toDateTime);
+                for(CourseParticipant courseParticipant : courseParticipantSet) {
+                    System.out.println("Course Name: "+ courseParticipant.getCourseName());
+                    System.out.println("Instructor Name: "+ courseParticipant.getInstructorName());
+                    System.out.println("Participant Name: "+ courseParticipant.getParticipantName());
+                    System.out.println("Registration Date: "+ courseParticipant.getRegistrationDate());
+                }
+                
+            }  
+        //Enrolled Courses Test
+
 
 }
