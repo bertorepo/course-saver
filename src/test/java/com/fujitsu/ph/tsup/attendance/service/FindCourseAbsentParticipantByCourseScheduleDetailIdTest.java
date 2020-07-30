@@ -100,37 +100,38 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      */
     @Test
     void testFindCourseAbsentParticipantByCourseScheduleDetailId_SignedUpNotAttended() {
-        CourseAttendance signUpOne = coursePresentOne();
-        CourseAttendance signUpTwo = coursePresentTwo();
-        
         CourseAttendance attendanceOne = coursePresentOne();
         CourseAttendance attendanceTwo = coursePresentTwo();
         CourseAttendance attendanceThree = courseAbsentOne();
         CourseAttendance attendanceFour = courseAbsentTwo();
          
         Set<CourseAttendance> signUpSet = new HashSet<>();
-        signUpSet.add(signUpOne);
-        signUpSet.add(signUpTwo);
+        signUpSet.add(attendanceOne);
+        signUpSet.add(attendanceTwo);
+        signUpSet.add(attendanceThree);
+        signUpSet.add(attendanceFour);
         
         Set<CourseAttendance> courseAttendanceSet = new HashSet<>(); 
         courseAttendanceSet.add(attendanceOne);
         courseAttendanceSet.add(attendanceTwo);
-        courseAttendanceSet.add(attendanceThree);
-        courseAttendanceSet.add(attendanceFour);
+         
+        when(attendanceDao.findCourseScheduleDetailParticipantsById(any(Long.class)))
+        .thenReturn(signUpSet);
         
         when(attendanceDao.findCourseAttendanceByCourseScheduleDetailId(any(Long.class)))
-                .thenReturn(signUpSet);
-        
-        when(attendanceDao.findCourseScheduleDetailParticipantsById(any(Long.class)))
-                .thenReturn(courseAttendanceSet);     
-        
+                .thenReturn(courseAttendanceSet);
+
         Set<CourseAttendance> course = attendanceService
                 .findCourseAbsentParticipantByCourseScheduleDetailId(1L);
 
         assertNotNull(course.size());
         assertNotEquals('A', attendanceOne.getStatus());
+        assertNotEquals('A', attendanceTwo.getStatus());
         assertNotSame(ZonedDateTime.now(), attendanceFour.getLoginDateTime());
-        assertEquals(2, course.size());    
+        assertEquals(4, course.size());
+        assertEquals('A', attendanceThree.getStatus());
+        assertEquals('A', attendanceFour.getStatus());
+        assertEquals('P', attendanceTwo.getStatus());
         assertEquals("Abad, Kenneth", attendanceThree.getParticipantName());
         assertEquals(20L, attendanceFour.getParticipantId());
     }
@@ -170,7 +171,7 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
         assertNotNull(courseAttendance.size());
         assertNotEquals('A', presentOne.getStatus());
         assertNotSame('A', presentTwo.getLoginDateTime());
-        assertEquals(0, courseAttendance.size());
+        assertEquals(2, courseAttendance.size());
         assertEquals("Juan", presentOne.getParticipantName());
         assertEquals(11L, presentTwo.getParticipantId());
     }
@@ -204,7 +205,7 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      * @return courseSchedule
      */
     private CourseAttendance courseAbsentOne() {
-        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1000L, "java", 
+        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1L, "java", 
                 "Lorenzo, Loyce", "WFH", 22L, "Abad, Kenneth", ZonedDateTime.now(), ZonedDateTime.now()
                 .plusDays(5), 2.0f, ZonedDateTime.now(), 'A').absent().build();
         return courseSchedule;
@@ -219,7 +220,7 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      * @return courseSchedule
      */
     private CourseAttendance courseAbsentTwo() {
-        CourseAttendance courseSchedule = new CourseAttendance.Builder(123456L, 1000L, "java", 
+        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1L, "java", 
                 "Lorenzo, Loyce", "WFH", 20L, "Velasco, Monica", ZonedDateTime.now(), ZonedDateTime.now()
                 .plusDays(5), 2.0f, ZonedDateTime.now(), 'A').absent().build();
         return courseSchedule;
@@ -234,7 +235,7 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      * @return courseSchedule
      */
     private CourseAttendance coursePresentOne() {
-        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1000L, "java", 
+        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1L, "java", 
                 "Lorenzo, Loyce", "WFH", 10L, "Juan", ZonedDateTime.now(), ZonedDateTime.now()
                 .plusDays(5), 2.0f, ZonedDateTime.now(), 'P')
                 .present(ZonedDateTime.now()).build();
@@ -250,7 +251,7 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      * @return courseSchedule
      */
     private CourseAttendance coursePresentTwo() {
-        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1000L, "java", 
+        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1L, "java", 
                 "Lorenzo, Loyce", "WFH", 11L, "Pedro", ZonedDateTime.now(), ZonedDateTime.now()
                 .plusDays(5), 2.0f, ZonedDateTime.now(), 'P')
                 .present(ZonedDateTime.now()).build();
