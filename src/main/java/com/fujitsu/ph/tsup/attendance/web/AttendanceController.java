@@ -417,6 +417,7 @@ public class AttendanceController {
                 // attendanceParticipantDetail.setEmployeeNumber(courseAttendance.getParticipantId());
                 attendanceParticipantDetail.setLoginDateTime(courseAttendance.getLoginDateTime());
                 attendanceParticipantDetail.setName(courseAttendance.getParticipantName());
+                attendanceParticipantDetail.setStatus(courseAttendance.getStatus());
                 setAttendanceParticipantDetail.add(attendanceParticipantDetail);
 
             }
