@@ -1,14 +1,20 @@
 package com.fujitsu.ph.tsup.attendance.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import org.springframework.jdbc.core.RowMapper;
 import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.attendance.domain.CourseScheduleDetail;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.jdbc.core.RowMapper;
+
 //==================================================================================================
 //$Id:PR03$
 //Project Name :Training Sign Up
@@ -16,20 +22,24 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseScheduleDetail;
 //Class Name   :CourseScheduleRowMapper.java
 //
 //<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/26/2020 |  WS) J. Iwarat        | New Creation
-//0.02    | 07/07/2020 |  WS) J. Iwarat        | Update
+//Version | Date       | Updated By                                      | Content
+//--------+------------+-------------------------------------------------+--------------------------
+//0.01    | 06/26/2020 | WS) J. Iwarat                                   | New Creation
+//0.02    | 07/07/2020 | WS) J. Iwarat                                   | Update
+//0.03    | 07/27/2020 | WS) K. Abad, WS) J. Iwarat, WS) R.Ramos         | Update
 //==================================================================================================
 /**
-* <pre>
-* It is the row mapping class that maps each row to a result object
-* In this class, it maps the row of a resultset on a per row basis
-* </pre>
-* 
-* @version 0.02
-* @author j.iwarat
-*/
+ * <pre>
+ * It is the row mapping class that maps each row to a result object
+ * In this class, it maps the row of a resultset on a per row basis
+ * </pre>
+ * 
+ * @version 0.03
+ * @author k.abad
+ * @author j.iwarat
+ * @author r.ramos
+ */
+
 public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
 
     @Override
@@ -52,23 +62,22 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
          * <pre> Set<CourseScheduleDetail> fields <pre>
          */
         ZonedDateTime scheduledStartDateTime = ZonedDateTime
-                .ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.of("UTC"));
-
+                .ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toLocalDateTime()
+                .toInstant(ZoneOffset.UTC),ZoneId.of("UTC")); 
         ZonedDateTime scheduledEndDateTime = ZonedDateTime
-                .ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(), ZoneId.of("UTC"));
+                .ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toLocalDateTime()
+                .toInstant(ZoneOffset.UTC),ZoneId.of("UTC"));
        
-        CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(id, scheduledStartDateTime, scheduledEndDateTime).build();
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(id, 
+                scheduledStartDateTime, scheduledEndDateTime).build();
         
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
         
         courseScheduleDetailSet.add(courseScheduleDetail);
         
-        CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, instructorId,
-                instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed, totalParticipants,
-                status).addDetail(courseScheduleDetailSet).build();
-
-        return courseSchedule;
-       
+        CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, 
+                instructorId,instructorLastName, instructorFirstName, venueId, venueName, 
+                minRequired, maxAllowed, totalParticipants, status).addDetail(courseScheduleDetailSet).build();
+        return courseSchedule;      
     }
 }

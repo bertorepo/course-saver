@@ -10,19 +10,18 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Change Attendance Status</title>
-	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css"> 
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	
 </head>
 
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal"  action="#" th:action="@{/attendance/participants}" th:object="${statusForm}" method="post">
+		<form class="form-horizontal"  action="#"  th:object="${changeAttendanceStatus}" method="get">
 			<h3><i class="fa fa-check-square-o"></i> Change Attendance Status</h3>
 			<hr>
 			<div class="card">
@@ -30,24 +29,47 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course</label>
 						<div class="col-lg-5">
-					<!--  		<select class="form-control">
-								<option value="">Select...</option>
-								<option value="">Hello</option>
-								<option value="">World</option>
-							</select> -->
-							<select class="form-control" th:field="*{id}">
-                            <option value="">   </option>
-                            <option th:each = "changeAttendanceStatus : *{statusForm}"
-                            th:value="${changeAttendanceStatus.getCourseName()}"
-                            th:utext="${changeAttendanceStatus.getCourseName()}"/>
-                            </select>
+							<select class="form-control" id="id"
+								th:each= "attendanceStatus : ${changeAttendanceStatus}">
+								<option value = ""></option> 
+							    <option th:each= "courses : ${changeAttendanceStatus.courses}"
+							    		th:value= "${courses.id}"
+							    		th:selected="${courses.id eq lastSelected}"
+							    		th:text=  "${courses.courseName}">	
+							</select>
 						</div>
 					</div>
+					<div class="float-right">
+                        <input type = "button"   onclick= "successUrl()"   class="btn btn-large btn-success"  value= "Generate" name="button" id="button"></input>              
+                    </div> 					
 				</div>
 			</div>
+			
+			 <script th:inline="javascript">
+            function successUrl() {
+                var id = document.getElementById("id").value;
+                if (id == "") {
+                	 var callUrl = '/attendance/0/participants';
+             document.location.href = callUrl;
+                }
+                 else if (id != "") {
+                var callUrl = '/attendance/' + id
+                        + '/participants';
+                document.location.href = callUrl;
+                }
+            }
+            
+            function goBack(){
+            	var callUrl = '/attendance/0/participants';
+            	document.location.href = callUrl;
+            }
+            </script>
+            
+			</form>
 			<div class="card mt-5">
 				<div class="card-body">			
-					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap">
+					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap">	
+								
 						<table class="table table-responsive table-borderless "  >
 							<colgroup >
 								<col style="width:3%"/>
@@ -63,75 +85,37 @@
 									<label class="col-lg-10 col-form-label text-center">Time In</label>
 								</td>
 							</tr>
-							<tr th:each="changeAttendanceStatus : *{statusForm}">
-								<td>
-									<label class="col-lg-6 col-form-label" th:text="*{changeAttendanceStatus.getParticipantName()}"></label>
-								</td>
+							 <tr th:each="participants : *{changeAttendanceStatus.participants}" id= "courseParticipants">
+								<td th:value = "${participants.getCourseAttendanceId()}"
+								th:text= "${participants.getName()}"/>								
 								<td>
 									<div class="col-lg-10">
-                            <select class="form-control" th:field="*{id}">
-                            <option value="">   </option>
-                            <option th:each = "changeAttendanceStatus : *{statusForm}"
-                            th:value="${changeAttendanceStatus.getStatus()}"
-                            th:utext="${changeAttendanceStatus.getStatus()}"/>
-                            </select>
+                            			<select class="form-control" >
+                            			<option value="">   </option>
+                           	 			<!--  <option th:text= "*{participants.getStatus()}"></option>-->
+                           	 			<option th:value= "*{participants.getStatus()}">P</option>
+                            			<option th:value= "*{participants.getStatus()}">A</option>                                                    	
+                            			</select>
 									</div>
 								</td>
 								<td>
-										<div class="col-lg-10">
-											<input type="text" class="form-control" th:value="*{changeAttendanceStatus.getLoginDateTime()}" >
-										</div>
-								</td>
-							</tr>
-							<!--  
-							<tr>
-								<td>
-									<label class="col-lg-6 col-form-label" >Name2</label>
-								</td>
-								<td>
 									<div class="col-lg-10">
-										<select class="form-control">
-											<option value="">Select...</option>
-											<option value="">Present</option>
-											<option value="">Absent</option>
-										</select>
+										<input type="text" class="form-control" th:value="*{participants.getLoginDateTime()}">
 									</div>
 								</td>
-								<td>
-										<div class="col-lg-10">
-											<input type="text" class="form-control" id="" >
-										</div>
-								</td>
 							</tr>
-							<tr>
-								<td>
-									<label class="col-lg-6 col-form-label" >Name3</label>
-								</td>
-								<td>
-									<div class="col-lg-10">
-										<select class="form-control">
-											<option value="">Select...</option>
-											<option value="">Present</option>
-											<option value="">Absent</option>
-										</select>
-									</div>
-								</td>
-								<td>
-										<div class="col-lg-10">
-											<input type="text" class="form-control" id="" >
-										</div>
-								</td>
-							</tr>
-							-->
 						</table>
 					</div>
+					
 					<div class="float-right">
+					<form class="form-horizontal"  id="form" action="#" th:action="@{/attendance/0/participants}" method="post">
 						<input type="submit" class="btn btn-success" value="Submit">
 						<input type="button" class="btn btn-danger" value="Back">
+						</form>
 					</div>
 				</div>
 			</div>
-		</form>       
+    
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
@@ -174,11 +158,10 @@
 			<input type="button" name="success" class="btn btn-success" value="Success">
 			<input type="button" name="error" class="btn btn-danger" value="Error">
 		<!--Buttons for messages (delete these) End-->
-	</div>
-	
+	</div>	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 <script>
-	<!--Message alert-->
+	//Message alert
 	//add if statement for the success/fail messages
 	$('input[name="success"]').on('click', function() {
 		$('#successModal').modal('show');
@@ -186,7 +169,7 @@
 	$('input[name="error"]').on('click', function() {
 		$('#errorModal').modal('show');
 	});
-	<!--Message alert End-->
+	//Message alert End
 </script>
 </body>
 
