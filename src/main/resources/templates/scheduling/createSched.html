@@ -296,28 +296,26 @@ function validations() {
 	                $('#errorModal').on('shown.bs.modal', function() {
 	                    $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
 	                });
-	            } else if (endDate == "") {
+	            } if (endDate == "") {
 
 	                $('#errorModal').modal('show');
 	                $('#errorModal').on('shown.bs.modal', function() {
 	                    $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
 	                });
-	            } else if (startTime == "") {
+	            } if (startTime == "") {
 
 	                $('#errorModal').modal('show');
 	                $('#errorModal').on('shown.bs.modal', function() {
 	                    $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
 	                });
-	            } else if (endTime == "") {
+	            } if (endTime == "") {
 
 	                $('#errorModal').modal('show');
 	                $('#errorModal').on('shown.bs.modal', function() {
 	                    $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
 	                });
 	            }
-	        	
-	        	//Checks if Start Date and End Date is equal
-	        	if(startDate === endDate){
+	       
 	        		//Start and End Time Validation
 	        		if (startTime > endTime) {
 	                    $('#errorModal').modal('show');
@@ -325,7 +323,7 @@ function validations() {
 	                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
 	                    });
 	                }
-	        	}
+	        	
 	        	//Start and End Date Validation
 	        	if (startDate > endDate) {
 	                $('#errorModal').modal('show');
@@ -337,18 +335,11 @@ function validations() {
 	    }
 	    
 	  	//Not Empty Fields Validation
-	    $("#dateTime input").filter( function () {
-	    	if($.trim($(this).val()).length == 0){
-	    		 $('#errorModal').modal('show');
-	             $('#errorModal').on('shown.bs.modal', function() {
-	                 $('#errorModal').find('.modal-body').html('<p> Please fill up Date Time entries below</p>');
-	             });
-	    	}
-	    	else if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") 
-	    				&& (maxAllowed !== "") && ($.trim($(this).val()).length > 0)) {
+	    if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") 
+	    				&& (maxAllowed !== "")) {
 		        $('#confirmModal').modal('show');
 			} 
-	    });
+
 	    
 	    //Scheduled Start Date Time and Scheduled End Date Time Part
 	    
