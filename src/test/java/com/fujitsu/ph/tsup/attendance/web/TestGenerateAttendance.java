@@ -129,7 +129,7 @@ public class TestGenerateAttendance {
         courseScheduleDetailSet.add(courseScheduleDetail);
 
         CourseSchedule courseSchedule = new CourseSchedule.Builder(1L, 1L, "SpringBoot", 1L, "Lorenzo", "Loyce", 2L,
-                "TwoNeo", 30, 100, 80, 'A').addDetail(courseScheduleDetailSet).build();
+                "TwoNeo", 30, 100, 80, 'P').addDetail(courseScheduleDetailSet).build();
         return courseSchedule;
     }
 
@@ -137,7 +137,7 @@ public class TestGenerateAttendance {
         CourseAttendance courseAttendance1 = new CourseAttendance.Builder(1L, 1L, "SpringBoot", "Lorenzo, Loyce",
                 "TwoNeo", 3L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"),
                 ZonedDateTime.parse("2020-07-06T17:30:34.983+08:00"), 3.0f,
-                ZonedDateTime.parse("2019-08-08T09:15:24.983+08:00").plusHours(8), 'A').build();
+                ZonedDateTime.parse("2019-08-08T09:15:24.983+08:00").plusHours(8), 'P').build();
         return courseAttendance1;
     }
 

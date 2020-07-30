@@ -6,7 +6,6 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.attendance.model.AttendanceParticipantDetail;
 import com.fujitsu.ph.tsup.attendance.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
-import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -83,8 +82,6 @@ public class TestViewInstructorCourseParticipant {
         CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
         courseScheduleDetailForm.setScheduledEndDateTime(ZonedDateTime.parse("2020-07-06T17:30:34.983+08:00"));
         courseScheduleDetailForm.setScheduledStartDateTime(ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"));
-        Duration totalDuration = Duration.between(courseScheduleDetailForm.getScheduledStartDateTime(),
-                courseScheduleDetailForm.getScheduledEndDateTime());
         AttendanceParticipantDetail attendanceParticipantDetail = new AttendanceParticipantDetail();
         attendanceParticipantDetail.setEmployeeNumber("220054288"); 
         attendanceParticipantDetail.setEmail("k.abad@fujitsu.com");
@@ -106,7 +103,7 @@ public class TestViewInstructorCourseParticipant {
                 .andExpect(status().isOk()).andExpect(view().name("attendance/viewInstructorCourseParticipants"))
                 .andExpect(model().attributeExists("courseParticipant"))
                 .andExpect(model().attributeDoesNotExist("errorMessages"))
-                .andExpect(model().attribute("duration", is(totalDuration)))
+                .andExpect(model().attribute("duration", is(courseParticipant.getDuration())))
                 .andExpect(model().attribute("courseParticipant", hasProperty("courseSchedules",
                         containsInAnyOrder(
                                 hasProperty("courseId", is(courseSchedule.getCourseId()))))))
