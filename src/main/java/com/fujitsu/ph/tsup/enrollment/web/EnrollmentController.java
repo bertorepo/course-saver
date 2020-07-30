@@ -111,7 +111,7 @@ public class EnrollmentController {
         	form.setToDateTime(ZonedDateTime.now().plusDays(5));
 //            System.out.println("SECOND TO DATE TIME: "+form.getToDateTime());
         }
-        
+
         if(form.getFromDateTime().isAfter(form.getToDateTime())) {
         	  model.addAttribute(form);
               model.addAttribute("error", "To Date should be greater than or equal to From Date");

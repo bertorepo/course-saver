@@ -92,7 +92,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             if(participantRecord != null){
                 throw new IllegalArgumentException("You are already enrolled in this course.");
             }
-            
+
             enrollmentDao.saveCourseParticipant(courseParticipant);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("Can't Access Course Participant");
