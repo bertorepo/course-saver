@@ -94,11 +94,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!--Error Modal End-->
-        <!--Buttons for messages (delete these)-->
-            <!-- <input type="button" name="error" class="btn btn-danger" value="Error"> -->
-        <!--Buttons for messages (delete these) End-->     
+        </div>  
     </div>
     <footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
@@ -132,7 +128,6 @@
 			}
 		}); 
 		
-		
 		$("#toDate").blur(function () {
 			var formDate = document.getElementById("toDate").value;
 			var newDate = new Date(formDate);
@@ -155,8 +150,6 @@
 		        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
 		        'Z';
 		};
-		
 	</script>
 </body>
-
 </html>
