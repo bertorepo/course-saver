@@ -17,7 +17,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body onload="load()">
 	<div th:insert="fragments/general.html :: header"> </div>
     
     <div class="container mt-5">
@@ -29,12 +29,15 @@
                     <div class="form-group row">
                         <label class="col-lg-2 col-form-label">From Date</label>
                         <div class="col-lg-3">
-                           <input type="date" th:field="*{fromDateTime}" 
-                           th:attr="placeholder='yyyy-MM-dd'"/>
+                           <input type="date" id="fromDate" name="fromDate"/>
+                           <!-- This is used to compile the converted date and pass it to the controller -->
+                           <input type="hidden" th:field="*{fromDateTime}" />
                         </div>
                         <label class="col-lg-2 col-form-label">To Date</label>
                         <div class="col-lg-3">
-                            <input type="date" th:field="*{toDateTime}"/>
+                            <input type="date" id="toDate" name="toDate"/>
+                            <!-- This is used to compile the converted date and pass it to the controller -->
+                            <input type="hidden" th:field="*{toDateTime}" />
                         </div>
                     </div>
                     <div class="float-right">
@@ -57,7 +60,6 @@
                     <tr>
                         <th>Course Name</th>
                         <th>Instructor</th>
-                        <th>Participants</th>
                         <th>Start Date/Time</th>
                         <th>End Date/Time</th>
                         <th>Duration</th>
@@ -67,7 +69,6 @@
                 	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
                         <td th:text="${courseSchedules.courseName}"></td>
                         <td th:text="${courseSchedules.instructorName}"></td>
-                        <td></td>
                         <td th:text="${courseScheduleDetails.scheduledStartDateTime}"></td>
                         <td th:text="${courseScheduleDetails.scheduledEndDateTime}"></td>
                         <td th:text="${courseScheduleDetails.duration}"></td>
@@ -109,37 +110,37 @@
 			}
 		/*<![CDATA[*/
 			
-		$("#fromDateTime").focus(function (){
-			$(this).prop('type', 'date')
-		});
-		
-		$("#fromDateTime").blur(function () {
-			var formDate = document.getElementById("fromDateTime").value;
+		function load(){
+			var fromDateTime = $("#fromDateTime").val();
+			var toDateTime = $("#toDateTime").val();
+			
+			var fromNewDate = fromDateTime.toString().slice(0,10);
+			var toNewDate = toDateTime.toString().slice(0,10);
+			
+			document.getElementById("fromDate").value = fromNewDate;
+			document.getElementById("toDate").value = toNewDate;
+		}
+	
+		$("#fromDate").blur(function () {
+			var formDate = document.getElementById("fromDate").value;
 			var newDate = new Date(formDate);
 			var dateConcat = newDate.toISO().toString();
 			if (formDate == "") {
-				$(this).prop('type', 'text')
-				$(this).prop('value', null);
+				$("#fromDateTime").prop('value', null);
 			} else {
-				$(this).prop('type', 'text')
-				$(this).prop('value', dateConcat);
+				$("#fromDateTime").prop('value', dateConcat);
 			}
 		}); 
 		
-		$("#toDateTime").focus(function (){
-			$(this).prop('type', 'date')
-		});
 		
-		$("#toDateTime").blur(function () {
-			var formDate = document.getElementById("toDateTime").value;
+		$("#toDate").blur(function () {
+			var formDate = document.getElementById("toDate").value;
 			var newDate = new Date(formDate);
 			var dateConcat = newDate.toISO().toString(); 
 			if (formDate == "") {
-				$(this).prop('type', 'text')
-				$(this).prop('value', null);
+				$("#toDateTime").prop('value', null);
 			} else {
-				$(this).prop('type', 'text')
-				$(this).prop('value', dateConcat);
+				$("#toDateTime").prop('value', dateConcat);
 			}
 		}); 
 		
