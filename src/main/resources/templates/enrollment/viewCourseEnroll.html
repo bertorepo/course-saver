@@ -283,22 +283,25 @@
 						<th>Minimum Number of Participants</th>
 						<th>Maximum Number of Participants</th>
 						<th>Total Number of Participants</th>
+						<th></th>
 					
 					</tr>
 				</thead>
 				<tbody th:each="courseSchedule : *{courseSchedules}"
 						th:with="courseScheduleDetails = ${courseSchedule.getCourseScheduleDetails()}">
+						
 					<tr th:each=" courseScheduleDetail : ${courseScheduleDetails}"
 							th:with="courseScheduleId = ${courseSchedule.id}"
-							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}'
-							,'${courseScheduleDetail.scheduledStartDateTime}')|">
+							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+									'${courseScheduleDetail.scheduledStartDateTime}')|">
+									
 						<td th:text="${courseScheduleId}"/>
 						<td th:text="${courseSchedule.getCourseName()}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
 						<td th:text="${courseScheduleDetail.scheduledStartDateTime}" />
 						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"/>
 						<td th:text="${courseScheduleDetail.duration}"/>
-						<td sec:authorize="hasAuthority('PMO')">
+
 						<td th:text="${courseSchedule.venueName}"/>
 						<td th:text="${courseSchedule.minRequired}"/>
 						<td th:text="${courseSchedule.maxAllowed}"/>
@@ -310,17 +313,19 @@
 							</button>
 						</td>
 
-						<td sec:authorize="hasAuthority('Member')">
-							<form action="#"
-									th:action="@{/enrollment/schedules/{courseScheduleId}/enroll (courseScheduleId = ${courseScheduleId})}"
-									th:object="${courseEnrollmentForm}" method="get">
-								<button th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}')|" 
-										type="button" class="btn btn-success">Register</button>
-							</form>
+						<td sec:authorize="hasAuthority('Member')">		
+							<button th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}')|" 
+									type="button" class="btn btn-success">Register</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}">
+				<div class="alert alert-dismissible alert-danger text-center">
+					<strong th:text="${nullMessage}"></strong> 
+				</div>
+			</div>
+			
 		</div>
 	</div>
 	
@@ -374,7 +379,7 @@
 	        'Z';
 	}; 
 	
-	<!--Message alert-->
+// 	<!--Message alert-->
 // 	$('tbody').on('dblclick', function() {
 // 		$('#infoModal').modal('show');
 // 		var a = ${this}.
@@ -395,7 +400,7 @@
 // 		$('#confirmModal').modal('show');
 // 	});
 	
-	<!--Message alert End-->
+// 	<!--Message alert End-->
 	//Information Modal
 	function showInformation(id, courseName, instructorName, scheduleDateTime){
 // 		alert(id + courseName + instructorName + scheduleDateTime);
@@ -493,13 +498,21 @@
 	//No Record Found
 	/*<![CDATA[*/
 	var nullMessage = /*[[${nullMessage}]]*/ 'default';
-	if(nullMessage == "No Record Found"){
+	if(nullMessage == "No schedules found"){
 		document.getElementById("message").innerHTML = nullMessage;
 		$('#errorModal').modal('show');
 	}
 	/*]]>*/
 	
-	
+	//DUPLICATE ENROLL
+	/*<![CDATA[*/
+	var duplicateMessage = /*[[${duplicateMessage}]]*/ 'default';
+	if(duplicateMessage == "You are already enrolled in this course."){
+		document.getElementById("message").innerHTML = duplicateMessage;
+		$('#errorModal').modal('show');
+	}
+	/*]]>*/
+	//DUPLICATE ENROLL END
 	
 	//REGISTRATION START
 	//SUCCESS ENROLL SHOW INFO MODAL
@@ -535,8 +548,9 @@
 	}
 	
 	/*]]>*/
-	
 	//REGISTRATION END
+	
+	
 </script>
 
 </body>
