@@ -64,7 +64,7 @@ public class ScheduleController {
      */
     @Autowired
     private ScheduleService scheduleService;
-    private DashboardMemberService dashboardMemberService;
+    //private DashboardMemberService dashboardMemberService;
 
     
     /**
@@ -91,8 +91,8 @@ public class ScheduleController {
         logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", bindingResult);
         
-        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long employeeId = user.getId();
+//        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Long employeeId = user.getId();
 
         if (bindingResult.hasErrors()) {
             return "scheduling/scheduleView";
@@ -146,7 +146,7 @@ public class ScheduleController {
         }
         
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
-        model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
+        //model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/instructorCourseScheduleList";
     }
