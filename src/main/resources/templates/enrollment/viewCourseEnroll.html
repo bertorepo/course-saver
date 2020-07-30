@@ -33,15 +33,17 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control" id="fromDateTime" name="fromDateTime"  th:field="*{fromDateTime}">
+							<input type="datetime-local" class="form-control" id="fromDateTime">
+							<input type="hidden" class="form-control" name="fromDateTime" id="inputFromDateTime">
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control" id="toDateTime" name="toDateTime"  th:field="*{toDateTime}">
+							<input type="datetime-local" class="form-control" id="toDateTime" >
+							<input type="hidden" class="form-control" name="toDateTime" id="inputToDateTime">
 						</div>
 					</div>
 					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
+						<input type="submit" class="btn btn-success" value="Submit" onClick="onSubmit()">
 					</div>
 				</div>
 			</div>
@@ -146,11 +148,11 @@
 								</div>
 								<label class="col-lg-3 col-form-label">Course Date(s):</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseRegistrationDate" value="June 1, 2020"  disabled>
+									<input type="text" class="form-control-plaintext" id="courseRegistrationDate" disabled>
 								</div>
 								<label class="col-lg-3 col-form-label">Time slot:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseRegistrationTime" value="8:00 AM to 17:30 PM PHT"  disabled>
+									<input type="text" class="form-control-plaintext" id="courseRegistrationTime" disabled>
 								</div>
 							</div>
 							<div class="alert alert-danger text-center">
@@ -237,7 +239,7 @@
 								</div>
 								<label class="col-lg-3 col-form-label">Time slot:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="8:00 AM to 17:30 PM PHT" disabled>
+									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
 								</div>
 							</div>	
 							<div class="alert alert-danger text-center">
@@ -290,10 +292,10 @@
 				<tbody th:each="courseSchedule : *{courseSchedules}"
 						th:with="courseScheduleDetails = ${courseSchedule.getCourseScheduleDetails()}">
 						
-					<tr th:each=" courseScheduleDetail : ${courseScheduleDetails}"
+					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}"
 							th:with="courseScheduleId = ${courseSchedule.id}"
 							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
-									'${courseScheduleDetail.scheduledStartDateTime}')|">
+									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|">
 									
 						<td th:text="${courseScheduleId}"/>
 						<td th:text="${courseSchedule.getCourseName()}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
@@ -314,7 +316,8 @@
 						</td>
 
 						<td sec:authorize="hasAuthority('Member')">		
-							<button th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}')|" 
+							<button th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|" 
 									type="button" class="btn btn-success">Register</button>
 						</td>
 					</tr>
@@ -332,52 +335,68 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 <script th:inline="javascript">
+	//SUBMIT FROM/TO DATE TIME
+	function onSubmit(){
+		var toAppend = ":00.000+08:00[Asia/Singapore]";
+		var fromDateTime = document.getElementById('fromDateTime').value;
+		var toDateTime = document.getElementById('toDateTime').value;
+		
+		var inpFromDateTime = document.getElementById('inputFromDateTime');
+		var inpToDateTime = document.getElementById('inputToDateTime');
+		
+		var finalFromDateTime = fromDateTime+toAppend;
+		var finalToDateTime = toDateTime+toAppend;
+	
+		inpFromDateTime.value = finalFromDateTime;
+		inpToDateTime.value = finalToDateTime;
+	}
 
-	$("#fromDateTime").focus(function (){
-		$(this).prop('type', 'date')
-	});
+	//SUBMIT FROM/TO DATE TIME END
+// 	$("#fromDateTime").focus(function (){
+// 		$(this).prop('type', 'date')
+// 	});
 	
-	$("#fromDateTime").blur(function () {
-		var formDate = document.getElementById("fromDateTime").value;
-		var newDate = new Date(formDate);
-		var dateConcat = newDate.toISO().toString();
-		if (formDate == "") {
-			$(this).prop('type', 'text')
-			$(this).prop('value', null);
-		} else {
-			$(this).prop('type', 'text')
-			$(this).prop('value', dateConcat);
-		}
-	}); 
+// 	$("#fromDateTime").blur(function () {
+// 		var formDate = document.getElementById("fromDateTime").value;
+// 		var newDate = new Date(formDate);
+// 		var dateConcat = newDate.toISO().toString();
+// 		if (formDate == "") {
+// 			$(this).prop('type', 'text')
+// 			$(this).prop('value', null);
+// 		} else {
+// 			$(this).prop('type', 'text')
+// 			$(this).prop('value', dateConcat);
+// 		}
+// 	}); 
 	
-	$("#toDateTime").focus(function (){
-		$(this).prop('type', 'date')
-	});
+// 	$("#toDateTime").focus(function (){
+// 		$(this).prop('type', 'date')
+// 	});
 	
-	$("#toDateTime").blur(function () {
-		var formDate = document.getElementById("toDateTime").value;
-		var newDate = new Date(formDate);
-		var dateConcat = newDate.toISO().toString(); 
-		if (formDate == "") {
-			$(this).prop('type', 'text')
-			$(this).prop('value', null);
-		} else {
-			$(this).prop('type', 'text')
-			$(this).prop('value', dateConcat);
-		}
-	}); 
+// 	$("#toDateTime").blur(function () {
+// 		var formDate = document.getElementById("toDateTime").value;
+// 		var newDate = new Date(formDate);
+// 		var dateConcat = newDate.toISO().toString(); 
+// 		if (formDate == "") {
+// 			$(this).prop('type', 'text')
+// 			$(this).prop('value', null);
+// 		} else {
+// 			$(this).prop('type', 'text')
+// 			$(this).prop('value', dateConcat);
+// 		}
+// 	}); 
 	
-	//Format Date Inputs
-	Date.prototype.toISO = function() {
-		 return this.getUTCFullYear() +
-	        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
-	        '-' + String(this.getUTCDate()).padStart(2, "0") +
-	        'T' + String(this.getUTCHours()).padStart(2, "0") +
-	        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
-	        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
-	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-	        'Z';
-	}; 
+// 	//Format Date Inputs
+// 	Date.prototype.toISO = function() {
+// 		 return this.getUTCFullYear() +
+// 	        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+// 	        '-' + String(this.getUTCDate()).padStart(2, "0") +
+// 	        'T' + String(this.getUTCHours()).padStart(2, "0") +
+// 	        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
+// 	        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
+// 	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+// 	        'Z';
+// 	}; 
 	
 // 	<!--Message alert-->
 // 	$('tbody').on('dblclick', function() {
@@ -401,9 +420,16 @@
 // 	});
 	
 // 	<!--Message alert End-->
+
 	//Information Modal
-	function showInformation(id, courseName, instructorName, scheduleDateTime){
-// 		alert(id + courseName + instructorName + scheduleDateTime);
+	function showInformation(id, courseName, instructorName, scheduleStartDateTime, scheduleEndDateTime){
+// 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
+
+		var startDate = scheduleStartDateTime.slice(0,10);
+		var startTime = scheduleStartDateTime.slice(11,22);
+		var endDate = scheduleEndDateTime.slice(0,10);
+		var endTime = scheduleEndDateTime.slice(11,22);
+
 		var idInput = document.getElementById('infoId');
 		idInput.value = id;
 		
@@ -414,8 +440,10 @@
 		instructorNameInput.value = instructorName;
 		
 		var dateInput = document.getElementById('infoDate');
-		dateInput.value = scheduleDateTime;
+		dateInput.value = startDate;
 		
+		var timeInput = document.getElementById('infoTime');
+		timeInput.value = startTime+" to "+endTime
 		$('#infoModal').modal('show');
 	}
 	//Information Modal End
@@ -429,8 +457,12 @@
 	}
 
 	//SHOW REGISTRATION POP UP
-	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName){
+	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, endDateTime){
 // 		alert(courseScheduleId + courseScheduleName + courseScheduleInstructorName);
+		var startDate = startDateTime.slice(0,10);
+		var startTime = startDateTime.slice(11,22);
+		var endDate = endDateTime.slice(0,10);
+		var endTime = endDateTime.slice(11,22);
 		
 		var idInput = document.getElementById('courseRegistrationId');
 		idInput.value = courseScheduleId;
@@ -440,6 +472,12 @@
 		
 		var courseInstructorNameInput = document.getElementById('courseRegistrationInstructorName');
 		courseInstructorNameInput.value = courseScheduleInstructorName;
+		
+		var courseDateInput = document.getElementById('courseRegistrationDate');
+		courseDateInput.value = startDate
+		
+		var courseTimeInput = document.getElementById('courseRegistrationTime');
+		courseTimeInput.value = startTime + " to " + endTime;
 		
 		$('#registerModal').modal('show');
 	}
@@ -496,13 +534,13 @@
 	/*]]>*/
 	
 	//No Record Found
-	/*<![CDATA[*/
-	var nullMessage = /*[[${nullMessage}]]*/ 'default';
-	if(nullMessage == "No schedules found"){
-		document.getElementById("message").innerHTML = nullMessage;
-		$('#errorModal').modal('show');
-	}
-	/*]]>*/
+// 	/*<![CDATA[*/
+// 	var nullMessage = /*[[${nullMessage}]]*/ 'default';
+// 	if(nullMessage == "No schedules found"){
+// 		document.getElementById("message").innerHTML = nullMessage;
+// 		$('#errorModal').modal('show');
+// 	}
+// 	/*]]>*/
 	
 	//DUPLICATE ENROLL
 	/*<![CDATA[*/
@@ -513,6 +551,20 @@
 	}
 	/*]]>*/
 	//DUPLICATE ENROLL END
+	
+	//SHOW ZONEDDATETIME IN TIMEDATE-LOCAL
+	/*<![CDATA[*/
+	var viewCourseEnroll = /*[[${viewCourseEnroll}]]*/ 'default';
+		
+		var finalFromDateTime = viewCourseEnroll.fromDateTime.slice(0,16);
+		var finalToDateTime = viewCourseEnroll.toDateTime.slice(0,16);
+		
+		var inputFromDateTime = document.getElementById('fromDateTime');
+		var inputToDateTime = document.getElementById('toDateTime');
+		
+		inputFromDateTime.value = finalFromDateTime;
+		inputToDateTime.value = finalToDateTime;
+	/*]]>*/
 	
 	//REGISTRATION START
 	//SUCCESS ENROLL SHOW INFO MODAL
@@ -536,6 +588,7 @@
 
 		$('#infoModal').modal('show');
 		$('#successModal').modal('show');
+		
 	}
 	/*]]>*/
 	
@@ -552,7 +605,5 @@
 	
 	
 </script>
-
 </body>
-
 </html>

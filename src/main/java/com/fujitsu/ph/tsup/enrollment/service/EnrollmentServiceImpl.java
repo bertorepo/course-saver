@@ -48,7 +48,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         try {
                Set<CourseSchedule> courseScheduleSet = enrollmentDao
                        .findAllScheduledCourses(fromDateTime, toDateTime);
-                 if (courseScheduleSet.isEmpty() || courseScheduleSet == null) {
+                 if (courseScheduleSet == null || courseScheduleSet.isEmpty()){
                         throw new IllegalArgumentException("No schedules found");
                   }
                 return courseScheduleSet;
