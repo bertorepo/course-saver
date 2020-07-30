@@ -31,6 +31,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fujitsu.ph.auth.model.FpiUser;
+import com.fujitsu.ph.tsup.dashboard.service.DashboardMemberService;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
@@ -61,6 +64,7 @@ public class ScheduleController {
      */
     @Autowired
     private ScheduleService scheduleService;
+    private DashboardMemberService dashboardMemberService;
 
     
     /**
@@ -86,6 +90,9 @@ public class ScheduleController {
 
         logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", bindingResult);
+        
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long employeeId = user.getId();
 
         if (bindingResult.hasErrors()) {
             return "scheduling/scheduleView";
@@ -135,9 +142,11 @@ public class ScheduleController {
             courseScheduleViewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
 
             courseScheduleViewFormSet.add(courseScheduleViewForm);
+            
         }
         
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
+        model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/instructorCourseScheduleList";
     }
