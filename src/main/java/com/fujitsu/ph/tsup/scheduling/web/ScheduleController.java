@@ -99,8 +99,7 @@ public class ScheduleController {
         }
 
         if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
-//            courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
-            courseScheduleListForm.setFromDateTime(ZonedDateTime.now().minusMonths(1));
+            courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
             courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
 
@@ -134,15 +133,12 @@ public class ScheduleController {
                 courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
                 courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
                 courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
-
                 courseScheduleDetailFormSet.add(courseSchedDetailForm);
 
             }
 
             courseScheduleViewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
-
             courseScheduleViewFormSet.add(courseScheduleViewForm);
-            
         }
         
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
