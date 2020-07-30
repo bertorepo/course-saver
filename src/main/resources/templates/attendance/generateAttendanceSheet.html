@@ -10,57 +10,89 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Generate Attendance Sheet</title>
-    <link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css"> 
+    <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css"> 
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    
+   
 </head>
 
-<body>
+<body   >
+
     <div th:insert="fragments/general.html :: header"> </div>
     <div class="container mt-5">
-        <form class="form-horizontal" action="#" th:action="@{/attendance/generate/{courseScheduleDetailId}/present}" th:object="${generateAttendance}" method="get">
+      <form class="form-horizontal"  th:object="${generateAttendance}" method="get">
             <h3><i class="fa fa-file-text"></i> Generate Attendance Sheet</h3>
             <hr>
-            <div class="card">
+            <div class="card" >
                 <div class="card-body">
                     <div class="form-group row">
                         <label class="col-lg-2 col-form-label">Course Schedule</label>
-                        <div class="col-lg-5">
-                        <!--    <select class="form-control">
-                                <option value="">Select...</option>
-                                <option value="">Hello</option>
-                                <option value="">World</option>
-                            </select>    -->
-                            <select class="form-control" th:field="*{id}">
-                            <option value="">   </option>
-                            <option th:each = "generateAttendanceSheet : *{generateAttendance}"
-                            th:value="${generateAttendanceSheet.getCourseName()}"
-                            th:utext="${generateAttendanceSheet.getCourseName()}"/>
+                        <div class="col-lg-5" >
+                            <select class="form-control" id="courseId">
+                                <option value=""></option>
+                                <option 
+                                    th:each="courseschedule : ${generateAttendance.courses}"
+                                    th:value="${courseschedule.id}"
+                                    th:selected="${courseschedule.id eq lastSelected}"
+                                    th:text="${courseschedule.courseName}">
+                                    </option>
                             </select>
+
                         </div>
-                    </div>
-                    <div class="float-right">
-                        <input type="submit" class="btn btn-success" value="Generate">
-                    </div>
+						<script th:inline="javascript">
+							function choices() {
+								var id= $('#courseId').val();
+								var courseName = $('#courseId :selected').text();
+								var message = 'You have signed in to this '+courseName;
+                                if (id == "") {
+                                    $('#errorModal').modal('show');
+                                } else if (id != "") {
+                                    $('#successModal').modal('show');
+                                    $('#successModal').on('shown.bs.modal',
+                                        function() {
+                                        $('#successModal').find('.modal-body').html(
+                                        message);
+                                        });
+                                }
+							}
+							function successUrl() {
+								var id = document.getElementById("courseId").value;
+								var callUrl = '/attendance/generate/' + id
+										+ '/present';
+								document.location.href = callUrl;
+							}
+							function errorUrl() {
+								var id = document.getElementById("courseId").value;
+								var callUrl = '/attendance/generate/0/present';
+								document.location.href = callUrl;
+							}
+							
+						</script>
+					</div>
+                            <div class="float-right">
+                            <input type = "button"   onclick= "choices()"   class="btn btn-large btn-success"  value= "Generate" name="button" id="button"></input>              
+                    </div> 
                 </div>
             </div>
         </form>
         <!--Success Modal-->
-        <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-sm text-center">
                 <div class="modal-content">
                     <div class="modal-header alert-success">
                         <h5 class="modal-title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button"  onclick="successUrl()" class="close"  data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label class="col-lg-12 col-form-label">You have signed in to this {Course}</label>
+                       <!--     <label cla{
+                       ss="col-lg-12 col-form-label">You have signed in to this</label>
+                            <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{courseName}"/> -->  
                         </div>  
                     </div>
                 </div>
@@ -68,12 +100,13 @@
         </div>
         <!--Success Modal End-->
         <!--Error Modal-->
-        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-sm text-center">
                 <div class="modal-content">
                     <div class="modal-header alert-danger">
                         <h5 class="modal-title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" onclick="errorUrl()" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -86,23 +119,20 @@
             </div>
         </div>
         <!--Error Modal End-->
-        <!--Buttons for messages (delete these)-->
-        <input type="button" name="success" class="btn btn-success" value="Success">
-        <input type="button" name="error" class="btn btn-danger" value="Error">
-        <!--Buttons for messages (delete these) End-->
-        <div class="card mt-5">
-            <div class="card-body"> 
-                <div class="col-lg-12" style="overflow-x:auto">             
+        <div class="card mt-5" id="hideTable" th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/present'}"> 
+            <div class="card-body"  > 
+                <div class="col-lg-12" style="overflow-x:auto"> 
+                <form class="form-horizontal"   th:object="${generateAttendance}" method="get">            
                     <table class="table table-bordered">
-                     <th:each="generateAttendanceSheet : *{generateAttendance}">
+                     <th:block >
                         <tr>
                             <td colspan="3">
-                                <label class="col-lg-6 col-form-label">COURSE TITLE</label>
-                                <label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceSheet.getCourseName()}"></label>
+                                <label class="col-lg-6 col-form-label">COURSE TITLE</label>    
+                                <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{courseName}"/>                      
                             </td>
                             <td colspan="1">
                                 <label class="col-lg-6 col-form-label">DURATION</label>
-                                <label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceSheet.getDuration()}"></label>
+                                <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{duration}"/>                        
                             </td>
                         </tr>
                         <tr>
@@ -111,15 +141,15 @@
                             </td>
                             <td colspan="1">
                                 <label class="col-lg-6 col-form-label">Start</label>
-                                <label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceSheet.getScheduleStartDateTime()}"></label>
+                                <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{scheduledStartDateTime}"/>
                             </td>
                             <td colspan="1">
                                 <label class="col-lg-6 col-form-label">End</label>
-                                <label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceSheet.getScheduleEndDateTime()}"></label>
+                                <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{scheduledEndDateTime}"/>
                             </td>
                             <td colspan="1">
                                 <label class="col-lg-6 col-form-label">VENUE</label>
-                                <label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceSheet.getVenueName()}"></label>
+                                <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{venueName}"/>
                             </td>
                         </tr>
                         <tr>
@@ -131,16 +161,16 @@
                             </td>
                             <td colspan="1">
                                 <label class="col-lg-6 col-form-label">START TIME</label>
-                                <label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceSheet.getScheduleStartDateTime()}"></label>
+                                <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{scheduledStartDateTime}"/>
                             </td>
                             <td colspan="1">
-                                <label class="col-lg-6 col-form-label">&nbsp;</label>
-                                <label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceSheet.getScheduleEndDateTime()}"></label>
+                                <label class="col-lg-6 col-form-label">END TIME</label>
+                                <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{scheduledEndDateTime}"/>
                             </td>
                             <td colspan="1" rowspan="2">
                                 <label class="col-lg-6 col-form-label">INSTRUCTOR</label>
                                 <div class="row mt-5">
-                                    <label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceSheet.getInstructorName()}"></label>
+                                <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{instructorName}"/>
                                 </div>
                                 <div class="row mt-5">
                                     <label class="col-lg-12 col-form-label text-center">___________________________________</label>
@@ -207,7 +237,9 @@
                                 </div>
                             </td>
                         </tr>
+                        </th:block>
                     </table>
+                    </form>
                 </div>
                 <div class="col-lg-12 mt-5" style="overflow-x:auto; display: block; white-space: nowrap">               
                     <table class="table table-bordered text-center" >
@@ -230,75 +262,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="generateAttendanceSheet : *{generateAttendance}">
-                                <td>1</td>
-                                <td th:text="*{generateAttendanceForAbsent.getParticipantName()}"></td>
-                                <td>G3CC</td>
-                                <td th:text="*{generateAttendanceForAbsent.getLoginDateTime())}"></td>
+                            <tr th:each="generateAttendanceSheet : *{generateAttendance.participants}">
+                                <td></td>
+                                <td th:text="${generateAttendanceSheet.getName()}"/>
+                                <td></td>
+                                <td th:text="${generateAttendanceSheet.getLoginDateTime()}"/>
                                 <td></td>
                                 <td></td>
                             </tr>
-                            <!--  
-                            <tr>
-                                <td>2</td>
-                                <td>Virtudazo, Aljohn Rey<br>a.virtudazo@ph.fujitsu.com</td>
-                                <td>G3CC</td>
-                                <td>10:00</td>
-                                <td>12:00</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Avellana, Brex<br>b.avellana@ph.fujitsu.com</td>
-                                <td>G3CC</td>
-                                <td>10:00</td>
-                                <td>12:00</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Con-Ui, Jan Daryll Martin<br>j.conui@ph.fujitsu.com</td>
-                                <td>G3CC</td>
-                                <td>10:00</td>
-                                <td>12:00</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Lorenzana, Joel<br>j.lorenzana@ph.fujitsu.com</td>
-                                <td>G3CC</td>
-                                <td>10:00</td>
-                                <td>12:00</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>Abella, Rixon Jeuz<br>r.abella@ph.fujitsu.com</td>
-                                <td>G3CC</td>
-                                <td>10:00</td>
-                                <td>12:00</td>
-                                <td></td>
-                            </tr>
-                             -->
                         </tbody>
                     </table>
-                </div>
-            </div>
+                </div>           
+</div>
         </div>  
     </div>
     
     <footer th:replace="fragments/general.html :: footer"></footer>
-<script>
-    <!--Message alert-->
-    //add if statement for the success/fail messages
-    $('input[name="success"]').on('click', function() {
-        $('#successModal').modal('show');
-    });
-    $('input[name="error"]').on('click', function() {
-        $('#errorModal').modal('show');
-    });
-    <!--Message alert End-->
-</script>
-</body>
 
+</body>
 </html>
