@@ -48,7 +48,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         try {
                Set<CourseSchedule> courseScheduleSet = enrollmentDao
                        .findAllScheduledCourses(fromDateTime, toDateTime);
-                 if (courseScheduleSet.isEmpty() || courseScheduleSet == null) {
+                 if (courseScheduleSet == null || courseScheduleSet.isEmpty()){
                         throw new IllegalArgumentException("No schedules found");
                   }
                 return courseScheduleSet;
@@ -92,7 +92,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             if(participantRecord != null){
                 throw new IllegalArgumentException("You are already enrolled in this course.");
             }
-            
+
             enrollmentDao.saveCourseParticipant(courseParticipant);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("Can't Access Course Participant");

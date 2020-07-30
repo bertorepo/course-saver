@@ -95,7 +95,8 @@ public class EnrollmentController {
 
         logger.debug("CourseScheduleListForm: {}", form);
         logger.debug("Result: {}", result);
-
+        System.out.println("From Date Time: "+ form.getFromDateTime());
+        System.out.println("To Date Time: "+ form.getToDateTime());
         if (result.hasErrors()) {
             model.addAttribute("errorMessage", result.getAllErrors());
             return "enrollment/viewCourseEnroll";
@@ -110,22 +111,18 @@ public class EnrollmentController {
         	form.setToDateTime(ZonedDateTime.now().plusDays(5));
 //            System.out.println("SECOND TO DATE TIME: "+form.getToDateTime());
         }
-        
+
         if(form.getFromDateTime().isAfter(form.getToDateTime())) {
         	  model.addAttribute(form);
               model.addAttribute("error", "To Date should be greater than or equal to From Date");
+              model.addAttribute("nullMessage", "No schedules found");
               return "enrollment/viewCourseEnroll";
         }
 
         try {
         	Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
             		form.getFromDateTime(), form.getToDateTime());
-
-            if(courseSchedules.isEmpty()) {
-            	model.addAttribute("nullMessage","No Record Found");
-            	return "enrollment/viewCourseEnroll";
-            }
-
+        	
         Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
         for (CourseSchedule courseSchedule : courseSchedules) {
