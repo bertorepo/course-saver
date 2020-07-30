@@ -29,7 +29,7 @@
 				<ul class="navbar-nav mr-auto">
 					<th:block sec:authorize="isAuthenticated()">
 					<li class="nav-item">
-						<a class="nav-link" th:href="@{/dashboard}">Home</a>
+						<a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
 					</li>
 					</th:block>
 					<!--Member-->
@@ -37,15 +37,11 @@
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">My Courses<span class="caret"></span></a>
-						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" th:href="@{/enrollment/mySchedules}">My Course Schedule</a>
-							<a class="dropdown-item" th:href="@{/enrollment/myschedules/{courseParticipantId}/decline}">My Course Decline</a>
-						</div>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/enrollment/mySchedules}">My Course Schedule</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" th:href="@{/attendance/signin/{courseScheduleDetailId}}">Attend</a>
+						<a class="nav-link" th:href="@{/attendance/signin}">Attend</a>
 					</li>
 					</th:block>
 					<!--Member end-->
@@ -61,8 +57,8 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/present}">Generate Attendance Sheet</a>
-							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/absent}">Attendance for Absent</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/absent}">Attendance for Absent</a>
 						</div>
 					</li>
 					</th:block>
@@ -73,14 +69,14 @@
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/schedules/view}">Instructor Course Schedule List</a>
-							<a class="dropdown-item" th:href="@{/schedules/{courseScheduleId}/participants}">View Instructor Course Participants</a>
+							<a class="dropdown-item" th:href="@{/schedules/0/participants}">View Instructor Course Participants</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/attendance/participants}">Change Attendance Status</a>
-							<a class="dropdown-item" th:href="@{/attendance/generate/{courseScheduleDetailId}/present}">Generate Attendance Sheet</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
 						</div>
 					</li>
 					</th:block>
