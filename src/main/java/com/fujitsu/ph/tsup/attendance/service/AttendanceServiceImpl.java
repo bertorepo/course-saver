@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 //0.04    | 07/08/2020 | WS) J.iwarat                                            | Update
 //0.05    | 07/08/2020 | WS) R.ramos                                             | Update
 //0.06    | 07/09/2020 | WS) R.ramos                                             | Update
+//0.07    | 07/30/2020 | WS) R.Ramos, WS) K.Abad            					 | Update
 //==================================================================================================
 /**
  * <pre>
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Service;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.06
+ * @version 0.07
  * @author k.abad
  * @author m.angara
  * @author j.iwarat
@@ -192,12 +193,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 			for (CourseAttendance a : signedUp) {
 				absentMap.put(a.getParticipantId(), a);
 			}
-
+			
 			for (CourseAttendance l : loggedIn) {
-				absentMap.remove(l.getParticipantId());
-			}
-			Set<CourseAttendance> valueSet = new HashSet<>(absentMap.values());
-			return valueSet;
+			    if (!absentMap.containsKey(l.getParticipantId())) {
+			        absentMap.remove(l.getParticipantId());
+			    }						
+			}		
+	         return new HashSet<>(absentMap.values());
 		} catch (DataAccessException e) {
 			throw new IllegalArgumentException("No record found.", e);
 		}
@@ -244,6 +246,29 @@ public class AttendanceServiceImpl implements AttendanceService {
 				;
 		} catch (DataAccessException e) {
 			throw new IllegalArgumentException("No records found.", e);
+		}
+	}
+
+	/**
+	 * <pre>
+	 * Finds all scheduled courses based on the given date range Call
+	 * attendanceDao.findAllScheduledCoursesByParticipant using the given
+	 * fromDateTime, toDateTime, participant id and return the result
+	 * 
+	 * <pre>
+	 * 
+	 * @param fromDateTime
+	 * @param toDateTime
+	 * @param participantId
+	 * @return Course Participant Set
+	 */
+	@Override
+	public Set<CourseParticipant> findAllScheduledCoursesByParticipant(ZonedDateTime fromDateTime,
+			ZonedDateTime toDateTime, Long participantId) {
+		try {
+			return attendanceDao.findAllScheduledCoursesByParticipant(fromDateTime, toDateTime, participantId);
+		} catch (DataAccessException e) {
+			throw new IllegalArgumentException("Can't find from date time, to date time and participant Id.", e);
 		}
 	}
 }
