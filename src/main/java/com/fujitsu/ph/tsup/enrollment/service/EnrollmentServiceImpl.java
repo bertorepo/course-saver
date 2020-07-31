@@ -10,7 +10,8 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/25/2020 | WS) T.Oviedo          | New Creation
-//0.01    | 07/08/2020 | WS) k.Freo            | Update
+//0.01    | 07/08/2020 | WS) K.Freo            | Update
+//0.01    | 07/08/2020 | WS) M.lumontad        | Update
 //==================================================================================================
 
 import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
@@ -99,20 +100,30 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
     }
 
-    /** Finds the scheduled courses starting from today onwards */
+    /** 
+     * 
+     * Call enrollmentDao.findAllEnrolledCoursesByParticipantId using ID
+     * Finds All Enrolled Courses by Participant ID
+     * 
+     * @author m.lumontad
+     * 
+     *  */
     @Override
     public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, 
             ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
         
           try {
               Set<CourseParticipant> courseParticipant = enrollmentDao.findAllEnrolledCoursesByParticipantId
-                      (participantId, fromDateTime, toDateTime);
+                      (participantId, fromDateTime, toDateTime);              
+              if (courseParticipant == null || courseParticipant.isEmpty()) {
+                  throw new IllegalArgumentException("No Course Schedule Found");
+              }
                 return courseParticipant;
             } catch(DataAccessException ex) {
-                throw new IllegalArgumentException("Can't Access Id.");
+                throw new IllegalArgumentException("Can't Access Id");
             }
         } 
-        
+    
     /** 
      * 
      * Call enrollmentDao.findCourseParticipantById using the given id 

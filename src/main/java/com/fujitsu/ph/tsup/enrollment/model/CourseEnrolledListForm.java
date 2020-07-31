@@ -10,6 +10,7 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/22/2020 | WS) G.Cabiling        | New Creation
+//0.01    | 07/30/2020 | WS) M.Lumontad        | Updated
 //==================================================================================================
 
 /** 
@@ -18,18 +19,22 @@ package com.fujitsu.ph.tsup.enrollment.model;
 *</pre> 
 *   
 * @version 0.01
-* @author g.cabiling    
+* @author m.lumontad 
 * 
 */
 import java.time.ZonedDateTime;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CourseEnrolledListForm {
 
     /* From Date and Time */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) 
     private ZonedDateTime fromDateTime;
 
     /* To Date and Time */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) 
     private ZonedDateTime toDateTime;
 
     /* Set of Course Enrollment Form */
