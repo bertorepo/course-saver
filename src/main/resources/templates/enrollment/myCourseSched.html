@@ -1,49 +1,81 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="description" content="" />
-	<meta name="author" content="" />
-	<title>My Course Sched</title>
-<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>My Course Sched</title>
+<link rel="stylesheet" type="text/css"
+	href="../css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+	integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+	integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+	crossorigin="anonymous"></script>
+
+<style>
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  right: 0;
+  background-color: white;
+}
+</style>
+
 </head>
 
 <body>
-	<div th:insert="fragments/general.html :: header"> </div>
-	
+	<div th:insert="fragments/general.html :: header"></div>
+
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/enrollment/mySchedules}" th:object="${myCourseSched}" method="get">
-			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
+		<form class="form-horizontal" action="#"
+			th:action="@{/enrollment/mySchedules}" th:object="${myCourseSched}"
+			method="get">
+			<h3>
+				<i class="fa fa-calendar-o"></i> Select Training Period
+			</h3>
 			<hr>
-		       <div class="card">
+			<div class="card">
 				<div class="card-body">
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="datetime" class="form-control" name="fromDateTime" id="" th:field="*{fromDateTime}">
+							<input type="datetime-local" class="form-control"
+								id="fromDateTime"> <input type="hidden"
+								class="for-control" name="fromDateTime" id="inputFromDateTime">
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="datetime" class="form-control" name="toDateTime" id="" th:field="*{toDateTime}">
+							<input type="datetime-local" class="form-control" id="toDateTime">
+							<input type="hidden" class="for-control" name="toDateTime"
+								id="inputToDateTime">
 						</div>
 					</div>
 					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
+						<input type="submit" class="btn btn-success" value="Submit"
+							onclick="submitDateTime()">
+
 					</div>
 				</div>
 			</div>
 		</form>
-		<!--Error Modal-->
+		
+		<!-- Error Modal -->
+		
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
@@ -61,54 +93,26 @@
 				</div>
 			</div>
 		</div>
+		
 		<!--Error Modal End-->
+	
+		<!--Table Data -->
 
-	<!--Confirmation Modal-->
-		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-danger">
-						<h5 class="modal-title">Confirmation</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">Are you sure you want to Decline
-								<strong id="courseName"></strong>?
-							</label>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
-							<form   id="form" action="#" 
-								th:action="@{/enrollment/myschedules/{courseParticipantId}/decline}"  method="post">
-							 	<input type="hidden" name="id" id="id" />
-								<button type="submit" name="submit" value="submit" class="btn btn-primary" 
-									> Yes
-								</button>
-							</form>
-								
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--Confirmation Modal End-->
-		
-		
-		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-			<h3><i class="fa fa-list"></i> List of Available Training</h3>
-			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%"  th:object="${myCourseSched}">
-				<colgroup >
-					<col style="width:20%"/>
-					<col style="width:20%"/>
-					<col style="width:30%"/>
-					<col style="width:30%"/>
-					<col style="width:10%"/>
-					<col style="width:15%"/>
-				
-			
+		<div style="overflow-x: auto; display: block; white-space: nowrap"
+			class="mt-5">
+			<h3>
+				<i class="fa fa-list"></i> List of Enrolled Training
+			</h3>
+			<table id="data"
+				class="table table-bordered table-responsive text-center"
+				style="width: 100%" th:object="${myCourseSched}">
+				<colgroup>
+					<col style="width: 20%" />
+					<col style="width: 20%" />
+					<col style="width: 30%" />
+					<col style="width: 30%" />
+					<col style="width: 10%" />
+					<col style="width: 15%" />
 				</colgroup>
 				<thead>
 					<tr>
@@ -119,163 +123,212 @@
 						<th>Start Date/Time</th>
 						<th>End Date/Time</th>
 						<th>Duration</th>
-						<th></th>
+						<th class="sticky"></th>
 					</tr>
 				</thead>
-				<tbody th:each="courseSchedules : *{courseSchedules}" >
-					  <tr th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
-					   <td th:text="${courseSchedules.courseScheduleId}" ></td>
-                        <td th:text="${courseSchedules.courseName}"></td>
-                        <td th:text="${courseSchedules.instructorName}"></td>
+				<tbody th:each="courseSchedules : *{courseSchedules}">
+					<tr
+						th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
+						<td th:text="${courseSchedules.courseScheduleId}"></td>
+						<td th:text="${courseSchedules.courseName}"></td>
+						<td th:text="${courseSchedules.instructorName}"></td>
 						<td th:text="${courseSchedules.venueName}"></td>
-                        <td th:text="${courseEnrollmentForm.scheduledStartDateTime}"></td>
-                        <td th:text="${courseEnrollmentForm.scheduledEndDateTime}"></td>
-                        <td th:text="${courseEnrollmentForm.duration}"></td>
-                   			<td>
-						<!--@RequestParam -->
-							<button th:attr="onclick=|decline('${courseSchedules.courseScheduleId}','${courseSchedules.courseName}','${courseSchedules.instructorName}','${courseSchedules.venueName}')|" class="btn btn-danger" name="" >
+						<td th:text="${courseEnrollmentForm.scheduledStartDateTime}"></td>
+						<td th:text="${courseEnrollmentForm.scheduledEndDateTime}"></td>
+						<td  th:text="${courseEnrollmentForm.duration}"></td>
+						<td  class="sticky">
+							<!--@RequestParam -->
+							<button
+								th:attr="onclick=|decline('${courseSchedules.courseScheduleId}','${courseSchedules.courseName}','${courseSchedules.instructorName}','${courseSchedules.venueName}')|"
+								class="btn btn-danger" name="">
 								<i class="fa fa-times"></i> Decline
 							</button>
 						</td>
-                    </tr>
+					</tr>
 				</tbody>
 			</table>
-		</div>    	
-		
-		
+			<div th:if="${#lists.isEmpty(myCourseSched.courseSchedules)}">
+				<div class="alert alert-dismissible alert-danger text-center">
+					<strong th:text="${errorMessage}"></strong>
+				</div>
+			</div>
+		</div>
+
+		<!--Table Data End-->
+
 		<!--Cancel Registration Modal -->
-			<div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Course Information</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Course ID:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseSchedId">
-								</div>
-								<label class="col-lg-3 col-form-label">Course Name:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseSchedName">
-								</div>
-								<label class="col-lg-3 col-form-label">Instructor Name:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseSchedInstructor">
-								</div>
-								<label class="col-lg-3 col-form-label">Course Date:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseSchedDate">
-								</div>
-								<label class="col-lg-3 col-form-label">Time slot:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseSchedTime">
-								</div>
-								<label class="col-lg-3 col-form-label">Venue Name:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseSchedVenue">
-								</div>
+		
+		<div class="modal fade" id="declineModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Course Information</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-3 col-form-label">Course ID:</label>
+							<div class="col-lg-9">
+								<input type="text" class="form-control-plaintext"
+									id="courseSchedId">
 							</div>
-							<div class="alert alert-danger text-center">
-								<h5>This is a REQUIRED training</h5>
-							</div>	
-							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Course Description:</label>
-								<div class="col-lg-9">
-								
-								<div class="col-lg-9">
-									<label class="col-form-label">Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World</label>
-								</div>
-								</div>
+							<label class="col-lg-3 col-form-label">Course Name:</label>
+							<div class="col-lg-9">
+								<input type="text" class="form-control-plaintext"
+									id="courseSchedName">
+							</div>
+							<label class="col-lg-3 col-form-label">Instructor Name:</label>
+							<div class="col-lg-9">
+								<input type="text" class="form-control-plaintext"
+									id="courseSchedInstructor">
+							</div>
+							<label class="col-lg-3 col-form-label">Course Date:</label>
+							<div class="col-lg-9">
+								<input type="text" class="form-control-plaintext"
+									id="courseSchedDate">
+							</div>
+							<label class="col-lg-3 col-form-label">Time slot:</label>
+							<div class="col-lg-9">
+								<input type="text" class="form-control-plaintext"
+									id="courseSchedTime">
+							</div>
+							<label class="col-lg-3 col-form-label">Venue Name:</label>
+							<div class="col-lg-9">
+								<input type="text" class="form-control-plaintext"
+									id="courseSchedVenue">
 							</div>
 						</div>
-						<div class="modal-footer">
-							<button class="btn btn-success" onclick="confirmModal">Cancel Registration</button>
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						<div class="alert alert-danger text-center">
+							<h5>This is a REQUIRED training</h5>
 						</div>
+						<div class="form-group row">
+							<label class="col-lg-3 col-form-label">Course
+								Description:</label>
+							<div class="col-lg-9">
+
+								<div class="col-lg-9">
+									<label class="col-form-label">Hello World Hello World
+										Hello World Hello World Hello World Hello World Hello World
+										Hello World Hello World Hello World</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-success" onclick="confirmModal">Cancel
+							Registration</button>
+						<input type="button" class="btn btn-danger" data-dismiss="modal"
+							value="Back">
 					</div>
 				</div>
 			</div>
-			
-		<!--Cancel Registration Modal End-->
+		</div>
+
+		<!--Decline Modal End-->
+
 		<!-- Confirm Decline Modal -->
-								<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Are you sure you want to cancel your registration for this training - {courseName}?</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="form-group">
-							<input type="hidden" name>
-								<h4 class="col-lg-12 col-form-label">Please write the reason for your cancellation.</h4>
-								<p class="text-danger">*This is a required field.</p>
-								<div class="col-lg-9">
-									<textarea cols="100" rows="10"></textarea>
-								</div>
+
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Are you sure you want to cancel your
+							registration for this training - {courseName}?</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<h4 class="col-lg-12 col-form-label">Please write the reason
+								for your cancellation.</h4>
+							<p class="text-danger">*This is a required field.</p>
+							<div class="col-lg-9">
+								<textarea cols="100" rows="10"></textarea>
 							</div>
 						</div>
-						<div class="modal-footer">
-							<input type="submit" name="success" class="btn btn-success" data-dismiss="modal" value="Confirm Cancellation">
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
-						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="submit" name="success" class="btn btn-success"
+							data-dismiss="modal" value="Confirm Cancellation"> <input
+							type="button" class="btn btn-danger" data-dismiss="modal"
+							value="Back">
 					</div>
 				</div>
 			</div>
-			<!-- Confirm Decline Modal End -->
+		</div>
+
+		<!-- Confirm Decline Modal End -->
+
 	</div>
-	
+
 	<footer th:replace="fragments/general.html :: footer"></footer>
-<script>
-	<!--Message alert-->
-	//Confirmation
-	function decline(courseId,courseName,instructorName,venueName){
-		var courseIdInput = document.getElementById('courseSchedId');
-		var courseNameInput = document.getElementById('courseSchedName');
-		var courseInstructorInput = document.getElementById('courseSchedInstructor');
-		var courseVenueInput = document.getElementById('courseSchedVenue');
-		courseIdInput.value = courseId;
-		courseNameInput.value = courseName;
-		courseInstructorInput.value = instructorName;
-		courseVenueInput.value = venueName;
-		$('#declineModal').modal('show');	
-	}
-	
-	//FromDateTime is Higher that ToDateTime
-	/*<![CDATA[*/
-	var errorMessage = /*[[${error}]]*/ 'default';
-	if(errorMessage ==  "To Date should be greater than or equal to From Date"){
-		document.getElementById("message").innerHTML = errorMessage;
-		$('#errorModal').modal('show');
-	}
-	/*]]>*/
-	
-	//Successfuly canceled a Course Schedule
-	/*<![CDATA[*/
-	var successMessage = /*[[${successMessage}]]*/ 'default';
-	if(successMessage == "Successfully Canceled the Course Schedule"){
-		document.getElementById("successMessage").innerHTML = successMessage;
-		$('#successModal').modal('show');
-	}
-	/*]]>*/
-	
-	//No Record Found
-	/*<![CDATA[*/
-	var nullMessage = /*[[${nullMessage}]]*/ 'default';
-	if(nullMessage == "No Record Found"){
-		document.getElementById("message").innerHTML = nullMessage;
-		$('#errorModal').modal('show');
-	}
-	/*]]>*/
-<!--Message alert End-->
-</script>
+	<script th:inline="javascript">
+		//DECLINE MODAL
+		/*<![CDATA[*/
+		function decline(courseId, courseName, instructorName, venueName) {
+			var courseIdInput = document.getElementById('courseSchedId');
+			var courseNameInput = document.getElementById('courseSchedName');
+			var courseInstructorInput = document
+					.getElementById('courseSchedInstructor');
+			var courseVenueInput = document.getElementById('courseSchedVenue');
+			courseIdInput.value = courseId;
+			courseNameInput.value = courseName;
+			courseInstructorInput.value = instructorName;
+			courseVenueInput.value = venueName;
+			$('#declineModal').modal('show');
+		}
+		/*]]>*/
+
+		//SHOW ZONEDDATETIME IN TIMEDATE-LOCAL
+		/*<![CDATA[*/
+		function submitDateTime() {
+			var toAppend = ":00.000+08:00[Asia/Singapore]";
+			var from = document.getElementById('fromDateTime').value;
+			var to = document.getElementById('toDateTime').value;
+			var fromInput = document.getElementById('inputFromDateTime');
+			var toInput = document.getElementById('inputToDateTime');
+			fromInput.value = from + toAppend;
+			toInput.value = to + toAppend;
+		}
+		/*]]>*/
+
+		//SHOW ZONEDDATETIME IN TIMEDATE-LOCAL
+		/*<![CDATA[*/
+		var myCourseSched = /*[[${myCourseSched}]]*/'default';
+		var finalFromDateTime = myCourseSched.fromDateTime.slice(0, 16);
+		var finalToDateTime = myCourseSched.toDateTime.slice(0, 16);
+		var inputFromDateTime = document.getElementById('fromDateTime');
+		var inputToDateTime = document.getElementById('toDateTime');
+
+		inputFromDateTime.value = finalFromDateTime;
+		inputToDateTime.value = finalToDateTime;
+		/*]]>*/
+
+		//FromDateTime is Higher that ToDateTime
+		/*<![CDATA[*/
+		var error = /*[[${error}]]*/'default';
+		if (error == "Invalid Date Input") {
+			document.getElementById("message").innerHTML = error;
+			$('#errorModal').modal('show');
+		}
+		/*]]>*/
+
+		//Successfuly canceled a Course Schedule
+		/*<![CDATA[*/
+		var successMessage = /*[[${successMessage}]]*/'default';
+		if (successMessage == "Successfully Canceled the Course Schedule") {
+			document.getElementById("successMessage").innerHTML = successMessage;
+			$('#successModal').modal('show');
+		}
+		/*]]>*/
+	</script>
 </body>
 
 </html>
