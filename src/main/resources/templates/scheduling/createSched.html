@@ -37,14 +37,14 @@
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5" style="">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
-							<input type="text" list="courses" id=courseName placeholder="Enter Course Name" class="form-control" th:field="*{courseId}">
+							<input type="text" list="courses" id="courseName" placeholder="Enter Course Name" class="form-control">
 							<datalist id="courses">
 								<option value=""></option>
 							 	<option th:each="courses : *{courses}"
-							 			th:value="${courses.id}"
-							 			th:text="${courses.name}"
-							 			th:selected="${courses.id} eq *{courseId}"></option>
+							 			th:attr="data-value = ${courses.id}"
+							 			th:value="${courses.name}"></option>
 							</datalist>
+							<input type="hidden" th:id="*{courseId}" th:field="*{courseId}"/>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -213,6 +213,15 @@
 	
 <script th:inline="javascript">
 
+//Set Course ID
+$("#courseName").blur(function (){
+	var courseName = $("#courseName").val();
+	var courseId = $('#courses [value="'+ courseName +'"]').data('value');
+	console.log(courseId);
+	
+	document.getElementById("courseId").value = courseId;
+});
+
 //Format Date Inputs
 Date.prototype.toISO = function() {
 	 return this.getUTCFullYear() +
@@ -233,9 +242,9 @@ function isToday(date){
 	date.getYear() === today.getYear();
 }  */
 
-function validations() {
+function validations() {	
    
-	 var courseName = $('#courseName').val();
+	 	var courseName = $('#courseName').val();
 	    var instructor = $('#instructorId').val();
 	    var venue = $('#venueId').val();
 	    var minRequired = $('#minRequired').val();
