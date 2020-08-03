@@ -336,7 +336,7 @@ function validations() {
 	    
 	  	//Not Empty Fields Validation
 	    if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") 
-	    				&& (maxAllowed !== "")) {
+	    				&& (maxAllowed !== "")  && ($.trim($("#dateTime input").val()).length > 0)) {
 		        $('#confirmModal').modal('show');
 			} 
 
