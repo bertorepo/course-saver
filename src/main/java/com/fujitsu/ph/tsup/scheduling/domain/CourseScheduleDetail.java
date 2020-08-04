@@ -141,7 +141,7 @@ public class CourseScheduleDetail {
          * @param scheduledEndDateTime
          */
         public Builder(Long id, Long courseScheduleId, ZonedDateTime scheduledStartDateTime, 
-                ZonedDateTime scheduledEndDateTime) {
+                ZonedDateTime scheduledEndDateTime, float duration) {
             validateId(id);
             validateCourseScheduleId(courseScheduleId);
             validateScheduledStartDateTime(scheduledStartDateTime);
@@ -151,7 +151,7 @@ public class CourseScheduleDetail {
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
+            this.duration = duration;
         }
         
         /**
@@ -166,7 +166,7 @@ public class CourseScheduleDetail {
          * @param scheduledEndDateTime
          */
         public Builder(Long courseScheduleId, ZonedDateTime scheduledStartDateTime, 
-                ZonedDateTime scheduledEndDateTime, float duration) {
+                ZonedDateTime scheduledEndDateTime) {
             validateCourseScheduleId(courseScheduleId);
             validateScheduledStartDateTime(scheduledStartDateTime);
             validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
@@ -174,7 +174,7 @@ public class CourseScheduleDetail {
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = duration;
+            this.duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
         }
         
         /**

@@ -80,8 +80,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED, " 
                 + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
                 + "CSCHED.STATUS AS STATUS, "
+                + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.DURATION AS DURATION "
                 + "FROM COURSE_SCHEDULE AS CSCHED " 
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID " 
@@ -129,7 +131,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
      */
     @Override
     public Set<InstructorForm> findAllInstructors() {
-        String query = "SELECT ID, FIRST_NAME, LAST_NAME FROM EMPLOYEE";
+        String query = "SELECT E.ID, E.FIRST_NAME, E.LAST_NAME "
+                     + "FROM EMPLOYEE AS E "
+                     + "INNER JOIN EMPLOYEE_AUTH AS EA "
+                     + "ON E.USERNAME = EA.USERNAME "
+                     + "WHERE EA.AUTH_NAME = 'Instructor'";
 
         List<InstructorForm> instructorList = template.query(query, new InstructorRowMapper());
         Set<InstructorForm> instructors = new HashSet<>(instructorList);
