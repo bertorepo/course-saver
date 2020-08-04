@@ -199,6 +199,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
+							<div id="error" style="color:red"></div>
 							<label class="col-lg-12 col-form-label"></label>
 						</div>	
 					</div>
@@ -242,91 +243,83 @@ function isToday(date){
 	date.getYear() === today.getYear();
 }  */
 
-function validations() {	
-   
-	 	var courseName = $('#courseName').val();
-	    var instructor = $('#instructorId').val();
-	    var venue = $('#venueId').val();
-	    var minRequired = $('#minRequired').val();
-	    var maxAllowed = $('#maxAllowed').val();
-	    
-	    //Empty Fields Validations
-	    if (courseName == "") {
+function validations() {
+	
+	var courseName = $('#courseName').val();
+	var instructor = $('#instructorId').val();
+	var venue = $('#venueId').val();
+	var minRequired = $('#minRequired').val();
+	var maxAllowed = $('#maxAllowed').val();
+	var errorMsg = new Array();
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
 
-	            $('#errorModal').find('.modal-body').html('<p>Please fill up course name</p>');
-	        });
+	//Empty Fields Validations
+	if (courseName == "") {
+	    errorMsg.push("Please fill up courses");
+	}
+	if (instructor == "") {
+	    errorMsg.push("Please fill up instructor");
+	}
+	if (venue == "") {
+	    errorMsg.push("Please fill up venues");
+	}
+	if (minRequired == "") {
+	    errorMsg.push("Please fill up minimum required");
+	}
+	if (maxAllowed == "") {
+	    errorMsg.push("Please fill up maximum allowed");
+	}
+	if (minRequired == "") {
+	    errorMsg.push("Please fill up minimum required");
+	}
+	if (minRequired > maxAllowed) {
+	    errorMsg.push("Max allowed can't be greater than minimum allowed");
+	}
+	if ((minRequired == 0) && (maxAllowed == 0)) {
+	    errorMsg.push("Minimum required and Max allowed can't be equal to zero");
+	}
+
+	if (errorMsg != "") {
+	    $('#errorModal').modal('show');
+	}
+
+	//Empty Fields Validation for start and end date
+	var startDateTimeCount = 0;
+	var endDateTimeCount = 0;
+
+	for (var i = 1; i <= 5; i++) {
+
+	    var startDate = $("#startDate" + i).val();
+	    var startTime = $("#startTime" + i).val();
+	    var endDate = $("#endDate" + i).val();
+	    var endTime = $("#endTime" + i).val();
+
+	    if ((startDate !== "") && (startTime !== "")) {
+	        startDateTimeCount++;
 	    }
-	    
-	    if (instructor == "") {
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
-	            $('#errorModal').find('.modal-body').html('<p>Please fill up instructors</p>');
-	        });
+	    if ((endDate !== "") && (endTime !== "")) {
+	        endDateTimeCount++;
 	    }
+	}
 
-	    if (venue == "") {
+	if (startDateTimeCount == 0) {
+	    errorMsg.push("Please fill up start date and start time");
+	}
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
-	            $('#errorModal').find('.modal-body').html('<p> Please fill up venues</p>');
-	        });
-	    }
-	    
-	    if (minRequired == "") {
+	if (endDateTimeCount == 0) {
+	    errorMsg.push("Please fill up end date and end time");
+	}
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
-	            $('#errorModal').find('.modal-body').html('<p> Please fill up minimum no. of participants</p>');
-	        });
-	    }
-	    
-	    if (maxAllowed == "") {
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
-	            $('#errorModal').find('.modal-body').html('<p> Please fill up maximum no. of participants</p>');
-	        });
-	    }
-	    
-	    for(var i = 1; i<=5; i++){
-	        var startDate = $("#startDate"+i).val();
-	        var endDate =  $("#endDate"+i).val();
-	        var startTime =  $("#startTime"+i).val();
-	        var endTime =  $("#endTime"+i).val();
-	               
-	        if([startDate, endDate, startTime, endTime].includes(null) == false ||
-	        		[startDate, endDate, startTime, endTime].includes("") == false ){
-	        	if (startDate == "") {
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
-	                });
-	            } if (endDate == "") {
+	var messageHtml = "";
 
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
-	                });
-	            } if (startTime == "") {
+	errorMsg.forEach(function(message) {
+	    messageHtml += "<li>" + message + "</li>";
+	});
 
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
-	                });
-	            } if (endTime == "") {
-
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
-	                });
-	            }
-	       
-	        }
-	    }
+	document.getElementById("error").innerHTML = messageHtml;
+	
 	    
 		//Scheduled Start Date Time and Scheduled End Date Time Part
 	    
