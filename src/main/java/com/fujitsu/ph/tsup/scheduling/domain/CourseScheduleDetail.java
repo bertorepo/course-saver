@@ -166,7 +166,7 @@ public class CourseScheduleDetail {
          * @param scheduledEndDateTime
          */
         public Builder(Long courseScheduleId, ZonedDateTime scheduledStartDateTime, 
-                ZonedDateTime scheduledEndDateTime) {
+                ZonedDateTime scheduledEndDateTime, float duration) {
             validateCourseScheduleId(courseScheduleId);
             validateScheduledStartDateTime(scheduledStartDateTime);
             validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
@@ -174,7 +174,7 @@ public class CourseScheduleDetail {
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
+            this.duration = duration;
         }
         
         /**
