@@ -198,9 +198,9 @@ public class ScheduleDaoImpl implements ScheduleDao {
             SqlParameterSource courseSchedDetailParameters = new MapSqlParameterSource()
                     .addValue("course_schedule_id", key)
                     .addValue("scheduled_start_datetime", courseSchedDetail.getScheduledStartDateTime()
-                            .withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledStartDateTime()
-                            .withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                            .withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
+                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledEndDateTime()
+                            .withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
                     .addValue("duration", courseSchedDetail.getDuration());
             template.update(courseScheduleDetailSql, courseSchedDetailParameters, courseSchedDetailGeneratedKeyHolder);
             
