@@ -336,8 +336,8 @@ function validations() {
 	        var startTime =  document.getElementById("startTime"+i).value;
 	        var endTime =  document.getElementById("endTime"+i).value;
 	        
-	        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00");
-		    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00");
+	        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00Z");
+		    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00Z");
         	
         	//Start and End Time Validation
         	if (rowStartDateTime.getTime() > rowEndDateTime.getTime()) {
@@ -372,7 +372,7 @@ function validations() {
 	    }
 	    
 	    
-		//Get the values of Start/End Date and Time per row
+/* 		//Get the values of Start/End Date and Time per row
 		var row1StartDate = $('#row1StartDate').val();
     	var row1EndDate = $('#row1EndDate').val();
     	var row1StartTime = $('#row1StartTime').val();
@@ -563,16 +563,13 @@ function validations() {
                 	$('#errorModal').on('shown.bs.modal', function() {
                     $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
                 	});
-           		}
+           		} */
 
 	  	//Not Empty Fields Validation
 	    if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") 
 	    				&& (maxAllowed !== "")  && ($.trim($("#dateTime input").val()).length > 0)) {
 		        $('#confirmModal').modal('show');
-			} 
-
-
-	    
+			}     
 }
 
 /*<![CDATA[*/
