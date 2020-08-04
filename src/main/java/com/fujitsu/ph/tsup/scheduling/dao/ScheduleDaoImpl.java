@@ -97,8 +97,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
-                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
+                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime());
 
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                 new CourseScheduleRowMapper());

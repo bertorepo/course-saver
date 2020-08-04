@@ -60,11 +60,11 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         
         ZonedDateTime scheduledStartDateTime = 
                 ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(),
-                        ZoneId.of("UTC"));
+                        ZoneId.systemDefault());
         
         ZonedDateTime scheduledEndDateTime = 
                 ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
-                        ZoneId.of("UTC"));
+                        ZoneId.systemDefault());
         
         float duration = cs.getFloat("DURATION");
         
