@@ -1,200 +1,167 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head> 
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="description" content="" />
-	<meta name="author" content="" />
-	<title>View Instructor Course Participants</title>
-	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>View Instructor Course Participants</title>
+    <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css"> 
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
 </head>
 
 <body>
-	<div th:insert="fragments/general.html :: header"> </div>
-	
-	<div class="container mt-5">
-		<form class="form-horizontal">
-			<h3><i class="fa fa-users"></i> View Course Participants</h3>
-			<hr>
-			<div class="card">
-				<div class="card-body">
-					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">Course Schedule</label>
-						<div class="col-lg-5">
-						<!-- DROPDOWN VALUES -->
-							<select class="form-control" th:field="*{id}">
-								<option value=""></option>
-								<option th:each = "courseNames : *{courseParticipant}" th:value="${courseNames.getCourseName()}" th:text="${courseNames.getCourseName()}"/>
-							</select>
-						<!-- DROPDOWN VALUES -->
-						</div>
-					</div>
-					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Generate">
-					</div>
-				</div>
-			</div>
-		</form>
-		<!--Error Modal-->
-		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-danger">
-						<h5 class="modal-title"></h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">No selected course</label>
-						</div>	
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--Error Modal End-->
-		<!--Buttons for messages (delete these)-->
-		<input type="button" name="error" class="btn btn-danger" value="Error">
-		<!--Buttons for messages (delete these) End-->
-		<div class="card mt-5">
-			<div class="card-body">	
-				<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: no-wrap">
-				
-					<table th:each="participant : *{courseParticipant}" class="table table-bordered">
-					
-						<colgroup>
-							<col style="width:20%"/>
-							<col style="width:20%"/>
-							<col style="width:20%"/>
-						</colgroup>
-						<tr>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label ">Course Name</label>
-								
-							</td>
-							<td colspan="2">
-							<!-- th:text="${participant.getCourseName()}" -->
-								<label class="col-lg-12 col-form-label" th:value="${participant.getCourseName()}"></label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label">Instructor</label>
-								
-							</td>
-							<td colspan="2">
-								<label class="col-lg-12 col-form-label" th:value="${participant.getInstructorName()}"></label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label">Start Date/Time</label>
-								
-							</td>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label">End Date/Time</label>
-							</td>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label">Duration</label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label" th:value="${participant.getScheduledStartDateTime()}"></label>
-								
-							</td>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label" th:value="${participant.getScheduledStartEndTime()}"></label>
-							</td>
-							<td colspan="1">
-							<!-- th:value="*{totalDuration}" -->
-							<!-- Duration -->
-								<label class="col-lg-12 col-form-label" th:value="*{totalDuration}"></label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label" th:value="${participant.getScheduledStartDateTime()}"></label>
-							</td>
-							<td colspan="1">
-								<label class="col-lg-12 col-form-label" th:value="${participant.getScheduledStartEndTime()}"></label>
-							</td>
-							<td colspan="1">
-							<!-- th:value="${participant.()}" -->
-							<!-- DURATION -->
-								<label class="col-lg-12 col-form-label" th:value="*{totalDuration}"></label>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<div class="col-lg-12 mt-5" style="overflow-x:auto; display: block; white-space: no-wrap">				
-					<table class="table table-bordered text-center" th:each="participantsAttendance : *{courseParticipant}">
-						<colgroup >
-							<col style="width:20%"/>
-							<col style="width:20%"/>
-							<col style="width:20%"/>								
-						</colgroup>
-						<thead>
-							<tr>
-								<th class="align-middle">8-Digit EMPLOYEE ID NUMBER<br>(if Applicable)</th>
-								<th class="align-middle">PARTICIPANT'S NAME<br>(Please <u>PRINT FULL NAME)</u></th>
-								<th class="align-middle">E-mail Address</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-							<!-- th:value="${participantsAttendance.get()}" -->
-							<!-- th:text="${participantsAttendance.get()}" -->
-								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
-								<td th:value="${participantsAttendance.getParticipantName()}"></td>
-								<td th:value="${participantsAttendance.getEmail()}"></td>
-							</tr>
-							<tr>
-								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
-								<td th:value="${participantsAttendance.getParticipantName()}"></td>
-								<td th:value="${participantsAttendance.getEmail()}"></td>
-							</tr>
-							<tr>
-								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
-								<td th:value="${participantsAttendance.getParticipantName()}"></td>
-								<td th:value="${participantsAttendance.getEmail()}"></td>
-							</tr>
-							<tr>
-								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
-								<td th:value="${participantsAttendance.getParticipantName()}"></td>
-								<td th:value="${participantsAttendance.getEmail()}"></td>
-							</tr>
-							<tr>
-								<td th:value="${participantsAttendance.getEmployeeNumber()}"></td>
-								<td th:value="${participantsAttendance.getParticipantName()}"></td>
-								<td th:value="${participantsAttendance.getEmail()}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>  
-	</div>
-	
-	<footer th:replace="fragments/general.html :: footer"></footer>
-<script>
-	<!--Message alert-->
-	//add if statement for the success/fail messages
-	$('input[name="error"]').on('click', function() {
-		$('#errorModal').modal('show');
-	});
-	<!--Message alert End-->
-</script>
+    <div th:insert="fragments/general.html :: header"> </div>
+    
+    <div class="container mt-5">
+        <form class="form-horizontal" th:object="${courseParticipant}" method="get">
+            <h3><i class="fa fa-users"></i> View Course Participants</h3>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Course Schedule</label>
+                        <div class="col-lg-5">
+                       <!-- DROPDOWN VALUES -->
+                            <select class="form-control"  id="courseId">
+                                <option value=""></option>
+                                <option 
+                                th:each = "courseNames : ${courseParticipant.courseSchedules}" 
+                                th:value="${courseNames.courseId}" 
+                                th:selected="${courseNames.courseId eq lastSelected}"
+                                th:text="${courseNames.getCourseName()}">
+                                </option>
+                            </select>
+                        <!-- DROPDOWN VALUES
+
+                        
+                         -->
+                        </div>
+                    </div>
+                    <script th:inline="javascript">
+                            function choices() {
+                                var id= $('#courseId').val();
+                                if (id == "") {
+                                    $('#errorModal').modal('show');
+                                } else if (id != "") {
+                                	 var id = document.getElementById("courseId").value;
+                                     var callUrl = '/attendance/schedules/' + id + '/participants';
+                                     document.location.href = callUrl;
+                                }
+                            }
+                            function errorUrl() {
+                                var id = document.getElementById("courseId").value;
+                                var callUrl = '/attendance/schedules/0/participants';
+                                document.location.href = callUrl;
+                            }
+                            </script>
+                    <div class="float-right">
+                        <input type="button" onclick="choices()" class="btn btn-success" value="Generate" name="button" id="button"></input> 
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--Error Modal-->
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+         data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-sm text-center">
+                <div class="modal-content">
+                    <div class="modal-header alert-danger">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" onclick="errorUrl()" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-lg-12 col-form-label">No selected course</label>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Error Modal End-->
+        <div class="card mt-5" th:if="${#httpServletRequest.requestURI != '/attendance/schedules/0/participants'}">
+            <div class="card-body"> 
+             <div class="col-lg-12" style="overflow-x:auto">
+             <form class="form-horizontal" th:object="${courseParticipant}" method="get">         
+                    <table>
+                     <th:block >
+                        <colgroup>
+                            <col style="width:20%"/>
+                            <col style="width:20%"/>
+                            <col style="width:20%"/>
+                        </colgroup>
+                        <tr>
+                            <td colspan="1">
+                                <label class="col-lg-12 col-form-label ">Course Name</label>
+                             <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" th:object="${courseParticipant}" readonly th:field="*{courseName}"/>  
+                            </td>
+                            <td colspan="2">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <label class="col-lg-12 col-form-label">Instructor</label>
+                                       <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{instructorName}"/>  
+                            </td>
+                            <td colspan="2">
+                            </td>
+                        </tr>
+                        <tr >
+                            <td colspan="1" th:each = "courses : ${courseParticipant.courseScheduleDetails}">
+                                <label class="col-lg-12 col-form-label">Start Date/Time</label>
+                                <label class="col-lg-12 col-form-label" th:text="${courses.getScheduledStartDateTime()}"/></label>
+                            </td>
+                            <td colspan="1" th:each = "courses : ${courseParticipant.courseScheduleDetails}">
+                                <label class="col-lg-12 col-form-label">End Date/Time</label>
+                                <label class="col-lg-12 col-form-label" th:text="${courses.getScheduledEndDateTime()}"/></label>
+                            </td>
+                            <td colspan="1">
+                                <label class="col-lg-12 col-form-label" >Duration</label>
+                                <label class="col-lg-12 col-form-label"th:text="${duration}"/></label>   
+                            </td>
+                        </tr>
+                        </th:block>
+                    </table>
+                   </form>
+                </div>
+                <div class="col-lg-12 mt-5" style="overflow-x:auto; display: block; white-space: no-wrap">              
+                    <table class="table table-bordered text-center" >
+                        <colgroup >
+                            <col style="width:20%"/>
+                            <col style="width:20%"/>
+                            <col style="width:20%"/>                                
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="align-middle">8-Digit EMPLOYEE ID NUMBER<br>(if Applicable)</th>
+                                <th class="align-middle">PARTICIPANT'S NAME<br>(Please <u>PRINT FULL NAME)</u></th>
+                                <th class="align-middle">E-mail Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr th:each="viewInstructorParticipant: *{courseParticipant.participants}"  >
+                                <td th:text="${viewInstructorParticipant.getEmployeeNumber()}"></td>
+                                <td th:text="${viewInstructorParticipant.getName()}"></td>
+                                <td th:text="${viewInstructorParticipant.getEmail()}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>  
+    </div>
+    
+    <footer th:replace="fragments/general.html :: footer"></footer>
 </body>
 
 </html>

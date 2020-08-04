@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Repository;
 //0.01    | 06/29/2020 | WS) G.Cabiling        | Updated
 //0.02    | 06/30/2020 | WS) K.Freo            | Updated
 //0.03    | 07/07/2020 | WS) J.Yu              | Updated
+//0.03    | 07/14/2020 | WS) T.Oviedo          | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -57,6 +59,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
         String query = "SELECT C.NAME AS COURSE_NAME, "
                 + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
@@ -82,7 +85,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "ON CS.VENUE_ID = V.ID "
                 + "WHERE CSD.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
                 + "AND CS.STATUS = 'A' "
-                +" ORDER BY C.NAME, CSD.SCHEDULED_START_DATETIME";
+                +" ORDER BY CS.ID";
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
                 .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC"))
                         .toOffsetDateTime())
@@ -103,6 +106,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         
         String query = "SELECT C.NAME AS COURSE_NAME, "
                 + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
@@ -147,12 +151,16 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         String query = "SELECT CP.ID AS ID, CP.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, CP.PARTICIPANT_ID AS PARTICIPANT_ID,"
         		+ " CP.REGISTRATION_DATE AS REGISTRATION_DATE_TIME FROM COURSE_PARTICIPANT AS CP"
         		+ " where CP.COURSE_SCHEDULE_ID = :courseScheduleId AND CP.PARTICIPANT_ID = :participantId";
-
-        SqlParameterSource NamedParameters = new MapSqlParameterSource()
-                .addValue("courseScheduleId", courseScheduleId)
-                .addValue("participantId", participantId);
-        return template.queryForObject(query, NamedParameters,
-                new EnrollmentRowMapperCourseParticipantByCourseScheduleIdAndParticipantId());
+        try {
+        	SqlParameterSource NamedParameters = new MapSqlParameterSource()
+                    .addValue("courseScheduleId", courseScheduleId)
+                    .addValue("participantId", participantId);
+            return template.queryForObject(query, NamedParameters,
+                    new EnrollmentRowMapperCourseParticipantByCourseScheduleIdAndParticipantId());
+        }catch(EmptyResultDataAccessException e) {
+        	return null;
+        }
+        
     }
     /** 
      * Method to Save Data to Table COURSE PARTICIPANT 
@@ -160,23 +168,14 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public void saveCourseParticipant(CourseParticipant courseParticipant) {
     	 String saveCourseParticipantSql = "INSERT INTO COURSE_PARTICIPANT"
-                 + "(ID, COURSE_SCHEDULE_ID, COURSE_NAME, INSTRUCTOR_NAME, VENUE_NAME, PARTICIPANT_ID, "
-                 + "PARTICIPANT_NAME, COURSE_SCHEDULE_DETAILS, REGISTRATION_DATE, REASON, DECLINE_DATE)"
-                 + "VALUES (:id, :courseScheduleId, :courseName, :instructorName, :venueName, :participantId,"
-                 + ":participantName, :courseScheduleDetails, :registrationDate, :reason, :declineDate)";
+                 + "(COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE)"
+                 + "VALUES (:courseScheduleId, :participantId, :registrationDate)";
 
          SqlParameterSource saveCourseParticipantParameters = new MapSqlParameterSource()
-                 .addValue(" id", courseParticipant.getId())
-                 .addValue(" courseScheduleId", courseParticipant.getCourseScheduleId())
-                 .addValue(" courseName", courseParticipant.getCourseName())
-                 .addValue(" instructorName", courseParticipant.getInstructorName())
-                 .addValue(" venueName", courseParticipant.getVenueName())
-                 .addValue(" participantId", courseParticipant.getParticipantId())
-                 .addValue(" participantName", courseParticipant.getParticipantName())
-                 .addValue(" courseScheduleDetail", courseParticipant.getCourseScheduleDetail())
-                 .addValue(" registrationDate", courseParticipant.getRegistrationDate())
-                 .addValue(" reason", courseParticipant.getReason())
-                 .addValue(" declineDate", courseParticipant.getDeclineDate());
+                 .addValue("courseScheduleId", courseParticipant.getCourseScheduleId())
+                 .addValue("participantId", courseParticipant.getParticipantId())
+                 .addValue("registrationDate", courseParticipant.getRegistrationDate().withZoneSameInstant(ZoneId.of("UTC"))
+                         .toOffsetDateTime());
          template.update(saveCourseParticipantSql, saveCourseParticipantParameters);
     }
 
@@ -188,46 +187,45 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 	 * @param fromDateTime
 	 * @param toDateTime
 	 * 
-	 * @author g.cabiling
+	 * @author m.lumontad
 	 */
     
     @Override
     public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, 
             ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
-    	String query = "SELECT " 
-    			+ "CSCHED.ID AS ID, " 
-                + "CSCHED.COURSE_ID AS COURSE_ID, "
-                + "C.NAME AS COURSE_NAME, " 
-                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
+        String query = "SELECT CPART.ID AS COURSE_PARTICIPANT_ID,"
+                + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, CSCHED.ID AS COURSE_SCHEDULE_ID, C.NAME AS COURSE_NAME, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "V.NAME AS VENUE_NAME, "
-                + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
-                + "CNONPART.REASON AS REASON, "
-                + "CNONPART.DECLINE_DATE AS DECLINE_DATE, "
                 + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "(SELECT LAST_NAME FROM tsup.EMPLOYEE WHERE ID = CPART.PARTICIPANT_ID) AS PARTICIPANT_LAST_NAME, "
+                + "(SELECT FIRST_NAME FROM tsup.EMPLOYEE WHERE ID = CPART.PARTICIPANT_ID) AS PARTICIPANT_FIRST_NAME, "
+                + "CSCHEDDET.DURATION AS DURATION, "
+                + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
                 + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
-                + "FROM COURSE_SCHEDULE AS CSCHED " 
-                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
-                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
-                + "INNER JOIN COURSE AS C "
-                + "ON CSCHED.COURSE_ID = C.ID "
-                + "INNER JOIN EMPLOYEE AS E "
-                + "ON CSCHED.INSTRUCTOR_ID = E.ID " 
-                + "INNER JOIN VENUE AS V " 
-                + "ON CSCHED.VENUE_ID = V.ID "
-                + "INNER JOIN COURSE_PARTICIPANT AS CPART "
-                + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
-                + "INNER JOIN COURSE_NON_PARTICIPANT AS CNONPART "
-                + "ON CSCHED.ID = CNONPART.COURSE_SCHEDULE_ID " //Added this line
+                + "FROM tsup.COURSE_SCHEDULE AS CSCHED  "
+                + "INNER JOIN tsup.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + "ON CSCHEDDET.COURSE_SCHEDULE_ID = CSCHED.ID "
+                + "INNER JOIN tsup.COURSE_PARTICIPANT AS CPART "
+                + "ON CPART.COURSE_SCHEDULE_ID = CSCHED.ID "
+                + "INNER JOIN tsup.COURSE AS C "
+                + "ON C.ID = CSCHED.COURSE_ID "
+                + "INNER JOIN tsup.EMPLOYEE AS E "
+                + "ON E.ID = CSCHED.INSTRUCTOR_ID "
+                + "INNER JOIN tsup.VENUE AS V "
+                + "ON V.ID = CSCHED.VENUE_ID "
                 + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
                 + "AND CPART.PARTICIPANT_ID = :participantId "
                 + "AND CSCHED.STATUS = 'A' ";
 
         SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
         		.addValue("participantId", participantId)
-                .addValue("fromDateTime", fromDateTime)
-                .addValue("toDateTime", toDateTime);
+                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC"))
+                        .toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC"))
+                        .toOffsetDateTime());
         
         List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipant());

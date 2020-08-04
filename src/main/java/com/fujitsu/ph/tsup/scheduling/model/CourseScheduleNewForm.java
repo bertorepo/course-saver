@@ -1,5 +1,9 @@
 package com.fujitsu.ph.tsup.scheduling.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -23,7 +27,10 @@ package com.fujitsu.ph.tsup.scheduling.model;
 
 import java.util.Set;
 
-public class CourseScheduleNewForm {
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+public class CourseScheduleNewForm{
 
     /**
      * Course Schedule Id
@@ -33,27 +40,33 @@ public class CourseScheduleNewForm {
     /**
      * Course Id
      */
+    @NotNull(message = "Please fill up course name")
     private Long courseId;
     
     /**
      * Instructor Id
      */
+    @NotNull(message = "Please fill up instructors")
     private Long instructorId;
     
     /**
      * Venue Id
      */
+    @NotNull(message = "Please fill up venues")
     private Long venueId;
     
     /**
      * Minimum Required Participants
      */
+    @Min(value = 1, message = "Please fill up minimum no. of participants")
     private int minRequired;
     
     /**
      * Maximum Allowed Participants
      */
+    @Min(value = 1, message = "Please fill up maximum no. of participants")
     private int maxAllowed;
+    
     
     /**
      * Set of Course Schedule Details
@@ -74,6 +87,12 @@ public class CourseScheduleNewForm {
      * Set of Venues
      */
     private Set<VenueForm> venues;
+    
+    /**
+     * List used to Bind Course Schedule Detail Inputs
+     */
+    private List<CourseScheduleDetailForm> courseScheduleDetailsAsList = 
+                new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[5]));
     
     public void setId(Long id) {
         this.id = id;
@@ -155,11 +174,26 @@ public class CourseScheduleNewForm {
         return venues;
     }
     
+    /**
+     * List to be bound in HTML
+     * 
+     * @return courseScheduleDetailsAsList
+     */
+    
+    public void setCourseScheduleDetailsAsList(List<CourseScheduleDetailForm> courseScheduleDetailsAsList) {
+        this.courseScheduleDetailsAsList = courseScheduleDetailsAsList;
+    }
+    
+    public List<CourseScheduleDetailForm> getCourseScheduleDetailsAsList() {
+        return courseScheduleDetailsAsList;
+    }
     
     @Override
     public String toString() {
         return "CourseScheduleNewForm [id = " + id + ", courseId = " + courseId + ", instructorId = " 
     + instructorId + ", venueId = " + venueId + ", minRequired = " + minRequired + ", maxAllowed = " 
-    + maxAllowed + ", courses = " + courses + ", instructors = " + instructors + ", venues = " + venues +"]";
+    + maxAllowed + ", courseScheduleDetails = "+ courseScheduleDetails + ", courseScheduleDetailsAsList = " 
+    + courseScheduleDetailsAsList + ", courses = " + courses + ", instructors = " + instructors + 
+    ", venues = " + venues +"]";
     }
 }

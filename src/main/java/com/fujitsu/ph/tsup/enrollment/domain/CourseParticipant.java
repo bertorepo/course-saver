@@ -265,6 +265,47 @@ public class CourseParticipant {
 			this.participantId = participantId;
 			this.registrationDate = registrationDate;
 		}
+		
+		public Builder(Long courseScheduleId, Long participantId, ZonedDateTime registrationDate) {
+
+			validateCourseScheduleId(courseScheduleId);
+			validateParticipantId(participantId);
+			validateRegistrationDate(registrationDate);
+			
+			this.courseScheduleId = courseScheduleId;
+			this.participantId = participantId;
+			this.registrationDate = registrationDate;
+		}
+		
+		//added a builder
+		public Builder(Long id, Long courseScheduleId, String courseName, String instructorName, String venueName,
+                Long participantId, String participantName, ZonedDateTime registrationDate) {
+
+            validateId(id);
+            validateCourseScheduleId(courseScheduleId);
+            validateParticipantId(participantId);
+            validateRegistrationDate(registrationDate);
+            validateCourseName(courseName);
+            validateInstructorName(instructorName);
+            validateVenueName(venueName);
+            validateParticipantName(participantName);
+
+
+            this.id = id;
+            this.courseScheduleId = courseScheduleId;
+            this.courseName = courseName;
+            this.instructorName = instructorName;
+            this.venueName = venueName;
+            this.participantId = participantId;
+            this.participantName = participantName;
+            this.registrationDate = registrationDate;         
+        }
+		
+		
+		
+		
+		
+		
 
 		/**
 		 * <pre>

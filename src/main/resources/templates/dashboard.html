@@ -66,11 +66,19 @@
 								<td th:text="${memberCourse.getEndDateTime()}"></td>
 								<td th:text="${memberCourse.getVenueName()}"></td>
 							</tr>
+							
 						</tbody>
 					</table>
+					
+					<div th:if="${#lists.isEmpty(memberCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center" >
+  							<strong th:text="${Errors}"></strong> 
+						</div>
+					</div>
 				</div>
+				
 				<div class="float-right">
-						<a th:href="@{/enrollment/schedules/{courseScheduleId}/enroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+						<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
 				</div>
 			</div>
 		</div>
@@ -109,8 +117,14 @@
 								<td th:text="${instructorCourse.getEndDateTime()}"></td>
 								<td th:text="${instructorCourse.getVenueName()}"></td>
 							</tr>
+							
 						</tbody>
 					</table>
+					<div th:if="${#lists.isEmpty(instructorCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+  							<strong th:text="${Errors}"></strong> 
+						</div>
+					</div>
 				</div>
 				<div class="float-right">
 						<a th:href="@{/schedules/view}">View More <i class="fa fa-arrow-circle-right"></i></a>
@@ -148,9 +162,16 @@
 								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
 								<td th:text="${pmoCourse.getEnrolled()}"></td>
 							</tr>
+							
 						</tbody>
 					</table>
+					<div th:if="${#lists.isEmpty(pmoCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+  							<strong th:text="${Errors}"></strong> 
+						</div>
+					</div>
 				</div>
+				
 				<div class="float-right">
 						<a th:href="@{/enrollment/schedules}">View More <i class="fa fa-arrow-circle-right"></i></a>
 				</div>

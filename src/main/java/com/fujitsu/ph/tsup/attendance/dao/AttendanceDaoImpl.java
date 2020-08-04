@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -33,13 +35,14 @@ import org.springframework.stereotype.Repository;
 //0.04    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.05    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.06    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
+//0.07    | 07/30/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access class for attendance related database access
  * </pre>
  * 
- * @version 0.06
+ * @version 0.07
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
@@ -48,9 +51,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository 
 public class AttendanceDaoImpl implements AttendanceDao {
+    
+    private static Logger logger = LoggerFactory.getLogger(AttendanceDaoImpl.class);
     @Autowired
     private NamedParameterJdbcTemplate template;
 
+    
     /**
      * <pre>
      * Finds the scheduled courses starting from today onwards
@@ -94,8 +100,6 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "ON CSCHED.INSTRUCTOR_ID = E.ID "
                 + "INNER JOIN VENUE AS V " 
                 + "ON CSCHED.VENUE_ID = V.ID " 
-                + "LEFT JOIN COURSE_PARTICIPANT AS CPART "
-                + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
                 + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
                 + "AND CSCHED.INSTRUCTOR_ID = :instructorId "
                 + "AND CSCHED.STATUS = 'A' "
@@ -105,13 +109,12 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                 .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                 .addValue("instructorId", instructorId);
-
+       
         List<CourseSchedule> listCourseSchedule = template.query(sql, courseScheduleParameters,
                 new CourseScheduleRowMapper());
         Set<CourseSchedule> setCourseSchedule = new HashSet<CourseSchedule>(listCourseSchedule);
         return setCourseSchedule;
     }
-
     /**
      * <pre>
      * Finds the course schedule by id
@@ -339,16 +342,16 @@ public class AttendanceDaoImpl implements AttendanceDao {
     public void updateAttendance(CourseAttendance courseAttendance) {
         String sql = "UPDATE COURSE_ATTENDANCE SET course_schedule_detail_id = :courseScheduleDetailId, "
                 + "participant_id = :participantId, status = :status, "
-                + "log_in_datetime = :loginDateTime, log_out_datetime = '2020-07-01 10:00:00+08', "
-                + "email = 'r.ramos@fujitsu.com' "
+                + "log_in_datetime = 'now()', log_out_datetime = 'now()', "
+                + "email = 'null' "
                 + "WHERE id = :id ";
 
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("id", courseAttendance.getId())
                 .addValue("courseScheduleDetailId", courseAttendance.getCourseScheduleDetailId())
                 .addValue("participantId", courseAttendance.getParticipantId())
-                .addValue("status", courseAttendance.getStatus())
-                .addValue("loginDateTime", courseAttendance.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
+                .addValue("status", courseAttendance.getStatus());
+//                .addValue("loginDateTime", courseAttendance.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         template.update(sql, namedParameters, generatedKeyHolder);
@@ -416,4 +419,66 @@ public class AttendanceDaoImpl implements AttendanceDao {
         Set<CourseAttendance> setCourse = new HashSet<CourseAttendance>(attendanceList);
         return setCourse;
     }
+    
+    /**
+     * <pre>
+     * Finds the all enrolled courses by participant
+     * 
+     * <pre>
+     * 
+     * @param fromDateTime
+     * @param toDateTime
+     * @param participantId
+     * @return CourseParticipant
+     * @author r.ramos
+     */
+    @Override
+    public Set<CourseParticipant> findAllScheduledCoursesByParticipant(ZonedDateTime fromDateTime, ZonedDateTime toDateTime,
+            Long participantId) {
+        String query = "SELECT " 
+                + "CSCHED.ID AS ID, "
+                + "CSCHED.COURSE_ID AS COURSE_SCHEDULE_ID, "
+                + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
+                + "C.NAME AS COURSE_NAME, "
+                + "CSCHEDDET.DURATION AS DURATION, "                                
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CPART.ID AS COURSE_PARTICIPANT_ID, "
+                + "E.ID AS PARTICIPANT_ID, "
+                + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME, "
+                + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
+                + "E.EMAIL_ADDRESS AS EMAIL, "
+                + "E.NUMBER AS EMPLOYEE_NUMBER "
+                + "FROM COURSE_SCHEDULE AS CSCHED " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CSCHED.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CSCHED.INSTRUCTOR_ID = E.ID " 
+                + "INNER JOIN VENUE AS V " 
+                + "ON CSCHED.VENUE_ID = V.ID "
+                + "INNER JOIN COURSE_PARTICIPANT AS CPART "
+                + "ON E.ID = CPART.PARTICIPANT_ID "
+                + "INNER JOIN COURSE_NON_PARTICIPANT AS CNONPART "
+                + "ON CSCHED.ID = CNONPART.COURSE_SCHEDULE_ID "
+                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
+                + "AND CPART.PARTICIPANT_ID = :participantId "
+                + "AND CSCHED.STATUS = 'A' ";
+        SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
+                .addValue("fromDateTime",  fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .addValue("participantId", participantId);
+                      
+        List<CourseParticipant> listCourseEnrolled = template.query(query, courseEnrolledParameters,
+                new CourseParticipantRowMapper());
+        Set<CourseParticipant> setCourseParticipant = new HashSet<>(listCourseEnrolled);
+        
+        return setCourseParticipant;
+    }
+
 }

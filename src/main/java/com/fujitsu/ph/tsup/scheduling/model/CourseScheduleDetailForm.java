@@ -22,6 +22,10 @@ package com.fujitsu.ph.tsup.scheduling.model;
 */
 import java.time.ZonedDateTime;
 
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CourseScheduleDetailForm {
 
 	/**
@@ -32,11 +36,15 @@ public class CourseScheduleDetailForm {
 	/**
      *	Start Date and Time
      */
+	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private ZonedDateTime scheduledStartDateTime;
 	
 	/**
      *	End Date and Time
      */
+	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private ZonedDateTime scheduledEndDateTime;
 	
 	/**     
@@ -74,5 +82,4 @@ public class CourseScheduleDetailForm {
 		return "CourseScheduleDetailForm [id=" + id + ", scheduledStartDateTime=" + scheduledStartDateTime
 				+ ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration = " + duration + "]";
 	}
-
 }

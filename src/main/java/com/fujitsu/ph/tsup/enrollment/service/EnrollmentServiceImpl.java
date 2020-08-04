@@ -48,9 +48,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         try {
                Set<CourseSchedule> courseScheduleSet = enrollmentDao
                        .findAllScheduledCourses(fromDateTime, toDateTime);
-                 if (courseScheduleSet.isEmpty() || courseScheduleSet == null) {
+                 if (courseScheduleSet == null || courseScheduleSet.isEmpty()){
                         throw new IllegalArgumentException("No schedules found");
-                    }
+                  }
                 return courseScheduleSet;
            } catch(DataAccessException ex) {
                throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
@@ -60,33 +60,39 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     /** Finds the course schedule by id */
     @Override
     public CourseSchedule findCourseScheduleById(Long id) {
-
-         try {
-                return enrollmentDao.findCourseScheduleById(id);
-            } catch(DataAccessException ex) {
-                throw new IllegalArgumentException("Can't Access Id.");
-            }
+    	return enrollmentDao.findCourseScheduleById(id);
+//         try {
+//                
+//            } catch(DataAccessException ex) {
+//                throw new IllegalArgumentException("Can't Access Id.");
+//            }
         
     }
     
     /** enroll using the courseParticipant */
     @Override
     public void enroll(CourseParticipant courseParticipant) {
-        
+    	  System.out.println("MY COURSE ID 2: " +courseParticipant.getCourseScheduleId());
+          System.out.println("FPI USER ID 2: "+courseParticipant.getParticipantId());
+         
         try {
-            CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getId());
+            CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
+            
             if (courseRecord == null){
-                throw new IllegalArgumentException("This course " +courseParticipant
-                        .getCourseName()+ " is not existing");
-            } 
-                
+//                throw new IllegalArgumentException("This course " +courseParticipant
+//                        .getCourseName()+ " is not existing");
+            	 throw new IllegalArgumentException("This course schedule id " +courseParticipant
+                         .getCourseScheduleId()+ " is not existing");
+            }
+//            System.out.println("COURSE NAME: "+courseRecord.getCourseName());
             CourseParticipant participantRecord = enrollmentDao
                     .findCourseParticipantByCourseScheduleIdAndParticipantId
                     (courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
+//            System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
             if(participantRecord != null){
-                throw new IllegalArgumentException("You are already enrolled to the course: " 
-                        +courseParticipant.getCourseName()+ ".");
-            } 
+                throw new IllegalArgumentException("You are already enrolled in this course.");
+            }
+
             enrollmentDao.saveCourseParticipant(courseParticipant);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("Can't Access Course Participant");

@@ -15,61 +15,78 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	
+	<style type="text/css">
+		[list]::-webkit-calendar-picker-indicator {
+    		opacity: 0;
+  		}
+	</style>
 </head>
 
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object=${scheduleNew} method="post">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
+		<!--Success Message-->
+		<div class="modal fade" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+		<!--Success Message End-->
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Name</label>
-						<div class="col-lg-5">
-							<input type="text" class="form-control" id="*{courses}" >
+						<div class="col-lg-5" style="">
+							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
+							<input type="text" list="courses" id="courseName" placeholder="Enter Course Name" class="form-control">
+							<datalist id="courses">
+								<option value=""></option>
+							 	<option th:each="courses : *{courses}"
+							 			th:attr="data-value = ${courses.id}"
+							 			th:value="${courses.name}"></option>
+							</datalist>
+							<input type="hidden" th:id="*{courseId}" th:field="*{courseId}"/>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Instructor</label>
 						<div class="col-lg-5">
-							<select class="form-control" th:field="${scheduleNew.instructors}"  id="*{instructors}" >
-								<option value="">Select...</option>
-								<option value="">Hello</option>
-								<option value="">World</option>
-								<option th:each="scheduleNew : ${scheduleNew}" th:value="${scheduleNew.instructors}"></option>
+							<select class="form-control" th:field="*{instructorId}" id="instructorId" >
+								<option value="" selected>Select Instructor</option>
+								<option th:each="instructors : *{instructors}" 
+										th:value="${instructors.id}"
+										th:text="${instructors.name}"
+										th:selected="${instructors.id} eq *{instructorId}"></option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Venue</label>
 						<div class="col-lg-5">
-							<select class="form-control">
-								<option value="">Select...</option>
-								<option value="">Hello</option>
-								<option value="">World</option>
-								<option th:each="scheduleNew : ${scheduleNew}" th:value="${scheduleNew.venues}"></option>
+							<select class="form-control" th:field="*{venueId}" id="venueId">
+								<option value="" selected>Select Venue</option>
+								<option th:each="venues : *{venues}" 
+										th:value="${venues.id}"
+										th:text="${venues.name}"
+										th:selected="${venues.id} eq *{venueId}"></option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Participants</label>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" id="*{minRequired}" >
+							<input type="text" class="form-control" placeholder="Minimum Required" th:field="*{minRequired}"id="minRequired" >
 						</div>
 						<div class="col-lg-1 text-center">—</div>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" id="*{maxAllowed}" >
+							<input type="text" class="form-control" placeholder="Maximum Allowed" th:field="*{maxAllowed}" id="maxAllowed" >
 						</div>
 					</div>
-					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap">
-						<table class="table table-responsive table-borderless text-center"  >
+					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap" id="dateTime">
+						<table class="table table-responsive table-borderless text-center">
 							<colgroup >
 								<col style="width:55%"/>
 								<col style="width:55%"/>
-							</colgroup>
+							</colgroup>	   			
 							<tr>
 								<td>
 									<label class="col-lg-6 col-form-label">Start/End Date</label>
@@ -78,14 +95,14 @@
 									<label class="col-lg-6 col-form-label">Start/End Time</label>
 								</td>
 							</tr>
-							<tr>
+							<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailsAsList}">
 								<td>
 									<div class="form-group row">
 										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
+											<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}" >
 										</div>
 										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
+											<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
 										</div>
 									</div>
 								</td>
@@ -93,75 +110,70 @@
 									<div class="form-group row">
 										<div class="col-lg-2"></div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
+											<input type="text" class="form-control" 
+													th:id="${'startTime' + (stat.index + 1)}" 
+													maxlength="5">
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
+											<input type="text" class="form-control" 
+													th:id="${'endTime' + (stat.index + 1)}"
+													maxlength="5" >
 										</div>
 									</div>
 								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
-										</div>
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
-										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
-										</div>
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
-										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
-										</div>
+								<td style="display:none;">
+									<div>
+										<input type="hidden" name="startDateTime" 
+											 th:id="${'startDateTime' + (stat.index + 1)}"
+											 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledStartDateTime}">
+											
+										<input type="hidden" name="endDateTime" 
+											 th:id="${'endDateTime' + (stat.index + 1)}"
+											 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledEndDateTime}">
 									</div>
 								</td>
 							</tr>
 						</table>
 					</div>
 					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Create">
-						<input type="button" class="btn btn-danger" value="Cancel">
+						<input type="button" class="btn btn-success" th:attr="onclick=|validations()|" value="Create">
+						<a class="btn btn-danger" th:href="@{/dashboard}" >Cancel</a>
 					</div>
 				</div>
 			</div>
+		<!--Confirmation Modal-->
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title">Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Are you sure you want to submit this form?
+								<strong id="courseName"></strong>
+							</label>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
+								<input type="hidden" name="id" id="id" />
+								<button type="submit" name="submit" value="submit" class="btn btn-primary"> Yes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!--Confirmation Modal End-->
 		</form>  
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
-						<h5 class="modal-title"></h5>
+						<h5 class="modal-title">Success</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -180,39 +192,398 @@
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-danger">
-						<h5 class="modal-title"></h5>
+						<h5 class="modal-title">Error</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">{error message}</label>
+							<label class="col-lg-12 col-form-label"></label>
 						</div>	
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--Error Modal End-->
-		<!--Buttons for messages (delete these)-->
-			<input type="button" name="success" class="btn btn-success" value="Success">
-			<input type="button" name="error" class="btn btn-danger" value="Error">
-		<!--Buttons for messages (delete these) End-->
-		
+		<!--Error Modal End-->	
 	</div>
 
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
-<script>
-	<!--Message alert-->
-	//add if statement for the success/fail messages
-	$('input[name="success"]').on('click', function() {
-		$('#successModal').modal('show');
-	});
-	$('input[name="error"]').on('click', function() {
-		$('#errorModal').modal('show');
-	});
-	<!--Message alert End-->
+	
+<script th:inline="javascript">
+
+//Set Course ID
+$("#courseName").blur(function (){
+	var courseName = $("#courseName").val();
+	var courseId = $('#courses [value="'+ courseName +'"]').data('value');
+	console.log(courseId);
+	
+	document.getElementById("courseId").value = courseId;
+});
+
+//Format Date Inputs
+Date.prototype.toISO = function() {
+	 return this.getUTCFullYear() +
+        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+        '-' + String(this.getUTCDate()).padStart(2, "0") +
+        'T' + String(this.getUTCHours()).padStart(2, "0") +
+        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
+        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
+        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+        'Z';
+};
+
+/*   //Checks if Date is Today
+function isToday(date){
+	var today = new Date();
+	return date.getDate() === today.getDate() &&
+	date.getMonth() === today.getMonth() &&
+	date.getYear() === today.getYear();
+}  */
+
+function validations() {	
+   
+	 	var courseName = $('#courseName').val();
+	    var instructor = $('#instructorId').val();
+	    var venue = $('#venueId').val();
+	    var minRequired = $('#minRequired').val();
+	    var maxAllowed = $('#maxAllowed').val();
+	    
+	    //Empty Fields Validations
+	    if (courseName == "") {
+
+	        $('#errorModal').modal('show');
+	        $('#errorModal').on('shown.bs.modal', function() {
+
+	            $('#errorModal').find('.modal-body').html('<p>Please fill up course name</p>');
+	        });
+	    }
+	    
+	    if (instructor == "") {
+
+	        $('#errorModal').modal('show');
+	        $('#errorModal').on('shown.bs.modal', function() {
+	            $('#errorModal').find('.modal-body').html('<p>Please fill up instructors</p>');
+	        });
+	    }
+
+	    if (venue == "") {
+
+	        $('#errorModal').modal('show');
+	        $('#errorModal').on('shown.bs.modal', function() {
+	            $('#errorModal').find('.modal-body').html('<p> Please fill up venues</p>');
+	        });
+	    }
+	    
+	    if (minRequired == "") {
+
+	        $('#errorModal').modal('show');
+	        $('#errorModal').on('shown.bs.modal', function() {
+	            $('#errorModal').find('.modal-body').html('<p> Please fill up minimum no. of participants</p>');
+	        });
+	    }
+	    
+	    if (maxAllowed == "") {
+
+	        $('#errorModal').modal('show');
+	        $('#errorModal').on('shown.bs.modal', function() {
+	            $('#errorModal').find('.modal-body').html('<p> Please fill up maximum no. of participants</p>');
+	        });
+	    }
+	    
+	    for(var i = 1; i<=5; i++){
+	        var startDate = $("#startDate"+i).val();
+	        var endDate =  $("#endDate"+i).val();
+	        var startTime =  $("#startTime"+i).val();
+	        var endTime =  $("#endTime"+i).val();
+	               
+	        if([startDate, endDate, startTime, endTime].includes(null) == false ||
+	        		[startDate, endDate, startTime, endTime].includes("") == false ){
+	        	if (startDate == "") {
+	                $('#errorModal').modal('show');
+	                $('#errorModal').on('shown.bs.modal', function() {
+	                    $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
+	                });
+	            } if (endDate == "") {
+
+	                $('#errorModal').modal('show');
+	                $('#errorModal').on('shown.bs.modal', function() {
+	                    $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
+	                });
+	            } if (startTime == "") {
+
+	                $('#errorModal').modal('show');
+	                $('#errorModal').on('shown.bs.modal', function() {
+	                    $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
+	                });
+	            } if (endTime == "") {
+
+	                $('#errorModal').modal('show');
+	                $('#errorModal').on('shown.bs.modal', function() {
+	                    $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
+	                });
+	            }
+	       
+	        }
+	    }
+	    
+		//Scheduled Start Date Time and Scheduled End Date Time Part
+	    
+	    for(i = 1; i<=5; i++){
+	    	var startDate = document.getElementById("startDate"+i).value;
+	        var endDate =  document.getElementById("endDate"+i).value;
+	        var startTime =  document.getElementById("startTime"+i).value;
+	        var endTime =  document.getElementById("endTime"+i).value;
+	        
+	        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00Z");
+		    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00Z");
+        	
+        	//Start and End Time Validation
+        	if (rowStartDateTime.getTime() > rowEndDateTime.getTime()) {
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
+                });
+            }
+        	
+        	//Start and End Date Validation
+        	if (rowStartDateTime.getDate() > rowEndDateTime.getDate()) {
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
+                });
+            }
+		    
+		    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
+		    	var endDateTime = null;
+		    	var startDateTime = null;
+		    } else {
+		    	var startDateTime = rowStartDateTime.toISO().toString();
+		        console.log(rowStartDateTime);
+		        console.log(startDateTime);
+		    	var endDateTime = rowEndDateTime.toISO().toString();
+			    console.log(rowEndDateTime);
+			    console.log(endDateTime);
+		    }
+		    
+		    document.getElementById("startDateTime"+i).value = startDateTime;
+			document.getElementById("endDateTime"+i).value = endDateTime;
+	    }
+	    
+	    
+/* 		//Get the values of Start/End Date and Time per row
+		var row1StartDate = $('#row1StartDate').val();
+    	var row1EndDate = $('#row1EndDate').val();
+    	var row1StartTime = $('#row1StartTime').val();
+    	var row1EndTime = $('#row1EndTime').val();
+
+	
+	  	var row2StartDate = $('#row2StartDate').val();
+	    var row2EndDate = $('#row2EndDate').val();
+	    var row2StartTime = $('#row2StartTime').val();
+	    var row2EndTime = $('#row2EndTime').val();
+
+	  
+	  	var row3StartDate = $('#row3StartDate').val();
+	    var row3EndDate = $('#row3EndDate').val();
+	    var row3StartTime = $('#row3StartTime').val();
+	    var row3EndTime = $('#row3EndTime').val();
+	    
+	 
+	  	var row4StartDate = $('#row4StartDate').val();
+	    var row4EndDate = $('#row4EndDate').val();
+	    var row4StartTime = $('#row4StartTime').val();
+	    var row4EndTime = $('#row4EndTime').val();
+	    
+	  	
+	  	var row5StartDate = $('#row5StartDate').val();
+	    var row5EndDate = $('#row5EndDate').val();
+	    var row5StartTime = $('#row5StartTime').val();
+	    var row5EndTime = $('#row5EndTime').val();
+
+	    //Static Time Zone Declaration
+	    var timeZone = ":00.252+08:00[Asia/Manila]";
+	    
+               
+    		//Check Empty Fields
+        	if ((row1StartDate == "") && (row2StartDate == "") && (row3StartDate == "") && (row4StartDate == "")
+        			&& (row5StartDate == "")) {
+        		
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
+                });
+            } 
+        	
+        	if ((row1EndDate == "") && (row2EndDate == "") && (row3EndDate == "") && (row4EndDate == "")
+        			&& (row5EndDate == "")) {
+
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
+                });
+            } 
+        	if ((row1StartTime == "") && (row2StartTime == "") && (row3StartTime == "") && (row4StartTime == "") 
+        			&& (row5StartTime == "")) {
+
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
+                });
+            } 
+        			
+        	if ((row1EndTime == "") && (row2EndTime == "") && (row3EndTime == "") && (row4EndTime == "")
+            		 && (row5EndTime == "")) {
+
+                $('#errorModal').modal('show');
+                $('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
+                });
+            }
+        	
+        	
+        		//Check not empty fields and execute parsing
+				if ((row1StartDate !== "") && (row1StartTime !== "") && (row1EndDate !== "") && (row1EndTime !=="")) {
+    			
+				    
+				var row1StartDateTime = row1StartDate + "T" + row1StartTime + timeZone;
+				var row1EndDateTime = row1EndDate + "T" + row1EndTime + timeZone;
+
+				   document.getElementById("startDateTime1").value = row1StartDateTime;
+				   document.getElementById("endDateTime1").value = row1EndDateTime;
+        		}
+            
+        		if ((row2StartDate !== "") && (row2StartTime !== "") && (row2EndDate !== "") && (row2EndTime !=="")) {
+    			
+        	    var row2StartDateTime = row2StartDate + "T" + row2StartTime + timeZone;
+        	    var row2EndDateTime = row2EndDate + "T" + row2EndTime + timeZone;
+        	    
+        	   	   document.getElementById("startDateTime2").value = row2StartDateTime;
+        		   document.getElementById("endDateTime2").value = row2EndDateTime;
+        		   
+        		}
+        		
+        		if ((row3StartDate !== "") && (row3StartTime !== "") && (row3EndDate !== "") && (row3EndTime !=="")) {
+        			
+        		
+        	    var row3StartDateTime = row3StartDate + "T" + row3StartTime + timeZone;
+        	    var row3EndDateTime = row3EndDate + "T" + row3EndTime + timeZone;
+        	    
+        		   document.getElementById("startDateTime3").value = row3StartDateTime;
+        		   document.getElementById("endDateTime3").value = row3EndDateTime;
+        		}
+        		
+        		if ((row4StartDate !== "") && (row4StartTime !== "") && (row4EndDate !== "") && (row4EndTime !=="")) {
+        			
+        	    var row4StartDateTime = row4StartDate + "T" + row4StartTime + timeZone;
+        	    var row4EndDateTime = row4EndDate + "T" + row4EndTime + timeZone;
+        	    
+        	       document.getElementById("startDateTime4").value = row4StartDateTime;
+        		   document.getElementById("endDateTime4").value = row4EndDateTime;
+        		}
+        		
+        		if ((row5StartDate !== "") && (row5StartTime !== "") && (row5EndDate !== "") && (row5EndTime !=="")) {
+        			
+        	    var row5StartDateTime = row5StartDate + "T" + row5StartTime + timeZone;
+        	    var row5EndDateTime = row5EndDate + "T" + row5EndTime + timeZone;
+        	    
+        	       document.getElementById("startDateTime5").value = row5StartDateTime;
+        		   document.getElementById("endDateTime5").value = row5EndDateTime;
+        	    
+        		}
+        	
+        
+        		//Start and End Time Validation
+        		if (row1StartTime > row1EndTime) {
+                    $('#errorModal').modal('show');
+                    $('#errorModal').on('shown.bs.modal', function() {
+                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
+                    });
+                }
+        		
+        		if (row2StartTime > row3EndTime) {
+                    $('#errorModal').modal('show');
+                    $('#errorModal').on('shown.bs.modal', function() {
+                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
+                    });
+                }
+        		
+        		if (row3StartTime > row3EndTime) {
+                    $('#errorModal').modal('show');
+                    $('#errorModal').on('shown.bs.modal', function() {
+                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
+                    });
+                }
+        		
+        		if (row4StartTime > row4EndTime) {
+                    $('#errorModal').modal('show');
+                    $('#errorModal').on('shown.bs.modal', function() {
+                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
+                    });
+                }
+        	
+        		if (row5StartTime > row5EndTime) {
+                    $('#errorModal').modal('show');
+                    $('#errorModal').on('shown.bs.modal', function() {
+                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
+                    });
+                }
+        		
+        		//Start and End Date Validation
+        		if (row1StartDate > row1EndDate)  {
+               		$('#errorModal').modal('show');
+                	$('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
+                	});
+           		}
+        		
+        		if (row2StartDate > row2EndDate)  {
+               		$('#errorModal').modal('show');
+                	$('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
+                	});
+           		}
+            	
+        		if (row3StartDate > row3EndDate)  {
+               		$('#errorModal').modal('show');
+                	$('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
+                	});
+           		}
+        		if (row4StartDate > row4EndDate)  {
+               		$('#errorModal').modal('show');
+                	$('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
+                	});
+           		}
+        		
+        		if (row5StartDate > row5EndDate)  {
+               		$('#errorModal').modal('show');
+                	$('#errorModal').on('shown.bs.modal', function() {
+                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
+                	});
+           		} */
+
+	  	//Not Empty Fields Validation
+	    if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") 
+	    				&& (maxAllowed !== "")  && ($.trim($("#dateTime input").val()).length > 0)) {
+		        $('#confirmModal').modal('show');
+			}     
+}
+
+/*<![CDATA[*/
+var successMessage = /*[[${message}]]*/ 'default';
+var element = document.getElementById('successMessage').innerHTML;
+
+console.log(successMessage);
+console.log(element);
+
+if (successMessage == element) {
+
+    $('#successModal').modal('show');
+}
+/*]]>*/
 </script>
 </body>
 

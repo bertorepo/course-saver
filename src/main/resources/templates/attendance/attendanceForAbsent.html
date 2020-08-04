@@ -10,212 +10,240 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Attendance for Absent</title>
-	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>	
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
 
 <body>
-	<div th:insert="fragments/general.html :: header"> </div>	
-	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/attendance/generate/{courseScheduleDetailId}/absent}" th:object="${generateAbsent}" method="get">
-			<h3><i class="fa fa-list"></i> Attendance for Absent</h3>
-			<hr>
-			<div class="card">
-				<div class="card-body">
-					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">Course</label>
-						<div class="col-lg-5">
-							<!-- <select class="form-control">
-								<option value="">Select...</option>
-								<option value="">Hello</option>
-								<option value="">World</option>
-							</select> -->
-							<select class="form-control" th:field="*{generateAbsent}">
-							<option value="">   </option>
-							<option th:each = "generateAttendanceForAbsent : *{generateAbsent}"
-							th:value="${generateAttendanceForAbsent.getCourseName()}"
-							th:text="${generateAttendanceForAbsent.getCourseName()}"/>
-							</select>
+	<div th:insert="fragments/general.html :: header" > </div>	
+		<div class="container mt-5">
+			<form class="form-horizontal" action="#" th:object="${attendanceForAbsent}" method="get">
+				<h3><i class="fa fa-list"></i> Attendance for Absent</h3>
+					<hr>
+						<div class="card" >
+							<div class="card-body">
+								<div class="form-group row">				
+									<label class="col-lg-1 col-form-label">Course</label>
+									<div class="col-lg-7">																									
+										<select class="form-control" id="selectedCourse"
+											th:each="courseschedule : ${attendanceForAbsent}">
+											<option value=""></option>
+											<option th:each="course : ${attendanceForAbsent.courses}" 
+								    				th:value="${course.id}"
+								    				th:selected="${course.id eq lastSelected}"
+								    				th:text="${course.courseName}">								   							 
+								 			</option>
+										</select>	
+									</div>
+									
+										<script th:inline="javascript">
+										function choices() {
+											var id= $('#selectedCourse').val();
+											var courseName = $('#selectedCourse :selected').text();
+											var message = 'You have signed in to '+courseName;
+			                                if (id == "") {
+			                                    $('#errorModal').modal('show');
+			                                } else if (id != "") {
+			                                    $('#successModal').modal('show');
+			                                    $('#successModal').on('shown.bs.modal',
+			                                        function() {
+			                                        $('#successModal').find('.modal-body').html(
+			                                        message);
+			                                        });
+			                                }
+										}
+										function successUrl() {
+											var id = document.getElementById("selectedCourse").value;
+											var callUrl = '/attendance/generate/' + id
+													+ '/absent';
+											document.location.href = callUrl;
+										}
+										function errorUrl() {
+											var id = document.getElementById("selectedCourse").value;
+											var callUrl = '/attendance/generate/0/absent';
+											document.location.href = callUrl;
+										}
+
+                        				</script>
+								</div>								
+								<div class="float-right">
+                        			<input type = "button" onclick="choices()" class="btn btn-large btn-success"  
+                        		    value= "Generate" name="button" id="button"></input>              
+                    			</div>
+							</div>
 						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">Course Schedule</label>
-						<div class="col-lg-5">
-							<!-- <select class="form-control">
-								<option value="">Select...</option>
-								<option value="">Hello</option>
-								<option value="">World</option>
-							</select> -->
-							<select class="form-control" th:field="*{generateAbsent}">
-							<option value="">   </option>
-							<option th:each = "generateAttendanceForAbsent : *{generateAbsent}"
-							th:value="${generateAttendanceForAbsent.getScheduleStartDateTime()} '+' ${generateAttendanceForAbsent.getScheduleEndDateTime()}"
-							th:text="${generateAttendanceForAbsent.getScheduleStartDateTime()} '+' ${generateAttendanceForAbsent.getScheduleEndDateTime()}"/>
-							</select>
-						</div>
-					</div>
-					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Generate">
-					</div>
-				</div>
-			</div>
-		</form>
+					</form>	
 		<!--Success Modal-->
-		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
 						<h5 class="modal-title"></h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<button type="button" onclick="successUrl()" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-					</div>
+					</div>	
 					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">You have signed in to this {Course}</label>
-						</div>	
+                        <div class="form-group row">
+                       <!--     <label cla{
+                       ss="col-lg-12 col-form-label">You have signed in to this</label>
+                            <input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{courseName}"/> -->  
+                        </div>  				
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Success Modal End-->
-		<!--Buttons for messages (delete these)-->
-		<input type="button" name="success" class="btn btn-success" value="Success">
-		<!--Buttons for messages (delete these) End-->
-		<div class="card mt-5">
+		<!--Error Modal-->
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+       		 data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-sm text-center">
+                <div class="modal-content">
+                    <div class="modal-header alert-danger">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" onclick="errorUrl()" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-lg-12 col-form-label">No selected course</label>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Error Modal End-->
+		<div class="card mt-5" id="hideTable" th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/absent'}">
 			<div class="card-body">	
-				<div class="col-lg-12" style="overflow-x:auto;">						
-					<table class="table table-bordered">
-					<th:block th:each="generateAttendanceForAbsent : *{generateAbsent}">
-						<tr>
-							<td colspan="3">
-								<label class="col-lg-6 col-form-label">COURSE TITLE</label>
-								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getCourseName()}"></label>
-								<!-- <input type="text" class="form-control" name="courseName" th:value="*{generateAttendanceForAbsent.getCourseName()}"/>-->						
-							</td>
-							<td colspan="1">
-								<label class="col-lg-6 col-form-label">DURATION</label>
-								<label class="col-lg-12 col-form-label text-center">2 hours</label>
-								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getDuration()}"></label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="1">
-								<label class="col-lg-6 col-form-label">INCLUSIVE DATES</label>
-							</td>
-							<td colspan="1">
-								<label class="col-lg-6 col-form-label">Start</label>
-								<label class="col-lg-12 col-form-label text-center">5/5/2020</label>
-								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getScheduleStartDateTime()}"></label>
-							</td>
-							<td colspan="1">
-								<label class="col-lg-6 col-form-label">End</label>
-								<label class="col-lg-12 col-form-label text-center">5/5/2020</label>
-								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getScheduleEndDateTime()}"></label>
-							</td>
-							<td colspan="1">
-								<label class="col-lg-6 col-form-label">VENUE</label>
-								<label class="col-lg-12 col-form-label text-center">Online Meeting</label>
-								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getVenueName()}"></label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="1">
-								<label class="col-lg-5 col-form-label">SESSION</label>
-								<label class="col-lg-1 col-form-label text-center">1</label>
-								<label class="col-lg-3 col-form-label text-center">OF</label>
-								<label class="col-lg-1 col-form-label text-center">5</label>
-							</td>
-							<td colspan="1">
-								<label class="col-lg-6 col-form-label">START TIME</label>
-								<label class="col-lg-12 col-form-label text-center">10:00 PHT</label>
-								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getScheduleStartDateTime()}"></label>
-							</td>
-							<td colspan="1">
-								<label class="col-lg-6 col-form-label">&nbsp;</label>
-								<label class="col-lg-12 col-form-label text-center">12:00 PHT</label>
-								<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getScheduleEndDateTime()}"></label>
-							</td>
-							<td colspan="1" rowspan="2">
-								<label class="col-lg-6 col-form-label">INSTRUCTOR</label>
-								<div class="row mt-5">
-									<label class="col-lg-12 col-form-label text-center">Instructor Name</label>
-									<label class="col-lg-12 col-form-label text-center" th:value="*{generateAttendanceForAbsent.getInstructorName()}"></label>
-								</div>
-								<div class="row mt-5">
-									<label class="col-lg-12 col-form-label text-center">___________________________________</label>
-								</div>
-								<div class="row">
-									<label class="col-lg-12 col-form-label text-center">(SIGNATURE OVER PRINTED NAME)</label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<label class="col-lg-6 col-form-label">TRAINING TYPE</label>
-								<div class="row">
+				<div class="col-lg-12" style="overflow-x:auto;">
+					<form class="form-horizontal" action="#" th:object="${attendanceForAbsent}" method="get" >						
+						<table class="table table-bordered" >
+							<th:block>				
+								<tr>
+									<td colspan="3">
+										<label class="col-lg-6 col-form-label">COURSE TITLE:</label>
+										<input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{courseName}"/>						
+									</td>
+									<td colspan="1">
+										<label class="col-lg-8 col-form-label">DURATION (in HRS):</label>
+										<input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{duration}"/>	
+									</td>
+								</tr>
+								<tr>
+									<td colspan="1">
+										<label class="col-lg-6 col-form-label">INCLUSIVE DATES:</label>
+									</td>
+									<td colspan="1">
+										<label class="col-lg-6 col-form-label">Start</label>
+										<input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{scheduledStartDateTime}"/>	
+									</td>
+									<td colspan="1">
+										<label class="col-lg-6 col-form-label">End</label>
+										<input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{scheduledEndDateTime}"/>	
+									</td>
+									<td colspan="1">
+										<label class="col-lg-6 col-form-label">VENUE:</label>
+										<input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{venueName}"/>	
+									</td>
+								</tr>
+								<tr>
+									<td colspan="1">
+										<label class="col-lg-5 col-form-label">SESSION</label>
+										<label class="col-lg-1 col-form-label text-center">1</label>
+										<label class="col-lg-3 col-form-label text-center">OF</label>
+										<label class="col-lg-1 col-form-label text-center">5</label>
+									</td>
+									<td colspan="1">
+										<label class="col-lg-12 col-form-label">START TIME</label>
+										<input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{scheduledStartDateTime}"/>	
+									</td>
+									<td colspan="1">
+										<label class="col-lg-12 col-form-label">END TIME</label>
+										<input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{scheduledEndDateTime}"/>	
+									</td>
+									<td colspan="1" rowspan="2">
+										<label class="col-lg-6 col-form-label">INSTRUCTOR:</label>
+										<div class="row mt-5">
+											<input type="text" class="form-control-plaintext col-lg-12 col-form-label text-center" readonly th:field="*{instructorName}"/>	
+										</div>
+										<div class="row mt-1">
+											<label class="col-lg-12 col-form-label text-center">___________________________________</label>
+										</div>
+										<div class="row">
+											<label class="col-lg-12 col-form-label text-center">(SIGNATURE OVER PRINTED NAME)</label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+									<label class="col-lg-6 col-form-label">TRAINING TYPE</label>
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="1">
+												<label class="form-check-label" for="1">INDUCTION</label>
+											</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="2">
+												<label class="form-check-label" for="2">LANGUAGE</label>
+											</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="3">
+												<label class="form-check-label" for="3">TEAM BUILDING</label>
+											</div>
+										</div>
 									<div class="col-lg-4">
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="1">
-											<label class="form-check-label" for="1">INDUCTION</label>
-										</div>
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="2">
-											<label class="form-check-label" for="2">LANGUAGE</label>
-										</div>
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="3">
-											<label class="form-check-label" for="3">TEAM BUILDING</label>
-										</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="4">
+												<label class="form-check-label" for="4">IT-TECHNICAL (SOFTWARE)</label>
+											</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="5">
+												<label class="form-check-label" for="5">IT-TECHNICAL (HARDWARE)</label>
+											</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="6">
+												<label class="form-check-label" for="6">IT-TECHNICAL (PROCESS)</label>
+											</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="7">
+												<label class="form-check-label" for="7">STANDARDS COMPLIANCE</label>
+											</div>
 									</div>
 									<div class="col-lg-4">
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="4">
-											<label class="form-check-label" for="4">IT-TECHNICAL (SOFTWARE)</label>
-										</div>
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="5">
-											<label class="form-check-label" for="5">IT-TECHNICAL (HARDWARE)</label>
-										</div>
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="6">
-											<label class="form-check-label" for="6">IT-TECHNICAL (PROCESS)</label>
-										</div>
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="7">
-											<label class="form-check-label" for="7">STANDARDS COMPLIANCE</label>
-										</div>
-									</div>
-									<div class="col-lg-4">
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="8">
-											<label class="form-check-label" for="8">SOFT SKILLS/BEHAVIORAL</label>
-										</div>
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="9">
-											<label class="form-check-label" for="9">MANAGEMENT/LEADERSHIP</label>
-										</div>
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="10">
-											<label class="form-check-label" for="10">POLICY ORIENTATION</label>
-										</div>
-										<div class="form-group form-check">
-											<input type="checkbox" class="form-check-input" id="11">
-											<label class="form-check-label" for="11">OTHER</label>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="8">
+												<label class="form-check-label" for="8">SOFT SKILLS/BEHAVIORAL</label>
+											</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="9">
+												<label class="form-check-label" for="9">MANAGEMENT/LEADERSHIP</label>
+											</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="10">
+												<label class="form-check-label" for="10">POLICY ORIENTATION</label>
+											</div>
+											<div class="form-group form-check">
+												<input type="checkbox" class="form-check-input" id="11">
+												<label class="form-check-label" for="11">OTHER</label>
+											</div>
 										</div>
 									</div>
-								</div>
-							</td>
-						</tr>
-						</th:block>
-					</table>
+									</td>
+								</tr>
+							</th:block>
+						</table>
 					</form>
 				</div>
+				
 				<div class="col-lg-12 mt-5" style="overflow-x:auto;display: block; white-space: nowrap ">				
-					<table class="table table-bordered text-center" >
+					<table class="table table-bordered text-center">
 						<colgroup >
 							<col style="width:10%"/>
 							<col style="width:10%"/>
@@ -235,68 +263,24 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="generateAttendanceForAbsent : *{generateAbsent}">
-								<td>1</td>
-								<!-- <td th:text="*{generateAttendanceForAbsent.getParticipantId()}"/> waiting din for Q.A tong employee number -->
-								<td>Tenorio, Arlene<br>a.tenorio@ph.fujitsu.com</td>
-								<td th:text="*{generateAttendanceForAbsent.getParticipantName()}"/><br><td th:text="*{generateAttendanceForAbsent.getEmail()}"/> <!-- yung sa email nilagay ko lang waiting for Q.A -->
-								<td>G3CC</td>								
-								<td>SL</td>
-								<!-- <td th:text="*{generateAttendanceForAbsent.getLoginDateTime())}"/> not sure kung logInDateTime ba para dito sa time-in-->
-								<td></td>
-								<td></td>
-
-								<!--  
-								<td>2</td>
-								<td>Virtudazo, Aljohn Rey<br>a.virtudazo@ph.fujitsu.com</td>
-								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
-								<td>G3CC</td>
-								<td>VL</td>
-								<td></td>
-								<td></td>
-
-								<td>3</td>
-								<td>Avellana, Brex<br>b.avellana@ph.fujitsu.com</td>
-								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
-								<td>G3CC</td>
-								<td>SL</td>
-								<td></td>
-								<td></td>
-	
-								<td>4</td>
-								<td>Con-Ui, Jan Daryll Martin<br>j.conui@ph.fujitsu.com</td>
-								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
-								<td>G3CC</td>
-								<td>VL</td>
-								<td></td>
-								<td></td>
-
-								<td>5</td>
-								<td>Lorenzana, Joel<br>j.lorenzana@ph.fujitsu.com</td>
-								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
-								<td>G3CC</td>
-								<td>VL</td>
-								<td></td>
-								<td></td>
-
-								<td>6</td>
-								<td>Abella, Rixon Jeuz<br>r.abella@ph.fujitsu.com</td>
-								<td th:text="*{name}"/><br><td th:text="*{loginDateTime}"/>
-								<td>G3CC</td>
-								<td>VL</td>
-								<td></td>
-								<td></td> -->
-							</tr>
+						<tr th:each="attendanceForAbsent : *{attendanceForAbsent.participants}">						
+								<td>---</td>
+								<td th:text="${attendanceForAbsent.getName()}"/>
+								<td th:text="${attendanceForAbsent.getLoginDateTime()}"/>
+								<td th:text="${attendanceForAbsent.getStatus()}"/>
+								<td>---</td>
+								<td>---</td>
+						</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
-		</div>  
-	</div>
-	
+		</div> 
+	</div> 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
+	
 <script>
-	<!--Message alert-->
+	//Message alert
 	//add if statement for the success/fail messages
 	$('input[name="success"]').on('click', function() {
 		$('#successModal').modal('show');
@@ -304,8 +288,7 @@
 	$('input[name="error"]').on('click', function() {
 		$('#errorModal').modal('show');
 	});
-	<!--Message alert End-->
+	//Message alert End	
 </script>
 </body>
-
 </html>
