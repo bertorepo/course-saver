@@ -19,6 +19,11 @@
 		[list]::-webkit-calendar-picker-indicator {
     		opacity: 0;
   		}
+  		
+  		input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+    		-webkit-appearance : none;
+    		margin: 0;
+  		}
 	</style>
 </head>
 
@@ -74,11 +79,15 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Participants</label>
 						<div class="col-lg-2">
-							<input type="text" oninput="numberOnly(this.id);" maxlength="5" class="form-control" placeholder="Minimum Required" th:field="*{minRequired}"id="minRequired" >
+							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
+									class="form-control" placeholder="Minimum Required" 
+									th:field="*{minRequired}"id="minRequired" >
 						</div>
 						<div class="col-lg-1 text-center">—</div>
 						<div class="col-lg-2">
-							<input type="text" oninput="numberOnly(this.id);" maxlength="5" class="form-control" placeholder="Maximum Allowed" th:field="*{maxAllowed}" id="maxAllowed" >
+							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
+									class="form-control" placeholder="Maximum Allowed" 
+									th:field="*{maxAllowed}" id="maxAllowed" >
 						</div>
 					</div>
 					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap" id="dateTime">
@@ -110,13 +119,15 @@
 									<div class="form-group row">
 										<div class="col-lg-2"></div>
 										<div class="col-lg-4">
-											<input type="number" class="form-control" 
+											<input type="text" class="form-control" 
 													th:id="${'startTime' + (stat.index + 1)}" 
+													oninput="timeOnly(this.id);" 
 													maxlength="5">
 										</div>
 										<div class="col-lg-4">
-											<input type="number" class="form-control" 
+											<input type="text" class="form-control" 
 													th:id="${'endTime' + (stat.index + 1)}"
+													oninput="timeOnly(this.id);" 
 													maxlength="5" >
 										</div>
 									</div>
@@ -368,12 +379,50 @@ function validations() {
 	    }		
  }
  
-function numberOnly(id)
+ 
+//Formats the text to only accept numbers on keypress
+function numOnly(id)
 {
-	 var element = document.getElementById(id);
+	 var number = document.getElementById(id);
 	 var regex = /[^0-9]/gi;
 	 
-	 element.value = element.value.replace(regex, "");
+	 number.value = number.value.replace(regex, "");
+}
+
+//Formats the time to only accept numbers add Semicolon at 3rd index 
+function timeOnly(id)
+{
+	var time = document.getElementById(id);
+	var regex = /[^0-9:]/gi;
+	
+	if (time.value.length == 2 && !(time.value.includes(":"))){
+		
+		time.value = time.value.replace(regex, "") + ":";
+		
+	} 
+	
+	if(time.value.includes(":")) {
+		
+		var hour = time.value.substring(0, time.value.indexOf(':'));
+		var minute = time.value.substring(time.value.indexOf(':') + 1);
+		var intHour = parseInt(hour);
+		console.log(intHour);
+		var intMinute = parseInt(minute);
+		console.log(intMinute);
+		
+		if (intHour > 24) {
+			time.value = "00:";
+		}
+		
+		if (intMinute > 59) {	
+			time.value = hour.replace(regex, "").padStart(2, "0") + ":00";	
+		}
+		
+		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
+			time.value = hour.replace(regex, "").padStart(2, "0") + ":" + minute.replace(regex, "").padStart(2,"0");
+		}
+	}
+	
 }
 
 	   
