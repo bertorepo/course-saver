@@ -419,7 +419,7 @@ function timeOnly(id)
 		}
 		
 		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
-			time.value = hour.replace(regex, "").padStart(2, "0") + ":" + minute.replace(regex, "").padStart(2,"0");
+			time.value = hour.replace(regex, "").padStart(2, "0") + ":" + minute.replace(regex, "").padEnd(2,"0");
 		}
 	}
 	
