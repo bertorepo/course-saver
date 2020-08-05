@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
@@ -10,51 +11,64 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Attend</title>
-	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
 
 <body>
-	<div th:insert="fragments/general.html :: header"> </div>
-	
+	<div th:insert="fragments/general.html :: header"></div>
+
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/attendance/signin/{courseScheduleDetailId} (courseScheduleDetailId= ${courseScheduleDetailId})}" th:object="${courseAttendance}" method="post">
-			<h3><i class="fa fa-info-circle"></i> Course Information</h3>
+		<form class="form-horizontal" action="#"
+			th:action="@{/attendance/signin/{courseScheduleDetailId} (courseScheduleDetailId= ${courseScheduleDetailId})}"
+			th:object="${courseAttendance}" method="post">
+			<div class="modal fade" th:if="${message}" id="successMessage"
+				tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+				aria-hidden="true"></div>
+			<h3>
+				<i class="fa fa-info-circle"></i> Course Information
+			</h3>
 			<hr>
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row">
 						<label class="col-lg-3 col-form-label">Course ID:</label>
 						<div class="col-lg-9">
-							<label class="col-lg-3 col-form-label" th:text="*{courseScheduleDetailId}"/></label>
+							<label class="col-lg-3 col-form-label"
+								th:text="*{courseScheduleDetailId}" /></label>
 						</div>
 						<label class="col-lg-3 col-form-label">Course Name:</label>
 						<div class="col-lg-9">
-							<label class="col-lg-3 col-form-label" th:text="*{courseName}"/></label>						
+							<label class="col-lg-3 col-form-label" th:text="*{courseName}" id = "coursesName"/></label>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-3 col-form-label">Instructor:</label>
 						<div class="col-lg-9">
-							<label class="col-lg-3 col-form-label" th:text="*{instructorName}"/></label>	
+							<label class="col-lg-3 col-form-label"
+								th:text="*{instructorName}" /></label>
 						</div>
 						<label class="col-lg-3 col-form-label">Course Date(s):</label>
 						<div class="col-lg-9">
-							<label class="col-lg-3 col-form-label" th:text="*{scheduledStartDateTime}"/></label>	
-							<label class="col-lg-3 col-form-label" th:text="*{scheduledEndDateTime}"/></label>	
+							<label class="col-lg-3 col-form-label"
+								th:text="*{scheduledStartDateTime}" /></label> <label
+								class="col-lg-3 col-form-label"
+								th:text="*{scheduledEndDateTime}" /></label>
 						</div>
 						<label class="col-lg-3 col-form-label">Timeslot:</label>
 						<div class="col-lg-9">
-							<label class="col-lg-3 col-form-label" th:text="*{scheduledStartDateTime}"/></label>	
-							<label class="col-lg-3 col-form-label" th:text="*{scheduledEndDateTime}"/></label>	
+							<label class="col-lg-3 col-form-label"
+								th:text="*{scheduledStartDateTime}" /></label> <label
+								class="col-lg-3 col-form-label"
+								th:text="*{scheduledEndDateTime}" /></label>
 						</div>
 						<label class="col-lg-3 col-form-label">Venue:</label>
 						<div class="col-lg-9">
-							<label class="col-lg-3 col-form-label" th:text="*{venueName}"/></label>	
-						</div> 
+							<label class="col-lg-3 col-form-label" th:text="*{venueName}" /></label>
+						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-3 col-form-label">Course Description:</label>
@@ -63,88 +77,109 @@
 						</div>
 					</div>
 					<div class="float-right">
-						<input type="submit" name="signin" class="btn btn-success" value="Sign In">
+						<input type="submit" name="signin" class="btn btn-success"
+							value="Sign In">
 					</div>
 				</div>
 			</div>
-		</form>       
+		</form>
 		<!--Signin Success Modal-->
-		<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
 						<h5 class="modal-title"></h5>
-<!-- 						<form id="form" action="#" th:action="@{/attendance/signin/{courseScheduleDetailId} (courseScheduleDetailId= ${courseScheduleDetailId})}" th:object="${courseAttendance}" method="post"> -->
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<!-- 						<form id="form" action="#" th:action="@{/attendance/signin/{courseScheduleDetailId} (courseScheduleDetailId= ${courseScheduleDetailId})}" th:object="${courseAttendance}" method="post"> -->
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-<!-- 						</form> -->
+						<!-- 						</form> -->
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">You have signed in to this {course}</label>
-						</div>	
+<!-- 							<label class="col-lg-12 col-form-label">You have signed -->
+<!-- 								in to this {course}</label> -->
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Signin Success Modal End-->
 		<!--Signout Success Modal-->
-		<div class="modal fade" id="signoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal fade" id="signoutModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-danger">
 						<h5 class="modal-title"></h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">You have signed out to this {course}</label>
-						</div>	
+							<label class="col-lg-12 col-form-label">You have signed
+								out to this {course}</label>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Signout Success Modal End-->
 		<!--Buttons for messages (delete these)-->
-<!-- 			<input type="button" name="signin" class="btn btn-success" value="Test button 1"> -->
-<!-- 			<input type="button" name="signout" class="btn btn-danger" value="Test button 2"> -->
+		<!-- 			<input type="button" name="signin" class="btn btn-success" value="Test button 1"> -->
+		<!-- 			<input type="button" name="signout" class="btn btn-danger" value="Test button 2"> -->
 		<!--Buttons for messages (delete these) End-->
 	</div>
-	
+
 	<footer th:replace="fragments/general.html :: footer"></footer>
-<script th:inline="javascript">
-	<!--Message alert-->
-	//add if statement for the success/fail messages
-	$('input[name="signin"]').on('click', function() {	
-		setTimeout(function() {
-		$('#signinModal').modal('show');
-		}, 1000);		
-	});
-	
-// 	$('input[name="signout"]').on('click', function() {
-// 		$('#signoutModal').modal('show');
-// 	});
-	
-// 	$('input[name="signin"]').on('click', function(e){
-// 	    e.preventDefault();
-// 	    $.ajax({
-// 	        url: '/attendance/signin/2',
-// 	        type: 'post',
-// 	        data: $(this).serialize(),
-// 	        success: function(){	        	
-// 	        }
-// 	    $('#signinModal').modal('show');
-// 	    });
-// 	}
-	
-// 	function signin() {
-// 		$('#signinModal').modal('show');
-// 	}
-	<!--Message alert End-->
-</script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	var courseName = $('#coursesName').text();	
+    var message = 'You have signed in to this '+ courseName;
+	var element = document.getElementById('successMessage').innerHTML;
+	    $('#successModal').modal('show');
+	    $('#successModal').on(
+                'shown.bs.modal',
+                function() {
+                    $('#successModal').find(
+                            '.modal-body').html(
+                            message);
+                });
+	/*]]>*/
+		//add if statement for the success/fail messages
+// 		$('input[name="signin"]').on('click', function() {
+// 			setTimeout(function() {
+// 				$('#signinModal').modal('show');
+// 			}, 1000);
+// 		});
+
+// 			$('input[name="signout"]').on('click', function() {
+		// 		$('#signoutModal').modal('show');
+		// 	});
+
+		// 	$('input[name="signin"]').on('click', function(e){
+		// 	    e.preventDefault();
+		// 	    $.ajax({
+		// 	        url: '/attendance/signin/2',
+		// 	        type: 'post',
+		// 	        data: $(this).serialize(),
+		// 	        success: function(){	        	
+		// 	        }
+		// 	    $('#signinModal').modal('show');
+		// 	    });
+		// 	}
+
+		// 	function signin() {
+		// 		$('#signinModal').modal('show');
+		// 	}
+		
+	</script>
 </body>
 
 </html>
