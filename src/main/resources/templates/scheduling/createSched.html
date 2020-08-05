@@ -145,7 +145,7 @@
 		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
-					<div class="modal-header alert-danger">
+					<div class="modal-header alert-warning">
 						<h5 class="modal-title">Confirmation</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -270,10 +270,10 @@ function validations() {
 	    errorMsg.push("Please fill up Maximum no. of Participants");
 	}
 	if (minRequired > maxAllowed) {
-	    errorMsg.push("Max allowed can't be greater than minimum allowed");
+	    errorMsg.push("Maximum Participants can't be greater than Minimum Participants");
 	}
 	if ((minRequired == 0) && (maxAllowed == 0)) {
-	    errorMsg.push("Minimum required and Max allowed can't be equal to zero");
+	    errorMsg.push("Minimum Participants and Maximum Participants can't be equal to zero");
 	}
 
 
@@ -298,11 +298,11 @@ function validations() {
 	}
 
 	if (startDateTimeCount == 0) {
-	    errorMsg.push("Please fill up start date and start time");
+	    errorMsg.push("Please fill up Start Date and Start Time");
 	}
 
 	if (endDateTimeCount == 0) {
-	    errorMsg.push("Please fill up end date and end time");
+	    errorMsg.push("Please fill up End Date and End Time");
 	}
 
 	 
@@ -344,33 +344,31 @@ function validations() {
 		    document.getElementById("startDateTime"+i).value = startDateTime;
 			document.getElementById("endDateTime"+i).value = endDateTime;
 	
-	    }
-		
-	    var messageHtml = "";
+			//Error Modal Validation
+		    var messageHtml = "";
 
-		errorMsg.forEach(function(message) {
-		    messageHtml += "<li>" + message + "</li>";
-		});
+			errorMsg.forEach(function(message) {
+			    messageHtml += "<br/>" + "<li>" + message + "</li>";
+			});
 
-		document.getElementById("error").innerHTML = messageHtml;
-		
-	    if(errorMsg!="") {
-		   	$('#errorModal').modal('show');
-		}
-		
-		//Confirmation Modal Validation
-		if ((courseName !== "") && (instructor !== "") && (venue !== "")
-				&& (minRequired !== "") && (maxAllowed !== "") && (minRequired !== 0) && (maxAllowed !== 0) &&
-				(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 )) {
+			document.getElementById("error").innerHTML = messageHtml;
 			
-			$('#confirmModal').modal('show');
-		}
-
-			console.log("startDate:"+ startDate);
-			console.log("endDate" + endDate);
-	    
+		    if(errorMsg!="") {
+			   	$('#errorModal').modal('show');
+			}
+			
+			//Confirmation Modal Validation
+			if ((courseName !== "") && (instructor !== "") && (venue !== "")
+					&& (minRequired !== "") && (maxAllowed !== "") && (minRequired !== 0) && (maxAllowed !== 0) &&
+					(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) && (startDate < endDate)
+					&& (startTime < endTime)) {
+				
+				$('#confirmModal').modal('show');
+			}
+	    }		
  }
 	   
+//Success Modal Validation
 
 /*<![CDATA[*/
 var successMessage = /*[[${message}]]*/ 'default';
