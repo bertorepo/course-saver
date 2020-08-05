@@ -19,6 +19,11 @@
 		[list]::-webkit-calendar-picker-indicator {
     		opacity: 0;
   		}
+  		
+  		input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+    		-webkit-appearance : none;
+    		margin: 0;
+  		}
 	</style>
 </head>
 
@@ -27,7 +32,7 @@
 	<div class="container mt-5">
 		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
 		<!--Success Message-->
-		<div class="modal fade" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+		<div class="modal fade" th:if="${message}" th:text="${message}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 		<!--Success Message End-->
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
@@ -37,14 +42,14 @@
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5" style="">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
-							<input type="text" list="courses" id=courseName placeholder="Enter Course Name" class="form-control" th:field="*{courseId}">
+							<input type="text" list="courses" id="courseName" placeholder="Enter Course Name" class="form-control">
 							<datalist id="courses">
 								<option value=""></option>
 							 	<option th:each="courses : *{courses}"
-							 			th:value="${courses.id}"
-							 			th:text="${courses.name}"
-							 			th:selected="${courses.id} eq *{courseId}"></option>
+							 			th:attr="data-value = ${courses.id}"
+							 			th:value="${courses.name}"></option>
 							</datalist>
+							<input type="hidden" th:id="*{courseId}" th:field="*{courseId}"/>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -74,11 +79,15 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Participants</label>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" placeholder="Minimum Required" th:field="*{minRequired}"id="minRequired" >
+							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
+									class="form-control" placeholder="Minimum Required" 
+									th:field="*{minRequired}"id="minRequired" >
 						</div>
 						<div class="col-lg-1 text-center">—</div>
 						<div class="col-lg-2">
-							<input type="text" class="form-control" placeholder="Maximum Allowed" th:field="*{maxAllowed}" id="maxAllowed" >
+							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
+									class="form-control" placeholder="Maximum Allowed" 
+									th:field="*{maxAllowed}" id="maxAllowed" >
 						</div>
 					</div>
 					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap" id="dateTime">
@@ -112,11 +121,13 @@
 										<div class="col-lg-4">
 											<input type="text" class="form-control" 
 													th:id="${'startTime' + (stat.index + 1)}" 
+													oninput="timeOnly(this.id);" 
 													maxlength="5">
 										</div>
 										<div class="col-lg-4">
 											<input type="text" class="form-control" 
 													th:id="${'endTime' + (stat.index + 1)}"
+													oninput="timeOnly(this.id);" 
 													maxlength="5" >
 										</div>
 									</div>
@@ -142,10 +153,10 @@
 				</div>
 			</div>
 		<!--Confirmation Modal-->
-		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
-					<div class="modal-header alert-danger">
+					<div class="modal-header alert-warning">
 						<h5 class="modal-title">Confirmation</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -169,7 +180,7 @@
 		<!--Confirmation Modal End-->
 		</form>  
 		<!--Success Modal-->
-		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
@@ -188,7 +199,7 @@
 		</div>
 		<!--Success Modal End-->
 		<!--Error Modal-->
-		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-danger">
@@ -199,6 +210,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
+							<div id="error" style="color:red"></div>
 							<label class="col-lg-12 col-form-label"></label>
 						</div>	
 					</div>
@@ -212,6 +224,15 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 <script th:inline="javascript">
+
+//Set Course ID
+$("#courseName").blur(function (){
+	var courseName = $("#courseName").val();
+	var courseId = $('#courses [value="'+ courseName +'"]').data('value');
+	console.log(courseId);
+	
+	document.getElementById("courseId").value = courseId;
+});
 
 //Format Date Inputs
 Date.prototype.toISO = function() {
@@ -234,123 +255,90 @@ function isToday(date){
 }  */
 
 function validations() {
-   
-	 var courseName = $('#courseName').val();
-	    var instructor = $('#instructorId').val();
-	    var venue = $('#venueId').val();
-	    var minRequired = $('#minRequired').val();
-	    var maxAllowed = $('#maxAllowed').val();
-	    
-	    //Empty Fields Validations
-	    if (courseName == "") {
+	
+	var courseName = $('#courseName').val();
+	var instructor = $('#instructorId').val();
+	var venue = $('#venueId').val();
+	var minRequired = $('#minRequired').val();
+	var maxAllowed = $('#maxAllowed').val();
+	var errorMsg = new Array();
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
 
-	            $('#errorModal').find('.modal-body').html('<p>Please fill up course name</p>');
-	        });
+	//Empty Fields Validations
+	if (courseName == "") {
+	    errorMsg.push("Please fill up Course Name");
+	}
+	if (instructor == "") {
+	    errorMsg.push("Please fill up Instructor");
+	}
+	if (venue == "") {
+	    errorMsg.push("Please fill up Venue");
+	}
+	if (minRequired == "") {
+	    errorMsg.push("Please fill up Minimum no. of Participants");
+	}
+	if (maxAllowed == "") {
+	    errorMsg.push("Please fill up Maximum no. of Participants");
+	}
+	if (minRequired > maxAllowed) {
+	    errorMsg.push("Maximum Participants can't be greater than Minimum Participants");
+	}
+	if ((minRequired == 0) && (maxAllowed == 0)) {
+	    errorMsg.push("Minimum Participants and Maximum Participants can't be equal to zero");
+	}
+
+
+	//Empty Fields Validation for Start and End date
+	var startDateTimeCount = 0;
+	var endDateTimeCount = 0;
+
+	for (var i = 1; i <= 5; i++) {
+
+	    var startDate = $("#startDate" + i).val();
+	    var startTime = $("#startTime" + i).val();
+	    var endDate = $("#endDate" + i).val();
+	    var endTime = $("#endTime" + i).val();
+
+	    if ((startDate !== "") && (startTime !== "")) {
+	        startDateTimeCount++;
 	    }
-	    
-	    if (instructor == "") {
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
-	            $('#errorModal').find('.modal-body').html('<p>Please fill up instructors</p>');
-	        });
+	    if ((endDate !== "") && (endTime !== "")) {
+	        endDateTimeCount++;
 	    }
+	}
 
-	    if (venue == "") {
+	if (startDateTimeCount == 0) {
+	    errorMsg.push("Please fill up Start Date and Start Time");
+	}
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
-	            $('#errorModal').find('.modal-body').html('<p> Please fill up venues</p>');
-	        });
-	    }
-	    
-	    if (minRequired == "") {
+	if (endDateTimeCount == 0) {
+	    errorMsg.push("Please fill up End Date and End Time");
+	}
 
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
-	            $('#errorModal').find('.modal-body').html('<p> Please fill up minimum no. of participants</p>');
-	        });
-	    }
-	    
-	    if (maxAllowed == "") {
-
-	        $('#errorModal').modal('show');
-	        $('#errorModal').on('shown.bs.modal', function() {
-	            $('#errorModal').find('.modal-body').html('<p> Please fill up maximum no. of participants</p>');
-	        });
-	    }
-	    
-	    for(var i = 1; i<=5; i++){
-	        var startDate = $("#startDate"+i).val();
-	        var endDate =  $("#endDate"+i).val();
-	        var startTime =  $("#startTime"+i).val();
-	        var endTime =  $("#endTime"+i).val();
-	               
-	        if([startDate, endDate, startTime, endTime].includes(null) == false ||
-	        		[startDate, endDate, startTime, endTime].includes("") == false ){
-	        	if (startDate == "") {
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
-	                });
-	            } if (endDate == "") {
-
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
-	                });
-	            } if (startTime == "") {
-
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
-	                });
-	            } if (endTime == "") {
-
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
-	                });
-	            }
-	       
-	        		//Start and End Time Validation
-	        		if (startTime > endTime) {
-	                    $('#errorModal').modal('show');
-	                    $('#errorModal').on('shown.bs.modal', function() {
-	                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
-	                    });
-	                }
-	        	
-	        	//Start and End Date Validation
-	        	if (startDate > endDate) {
-	                $('#errorModal').modal('show');
-	                $('#errorModal').on('shown.bs.modal', function() {
-	                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
-	                });
-	            }
-	        }    	
-	    }
-	    
-	  	//Not Empty Fields Validation
-	    if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") 
-	    				&& (maxAllowed !== "")) {
-		        $('#confirmModal').modal('show');
-			} 
-
-	    
-	    //Scheduled Start Date Time and Scheduled End Date Time Part
-	    
+	 
+		//Scheduled Start Date Time and Scheduled End Date Time Part
 	    for(i = 1; i<=5; i++){
 	    	var startDate = document.getElementById("startDate"+i).value;
 	        var endDate =  document.getElementById("endDate"+i).value;
 	        var startTime =  document.getElementById("startTime"+i).value;
 	        var endTime =  document.getElementById("endTime"+i).value;
 	        
-	        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00");
-		    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00");
+	        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00Z");
+		    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00Z");
+        	
+		    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
+		    	//Start and End Time Validation
+	        	if (startDate > endDate) {
+	        		errorMsg.push("End Date can't be greater than Start Date");
+	            }
+	        	
+	        	//Start and End Date Validation
+	        	if (startTime > endTime) {
+	        		errorMsg.push("End Time can't be greater than Start Time");
+	            }
+		    }
+        	
 		    
 		    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 		    	var endDateTime = null;
@@ -366,9 +354,80 @@ function validations() {
 		    
 		    document.getElementById("startDateTime"+i).value = startDateTime;
 			document.getElementById("endDateTime"+i).value = endDateTime;
-	    }
-	    
+	
+			//Error Modal Validation
+		    var messageHtml = "";
+
+			errorMsg.forEach(function(message) {
+			    messageHtml += "<br/>" + "<li>" + message + "</li>";
+			});
+
+			document.getElementById("error").innerHTML = messageHtml;
+			
+		    if(errorMsg!="") {
+			   	$('#errorModal').modal('show');
+			}
+			
+			//Confirmation Modal Validation
+			if ((courseName !== "") && (instructor !== "") && (venue !== "")
+					&& (minRequired !== "") && (maxAllowed !== "") && (minRequired !== 0) && (maxAllowed !== 0) &&
+					(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) && (startDate < endDate)
+					&& (startTime < endTime)) {
+				
+				$('#confirmModal').modal('show');
+			}
+	    }		
+ }
+ 
+ 
+//Formats the text to only accept numbers on keypress
+function numOnly(id)
+{
+	 var number = document.getElementById(id);
+	 var regex = /[^0-9]/gi;
+	 
+	 number.value = number.value.replace(regex, "");
 }
+
+//Formats the time to only accept numbers add Semicolon at 3rd index 
+function timeOnly(id)
+{
+	var time = document.getElementById(id);
+	var regexWithColon = /[^0-9:]/gi;
+	var regexWithoutColon = /[^0-9]/gi;
+	
+	if (time.value.length == 2 && !(time.value.includes(":"))){
+		
+		time.value = time.value.replace(regexWithColon, "") + ":";
+		
+	} 
+	
+	if(time.value.includes(":")) {
+		
+		var hour = time.value.substring(0, time.value.indexOf(':')).replace(regexWithoutColon, "");
+		var minute = time.value.substring(time.value.indexOf(':') + 1).replace(regexWithoutColon, "");
+		var intHour = parseInt(hour);
+		console.log(intHour);
+		var intMinute = parseInt(minute);
+		console.log(intMinute);
+		
+		if (intHour > 24) {
+			time.value = "00:" + minute;
+		}
+		
+		if (intMinute > 59) {	
+			time.value = hour.padStart(2, "0") + ":00";	
+		}
+		
+		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
+			time.value = hour.padStart(2, "0") + ":" + minute.padEnd(2,"0");
+		}
+	}
+	
+}
+
+	   
+//Success Modal Validation
 
 /*<![CDATA[*/
 var successMessage = /*[[${message}]]*/ 'default';

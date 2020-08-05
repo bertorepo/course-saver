@@ -22,6 +22,9 @@ package com.fujitsu.ph.tsup.scheduling.web;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,15 +49,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleListForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleViewForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ScheduleController.class)
 @AutoConfigureMockMvc
-public class ViewAllCourseScheduleTest {
+class ViewAllCourseScheduleTest {
 
     /**
      * MockMvc for dependency
@@ -77,30 +84,71 @@ public class ViewAllCourseScheduleTest {
      */
     @WithMockCustomUser(id = 1L, username = "l.lorenzo")
     @Test
-    void viewAllCourseScheduleTest() throws Exception {
+    void viewAllCourseScheduleTest_Valid() throws Exception {
 
         when(scheduleService.findAllScheduledCourses(any(ZonedDateTime.class), any(ZonedDateTime.class)))
                 .thenReturn(courseSchedules());
 
         mockMvc.perform(get("/schedules/view")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("fromDateTime", String.valueOf(ZonedDateTime.now()))
-                .param("toDateTime", String.valueOf(ZonedDateTime.now().plusDays(3))))
+                .flashAttr("scheduleView", list()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("scheduling/instructorCourseScheduleList"))
                 .andExpect(model().attributeExists("scheduleView"))
                 .andExpect(model().attribute("scheduleView", allOf(
-                                hasProperty("id"),
-                                hasProperty("courseId"),
-                                hasProperty("instructorId"),
-                                hasProperty("courses"),
-                                hasProperty("instructors"))))
-                .andExpect(model().attributeDoesNotExist("errorMessages")).
+                                hasProperty("fromDateTime"),
+                                hasProperty("toDateTime"),
+                                hasProperty("courseSchedules"))))
+                .andExpect(model().attributeDoesNotExist("error")).
                  andReturn();
 
         verify(scheduleService, times(1)).findAllScheduledCourses(any(ZonedDateTime.class), any(ZonedDateTime.class));
         verifyNoMoreInteractions(scheduleService);
+    }
+    
+    @WithMockCustomUser(id = 1L, username = "l.lorenzo")
+    @Test
+    void viewAllCourseScheduleTest_isNull() throws Exception {
+
+        when(scheduleService.findAllScheduledCourses(null, null))
+                .thenReturn(courseSchedules());
+
+        mockMvc.perform(get("/schedules/view")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .flashAttr("scheduleView", list_Null()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("scheduling/instructorCourseScheduleList"))
+                .andExpect(model().attributeExists("scheduleView"))
+                .andExpect(model().attribute("scheduleView", allOf(
+                                hasProperty("fromDateTime"),
+                                hasProperty("toDateTime"),
+                                hasProperty("courseSchedules"))))
+                .andExpect(model().attributeDoesNotExist("error")).
+                 andReturn();
+
+        verify(scheduleService, times(1)).findAllScheduledCourses(any(ZonedDateTime.class), any(ZonedDateTime.class));
+        verifyNoMoreInteractions(scheduleService);
+    }
+    
+    @WithMockCustomUser(id = 1L, username = "l.lorenzo")
+    @Test
+    void viewAllCourseScheduleTest_isFromDateTimeGreaterThanToDateTime() throws Exception {
+
+        mockMvc.perform(get("/schedules/view")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .flashAttr("scheduleView", list_fromDateTimeIsGreaterThanToDateTime()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("scheduling/instructorCourseScheduleList"))
+                .andExpect(model().attributeExists("scheduleView"))
+                .andExpect(model().attribute("scheduleView", allOf(
+                                hasProperty("fromDateTime"),
+                                hasProperty("toDateTime"))))
+                .andExpect(model().attributeExists("error"))
+                .andExpect(model().attribute("error", is("To Date should be greater than or equal to From Date")))
+                .andReturn();
     }
     
 
@@ -113,6 +161,30 @@ public class ViewAllCourseScheduleTest {
      * <pre>
      * 
      */
+    
+    private CourseScheduleListForm list() {
+        CourseScheduleListForm list = new CourseScheduleListForm();
+        list.setFromDateTime(ZonedDateTime.parse("2020-08-12T00:00Z"));
+        list.setToDateTime(ZonedDateTime.parse("2020-08-12T00:00Z"));
+        
+        return list;
+    }
+    
+    private CourseScheduleListForm list_Null() {
+        CourseScheduleListForm list = new CourseScheduleListForm();
+        list.setFromDateTime(null);
+        list.setToDateTime(null);
+        
+        return list;
+    }
+    
+    private CourseScheduleListForm list_fromDateTimeIsGreaterThanToDateTime() {
+        CourseScheduleListForm list = new CourseScheduleListForm();
+        list.setFromDateTime(ZonedDateTime.parse("2020-08-12T00:00Z"));
+        list.setToDateTime(ZonedDateTime.parse("2020-08-10T00:00Z"));
+        
+        return list;
+    }
     
     private Set<CourseSchedule> courseSchedules() {
         Set<CourseSchedule> courseSchedules = new HashSet<>();
