@@ -51,6 +51,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.01    | 07/01/2020 | WS) G.Cabiling  | Updated
 //0.01    | 07/01/2020 | WS) T.Oviedo    | Updated
 //0.01    | 07/30/2020 | WS) M.Lumontad  | Updated
+//0.01    | 08/05/2020 | WS) J.Yu        | Updated
 //=======================================================
 /**
  * <pre>
@@ -104,7 +105,7 @@ public class EnrollmentController {
         }
         if (form.getFromDateTime() == null) {
 //        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
-        	form.setFromDateTime(ZonedDateTime.now().minusMonths(1));
+        	form.setFromDateTime(ZonedDateTime.now());
 //        	System.out.println("SECOND FROM DATE TIME: "+form.getFromDateTime());
         }
         if (form.getToDateTime() == null) {
@@ -181,7 +182,7 @@ public class EnrollmentController {
 
         if (courseEnrolledListForm.getFromDateTime() == null || courseEnrolledListForm.getToDateTime() == null) {
 
-            courseEnrolledListForm.setFromDateTime(ZonedDateTime.now().minusMonths(1));
+            courseEnrolledListForm.setFromDateTime(ZonedDateTime.now());
             courseEnrolledListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
 
