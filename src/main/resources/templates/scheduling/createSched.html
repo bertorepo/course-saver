@@ -407,9 +407,9 @@ function timeOnly(id)
 		var hour = time.value.substring(0, time.value.indexOf(':')).replace(regexWithoutColon, "");
 		var minute = time.value.substring(time.value.indexOf(':') + 1).replace(regexWithoutColon, "");
 		var intHour = parseInt(hour);
-		console.log(intHour);
 		var intMinute = parseInt(minute);
-		console.log(intMinute);
+		
+		time.value = hour + ":" + minute;
 		
 		if (intHour > 24) {
 			time.value = "00:" + minute;
@@ -422,6 +422,7 @@ function timeOnly(id)
 		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
 			time.value = hour.padStart(2, "0") + ":" + minute.padEnd(2,"0");
 		}
+		
 	}
 	
 }
