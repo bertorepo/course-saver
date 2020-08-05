@@ -279,9 +279,6 @@ function validations() {
 	    errorMsg.push("Minimum required and Max allowed can't be equal to zero");
 	}
 
-	if (errorMsg != "") {
-	    $('#errorModal').modal('show');
-	}
 
 	//Empty Fields Validation for start and end date
 	var startDateTimeCount = 0;
@@ -320,6 +317,9 @@ function validations() {
 
 	document.getElementById("error").innerHTML = messageHtml;
 	
+    if(errorMsg!="") {
+	   	$('#errorModal').modal('show');
+	}
 	    
 		//Scheduled Start Date Time and Scheduled End Date Time Part
 	    
@@ -362,208 +362,21 @@ function validations() {
 		    
 		    document.getElementById("startDateTime"+i).value = startDateTime;
 			document.getElementById("endDateTime"+i).value = endDateTime;
+			
+			console.log(startDateTime);
+			console.log(endDateTime);
 	    }
+		
+		 //Not Empty Fields Validation
+		if ((courseName !== "") && (instructor !== "") && (venue !== "")
+				&& (minRequired !== "") && (maxAllowed !== "") && (minRequired !== 0) && (maxAllowed !== 0) &&
+				(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 )){
+			$('#confirmModal').modal('show');
+		}
+
 	    
-	    
-/* 		//Get the values of Start/End Date and Time per row
-		var row1StartDate = $('#row1StartDate').val();
-    	var row1EndDate = $('#row1EndDate').val();
-    	var row1StartTime = $('#row1StartTime').val();
-    	var row1EndTime = $('#row1EndTime').val();
-
-	
-	  	var row2StartDate = $('#row2StartDate').val();
-	    var row2EndDate = $('#row2EndDate').val();
-	    var row2StartTime = $('#row2StartTime').val();
-	    var row2EndTime = $('#row2EndTime').val();
-
-	  
-	  	var row3StartDate = $('#row3StartDate').val();
-	    var row3EndDate = $('#row3EndDate').val();
-	    var row3StartTime = $('#row3StartTime').val();
-	    var row3EndTime = $('#row3EndTime').val();
-	    
-	 
-	  	var row4StartDate = $('#row4StartDate').val();
-	    var row4EndDate = $('#row4EndDate').val();
-	    var row4StartTime = $('#row4StartTime').val();
-	    var row4EndTime = $('#row4EndTime').val();
-	    
-	  	
-	  	var row5StartDate = $('#row5StartDate').val();
-	    var row5EndDate = $('#row5EndDate').val();
-	    var row5StartTime = $('#row5StartTime').val();
-	    var row5EndTime = $('#row5EndTime').val();
-
-	    //Static Time Zone Declaration
-	    var timeZone = ":00.252+08:00[Asia/Manila]";
-	    
-               
-    		//Check Empty Fields
-        	if ((row1StartDate == "") && (row2StartDate == "") && (row3StartDate == "") && (row4StartDate == "")
-        			&& (row5StartDate == "")) {
-        		
-                $('#errorModal').modal('show');
-                $('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> Please fill up start date </p>');
-                });
-            } 
-        	
-        	if ((row1EndDate == "") && (row2EndDate == "") && (row3EndDate == "") && (row4EndDate == "")
-        			&& (row5EndDate == "")) {
-
-                $('#errorModal').modal('show');
-                $('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> Please fill up end date</p>');
-                });
-            } 
-        	if ((row1StartTime == "") && (row2StartTime == "") && (row3StartTime == "") && (row4StartTime == "") 
-        			&& (row5StartTime == "")) {
-
-                $('#errorModal').modal('show');
-                $('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> Please fill up start time per day </p>');
-                });
-            } 
-        			
-        	if ((row1EndTime == "") && (row2EndTime == "") && (row3EndTime == "") && (row4EndTime == "")
-            		 && (row5EndTime == "")) {
-
-                $('#errorModal').modal('show');
-                $('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> Please fill up end time per day</p>');
-                });
-            }
-        	
-        	
-        		//Check not empty fields and execute parsing
-				if ((row1StartDate !== "") && (row1StartTime !== "") && (row1EndDate !== "") && (row1EndTime !=="")) {
-    			
-				    
-				var row1StartDateTime = row1StartDate + "T" + row1StartTime + timeZone;
-				var row1EndDateTime = row1EndDate + "T" + row1EndTime + timeZone;
-
-				   document.getElementById("startDateTime1").value = row1StartDateTime;
-				   document.getElementById("endDateTime1").value = row1EndDateTime;
-        		}
-            
-        		if ((row2StartDate !== "") && (row2StartTime !== "") && (row2EndDate !== "") && (row2EndTime !=="")) {
-    			
-        	    var row2StartDateTime = row2StartDate + "T" + row2StartTime + timeZone;
-        	    var row2EndDateTime = row2EndDate + "T" + row2EndTime + timeZone;
-        	    
-        	   	   document.getElementById("startDateTime2").value = row2StartDateTime;
-        		   document.getElementById("endDateTime2").value = row2EndDateTime;
-        		   
-        		}
-        		
-        		if ((row3StartDate !== "") && (row3StartTime !== "") && (row3EndDate !== "") && (row3EndTime !=="")) {
-        			
-        		
-        	    var row3StartDateTime = row3StartDate + "T" + row3StartTime + timeZone;
-        	    var row3EndDateTime = row3EndDate + "T" + row3EndTime + timeZone;
-        	    
-        		   document.getElementById("startDateTime3").value = row3StartDateTime;
-        		   document.getElementById("endDateTime3").value = row3EndDateTime;
-        		}
-        		
-        		if ((row4StartDate !== "") && (row4StartTime !== "") && (row4EndDate !== "") && (row4EndTime !=="")) {
-        			
-        	    var row4StartDateTime = row4StartDate + "T" + row4StartTime + timeZone;
-        	    var row4EndDateTime = row4EndDate + "T" + row4EndTime + timeZone;
-        	    
-        	       document.getElementById("startDateTime4").value = row4StartDateTime;
-        		   document.getElementById("endDateTime4").value = row4EndDateTime;
-        		}
-        		
-        		if ((row5StartDate !== "") && (row5StartTime !== "") && (row5EndDate !== "") && (row5EndTime !=="")) {
-        			
-        	    var row5StartDateTime = row5StartDate + "T" + row5StartTime + timeZone;
-        	    var row5EndDateTime = row5EndDate + "T" + row5EndTime + timeZone;
-        	    
-        	       document.getElementById("startDateTime5").value = row5StartDateTime;
-        		   document.getElementById("endDateTime5").value = row5EndDateTime;
-        	    
-        		}
-        	
-        
-        		//Start and End Time Validation
-        		if (row1StartTime > row1EndTime) {
-                    $('#errorModal').modal('show');
-                    $('#errorModal').on('shown.bs.modal', function() {
-                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
-                    });
-                }
-        		
-        		if (row2StartTime > row3EndTime) {
-                    $('#errorModal').modal('show');
-                    $('#errorModal').on('shown.bs.modal', function() {
-                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
-                    });
-                }
-        		
-        		if (row3StartTime > row3EndTime) {
-                    $('#errorModal').modal('show');
-                    $('#errorModal').on('shown.bs.modal', function() {
-                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
-                    });
-                }
-        		
-        		if (row4StartTime > row4EndTime) {
-                    $('#errorModal').modal('show');
-                    $('#errorModal').on('shown.bs.modal', function() {
-                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
-                    });
-                }
-        	
-        		if (row5StartTime > row5EndTime) {
-                    $('#errorModal').modal('show');
-                    $('#errorModal').on('shown.bs.modal', function() {
-                        $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
-                    });
-                }
-        		
-        		//Start and End Date Validation
-        		if (row1StartDate > row1EndDate)  {
-               		$('#errorModal').modal('show');
-                	$('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
-                	});
-           		}
-        		
-        		if (row2StartDate > row2EndDate)  {
-               		$('#errorModal').modal('show');
-                	$('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
-                	});
-           		}
-            	
-        		if (row3StartDate > row3EndDate)  {
-               		$('#errorModal').modal('show');
-                	$('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
-                	});
-           		}
-        		if (row4StartDate > row4EndDate)  {
-               		$('#errorModal').modal('show');
-                	$('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
-                	});
-           		}
-        		
-        		if (row5StartDate > row5EndDate)  {
-               		$('#errorModal').modal('show');
-                	$('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
-                	});
-           		} */
-
-	  	//Not Empty Fields Validation
-	    if ((courseName !== "") && (instructor !== "") && (venue !== "") && (minRequired !== "") 
-	    				&& (maxAllowed !== "")  && ($.trim($("#dateTime input").val()).length > 0)) {
-		        $('#confirmModal').modal('show');
-			}     
-}
+ }
+	   
 
 /*<![CDATA[*/
 var successMessage = /*[[${message}]]*/ 'default';
