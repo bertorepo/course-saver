@@ -245,7 +245,6 @@ public class ScheduleController {
         form.setInstructors(instructorFormList);
 
         redirectAttributes.addFlashAttribute("message", "Success!! Schedule has been created");
-        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         redirectAttributes.addFlashAttribute("scheduleNew", form);
         return "redirect:/schedules/new";
 

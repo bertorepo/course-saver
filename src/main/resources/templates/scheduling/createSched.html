@@ -27,7 +27,7 @@
 	<div class="container mt-5">
 		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
 		<!--Success Message-->
-		<div class="modal fade" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+		<div class="modal fade" th:if="${message}" th:text="${message}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 		<!--Success Message End-->
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
@@ -142,7 +142,7 @@
 				</div>
 			</div>
 		<!--Confirmation Modal-->
-		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-danger">
@@ -169,7 +169,7 @@
 		<!--Confirmation Modal End-->
 		</form>  
 		<!--Success Modal-->
-		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
@@ -188,7 +188,7 @@
 		</div>
 		<!--Success Modal End-->
 		<!--Error Modal-->
-		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-danger">
@@ -255,22 +255,19 @@ function validations() {
 
 	//Empty Fields Validations
 	if (courseName == "") {
-	    errorMsg.push("Please fill up courses");
+	    errorMsg.push("Please fill up Course Name");
 	}
 	if (instructor == "") {
-	    errorMsg.push("Please fill up instructor");
+	    errorMsg.push("Please fill up Instructor");
 	}
 	if (venue == "") {
-	    errorMsg.push("Please fill up venues");
+	    errorMsg.push("Please fill up Venue");
 	}
 	if (minRequired == "") {
-	    errorMsg.push("Please fill up minimum required");
+	    errorMsg.push("Please fill up Minimum no. of Participants");
 	}
 	if (maxAllowed == "") {
-	    errorMsg.push("Please fill up maximum allowed");
-	}
-	if (minRequired == "") {
-	    errorMsg.push("Please fill up minimum required");
+	    errorMsg.push("Please fill up Maximum no. of Participants");
 	}
 	if (minRequired > maxAllowed) {
 	    errorMsg.push("Max allowed can't be greater than minimum allowed");
@@ -280,7 +277,7 @@ function validations() {
 	}
 
 
-	//Empty Fields Validation for start and end date
+	//Empty Fields Validation for Start and End date
 	var startDateTimeCount = 0;
 	var endDateTimeCount = 0;
 
@@ -308,21 +305,8 @@ function validations() {
 	    errorMsg.push("Please fill up end date and end time");
 	}
 
-
-	var messageHtml = "";
-
-	errorMsg.forEach(function(message) {
-	    messageHtml += "<li>" + message + "</li>";
-	});
-
-	document.getElementById("error").innerHTML = messageHtml;
-	
-    if(errorMsg!="") {
-	   	$('#errorModal').modal('show');
-	}
-	    
+	 
 		//Scheduled Start Date Time and Scheduled End Date Time Part
-	    
 	    for(i = 1; i<=5; i++){
 	    	var startDate = document.getElementById("startDate"+i).value;
 	        var endDate =  document.getElementById("endDate"+i).value;
@@ -332,21 +316,18 @@ function validations() {
 	        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00Z");
 		    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00Z");
         	
-        	//Start and End Time Validation
-        	if (rowStartDateTime.getTime() > rowEndDateTime.getTime()) {
-                $('#errorModal').modal('show');
-                $('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html('<p> End Date cant be greater than start date</p>');
-                });
-            }
+		    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
+		    	//Start and End Time Validation
+	        	if (startDate > endDate) {
+	        		errorMsg.push("End Date can't be greater than Start Date");
+	            }
+	        	
+	        	//Start and End Date Validation
+	        	if (startTime > endTime) {
+	        		errorMsg.push("End Time can't be greater than Start Time");
+	            }
+		    }
         	
-        	//Start and End Date Validation
-        	if (rowStartDateTime.getDate() > rowEndDateTime.getDate()) {
-                $('#errorModal').modal('show');
-                $('#errorModal').on('shown.bs.modal', function() {
-                    $('#errorModal').find('.modal-body').html("<p> End time can't be greater than start time</p>");
-                });
-            }
 		    
 		    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 		    	var endDateTime = null;
@@ -362,18 +343,31 @@ function validations() {
 		    
 		    document.getElementById("startDateTime"+i).value = startDateTime;
 			document.getElementById("endDateTime"+i).value = endDateTime;
-			
-			console.log(startDateTime);
-			console.log(endDateTime);
+	
 	    }
 		
-		 //Not Empty Fields Validation
+	    var messageHtml = "";
+
+		errorMsg.forEach(function(message) {
+		    messageHtml += "<li>" + message + "</li>";
+		});
+
+		document.getElementById("error").innerHTML = messageHtml;
+		
+	    if(errorMsg!="") {
+		   	$('#errorModal').modal('show');
+		}
+		
+		//Confirmation Modal Validation
 		if ((courseName !== "") && (instructor !== "") && (venue !== "")
 				&& (minRequired !== "") && (maxAllowed !== "") && (minRequired !== 0) && (maxAllowed !== 0) &&
-				(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 )){
+				(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 )) {
+			
 			$('#confirmModal').modal('show');
 		}
 
+			console.log("startDate:"+ startDate);
+			console.log("endDate" + endDate);
 	    
  }
 	   
