@@ -329,7 +329,7 @@ function validations() {
         	
 		    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
 		    	//Start and End Time Validation
-	        	if (startDate > endDate) {
+	        	if (startDate > endDate)  {
 	        		errorMsg.push("End Date can't be greater than Start Date");
 	            }
 	        	
@@ -371,8 +371,8 @@ function validations() {
 			//Confirmation Modal Validation
 			if ((courseName !== "") && (instructor !== "") && (venue !== "")
 					&& (minRequired !== "") && (maxAllowed !== "") && (minRequired !== 0) && (maxAllowed !== 0) &&
-					(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) && (startDate < endDate)
-					&& (startTime < endTime)) {
+					(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) && ((startDate < endDate)
+					|| (startDate == endDate)) && (startTime < endTime)) {
 				
 				$('#confirmModal').modal('show');
 			}
