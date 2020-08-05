@@ -393,11 +393,12 @@ function numOnly(id)
 function timeOnly(id)
 {
 	var time = document.getElementById(id);
-	var regex = /[^0-9:]/gi;
+	var regexWithColon = /[^0-9:]/gi;
+	var regexWithoutColon = /[^0-9]/gi;
 	
 	if (time.value.length == 2 && !(time.value.includes(":"))){
 		
-		time.value = time.value.replace(regex, "") + ":";
+		time.value = time.value.replace(regexWithColon, "") + ":";
 		
 	} 
 	
@@ -415,11 +416,11 @@ function timeOnly(id)
 		}
 		
 		if (intMinute > 59) {	
-			time.value = hour.replace(regex, "").padStart(2, "0") + ":00";	
+			time.value = hour.replace(regexWithoutColon, "").padStart(2, "0") + ":00";	
 		}
 		
 		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
-			time.value = hour.replace(regex, "").padStart(2, "0") + ":" + minute.replace(regex, "").padEnd(2,"0");
+			time.value = hour.replace(regex, "").padStart(2, "0") + ":" + minute.replace(regexWithoutColon, "").padEnd(2,"0");
 		}
 	}
 	
