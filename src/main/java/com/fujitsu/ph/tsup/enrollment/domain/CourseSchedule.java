@@ -274,6 +274,7 @@ public class CourseSchedule {
 		 * @param venueName
 		 * @param minRequired
 		 * @param maxAllowed
+		 * @param totalParticipant
 		 */
 		public Builder(Long id, Long courseId, String courseName, Long instructorId, String instructorLastName,
 				String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed,
@@ -301,6 +302,7 @@ public class CourseSchedule {
 			this.venueName = venueName;
 			this.maxAllowed = maxAllowed;
 			this.status = status;
+			this.totalParticipants = totalParticipants;
 
 		}
 		//TEMPORARY
