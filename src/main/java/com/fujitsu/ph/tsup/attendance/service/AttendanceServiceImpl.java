@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 //0.05    | 07/08/2020 | WS) R.ramos                                             | Update
 //0.06    | 07/09/2020 | WS) R.ramos                                             | Update
 //0.07    | 07/30/2020 | WS) R.Ramos, WS) K.Abad            					 | Update
+//0.07    | 08/05/2020 | WS) R.Ramos, WS) K.Abad            					 | Update
 //==================================================================================================
 /**
  * <pre>
@@ -38,7 +39,7 @@ import org.springframework.stereotype.Service;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.07
+ * @version 0.08
  * @author k.abad
  * @author m.angara
  * @author j.iwarat
@@ -266,7 +267,11 @@ public class AttendanceServiceImpl implements AttendanceService {
 	public Set<CourseParticipant> findAllScheduledCoursesByParticipant(ZonedDateTime fromDateTime,
 			ZonedDateTime toDateTime, Long participantId) {
 		try {
-			return attendanceDao.findAllScheduledCoursesByParticipant(fromDateTime, toDateTime, participantId);
+		    Set<CourseParticipant> courseParticipant =  attendanceDao.findAllScheduledCoursesByParticipant(fromDateTime, toDateTime, participantId);
+		    if(courseParticipant == null || courseParticipant.isEmpty()) {
+		        throw new IllegalArgumentException("No schedules found");
+		    }
+			return courseParticipant;
 		} catch (DataAccessException e) {
 			throw new IllegalArgumentException("Can't find from date time, to date time and participant Id.", e);
 		}
