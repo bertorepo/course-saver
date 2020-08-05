@@ -55,7 +55,7 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         float duration = resultSet.getFloat("DURATION");//Added
         
         CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(id, courseScheduleDetailId, scheduledStartDateTime, scheduledEndDateTime,duration).build();
+                new CourseScheduleDetail.Builder(courseScheduleDetailId, id, scheduledStartDateTime, scheduledEndDateTime,duration).build();
         
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
         courseScheduleDetailSet.add(courseScheduleDetail);
