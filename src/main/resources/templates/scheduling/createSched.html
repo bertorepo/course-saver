@@ -404,23 +404,23 @@ function timeOnly(id)
 	
 	if(time.value.includes(":")) {
 		
-		var hour = time.value.substring(0, time.value.indexOf(':'));
-		var minute = time.value.substring(time.value.indexOf(':') + 1);
+		var hour = time.value.substring(0, time.value.indexOf(':')).replace(regexWithoutColon, "");
+		var minute = time.value.substring(time.value.indexOf(':') + 1).replace(regexWithoutColon, "");
 		var intHour = parseInt(hour);
 		console.log(intHour);
 		var intMinute = parseInt(minute);
 		console.log(intMinute);
 		
 		if (intHour > 24) {
-			time.value = "00:";
+			time.value = "00:" + minute;
 		}
 		
 		if (intMinute > 59) {	
-			time.value = hour.replace(regexWithoutColon, "").padStart(2, "0") + ":00";	
+			time.value = hour.padStart(2, "0") + ":00";	
 		}
 		
 		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
-			time.value = hour.replace(regex, "").padStart(2, "0") + ":" + minute.replace(regexWithoutColon, "").padEnd(2,"0");
+			time.value = hour.padStart(2, "0") + ":" + minute.padEnd(2,"0");
 		}
 	}
 	
