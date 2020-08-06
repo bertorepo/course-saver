@@ -429,7 +429,7 @@ function timeOnly(id)
 			time.value = "00:" + minute;
 		}
 		
-		if (intMinute > 59 || intHour > 24) {	
+		if (intMinute > 59 || intHour == 24) {	
 			time.value = hour.padStart(2, "0") + ":00";	
 		}
 		
