@@ -4,6 +4,7 @@ import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrolledListForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
@@ -12,8 +13,13 @@ import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +28,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //=======================================================
@@ -396,5 +406,69 @@ public class EnrollmentController {
         redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
 //      return "redirect:/schedule";
         return "redirect:/enrollment/viewCourseEnroll";
+    }
+    
+    /**
+     * View Members Course
+     * @param id
+     * @param model
+     * @param redirectAttributes
+     * @return
+     */
+    @GetMapping("/viewMemberCourse")
+    public String viewAllMemberCourse(
+            @Valid @ModelAttribute("viewCourseEnroll") CourseScheduleListForm form, BindingResult result,
+            Model model) {
+        logger.debug("CourseScheduleListForm: {}", form);
+        logger.debug("Result: {}", result);
+
+        if (result.hasErrors()) {
+            model.addAttribute("errorMessage", result.getAllErrors());
+            return "enrollment/viewMemberCourse";
+        }
+
+        if (form.getFromDateTime() == null) {
+            form.setFromDateTime(ZonedDateTime.now().minusMonths(1));
+        }
+        
+        if (form.getToDateTime() == null) {
+            form.setToDateTime(ZonedDateTime.now().plusDays(5));
+        }
+        
+        Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
+                form.getFromDateTime(), form.getToDateTime());
+        
+        
+        model.addAttribute("courseSchedules",courseSchedules);
+        model.addAttribute("participantForm", new Participant());
+        
+        System.out.println(courseSchedules);
+        return "enrollment/viewMemberCourse";	
+    }
+    
+    @RequestMapping(value = "/viewEnrolled", method = RequestMethod.GET)
+	public @ResponseBody List<Participant> viewMemberEnrolled (@RequestParam Long id) {
+    	return enrollmentService.findEnrolledMembersById(id);
+    }
+    
+    @RequestMapping(value = "/addEnrolled", method = RequestMethod.POST)
+	public String addMemberEnrolled (@RequestBody @Valid @ModelAttribute("participantForm") Participant participant, 
+			RedirectAttributes redirectAttributes, BindingResult result) {
+    	
+    	if (result.hasErrors()) {
+    		List<FieldError> err=result.getFieldErrors();
+    		
+    		
+    		for(FieldError e:err){
+                System.out.println("Error on object ---> "+e.getObjectName()+" on field ---> "+e.getField()+". Message ---> "+e.getDefaultMessage());
+           }
+    		
+    		return "redirect:/enrollment/viewMemberCourse";
+    	}
+    	
+    	enrollmentService.addEnrolledMembersById(participant);
+    	
+    	redirectAttributes.addFlashAttribute("success","{employee} has been added");
+    	return "redirect:/enrollment/viewMemberCourse";
     }
 }

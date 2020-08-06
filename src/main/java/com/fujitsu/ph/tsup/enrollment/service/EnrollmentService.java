@@ -19,15 +19,20 @@ package com.fujitsu.ph.tsup.enrollment.service;
 * @author t.oviedo                    
 */
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
+import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 
 public interface EnrollmentService {
 	
 	/** Finds all scheduled courses based on the given date range */
 	Set<CourseSchedule>findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
+	
+	/** Finds specific details on courses based on the given date range */
+	Set<CourseSchedule>findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
 	
 	/** Finds the course schedule by Id */
 	CourseSchedule findCourseScheduleById(Long id);
@@ -46,4 +51,10 @@ public interface EnrollmentService {
 
 	/** Cancels a scheduled course */
 	void cancel(Long id);
+
+	/** Finds the participant of course by Id */
+	List<Participant> findEnrolledMembersById(Long id);
+
+	/** Add the participant of course by Id */
+	Integer addEnrolledMembersById(Participant participant);
 }
