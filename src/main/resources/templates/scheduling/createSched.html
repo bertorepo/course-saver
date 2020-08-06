@@ -371,7 +371,7 @@ function validations() {
 			//Confirmation Modal Validation
 			if ((courseName !== "") && (instructor !== "") && (venue !== "")
 					&& (minRequired !== "") && (maxAllowed !== "") && ((minRequired !== 0) || (maxAllowed !== 0)) 
-					&& (minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) 
+					&& (minRequired <= maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) 
 					&& ((startDate < endDate) || (startDate == endDate)) && (startTime < endTime)) {
 				
 				$('#confirmModal').modal('show');
