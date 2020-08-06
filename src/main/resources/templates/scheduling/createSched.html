@@ -246,13 +246,12 @@ Date.prototype.toISO = function() {
         'Z';
 };
 
-/*   //Checks if Date is Today
-function isToday(date){
-	var today = new Date();
-	return date.getDate() === today.getDate() &&
-	date.getMonth() === today.getMonth() &&
-	date.getYear() === today.getYear();
-}  */
+//Checks if Date is Today
+function isLessThanToday(date){
+	var dateEntry = new Date(date);
+	var today = new Date((new Date).setHours(0, 0, 0, 0));
+	return dateEntry < today;
+}  
 
 function validations() {
 	
@@ -306,6 +305,7 @@ function validations() {
 	    if ((endDate !== "") && (endTime !== "")) {
 	        endDateTimeCount++;
 	    }
+ 
 	}
 
 	if (startDateTimeCount == 0) {
@@ -317,66 +317,70 @@ function validations() {
 	}
 
 	 
-		//Scheduled Start Date Time and Scheduled End Date Time Part
-	    for(i = 1; i<=5; i++){
-	    	var startDate = document.getElementById("startDate"+i).value;
-	        var endDate =  document.getElementById("endDate"+i).value;
-	        var startTime =  document.getElementById("startTime"+i).value;
-	        var endTime =  document.getElementById("endTime"+i).value;
-	        
-	        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00Z");
-		    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00Z");
+	//Scheduled Start Date Time and Scheduled End Date Time Part
+    for(i = 1; i<=5; i++){
+    	var startDate = document.getElementById("startDate"+i).value;
+        var endDate =  document.getElementById("endDate"+i).value;
+        var startTime =  document.getElementById("startTime"+i).value;
+        var endTime =  document.getElementById("endTime"+i).value;
+        
+        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00Z");
+	    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00Z");
+       	
+	    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
+	    	//Start and End Time Validation
+        	if (startDate > endDate)  {
+        		errorMsg.push("End Date can't be greater than Start Date");
+            }
         	
-		    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
-		    	//Start and End Time Validation
-	        	if (startDate > endDate)  {
-	        		errorMsg.push("End Date can't be greater than Start Date");
-	            }
-	        	
-	        	//Start and End Date Validation
-	        	if (startTime > endTime) {
-	        		errorMsg.push("End Time can't be greater than Start Time");
-	            }
-		    }
+        	//Start and End Date Validation
+        	if (startTime > endTime) {
+        		errorMsg.push("End Time can't be greater than Start Time");
+            }
         	
-		    
-		    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
-		    	var endDateTime = null;
-		    	var startDateTime = null;
-		    } else {
-		    	var startDateTime = rowStartDateTime.toISO().toString();
-		        console.log(rowStartDateTime);
-		        console.log(startDateTime);
-		    	var endDateTime = rowEndDateTime.toISO().toString();
-			    console.log(rowEndDateTime);
-			    console.log(endDateTime);
-		    }
-		    
-		    document.getElementById("startDateTime"+i).value = startDateTime;
-			document.getElementById("endDateTime"+i).value = endDateTime;
-	
-			//Error Modal Validation
-		    var messageHtml = "";
+        	if (isLessThanToday(startDate) || isLessThanToday(endDate)) {
+        		errorMsg.push("Start Date and End Date should not be less than today");
+        	}
+	    }
+       	
+	    
+	    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
+	    	var endDateTime = null;
+	    	var startDateTime = null;
+	    } else {
+	    	var startDateTime = rowStartDateTime.toISO().toString();
+	        console.log(rowStartDateTime);
+	        console.log(startDateTime);
+	    	var endDateTime = rowEndDateTime.toISO().toString();
+		    console.log(rowEndDateTime);
+		    console.log(endDateTime);
+	    }
+	    
+	    document.getElementById("startDateTime"+i).value = startDateTime;
+		document.getElementById("endDateTime"+i).value = endDateTime;
 
-			errorMsg.forEach(function(message) {
-			    messageHtml += "<br/>" + "<li>" + message + "</li>";
-			});
+		//Error Modal Validation
+	    var messageHtml = "";
 
-			document.getElementById("error").innerHTML = messageHtml;
+		errorMsg.forEach(function(message) {
+		    messageHtml += "<br/>" + "<li>" + message + "</li>";
+		});
+
+		document.getElementById("error").innerHTML = messageHtml;
+		
+	    if(errorMsg!="") {
+		   	$('#errorModal').modal('show');
+		}
+		
+		//Confirmation Modal Validation
+		if ((courseName !== "") && (instructor !== "") && (venue !== "")
+				&& (minRequired !== "") && (maxAllowed !== "") && ((minRequired !== 0) || (maxAllowed !== 0)) 
+				&& (minRequired <= maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) 
+				&& (startDate <= endDate) && (startTime < endTime)) {
 			
-		    if(errorMsg!="") {
-			   	$('#errorModal').modal('show');
-			}
-			
-			//Confirmation Modal Validation
-			if ((courseName !== "") && (instructor !== "") && (venue !== "")
-					&& (minRequired !== "") && (maxAllowed !== "") && ((minRequired !== 0) || (maxAllowed !== 0)) 
-					&& (minRequired <= maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) 
-					&& (startDate <= endDate) && (startTime < endTime)) {
-				
-				$('#confirmModal').modal('show');
-			}
-	    }		
+			$('#confirmModal').modal('show');
+		}
+    }		
  }
  
  
