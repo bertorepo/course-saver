@@ -258,8 +258,8 @@ function validations() {
 	var courseName = $('#courseName').val();
 	var instructor = $('#instructorId').val();
 	var venue = $('#venueId').val();
-	var minRequired = $('#minRequired').val();
-	var maxAllowed = $('#maxAllowed').val();
+	var minRequired = parseInt($('#minRequired').val());
+	var maxAllowed = parseInt($('#maxAllowed').val());
 	var errorMsg = new Array();
 
 
@@ -375,7 +375,8 @@ function validations() {
 		//Confirmation Modal Validation
 		if ((courseName !== "") && (instructor !== "") && (venue !== "")
 				&& (minRequired !== "") && (maxAllowed !== "") && ((minRequired !== 0) || (maxAllowed !== 0)) 
-				&& (minRequired <= maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) 
+				&& (minRequired <= maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 )
+				&& !((isLessThanToday(startDate) || isLessThanToday(endDate)))
 				&& (startDate <= endDate) && (startTime < endTime)) {
 			
 			$('#confirmModal').modal('show');
