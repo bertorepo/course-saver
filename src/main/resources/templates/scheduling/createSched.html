@@ -229,7 +229,6 @@
 $("#courseName").blur(function (){
 	var courseName = $("#courseName").val();
 	var courseId = $('#courses [value="'+ courseName +'"]').data('value');
-	console.log(courseId);
 	
 	document.getElementById("courseId").value = courseId;
 });
@@ -262,7 +261,6 @@ function validations() {
 	var maxAllowed = parseInt($('#maxAllowed').val());
 	var errorMsg = new Array();
 
-
 	//Empty Fields Validations
 	if (courseName == "") {
 	    errorMsg.push("Please fill up Course Name");
@@ -285,7 +283,6 @@ function validations() {
 	if ((minRequired == 0) || (maxAllowed == 0)) {
 	    errorMsg.push("Minimum Participants or Maximum Participants can't be equal to zero");
 	}
-
 
 	//Empty Fields Validation for Start and End date
 	var startDateTimeCount = 0;
@@ -324,8 +321,13 @@ function validations() {
         var startTime =  document.getElementById("startTime"+i).value;
         var endTime =  document.getElementById("endTime"+i).value;
         
-        var rowStartDateTime = new Date(startDate +"T"+ startTime+":00Z");
-	    var rowEndDateTime = new Date(endDate +"T"+ endTime+":00Z");
+        var rowStartDateTime = new Date(startDate);
+	    var rowEndDateTime = new Date(endDate);
+	    
+	    rowStartDateTime.setHours(startTime.substring(0, startTime.indexOf(":")));
+	    rowStartDateTime.setMinutes(startTime.substring(startTime.indexOf(":") + 1));
+	    rowEndDateTime.setHours(endTime.substring(0, endTime.indexOf(":")));
+	    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1));
        	
 	    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
 	    	//Start and End Time Validation
