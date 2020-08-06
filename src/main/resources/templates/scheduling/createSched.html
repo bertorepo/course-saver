@@ -283,8 +283,8 @@ function validations() {
 	if (minRequired > maxAllowed) {
 	    errorMsg.push("Maximum Participants can't be greater than Minimum Participants");
 	}
-	if ((minRequired == 0) && (maxAllowed == 0)) {
-	    errorMsg.push("Minimum Participants and Maximum Participants can't be equal to zero");
+	if ((minRequired == 0) || (maxAllowed == 0)) {
+	    errorMsg.push("Minimum Participants or Maximum Participants can't be equal to zero");
 	}
 
 
