@@ -338,6 +338,7 @@ function validations() {
         		errorMsg.push("End Time can't be greater than Start Time");
             }
         	
+        	//If Date is Less Than Today
         	if (isLessThanToday(startDate) || isLessThanToday(endDate)) {
         		errorMsg.push("Start Date and End Date should not be less than today");
         	}
@@ -428,7 +429,7 @@ function timeOnly(id)
 			time.value = "00:" + minute;
 		}
 		
-		if (intMinute > 59) {	
+		if (intMinute > 59 || intHour > 24) {	
 			time.value = hour.padStart(2, "0") + ":00";	
 		}
 		
