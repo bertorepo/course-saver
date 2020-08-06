@@ -139,10 +139,10 @@
 						<td  class="sticky">
 							<!--@RequestParam -->
 							<button
-								th:attr="onclick=|decline('${courseSchedules.courseScheduleId}','${courseSchedules.courseName}','${courseSchedules.instructorName}','${courseSchedules.venueName}')|"
+								th:attr="onclick=|decline('${courseSchedules.courseScheduleId}','${courseSchedules.courseName}','${courseSchedules.instructorName}','${courseSchedules.venueName}','${courseEnrollmentForm.scheduledStartDateTime}','${courseEnrollmentForm.scheduledEndDateTime}')|"
 								class="btn btn-danger" name="">
 								<i class="fa fa-times"></i> Decline
-							</button>
+							</button> 				
 						</td>
 					</tr>
 				</tbody>
@@ -256,8 +256,7 @@
 					</div>
 					<div class="modal-footer">
 						<button class="btn btn-success" onclick="successfullModal()" data-dismiss="modal">Confirm Cancellation</button>
-						<input type="button" class="btn btn-info" data-dismiss="modal"
-							value="Back">
+						<button class="btn btn-info" onclick="backModal()" data-dismiss="modal">Back</button>
 					</div>
 				</div>
 			</div>
@@ -289,19 +288,46 @@
 	<script th:inline="javascript">
 		//DECLINE MODAL
 		/*<![CDATA[*/
-		function decline(courseId, courseName, instructorName, venueName) {
+		function decline(courseId, courseName, instructorName, venueName, scheduledStartDateTime, scheduledEndDateTime) {
+			var startDate = scheduledStartDateTime.slice(0,10);
+			var endDate = scheduledEndDateTime.slice(0,10);
+			var startTime = scheduledStartDateTime.slice(11,16);
+			var endTime = scheduledEndDateTime.slice(11,16);
 			var courseIdInput = document.getElementById('courseSchedId');
 			var courseNameInput = document.getElementById('courseSchedName');
-			var courseInstructorInput = document
-					.getElementById('courseSchedInstructor');
+			var courseInstructorInput = document.getElementById('courseSchedInstructor');
 			var courseVenueInput = document.getElementById('courseSchedVenue');
+
+			var dateInput = document.getElementById('courseSchedDate');
+			var timeInput = document.getElementById('courseSchedTime');
 			courseIdInput.value = courseId;
 			courseNameInput.value = courseName;
 			courseInstructorInput.value = instructorName;
 			courseVenueInput.value = venueName;
-			$('#declineModal').modal('show');
+			dateInput.value = startDate+" to "+endDate;
+			timeInput.value = startTime+" to "+endTime 
+			
+			$('#declineModal').modal('show');	
 		}
 		/*]]>*/
+		
+		
+		//Confirm Decline Modal 
+	
+		/*<![CDATA[*/
+		function confirmModal(){
+			$('#confirmationModal').modal('show');		
+			$('#declineModal').modal('hide');} 	
+		/*]]>*/	
+		
+		//Back Modal
+		function backModal(){
+			$('#confirmationModal').modal('hide');		
+			$('#declineModal').modal('show');
+			} 
+		
+		/*]]>*/
+
 		
 		//Confirm Decline Modal 
 		/*<![CDATA[*/
