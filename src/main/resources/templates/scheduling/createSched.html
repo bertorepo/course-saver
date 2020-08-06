@@ -411,16 +411,16 @@ function timeOnly(id)
 		
 		time.value = hour + ":" + minute;
 		
+		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
+			time.value = hour.padStart(2, "0") + ":" + minute.padEnd(2,"0");
+		}
+		
 		if (intHour > 24) {
 			time.value = "00:" + minute;
 		}
 		
 		if (intMinute > 59) {	
 			time.value = hour.padStart(2, "0") + ":00";	
-		}
-		
-		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
-			time.value = hour.padStart(2, "0") + ":" + minute.padEnd(2,"0");
 		}
 		
 	}
