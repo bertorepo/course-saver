@@ -64,6 +64,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
      * @param ZonedDateTime scheduledStartDateTime
      * @param ZonedDateTime scheduledEndDateTime
      */
+    
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime,
             ZonedDateTime toDateTime) {
@@ -97,8 +98,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
-                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
-                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime());
+                .addValue("fromDateTime", fromDateTime.toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.toOffsetDateTime());
 
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                 new CourseScheduleRowMapper());
@@ -129,6 +130,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
      * 
      * <pre>
      */
+    
     @Override
     public Set<InstructorForm> findAllInstructors() {
         String query = "SELECT E.ID, E.FIRST_NAME, E.LAST_NAME "
@@ -197,10 +199,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
             KeyHolder courseSchedDetailGeneratedKeyHolder = new GeneratedKeyHolder();
             SqlParameterSource courseSchedDetailParameters = new MapSqlParameterSource()
                     .addValue("course_schedule_id", key)
-                    .addValue("scheduled_start_datetime", courseSchedDetail.getScheduledStartDateTime()
-                            .withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
-                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledEndDateTime()
-                            .withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
+                    .addValue("scheduled_start_datetime", courseSchedDetail.getScheduledStartDateTime().toOffsetDateTime())
+                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledEndDateTime().toOffsetDateTime())
                     .addValue("duration", courseSchedDetail.getDuration());
             template.update(courseScheduleDetailSql, courseSchedDetailParameters, courseSchedDetailGeneratedKeyHolder);
             
