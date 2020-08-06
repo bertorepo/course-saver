@@ -414,7 +414,7 @@ function timeOnly(id)
 		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
 			time.value = hour.padStart(2, "0") + ":" + minute.padEnd(2,"0");
 			
-			if (intMinute > 59) {	
+			if (intMinute > 5) {	
 				time.value = hour.padStart(2, "0") + ":00";	
 			}
 		}
