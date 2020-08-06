@@ -320,13 +320,16 @@ function validations() {
         var startTime =  document.getElementById("startTime"+i).value;
         var endTime =  document.getElementById("endTime"+i).value;
         
-        var rowStartDateTime = new Date(startDate);
+        var rowStartDateTime = new Date(startDate+"T"+startTime+":00Z");
+	    var rowEndDateTime = new Date(endDate+"T"+startTime+":00Z");
+        
+        /* var rowStartDateTime = new Date(startDate);
 	    var rowEndDateTime = new Date(endDate);
 	    
 	    rowStartDateTime.setHours(startTime.substring(0, startTime.indexOf(":")));
 	    rowStartDateTime.setMinutes(startTime.substring(startTime.indexOf(":") + 1));
 	    rowEndDateTime.setHours(endTime.substring(0, endTime.indexOf(":")));
-	    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1));
+	    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); */
        	
 	    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
 	    	//Start and End Time Validation
