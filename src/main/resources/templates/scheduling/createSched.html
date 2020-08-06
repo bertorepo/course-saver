@@ -283,8 +283,8 @@ function validations() {
 	if (minRequired > maxAllowed) {
 	    errorMsg.push("Maximum Participants can't be greater than Minimum Participants");
 	}
-	if ((minRequired == 0) && (maxAllowed == 0)) {
-	    errorMsg.push("Minimum Participants and Maximum Participants can't be equal to zero");
+	if ((minRequired == 0) || (maxAllowed == 0)) {
+	    errorMsg.push("Minimum Participants or Maximum Participants can't be equal to zero");
 	}
 
 
@@ -370,9 +370,9 @@ function validations() {
 			
 			//Confirmation Modal Validation
 			if ((courseName !== "") && (instructor !== "") && (venue !== "")
-					&& (minRequired !== "") && (maxAllowed !== "") && (minRequired !== 0) && (maxAllowed !== 0) &&
-					(minRequired < maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) && ((startDate < endDate)
-					|| (startDate == endDate)) && (startTime < endTime)) {
+					&& (minRequired !== "") && (maxAllowed !== "") && ((minRequired !== 0) || (maxAllowed !== 0)) 
+					&& (minRequired <= maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 ) 
+					&& (startDate <= endDate) && (startTime < endTime)) {
 				
 				$('#confirmModal').modal('show');
 			}
@@ -411,16 +411,20 @@ function timeOnly(id)
 		
 		time.value = hour + ":" + minute;
 		
+		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
+			time.value = hour.padStart(2, "0") + ":" + minute.padEnd(2,"0");
+			
+			if (intMinute > 5) {	
+				time.value = hour.padStart(2, "0") + ":00";	
+			}
+		}
+		
 		if (intHour > 24) {
 			time.value = "00:" + minute;
 		}
 		
 		if (intMinute > 59) {	
 			time.value = hour.padStart(2, "0") + ":00";	
-		}
-		
-		if (hour.length == 1 && (time.value.length == 4 || time.value.length == 3)){
-			time.value = hour.padStart(2, "0") + ":" + minute.padEnd(2,"0");
 		}
 		
 	}
