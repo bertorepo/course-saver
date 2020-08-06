@@ -15,7 +15,14 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	
+	<style>
+	.sticky {
+	  position: -webkit-sticky;
+	  position: sticky;
+	  right: 0;
+	  background-color: white;
+	}
+	</style> 
 </head>
 
 <body>
@@ -30,15 +37,17 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="datetime" class="form-control" name="fromDateTime" id="" th:field="*{fromDateTime}">
+							<input type="datetime-local" class="form-control" id="fromDateTime">
+							<input type="hidden" class="form-control" name="fromDateTime" id="inputFromDateTime">
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="datetime" class="form-control" name="toDateTime" id="" th:field="*{toDateTime}">
+							<input type="datetime-local" class="form-control" id="toDateTime" >
+							<input type="hidden" class="form-control" name="toDateTime" id="inputToDateTime">
 						</div>
 					</div>
 					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
+						<input type="submit" class="btn btn-success" value="Submit" onClick="onSubmit()">
 					</div>
 				</div>
 			</div>
@@ -131,8 +140,7 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Schedule ID:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseRegistrationId"
-											 disabled >
+									<input type="text" class="form-control-plaintext" id="courseRegistrationId" name="courseRegistrationId" disabled >
 								</div>
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
@@ -144,11 +152,11 @@
 								</div>
 								<label class="col-lg-3 col-form-label">Course Date(s):</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="June 1, 2020"  disabled>
+									<input type="text" class="form-control-plaintext" id="courseRegistrationDate" disabled>
 								</div>
 								<label class="col-lg-3 col-form-label">Time slot:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="8:00 AM to 17:30 PM PHT"  disabled>
+									<input type="text" class="form-control-plaintext" id="courseRegistrationTime" disabled>
 								</div>
 							</div>
 							<div class="alert alert-danger text-center">
@@ -157,17 +165,16 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
 								<div class="col-lg-9">
-									<label class="col-form-label">Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World</label>
+									<input type="text" class="form-control-plaintext" id="courseDescription" 
+											value="Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World"  disabled>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<form class="form-horizontal" action="#" 
-									th:action="@{/enrollment/schedules/{courseScheduleId}/enroll}" 
-									th:object="${courseEnrollmentForm}" method="post">
-								<input type="hidden" id="courseScheduleIdHidden" name="courseScheduleId">
-								<button type="submit" name="submit" value="submit" class="btn btn-success" onclick="">Register</button>
-							</form>
+							<button class="btn btn-success" 
+									onclick="registrationConfirm()">
+									Register
+							</button>
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
 						</div>
 					</div>
@@ -175,9 +182,9 @@
 			</div>
 
 		<!--Register Modal End-->
+		
 		<!--Confirm Modal-->
-		<form class="form-horizontal">
-			<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" id="confirmRegisterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm text-center">
 					<div class="modal-content">
 						
@@ -187,14 +194,76 @@
 							</div>	
 						</div>
 						<div class="modal-footer">
-							<input type="submit" class="btn btn-success" value="Yes" name="confirm" data-dismiss="modal">
+							<form class="form-horizontal" action="#" 
+									th:action="@{/enrollment/schedules/{courseScheduleId}/enroll}" 
+									th:object="${courseEnrollmentForm}" method="post">
+								<input type="hidden" id="courseScheduleIdHidden" name="courseScheduleId">
+								<input type="hidden" id="courseScheduleCourseNameHidden" name="courseName">
+								<input type="hidden" id="courseScheduleInstructorNameHidden" name="instructorName">
+								<input type="hidden" id="courseScheduleDateHidden" name="">
+								<input type="hidden" id="courseScheduleTimeHidden" name="">
+								<input type="hidden" id="courseScheduleDescriptionHidden" name="">
+								<button type="submit" name="submit" value="submit" class="btn btn-success">Yes</button>
+							</form>
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
 						</div>
 					</div>
 				</div>
 			</div>
-		</form>
 		<!--Confirm Modal End-->
+
+		<!--Information Modal-->
+		<form class="form-horizontal">
+			<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Course Details</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Course ID:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="infoId"  disabled >
+								</div>
+								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="infoCourseName" disabled>
+								</div>
+								<label class="col-lg-3 col-form-label">Instructor:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="infoInstructorName" disabled>
+								</div>
+								<label class="col-lg-3 col-form-label">Course Date(s):</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="infoDate" disabled>
+								</div>
+								<label class="col-lg-3 col-form-label">Time slot:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
+								</div>
+							</div>	
+							<div class="alert alert-danger text-center">
+								<h5>This is a REQUIRED training</h5>
+							</div>
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Course Description:</label>
+								<div class="col-lg-9">
+									<label class="col-form-label">Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World</label>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="button" name="message" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--Information Modal End-->
 
 		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
@@ -220,55 +289,126 @@
 						<th>Minimum Number of Participants</th>
 						<th>Maximum Number of Participants</th>
 						<th>Total Number of Participants</th>
+						<th  class="sticky"></th>
 					
 					</tr>
 				</thead>
-				<tbody th:if="${courseSchedule} != null"
-						 th:each="courseSchedule : *{courseSchedules}"
+				<tbody th:each="courseSchedule : *{courseSchedules}"
 						th:with="courseScheduleDetails = ${courseSchedule.getCourseScheduleDetails()}">
-					<tr th:each=" courseScheduleDetail : ${courseScheduleDetails}"
-							th:with="courseScheduleId = ${courseSchedule.id}">
+						
+					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
+							th:with="courseScheduleId = ${courseSchedule.id}"
+							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|">
+									
 						<td th:text="${courseScheduleId}"/>
 						<td th:text="${courseSchedule.getCourseName()}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
 						<td th:text="${courseScheduleDetail.scheduledStartDateTime}" />
 						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"/>
 						<td th:text="${courseScheduleDetail.duration}"/>
-						<td sec:authorize="hasAuthority('PMO')">
+
 						<td th:text="${courseSchedule.venueName}"/>
 						<td th:text="${courseSchedule.minRequired}"/>
 						<td th:text="${courseSchedule.maxAllowed}"/>
 						<td th:text="${courseSchedule.totalParticipants}"/>
 
-						<td sec:authorize="hasAuthority('PMO')">
-							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|" >
+						<td sec:authorize="hasAuthority('PMO')" class="sticky">
+							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|">
 								<i class="fa fa-times"></i> Cancel
 							</button>
 						</td>
 
-						<td sec:authorize="hasAuthority('Member')">
-							<form action="#"
-									th:action="@{/enrollment/schedules/{courseScheduleId}/enroll (courseScheduleId = ${courseScheduleId})}"
-									th:object="${courseEnrollmentForm}" method="get">
-								<button th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}')|" 
-										type="button" class="btn btn-success">Register</button>
-							</form>
+						<td sec:authorize="hasAuthority('Member')" class="sticky">
+							<button th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|" 
+									type="button" class="btn btn-success">Register</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-		</div>    
-		
+			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}">
+				<div class="alert alert-dismissible alert-danger text-center">
+					<strong th:text="${nullMessage}"></strong> 
+				</div>
+			</div>
+			
+		</div>
 	</div>
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 <script th:inline="javascript">
-	<!--Message alert-->
-	var cancelledCourseName;
-	var cancelledCourseId;
+	//SUBMIT FROM/TO DATE TIME
+	function onSubmit(){
+		var toAppend = ":00.000+08:00[Asia/Singapore]";
+		var fromDateTime = document.getElementById('fromDateTime').value;
+		var toDateTime = document.getElementById('toDateTime').value;
+		
+		var inpFromDateTime = document.getElementById('inputFromDateTime');
+		var inpToDateTime = document.getElementById('inputToDateTime');
+		
+		var finalFromDateTime = fromDateTime+toAppend;
+		var finalToDateTime = toDateTime+toAppend;
 	
-//	var action !P
+		inpFromDateTime.value = finalFromDateTime;
+		inpToDateTime.value = finalToDateTime;
+	}
+
+	//SUBMIT FROM/TO DATE TIME END
+// 	$("#fromDateTime").focus(function (){
+// 		$(this).prop('type', 'date')
+// 	});
+	
+// 	$("#fromDateTime").blur(function () {
+// 		var formDate = document.getElementById("fromDateTime").value;
+// 		var newDate = new Date(formDate);
+// 		var dateConcat = newDate.toISO().toString();
+// 		if (formDate == "") {
+// 			$(this).prop('type', 'text')
+// 			$(this).prop('value', null);
+// 		} else {
+// 			$(this).prop('type', 'text')
+// 			$(this).prop('value', dateConcat);
+// 		}
+// 	}); 
+	
+// 	$("#toDateTime").focus(function (){
+// 		$(this).prop('type', 'date')
+// 	});
+	
+// 	$("#toDateTime").blur(function () {
+// 		var formDate = document.getElementById("toDateTime").value;
+// 		var newDate = new Date(formDate);
+// 		var dateConcat = newDate.toISO().toString(); 
+// 		if (formDate == "") {
+// 			$(this).prop('type', 'text')
+// 			$(this).prop('value', null);
+// 		} else {
+// 			$(this).prop('type', 'text')
+// 			$(this).prop('value', dateConcat);
+// 		}
+// 	}); 
+	
+// 	//Format Date Inputs
+// 	Date.prototype.toISO = function() {
+// 		 return this.getUTCFullYear() +
+// 	        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+// 	        '-' + String(this.getUTCDate()).padStart(2, "0") +
+// 	        'T' + String(this.getUTCHours()).padStart(2, "0") +
+// 	        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
+// 	        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
+// 	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+// 	        'Z';
+// 	}; 
+	
+// 	<!--Message alert-->
+// 	$('tbody').on('dblclick', function() {
+// 		$('#infoModal').modal('show');
+// 		var a = ${this}.
+// 	});
+	
+//	var action 
 	//add if statement for the success/fail messages
 // 	$('input[name="error"]').on('click', function() {
 // 		$('#errorModal').modal('show');
@@ -283,26 +423,53 @@
 // 		$('#confirmModal').modal('show');
 // 	});
 	
-	<!--Message alert End-->
+// 	<!--Message alert End-->
+
+	//Information Modal
+	function showInformation(id, courseName, instructorName, scheduleStartDateTime, scheduleEndDateTime){
+// 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
+
+		var startDate = scheduleStartDateTime.slice(0,10);
+		var startTime = scheduleStartDateTime.slice(11,22);
+		var endDate = scheduleEndDateTime.slice(0,10);
+		var endTime = scheduleEndDateTime.slice(11,22);
+
+		var idInput = document.getElementById('infoId');
+		idInput.value = id;
+		
+		var courseNameInput = document.getElementById('infoCourseName');
+		courseNameInput.value = courseName;
+		
+		var instructorNameInput = document.getElementById('infoInstructorName');
+		instructorNameInput.value = instructorName;
+		
+		var dateInput = document.getElementById('infoDate');
+		dateInput.value = startDate;
+		
+		var timeInput = document.getElementById('infoTime');
+		timeInput.value = startTime+" to "+endTime
+		$('#infoModal').modal('show');
+	}
+	//Information Modal End
+	
 	//Confirmation
 	function cancellation(courseId,courseName){
-		cancelledCourseId = courseId;
-		cancelledCourseName = courseName;
 		$('#confirmModal').modal('show');
-		document.getElementById("courseName").innerHTML = cancelledCourseName ;
+		document.getElementById("courseName").innerHTML = courseName ;
 		var input = document.getElementById("id");
 		input.value=courseId
 	}
 
 	//SHOW REGISTRATION POP UP
-	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName){
+	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, endDateTime){
 // 		alert(courseScheduleId + courseScheduleName + courseScheduleInstructorName);
+		var startDate = startDateTime.slice(0,10);
+		var startTime = startDateTime.slice(11,22);
+		var endDate = endDateTime.slice(0,10);
+		var endTime = endDateTime.slice(11,22);
 		
 		var idInput = document.getElementById('courseRegistrationId');
 		idInput.value = courseScheduleId;
-		
-		var idHiddenInput = document.getElementById('courseScheduleIdHidden');
-		idHiddenInput.value = courseScheduleId;
 		
 		var courseNameInput = document.getElementById('courseRegistrationName');
 		courseNameInput.value = courseScheduleName;
@@ -310,17 +477,45 @@
 		var courseInstructorNameInput = document.getElementById('courseRegistrationInstructorName');
 		courseInstructorNameInput.value = courseScheduleInstructorName;
 		
+		var courseDateInput = document.getElementById('courseRegistrationDate');
+		courseDateInput.value = startDate
+		
+		var courseTimeInput = document.getElementById('courseRegistrationTime');
+		courseTimeInput.value = startTime + " to " + endTime;
+		
 		$('#registerModal').modal('show');
 	}
 	//SHOW REGISTRATION POP UP
 	
 	//SHOW REGISTRATION CONFIRMATION POP UP
-	function showRegistrationConfirmation(){
-		alert("wat f");
-// 		var idInput = document.getElementById('idRegCon');
-// 		idInput.value = id;
-// 		document.getElementById('courseNameRegCon').innerHTML = name;
-// 		$('#registrationConfirmModal').modal('show');
+	function registrationConfirm(){
+// 		alert(id);
+		var id = document.getElementById('courseRegistrationId').value;
+		var courseScheduleIdHidden = document.getElementById('courseScheduleIdHidden');
+		courseScheduleIdHidden.value = id;
+		
+		var courseName = document.getElementById('courseRegistrationName').value;
+		var courseScheduleCourseNameHidden = document.getElementById('courseScheduleCourseNameHidden');
+		courseScheduleCourseNameHidden.value = courseName;
+		
+		var courseInstructor = document.getElementById('courseRegistrationInstructorName').value;
+		var courseScheduleInstructorNameHidden = document.getElementById('courseScheduleInstructorNameHidden');
+		courseScheduleInstructorNameHidden.value = courseInstructor;
+		
+		var courseDate = document.getElementById('courseRegistrationDate').value;
+		var courseScheduleDateHidden = document.getElementById('courseScheduleDateHidden');
+		courseScheduleDateHidden.value = courseDate;
+		
+		var courseTime = document.getElementById('courseRegistrationTime').value;
+		var courseScheduleTimeHidden = document.getElementById('courseScheduleTimeHidden');
+		courseScheduleTimeHidden.value = courseTime;
+		
+// 		var courseDescription = document.getElementById('Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World').value;
+// 		var courseScheduleDescriptionHidden = document.getElementById('courseScheduleDescriptionHidden');
+// 		courseScheduleDescriptionHidden.value = courseDescription;
+		
+		$('#confirmRegisterModal').modal('show');
+		
 	}
 	//SHOW REGISTRATION CONFIRMATION POP UP
 	
@@ -343,25 +538,63 @@
 	/*]]>*/
 	
 	//No Record Found
+// 	/*<![CDATA[*/
+// 	var nullMessage = /*[[${nullMessage}]]*/ 'default';
+// 	if(nullMessage == "No schedules found"){
+// 		document.getElementById("message").innerHTML = nullMessage;
+// 		$('#errorModal').modal('show');
+// 	}
+// 	/*]]>*/
+	
+	//DUPLICATE ENROLL
 	/*<![CDATA[*/
-	var nullMessage = /*[[${nullMessage}]]*/ 'default';
-	if(nullMessage == "No Record Found"){
-		document.getElementById("message").innerHTML = nullMessage;
+	var duplicateMessage = /*[[${duplicateMessage}]]*/ 'default';
+	if(duplicateMessage == "You are already enrolled in this course."){
+		document.getElementById("message").innerHTML = duplicateMessage;
 		$('#errorModal').modal('show');
 	}
 	/*]]>*/
+	//DUPLICATE ENROLL END
 	
-	
-	//REGISTRATION START
-	//SUCCESS ENROLL
+	//SHOW ZONEDDATETIME IN TIMEDATE-LOCAL
 	/*<![CDATA[*/
-	var successMsg = /*[[${successMsg}]]*/ 'default';
-	if(successMsg == "Successfully Enrolled a Course!!!"){
-		document.getElementById("successMessage").innerHTML = successMsg;
-		$('#successModal').modal('show');
-	}
+	var viewCourseEnroll = /*[[${viewCourseEnroll}]]*/ 'default';
+		
+		var finalFromDateTime = viewCourseEnroll.fromDateTime.slice(0,16);
+		var finalToDateTime = viewCourseEnroll.toDateTime.slice(0,16);
+		
+		var inputFromDateTime = document.getElementById('fromDateTime');
+		var inputToDateTime = document.getElementById('toDateTime');
+		
+		inputFromDateTime.value = finalFromDateTime;
+		inputToDateTime.value = finalToDateTime;
 	/*]]>*/
 	
+	//REGISTRATION START
+	//SUCCESS ENROLL SHOW INFO MODAL
+	/*<![CDATA[*/
+	var successMsg = /*[[${successMsg}]]*/ 'default';
+
+	var courseEnrollmentForm = /*[[${courseEnrollmentForm}]]*/ 'default';
+	if(successMsg == "Successfully Enrolled a Course!!!"){
+		var courseId = courseEnrollmentForm.courseScheduleId;
+		var courseName = courseEnrollmentForm.courseName;
+		var instructorName = courseEnrollmentForm.instructorName;
+// 		alert("Course ID: " + courseId + " Course Name: " + courseName + " Instructor Name:" + instructorName);
+		document.getElementById("successMessage").innerHTML = successMsg;
+		var courseIdInput = document.getElementById('infoId');
+		var courseNameInput = document.getElementById('infoCourseName');
+		var courseInstructorNameInput = document.getElementById('infoInstructorName');
+
+		courseIdInput.value = courseId;
+		courseNameInput.value = courseName;
+		courseInstructorNameInput.value = instructorName;
+
+		$('#infoModal').modal('show');
+		$('#successModal').modal('show');
+		
+	}
+	/*]]>*/
 	
 	//ERROR ENROLL
 	/*<![CDATA[*/
@@ -372,10 +605,9 @@
 	}
 	
 	/*]]>*/
-	
 	//REGISTRATION END
+	
+	
 </script>
-
 </body>
-
 </html>

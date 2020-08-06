@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 	<meta charset="utf-8" />
@@ -10,108 +11,161 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Attend Course List</title>
-	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	
 </head>
 
 <body>
-	<div th:insert="fragments/general.html :: header"> </div>
-	
-	<div class="container mt-5">
-		<form class="form-horizontal">
-			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
-			<hr>
-			<div class="card">
-				<div class="card-body">
-					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">From Date</label>
-						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
-						</div>
-						<label class="col-lg-2 col-form-label">To Date</label>
-						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
-						</div>
-					</div>
-					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
-					</div>
-				</div>
-			</div>
-		</form>
-		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-			<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
-			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%">
-				<colgroup >
-					<col style="width:20%"/>
-					<col style="width:20%"/>
-					<col style="width:30%"/>
-					<col style="width:30%"/>
-					<col style="width:10%"/>
-				</colgroup>
-				<thead>
-					<tr>
-						<th>Course Name</th>
-						<th>Instructor</th>
-						<th>Start Date/Time</th>
-						<th>End Date/Time</th>
-						<th>Duration</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>    	
-	</div>
-	
-	<footer th:replace="fragments/general.html :: footer"></footer>
-<script>
-	<!--Message alert-->
-	//add if statement for the success/fail messages
-	$('tbody').on('dblclick', function() {
-		document.location.href='attend.html';
-	});
-	<!--Message alert End-->
-</script>
+       <div th:insert="fragments/general.html :: header"></div>
+
+       <div class="container mt-5">
+              <form class="form-horizontal" th:object="${attendCourseList}" method="get">
+                     <h3>
+                           <i class="fa fa-calendar-o"></i> Select Training Period
+                     </h3>
+                     <hr>
+                     <div class="card">
+                           <div class="card-body">
+                                  <div class="form-group row">
+                                         <label class="col-lg-2 col-form-label">From Date</label>
+                                         <div class="col-lg-3">
+                                                <input type="datetime-local" class="form-control" id="fromDateTime"> 
+                                                <input type="hidden" class="form-control" name="fromDateTime" id="inputFromDateTime">
+                                         </div>
+                                         <label class="col-lg-2 col-form-label">To Date</label>
+                                         <div class="col-lg-3">
+                                                <input type="datetime-local" class="form-control" id="toDateTime">
+                                                <input type="hidden" class="form-control" name="toDateTime"
+                                                       id="inputToDateTime">
+                                         </div>
+                                  </div>
+                                  <div class="float-right">
+                                         <input type="submit" class="btn btn-success" value="Submit" onClick="onSubmit()">
+                                  </div>
+                           </div>
+                     </div>
+              </form>
+              <div style="overflow-x: auto; display: block; white-space: nowrap"
+                     class="mt-5">
+                     <h3>
+                           <i class="fa fa-list"></i> List of Available Trainings
+                     </h3>
+                     <table id="data"
+                           class="table table-bordered table-responsive text-center"
+                           style="width: 100%">
+                           <colgroup>
+                                  <col style="width: 20%" />
+                                  <col style="width: 20%" />
+                                  <col style="width: 30%" />
+                                  <col style="width: 30%" />
+                                  <col style="width: 10%" />
+                           </colgroup>
+                           <thead>
+                                  <tr>
+                                         <th>Course ID</th>
+                                         <th>Course Name</th>
+                                         <th>Instructor</th>
+                                         <th>Start Date/Time</th>
+                                         <th>End Date/Time</th>
+                                         <th>Duration</th>
+                                  </tr>
+                           </thead>
+                           <tbody th:each="setCourseScheduleForm : *{attendCourseList.courseSchedules}">
+                                  <tr th:each="courseScheduleForm : *{setCourseScheduleForm.courseScheduleDetails}">
+                                         <td th:text="${courseScheduleForm.getId()}" id="id"></td>
+                                         <td th:text="${setCourseScheduleForm.getCourseName()}"></td>
+                                         <td th:text="${setCourseScheduleForm.getInstructorName()}"></td>
+                                         <td th:text="${courseScheduleForm.getScheduledStartDateTime()}"></td>
+                                         <td th:text="${courseScheduleForm.getScheduledEndDateTime()}"></td>
+                                         <td th:text="${courseScheduleForm.getDuration()}"></td>
+                                  </tr>
+                           </tbody>
+                     </table>
+              </div>
+       </div>
+
+       <footer th:replace="fragments/general.html :: footer"></footer>
+
+       <!--Message alert End-->
+       <script th:inline="javascript">
+              //SUBMIT FROM/TO DATE TIME
+              function onSubmit() {
+                     var toAppend = ":00.000+08:00[Asia/Singapore]";
+                     var fromDateTime = document.getElementById('fromDateTime').value;
+                     var toDateTime = document.getElementById('toDateTime').value;
+
+                     var inpFromDateTime = document.getElementById('inputFromDateTime');
+                     var inpToDateTime = document.getElementById('inputToDateTime');
+
+                     var finalFromDateTime = fromDateTime + toAppend;
+                     var finalToDateTime = toDateTime + toAppend;
+
+                     inpFromDateTime.value = finalFromDateTime;
+                     inpToDateTime.value = finalToDateTime;
+              }
+              //SUBMIT FROM/TO DATE TIME END
+              //SHOW ZONEDDATETIME IN TIMEDATE-LOCAL
+              /*<![CDATA[*/
+              var attendCourseList = /*[[${attendCourseList}]]*/'default';
+
+              var finalFromDateTime = attendCourseList.fromDateTime.slice(0, 16);
+              var finalToDateTime = attendCourseList.toDateTime.slice(0, 16);
+
+              var inputFromDateTime = document.getElementById('fromDateTime');
+              var inputToDateTime = document.getElementById('toDateTime');
+
+              inputFromDateTime.value = finalFromDateTime;
+              inputToDateTime.value = finalToDateTime;
+              /*]]>*/
+              //add if statement for the success/fail messages           
+              //            function getUrl() {
+              //                  var id = $('#id');
+              //                  var idVal = parseInt(id.text());
+              //                  var idVal = parseInt($('#id').text());               
+              //                  alert(idVal);
+              //                  alert(id.text());                
+              //                  var callUrl = '/attendance/signin/' +idVal;
+              //                  document.location.href = callUrl;
+              //            }
+              init();
+              function init() {
+
+                     addRowHandlers('data');
+
+              }
+
+              function addRowHandlers(tableId) {
+                     if (document.getElementById(tableId) != null) {
+                           var table = document.getElementById(tableId);
+                           var rows = table.getElementsByTagName('tr');
+                           var id = '';
+                           var courseName = '';
+                           var instructorName = '';
+                           var scheduledStartDateTime = '';
+                           var scheduledEndDateTime = '';
+                           var duration = '';
+                           for (var i = 1; i < rows.length; i++) {
+
+                                  rows[i].i = i;
+                                  rows[i].onclick = function() {
+
+                                         id = table.rows[this.i].cells[0].innerHTML;
+                                         courseName = table.rows[this.i].cells[1].innerHTML;
+                                         instructorName = table.rows[this.i].cells[2].innerHTML;
+                                         scheduledStartDateTime = table.rows[this.i].cells[3].innerHTML;
+                                         scheduledEndDateTime = table.rows[this.i].cells[4].innerHTML;
+                                         duration = table.rows[this.i].cells[5].innerHTML;
+                                         //alert('Id: '+id+' Course Name: '+courseName+' Instructor Name: '+instructorName+' Start Date Time: '+scheduledStartDateTime+' End Date Time: '+scheduledEndDateTime);
+                                         var callUrl = '/attendance/signin/' + id;
+                                         document.location.href = callUrl;
+                                  };
+                           }
+                     }
+              }
+       </script>
 </body>
 
 </html>

@@ -12,7 +12,8 @@ import java.time.ZonedDateTime;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/24/2020 |  WS) J. Iwarat   | New Creation
-//0.01 | 06/25/2020 |  WS) J. Iwarat   | Update
+//0.02 | 06/25/2020 |  WS) J. Iwarat   | Update
+//0.03 | 07/30/2020 |  WS) R. Ramos    | Update
 //==================================================================================================
 /**
  * <pre>
@@ -20,8 +21,9 @@ import java.time.ZonedDateTime;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.03
  * @author j.iwarat
+ * @author r.ramos
  */
 public class CourseScheduleDetailForm {
 
@@ -39,6 +41,11 @@ public class CourseScheduleDetailForm {
      * End Date and Time
      */
     private ZonedDateTime scheduledEndDateTime;
+
+    /**
+     * End Date and Time
+     */
+    private float duration;
 
     public Long getId() {
         return id;
@@ -63,10 +70,18 @@ public class CourseScheduleDetailForm {
     public void setScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
         this.scheduledEndDateTime = scheduledEndDateTime;
     }
+    
+    public float getDuration() {
+        return duration;
+    }
+
+    public void setDuration(float duration) {
+        this.duration = duration;
+    }
 
     @Override
     public String toString() {
         return "CourseScheduleDetailForm [id=" + id + ", scheduledStartDateTime" + scheduledStartDateTime
-                + ", scheduledEndDateTime=" + scheduledEndDateTime + "]";
+                + ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration=" + duration + "]";
     }
 }

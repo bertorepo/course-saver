@@ -56,16 +56,21 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         int maxAllowed = cs.getInt("MAX_ALLOWED");
         char status = cs.getString("STATUS").charAt(0);
         
+        Long courseScheduleDetailId = cs.getLong("COURSE_SCHEDULE_DETAIL_ID");
+        
         ZonedDateTime scheduledStartDateTime = 
                 ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(),
-                        ZoneId.of("UTC"));
+                        ZoneId.systemDefault());
         
         ZonedDateTime scheduledEndDateTime = 
                 ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
-                        ZoneId.of("UTC"));
+                        ZoneId.systemDefault());
+        
+        float duration = cs.getFloat("DURATION");
         
         CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(id, scheduledStartDateTime, scheduledEndDateTime).build();
+                new CourseScheduleDetail.Builder(courseScheduleDetailId, 
+                        id, scheduledStartDateTime, scheduledEndDateTime, duration).build();
         
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
         

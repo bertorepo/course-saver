@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        package com.fujitsu.ph.tsup.scheduling.web;
+package com.fujitsu.ph.tsup.scheduling.web;
 
 //=======================================================
 //$Id: PR02$
@@ -24,15 +24,14 @@
 *
 */
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fujitsu.ph.auth.model.FpiUser;
+import com.fujitsu.ph.tsup.dashboard.service.DashboardMemberService;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
@@ -63,6 +64,7 @@ public class ScheduleController {
      */
     @Autowired
     private ScheduleService scheduleService;
+    //private DashboardMemberService dashboardMemberService;
 
     
     /**
@@ -88,6 +90,9 @@ public class ScheduleController {
 
         logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", bindingResult);
+        
+//        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Long employeeId = user.getId();
 
         if (bindingResult.hasErrors()) {
             return "scheduling/scheduleView";
@@ -101,13 +106,13 @@ public class ScheduleController {
         if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())) {
             model.addAttribute("scheduleView", courseScheduleListForm);
             model.addAttribute("error", "To Date should be greater than or equal to From Date");
-            return "scheduling/scheduleView";
-        }
+            return "scheduling/instructorCourseScheduleList";
+        } 
 
         Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
                 courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
 
-        Set<CourseScheduleViewForm> courseScheduleViewFormSet = courseScheduleListForm.getCourseSchedules();
+        Set<CourseScheduleViewForm> courseScheduleViewFormSet = new HashSet<>();
 
         for (CourseSchedule courseSched : courseSchedule) {
             CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
@@ -128,16 +133,16 @@ public class ScheduleController {
                 courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
                 courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
                 courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
-
                 courseScheduleDetailFormSet.add(courseSchedDetailForm);
 
             }
 
             courseScheduleViewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
-
             courseScheduleViewFormSet.add(courseScheduleViewForm);
         }
-
+        
+        courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
+        //model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/instructorCourseScheduleList";
     }
@@ -165,7 +170,7 @@ public class ScheduleController {
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
 
         CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
-        
+
         courseScheduleNewForm.setInstructors(instructorFormList);
         courseScheduleNewForm.setVenues(venueFormList);
         courseScheduleNewForm.setCourses(courseFormList);
@@ -207,7 +212,17 @@ public class ScheduleController {
             return "scheduling/createSched";
         }
         
-        form.setCourseScheduleDetails(new HashSet<>(form.getCourseScheduleDetailsAsList()));
+        Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
+        
+        //For looping inside the binded List
+        for (CourseScheduleDetailForm courseSchedDetForm : form.getCourseScheduleDetailsAsList()) {
+            if((courseSchedDetForm.getScheduledStartDateTime() != null) 
+                    && (courseSchedDetForm.getScheduledEndDateTime() != null)) {
+               courseScheduleDetailsAsListSet.add(courseSchedDetForm);
+            }
+        }
+        
+        form.setCourseScheduleDetails(courseScheduleDetailsAsListSet);
 
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
@@ -224,9 +239,12 @@ public class ScheduleController {
                         .build();
         
         scheduleService.createCourseSchedule(courseSchedule);
+        
+        form.setCourses(courseFormList);
+        form.setVenues(venueFormList);
+        form.setInstructors(instructorFormList);
 
         redirectAttributes.addFlashAttribute("message", "Success!! Schedule has been created");
-        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         redirectAttributes.addFlashAttribute("scheduleNew", form);
         return "redirect:/schedules/new";
 

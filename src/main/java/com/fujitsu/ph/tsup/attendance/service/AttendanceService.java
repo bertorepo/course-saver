@@ -17,6 +17,7 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) K.Abad            | New Creation
+//0.02    | 07/30/2020 | WS) R.Ramos           | Update
 //==================================================================================================
 /**
  * <pre>
@@ -24,8 +25,9 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 * In this interface, it consists of the method required for the initial setting of the database
  * </pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author k.abad
+ * @author r.ramos
  *
  */
 
@@ -100,5 +102,17 @@ public interface AttendanceService {
      * @param courseAttendance
      */
     void attend(CourseAttendance courseAttendance);
-
+    
+    /**
+     * <pre>
+     * Finds all scheduled courses based on the given date range
+     * </pre>
+     * 
+     * @param fromDateTime
+     * @param toDateTime
+     * @param participantId
+     * @return Course Participant Set
+     */
+    Set<CourseParticipant> findAllScheduledCoursesByParticipant(ZonedDateTime fromDateTime, ZonedDateTime toDateTime,
+            Long participantId);
 }

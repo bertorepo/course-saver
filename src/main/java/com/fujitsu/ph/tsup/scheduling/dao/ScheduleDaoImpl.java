@@ -80,8 +80,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED, " 
                 + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
                 + "CSCHED.STATUS AS STATUS, "
+                + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.DURATION AS DURATION "
                 + "FROM COURSE_SCHEDULE AS CSCHED " 
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID " 
@@ -95,8 +97,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
-                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
+                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime());
 
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                 new CourseScheduleRowMapper());
@@ -129,7 +131,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
      */
     @Override
     public Set<InstructorForm> findAllInstructors() {
-        String query = "SELECT ID, FIRST_NAME, LAST_NAME FROM EMPLOYEE";
+        String query = "SELECT E.ID, E.FIRST_NAME, E.LAST_NAME "
+                     + "FROM EMPLOYEE AS E "
+                     + "INNER JOIN EMPLOYEE_AUTH AS EA "
+                     + "ON E.USERNAME = EA.USERNAME "
+                     + "WHERE EA.AUTH_NAME = 'Instructor'";
 
         List<InstructorForm> instructorList = template.query(query, new InstructorRowMapper());
         Set<InstructorForm> instructors = new HashSet<>(instructorList);
@@ -192,9 +198,9 @@ public class ScheduleDaoImpl implements ScheduleDao {
             SqlParameterSource courseSchedDetailParameters = new MapSqlParameterSource()
                     .addValue("course_schedule_id", key)
                     .addValue("scheduled_start_datetime", courseSchedDetail.getScheduledStartDateTime()
-                            .withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledStartDateTime()
-                            .withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                            .withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
+                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledEndDateTime()
+                            .withZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime())
                     .addValue("duration", courseSchedDetail.getDuration());
             template.update(courseScheduleDetailSql, courseSchedDetailParameters, courseSchedDetailGeneratedKeyHolder);
             
