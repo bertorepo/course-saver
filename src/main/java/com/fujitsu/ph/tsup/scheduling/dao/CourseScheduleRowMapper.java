@@ -58,13 +58,19 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         
         Long courseScheduleDetailId = cs.getLong("COURSE_SCHEDULE_DETAIL_ID");
         
+        /*
+         * ZonedDateTime scheduledStartDateTime =
+         * ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_START_DATETIME").
+         * toInstant(), ZoneId.systemDefault());
+         */
+        
         ZonedDateTime scheduledStartDateTime = 
                 ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(),
-                        ZoneId.systemDefault());
+                        ZoneId.of("UTC"));
         
         ZonedDateTime scheduledEndDateTime = 
                 ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
-                        ZoneId.systemDefault());
+                        ZoneId.of("UTC"));
         
         float duration = cs.getFloat("DURATION");
         
