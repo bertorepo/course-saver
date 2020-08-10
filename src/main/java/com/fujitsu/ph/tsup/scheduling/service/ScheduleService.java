@@ -74,5 +74,16 @@ public interface ScheduleService {
      */
     void createCourseSchedule(CourseSchedule courseSchedule);
     
+    /**
+     * Update a course schedule
+     * @param courseSchedule
+     */
+    void updateCourseSchedule(CourseSchedule courseSchedule);
+    
+    /**
+     * Delete a course schedule by Id
+     * @param long id
+     */
+    void deleteCourseScheduleById(Long id);
     
 }

@@ -208,4 +208,32 @@ public class ScheduleDaoImpl implements ScheduleDao {
             System.out.println("\nGenerated Course Schedule Detail ID: "+ courseSchedDetailKey +"\n");
         } 
     }
+
+    /**
+     * <pre>
+     * Update a course schedule 
+     * 
+     * <pre>
+     * 
+     * @param Long id
+     */
+	@Override
+	public void updateCourseSchedule(Long id) {
+		
+		
+	}
+
+	/**
+     * <pre>
+     * Delete a course schedule 
+     * 
+     * <pre>
+     * 
+     * @param Long id
+     */
+	@Override
+	public void deleteCourseScheduleById(Long id) {
+		
+		
+	}
 }

@@ -64,4 +64,18 @@ public interface ScheduleDao {
      */
 	void saveCourseSchedule(CourseSchedule courseSchedule);
 	
+	
+	 /**
+     * Update a course schedule
+     * @param long course schedule id
+     */
+	void updateCourseSchedule(Long id);
+	
+	
+	 /**
+     * Deletes the CourseSchedule and CourseScheduleDetail by ID
+     * @param long course schedule id
+     */
+	void deleteCourseScheduleById(Long id);
+	
 }

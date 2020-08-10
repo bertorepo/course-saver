@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.scheduling.dao.ScheduleDao;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
@@ -147,6 +148,39 @@ public class ScheduleServiceImpl implements ScheduleService{
 	        	 throw new IllegalArgumentException("Can't save course schedule"); 
 	        }
 	    }
-}
+	
+	/**
+     * <pre>
+     * Update a course schedule
+     * Call ScheduleDao.updateCourseSchedule by using Course Schedule Object.
+     * <pre>
+     * 
+     * @param courseSchedule
+     */
+	@Override
+	public void updateCourseSchedule(CourseSchedule courseSchedule) {
+		
+	}
+		
+	/**
+     * <pre>
+     * Delete a course schedule
+     * Call ScheduleDao.deleteCourseScheduleById by using Course ID
+     * <pre>
+     * 
+     * @param courseSchedule
+     */
+	@Override
+	public void deleteCourseScheduleById(Long id) {
+		
+		try {
+			   scheduleDao.deleteCourseScheduleById(id);
+	        } catch (DataAccessException ex) {
+	        	 throw new IllegalArgumentException("Can't delete course schedule"); 
+	        }
+	    }
+		
+	}
+
 	
 
