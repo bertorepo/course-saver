@@ -188,31 +188,64 @@ public class ScheduleController {
         return "scheduling/createSched";
     }
     
-    @GetMapping("/new/addDate")
-    public String addNewCourseScheduleDetailRow(Model model, CourseScheduleNewForm form) {
+    @GetMapping("/new/addDate/{row}")
+    public String addNewCourseScheduleDetailRow
+            (@ModelAttribute("scheduleNew") CourseScheduleNewForm form, @PathVariable("row") int row, 
+                                    Model model, RedirectAttributes redirectAttributes) {
+        List<CourseScheduleDetailForm> newCourseScheduleDetailForm = new ArrayList<>();
+        
         List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
-                new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[1]));
+                    new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[row]));
         
-        form.getCourseScheduleDetailsAsList().addAll(newCourseScheduleDetailFormRow);
+        newCourseScheduleDetailForm.addAll(form.getCourseScheduleDetailsAsList());
+        newCourseScheduleDetailForm.addAll(newCourseScheduleDetailFormRow);
         
-        model.addAttribute("scheduleNew", form);
-        return "scheduling/createSched";
+        form.setCourseScheduleDetailsAsList(newCourseScheduleDetailForm);
+        
+        Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+        Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+        Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+        
+        form.setInstructors(instructorFormList);
+        form.setVenues(venueFormList);
+        form.setCourses(courseFormList);
+        
+        redirectAttributes.addFlashAttribute("scheduleNew", form);
+        return "redirect:/schedules/new";
     }
     
-    @GetMapping("/new/removeDate")
-    public String deleteNewCourseScheduleDetailRow(Model model, CourseScheduleNewForm form) {
+    @GetMapping("/new/removeDate/{row}")
+    public String deleteNewCourseScheduleDetailRow(@PathVariable("row") int row, Model model, 
+            CourseScheduleNewForm form, RedirectAttributes redirectAttributes) {
          List<CourseScheduleDetailForm> newCourseScheduleDetailForm = form.getCourseScheduleDetailsAsList();
+         List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
+                 new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[row]));
+         //newCourseScheduleDetailForm.addAll();
          
          ListIterator<CourseScheduleDetailForm> itr = newCourseScheduleDetailForm.listIterator();
          
-         if(itr.hasNext()) {
-             List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
-                     new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[1]));
-             newCourseScheduleDetailFormRow.removeAll(newCourseScheduleDetailFormRow);
-         }
+         int lastIndex = row - 1;
          
-         model.addAttribute("scheduleNew", form);
-         return "scheduling/createSched";
+         if(itr.hasNext()) {
+             newCourseScheduleDetailFormRow.remove(lastIndex);
+         }
+         form.setCourseScheduleDetailsAsList(newCourseScheduleDetailFormRow);
+         
+         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+         
+         form.setCourseId(form.getCourseId());
+         form.setInstructorId(form.getInstructorId());
+         form.setVenueId(form.getVenueId());
+         form.setMinRequired(form.getMinRequired());
+         form.setMaxAllowed(form.getMaxAllowed());
+         form.setInstructors(instructorFormList);
+         form.setVenues(venueFormList);
+         form.setCourses(courseFormList);
+         
+         redirectAttributes.addFlashAttribute("scheduleNew", form);
+         return "redirect:/schedules/new";
     }
 
     /**

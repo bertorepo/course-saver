@@ -103,63 +103,70 @@
 						</div>
 					</div>
 					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap" id="dateTime">
-						<table class="table table-responsive table-borderless text-center">
+						<table class="table table-responsive table-borderless text-center" >
 							<colgroup >
 								<col style="width:55%"/>
 								<col style="width:55%"/>
-							</colgroup>	   			
-							<tr>
-								<td>
-									<label class="col-lg-6 col-form-label">Start/End Date</label>
-								</td>
-								<td>
-									<label class="col-lg-6 col-form-label">Start/End Time</label>
-								</td>
-							</tr>
-							<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailsAsList}">
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}" >
+							</colgroup>	   		
+							<thead>
+								<tr>
+									<td>
+										<label class="col-lg-6 col-form-label">Start/End Date</label>
+									</td>
+									<td>
+										<label class="col-lg-6 col-form-label">Start/End Time</label>
+									</td>
+								</tr>
+							</thead>	
+							<tbody th:id="courseScheduleDetails">
+								<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailsAsList}">
+									<td>
+										<div class="form-group row">
+											<div class="col-lg-6">
+												<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}">
+											</div>
+											<div class="col-lg-6">
+												<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
+											</div>
 										</div>
-										<div class="col-lg-6">
-											<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
+									</td>
+									<td>
+										<div class="form-group row">
+											<div class="col-lg-2"></div>
+											<div class="col-lg-4">
+												<input type="text" class="form-control" 
+														th:id="${'startTime' + (stat.index + 1)}" 
+														oninput="timeOnly(this.id);" 
+														maxlength="5">
+											</div>
+											<div class="col-lg-4">
+												<input type="text" class="form-control" 
+														th:id="${'endTime' + (stat.index + 1)}"
+														oninput="timeOnly(this.id);" 
+														maxlength="5" >
+											</div>
 										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" 
-													th:id="${'startTime' + (stat.index + 1)}" 
-													oninput="timeOnly(this.id);" 
-													maxlength="5">
+									</td>
+									<td style="display:none;">
+										<div>
+											<input type="hidden" name="startDateTime" 
+												 th:id="${'startDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledStartDateTime}">
+											<input type="hidden" name="endDateTime" 
+												 th:id="${'endDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledEndDateTime}">
+											<input type="hidden" th:id="${'index' + (stat.index + 1)}"
+											     th:value="${stat.index}">
 										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" 
-													th:id="${'endTime' + (stat.index + 1)}"
-													oninput="timeOnly(this.id);" 
-													maxlength="5" >
-										</div>
-									</div>
-								</td>
-								<td style="display:none;">
-									<div>
-										<input type="hidden" name="startDateTime" 
-											 th:id="${'startDateTime' + (stat.index + 1)}"
-											 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledStartDateTime}">
-											
-										<input type="hidden" name="endDateTime" 
-											 th:id="${'endDateTime' + (stat.index + 1)}"
-											 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledEndDateTime}">
-									</div>
-								</td>
-							</tr>
+									</td>
+								</tr>
+							</tbody>
 						</table>
 						<div>
-							<button type="button" value="" name="addRow" onclick="addNewRow()" class="btn btn-success"> Add</button>
-							<button type="button" value="" name="RemoveRow" onclick="removeNewRow()" class="btn btn-danger"> 
+							<button type="button" value="" name="addRow" onclick="addNewRow(this.form)" class="btn btn-success"> 
+								Add
+							</button>
+							<button type="button" value="" name="removeRow" onclick="removeNewRow(this.form)" class="btn btn-danger"> 
 								Remove
 							</button>
 						</div>
@@ -241,13 +248,17 @@
 	
 <script th:inline="javascript">
 //Add New Rows
-function addNewRow() {
-	var Url = '/schedules/new/addDate';
+function addNewRow(form) {
+	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+	var length = courseScheduleDetails.rows.length;
+	var Url = '/schedules/new/addDate/'+length;
 	document.location.href = Url;
 }
 
-function removeNewRow() {
-	var Url = '/schedules/new/removeDate';
+function removeNewRow(form) {
+	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+	var length = courseScheduleDetails.rows.length;
+	var Url = '/schedules/new/removeDate/'+length;
 	document.location.href = Url;
 }
 
@@ -322,8 +333,10 @@ function validations() {
 	//Empty Fields Validation for Start and End date
 	var startDateTimeCount = 0;
 	var endDateTimeCount = 0;
+	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+	var length = courseScheduleDetails.rows.length;
 
-	for (var i = 1; i <= 5; i++) {
+	for (var i = 1; i <= length; i++) {
 
 	    var startDate = $("#startDate" + i).val();
 	    var startTime = $("#startTime" + i).val();
