@@ -10,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Create Sched</title>
-	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -150,6 +150,12 @@
 								</td>
 							</tr>
 						</table>
+						<div>
+							<button type="button" value="" name="addRow" onclick="addNewRow()" class="btn btn-primary"> Add</button>
+							<button type="button" value="" name="RemoveRow" onclick="removeNewRow()" class="btn btn-primary"> 
+								Remove
+							</button>
+						</div>
 					</div>
 					<div class="float-right">
 						<input type="button" class="btn btn-success" th:attr="onclick=|validations()|" value="Create">
@@ -183,7 +189,16 @@
 			</div>
 		</div> 
 		<!--Confirmation Modal End-->
-		</form>  
+		</form>
+		<!-- <div>
+			<form th:action="@{/schedules/new/addDate}" th:object="${scheduleNew}" method="get">
+				
+			</form>
+			<form th:action="@{/schedules/new/removeDate}" th:object="${scheduleNew}" method="get">
+				<button type="submit" class="btn btn-primary"> Remove</button>
+			</form>
+		</div> -->
+		
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
@@ -229,6 +244,16 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 <script th:inline="javascript">
+//Add New Rows
+function addNewRow() {
+	var Url = '/schedules/new/addDate';
+	document.location.href = Url;
+}
+
+function removeNewRow() {
+	var Url = '/schedules/new/removeDate';
+	document.location.href = Url;
+}
 
 //Set Course ID
 $("#courseName").blur(function (){

@@ -1,5 +1,7 @@
 package com.fujitsu.ph.tsup.scheduling.web;
 
+import java.lang.reflect.Array;
+
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -24,7 +26,12 @@ package com.fujitsu.ph.tsup.scheduling.web;
 *
 */
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -37,6 +44,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -145,7 +153,7 @@ public class ScheduleController {
         //model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/instructorCourseScheduleList";
-    }
+    }    
 
     /**
      * <pre>
@@ -179,6 +187,34 @@ public class ScheduleController {
 
         return "scheduling/createSched";
 
+    }
+    
+    @GetMapping("/new/addDate")
+    public String addNewCourseScheduleDetailRow(Model model, CourseScheduleNewForm form) {
+        List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
+                new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[1]));
+        
+        form.getCourseScheduleDetailsAsList().addAll(newCourseScheduleDetailFormRow);
+        
+        model.addAttribute("scheduleNew", form);
+        return "scheduling/createSched";
+    }
+    
+    @GetMapping("/new/removeDate")
+    public String deleteNewCourseScheduleDetailRow(Model model, CourseScheduleNewForm form) {
+         List<CourseScheduleDetailForm> newCourseScheduleDetailForm = form.getCourseScheduleDetailsAsList();
+         
+         ListIterator<CourseScheduleDetailForm> itr = newCourseScheduleDetailForm.listIterator();
+         
+         if(itr.hasNext()) {
+             List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
+                     new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[1]));
+             newCourseScheduleDetailFormRow.removeAll(newCourseScheduleDetailFormRow);
+         }
+         
+         model.addAttribute("scheduleNew", form);
+        
+         return "scheduling/createSched";
     }
 
     /**
