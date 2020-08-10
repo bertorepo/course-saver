@@ -151,8 +151,8 @@
 							</tr>
 						</table>
 						<div>
-							<button type="button" value="" name="addRow" onclick="addNewRow()" class="btn btn-primary"> Add</button>
-							<button type="button" value="" name="RemoveRow" onclick="removeNewRow()" class="btn btn-primary"> 
+							<button type="button" value="" name="addRow" onclick="addNewRow()" class="btn btn-success"> Add</button>
+							<button type="button" value="" name="RemoveRow" onclick="removeNewRow()" class="btn btn-danger"> 
 								Remove
 							</button>
 						</div>
@@ -190,14 +190,6 @@
 		</div> 
 		<!--Confirmation Modal End-->
 		</form>
-		<!-- <div>
-			<form th:action="@{/schedules/new/addDate}" th:object="${scheduleNew}" method="get">
-				
-			</form>
-			<form th:action="@{/schedules/new/removeDate}" th:object="${scheduleNew}" method="get">
-				<button type="submit" class="btn btn-primary"> Remove</button>
-			</form>
-		</div> -->
 		
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
@@ -239,8 +231,6 @@
 		</div>
 		<!--Error Modal End-->	
 	</div>
-
-	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 <script th:inline="javascript">

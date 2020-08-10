@@ -186,7 +186,6 @@ public class ScheduleController {
         model.addAttribute("scheduleNew", courseScheduleNewForm);
 
         return "scheduling/createSched";
-
     }
     
     @GetMapping("/new/addDate")
@@ -213,7 +212,6 @@ public class ScheduleController {
          }
          
          model.addAttribute("scheduleNew", form);
-        
          return "scheduling/createSched";
     }
 
