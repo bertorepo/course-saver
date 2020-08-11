@@ -381,22 +381,22 @@ function validations() {
 	
 	
 	//Scheduled Start Date Time and Scheduled End Date Time Part
-    for(i = 1; i<=5; i++){
+    for(i = 1; i<= length; i++){
     	var startDate = document.getElementById("startDate"+i).value;
         var endDate =  document.getElementById("endDate"+i).value;
         var startTime =  document.getElementById("startTime"+i).value;
         var endTime =  document.getElementById("endTime"+i).value;
         
-        var rowStartDateTime = new Date(startDate+"T"+startTime+":00Z");
-	    var rowEndDateTime = new Date(endDate+"T"+startTime+":00Z");
+        /* var rowStartDateTime = new Date(startDate+"T"+startTime+":00Z");
+	    var rowEndDateTime = new Date(endDate+"T"+startTime+":00Z"); */
         
-        /* var rowStartDateTime = new Date(startDate);
+        var rowStartDateTime = new Date(startDate);
 	    var rowEndDateTime = new Date(endDate);
 	    
 	    rowStartDateTime.setHours(startTime.substring(0, startTime.indexOf(":")));
 	    rowStartDateTime.setMinutes(startTime.substring(startTime.indexOf(":") + 1));
 	    rowEndDateTime.setHours(endTime.substring(0, endTime.indexOf(":")));
-	    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); */
+	    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); 
        	
 	    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
 	    	//Start and End Time Validation
@@ -420,16 +420,15 @@ function validations() {
 	    	var startDateTime = null;
 	    } else {
 	    	var startDateTime = rowStartDateTime.toISO().toString();
-	        console.log(rowStartDateTime);
-	        console.log(startDateTime);
+	        /* console.log(rowStartDateTime);
+	        console.log(startDateTime); */
 	    	var endDateTime = rowEndDateTime.toISO().toString();
-		    console.log(rowEndDateTime);
-		    console.log(endDateTime);
+		    /* console.log(rowEndDateTime);
+		    console.log(endDateTime); */
 	    }
 	    
 	    document.getElementById("startDateTime"+i).value = startDateTime;
 		document.getElementById("endDateTime"+i).value = endDateTime;
-
 		
 		//Confirmation Modal Validation
 		if ((courseName !== "") && (instructor !== "") && (venue !== "")

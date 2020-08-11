@@ -40,10 +40,10 @@ import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
  *
  */
 public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
-    
+
     @Override
     public CourseSchedule mapRow(ResultSet cs, int rowNum) throws SQLException {
-        
+
         Long id = cs.getLong("ID");
         Long courseId = cs.getLong("COURSE_ID");
         String courseName = cs.getString("COURSE_NAME");
@@ -55,38 +55,39 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         int minRequired = cs.getInt("MIN_REQUIRED");
         int maxAllowed = cs.getInt("MAX_ALLOWED");
         char status = cs.getString("STATUS").charAt(0);
-        
+
         Long courseScheduleDetailId = cs.getLong("COURSE_SCHEDULE_DETAIL_ID");
-        
-        /*
-         * ZonedDateTime scheduledStartDateTime =
-         * ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_START_DATETIME").
-         * toInstant(), ZoneId.systemDefault());
-         */
-        
-        ZonedDateTime scheduledStartDateTime = 
-                ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(),
-                        ZoneId.of("UTC"));
-        
-        ZonedDateTime scheduledEndDateTime = 
-                ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
-                        ZoneId.of("UTC"));
-        
-        float duration = cs.getFloat("DURATION");
-        
-        CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(courseScheduleDetailId, 
-                        id, scheduledStartDateTime, scheduledEndDateTime, duration).build();
-        
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-        
-        courseScheduleDetailSet.add(courseScheduleDetail);
+
        
-        CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
-                instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed, status)
-                .addDetail(courseScheduleDetailSet)
-                .build();
+        ZonedDateTime scheduledStartDateTime =
+                    ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.systemDefault());
+         
+        ZonedDateTime scheduledEndDateTime =
+                ZonedDateTime.ofInstant(cs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(), ZoneId.systemDefault());
         
+//        ZonedDateTime scheduledStartDateTime = ZonedDateTime.ofInstant(
+//                cs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(),
+//                ZoneId.of("UTC"));
+
+//        ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(
+//                cs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
+//                ZoneId.of("UTC"));
+
+        float duration = cs.getFloat("DURATION");
+
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(
+                courseScheduleDetailId, id, scheduledStartDateTime,
+                scheduledEndDateTime, duration).build();
+
+        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+
+        courseScheduleDetailSet.add(courseScheduleDetail);
+
+        CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId,
+                courseName, instructorId, instructorLastName,
+                instructorFirstName, venueId, venueName, minRequired,
+                maxAllowed, status).addDetail(courseScheduleDetailSet).build();
+
         return courseSchedule;
     }
 }

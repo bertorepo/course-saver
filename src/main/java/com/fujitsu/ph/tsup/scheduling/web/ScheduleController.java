@@ -220,7 +220,6 @@ public class ScheduleController {
          List<CourseScheduleDetailForm> newCourseScheduleDetailForm = form.getCourseScheduleDetailsAsList();
          List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
                  new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[row]));
-         //newCourseScheduleDetailForm.addAll();
          
          ListIterator<CourseScheduleDetailForm> itr = newCourseScheduleDetailForm.listIterator();
          
@@ -235,11 +234,6 @@ public class ScheduleController {
          Set<VenueForm> venueFormList = scheduleService.findAllVenues();
          Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
          
-         form.setCourseId(form.getCourseId());
-         form.setInstructorId(form.getInstructorId());
-         form.setVenueId(form.getVenueId());
-         form.setMinRequired(form.getMinRequired());
-         form.setMaxAllowed(form.getMaxAllowed());
          form.setInstructors(instructorFormList);
          form.setVenues(venueFormList);
          form.setCourses(courseFormList);
