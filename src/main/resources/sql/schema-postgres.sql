@@ -144,7 +144,7 @@ ALTER TABLE tsup.DEPARTMENT
 CREATE TABLE tsup.EMPLOYEE_AUTH
 (
     ID bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_AUTH_ID_seq"'::regclass),
-    AUTH_NAME character varying(50) COLLATE pg_catalog."default",
+    AUTH_NAME character varying(50) COLLATE pg_catalog."default" NOT NULL,
     USERNAME character varying(50) COLLATE pg_catalog."default",
     CONSTRAINT "EMPLOYEE_AUTH_pkey" PRIMARY KEY (ID)
 )
