@@ -124,9 +124,13 @@
 										<div class="form-group row">
 											<div class="col-lg-6">
 												<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}">
+													<div class="text-danger" id="startDateId_error">
+												</div>
 											</div>
 											<div class="col-lg-6">
 												<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
+													<div class="text-danger" id="endDateId_error">
+												</div>
 											</div>
 										</div>
 									</td>
@@ -290,14 +294,13 @@ function isLessThanToday(date){
 }  
 
 function validations() {
-	
 	var courseName = $('#courseName').val();
 	var instructor = $('#instructorId').val();
 	var venue = $('#venueId').val();
-	var minRequired = parseInt($('#minRequired').val());
-	var maxAllowed = parseInt($('#maxAllowed').val());
-
-
+	var minRequired = parseInt($('#minRequired').val().replace("", "0"));
+	var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
+	
+	
 	//Empty Fields Validations
 	if (courseName == "") {
 		courseNameError = "Please fill up Course Name"; 
@@ -311,25 +314,38 @@ function validations() {
 		venueError = "Please fill up Venue";
         document.getElementById("venueId_error").innerHTML = venueError;
 	}
-	if (minRequired == "") {
+	if (minRequired <= 0) {
 	  	minRequiredError = "Please fill up Minimum no. of Participants";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 	}
-	if (minRequired == "") {
+	if (maxAllowed <=0) {
 	  	maxAllowedError = "Please fill up Maximum no. of Participants";
 	  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
 	}
-
+	if (minRequired !==0) {
+		if (maxAllowed <= minRequired) {
+	  	minRequiredError = "Minimum can't be greater or equal to Maximum Participants";
+	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
+		}
+	}
+	
 	function removeWarning() {
-	    document.getElementById(this.id + "_error").innerHTML = "";
+		
+		var fieldId = this.id;
+		var data = document.getElementById(fieldId).value;
+		
+		
+		if (data !== "") {
+			document.getElementById(fieldId + "_error").innerHTML = "";
+		}
 	}
 	
 	document.getElementById("courseName").onkeyup = removeWarning;
-	document.getElementById("instructorId").onkeyup = removeWarning;
-	document.getElementById("venueId").onkeyup = removeWarning;
+	document.getElementById("instructorId").onmouseleave = removeWarning;
+	document.getElementById("venueId").onmouseleave = removeWarning;
 	document.getElementById("minRequired").onkeyup = removeWarning;
 	document.getElementById("maxAllowed").onkeyup = removeWarning;
-	
+
 	//Empty Fields Validation for Start and End date
 	var startDateTimeCount = 0;
 	var endDateTimeCount = 0;
@@ -354,13 +370,16 @@ function validations() {
 	}
 
 	if (startDateTimeCount == 0) {
-	    errorMsg.push("Please fill up Start Date and Start Time");
+		minRequiredError = "Please fill up Start Date and Time";
+	  	//document.getElementById("startDateId_error").innerHTML = minRequiredError;
 	}
 
 	if (endDateTimeCount == 0) {
-	    errorMsg.push("Please fill up End Date and End Time");
+		minRequiredError = "Please fill up End Date and Time";
+	  	//document.getElementById("endDateId_error").innerHTML = minRequiredError;
 	}
-	 
+	
+	
 	//Scheduled Start Date Time and Scheduled End Date Time Part
     for(i = 1; i<=5; i++){
     	var startDate = document.getElementById("startDate"+i).value;
