@@ -187,7 +187,19 @@ public class ScheduleController {
 
         return "scheduling/createSched";
     }
-    
+    /**
+     * <pre>
+     * Add a row in Course Schedule Detail. Method = GET
+     * 
+     * <pre>
+     * 
+     * @param PathVariable row 		 int row
+     * @param CourseScheduleListForm form
+     * @param BindingResult          bindingResult
+     * @param Model                  model
+     * @param RedirectAttributes     redirectAttributes
+     * @return courseScheduleListForm and view
+     */
     @GetMapping("/new/addDate/{row}")
     public String addNewCourseScheduleDetailRow
             (@ModelAttribute("scheduleNew") CourseScheduleNewForm form, @PathVariable("row") int row, 
@@ -213,7 +225,19 @@ public class ScheduleController {
         redirectAttributes.addFlashAttribute("scheduleNew", form);
         return "redirect:/schedules/new";
     }
-    
+    /**
+     * <pre>
+     * Remove a row in Course Schedule Detail. Method = GET
+     * 
+     * <pre>
+     * 
+     * @param PathVariable row 		 int row
+     * @param CourseScheduleListForm form
+     * @param BindingResult          bindingResult
+     * @param Model                  model
+     * @param RedirectAttributes     redirectAttributes
+     * @return courseScheduleListForm and view
+     */
     @GetMapping("/new/removeDate/{row}")
     public String deleteNewCourseScheduleDetailRow(@PathVariable("row") int row, Model model, 
             CourseScheduleNewForm form, RedirectAttributes redirectAttributes) {
@@ -244,7 +268,7 @@ public class ScheduleController {
 
     /**
      * <pre>
-     * Create the course schedule. Method = GET
+     * Create the course schedule. Method = POST
      * 
      * <pre>
      * 
@@ -309,6 +333,70 @@ public class ScheduleController {
      
         return "redirect:/schedules/new";
 
+    }
+    
+    /**
+     * <pre>
+     * Update the course schedule. Method = POST
+     * 
+     * <pre>
+     * 
+     * @param CourseScheduleListForm form
+     * @param BindingResult          bindingResult
+     * @param Model                  model
+     * @param RedirectAttributes     redirectAttributes
+     * @return courseScheduleListForm and view
+     */
+    @PostMapping("/updateCourseSchedule")
+    public String updateCourseScheduleForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
+            BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    	
+		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+		Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+
+		logger.debug("CourseScheduleNewForm: {}", form);
+		logger.debug("Result: {}", bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			form.setVenues(venueFormList);
+			form.setInstructors(instructorFormList);
+			model.addAttribute("scheduleNew", form);
+			return "scheduling/createSched";
+		}
+
+		Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
+
+		// For looping inside the binded List
+		for (CourseScheduleDetailForm courseSchedDetForm : form.getCourseScheduleDetailsAsList()) {
+			if ((courseSchedDetForm.getScheduledStartDateTime() != null)
+					&& (courseSchedDetForm.getScheduledEndDateTime() != null)) {
+				courseScheduleDetailsAsListSet.add(courseSchedDetForm);
+			}
+		}
+
+		form.setCourseScheduleDetails(courseScheduleDetailsAsListSet);
+
+		Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
+		Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+
+		for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
+			CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L,
+					courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime())
+							.build();
+			courseScheduleDetailSet.add(courseScheduleDetail);
+		}
+
+		CourseSchedule courseSchedule = new CourseSchedule.Builder(form.getCourseId(), form.getInstructorId(),
+				form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet).maxAllowed(form.getMaxAllowed())
+						.build();
+
+		scheduleService.updateCourseSchedule(courseSchedule);
+
+		form.setVenues(venueFormList);
+		form.setInstructors(instructorFormList);
+
+    	return "redirect:/schedules/new";
+    
     }
 
 }

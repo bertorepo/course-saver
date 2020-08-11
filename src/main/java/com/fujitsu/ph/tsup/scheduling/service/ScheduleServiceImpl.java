@@ -160,6 +160,13 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public void updateCourseSchedule(CourseSchedule courseSchedule) {
 		
+		long id = courseSchedule.getId();
+
+		try {
+			scheduleDao.updateCourseSchedule(id);
+		} catch (DataAccessException ex) {
+			throw new IllegalArgumentException("Can't update course schedule");
+		}
 	}
 		
 	/**
