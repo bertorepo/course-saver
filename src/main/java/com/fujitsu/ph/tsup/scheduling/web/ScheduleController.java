@@ -351,6 +351,7 @@ public class ScheduleController {
     public String updateCourseScheduleForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
     	
+    	Set<CourseForm> courseFormList = scheduleService.findAllCourses();
 		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
 		Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
 
@@ -358,6 +359,7 @@ public class ScheduleController {
 		logger.debug("Result: {}", bindingResult);
 
 		if (bindingResult.hasErrors()) {
+			form.setCourses(courseFormList);
 			form.setVenues(venueFormList);
 			form.setInstructors(instructorFormList);
 			model.addAttribute("scheduleNew", form);
@@ -392,6 +394,7 @@ public class ScheduleController {
 
 		scheduleService.updateCourseSchedule(courseSchedule);
 
+		form.setCourses(courseFormList);
 		form.setVenues(venueFormList);
 		form.setInstructors(instructorFormList);
 
