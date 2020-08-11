@@ -217,7 +217,7 @@ public class ScheduleController {
     @GetMapping("/new/removeDate/{row}")
     public String deleteNewCourseScheduleDetailRow(@PathVariable("row") int row, Model model, 
             CourseScheduleNewForm form, RedirectAttributes redirectAttributes) {
-//         List<CourseScheduleDetailForm> newCourseScheduleDetailForm = form.getCourseScheduleDetailsAsList();
+         List<CourseScheduleDetailForm> newCourseScheduleDetailForm = form.getCourseScheduleDetailsAsList();
          List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
                  new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[row]));
          
