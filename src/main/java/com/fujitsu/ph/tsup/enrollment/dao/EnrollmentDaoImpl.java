@@ -40,6 +40,8 @@ import org.springframework.stereotype.Repository;
 */
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
+import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+import com.fujitsu.ph.tsup.enrollment.model.MemberSchedule;
 
 @Repository
 public class EnrollmentDaoImpl implements EnrollmentDao {
@@ -342,5 +344,63 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 		        .getStatus()).addValue("id", courseSchedule.getId());
 		template.update(sql, namedParameters);
     }
+
+    
+    /**
+     * <pre>
+     *
+     *viewEnrolledMembers
+     *
+     *@author c.delapena
+     * <pre>
+     */
+    @Override
+    public List<Participant> viewEnrolledMembers(Long id) {
+        String sql = "SELECT C.ID, "
+                + "E.NUMBER AS EMPLOYEE_NUMBER, "
+                + "E.LAST_NAME, "
+                + "E.FIRST_NAME, "
+                + "E.EMAIL_ADDRESS "
+                + "FROM tsup.COURSE_PARTICIPANT AS CP "
+                + "INNER JOIN tsup.EMPLOYEE AS E "
+                + "ON CP.PARTICIPANT_ID = E.ID "
+                + "INNER JOIN tsup.COURSE_SCHEDULE AS CS "
+                + "ON CS.ID = CP.COURSE_SCHEDULE_ID "
+                + "INNER JOIN tsup.COURSE AS C "
+                + "ON C.ID = CS.COURSE_ID " 
+                + "WHERE C.ID = :ID "
+                + "ORDER BY C.NAME ";
+        
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("ID", id);
+        
+        List<Participant> participantList = template.query(sql, namedParameters, 
+                new EnrollmentRowMapperParticipant());
+        
+        return participantList;
+    }
+    
+    /**
+     * <pre>
+     *
+     *addEnrolledMembers
+     *
+     *@author c.delapena
+     * <pre>
+     */
+    @Override
+    public Integer addEnrolledMembersById(Participant participant)  {
+        String sql = "WITH participant AS ( "
+        		+ "INSERT INTO tsup.employee ( number, last_name, first_name, email_address, username) "
+        		+ "VALUES (:EMPLOYEENUMBER, :LASTNAME, :FIRSTNAME, :EMAILADDRESS, null) RETURNING ID ) "
+                + "INSERT INTO tsup.course_participant( course_schedule_id, participant_id, registration_date) "
+        		+ "VALUES (:ID, (SELECT ID from participant), Now()); ";
+        
+        Integer row = template.update(sql, new MapSqlParameterSource("ID", participant.getId()).addValue("EMPLOYEENUMBER", participant.getEmployeeNumber())
+        		.addValue("LASTNAME", participant.getLastName()).addValue("FIRSTNAME", participant.getFirstName())
+        		.addValue("EMAILADDRESS", participant.getEmailAddress()));
+        
+        return row;
+    }
+}
 
 }
