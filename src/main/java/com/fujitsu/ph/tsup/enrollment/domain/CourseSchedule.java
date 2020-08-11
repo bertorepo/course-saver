@@ -595,6 +595,15 @@ public class CourseSchedule {
 		}
 
 	}
+
+	@Override
+	public String toString() {
+		return "CourseSchedule [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", instructorId="
+				+ instructorId + ", instructorLastName=" + instructorLastName + ", instructorFirstName="
+				+ instructorFirstName + ", venueId=" + venueId + ", venueName=" + venueName + ", minRequired="
+				+ minRequired + ", maxAllowed=" + maxAllowed + ", courseScheduleDetail=" + courseScheduleDetail
+				+ ", totalParticipants=" + totalParticipants + ", status=" + status + "]";
+	}
 	
 	/**
      * Creates a new instance of the course schedule.
@@ -604,5 +613,7 @@ public class CourseSchedule {
 //    public CourseSchedule build() {
 //        return new CourseSchedule(this);
 //    }
+	
+	
 
 }

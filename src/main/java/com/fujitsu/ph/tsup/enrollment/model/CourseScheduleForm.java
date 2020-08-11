@@ -164,4 +164,12 @@ public class CourseScheduleForm {
         this.totalParticipants = totalParticipants;
     }
 
+	@Override
+	public String toString() {
+		return "CourseScheduleForm [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName
+				+ ", instructorId=" + instructorId + ", instructorName=" + instructorName + ", venueId=" + venueId
+				+ ", venueName=" + venueName + ", courseScheduleDetail=" + courseScheduleDetail + ", minRequired="
+				+ minRequired + ", maxAllowed=" + maxAllowed + ", totalParticipants=" + totalParticipants + "]";
+	}
+
 }

@@ -17,7 +17,10 @@ package com.fujitsu.ph.tsup.enrollment.service;
 import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
+import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -58,7 +61,22 @@ public class EnrollmentServiceImpl implements EnrollmentService {
            }   
     }
 
-    /** Finds the course schedule by id */
+    
+    
+    @Override
+	public Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
+        try {
+            Set<CourseSchedule> courseScheduleSet = enrollmentDao
+                    .findAllScheduledCourses(fromDateTime, toDateTime);
+             return courseScheduleSet;
+        } catch(DataAccessException ex) {
+            throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
+        }   
+	}
+
+
+
+	/** Finds the course schedule by id */
     @Override
     public CourseSchedule findCourseScheduleById(Long id) {
     	return enrollmentDao.findCourseScheduleById(id);
@@ -189,4 +207,17 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 throw new IllegalArgumentException(" Can't cancel Course.");
             }
         }       
+    
+    /** Finds the participant of course by Id */
+    @Override
+    public List<Participant> findEnrolledMembersById(Long id) {
+         return enrollmentDao.viewEnrolledMembers(id);
+    }
+    
+    /** Add the participant of course by Id */
+    @Override
+    public Integer addEnrolledMembersById(Participant participant) {
+         return enrollmentDao.addEnrolledMembersById(participant);
+    }
+    
 }
