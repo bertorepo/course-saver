@@ -7,7 +7,7 @@
     CONNECTION LIMIT = -1; */
 -- SEQUENCE: tsup."EMPLOYEE_AUTH_ID_seq"
 
--- DROP SCHEMA tsup
+-- DROP SCHEMA tsup;
     
 CREATE SCHEMA tsup
     AUTHORIZATION postgres;
@@ -123,6 +123,19 @@ CREATE SEQUENCE tsup."COURSE_ATTENDANCE_ID_seq"
 
 ALTER SEQUENCE tsup."COURSE_ATTENDANCE_ID_seq"
     OWNER TO postgres;
+    
+CREATE TABLE tsup.DEPARTMENT
+(
+    id bigserial NOT NULL,
+    department_name character varying(50) NOT NULL,
+    CONSTRAINT "DEPARTMENT_pkey" PRIMARY KEY (id),
+    CONSTRAINT "DEPARTMENT_NAME_unique" UNIQUE (department_name)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE tsup.DEPARTMENT
+    OWNER to postgres;
 
 -- Table: tsup.EMPLOYEE_AUTH
 
@@ -150,13 +163,18 @@ ALTER TABLE tsup.EMPLOYEE_AUTH
 
 CREATE TABLE tsup.EMPLOYEE
 (
-    ID bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
-    NUMBER character varying(10) COLLATE pg_catalog."default",
-    LAST_NAME character varying(50) COLLATE pg_catalog."default",
-    FIRST_NAME character varying(50) COLLATE pg_catalog."default",
-    EMAIL_ADDRESS character varying(50) COLLATE pg_catalog."default",
-    USERNAME character varying(50) COLLATE pg_catalog."default",
-    CONSTRAINT "EMPLOYEE_pkey" PRIMARY KEY (ID)
+    id bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
+    "number" character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    last_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    first_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    email_address character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    username character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    department_id bigserial NOT NULL,
+    CONSTRAINT "EMPLOYEE_pkey" PRIMARY KEY (id),
+    CONSTRAINT "EMAIL_ADDRESS_unique" UNIQUE (email_address),
+    CONSTRAINT "NUMBER_unique" UNIQUE ("number"),
+    CONSTRAINT "USER_NAME_unique" UNIQUE (username),
+    CONSTRAINT "DEPARTMENT_ID_fkey" FOREIGN KEY (department_id) REFERENCES tsup.department (id) MATCH SIMPLE
 )
 WITH (
     OIDS = FALSE
@@ -239,6 +257,8 @@ CREATE TABLE tsup.COURSE_SCHEDULE_DETAIL
 	SCHEDULED_START_DATETIME timestamp with time zone NOT NULL,
 	SCHEDULED_END_DATETIME timestamp with time zone NOT NULL,
 	DURATION numeric(5, 2) NOT NULL,
+	rescheduled_start_datetime timestamp with time zone,
+    rescheduled_end_datetime timestamp with time zone,
 	CONSTRAINT "COURSE_SCHEDULE_DETAIL_pkey" PRIMARY KEY (ID),
 	CONSTRAINT "COURSE_SCHEDULE_ID_fkey" FOREIGN KEY (COURSE_SCHEDULE_ID) REFERENCES tsup.COURSE_SCHEDULE(ID) MATCH SIMPLE
 )
@@ -299,16 +319,18 @@ ALTER TABLE tsup.COURSE_NON_PARTICIPANT
     
 CREATE TABLE tsup.COURSE_ATTENDANCE
 (
-    ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_ATTENDANCE_ID_seq"'::regclass),
-	COURSE_SCHEDULE_DETAIL_ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_SCHEDULE_DETAIL_ID_seq"'::regclass),
-	PARTICIPANT_ID bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
-	STATUS character varying(1) NOT NULL COLLATE pg_catalog."default",
-	LOG_IN_DATETIME timestamp with time zone NOT NULL,
-	LOG_OUT_DATETIME timestamp with time zone NOT NULL,
-	EMAIL character varying COLLATE pg_catalog."default",
-	CONSTRAINT "COURSE_ATTENDANCE_pkey" PRIMARY KEY (ID),
-	CONSTRAINT "COURSE_SCHEDULE_DETAIL_ID_fkey" FOREIGN KEY (COURSE_SCHEDULE_DETAIL_ID) REFERENCES tsup.COURSE_SCHEDULE(ID) MATCH SIMPLE,
-    CONSTRAINT "EMPLOYEE_ID_fkey" FOREIGN KEY (PARTICIPANT_ID) REFERENCES tsup.EMPLOYEE(ID) MATCH SIMPLE
+    id bigint NOT NULL DEFAULT nextval('tsup."COURSE_ATTENDANCE_ID_seq"'::regclass),
+    course_schedule_detail_id bigint NOT NULL DEFAULT nextval('tsup."COURSE_SCHEDULE_DETAIL_ID_seq"'::regclass),
+    participant_id bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
+    status character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    log_in_datetime timestamp with time zone NOT NULL,
+    log_out_datetime timestamp with time zone,
+    email character varying COLLATE pg_catalog."default",
+    CONSTRAINT "COURSE_ATTENDANCE_pkey" PRIMARY KEY (id),
+    CONSTRAINT "COURSE_SCHEDULE_DETAIL_ID_fkey" FOREIGN KEY (course_schedule_detail_id)
+        REFERENCES tsup.course_schedule (id) MATCH SIMPLE,
+    CONSTRAINT "EMPLOYEE_ID_fkey" FOREIGN KEY (participant_id)
+        REFERENCES tsup.employee (id) MATCH SIMPLE
 )
 WITH (
     OIDS = FALSE
@@ -319,16 +341,28 @@ TABLESPACE pg_default;
 ALTER TABLE tsup.COURSE_ATTENDANCE
     OWNER to postgres;
     
+INSERT INTO tsup.DEPARTMENT(
+	id, department_name)
+	VALUES (1, 'FDC-Apps Dev Manila');
+	
+INSERT INTO tsup.DEPARTMENT(
+	id, department_name)
+	VALUES (2, 'FDC-G3CC');
+	
+INSERT INTO tsup.DEPARTMENT(
+	id, department_name)
+	VALUES (3, 'FDC-Apps Dev Cebu');
+    
 
 INSERT INTO tsup.employee(
-	id, "number", last_name, first_name, email_address, username)
-	VALUES (1, '12345678', 'LORENZO', 'LOYCE', 'l.lorenzo@fujitsu.ph', 'l.lorenzo');
+	id, number, last_name, first_name, email_address, username, department_id)
+	VALUES (1, '12345678', 'LORENZO', 'LOYCE', 'l.lorenzo@fujitsu.ph', 'l.lorenzo', 1);
 INSERT INTO tsup.employee(
-	id, "number", last_name, first_name, email_address, username)
-	VALUES (2, '22222222', 'DE LEON', 'JC', 'jc.deleon@fujitsu.ph', 'jc.deleon');
+	id, number, last_name, first_name, email_address, username, department_id)
+	VALUES (2, '22222222', 'DE LEON', 'JC', 'jc.deleon@fujitsu.ph', 'jc.deleon', 1);
 INSERT INTO tsup.employee(
-	id, "number", last_name, first_name, email_address, username)
-	VALUES (3, '33333333', 'DE GUZMAN', 'GENEVIEVE', 'g.deguzman@fujitsu.ph', 'g.deguzman');
+	id, number, last_name, first_name, email_address, username, department_id)
+	VALUES (3, '33333333', 'DE GUZMAN', 'GENEVIEVE', 'g.deguzman@fujitsu.ph', 'g.deguzman', 1);
 	
 INSERT INTO tsup.employee_auth(
 	id, auth_name, username)
