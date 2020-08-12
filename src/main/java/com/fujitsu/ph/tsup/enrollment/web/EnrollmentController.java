@@ -4,7 +4,7 @@ import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
-import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrolledListForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
@@ -466,44 +466,44 @@ public class EnrollmentController {
         
         
         model.addAttribute("courseSchedules",courseSchedules);
-        model.addAttribute("participantForm", new Participant());
+//        model.addAttribute("participantForm", new Participant());
         
         System.out.println(courseSchedules);
         return "enrollment/viewMemberCourse";	
     }
     
-    @RequestMapping(value = "/viewEnrolled", method = RequestMethod.GET)
-	public @ResponseBody List<Participant> viewMemberEnrolled (@RequestParam Long id) {
-    	return enrollmentService.findEnrolledMembersById(id);
-    }
+//    @RequestMapping(value = "/viewEnrolled", method = RequestMethod.GET)
+//	public @ResponseBody List<Participant> viewMemberEnrolled (@RequestParam Long id) {
+//    	return enrollmentService.findEnrolledMembersById(id);
+//    }
     
-    @RequestMapping(value = "/addEnrolled", method = RequestMethod.POST)
-	public String addMemberEnrolled (@RequestBody @Valid @ModelAttribute("participantForm") Participant participant, 
-			RedirectAttributes redirectAttributes, BindingResult result) {
-    	
-    	if (result.hasErrors()) {
-    		List<FieldError> err=result.getFieldErrors();
-    		
-    		
-    		for(FieldError e:err){
-                System.out.println("Error on object ---> "+e.getObjectName()+" on field ---> "+e.getField()+". Message ---> "+e.getDefaultMessage());
-           }
-    		
-    		return "redirect:/enrollment/viewMemberCourse";
-    	}
-    	
-    	enrollmentService.addEnrolledMembersById(participant);
-    	
-    	redirectAttributes.addFlashAttribute("success","{employee} has been added");
-    	return "redirect:/enrollment/viewMemberCourse";
-    }
-}
+//    @RequestMapping(value = "/addEnrolled", method = RequestMethod.POST)
+//	public String addMemberEnrolled (@RequestBody @Valid @ModelAttribute("participantForm") Participant participant, 
+//			RedirectAttributes redirectAttributes, BindingResult result) {
+//    	
+//    	if (result.hasErrors()) {
+//    		List<FieldError> err=result.getFieldErrors();
+//    		
+//    		
+//    		for(FieldError e:err){
+//                System.out.println("Error on object ---> "+e.getObjectName()+" on field ---> "+e.getField()+". Message ---> "+e.getDefaultMessage());
+//           }
+//    		
+//    		return "redirect:/enrollment/viewMemberCourse";
+//    	}
+//    	
+//    	enrollmentService.addEnrolledMembersById(participant);
+//    	
+//    	redirectAttributes.addFlashAttribute("success","{employee} has been added");
+//    	return "redirect:/enrollment/viewMemberCourse";
+//    }
+//}
 
-	public String submitCourseEnrollmentCancelForm(@RequestParam("courseScheduleId") Long id, Model model, 
-			RedirectAttributes redirectAttributes) {
-		enrollmentService.cancel(id);
-		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
-//		return "redirect:/schedule";
-		return "redirect:/enrollment/viewCourseEnroll";
-	}
+//	public String submitCourseEnrollmentCancelForm(@RequestParam("courseScheduleId") Long id, Model model, 
+//			RedirectAttributes redirectAttributes) {
+//		enrollmentService.cancel(id);
+//		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
+////		return "redirect:/schedule";
+//		return "redirect:/enrollment/viewCourseEnroll";
+//	}
 }
