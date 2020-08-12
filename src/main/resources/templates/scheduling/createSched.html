@@ -124,12 +124,15 @@
 										<div class="form-group row">
 											<div class="col-lg-6">
 												<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}">
-													<div class="text-danger" id="startDateId_error">
+													<div class="text-danger" id="startDate1_error">
 												</div>
 											</div>
-											<div class="col-lg-6">
-												<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
-													<div class="text-danger" id="endDateId_error">
+											<div class="col-lg-4">
+												<input type="text" class="form-control" 
+														th:id="${'startTime' + (stat.index + 1)}" 
+														oninput="timeOnly(this.id);" 
+														maxlength="5">
+														<div class="text-danger" id="startTime1_error">
 												</div>
 											</div>
 										</div>
@@ -137,17 +140,18 @@
 									<td>
 										<div class="form-group row">
 											<div class="col-lg-2"></div>
-											<div class="col-lg-4">
-												<input type="text" class="form-control" 
-														th:id="${'startTime' + (stat.index + 1)}" 
-														oninput="timeOnly(this.id);" 
-														maxlength="5">
+											<div class="col-lg-6">
+												<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
+													<div class="text-danger" id="endDate1_error">
+												</div>
 											</div>
 											<div class="col-lg-4">
 												<input type="text" class="form-control" 
 														th:id="${'endTime' + (stat.index + 1)}"
 														oninput="timeOnly(this.id);" 
 														maxlength="5" >
+														<div class="text-danger" id="endTime1_error">
+												</div>
 											</div>
 										</div>
 									</td>
@@ -349,26 +353,12 @@ function validations() {
 		}
 	}
 	
-	function removeWarning() {
-		
-		var fieldId = this.id;
-		var data = document.getElementById(fieldId).value;
-		
-		
-		if (data !== "") {
-			document.getElementById(fieldId + "_error").innerHTML = "";
-		}
-	}
 	
-	document.getElementById("courseName").onkeyup = removeWarning;
-	document.getElementById("instructorId").onmouseleave = removeWarning;
-	document.getElementById("venueId").onmouseleave = removeWarning;
-	document.getElementById("minRequired").onkeyup = removeWarning;
-	document.getElementById("maxAllowed").onkeyup = removeWarning;
-
 	//Empty Fields Validation for Start and End date
-	var startDateTimeCount = 0;
-	var endDateTimeCount = 0;
+	var startDateCount = 0;
+	var startTimeCount = 0;
+	var endDateCount = 0;
+	var endTimeCount = 0;
 	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
 	var length = courseScheduleDetails.rows.length;
 
@@ -379,25 +369,61 @@ function validations() {
 	    var endDate = $("#endDate" + i).val();
 	    var endTime = $("#endTime" + i).val();
 
-	    if ((startDate !== "") && (startTime !== "")) {
-	        startDateTimeCount++;
+	    if (startDate !== "") {
+	        startDateCount++;
+	    }    
+	    if (startTime !== "") {
+	        startTimeCount++;
 	    }
-
-	    if ((endDate !== "") && (endTime !== "")) {
-	        endDateTimeCount++;
+	    if (endDate !== "") {
+	        endDateCount++;
 	    }
+	    if (endTime !== "") {
+	        endTimeCount++;
+	    }
+	}
  
+
+	if (startDateCount <= 0) {
+		minRequiredError = "Please fill up Start Date";
+	  	document.getElementById("startDate1_error").innerHTML = minRequiredError;
+	}
+	if (startTimeCount <= 0) {
+		minRequiredError = "Please fill up Start Time";
+	  	document.getElementById("startTime1_error").innerHTML = minRequiredError;
 	}
 
-	if (startDateTimeCount == 0) {
-		minRequiredError = "Please fill up Start Date and Time";
-	  	//document.getElementById("startDateId_error").innerHTML = minRequiredError;
+	if (endDateCount <= 0) {
+		minRequiredError = "Please fill up End Date";
+	  	document.getElementById("endDate1_error").innerHTML = minRequiredError;
 	}
-
-	if (endDateTimeCount == 0) {
-		minRequiredError = "Please fill up End Date and Time";
-	  	//document.getElementById("endDateId_error").innerHTML = minRequiredError;
+	if (endTimeCount <= 0) {
+		minRequiredError = "Please fill up End Time";
+	  	document.getElementById("endTime1_error").innerHTML = minRequiredError;
 	}
+	
+	 function removeWarning() {
+			
+			var fieldId = this.id;
+			var data = document.getElementById(fieldId).value;
+			
+			
+			if (data !== "") {
+				document.getElementById(fieldId + "_error").innerHTML = "";
+			}
+		}
+		
+		document.getElementById("courseName").onkeyup = removeWarning;
+		document.getElementById("instructorId").onmouseleave = removeWarning;
+		document.getElementById("venueId").onmouseleave = removeWarning;
+		document.getElementById("minRequired").onkeyup = removeWarning;
+		document.getElementById("maxAllowed").onkeyup = removeWarning;
+		
+		document.getElementById("startDate1").onmouseleave = removeWarning;
+		document.getElementById("endDate1").onmouseleave = removeWarning;
+		
+		document.getElementById("startTime1").onkeyup = removeWarning;
+		document.getElementById("endTime1").onkeyup = removeWarning;
 	
 	
 	//Scheduled Start Date Time and Scheduled End Date Time Part
