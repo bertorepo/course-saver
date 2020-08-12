@@ -14,7 +14,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
@@ -97,7 +97,7 @@ public interface EnrollmentDao {
 	 *@author c.delapena
 	 * <pre>
 	 */
-	List<Participant> viewEnrolledMembers(Long id);
+//	List<Participant> viewEnrolledMembers(Long id);
 
 
 	/**
@@ -108,6 +108,6 @@ public interface EnrollmentDao {
 	 *@author c.delapena
 	 * <pre>
 	 */
-	Integer addEnrolledMembersById(Participant participant);
+//	Integer addEnrolledMembersById(Participant participant);
    
 }

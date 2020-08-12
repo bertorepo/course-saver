@@ -24,7 +24,7 @@ import java.util.Set;
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 
 public interface EnrollmentService {
 	
@@ -53,8 +53,8 @@ public interface EnrollmentService {
 	void cancel(Long id);
 
 	/** Finds the participant of course by Id */
-	List<Participant> findEnrolledMembersById(Long id);
+//	List<Participant> findEnrolledMembersById(Long id);
 
 	/** Add the participant of course by Id */
-	Integer addEnrolledMembersById(Participant participant);
+//	Integer addEnrolledMembersById(Participant participant);
 }

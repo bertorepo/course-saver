@@ -17,7 +17,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -209,15 +209,15 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }       
     
     /** Finds the participant of course by Id */
-    @Override
-    public List<Participant> findEnrolledMembersById(Long id) {
-         return enrollmentDao.viewEnrolledMembers(id);
-    }
+//    @Override
+//    public List<Participant> findEnrolledMembersById(Long id) {
+//         return enrollmentDao.viewEnrolledMembers(id);
+//    }
     
     /** Add the participant of course by Id */
-    @Override
-    public Integer addEnrolledMembersById(Participant participant) {
-         return enrollmentDao.addEnrolledMembersById(participant);
-    }
+//    @Override
+//    public Integer addEnrolledMembersById(Participant participant) {
+//         return enrollmentDao.addEnrolledMembersById(participant);
+//    }
     
 }
