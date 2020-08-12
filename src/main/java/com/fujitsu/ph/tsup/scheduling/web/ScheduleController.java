@@ -314,7 +314,7 @@ public class ScheduleController {
 
         for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
             CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L,
-                    courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime())
+                    courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime(), 0.0f)
                             .build();
             courseScheduleDetailSet.add(courseScheduleDetail);
         }
@@ -383,7 +383,7 @@ public class ScheduleController {
 
 		for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
 			CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L,
-					courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime())
+					courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime(), 0.0f)
 							.build();
 			courseScheduleDetailSet.add(courseScheduleDetail);
 		}
