@@ -167,10 +167,10 @@
 							</tbody>
 						</table>
 						<div>
-							<button type="button" value="" name="addRow" onclick="addNewRow(this.form)" class="btn btn-success"> 
+							<button type="button" value="" name="addRow" onclick="addNewRow()" class="btn btn-success"> 
 								Add
 							</button>
-							<button type="button" value="" name="removeRow" onclick="removeNewRow(this.form)" class="btn btn-danger"> 
+							<button type="button" value="" name="removeRow" onclick="removeNewRow()" class="btn btn-danger"> 
 								Remove
 							</button>
 						</div>
@@ -208,6 +208,19 @@
 		</div> 
 		<!--Confirmation Modal End-->
 		</form>
+		<input type="hidden" th:id="row" value="">
+		
+		<!-- <form th:action="@{/schedules/new/addDate/{row} (row = row)}" method="post">
+			<button type="submit" value="" name="addRow" onclick="addNewRow()" class="btn btn-success"> 
+				Add
+			</button>
+		</form>
+		<form action="@{/schedules/new/removeDate/{row} (row = row)}" method="post">
+			<button type="submit" value="" name="removeRow" onclick="removeNewRow()" class="btn btn-danger"> 
+				Remove
+			</button>
+		</form> -->
+		
 		
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
@@ -252,18 +265,25 @@
 	
 <script th:inline="javascript">
 //Add New Rows
-function addNewRow(form) {
+function addNewRow() {
 	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
 	var length = courseScheduleDetails.rows.length;
 	var Url = '/schedules/new/addDate/'+length;
 	document.location.href = Url;
+	
+	/* var row = document.getElementById("row");
+	row.value = length; */
+	
 }
 
-function removeNewRow(form) {
+function removeNewRow() {
 	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
 	var length = courseScheduleDetails.rows.length;
 	var Url = '/schedules/new/removeDate/'+length;
 	document.location.href = Url;
+	
+	/* var row = document.getElementById("row");
+	row.value = length; */
 }
 
 //Set Course ID

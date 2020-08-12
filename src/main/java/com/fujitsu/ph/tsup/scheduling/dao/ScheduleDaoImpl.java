@@ -1,6 +1,5 @@
 package com.fujitsu.ph.tsup.scheduling.dao;
 
-import java.time.ZoneId;
 
 //=======================================================
 //$Id: PR02$
@@ -29,7 +28,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ import org.springframework.stereotype.Repository;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
@@ -175,22 +177,24 @@ public class ScheduleDaoImpl implements ScheduleDao {
         String courseScheduleSql = "INSERT INTO COURSE_SCHEDULE"
                 + "(COURSE_ID, INSTRUCTOR_ID, VENUE_ID, MIN_REQUIRED, MAX_ALLOWED, STATUS) "
                 + "VALUES (:course_id, :instructor_id, :venue_id, :min_required, :max_allowed, :status)";
-
-        SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
-                .addValue("course_id", courseSchedule.getCourseId())
-                .addValue("instructor_id", courseSchedule.getInstructorId())
-                .addValue("venue_id", courseSchedule.getVenueId())
-                .addValue("min_required", courseSchedule.getMinRequired())
-                .addValue("max_allowed", courseSchedule.getMaxAllowed())
-                .addValue("status", String.valueOf(courseSchedule.getStatus()));
-        template.update(courseScheduleSql, courseSchedParameters, generatedKeyHolder);
+        
+        Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+        
+        for(int i=1; i<=courseScheduleDetail.size(); i++) {
+            SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
+                    .addValue("course_id", courseSchedule.getCourseId())
+                    .addValue("instructor_id", courseSchedule.getInstructorId())
+                    .addValue("venue_id", courseSchedule.getVenueId())
+                    .addValue("min_required", courseSchedule.getMinRequired())
+                    .addValue("max_allowed", courseSchedule.getMaxAllowed())
+                    .addValue("status", String.valueOf(courseSchedule.getStatus()));
+            template.update(courseScheduleSql, courseSchedParameters, generatedKeyHolder);
+        }
 
         String courseScheduleDetailSql = "INSERT INTO COURSE_SCHEDULE_DETAIL"
                 + "(COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, DURATION)"
                 + "VALUES (:course_schedule_id, :scheduled_start_datetime, :scheduled_end_datetime, "
                 + ":duration)";
-
-        Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
         
         Long key = (Long) generatedKeyHolder.getKeys().get("id");
         System.out.println("\nGenerated Course Schedule ID: "+ key +"\n");
