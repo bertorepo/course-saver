@@ -42,6 +42,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -401,5 +402,25 @@ public class ScheduleController {
     	return "redirect:/schedules/new";
     
     }
+    
+    /**
+     * <pre>
+     * Delete the course schedule. Method = DELETE
+     * 
+     * <pre>
+     * 
+     * @param path variable          Long id
+     * @param Model                  model
+     * @param RedirectAttributes     redirectAttributes
+     * @return courseScheduleListForm and view
+     */
+	@DeleteMapping("/courseSchedules/{courseId}/delete")
+	public String submitDeleteCourseScheduleForm(@PathVariable("courseId") long id, Model model,
+			RedirectAttributes redirectAttributes) {
 
+		scheduleService.deleteCourseScheduleById(id);
+
+		return "redirect:/schedules/new";
+
+    }
 }
