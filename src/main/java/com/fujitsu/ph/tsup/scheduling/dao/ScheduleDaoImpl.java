@@ -180,7 +180,12 @@ public class ScheduleDaoImpl implements ScheduleDao {
         
         Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
         
-        for(int i=1; i<=courseScheduleDetail.size(); i++) {
+        String courseScheduleDetailSql = "INSERT INTO COURSE_SCHEDULE_DETAIL"
+                + "(COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, DURATION)"
+                + "VALUES (:course_schedule_id, :scheduled_start_datetime, :scheduled_end_datetime, "
+                + ":duration)";
+
+        for (CourseScheduleDetail courseSchedDetail : courseScheduleDetail) {
             SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
                     .addValue("course_id", courseSchedule.getCourseId())
                     .addValue("instructor_id", courseSchedule.getInstructorId())
@@ -189,17 +194,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
                     .addValue("max_allowed", courseSchedule.getMaxAllowed())
                     .addValue("status", String.valueOf(courseSchedule.getStatus()));
             template.update(courseScheduleSql, courseSchedParameters, generatedKeyHolder);
-        }
-
-        String courseScheduleDetailSql = "INSERT INTO COURSE_SCHEDULE_DETAIL"
-                + "(COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, DURATION)"
-                + "VALUES (:course_schedule_id, :scheduled_start_datetime, :scheduled_end_datetime, "
-                + ":duration)";
-        
-        Long key = (Long) generatedKeyHolder.getKeys().get("id");
-        System.out.println("\nGenerated Course Schedule ID: "+ key +"\n");
-
-        for (CourseScheduleDetail courseSchedDetail : courseScheduleDetail) {
+            
+            Long key = (Long) generatedKeyHolder.getKeys().get("id");
+            System.out.println("\nGenerated Course Schedule ID: "+ key +"\n");
+            
             KeyHolder courseSchedDetailGeneratedKeyHolder = new GeneratedKeyHolder();
             SqlParameterSource courseSchedDetailParameters = new MapSqlParameterSource()
                     .addValue("course_schedule_id", key)
