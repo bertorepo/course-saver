@@ -367,45 +367,22 @@ function validations() {
  
 
 	if (startDateCount <= 0) {
-		minRequiredError = "Please fill up Start Date";
-	  	document.getElementById("startDate1_error").innerHTML = minRequiredError;
+		startDateError = "Please fill up Start Date";
+	  	document.getElementById("startDate1_error").innerHTML = startDateError;
 	}
 	if (startTimeCount <= 0) {
-		minRequiredError = "Please fill up Start Time";
-	  	document.getElementById("startTime1_error").innerHTML = minRequiredError;
+		startTimeError = "Please fill up Start Time";
+	  	document.getElementById("startTime1_error").innerHTML = startTimeError;
 	}
 
 	if (endDateCount <= 0) {
-		minRequiredError = "Please fill up End Date";
-	  	document.getElementById("endDate1_error").innerHTML = minRequiredError;
+		endDateError = "Please fill up End Date";
+	  	document.getElementById("endDate1_error").innerHTML = endDateError;
 	}
 	if (endTimeCount <= 0) {
-		minRequiredError = "Please fill up End Time";
-	  	document.getElementById("endTime1_error").innerHTML = minRequiredError;
+		endTimeError = "Please fill up End Time";
+	  	document.getElementById("endTime1_error").innerHTML = endTimeError;
 	}
-	
-	 function removeWarning() {
-			
-			var fieldId = this.id;
-			var data = document.getElementById(fieldId).value;
-			
-			
-			if (data !== "") {
-				document.getElementById(fieldId + "_error").innerHTML = "";
-			}
-		}
-		
-		document.getElementById("courseName").onkeyup = removeWarning;
-		document.getElementById("instructorId").onmouseleave = removeWarning;
-		document.getElementById("venueId").onmouseleave = removeWarning;
-		document.getElementById("minRequired").onkeyup = removeWarning;
-		document.getElementById("maxAllowed").onkeyup = removeWarning;
-		
-		document.getElementById("startDate1").onmouseleave = removeWarning;
-		document.getElementById("endDate1").onmouseleave = removeWarning;
-		
-		document.getElementById("startTime1").onkeyup = removeWarning;
-		document.getElementById("endTime1").onkeyup = removeWarning;
 	
 	
 	//Scheduled Start Date Time and Scheduled End Date Time Part
@@ -430,19 +407,51 @@ function validations() {
 	    if((startDateCount !==0) && (endDateCount !==0)) {
 	    	//Start and End Time Validation
         	if (startDate > endDate)  {
-        		errorMsg.push("End Date can't be greater than Start Date");
+        		startDateError = "Start Date can't be greater than or equal to end date";
+        	  	document.getElementById("startDate1_error").innerHTML = startDateError;
             }
         	
         	//Start and End Date Validation
         	if (startTime > endTime) {
-        		errorMsg.push("End Time can't be greater than Start Time");
+        		startDateError = "Start time can't be greater than or equal to end time";
+        	  	document.getElementById("startTime1_error").innerHTML = startDateError;
             }
         	
         	//If Date is Less Than Today
-        	if (isLessThanToday(startDate) || isLessThanToday(endDate)) {
-        		errorMsg.push("Start Date and End Date should not be less than today");
+        	if (isLessThanToday(startDate)) {
+        		startDateError = "Date can't be less than today";
+        	  	document.getElementById("startDate1_error").innerHTML = startDateError;
         	}
+        	
+        	if (isLessThanToday(endDate)) {
+        		endDateError = "Date can't be less than today";
+        	  	document.getElementById("endDate1_error").innerHTML = endDateError;
+        	}
+        	
 	    }
+	    
+		function removeWarning() {
+			
+			var fieldId = this.id;
+			var data = document.getElementById(fieldId).value;
+			
+			
+			if (data !== "") {
+				document.getElementById(fieldId + "_error").innerHTML = "";
+			}
+		}
+		
+		document.getElementById("courseName").onkeyup = removeWarning;
+		document.getElementById("instructorId").onmouseleave = removeWarning;
+		document.getElementById("venueId").onmouseleave = removeWarning;
+		document.getElementById("minRequired").onkeyup = removeWarning;
+		document.getElementById("maxAllowed").onkeyup = removeWarning;
+		
+		document.getElementById("startDate1").onmouseleave = removeWarning;
+		document.getElementById("endDate1").onmouseleave = removeWarning;
+		
+		document.getElementById("startTime1").onkeyup = removeWarning;
+		document.getElementById("endTime1").onkeyup = removeWarning;
 	    
 	    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 	    	var endDateTime = null;
