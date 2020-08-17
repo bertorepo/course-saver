@@ -201,10 +201,12 @@ public class ScheduleController {
      * @param RedirectAttributes     redirectAttributes
      * @return courseScheduleListForm and view
      */
-    @GetMapping("/new/addDate/{row}")
+    @PostMapping("/new/addDate/{row}")
     public String addNewCourseScheduleDetailRow
             (@ModelAttribute("scheduleNew") CourseScheduleNewForm form, @PathVariable("row") int row, 
                                     Model model, RedirectAttributes redirectAttributes) {
+        
+        logger.debug("CourseScheduleNewForm : {}", form);
         List<CourseScheduleDetailForm> newCourseScheduleDetailForm = new ArrayList<>();
         
         List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
@@ -239,9 +241,12 @@ public class ScheduleController {
      * @param RedirectAttributes     redirectAttributes
      * @return courseScheduleListForm and view
      */
-    @GetMapping("/new/removeDate/{row}")
+    @PostMapping("/new/removeDate/{row}")
     public String deleteNewCourseScheduleDetailRow(@PathVariable("row") int row, Model model, 
-            CourseScheduleNewForm form, RedirectAttributes redirectAttributes) {
+           @ModelAttribute("scheduleNew") CourseScheduleNewForm form, RedirectAttributes redirectAttributes) {
+         
+         logger.debug("CourseScheduleNewForm : {}", form);
+        
          List<CourseScheduleDetailForm> newCourseScheduleDetailForm = form.getCourseScheduleDetailsAsList();
          List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
                  new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[row]));

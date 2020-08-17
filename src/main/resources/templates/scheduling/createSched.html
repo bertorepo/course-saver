@@ -35,7 +35,7 @@
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
+		<form class="form-horizontal" id="scheduleNew" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
 		<!--Success Message-->
 		<div class="modal fade" th:if="${message}" th:text="${message}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 		<!--Success Message End-->
@@ -172,10 +172,10 @@
 							</tbody>
 						</table>
 						<div>
-							<button type="button" value="" name="addRow" onclick="addNewRow()" class="btn btn-success"> 
+							<button type="submit" value="" name="addRow" onclick="addNewRow()" class="btn btn-success"> 
 								Add
 							</button>
-							<button type="button" value="" name="removeRow" onclick="removeNewRow()" class="btn btn-danger"> 
+							<button type="submit" value="" name="removeRow" onclick="removeNewRow()" class="btn btn-danger"> 
 								Remove
 							</button>
 						</div>
@@ -213,19 +213,6 @@
 		</div> 
 		<!--Confirmation Modal End-->
 		</form>
-		<input type="hidden" th:id="row" value="">
-		
-		<!-- <form th:action="@{/schedules/new/addDate/{row} (row = row)}" method="post">
-			<button type="submit" value="" name="addRow" onclick="addNewRow()" class="btn btn-success"> 
-				Add
-			</button>
-		</form>
-		<form action="@{/schedules/new/removeDate/{row} (row = row)}" method="post">
-			<button type="submit" value="" name="removeRow" onclick="removeNewRow()" class="btn btn-danger"> 
-				Remove
-			</button>
-		</form> -->
-		
 		
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
@@ -274,21 +261,14 @@ function addNewRow() {
 	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
 	var length = courseScheduleDetails.rows.length;
 	var Url = '/schedules/new/addDate/'+length;
-	document.location.href = Url;
-	
-	/* var row = document.getElementById("row");
-	row.value = length; */
-	
+	document.getElementById("scheduleNew").action = Url;
 }
 
 function removeNewRow() {
 	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
 	var length = courseScheduleDetails.rows.length;
 	var Url = '/schedules/new/removeDate/'+length;
-	document.location.href = Url;
-	
-	/* var row = document.getElementById("row");
-	row.value = length; */
+	document.getElementById("scheduleNew").action = Url;
 }
 
 //Set Course ID
@@ -372,6 +352,7 @@ function validations() {
 
 	    if (startDate !== "") {
 	        startDateCount++;
+	        console.log(startDateCount);
 	    }    
 	    if (startTime !== "") {
 	        startTimeCount++;
@@ -445,7 +426,8 @@ function validations() {
 	    rowEndDateTime.setHours(endTime.substring(0, endTime.indexOf(":")));
 	    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); 
        	
-	    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
+	    //--> Changed StartDateTimeCount to StartDateCount
+	    if((startDateCount !==0) && (endDateCount !==0)) {
 	    	//Start and End Time Validation
         	if (startDate > endDate)  {
         		errorMsg.push("End Date can't be greater than Start Date");
@@ -478,9 +460,11 @@ function validations() {
 		document.getElementById("endDateTime"+i).value = endDateTime;
 		
 		//Confirmation Modal Validation
+		
+		//--> Changed StartDateTimeCount to StartDateCount
 		if ((courseName !== "") && (instructor !== "") && (venue !== "")
 				&& (minRequired !== "") && (maxAllowed !== "") && ((minRequired !== 0) || (maxAllowed !== 0)) 
-				&& (minRequired <= maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 )
+				&& (minRequired <= maxAllowed) && (startDateCount !=0 ) && (endDateCount !=0 )
 				&& !((isLessThanToday(startDate) || isLessThanToday(endDate)))
 				&& (startDate <= endDate) && (startTime < endTime)) {
 			
