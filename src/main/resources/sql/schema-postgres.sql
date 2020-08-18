@@ -124,9 +124,19 @@ CREATE SEQUENCE tsup."COURSE_ATTENDANCE_ID_seq"
 ALTER SEQUENCE tsup."COURSE_ATTENDANCE_ID_seq"
     OWNER TO postgres;
     
+CREATE SEQUENCE tsup."DEPARTMENT_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE tsup."DEPARTMENT_ID_seq"
+    OWNER TO postgres;
+    
 CREATE TABLE tsup.DEPARTMENT
 (
-    id bigserial NOT NULL,
+    id NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
     department_name character varying(50) NOT NULL,
     CONSTRAINT "DEPARTMENT_pkey" PRIMARY KEY (id),
     CONSTRAINT "DEPARTMENT_NAME_unique" UNIQUE (department_name)
@@ -169,7 +179,7 @@ CREATE TABLE tsup.EMPLOYEE
     first_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
     email_address character varying(50) COLLATE pg_catalog."default" NOT NULL,
     username character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    department_id bigserial NOT NULL,
+    department_id bigint NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
     CONSTRAINT "EMPLOYEE_pkey" PRIMARY KEY (id),
     CONSTRAINT "EMAIL_ADDRESS_unique" UNIQUE (email_address),
     CONSTRAINT "NUMBER_unique" UNIQUE ("number"),
