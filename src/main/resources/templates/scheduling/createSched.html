@@ -47,7 +47,8 @@
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5" style="">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
-							<input type="text" list="courses" id="courseName" placeholder="Enter Course Name" class="form-control"><div class="text-danger" id="courseName_error"> </div>
+							<input type="text" list="courses" id="courseName" placeholder="Enter Course Name" class="form-control">
+							<div class="text-danger" id="courseName_error"> </div>
 							<datalist id="courses">
 								<option value=""></option>
 							 	<option th:each="courses : *{courses}"
@@ -138,7 +139,7 @@
 									<td class="form-group">
 										<div class="">
 											<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}">
-											<div class="text-danger" id="startDate1_error">
+											<div class="text-danger" th:id="${'startDate' + (stat.index + 1) + '_error'}">
 											</div>
 										</div>
 									</td>
@@ -148,7 +149,7 @@
 													th:id="${'startTime' + (stat.index + 1)}" 
 													oninput="timeOnly(this.id);" 
 													maxlength="5">
-											<div class="text-danger" id="startTime1_error"></div>
+											<div class="text-danger" th:id="${'startTime' + (stat.index + 1) + '_error'}"></div>
 										</div>
 									</td>
 									<td class="d-print-none">
@@ -166,7 +167,7 @@
 									<td class="form-group">
 										<div class="">
 											<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
-											<div class="text-danger" id="endDate1_error"></div>
+											<div class="text-danger" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
 										</div>
 									</td>
 									<td class="form-group">
@@ -175,7 +176,7 @@
 													th:id="${'endTime' + (stat.index + 1)}"
 													oninput="timeOnly(this.id);" 
 													maxlength="5" >
-											<div class="text-danger" id="endTime1_error"></div>
+											<div class="text-danger" th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
 										</div>
 									</td>
 								</tr>
@@ -368,28 +369,26 @@ function validations() {
 	    if (endTime !== "") {
 	        endTimeCount++;
 	    }
-	}
- 
 
 	if (startDateCount <= 0) {
 		startDateError = "Please fill up Start Date";
-	  	document.getElementById("startDate1_error").innerHTML = startDateError;
+	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
 	}
 	if (startTimeCount <= 0) {
 		startTimeError = "Please fill up Start Time";
-	  	document.getElementById("startTime1_error").innerHTML = startTimeError;
+	  	document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
 	}
 
 	if (endDateCount <= 0) {
 		endDateError = "Please fill up End Date";
-	  	document.getElementById("endDate1_error").innerHTML = endDateError;
+	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	}
 	if (endTimeCount <= 0) {
 		endTimeError = "Please fill up End Time";
-	  	document.getElementById("endTime1_error").innerHTML = endTimeError;
+	  	document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
 	}
 	
-	
+	}
 	//Scheduled Start Date Time and Scheduled End Date Time Part
     for(i = 1; i<= length; i++){
     	var startDate = document.getElementById("startDate"+i).value;
@@ -413,24 +412,24 @@ function validations() {
 	    	//Start and End Time Validation
         	if (startDate > endDate)  {
         		startDateError = "Start Date can't be greater than or equal to end date";
-        	  	document.getElementById("startDate1_error").innerHTML = startDateError;
+        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
             }
         	
         	//Start and End Date Validation
         	if (startTime > endTime) {
         		startDateError = "Start time can't be greater than or equal to end time";
-        	  	document.getElementById("startTime1_error").innerHTML = startDateError;
+        	  	document.getElementById("startTime" + i + "_error").innerHTML = startDateError;
             }
         	
         	//If Date is Less Than Today
         	if (isLessThanToday(startDate)) {
         		startDateError = "Date can't be less than today";
-        	  	document.getElementById("startDate1_error").innerHTML = startDateError;
+        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
         	}
         	
         	if (isLessThanToday(endDate)) {
         		endDateError = "Date can't be less than today";
-        	  	document.getElementById("endDate1_error").innerHTML = endDateError;
+        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
         	}
         	
 	    }
@@ -452,12 +451,12 @@ function validations() {
 		document.getElementById("minRequired").onkeyup = removeWarning;
 		document.getElementById("maxAllowed").onkeyup = removeWarning;
 		
-		document.getElementById("startDate1").onmouseleave = removeWarning;
-		document.getElementById("endDate1").onmouseleave = removeWarning;
+		//Remove warning for Date and Time
+		document.getElementById("startDate" + i).onmouseleave = removeWarning;
+		document.getElementById("startTime" + i).onkeyup = removeWarning;
+		document.getElementById("endDate" + i).onmouseleave = removeWarning;
+		document.getElementById("endTime" + i).onkeyup = removeWarning;
 		
-		document.getElementById("startTime1").onkeyup = removeWarning;
-		document.getElementById("endTime1").onkeyup = removeWarning;
-	    
 	    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 	    	var endDateTime = null;
 	    	var startDateTime = null;
