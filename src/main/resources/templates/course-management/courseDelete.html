@@ -1,65 +1,161 @@
 <!-- @Author:Freo, Kristine Faith-->
 
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
     <head>
-       <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> 
-     <title> Delete Course</title>   
+       <meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+    <title> Delete Course</title>  
+	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
    </head>
   <body> 
- <div class="container">
-	<h3>Course List</h3>
-	<hr>
-	 <form action="#" th:action="@{/Course/delete}" th:object="${courseDelete}" method="post"> 
-	  <form action="#" th:action="@{/Course/delete}" th:object="${courseDelete}" method="post">   
-         <divclass="row w-50"><table border="1">
-         <div class="row justify-content-md-center">  
-            <tr th:each ="course : ${course}">	    
-         Enter Course Name:
-         <input type="text" name="courseName" th:value="*{courseName}"/>
-          </tr>       
-	    <button type="submit" name="submit" value="submit">Search</button>    
-	    <br>
-	     <div>
- 	 	<div class="w-50">
-	  		<ul>
-	    		<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
-	        		<span th:text="${e.global}? '*' : ${e.fieldName}">Field Name</span> |
-	        		<span th:text="${e.message}">Error Message</span>
-	    		</li>
-	  		</ul>
- 	 	</div>
-	</div>	 
-	<br>
-  <br>    
-<h5>Results<h5>
-    <table class="table table-bordered table-striped">
-	  <thead class="">
-			  <tr>
-				<th></th>
-			    <th>Course ID</th>
-				<th>Course Name</th>				
-			 </tr>
-		</thead>
-      <tbody>
-		<tr th:each="crsCourse : ${courseDelete}">	
-			<td><input type="checkbox" th:field="*{checkedItems}" th:value="${item}"/>	
-			<td th:text="${crsCourse.CourseID}" />
-			<td th:text="${crsCourse.courseName}" />		
-		</tr>
-	</tbody>			 	
-</table> 
- <button th:text="#{msg_warning}" th:attr="onclick='return confirm(\'' + #{msg_confirm_warning} + '\');'">Delete</button>
-</form>
-</div>
-</table>
-      </div>
-      </div>
-      </form>
-    </body>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-<script type="text/javascript" src="/js/lib/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"crossorigin="anonymous">
- </script>	 	
+  <!-- Info modal -->
+    		<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Course Information</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<!-- th:action="@{/courses/{courseId}/delete}" -->
+						<form th:action="@{/courses/{courseId}/delete}" th:object="${deleteCourse}" method="get" >
+						
+						<div class="modal-body">
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<!-- th:text="${deleteCourse.name}" -->
+								<input type="text" id ="idC" th:value="${name}" class="col-lg-3 col-form-label"/>
+								<div class="col-lg-9">
+									<label class="col-lg-3 col-form-label">Understanding UIsssssssssssssssssssssssssssss</label>
+								</div>
+								<label class="col-lg-3 col-form-label">Detail:</label>
+								<div class="col-lg-9">
+									<label class="col-lg-3 col-form-label">Hello world</label>
+								</div>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+						
+						
+						<button class="btn btn-success" onclick = "confirmDeleteButton()">
+									Delete
+							</button>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		 <!-- Info modal End-->
+  
+  		<!--Confirm Modal-->
+			<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-sm text-center">
+					<div class="modal-content">
+						
+						<div class="modal-body">
+							<div class="form-group row">
+								<label class="col-lg-12 col-form-label">Are you sure you want to delete this course?</label>
+							</div>	
+						</div>
+						<div class="modal-footer">
+							<form class="form-horizontal" action="#" 
+									>
+								<button type="submit" name="submit" value="submit" class="btn btn-success">Confirm Deletion</button>
+							</form>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
+		<!--Confirm Modal End-->
+  
+   <div th:insert="fragments/general.html :: header"> </div>
+   <div class = "container mt-5">
+
+     <form class="form-horizontal" action="#" >
+     
+     <h3><i class="fa fa-calendar-o"></i> Search Course Name</h3>
+			<hr>
+			<div class="card">
+				<div class="card-body">
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Search:</label>
+						<div class="col-lg-3">
+							<input type="Text" class="form-control" id="courseNameText">
+						</div>
+					</div>
+					<div class="float-right">
+						<input type="submit" class="btn btn-success" value="Submit">
+					</div>
+					
+
+				</div>
+			</div>
+			
+			</form>
+     
+     <div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-triangle"></i> Delete Courses</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th style ="width: 20%;">Course Name</th>
+							<th>Detail</th>
+							<th style ="width: 20%;">Action</th>
+						</thead>
+						<tbody>
+						<!--  <tr th:each="pmoCourse : *{pmoCourses}"> -->
+							<tr>
+							<td><label ></label></td>
+							<td>Sample2</td>
+							<td>
+							
+							
+							<button class="btn btn-danger" onclick="deleteButton()" >Delete</button>
+							</td>
+							</tr> 
+						</tbody>
+							
+					</table>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+
+   </div>
+
+	<script th:inline="javascript">
+		function deleteButton() {
+			$('#infoModal').modal('show');
+
+		}
+		
+		function confirmDeleteButton() {
+			$('#infoModal').modal('toggle');
+			$('#confirmModal').modal('show');
+
+		}
+	</script>
+
+</body>
+ 	
 </html>
