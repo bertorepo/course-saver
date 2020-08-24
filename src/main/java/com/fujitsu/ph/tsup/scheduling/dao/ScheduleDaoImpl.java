@@ -238,4 +238,28 @@ public class ScheduleDaoImpl implements ScheduleDao {
 		
 		
 	}
+
+    @Override
+    public int countAllEnrolledCoursesByInstructorId(long id) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public List<String> findMonthlyTopLearners() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<String> findQuarterlyTopLearners() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CourseSchedule findCourseScheduleById(long id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
