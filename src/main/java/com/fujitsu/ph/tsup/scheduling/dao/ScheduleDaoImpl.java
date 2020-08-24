@@ -46,6 +46,7 @@ import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 @Repository
@@ -246,13 +247,13 @@ public class ScheduleDaoImpl implements ScheduleDao {
     }
 
     @Override
-    public List<String> findMonthlyTopLearners() {
+    public List<TopLearnersForm> findMonthlyTopLearners() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<String> findQuarterlyTopLearners() {
+    public List<TopLearnersForm> findQuarterlyTopLearners() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -28,6 +28,7 @@ import java.util.Set;
 
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
@@ -43,9 +44,9 @@ public interface ScheduleDao {
 	
 	int countAllEnrolledCoursesByInstructorId(long id);
 	
-	List<String> findMonthlyTopLearners();
+	List<TopLearnersForm> findMonthlyTopLearners();
 	
-	List<String> findQuarterlyTopLearners();
+	List<TopLearnersForm> findQuarterlyTopLearners();
 	 /**
      * Finds all courses
      * 
