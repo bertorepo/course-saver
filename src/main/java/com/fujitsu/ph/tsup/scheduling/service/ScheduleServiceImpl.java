@@ -12,6 +12,7 @@ import com.fujitsu.ph.tsup.scheduling.dao.ScheduleDao;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 /**
@@ -186,6 +187,37 @@ public class ScheduleServiceImpl implements ScheduleService{
 	        	 throw new IllegalArgumentException("Can't delete course schedule"); 
 	        }
 	    }
+
+	@Override
+	public void countAllEnrolledCoursesTodayByInstructorId(Long Id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void findMonthlyTopLearners(TopLearnersForm topLearnersForm) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void findQuarterlyTopLearners(TopLearnersForm topLearnersForm) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public CourseSchedule findCourseScheduleById(Long Id) {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateCourseSchedule(Long Id) {
+		// TODO Auto-generated method stub
+		
+	}
 		
 	}
 

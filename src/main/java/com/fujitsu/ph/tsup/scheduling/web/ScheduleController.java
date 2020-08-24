@@ -1,6 +1,5 @@
 package com.fujitsu.ph.tsup.scheduling.web;
 
-import java.lang.reflect.Array;
 
 //=======================================================
 //$Id: PR02$
@@ -29,16 +28,13 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,14 +47,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fujitsu.ph.auth.model.FpiUser;
-import com.fujitsu.ph.tsup.dashboard.service.DashboardMemberService;
+
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDeleteForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleUpdateForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleViewForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
@@ -190,16 +187,14 @@ public class ScheduleController {
     }
     /**
      * <pre>
-     * Add a row in Course Schedule Detail. Method = GET
+     * Add a row in Course Schedule Detail. Method = POST
      * 
      * <pre>
      * 
-     * @param PathVariable row 		 int row
-     * @param CourseScheduleListForm form
-     * @param BindingResult          bindingResult
+     * @param CourseScheduleNewForm  form
      * @param Model                  model
      * @param RedirectAttributes     redirectAttributes
-     * @return courseScheduleListForm and view
+     * @return courseScheduleNewForm and view
      */
     @PostMapping("/new/addDate")
     public String addNewCourseScheduleDetailRow
@@ -230,19 +225,18 @@ public class ScheduleController {
     }
     /**
      * <pre>
-     * Remove a row in Course Schedule Detail. Method = GET
+     * Delete specific rows to Course Schedule Detail List. Method = POST
      * 
      * <pre>
      * 
      * @param PathVariable row 		 int row
-     * @param CourseScheduleListForm form
-     * @param BindingResult          bindingResult
+     * @param CourseScheduleNewForm  form
      * @param Model                  model
      * @param RedirectAttributes     redirectAttributes
-     * @return courseScheduleListForm and view
+     * @return courseScheduleNewForm and view
      */
     @PostMapping("/new/removeDate/{row}")
-    public String deleteNewCourseScheduleDetailRow(@PathVariable("row") int row, Model model, 
+    public String deleteCourseScheduleDetailRow(@PathVariable("row") int row, Model model, 
            @ModelAttribute("scheduleNew") CourseScheduleNewForm form, RedirectAttributes redirectAttributes) {
          
          logger.debug("CourseScheduleNewForm : {}", form);
@@ -336,6 +330,133 @@ public class ScheduleController {
 
     }
     
+	/**
+     * <pre>
+     * View change course schedule. Method = GET
+     * 
+     * <pre>
+     * 
+     * @param Binding result         bindingResult
+     * @param Model                  model
+     * @param RedirectAttributes     redirectAttributes
+     * @return courseScheduleListForm and view
+     */
+	@GetMapping("courseSchedules/view")
+    public String viewChangeCourseSchedule(
+            @Valid @ModelAttribute("scheduleView") CourseScheduleListForm courseScheduleListForm,
+            BindingResult bindingResult, Model model) {
+
+        logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
+        logger.debug("Result: {}", bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "scheduling/scheduleView";
+        }
+
+        if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
+            courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
+            courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
+        }
+
+        if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())) {
+            model.addAttribute("scheduleView", courseScheduleListForm);
+            model.addAttribute("error", "To Date should be greater than or equal to From Date");
+            return "scheduling/instructorCourseScheduleList";
+        } 
+
+        Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
+                courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
+
+        Set<CourseScheduleViewForm> courseScheduleViewFormSet = new HashSet<>();
+
+        for (CourseSchedule courseSched : courseSchedule) {
+            CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
+
+            courseScheduleViewForm.setId(courseSched.getId());
+            courseScheduleViewForm.setCourseId(courseSched.getCourseId());
+            courseScheduleViewForm.setCourseName(courseSched.getCourseName());
+            courseScheduleViewForm.setInstructorId(courseSched.getInstructorId());
+            courseScheduleViewForm.setInstructorName(
+                    courseSched.getInstructorLastName() + ", " + courseSched.getInstructorFirstName());
+
+            Set<CourseScheduleDetail> courseSchedDetSet = courseSched.getCourseScheduleDetail();
+            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
+
+            for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
+                CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
+
+                courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+                courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+                courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
+                courseScheduleDetailFormSet.add(courseSchedDetailForm);
+
+            }
+
+            courseScheduleViewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
+            courseScheduleViewFormSet.add(courseScheduleViewForm);
+        }
+        
+        courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
+     
+        model.addAttribute("scheduleView", courseScheduleListForm);
+        return "scheduling/instructorCourseScheduleList";
+    } 
+    
+    /**
+     * <pre>
+     * View and update course schedule. Method = GET
+     * 
+     * <pre>
+     * 
+     * @param CourseScheduleUpdateForm courseScheduleUpdateForm
+     * @param BindingResult            bindingResult
+     * @param Model                    model
+     * @param PathVariable     		   long id
+     * @return courseScheduleUpdateForm and view
+     */
+	@GetMapping("/courseSchedule/{courseScheduleId}/update")
+	public String showUpdateCourseScheduleForm(@PathVariable("courseId") long id, Model model,
+			BindingResult bindingResult, CourseScheduleUpdateForm courseScheduleUpdateForm) {
+
+		logger.debug("Result: {}", bindingResult);
+
+		if (model.containsAttribute("updateView")) {
+			return "scheduling/createSched";
+		}
+
+		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
+		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+		Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+
+		courseScheduleUpdateForm.setId(courseSchedule.getId());
+		courseScheduleUpdateForm.setInstructors(instructorFormList);
+		courseScheduleUpdateForm.setVenues(venueFormList);
+
+		// to be changed when the update screen is released
+		return "scheduling/createSched";
+
+    }
+    
+    
+    @GetMapping("/courseSchedule/{courseScheduleId}/delete")
+	public String showDeleteCourseScheduleForm(@PathVariable("courseId") long id, Model model,
+			BindingResult bindingResult, CourseScheduleDeleteForm courseScheduleDeleteForm) {
+    
+		logger.debug("Result: {}", bindingResult);
+
+		if (model.containsAttribute("deleteView")) {
+			return "scheduling/createSched";
+		}
+		
+		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
+	
+		courseScheduleDeleteForm.setId(courseSchedule.getId());
+         //to be changed when the update screen is released
+         return "scheduling/createSched";
+
+    }
+    
+    
     /**
      * <pre>
      * Update the course schedule. Method = POST
@@ -348,11 +469,10 @@ public class ScheduleController {
      * @param RedirectAttributes     redirectAttributes
      * @return courseScheduleListForm and view
      */
-    @PostMapping("/updateCourseSchedule")
-    public String updateCourseScheduleForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
+    @PostMapping("/courseSchedule/courseScheduleId/update")
+    public String submitUpdateCourseScheduleForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-    	
-    	Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+
 		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
 		Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
 
@@ -360,7 +480,6 @@ public class ScheduleController {
 		logger.debug("Result: {}", bindingResult);
 
 		if (bindingResult.hasErrors()) {
-			form.setCourses(courseFormList);
 			form.setVenues(venueFormList);
 			form.setInstructors(instructorFormList);
 			model.addAttribute("scheduleNew", form);
@@ -395,10 +514,10 @@ public class ScheduleController {
 
 		scheduleService.updateCourseSchedule(courseSchedule);
 
-		form.setCourses(courseFormList);
 		form.setVenues(venueFormList);
 		form.setInstructors(instructorFormList);
 
+		//to be changed
     	return "redirect:/schedules/new";
     
     }
@@ -414,7 +533,7 @@ public class ScheduleController {
      * @param RedirectAttributes     redirectAttributes
      * @return courseScheduleListForm and view
      */
-	@DeleteMapping("/courseSchedules/{courseId}/delete")
+	@DeleteMapping("/courseSchedules/{courseScheduleId}/delete")
 	public String submitDeleteCourseScheduleForm(@PathVariable("courseId") long id, Model model,
 			RedirectAttributes redirectAttributes) {
 
@@ -423,4 +542,6 @@ public class ScheduleController {
 		return "redirect:/schedules/new";
 
     }
+	
+	
 }
