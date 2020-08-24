@@ -55,7 +55,8 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         int minRequired = cs.getInt("MIN_REQUIRED");
         int maxAllowed = cs.getInt("MAX_ALLOWED");
         char status = cs.getString("STATUS").charAt(0);
-
+     
+        
         Long courseScheduleDetailId = cs.getLong("COURSE_SCHEDULE_DETAIL_ID");
 
        
@@ -86,7 +87,7 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId,
                 courseName, instructorId, instructorLastName,
                 instructorFirstName, venueId, venueName, minRequired,
-                maxAllowed, status).addDetail(courseScheduleDetailSet).build();
+                maxAllowed, status, 1).addDetail(courseScheduleDetailSet).build();
 
         return courseSchedule;
     }

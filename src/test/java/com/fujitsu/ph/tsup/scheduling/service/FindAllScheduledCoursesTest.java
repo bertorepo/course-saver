@@ -127,7 +127,7 @@ public class FindAllScheduledCoursesTest {
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
         courseScheduleDetailSet.add(courseScheduleDetail);
         
-        return new CourseSchedule.Builder(1L, 1L, "Dummy", 1L, "Dummy", "Dummy", 1L, "Dummy", 1, 10, "A".charAt(0))
+        return new CourseSchedule.Builder(1L, 1L, "Dummy", 1L, "Dummy", "Dummy", 1L, "Dummy", 1, 10, "A".charAt(0), 1)
                     .addDetail(courseScheduleDetailSet).build();
     }
 }

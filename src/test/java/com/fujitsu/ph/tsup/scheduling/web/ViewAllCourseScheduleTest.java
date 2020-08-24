@@ -199,10 +199,10 @@ class ViewAllCourseScheduleTest {
         courseScheduleDetails.add(courseScheduleDetail2);
         
         CourseSchedule courseSchedule1 = 
-                new CourseSchedule.Builder(1L, 1L, "name", 1L, "last", "first", 1L, "venue", 1, 10, 'A')
+                new CourseSchedule.Builder(1L, 1L, "name", 1L, "last", "first", 1L, "venue", 1, 10, 'A', 1)
                 .addDetail(courseScheduleDetails).build();
         CourseSchedule courseSchedule2 = 
-                new CourseSchedule.Builder(2L, 2L, "name2", 2L, "last2", "first2", 2L, "venue2", 1, 10, 'A')
+                new CourseSchedule.Builder(2L, 2L, "name2", 2L, "last2", "first2", 2L, "venue2", 1, 10, 'A', 1)
                 .addDetail(courseScheduleDetails).build();
         courseSchedules.add(courseSchedule1);
         courseSchedules.add(courseSchedule2);
