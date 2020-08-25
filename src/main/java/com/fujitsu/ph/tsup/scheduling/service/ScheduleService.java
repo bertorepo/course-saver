@@ -114,10 +114,4 @@ public interface ScheduleService {
      */
     CourseSchedule findCourseScheduleById(Long Id);
     
-    /**
-     * Update Course Schedule
-     * @param long id
-     */
-    void updateCourseSchedule(Long Id);
-    
 }

@@ -34,7 +34,7 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 //--------+------------+-----------------+---------------
 //0.01    | 06/24/2020 | WS) JC. Jimenez | New Creation
 //0.01    | 06/24/2020 | WS) J. Macabugao| New Creattion
-//
+//0.02    | 06/25/2020 | WS) J. Balanon  | New Creattion
 //
 //
 //=======================================================
@@ -209,12 +209,6 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public CourseSchedule findCourseScheduleById(Long Id) {
 		return null;
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateCourseSchedule(Long Id) {
 		// TODO Auto-generated method stub
 		
 	}
