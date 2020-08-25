@@ -224,9 +224,37 @@ public class ScheduleDaoImpl implements ScheduleDao {
      * @param Long id
      */
 	@Override
-	public void updateCourseSchedule(Long id) {
+	public void updateCourseSchedule(CourseSchedule courseSchedule) {
+		String sql = "UPDATE COURSE_SCHEDULE "
+		           + "SET COURSE_ID = :course_id, INSTRUCTOR_ID = :instructor_id, VENUE_ID = :venue_id, "
+		           + "MIN_REQUIRED = :min_required, MAX_ALLOWED = :max_allowed  "
+		           + "WHERE ID = :cs_id";
 		
-		
+		SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
+                .addValue("course_id", courseSchedule.getCourseId())
+                .addValue("instructor_id", courseSchedule.getInstructorId())
+                .addValue("venue_id", courseSchedule.getVenueId())
+                .addValue("min_required", courseSchedule.getMinRequired())
+                .addValue("max_allowed", courseSchedule.getMaxAllowed())
+                .addValue("cs_id", courseSchedule.getId());
+        template.update(sql, courseSchedParameters);
+        
+        String courseSchedDetSql = "UPDATE COURSE_SCHEDULE_DETAILS "
+                                 + "SET COURSE_SCHEDULE_ID = :course_schedule_id, "
+                                 + "SCHEDULED_START_DATETIME = :scheduled_start_datetime, "
+                                 + "SCHEDULED_END_DATETIME = :scheduled_end_datetime, "
+                                 + "DURATION = :duration "
+                                 + "WHERE ID = :csdet_id";
+        
+        for(CourseScheduleDetail courseSchedDetail : courseSchedule.getCourseScheduleDetail()) {
+            SqlParameterSource courseSchedDetailParameters = new MapSqlParameterSource()
+                    .addValue("course_schedule_id", courseSchedDetail.getCourseScheduleId())
+                    .addValue("scheduled_start_datetime", courseSchedDetail.getScheduledStartDateTime().toOffsetDateTime())
+                    .addValue("scheduled_end_datetime", courseSchedDetail.getScheduledEndDateTime().toOffsetDateTime())
+                    .addValue("duration", courseSchedDetail.getDuration())
+                    .addValue("csdet_id", courseSchedDetail.getId());
+            template.update(courseSchedDetSql, courseSchedDetailParameters);
+        }
 	}
 
 	/**

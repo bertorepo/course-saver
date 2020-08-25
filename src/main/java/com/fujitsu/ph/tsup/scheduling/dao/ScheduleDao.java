@@ -75,14 +75,14 @@ public interface ScheduleDao {
 	
 	 /**
      * Update a course schedule
-     * @param long course schedule id
+     * @param courseSchedule
      */
-	void updateCourseSchedule(Long id);
+	void updateCourseSchedule(CourseSchedule courseSchedule);
 	
 	
 	 /**
      * Deletes the CourseSchedule and CourseScheduleDetail by ID
-     * @param long course schedule id
+     * @param id
      */
 	void deleteCourseScheduleById(Long id);
 	
