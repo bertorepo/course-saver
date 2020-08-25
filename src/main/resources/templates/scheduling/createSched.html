@@ -303,6 +303,7 @@ function isLessThanToday(date){
 }  
 
 function validations() {
+	var errorCount = 0;
 	var courseName = $('#courseName').val();
 	var instructor = $('#instructorId').val();
 	var venue = $('#venueId').val();
@@ -312,32 +313,37 @@ function validations() {
 	
 	//Empty Fields Validations
 	if (courseName == "") {
+		errorCount++;
 		courseNameError = "Please fill up Course Name"; 
         document.getElementById("courseName_error").innerHTML = courseNameError;
 	}
 	if (instructor == "") {
+		errorCount++;
 		instructorError = "Please fill up Instructor";
         document.getElementById("instructorId_error").innerHTML = instructorError;
 	}
 	if (venue == "") {
+		errorCount++;
 		venueError = "Please fill up Venue";
         document.getElementById("venueId_error").innerHTML = venueError;
 	}
 	if (minRequired <= 0) {
+		errorCount++;
 	  	minRequiredError = "Please fill up Minimum no. of Participants";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 	}
 	if (maxAllowed <=0) {
+		errorCount++;
 	  	maxAllowedError = "Please fill up Maximum no. of Participants";
 	  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
 	}
 	if (minRequired !==0) {
 		if (maxAllowed <= minRequired) {
+			errorCount++;
 	  	minRequiredError = "Minimum can't be greater or equal to Maximum Participants";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 		}
 	}
-	
 	
 	//Empty Fields Validation for Start and End date
 	var startDateCount = 0;
@@ -356,7 +362,6 @@ function validations() {
 
 	    if (startDate !== "") {
 	        startDateCount++;
-	        console.log(startDateCount);
 	    }    
 	    if (startTime !== "") {
 	        startTimeCount++;
@@ -369,19 +374,23 @@ function validations() {
 	    }
 
 	if (startDateCount <= 0) {
+		errorCount++;
 		startDateError = "Please fill up Start Date";
 	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
 	}
 	if (startTimeCount <= 0) {
+		errorCount++;
 		startTimeError = "Please fill up Start Time";
 	  	document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
 	}
 
 	if (endDateCount <= 0) {
+		errorCount++;
 		endDateError = "Please fill up End Date";
 	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	}
 	if (endTimeCount <= 0) {
+		errorCount++;
 		endTimeError = "Please fill up End Time";
 	  	document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
 	}
@@ -412,29 +421,33 @@ function validations() {
 	    if((startDateCount !==0) && (endDateCount !==0)) {
 	    	//Start and End Time Validation
         	if (startDate > endDate)  {
+        		errorCount++;
         		startDateError = "Start Date can't be greater than or equal to end date";
         	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
             }
         	
         	//Start and End Date Validation
         	if (startTime > endTime) {
+        		errorCount++;
         		startDateError = "Start time can't be greater than or equal to end time";
         	  	document.getElementById("startTime" + i + "_error").innerHTML = startDateError;
             }
         	
         	//If Date is Less Than Today
         	if (isLessThanToday(startDate)) {
+        		errorCount++;
         		startDateError = "Date can't be less than today";
         	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
         	}
         	
         	if (isLessThanToday(endDate)) {
+        		errorCount++;
         		endDateError = "Date can't be less than today";
         	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
         	}
         	
 	    }
-	    
+
 		function removeWarning() {
 			
 			var fieldId = this.id;
@@ -454,9 +467,9 @@ function validations() {
 		
 		//Remove warning for Date and Time
 		document.getElementById("startDate" + i).onmouseleave = removeWarning;
-		document.getElementById("startTime" + i).onkeyup = removeWarning;
+		document.getElementById("startTime" + i).onmouseleave = removeWarning;
 		document.getElementById("endDate" + i).onmouseleave = removeWarning;
-		document.getElementById("endTime" + i).onkeyup = removeWarning;
+		document.getElementById("endTime" + i).onmouseleave = removeWarning;
 		
 	    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 	    	var endDateTime = null;
@@ -472,19 +485,12 @@ function validations() {
 	    
 	    document.getElementById("startDateTime"+i).value = startDateTime;
 		document.getElementById("endDateTime"+i).value = endDateTime;
-		
-		//Confirmation Modal Validation
-		
-		//--> Changed StartDateTimeCount to StartDateCount
-		if ((courseName !== "") && (instructor !== "") && (venue !== "")
-				&& (minRequired !== "") && (maxAllowed !== "") && ((minRequired !== 0) || (maxAllowed !== 0)) 
-				&& (minRequired <= maxAllowed) && (startDateCount !=0 ) && (endDateCount !=0 )
-				&& !((isLessThanToday(startDate) || isLessThanToday(endDate)))
-				&& (startDate <= endDate) && (startTime < endTime)) {
-			
-			$('#confirmModal').modal('show');
-		}
-    }		
+	
+    }
+	if (errorCount <= 0) {
+
+		$('#confirmModal').modal('show');
+	}
  }
  
 //Formats the text to only accept numbers on keypress
