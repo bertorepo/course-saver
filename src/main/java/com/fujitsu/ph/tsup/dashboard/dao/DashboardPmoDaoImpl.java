@@ -10,9 +10,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmo;
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign Up
 //System Name  :Dashboard
 //Class Name   :DashboardPmoDaoImpl.java
@@ -21,6 +21,7 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/25/2020 |  WS) Jm.Deguzman   | New Creation
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Update
 //==================================================================================================
 /**
 * <pre>
@@ -45,7 +46,7 @@ public class DashboardPmoDaoImpl implements DashboardPmoDao {
      * @return Set<dashboardPmoForm>
      */
     @Override
-    public Set<DashboardPmoForm> findCourses() {
+    public Set<DashboardPmo> findCourses() {
         String sql = "SELECT C.NAME AS \"C.NAME\" , " +
                 "CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME, " +
                 "CSD.SCHEDULED_START_DATETIME  AS \"CSD.SCHEDULED_START_DATETIME\", " +
@@ -79,8 +80,8 @@ public class DashboardPmoDaoImpl implements DashboardPmoDao {
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("status", "A");
         
-        List<DashboardPmoForm> dashboardPmo = template.query(sql, namedParameters, new DashboardPmoRowMapper());
-        Set<DashboardPmoForm> setDashboardPmo = new HashSet<DashboardPmoForm>(dashboardPmo);
+        List<DashboardPmo> dashboardPmo = template.query(sql, namedParameters, new DashboardPmoRowMapper());
+        Set<DashboardPmo> setDashboardPmo = new HashSet<DashboardPmo>(dashboardPmo);
         return setDashboardPmo;
     }
 }
