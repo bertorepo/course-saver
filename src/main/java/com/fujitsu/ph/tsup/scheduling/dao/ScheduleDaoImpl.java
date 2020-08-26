@@ -301,7 +301,42 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public CourseSchedule findCourseScheduleById(long id) {
-        // TODO Auto-generated method stub
-        return null;
+        String query = "SELECT " 
+                + "CSCHED.ID AS ID, " 
+                + "CSCHED.COURSE_ID AS COURSE_ID, "
+                + "C.NAME AS COURSE_NAME, " 
+                + "CSCHED.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "CSCHED.VENUE_ID AS VENUE_ID, " 
+                + "V.NAME AS VENUE_NAME, "
+                + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED, " 
+                + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
+                + "(SELECT COUNT(PARTICIPANT_ID)"
+                + " FROM COURSE_PARTICIPANTS"
+                + " WHERE COURSE_SCHEDULE_ID = CS.ID) AS TOTAL_PARTICIPANTS, "
+                + "CSCHED.STATUS AS STATUS, "
+                + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.DURATION AS DURATION "
+                + "FROM COURSE_SCHEDULE AS CSCHED " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
+                + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID " 
+                + "INNER JOIN COURSE AS C "
+                + " ON CSCHED.COURSE_ID = C.ID " 
+                + "INNER JOIN EMPLOYEE AS E"
+                + " ON CSCHED.INSTRUCTOR_ID = E.ID " 
+                + "INNER JOIN VENUE AS V " 
+                + " ON CSCHED.VENUE_ID = V.ID "
+                + "WHERE CSCHED.ID = :id ";
+
+        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                .addValue("id", id);
+
+        CourseSchedule courseSchedule = template.queryForObject(query, courseScheduleParameters,
+                new CourseScheduleRowMapper());
+
+        return courseSchedule;
     }
 }
