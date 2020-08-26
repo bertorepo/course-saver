@@ -35,7 +35,7 @@
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	
-	<div class="container mt-5">
+	<div class="container mt-5" id="scheduleView" action="#" th:action="@{/schedules/courseSchedules/view}" th:object="${scheduleView}" method="get">
 		<form class="form-horizontal">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
 			<hr>

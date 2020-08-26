@@ -362,7 +362,13 @@ public class ScheduleController {
         if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())) {
             model.addAttribute("scheduleView", courseScheduleListForm);
             model.addAttribute("error", "To Date should be greater than or equal to From Date");
-            return "scheduling/instructorCourseScheduleList";
+            return "scheduling/viewSched";
+        } 
+        
+        if (courseScheduleListForm.getToDateTime() == (courseScheduleListForm.getFromDateTime())) {
+            model.addAttribute("scheduleView", courseScheduleListForm);
+            model.addAttribute("error", "From Datetime and To Datetime should not be exactly equal to each other");
+            return "scheduling/viewSched";
         } 
 
         Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
@@ -400,7 +406,7 @@ public class ScheduleController {
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
      
         model.addAttribute("scheduleView", courseScheduleListForm);
-        return "scheduling/instructorCourseScheduleList";
+        return "scheduling/viewSched";
     } 
     
     /**
@@ -422,7 +428,7 @@ public class ScheduleController {
 		logger.debug("Result: {}", bindingResult);
 
 		if (model.containsAttribute("updateView")) {
-			return "scheduling/createSched";
+			return "scheduling/viewSched";
 		}
 
 		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
@@ -433,8 +439,8 @@ public class ScheduleController {
 		courseScheduleUpdateForm.setInstructors(instructorFormList);
 		courseScheduleUpdateForm.setVenues(venueFormList);
 
-		// to be changed when the update screen is released
-		return "scheduling/createSched";
+
+		return "scheduling/viewSched";
 
     }
     
@@ -446,14 +452,14 @@ public class ScheduleController {
 		logger.debug("Result: {}", bindingResult);
 
 		if (model.containsAttribute("deleteView")) {
-			return "scheduling/createSched";
+			return "scheduling/viewSched";
 		}
 		
 		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
 	
 		courseScheduleDeleteForm.setId(courseSchedule.getId());
          //to be changed when the update screen is released
-         return "scheduling/createSched";
+         return "scheduling/viewSched";
 
     }
     
