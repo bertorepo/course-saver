@@ -11,9 +11,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardMember;
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign Up
 //System Name  :Dashboard
 //Class Name   :DashboardMemberDaoImpl.java
@@ -22,6 +22,7 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) Jm.Deguzman   | New Creation
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Update
 //==================================================================================================
 /**
 * <pre>
@@ -47,7 +48,7 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
      * @return Set<DashboardMemberForm>
      */
     @Override
-    public Set<DashboardMemberForm> findCourses(Long employeeId) {
+    public Set<DashboardMember> findCourses(Long employeeId) {
         String sql = "SELECT C.NAME AS \"C.NAME\", " + 
                 "   CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME, " + 
                 "    CSD.SCHEDULED_START_DATETIME AS \"CSD.SCHEDULED_START_DATETIME\", " + 
@@ -84,8 +85,8 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 .addValue("employeeId", employeeId)
                 .addValue("status", "A");
         
-        List<DashboardMemberForm> dashboardMember = template.query(sql, namedParameters, new DashboardMemberRowMapper());
-        Set<DashboardMemberForm> setDashboardMember = new HashSet<DashboardMemberForm>(dashboardMember);
+        List<DashboardMember> dashboardMember = template.query(sql, namedParameters, new DashboardMemberRowMapper());
+        Set<DashboardMember> setDashboardMember = new HashSet<DashboardMember>(dashboardMember);
         
         
         return setDashboardMember;
