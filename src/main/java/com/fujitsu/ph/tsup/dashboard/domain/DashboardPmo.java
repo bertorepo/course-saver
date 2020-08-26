@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
  */
 
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign up
 //System Name  :Dashboard
 //Class Name   :DashboardPmoForm.java
@@ -23,8 +23,9 @@ import java.time.ZonedDateTime;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/25/2020 | WS) Jm.Deguzman       | New Creation
+//0.02    | 08/24/2020 | WS) Jm.Deguzman       | Update
 
-public class DashboardPmoForm {
+public class DashboardPmo {
     /**
      * Course Name
      */
@@ -58,7 +59,7 @@ public class DashboardPmoForm {
      */
     private String status;
 
-    protected DashboardPmoForm() {
+    protected DashboardPmo() {
 
     }
 
@@ -70,7 +71,7 @@ public class DashboardPmoForm {
      * 
      * @param builder
      */
-    private DashboardPmoForm(Builder builder) {
+    private DashboardPmo(Builder builder) {
         this.courseName = builder.courseName;
         this.instructorName = builder.instructorName;
         this.startDateTime = builder.startDateTime;
@@ -197,8 +198,8 @@ public class DashboardPmoForm {
          * 
          * @return new DashboardPmoForm(this)
          */
-        public DashboardPmoForm build() {
-            return new DashboardPmoForm(this);
+        public DashboardPmo build() {
+            return new DashboardPmo(this);
         }
 
         /*
