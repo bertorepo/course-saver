@@ -239,7 +239,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 .addValue("cs_id", courseSchedule.getId());
         template.update(sql, courseSchedParameters);
         
-        String courseSchedDetSql = "UPDATE COURSE_SCHEDULE_DETAILS "
+        String courseSchedDetSql = "UPDATE COURSE_SCHEDULE_DETAIL "
                                  + "SET COURSE_SCHEDULE_ID = :course_schedule_id, "
                                  + "SCHEDULED_START_DATETIME = :scheduled_start_datetime, "
                                  + "SCHEDULED_END_DATETIME = :scheduled_end_datetime, "
@@ -267,8 +267,19 @@ public class ScheduleDaoImpl implements ScheduleDao {
      */
 	@Override
 	public void deleteCourseScheduleById(Long id) {
-		
-		
+	    String courseSchedSql = "DELETE FROM COURSE_SCHEDULE WHERE ID = :id ";
+	    String courseSchedDetSql = "DELETE FROM COURSE_SCHEDULE_DETAIL WHERE COURSE_SCHEDULE_ID = :cs_id";
+	    
+	    SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
+                .addValue("id", id);
+        template.update(courseSchedSql, courseSchedParameters);
+        
+        SqlParameterSource courseSchedDetParameters = new MapSqlParameterSource()
+                .addValue("cs_id", id);
+        template.update(courseSchedDetSql, courseSchedDetParameters);
+        
+        
+        		
 	}
 
     @Override
