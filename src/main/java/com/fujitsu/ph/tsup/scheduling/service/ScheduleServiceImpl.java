@@ -194,13 +194,15 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	@Override
-	public void findMonthlyTopLearners(List<TopLearnersForm> topLearnersFormList) {
+	public List<TopLearnersForm> findMonthlyTopLearners() {
+        return null;
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void findQuarterlyTopLearners(List<TopLearnersForm> topLearnersFormList) {
+	public List<TopLearnersForm> findQuarterlyTopLearners() {
+        return null;
 		// TODO Auto-generated method stub
 		
 	}

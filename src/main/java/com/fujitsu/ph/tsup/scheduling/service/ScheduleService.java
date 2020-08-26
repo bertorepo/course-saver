@@ -100,13 +100,13 @@ public interface ScheduleService {
      * Find Monthly Top Learners
      * @param long id
      */
-    void findMonthlyTopLearners(List<TopLearnersForm> topLearnersFormList);
+    List<TopLearnersForm> findMonthlyTopLearners();
     
     /**
      * Find Quarterly Top Learners
      * @param long id
      */
-    void findQuarterlyTopLearners(List<TopLearnersForm> topLearnersFormList);
+    List<TopLearnersForm> findQuarterlyTopLearners();
     
     /**
      * Find Course Schedule by Id
