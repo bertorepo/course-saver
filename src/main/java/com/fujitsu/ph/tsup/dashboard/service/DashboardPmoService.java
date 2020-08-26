@@ -2,9 +2,9 @@ package com.fujitsu.ph.tsup.dashboard.service;
 
 import java.util.Set;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmo;
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign Up
 //System Name  :Dashboard
 //Class Name   :DashboardPmoService.java
@@ -13,6 +13,7 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/25/2020 |  WS) Jm.Deguzman   | New Creation
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Update
 //==================================================================================================
 /**
 * <pre>
@@ -28,5 +29,5 @@ public interface DashboardPmoService {
      * 
      * @return Set<DashbcoardPmoForm>
      */
-    Set<DashboardPmoForm> findCourses();
+    Set<DashboardPmo> findCourses();
 }
