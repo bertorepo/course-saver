@@ -1,16 +1,19 @@
 package com.fujitsu.ph.tsup.scheduling.service;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.scheduling.dao.ScheduleDao;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 /**
@@ -32,7 +35,7 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 //--------+------------+-----------------+---------------
 //0.01    | 06/24/2020 | WS) JC. Jimenez | New Creation
 //0.01    | 06/24/2020 | WS) J. Macabugao| New Creattion
-//
+//0.02    | 06/25/2020 | WS) J. Balanon  | New Creattion
 //
 //
 //=======================================================
@@ -147,6 +150,71 @@ public class ScheduleServiceImpl implements ScheduleService{
 	        	 throw new IllegalArgumentException("Can't save course schedule"); 
 	        }
 	    }
-}
+	
+	/**
+     * <pre>
+     * Update a course schedule
+     * Call ScheduleDao.updateCourseSchedule by using Course Schedule Object.
+     * <pre>
+     * 
+     * @param courseSchedule
+     */
+	@Override
+	public void updateCourseSchedule(CourseSchedule courseSchedule) {
+
+		try {
+			scheduleDao.updateCourseSchedule(courseSchedule);
+		} catch (DataAccessException ex) {
+			throw new IllegalArgumentException("Can't update course schedule");
+		}
+	}
+		
+	/**
+     * <pre>
+     * Delete a course schedule
+     * Call ScheduleDao.deleteCourseScheduleById by using Course ID
+     * <pre>
+     * 
+     * @param courseSchedule
+     */
+	@Override
+	public void deleteCourseScheduleById(Long id) {
+		
+		try {
+			   scheduleDao.deleteCourseScheduleById(id);
+	        } catch (DataAccessException ex) {
+	        	 throw new IllegalArgumentException("Can't delete course schedule"); 
+	        }
+	    }
+
+	@Override
+	public void countAllEnrolledCoursesTodayByInstructorId(Long Id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<TopLearnersForm> findMonthlyTopLearners() {
+        return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<TopLearnersForm> findQuarterlyTopLearners() {
+        return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public CourseSchedule findCourseScheduleById(Long Id) {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+		
+	}
+
 	
 

@@ -9,6 +9,7 @@ package com.fujitsu.ph.tsup.scheduling.service;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/22/2020 | WS) JC. Jimenez | New Creation
+//0.02    | 08/24/2002 | WS) J. Balanon  | New Creation
 //
 //=======================================================
 
@@ -22,11 +23,14 @@ package com.fujitsu.ph.tsup.scheduling.service;
 */
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 public interface ScheduleService {
@@ -74,5 +78,41 @@ public interface ScheduleService {
      */
     void createCourseSchedule(CourseSchedule courseSchedule);
     
+    /**
+     * Update a course schedule
+     * @param courseSchedule
+     */
+    void updateCourseSchedule(CourseSchedule courseSchedule);
+    
+    /**
+     * Delete a course schedule by Id
+     * @param long id
+     */
+    void deleteCourseScheduleById(Long id);
+    
+    /**
+     * Counts the Enrolled Courses by Instructor Id
+     * @param long id
+     */
+    void countAllEnrolledCoursesTodayByInstructorId(Long Id);
+    
+    /**
+     * Find Monthly Top Learners
+     * @param long id
+     */
+    List<TopLearnersForm> findMonthlyTopLearners();
+    
+    /**
+     * Find Quarterly Top Learners
+     * @param long id
+     */
+    List<TopLearnersForm> findQuarterlyTopLearners();
+    
+    /**
+     * Find Course Schedule by Id
+     * @param long id
+     * @return 
+     */
+    CourseSchedule findCourseScheduleById(Long Id);
     
 }

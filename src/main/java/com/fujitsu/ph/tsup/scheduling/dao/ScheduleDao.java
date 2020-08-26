@@ -23,10 +23,12 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 */
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
@@ -40,6 +42,11 @@ public interface ScheduleDao {
 	Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime scheduledStartDateTime, 
 			ZonedDateTime scheduledEndDateTime );
 	
+	int countAllEnrolledCoursesByInstructorId(long id);
+	
+	List<TopLearnersForm> findMonthlyTopLearners();
+	
+	List<TopLearnersForm> findQuarterlyTopLearners();
 	 /**
      * Finds all courses
      * 
@@ -58,10 +65,25 @@ public interface ScheduleDao {
      */
 	Set<VenueForm> findAllVenues();
 	
+	CourseSchedule findCourseScheduleById(long id);
+	
 	 /**
      * Saves the CourseSchedule and CourseScheduleDetail object
      * @param courseSchedule
      */
 	void saveCourseSchedule(CourseSchedule courseSchedule);
+	
+	 /**
+     * Update a course schedule
+     * @param courseSchedule
+     */
+	void updateCourseSchedule(CourseSchedule courseSchedule);
+	
+	
+	 /**
+     * Deletes the CourseSchedule and CourseScheduleDetail by ID
+     * @param id
+     */
+	void deleteCourseScheduleById(Long id);
 	
 }
