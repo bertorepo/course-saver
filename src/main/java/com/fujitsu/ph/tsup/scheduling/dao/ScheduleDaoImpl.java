@@ -283,8 +283,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public int countAllEnrolledCoursesByInstructorId(long id) {
-        // TODO Auto-generated method stub
-        return 0;
+        String query = "SELECT COUNT(COURSE_ID) FROM COURSE_SCHEDULE WHERE INSTRUCTOR_ID = :id";
+        
+        SqlParameterSource courseSchedParameters = new MapSqlParameterSource().addValue("id", id);
+        return template.queryForObject(query, courseSchedParameters, Integer.class);
     }
 
     @Override
@@ -295,7 +297,6 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public List<TopLearnersForm> findQuarterlyTopLearners() {
-        // TODO Auto-generated method stub
         return null;
     }
 
