@@ -333,7 +333,7 @@ CREATE TABLE tsup.COURSE_ATTENDANCE
     course_schedule_detail_id bigint NOT NULL DEFAULT nextval('tsup."COURSE_SCHEDULE_DETAIL_ID_seq"'::regclass),
     participant_id bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
     status character varying(1) COLLATE pg_catalog."default" NOT NULL,
-    log_in_datetime timestamp with time zone NOT NULL,
+    log_in_datetime timestamp with time zone,
     log_out_datetime timestamp with time zone,
     email character varying COLLATE pg_catalog."default",
     CONSTRAINT "COURSE_ATTENDANCE_pkey" PRIMARY KEY (id),
@@ -405,13 +405,13 @@ INSERT INTO tsup.venue(
 	
 INSERT INTO tsup.course_schedule(
 	id, course_id, instructor_id, venue_id, min_required, max_allowed, status)
-	VALUES (1, 1, 1, 1, 10, 20, 'A');
+	VALUES (1, 1, 1, 1, 10, 20, 'O');
 INSERT INTO tsup.course_schedule(
 	id, course_id, instructor_id, venue_id, min_required, max_allowed, status)
-	VALUES (2, 2, 2, 2, 5, 10, 'A');
+	VALUES (2, 2, 2, 2, 5, 10, 'O');
 INSERT INTO tsup.course_schedule(
 	id, course_id, instructor_id, venue_id, min_required, max_allowed, status)
-	VALUES (3, 3, 3, 3, 20, 100, 'A');
+	VALUES (3, 3, 3, 3, 20, 100, 'O');
 
 INSERT INTO tsup.course_schedule_detail(
 	id, course_schedule_id, scheduled_start_datetime, scheduled_end_datetime, duration)
