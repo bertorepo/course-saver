@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.dashboard.dao.DashboardPmoDao;
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmo;
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign Up
 //System Name  :Dashboard
 //Class Name   :DashboardPmoServiceImpl.java
@@ -17,6 +17,7 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/25/2020 |  WS) Jm.Deguzman   | New Creation
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Update
 //==================================================================================================
 /**
 * <pre>
@@ -38,8 +39,8 @@ public class DashboardPmoServiceImpl implements DashboardPmoService{
      * @return Set<DashboardPmoForm>
      */
     @Override
-    public Set<DashboardPmoForm> findCourses(){
-        Set<DashboardPmoForm> dashboardPmo = dao.findCourses();
+    public Set<DashboardPmo> findCourses(){
+        Set<DashboardPmo> dashboardPmo = dao.findCourses();
         if (dashboardPmo.isEmpty() || dashboardPmo == null) {
             throw new IllegalArgumentException("No records found");
         } 
