@@ -23,6 +23,7 @@ package com.fujitsu.ph.tsup.scheduling.service;
 */
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
@@ -99,13 +100,13 @@ public interface ScheduleService {
      * Find Monthly Top Learners
      * @param long id
      */
-    void findMonthlyTopLearners(TopLearnersForm topLearnersForm);
+    void findMonthlyTopLearners(List<TopLearnersForm> topLearnersFormList);
     
     /**
      * Find Quarterly Top Learners
      * @param long id
      */
-    void findQuarterlyTopLearners(TopLearnersForm topLearnersForm);
+    void findQuarterlyTopLearners(List<TopLearnersForm> topLearnersFormList);
     
     /**
      * Find Course Schedule by Id

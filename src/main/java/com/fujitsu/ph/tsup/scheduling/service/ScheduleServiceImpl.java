@@ -1,6 +1,7 @@
 package com.fujitsu.ph.tsup.scheduling.service;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,13 +194,13 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	@Override
-	public void findMonthlyTopLearners(TopLearnersForm topLearnersForm) {
+	public void findMonthlyTopLearners(List<TopLearnersForm> topLearnersFormList) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void findQuarterlyTopLearners(TopLearnersForm topLearnersForm) {
+	public void findQuarterlyTopLearners(List<TopLearnersForm> topLearnersFormList) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -278,8 +278,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 .addValue("cs_id", id);
         template.update(courseSchedDetSql, courseSchedDetParameters);
         
-        
-        		
+
 	}
 
     @Override
