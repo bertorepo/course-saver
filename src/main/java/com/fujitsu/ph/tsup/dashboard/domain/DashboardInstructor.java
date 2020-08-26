@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
  */
 
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign up
 //System Name  :Dashboard
 //Class Name   :DashboardInstructorForm.java
@@ -23,8 +23,9 @@ import java.time.ZonedDateTime;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/24/2020 | WS) Jm.Deguzman       | New Creation
+//0.02    | 08/24/2020 | WS) Jm.Deguzman       | Update
 
-public class DashboardInstructorForm {
+public class DashboardInstructor {
     /**
      * Employee ID
      */
@@ -50,7 +51,7 @@ public class DashboardInstructorForm {
      */
     private String status;
 
-    protected DashboardInstructorForm() {
+    protected DashboardInstructor() {
 
     }
 
@@ -63,7 +64,7 @@ public class DashboardInstructorForm {
      * 
      * @param builder
      */
-    private DashboardInstructorForm(Builder builder) {
+    private DashboardInstructor(Builder builder) {
         this.employeeId = builder.employeeId;
         this.courseName = builder.courseName;
         this.startDateTime = builder.startDateTime;
@@ -190,8 +191,8 @@ public class DashboardInstructorForm {
          * 
          * @return new DashboardInstructorForm(this)
          */
-        public DashboardInstructorForm build() {
-            return new DashboardInstructorForm(this);
+        public DashboardInstructor build() {
+            return new DashboardInstructor(this);
         }
 
         /*
