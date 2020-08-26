@@ -22,15 +22,20 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
+	<th:block sec:authorize="isAuthenticated()">
+		<h1>Hello, <th:block th:text="${name}"></th:block>!</h1>
+		<hr>
+	</th:block>
 		<!--Member-->
-		<div sec:authorize="hasAuthority('Member')">
+		<!--<div sec:authorize="hasAuthority('Member')">-->
+		<div th:if="${#authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''Instructor'')') and not#authorization.expression('hasAuthority(''PMO'')')}">
 		<div class="row h-100">
 			<div class="card mb-5 col-lg-4 bg-danger text-white mx-auto">
 				<div class="card-body text-center align-items-center d-flex justify-content-center">
 					<div style="overflow-x:auto;">
 						<h4>You have</h4>
 						<h2 th:text="${memberTrainingsToday}"></h2>
-						<h4>training/s today</h3>
+						<h4>training/s to attend today</h3>
 					</div>
 				</div>
 			</div>
@@ -49,7 +54,7 @@
 				<h3><i class="fa fa-exclamation-circle"></i> Enroll now!</h3>
 			</div>
 			<div class="card-body">
-				<div style="overflow-x:auto;">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
 					<table class="table table-bordered text-center">
 						<thead>
 							<th>Course Name</th>
@@ -72,7 +77,7 @@
 					
 					<div th:if="${#lists.isEmpty(memberCourses)}">
 						<div class="alert alert-dismissible alert-danger text-center" >
-  							<strong th:text="${Errors}"></strong> 
+  							<strong th:text="${error}"></strong> 
 						</div>
 					</div>
 				</div>
@@ -85,14 +90,14 @@
 		</div>
 		<!--Member end-->
 		<!--Instructor-->
-		<div sec:authorize="hasAuthority('Instructor')">
+		<div th:if="${#authorization.expression('hasAuthority(''Instructor'')') and not#authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''PMO'')')}">
 		<div class="row h-100">
 			<div class="card mb-5 col-lg-4 bg-danger text-white mx-auto">
 				<div class="card-body text-center align-items-center d-flex justify-content-center">
 					<div style="overflow-x:auto;">
 						<h4>You have</h4>
 						<h2 th:text="${instructorCoursesToday}"></h2>
-						<h4>training/s today</h3>
+						<h4>training/s to teach today</h3>
 					</div>
 				</div>
 			</div>
@@ -122,7 +127,7 @@
 					</table>
 					<div th:if="${#lists.isEmpty(instructorCourses)}">
 						<div class="alert alert-dismissible alert-danger text-center">
-  							<strong th:text="${Errors}"></strong> 
+  							<strong th:text="${error}"></strong> 
 						</div>
 					</div>
 				</div>
@@ -135,7 +140,7 @@
 		<!--Instructor end-->
 		
 		<!--PMO-->
-		<div sec:authorize="hasAuthority('PMO')">
+		<div th:if="${#authorization.expression('hasAuthority(''PMO'')') and not#authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''Instructor'')')}">
 		<div class="card mb-5">
 			<div class="card-header">
 				<h3><i class="fa fa-exclamation-triangle"></i> Courses to Cancel</h3>
@@ -167,7 +172,7 @@
 					</table>
 					<div th:if="${#lists.isEmpty(pmoCourses)}">
 						<div class="alert alert-dismissible alert-danger text-center">
-  							<strong th:text="${Errors}"></strong> 
+  							<strong th:text="${error}"></strong> 
 						</div>
 					</div>
 				</div>
@@ -179,7 +184,432 @@
 		</div>
 		</div>
 		<!--PMO end-->
-		
+		<!--Member/Instructor-->
+		<div th:if="${#authorization.expression('hasAuthority(''Member'')') and #authorization.expression('hasAuthority(''Instructor'')') and not#authorization.expression('hasAuthority(''PMO'')')}">
+		<div class="row h-100">
+			<div class="card mb-5 col-lg-3 bg-danger text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2 th:text="${memberTrainingsToday}"></h2>
+						<h4>training/s to attend today</h3>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-5 col-lg-3 bg-success text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have enrolled to</h4>
+						<h2 th:text="${memberActiveCourses}"></h2>
+						<h4>active course/s</h3>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-5 col-lg-3 bg-warning text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2 th:text="${instructorCoursesToday}"></h2>
+						<h4>training/s to teach today</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-circle"></i> Enroll now!</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Venue</th>
+						</thead>
+						<tbody>
+							<tr th:each="memberCourse : *{memberCourses}">
+								<td th:text="${memberCourse.getCourseName()}"></td>
+								<td th:text="${memberCourse.getInstructorName()}"></td>
+								<td th:text="${memberCourse.getStartDateTime()}"></td>
+								<td th:text="${memberCourse.getEndDateTime()}"></td>
+								<td th:text="${memberCourse.getVenueName()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(memberCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center" >
+  							<strong th:text="${errorMember1}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-list"></i> Your Courses</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Venue</th>
+						</thead>
+						<tbody>
+							<tr th:each="instructorCourse : *{instructorCourses}">
+								<td th:text="${instructorCourse.getCourseName()}"></td>
+								<td th:text="${instructorCourse.getStartDateTime()}"></td>
+								<td th:text="${instructorCourse.getEndDateTime()}"></td>
+								<td th:text="${instructorCourse.getVenueName()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(instructorCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+  							<strong th:text="${errorInstructor1}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/schedules/view}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!--Member/Instructor end-->
+		<!--Instructor/PMO-->
+		<div th:if="${#authorization.expression('hasAuthority(''Instructor'')') and #authorization.expression('hasAuthority(''PMO'')') and not#authorization.expression('hasAuthority(''Member'')')}">
+		<div class="row h-100">
+			<div class="card mb-5 col-lg-4 bg-danger text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2 th:text="${instructorCoursesToday}"></h2>
+						<h4>training/s to teach today</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-list"></i> Your Courses</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Venue</th>
+						</thead>
+						<tbody>
+							<tr th:each="instructorCourse : *{instructorCourses}">
+								<td th:text="${instructorCourse.getCourseName()}"></td>
+								<td th:text="${instructorCourse.getStartDateTime()}"></td>
+								<td th:text="${instructorCourse.getEndDateTime()}"></td>
+								<td th:text="${instructorCourse.getVenueName()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(instructorCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+  							<strong th:text="${errorInstructor2}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/schedules/view}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-triangle"></i> Courses to Cancel</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Min Required</th>
+							<th>Max Allowed</th>
+							<th>Enrolled</th>
+						</thead>
+						<tbody>
+							<tr th:each="pmoCourse : *{pmoCourses}">
+								<td th:text="${pmoCourse.getCourseName()}"></td>
+								<td th:text="${pmoCourse.getInstructorName()}"></td>
+								<td th:text="${pmoCourse.getStartDateTime()}"></td>
+								<td th:text="${pmoCourse.getEndDateTime()}"></td>
+								<td th:text="${pmoCourse.getMinRequired()}"></td>
+								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
+								<td th:text="${pmoCourse.getEnrolled()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(pmoCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+  							<strong th:text="${errorPmo2}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!--Instructor/PMO end-->
+		<!--Member/PMO-->
+		<div th:if="${#authorization.expression('hasAuthority(''PMO'')') and #authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''Instructor'')')}">
+		<div class="row h-100">
+			<div class="card mb-5 col-lg-4 bg-danger text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2 th:text="${memberTrainingsToday}"></h2>
+						<h4>training/s to attend today</h3>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-5 col-lg-4 bg-success text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have enrolled to</h4>
+						<h2 th:text="${memberActiveCourses}"></h2>
+						<h4>active course/s</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-circle"></i> Enroll now!</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Venue</th>
+						</thead>
+						<tbody>
+							<tr th:each="memberCourse : *{memberCourses}">
+								<td th:text="${memberCourse.getCourseName()}"></td>
+								<td th:text="${memberCourse.getInstructorName()}"></td>
+								<td th:text="${memberCourse.getStartDateTime()}"></td>
+								<td th:text="${memberCourse.getEndDateTime()}"></td>
+								<td th:text="${memberCourse.getVenueName()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(memberCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center" >
+  							<strong th:text="${errorMember2}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-triangle"></i> Courses to Cancel</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Min Required</th>
+							<th>Max Allowed</th>
+							<th>Enrolled</th>
+						</thead>
+						<tbody>
+							<tr th:each="pmoCourse : *{pmoCourses}">
+								<td th:text="${pmoCourse.getCourseName()}"></td>
+								<td th:text="${pmoCourse.getInstructorName()}"></td>
+								<td th:text="${pmoCourse.getStartDateTime()}"></td>
+								<td th:text="${pmoCourse.getEndDateTime()}"></td>
+								<td th:text="${pmoCourse.getMinRequired()}"></td>
+								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
+								<td th:text="${pmoCourse.getEnrolled()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(pmoCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+  							<strong th:text="${errorPmo1}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!--Member/PMO end-->
+		<!--Member/Instructor/PMO-->
+		<div th:if="${#authorization.expression('hasAuthority(''Member'')') and #authorization.expression('hasAuthority(''Instructor'')') and #authorization.expression('hasAuthority(''PMO'')')}">
+		<div class="row h-100">
+			<div class="card mb-5 col-lg-3 bg-danger text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2 th:text="${memberTrainingsToday}"></h2>
+						<h4>training/s to attend today</h3>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-5 col-lg-3 bg-success text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have enrolled to</h4>
+						<h2 th:text="${memberActiveCourses}"></h2>
+						<h4>active course/s</h3>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-5 col-lg-3 bg-warning text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2 th:text="${instructorCoursesToday}"></h2>
+						<h4>training/s to teach today</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-circle"></i> Enroll now!</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Venue</th>
+						</thead>
+						<tbody>
+							<tr th:each="memberCourse : *{memberCourses}">
+								<td th:text="${memberCourse.getCourseName()}"></td>
+								<td th:text="${memberCourse.getInstructorName()}"></td>
+								<td th:text="${memberCourse.getStartDateTime()}"></td>
+								<td th:text="${memberCourse.getEndDateTime()}"></td>
+								<td th:text="${memberCourse.getVenueName()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(memberCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center" >
+  							<strong th:text="${errorMember3}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-list"></i> Your Courses</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Venue</th>
+						</thead>
+						<tbody>
+							<tr th:each="instructorCourse : *{instructorCourses}">
+								<td th:text="${instructorCourse.getCourseName()}"></td>
+								<td th:text="${instructorCourse.getStartDateTime()}"></td>
+								<td th:text="${instructorCourse.getEndDateTime()}"></td>
+								<td th:text="${instructorCourse.getVenueName()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(instructorCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+  							<strong th:text="${errorInstructor3}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/schedules/view}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3><i class="fa fa-exclamation-triangle"></i> Courses to Cancel</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x:auto;display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Min Required</th>
+							<th>Max Allowed</th>
+							<th>Enrolled</th>
+						</thead>
+						<tbody>
+							<tr th:each="pmoCourse : *{pmoCourses}">
+								<td th:text="${pmoCourse.getCourseName()}"></td>
+								<td th:text="${pmoCourse.getInstructorName()}"></td>
+								<td th:text="${pmoCourse.getStartDateTime()}"></td>
+								<td th:text="${pmoCourse.getEndDateTime()}"></td>
+								<td th:text="${pmoCourse.getMinRequired()}"></td>
+								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
+								<td th:text="${pmoCourse.getEnrolled()}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${#lists.isEmpty(pmoCourses)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+  							<strong th:text="${errorPmo3}"></strong> 
+						</div>
+					</div>
+				</div>
+				<div class="float-right">
+						<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!--Member/Instructor/PMO end-->
 	</div>
 
 	<footer th:replace="fragments/general.html :: footer"></footer>
