@@ -283,24 +283,46 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public int countAllEnrolledCoursesByInstructorId(long id) {
-        String query = "SELECT COUNT(COURSE_ID) FROM COURSE_SCHEDULE WHERE INSTRUCTOR_ID = :id";
+        String query = "SELECT COUNT(COURSE_ID) "
+                     + "FROM COURSE_SCHEDULE "
+                     + "WHERE INSTRUCTOR_ID = :id";
         
-        SqlParameterSource courseSchedParameters = new MapSqlParameterSource().addValue("id", id);
-        return template.queryForObject(query, courseSchedParameters, Integer.class);
+        SqlParameterSource countParameters = new MapSqlParameterSource().addValue("id", id);
+        return template.queryForObject(query, countParameters, Integer.class);
     }
 
     @Override
     public List<TopLearnersForm> findMonthlyTopLearners() {
-        String query = "SELECT COUNT(*) AS PLACE, "
-                     + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, "
-                     + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME, "
-                     + " ";
-        return null;
+        String query = " SELECT "  
+                     + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                     + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, " 
+                     + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME " 
+                     + "FROM tsup.COURSE_ATTENDANCE AS CATTEN "  
+                     + "INNER JOIN tsup.EMPLOYEE AS E" 
+                     + " ON CATTEN.PARTICIPANT_ID = E.ID "  
+                     + "WHERE STATUS = 'P'" 
+                     + " AND EXTRACT(MONTH FROM LOG_IN_DATETIME) = EXTRACT(MONTH FROM NOW()) " 
+                     + "GROUP BY CATTEN.PARTICIPANT_ID, E.LAST_NAME, E.FIRST_NAME " 
+                     + "ORDER BY COUNT(CATTEN.PARTICIPANT_ID) DESC;";
+        List<TopLearnersForm> monthlyTopLearners = template.query(query, new TopLearnersRowMapper());
+        return monthlyTopLearners;
     }
 
     @Override
     public List<TopLearnersForm> findQuarterlyTopLearners() {
-        return null;
+        String query = " SELECT "  
+                + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, " 
+                + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME " 
+                + "FROM tsup.COURSE_ATTENDANCE AS CATTEN "  
+                + "INNER JOIN tsup.EMPLOYEE AS E" 
+                + " ON CATTEN.PARTICIPANT_ID = E.ID "  
+                + "WHERE STATUS = 'P'" 
+                + " AND EXTRACT(QUARTER FROM LOG_IN_DATETIME) = EXTRACT(QUARTER FROM NOW()) " 
+                + "GROUP BY CATTEN.PARTICIPANT_ID, E.LAST_NAME, E.FIRST_NAME " 
+                + "ORDER BY COUNT(CATTEN.PARTICIPANT_ID) DESC;";
+        List<TopLearnersForm> quarterlyTopLearners = template.query(query, new TopLearnersRowMapper());
+        return quarterlyTopLearners;
     }
 
     @Override
