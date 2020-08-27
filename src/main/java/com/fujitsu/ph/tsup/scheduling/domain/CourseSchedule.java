@@ -292,7 +292,7 @@ public class CourseSchedule {
         validateMinRequired(minRequired);
         validateCourseScheduleDetail(courseScheduleDetail);
             
-        this.status = 'A';  
+        this.status = 'O';  
         this.courseId = courseId;
         this.instructorId = instructorId;
         this.venueId = venueId;
@@ -590,8 +590,8 @@ public class CourseSchedule {
          * @param status
          */
         private void validateStatus(char status) {
-            if(status != 'A' && status != 'D' ) {
-                throw new IllegalArgumentException("Status should be A or D only");
+            if(status != 'O' && status != 'D') {
+                throw new IllegalArgumentException("Status should be 'O' and 'D' only");
         }
     }
     
@@ -609,7 +609,7 @@ public class CourseSchedule {
         }
     }
         private void validateTotalParticipants(int totalParticipants) {
-        	 if(venueName == null || venueName.isEmpty()) {
+        	 if(totalParticipants < 0 ) {
                  throw new IllegalArgumentException("Total Participants value should be numeric");
          }
     }

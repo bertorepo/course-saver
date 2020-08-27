@@ -344,14 +344,14 @@ public class ScheduleController {
      */
 	@GetMapping("courseSchedules/view")
     public String viewChangeCourseSchedule(
-            @Valid @ModelAttribute("scheduleView") CourseScheduleListForm courseScheduleListForm,
+            @Valid @ModelAttribute("changeSchedule") CourseScheduleListForm courseScheduleListForm,
             BindingResult bindingResult, Model model) {
 
         logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "scheduling/scheduleView";
+            return "scheduling/changeSchedule";
         }
 
         if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
@@ -360,13 +360,13 @@ public class ScheduleController {
         }
 
         if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())) {
-            model.addAttribute("scheduleView", courseScheduleListForm);
+            model.addAttribute("changeSchedule", courseScheduleListForm);
             model.addAttribute("error", "To Date should be greater than or equal to From Date");
             return "scheduling/viewSched";
         } 
         
         if (courseScheduleListForm.getToDateTime() == (courseScheduleListForm.getFromDateTime())) {
-            model.addAttribute("scheduleView", courseScheduleListForm);
+            model.addAttribute("changeSchedule", courseScheduleListForm);
             model.addAttribute("error", "From Datetime and To Datetime should not be exactly equal to each other");
             return "scheduling/viewSched";
         } 
@@ -405,7 +405,7 @@ public class ScheduleController {
         
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
      
-        model.addAttribute("scheduleView", courseScheduleListForm);
+        model.addAttribute("changeSchedule", courseScheduleListForm);
         return "scheduling/viewSched";
     } 
     

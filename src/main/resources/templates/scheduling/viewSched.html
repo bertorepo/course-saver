@@ -10,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>View Schedule</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -32,11 +32,11 @@
 	</style>
 </head>
 
-<body>
+<body onload="load()">
 	<div th:insert="fragments/general.html :: header"> </div>
 	
-	<div class="container mt-5" id="scheduleView" action="#" th:action="@{/schedules/courseSchedules/view}" th:object="${scheduleView}" method="get">
-		<form class="form-horizontal">
+	<div class="container mt-5">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedules/view}" th:object="${changeSchedule}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
 			<hr>
 			<div class="card">
@@ -44,11 +44,15 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">From Date</label>
 						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
+							<input class="form-control" type="date" id="fromDate" name="fromDate"/>
+                           <!-- This is used to compile the converted date and pass it to the controller -->
+                      		<input type="hidden" th:field="*{fromDateTime}" />
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
+							<input class="form-control" type="date" id="toDate" name="toDate"/>
+                            <!-- This is used to compile the converted date and pass it to the controller -->
+                         <input type="hidden" th:field="*{toDateTime}" />
 						</div>
 						
 					</div>
@@ -121,49 +125,13 @@
 						<th></th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
+				<tbody th:each="courseSchedules : *{courseSchedules}">
+                	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
+                        <td th:text="${courseSchedules.courseName}"></td>
+                        <td th:text="${courseSchedules.instructorName}"></td>
+                        <td th:text="${courseScheduleDetails.scheduledStartDateTime}"></td>
+                        <td th:text="${courseScheduleDetails.scheduledEndDateTime}"></td>
+                        <td th:text="${courseScheduleDetails.duration}"></td>
 						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
 						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
 					</tr>
@@ -414,6 +382,13 @@
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 <script>
+
+/*<![CDATA[*/
+var errorMessage = /*[[${error}]]*/ 'default';
+if(errorMessage == "To Date should be greater than or equal to From Date"){
+	$('#error1Modal').modal('show');
+}
+/*<![CDATA[*/
 	<!--Update-->
 	$('button[name="update"]').on('click', function() {
 		$('#updateModal').modal('show');
@@ -443,6 +418,50 @@
 		$('#error2Modal').modal('show');
 	});
 	<!--Message alert End-->
+	
+	function load(){
+		var fromDateTime = $("#fromDateTime").val();
+		var toDateTime = $("#toDateTime").val();
+		
+		var fromNewDate = fromDateTime.toString().slice(0,10);
+		var toNewDate = toDateTime.toString().slice(0,10);
+		
+		document.getElementById("fromDate").value = fromNewDate;
+		document.getElementById("toDate").value = toNewDate;
+	}
+
+	$("#fromDate").blur(function () {
+		var formDate = document.getElementById("fromDate").value;
+		var newDate = new Date(formDate);
+		var dateConcat = newDate.toISO().toString();
+		if (formDate == "") {
+			$("#fromDateTime").prop('value', null);
+		} else {
+			$("#fromDateTime").prop('value', dateConcat);
+		}
+	}); 
+	
+	$("#toDate").blur(function () {
+		var formDate = document.getElementById("toDate").value;
+		var newDate = new Date(formDate);
+		var dateConcat = newDate.toISO().toString(); 
+		if (formDate == "") {
+			$("#toDateTime").prop('value', null);
+		} else {
+			$("#toDateTime").prop('value', dateConcat);
+		}
+	}); 
+	//Format Date Inputs
+	Date.prototype.toISO = function() {
+		 return this.getUTCFullYear() +
+	        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+	        '-' + String(this.getUTCDate()).padStart(2, "0") +
+	        'T' + String(this.getUTCHours()).padStart(2, "0") +
+	        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
+	        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
+	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+	        'Z';
+	};
 </script>
 </body>
 
