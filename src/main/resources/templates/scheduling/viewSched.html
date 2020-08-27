@@ -38,30 +38,29 @@
 	<div class="container mt-5">
 		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedules/view}" th:object="${changeSchedule}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
-			<hr>
-			<div class="card">
-				<div class="card-body">
-					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">From Date</label>
-						<div class="col-lg-3">
-							<input class="form-control" type="date" id="fromDate" name="fromDate"/>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">From Date</label>
+                        <div class="col-lg-3">
+                           <input class="form-control" type="date" id="fromDate" name="fromDate"/>
                            <!-- This is used to compile the converted date and pass it to the controller -->
-                      		<input type="hidden" th:field="*{fromDateTime}" />
-						</div>
-						<label class="col-lg-2 col-form-label">To Date</label>
-						<div class="col-lg-3">
-							<input class="form-control" type="date" id="toDate" name="toDate"/>
+                           <input type="hidden" th:field="*{fromDateTime}" />
+                        </div>
+                        <label class="col-lg-2 col-form-label">To Date</label>
+                        <div class="col-lg-3">
+                            <input class="form-control" type="date" id="toDate" name="toDate"/>
                             <!-- This is used to compile the converted date and pass it to the controller -->
-                         <input type="hidden" th:field="*{toDateTime}" />
-						</div>
-						
-					</div>
-					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
-					</div>
-				</div>
-			</div>
-		</form>
+                            <input type="hidden" th:field="*{toDateTime}" />
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                    </div>
+                </div>
+            </div>
+             
 		<!--Error1 Modal-->
 		<div class="modal fade" id="error1Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
@@ -137,9 +136,10 @@
 					</tr>
 				</tbody>
 			</table>
-		</div>    	
+		</div> 
+		</form> 	
 		<!--Update Modal-->
-		<form class="form-horizontal">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedule/{courseScheduleId}/update}" th:object="${updateView}" method="get">
 			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
