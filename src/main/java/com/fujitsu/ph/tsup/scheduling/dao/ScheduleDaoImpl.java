@@ -285,7 +285,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
     public int countAllEnrolledCoursesByInstructorId(long id) {
         String query = "SELECT COUNT(COURSE_ID) "
                      + "FROM COURSE_SCHEDULE "
-                     + "WHERE INSTRUCTOR_ID = :id";
+                     + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "  
+                     + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
+                     + "WHERE INSTRUCTOR_ID = :id "
+                     + "AND NOW() BETWEEN CSCHEDDET.SCHEDULED_START_DATETIME AND CSCHEDDET.SCHEDULED_END_DATETIME;";
         
         SqlParameterSource countParameters = new MapSqlParameterSource().addValue("id", id);
         return template.queryForObject(query, countParameters, Integer.class);
@@ -297,8 +300,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
                      + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
                      + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, " 
                      + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME " 
-                     + "FROM tsup.COURSE_ATTENDANCE AS CATTEN "  
-                     + "INNER JOIN tsup.EMPLOYEE AS E" 
+                     + "FROM COURSE_ATTENDANCE AS CATTEN "  
+                     + "INNER JOIN EMPLOYEE AS E" 
                      + " ON CATTEN.PARTICIPANT_ID = E.ID "  
                      + "WHERE STATUS = 'P'" 
                      + " AND EXTRACT(MONTH FROM LOG_IN_DATETIME) = EXTRACT(MONTH FROM NOW()) " 

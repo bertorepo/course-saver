@@ -34,9 +34,9 @@ public class TopLearnersRowMapper implements RowMapper <TopLearnersForm>{
     @Override
     public TopLearnersForm mapRow(ResultSet tpl, int rowNum) throws SQLException {
         TopLearnersForm topLearnersForm = new TopLearnersForm();
-        
-        int place = tpl.getRow();
+   
         int id = tpl.getInt("PARTICIPANT_ID");
+        int place = tpl.getRow();
         String participantName = tpl.getString("PARTICIPANT_LAST_NAME") + ", " + tpl.getString("PARTICIPANT_FIRST_NAME");
         
         topLearnersForm.setId(id);
