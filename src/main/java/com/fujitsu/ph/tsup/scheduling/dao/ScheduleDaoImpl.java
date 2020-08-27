@@ -85,7 +85,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
                 + "(SELECT COUNT(PARTICIPANT_ID)"
                 + " FROM COURSE_PARTICIPANT"
-                + " WHERE COURSE_SCHEDULE_ID = CS.ID) AS TOTAL_PARTICIPANTS, "
+                + " WHERE COURSE_SCHEDULE_ID = CSCHED.ID) AS TOTAL_PARTICIPANTS, "
                 + "CSCHED.STATUS AS STATUS, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
@@ -291,7 +291,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public List<TopLearnersForm> findMonthlyTopLearners() {
-        
+        String query = "SELECT COUNT(*) AS PLACE, "
+                     + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, "
+                     + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME, "
+                     + " ";
         return null;
     }
 
@@ -315,7 +318,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
                 + "(SELECT COUNT(PARTICIPANT_ID)"
                 + " FROM COURSE_PARTICIPANT"
-                + " WHERE COURSE_SCHEDULE_ID = CS.ID) AS TOTAL_PARTICIPANTS, "
+                + " WHERE COURSE_SCHEDULE_ID = CSCHED.ID) AS TOTAL_PARTICIPANTS, "
                 + "CSCHED.STATUS AS STATUS, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
