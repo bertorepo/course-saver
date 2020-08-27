@@ -29,13 +29,13 @@
                     <div class="form-group row">
                         <label class="col-lg-2 col-form-label">From Date</label>
                         <div class="col-lg-3">
-                           <input type="date" id="fromDate" name="fromDate"/>
+                           <input class="form-control" type="date" id="fromDate" name="fromDate"/>
                            <!-- This is used to compile the converted date and pass it to the controller -->
                            <input type="hidden" th:field="*{fromDateTime}" />
                         </div>
                         <label class="col-lg-2 col-form-label">To Date</label>
                         <div class="col-lg-3">
-                            <input type="date" id="toDate" name="toDate"/>
+                            <input class="form-control" type="date" id="toDate" name="toDate"/>
                             <!-- This is used to compile the converted date and pass it to the controller -->
                             <input type="hidden" th:field="*{toDateTime}" />
                         </div>
@@ -45,8 +45,23 @@
                     </div>
                 </div>
             </div>
+            <div class="row h-100 mt-5">
+			<div class="card mb-2 col-lg-4 bg-danger text-white mx-auto">
+				<div class="card-body text-center align-items-center d-flex justify-content-center">
+					<div style="overflow-x:auto;">
+						<h4>You have</h4>
+						<h2>0</h2>
+						<h4>training/s to attend today</h3>
+					</div>
+				</div>
+			</div>
+			</div>
             <div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-            <h3><i class="fa fa-list"></i> My Courses</h3>
+            <p><h3 style="display:inline"><i class="fa fa-list"></i> My Courses</h3>
+            <div class="float-right mt-3">
+            	<a href="" name="topLearners" data-toggle="modal" data-target="#viewTopeLearnersModal"><i class="fa fa-search"></i> View Top Learners...</a>
+            </div></p>
+            
             <table id="data" class="table table-bordered text-center" style="width:100%">
                 <colgroup >
                     <col style="width:20%"/>
@@ -96,8 +111,140 @@
             </div>
         </div>  
     </div>
+    <!--Error Modal end-->
+    <!--View Top Learners Modal-->
+        <div class="modal fade" id="viewTopLearnersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg text-center">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Top Learners</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                        	<div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        		<h5><b>Quarter (Current Quarter)</b></h5>
+                            	<table class="table table-bordered">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th>
+                            				<th>Employee</th>
+                            			</tr>
+                            		</thead>
+                            		<tbody>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			
+                            		</tbody>
+                            	</table>
+                            </div>
+                            <div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        		<h5><b>Month (Current Month)</b></h5>
+                            	<table class="table table-bordered">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th>
+                            				<th>Employee</th>
+                            			</tr>
+                            		</thead>
+                            		<tbody>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            			<tr>
+                            				<td>1</td>
+                            				<td>Gene De Guzman</td>
+                            			</tr>
+                            		</tbody>
+                            	</table>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div> 
+    <!--View Top Learners Modal end-->
+    </div>
     <footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
+		<!--View Top Learners-->
+			$('a[name="topLearners"]').on('click', function() {
+				$('#viewTopLearnersModal').modal('show');
+	});
+		<!--View Top Learners end-->
 		/*<![CDATA[*/
 			var errorMessage = /*[[${error}]]*/ 'default';
 			if(errorMessage == "To Date should be greater than or equal to From Date"){
