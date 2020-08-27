@@ -292,7 +292,7 @@ public class CourseSchedule {
         validateMinRequired(minRequired);
         validateCourseScheduleDetail(courseScheduleDetail);
             
-        this.status = 'A';  
+        this.status = 'O';  
         this.courseId = courseId;
         this.instructorId = instructorId;
         this.venueId = venueId;
