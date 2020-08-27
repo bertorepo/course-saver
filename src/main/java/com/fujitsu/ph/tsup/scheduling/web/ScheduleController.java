@@ -438,7 +438,7 @@ public class ScheduleController {
 		courseScheduleUpdateForm.setId(courseSchedule.getId());
 		courseScheduleUpdateForm.setInstructors(instructorFormList);
 		courseScheduleUpdateForm.setVenues(venueFormList);
-
+		
 
 		return "scheduling/viewSched";
 

@@ -128,8 +128,8 @@
                 	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
                         <td th:text="${courseSchedules.courseName}"></td>
                         <td th:text="${courseSchedules.instructorName}"></td>
-                        <td th:text="${courseScheduleDetails.scheduledStartDateTime}"></td>
-                        <td th:text="${courseScheduleDetails.scheduledEndDateTime}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
                         <td th:text="${courseScheduleDetails.duration}"></td>
 						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
 						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
@@ -389,7 +389,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	$('#error1Modal').modal('show');
 }
 /*<![CDATA[*/
-	<!--Update-->
+	//Update
 	$('button[name="update"]').on('click', function() {
 		$('#updateModal').modal('show');
 	});
@@ -399,7 +399,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	$('input[name="updateConfirmation"]').on('click', function() {
 		$('#updateSuccessModal').modal('show');
 	});
-	<!--Delete-->
+	//Delete
 	$('button[name="delete"]').on('click', function() {
 		$('#deleteModal').modal('show');
 	});
@@ -409,7 +409,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	$('input[name="deleteConfirmation"]').on('click', function() {
 		$('#deleteSuccessModal').modal('show');
 	});
-	<!--Message alert-->
+	//Message alert
 	//add if statement for the success/fail messages
 	$('input[name="error1"]').on('click', function() {
 		$('#error1Modal').modal('show');
@@ -417,7 +417,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	$('input[name="error2"]').on('click', function() {
 		$('#error2Modal').modal('show');
 	});
-	<!--Message alert End-->
+	//Message alert End
 	
 	function load(){
 		var fromDateTime = $("#fromDateTime").val();
