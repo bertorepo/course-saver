@@ -21,7 +21,7 @@
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	
-	<div class="container mt-5">
+	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
 	<th:block sec:authorize="isAuthenticated()">
 		<h1>Hello, <th:block th:text="${name}"></th:block>!</h1>
 		<hr>
@@ -610,9 +610,9 @@
 		</div>
 		</div>
 		<!--Member/Instructor/PMO end-->
+	
+		<footer th:replace="fragments/general.html :: footer"></footer>
 	</div>
-
-	<footer th:replace="fragments/general.html :: footer"></footer>
 
 </body>
 
