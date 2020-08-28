@@ -1,5 +1,9 @@
 package com.fujitsu.ph.tsup.dashboard.web;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fujitsu.ph.auth.model.FpiUser;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardInstructor;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardMember;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmo;
 import com.fujitsu.ph.tsup.dashboard.service.DashboardInstructorService;
 import com.fujitsu.ph.tsup.dashboard.service.DashboardMemberService;
 import com.fujitsu.ph.tsup.dashboard.service.DashboardPmoService;
@@ -24,7 +31,8 @@ import com.fujitsu.ph.tsup.dashboard.service.DashboardPmoService;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) Jm.Deguzman   | New Creation
-//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Update
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
+//0.03 | 08/28/2020 |  WS) Jm.Deguzman   | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -76,20 +84,38 @@ public class DashboardController {
                 try {
                     model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
                     model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
-                    model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                    List<DashboardMember> setSortedDashboardMember =  
+                            dashboardMemberService.findCourses(employeeId).stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardMember> sortedDashboardMember = setSortedDashboardMember
+                            .stream().sorted((e1, e2) ->
+                    e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("memberCourses", sortedDashboardMember);
                 } catch(Exception e) {
                     model.addAttribute("error", e.getMessage());
                 }
             } else if (user.getRoles().contains("Instructor")) {
                 try {
                     model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
-                    model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
+                    List<DashboardInstructor> setSortedDashboardInstructor =  
+                            dashboardInstructorService.findCourses(employeeId).stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardInstructor> sortedDashboardInstructor = setSortedDashboardInstructor
+                            .stream().sorted((e1, e2) ->
+                    e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("instructorCourses", sortedDashboardInstructor);
                 } catch(Exception e) {
                     model.addAttribute("error", e.getMessage());
                 }
             } else if (user.getRoles().contains("PMO")) {
                 try {
-                    model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                    List<DashboardPmo> setSortedDashboardPmo =  
+                            dashboardPmoService.findCourses().stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardPmo> sortedDashboardPmo = setSortedDashboardPmo
+                            .stream().sorted((e1, e2) ->
+                            e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("pmoCourses", sortedDashboardPmo);
                 } catch(Exception e) {
                     model.addAttribute("error", e.getMessage());
                 }
@@ -99,13 +125,25 @@ public class DashboardController {
                 try {
                     model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
                     model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
-                    model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                    List<DashboardMember> setSortedDashboardMember =  
+                            dashboardMemberService.findCourses(employeeId).stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardMember> sortedDashboardMember = setSortedDashboardMember
+                            .stream().sorted((e1, e2) ->
+                    e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("memberCourses", sortedDashboardMember);
                 } catch(Exception e) {
                     model.addAttribute("errorMember1", e.getMessage());
                 }
                 try {
                 model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
-                model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
+                List<DashboardInstructor> setSortedDashboardInstructor =  
+                        dashboardInstructorService.findCourses(employeeId).stream()
+                        .collect(Collectors.toCollection(ArrayList::new));
+                List<DashboardInstructor> sortedDashboardInstructor = setSortedDashboardInstructor
+                        .stream().sorted((e1, e2) ->
+                        e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                model.addAttribute("instructorCourses", sortedDashboardInstructor);
                 } catch(Exception e) {
                     model.addAttribute("errorInstructor1", e.getMessage());
                 }
@@ -113,12 +151,24 @@ public class DashboardController {
             } else if (user.getRoles().contains("Instructor") && user.getRoles().contains("PMO")) {
                 try {
                     model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
-                    model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
+                    List<DashboardInstructor> setSortedDashboardInstructor =  
+                            dashboardInstructorService.findCourses(employeeId).stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardInstructor> sortedDashboardInstructor = setSortedDashboardInstructor
+                            .stream().sorted((e1, e2) ->
+                            e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("instructorCourses", sortedDashboardInstructor);
                 } catch(Exception e) {
                     model.addAttribute("errorInstructor2", e.getMessage());
                 }
                 try {
-                    model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                    List<DashboardPmo> setSortedDashboardPmo =  
+                            dashboardPmoService.findCourses().stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardPmo> sortedDashboardPmo = setSortedDashboardPmo
+                            .stream().sorted((e1, e2) ->
+                            e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("pmoCourses", sortedDashboardPmo);
                 } catch(Exception e) {
                     model.addAttribute("errorPmo1", e.getMessage());
                 }
@@ -126,12 +176,24 @@ public class DashboardController {
                 try {
                     model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
                     model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
-                    model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                    List<DashboardMember> setSortedDashboardMember =  
+                            dashboardMemberService.findCourses(employeeId).stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardMember> sortedDashboardMember = setSortedDashboardMember
+                            .stream().sorted((e1, e2) ->
+                    e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("memberCourses", sortedDashboardMember);
                 } catch(Exception e) {
                     model.addAttribute("errorMember2", e.getMessage());
                 }
                 try {
-                    model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                    List<DashboardPmo> setSortedDashboardPmo =  
+                            dashboardPmoService.findCourses().stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardPmo> sortedDashboardPmo = setSortedDashboardPmo
+                            .stream().sorted((e1, e2) ->
+                            e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("pmoCourses", sortedDashboardPmo);
                 } catch(Exception e) {
                     model.addAttribute("errorPmo2", e.getMessage());
                 }
@@ -141,18 +203,36 @@ public class DashboardController {
                 try {
                     model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
                     model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
-                    model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                    List<DashboardMember> setSortedDashboardMember =  
+                            dashboardMemberService.findCourses(employeeId).stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardMember> sortedDashboardMember = setSortedDashboardMember
+                            .stream().sorted((e1, e2) ->
+                    e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("memberCourses", sortedDashboardMember);
                 } catch(Exception e) {
                     model.addAttribute("errorMember3", e.getMessage());
                 }
                 try {
                     model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
-                    model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
+                    List<DashboardInstructor> setSortedDashboardInstructor =  
+                            dashboardInstructorService.findCourses(employeeId).stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardInstructor> sortedDashboardInstructor = setSortedDashboardInstructor
+                            .stream().sorted((e1, e2) ->
+                            e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("instructorCourses", sortedDashboardInstructor);
                 } catch(Exception e) {
                     model.addAttribute("errorInstructor3", e.getMessage());
                 }
                 try {
-                    model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                    List<DashboardPmo> setSortedDashboardPmo =  
+                            dashboardPmoService.findCourses().stream()
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    List<DashboardPmo> sortedDashboardPmo = setSortedDashboardPmo
+                            .stream().sorted((e1, e2) ->
+                            e1.getStartDateTime().compareTo(e2.getStartDateTime())).collect(Collectors.toList());
+                    model.addAttribute("pmoCourses", sortedDashboardPmo);
                 } catch(Exception e) {
                     model.addAttribute("errorPmo3", e.getMessage());
                 }

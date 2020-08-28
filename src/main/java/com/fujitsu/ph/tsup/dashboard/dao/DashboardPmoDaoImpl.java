@@ -21,7 +21,8 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmo;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/25/2020 |  WS) Jm.Deguzman   | New Creation
-//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Update
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
+//0.03 | 08/28/2020 |  WS) Jm.Deguzman   | Updated
 //==================================================================================================
 /**
 * <pre>
@@ -74,7 +75,7 @@ public class DashboardPmoDaoImpl implements DashboardPmoDao {
                 "CS.MAX_ALLOWED, " +
                 "CS.STATUS "  +
                 "HAVING COUNT(CP.ID) < CS.MIN_REQUIRED " +
-                "ORDER BY COUNT(CP.ID) DESC " +
+                "ORDER BY CSD.SCHEDULED_START_DATETIME ASC " +
                 "LIMIT 5";
  
         SqlParameterSource namedParameters = new MapSqlParameterSource()

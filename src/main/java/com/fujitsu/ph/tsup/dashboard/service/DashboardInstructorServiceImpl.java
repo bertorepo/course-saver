@@ -18,7 +18,7 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardInstructor;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/24/2020 |  WS) Jm.Deguzman   | New Creation
-//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Update
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
 //==================================================================================================
 /**
 * <pre>
