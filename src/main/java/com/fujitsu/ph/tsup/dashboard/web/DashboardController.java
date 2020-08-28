@@ -15,7 +15,7 @@ import com.fujitsu.ph.tsup.dashboard.service.DashboardMemberService;
 import com.fujitsu.ph.tsup.dashboard.service.DashboardPmoService;
 
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign Up
 //System Name  :Dashboard
 //Class Name   :DashboardController.java
@@ -24,6 +24,7 @@ import com.fujitsu.ph.tsup.dashboard.service.DashboardPmoService;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) Jm.Deguzman   | New Creation
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Update
 //==================================================================================================
 /**
  * <pre>
@@ -69,19 +70,93 @@ public class DashboardController {
         logger.debug("Model:{}", model);
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         employeeId = user.getId();
-        try {
+        model.addAttribute("name", user.getFirstName());
+        if(user.getRoles().size() == 1) {
             if (user.getRoles().contains("Member")) {
-                model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
-                model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
-                model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                try {
+                    model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
+                    model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
+                    model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                } catch(Exception e) {
+                    model.addAttribute("error", e.getMessage());
+                }
             } else if (user.getRoles().contains("Instructor")) {
+                try {
+                    model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
+                    model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
+                } catch(Exception e) {
+                    model.addAttribute("error", e.getMessage());
+                }
+            } else if (user.getRoles().contains("PMO")) {
+                try {
+                    model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                } catch(Exception e) {
+                    model.addAttribute("error", e.getMessage());
+                }
+            }
+        } else if(user.getRoles().size() == 2) {
+            if (user.getRoles().contains("Member") && user.getRoles().contains("Instructor")) {
+                try {
+                    model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
+                    model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
+                    model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                } catch(Exception e) {
+                    model.addAttribute("errorMember1", e.getMessage());
+                }
+                try {
                 model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
                 model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
-            } else if (user.getRoles().contains("PMO")) {
-                model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                } catch(Exception e) {
+                    model.addAttribute("errorInstructor1", e.getMessage());
+                }
+                
+            } else if (user.getRoles().contains("Instructor") && user.getRoles().contains("PMO")) {
+                try {
+                    model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
+                    model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
+                } catch(Exception e) {
+                    model.addAttribute("errorInstructor2", e.getMessage());
+                }
+                try {
+                    model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                } catch(Exception e) {
+                    model.addAttribute("errorPmo1", e.getMessage());
+                }
+            } else if (user.getRoles().contains("PMO") && user.getRoles().contains("Member")) {
+                try {
+                    model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
+                    model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
+                    model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                } catch(Exception e) {
+                    model.addAttribute("errorMember2", e.getMessage());
+                }
+                try {
+                    model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                } catch(Exception e) {
+                    model.addAttribute("errorPmo2", e.getMessage());
+                }
             }
-        } catch (Exception e) {
-            model.addAttribute("Errors", e.getMessage());
+        } else if(user.getRoles().size() == 3) {
+            if(user.getRoles().contains("Member") && user.getRoles().contains("Instructor") && user.getRoles().contains("PMO")) {
+                try {
+                    model.addAttribute("memberActiveCourses", dashboardMemberService.getActiveCourses(employeeId));
+                    model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
+                    model.addAttribute("memberCourses", dashboardMemberService.findCourses(employeeId));
+                } catch(Exception e) {
+                    model.addAttribute("errorMember3", e.getMessage());
+                }
+                try {
+                    model.addAttribute("instructorCoursesToday", dashboardInstructorService.getCoursesToday(employeeId));
+                    model.addAttribute("instructorCourses", dashboardInstructorService.findCourses(employeeId));
+                } catch(Exception e) {
+                    model.addAttribute("errorInstructor3", e.getMessage());
+                }
+                try {
+                    model.addAttribute("pmoCourses", dashboardPmoService.findCourses());
+                } catch(Exception e) {
+                    model.addAttribute("errorPmo3", e.getMessage());
+                }
+            }
         }
 
         return "dashboard";

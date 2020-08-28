@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 
 /**
  * <pre>
- * It is a JavaBean for Dashboard (Member)
+ * It is a JavaBean for Dashboard (Instructor)
  * In this class, variables and builder are defined that will be an instance when calling the data from the database
  * </pre>
  * 
@@ -14,17 +14,18 @@ import java.time.ZonedDateTime;
  */
 
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign up
 //System Name  :Dashboard
-//Class Name   :DashboardMemberForm.java
+//Class Name   :DashboardInstructorForm.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 | WS) Jm.Deguzman       | New Creation
+//0.01    | 06/24/2020 | WS) Jm.Deguzman       | New Creation
+//0.02    | 08/24/2020 | WS) Jm.Deguzman       | Update
 
-public class DashboardMemberForm {
+public class DashboardInstructor {
     /**
      * Employee ID
      */
@@ -33,10 +34,6 @@ public class DashboardMemberForm {
      * Course Name
      */
     private String courseName;
-    /**
-     * Instructor Name
-     */
-    private String instructorName;
     /**
      * Start Date Time
      */
@@ -54,22 +51,22 @@ public class DashboardMemberForm {
      */
     private String status;
 
-    protected DashboardMemberForm() {
+    protected DashboardInstructor() {
 
     }
 
     /**
      * <pre>
-     * Creates an instance of the DashboardMemberForm using the given builder class.
+     * Creates an instance of the DashboardInstructorForm using the given builder
+     * class.
      * 
      * <pre>
      * 
      * @param builder
      */
-    private DashboardMemberForm(Builder builder) {
+    private DashboardInstructor(Builder builder) {
         this.employeeId = builder.employeeId;
         this.courseName = builder.courseName;
-        this.instructorName = builder.instructorName;
         this.startDateTime = builder.startDateTime;
         this.endDateTime = builder.endDateTime;
         this.venueName = builder.venueName;
@@ -82,10 +79,6 @@ public class DashboardMemberForm {
 
     public String getCourseName() {
         return courseName;
-    }
-
-    public String getInstructorName() {
-        return instructorName;
     }
 
     public ZonedDateTime getStartDateTime() {
@@ -110,13 +103,9 @@ public class DashboardMemberForm {
          */
         private Long employeeId;
         /**
-         * Course Name
+         * Coruse Name
          */
         private String courseName;
-        /**
-         * Instructor Name
-         */
-        private String instructorName;
         /**
          * Start Date Time
          */
@@ -143,23 +132,21 @@ public class DashboardMemberForm {
          * <pre>
          * 
          * @param courseName
-         * @param instructorName
          * @param startDateTime
          * @param endDateTime
          * @param venueName
          * @param status
          */
-        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, ZonedDateTime endDateTime,
-                String venueName, String status) {
+
+        public Builder(String courseName, ZonedDateTime startDateTime, ZonedDateTime endDateTime, String venueName,
+                String status) {
             validateCourseName(courseName);
-            validateInstructorName(instructorName);
             validateStartDateTime(startDateTime);
             validateEndDateTime(endDateTime);
             validateVenueName(venueName);
             validateStatus(status);
 
             this.courseName = courseName;
-            this.instructorName = instructorName;
             this.startDateTime = startDateTime;
             this.endDateTime = endDateTime;
             this.venueName = venueName;
@@ -182,11 +169,10 @@ public class DashboardMemberForm {
          * @param employeeId
          * @param status
          */
-        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, ZonedDateTime endDateTime,
-                String venueName, Long employeeId, String status) {
+        public Builder(String courseName, ZonedDateTime startDateTime, ZonedDateTime endDateTime, String venueName,
+                Long employeeId, String status) {
             validateEmployeeId(employeeId);
             validateCourseName(courseName);
-            validateInstructorName(instructorName);
             validateStartDateTime(startDateTime);
             validateEndDateTime(endDateTime);
             validateVenueName(venueName);
@@ -194,7 +180,6 @@ public class DashboardMemberForm {
 
             this.employeeId = employeeId;
             this.courseName = courseName;
-            this.instructorName = instructorName;
             this.startDateTime = startDateTime;
             this.endDateTime = endDateTime;
             this.venueName = venueName;
@@ -202,12 +187,12 @@ public class DashboardMemberForm {
         }
 
         /**
-         * Creates a new instance of the DashboardMemberForm.
+         * Creates a new instance of the DashboardInstructorForm.
          * 
-         * @return new DashboardMemberForm(this)
+         * @return new DashboardInstructorForm(this)
          */
-        public DashboardMemberForm build() {
-            return new DashboardMemberForm(this);
+        public DashboardInstructor build() {
+            return new DashboardInstructor(this);
         }
 
         /*
@@ -233,17 +218,6 @@ public class DashboardMemberForm {
         }
 
         /*
-         * Validates Instructor Name
-         * 
-         * @param instructorName
-         */
-        private void validateInstructorName(String instructorName) {
-            if (instructorName == null || instructorName.isEmpty()) {
-                throw new IllegalArgumentException("Instructor Name should not be empty");
-            }
-        }
-
-        /*
          * Validates Start Date Time
          * 
          * @param startDateTime
@@ -255,7 +229,7 @@ public class DashboardMemberForm {
         }
 
         /*
-         * Validates EndDateTime
+         * Validates End Date Time
          * 
          * @param endDateTime
          */
@@ -291,13 +265,13 @@ public class DashboardMemberForm {
     /**
      * Overrides toString()
      * 
-     * @return String containing employeeId, courseName, instructorName,
-     *         startDateTime, endDateTime, venueName, status
+     * @return String containing employeeId, courseName, startDateTime, endDateTime,
+     *         venueName, status
      */
     @Override
     public String toString() {
-        return "DashboardMemberForm [employeeId=" + employeeId + ", courseName=" + courseName + ", instructorName= "
-                + instructorName + ",startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + ", venueName="
-                + venueName + ", status=" + status + "]";
+        return "DashboardInstructorForm [employeeId=" + employeeId + ", courseName=" + courseName + ", startDateTime="
+                + startDateTime + ", endDateTime=" + endDateTime + ", venueName=" + venueName + ", status=" + status
+                + "]";
     }
 }

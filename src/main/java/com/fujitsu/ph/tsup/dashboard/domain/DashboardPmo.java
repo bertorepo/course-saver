@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 
 /**
  * <pre>
- * It is a JavaBean for Dashboard (Instructor)
+ * It is a JavaBean for Dashboard (PMO)
  * In this class, variables and builder are defined that will be an instance when calling the data from the database
  * </pre>
  * 
@@ -14,25 +14,26 @@ import java.time.ZonedDateTime;
  */
 
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign up
 //System Name  :Dashboard
-//Class Name   :DashboardInstructorForm.java
+//Class Name   :DashboardPmoForm.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/24/2020 | WS) Jm.Deguzman       | New Creation
+//0.01    | 06/25/2020 | WS) Jm.Deguzman       | New Creation
+//0.02    | 08/24/2020 | WS) Jm.Deguzman       | Update
 
-public class DashboardInstructorForm {
-    /**
-     * Employee ID
-     */
-    private Long employeeId;
+public class DashboardPmo {
     /**
      * Course Name
      */
     private String courseName;
+    /**
+     * Instructor Name
+     */
+    private String instructorName;
     /**
      * Start Date Time
      */
@@ -42,42 +43,51 @@ public class DashboardInstructorForm {
      */
     private ZonedDateTime endDateTime;
     /**
-     * Venue Name
+     * Minimum Required Participants
      */
-    private String venueName;
+    private int minRequired;
     /**
-     * Course Status
+     * Maximum Allowed Participants
+     */
+    private int maxAllowed;
+    /**
+     * Total number of enrolled participants
+     */
+    private int enrolled;
+    /**
+     * Course status
      */
     private String status;
 
-    protected DashboardInstructorForm() {
+    protected DashboardPmo() {
 
     }
 
     /**
      * <pre>
-     * Creates an instance of the DashboardInstructorForm using the given builder
-     * class.
+     * Creates an instance of the DashboardPmoForm using the given builder class.
      * 
      * <pre>
      * 
      * @param builder
      */
-    private DashboardInstructorForm(Builder builder) {
-        this.employeeId = builder.employeeId;
+    private DashboardPmo(Builder builder) {
         this.courseName = builder.courseName;
+        this.instructorName = builder.instructorName;
         this.startDateTime = builder.startDateTime;
         this.endDateTime = builder.endDateTime;
-        this.venueName = builder.venueName;
+        this.minRequired = builder.minRequired;
+        this.maxAllowed = builder.maxAllowed;
+        this.enrolled = builder.enrolled;
         this.status = builder.status;
-    }
-
-    public Long getEmployeeId() {
-        return employeeId;
     }
 
     public String getCourseName() {
         return courseName;
+    }
+
+    public String getInstructorName() {
+        return instructorName;
     }
 
     public ZonedDateTime getStartDateTime() {
@@ -88,23 +98,39 @@ public class DashboardInstructorForm {
         return endDateTime;
     }
 
-    public String getVenueName() {
-        return venueName;
+    public int getMinRequired() {
+        return minRequired;
+    }
+
+    public int getMaxAllowed() {
+        return maxAllowed;
+    }
+
+    public int getEnrolled() {
+        return enrolled;
     }
 
     public String getStatus() {
         return status;
     }
 
+    /**
+     * <pre>
+     * The builder class of the course schedule. The builder is a public static
+     * member class of DashboardPmoForm
+     * 
+     * <pre>
+     * 
+     */
     public static class Builder {
         /**
-         * Employee ID
-         */
-        private Long employeeId;
-        /**
-         * Coruse Name
+         * Course Name
          */
         private String courseName;
+        /**
+         * Instructor Name
+         */
+        private String instructorName;
         /**
          * Start Date Time
          */
@@ -114,43 +140,21 @@ public class DashboardInstructorForm {
          */
         private ZonedDateTime endDateTime;
         /**
-         * Venue Name
+         * Minimum Required participants
          */
-        private String venueName;
+        private int minRequired;
         /**
-         * Course Status
+         * Maximum Allowed Participants
+         */
+        private int maxAllowed;
+        /**
+         * Total number of enrolled participants
+         */
+        private int enrolled;
+        /**
+         * Course status
          */
         private String status;
-
-        /**
-         * <pre>
-         * Creates a new instance of course schedule Builder. Validates and sets the
-         * argument into the Builder instance variables. This method is used for setting
-         * the data from the database.
-         * 
-         * <pre>
-         * 
-         * @param courseName
-         * @param startDateTime
-         * @param endDateTime
-         * @param venueName
-         * @param status
-         */
-
-        public Builder(String courseName, ZonedDateTime startDateTime, ZonedDateTime endDateTime, String venueName,
-                String status) {
-            validateCourseName(courseName);
-            validateStartDateTime(startDateTime);
-            validateEndDateTime(endDateTime);
-            validateVenueName(venueName);
-            validateStatus(status);
-
-            this.courseName = courseName;
-            this.startDateTime = startDateTime;
-            this.endDateTime = endDateTime;
-            this.venueName = venueName;
-            this.status = status;
-        }
 
         /**
          * <pre>
@@ -164,45 +168,38 @@ public class DashboardInstructorForm {
          * @param instructorName
          * @param startDateTime
          * @param endDateTime
-         * @param venueName
-         * @param employeeId
+         * @param minRequired
+         * @param maxAllowed
+         * @param enrolled
          * @param status
          */
-        public Builder(String courseName, ZonedDateTime startDateTime, ZonedDateTime endDateTime, String venueName,
-                Long employeeId, String status) {
-            validateEmployeeId(employeeId);
+        public Builder(String courseName, String instructorName, ZonedDateTime startDateTime, ZonedDateTime endDateTime,
+                int minRequired, int maxAllowed, int enrolled, String status) {
             validateCourseName(courseName);
+            validateInstructorName(instructorName);
             validateStartDateTime(startDateTime);
             validateEndDateTime(endDateTime);
-            validateVenueName(venueName);
+            validateMinRequired(minRequired);
+            validateMaxAllowed(maxAllowed);
             validateStatus(status);
 
-            this.employeeId = employeeId;
             this.courseName = courseName;
+            this.instructorName = instructorName;
             this.startDateTime = startDateTime;
             this.endDateTime = endDateTime;
-            this.venueName = venueName;
+            this.minRequired = minRequired;
+            this.maxAllowed = maxAllowed;
+            this.enrolled = enrolled;
             this.status = status;
         }
 
         /**
-         * Creates a new instance of the DashboardInstructorForm.
+         * Creates a new instance of the DashboardPmoForm.
          * 
-         * @return new DashboardInstructorForm(this)
+         * @return new DashboardPmoForm(this)
          */
-        public DashboardInstructorForm build() {
-            return new DashboardInstructorForm(this);
-        }
-
-        /*
-         * Validates Employee ID
-         * 
-         * @param employeeId
-         */
-        private void validateEmployeeId(Long employeeId) {
-            if (employeeId == null || employeeId == 0L) {
-                throw new IllegalArgumentException("Employee ID should not be empty");
-            }
+        public DashboardPmo build() {
+            return new DashboardPmo(this);
         }
 
         /*
@@ -213,6 +210,17 @@ public class DashboardInstructorForm {
         private void validateCourseName(String courseName) {
             if (courseName == null || courseName.isEmpty()) {
                 throw new IllegalArgumentException("Course Name should not be empty");
+            }
+        }
+
+        /*
+         * Validates Instructor Name
+         * 
+         * @param instructorName
+         */
+        private void validateInstructorName(String instructorName) {
+            if (instructorName == null || instructorName.isEmpty()) {
+                throw new IllegalArgumentException("Instructor Name should not be empty");
             }
         }
 
@@ -239,13 +247,24 @@ public class DashboardInstructorForm {
         }
 
         /*
-         * Validates Venue Name
+         * Validates Minimum Required
          * 
-         * @param venueName
+         * @param minRequired
          */
-        private void validateVenueName(String venueName) {
-            if (venueName == null || venueName.isEmpty()) {
-                throw new IllegalArgumentException("Venue Name should not be empty");
+        private void validateMinRequired(int minRequired) {
+            if (minRequired < 1) {
+                throw new IllegalArgumentException("Minimum required should not be zero");
+            }
+        }
+
+        /*
+         * Validates Maximum Allowed
+         * 
+         * @param maxAllowed
+         */
+        private void validateMaxAllowed(int maxAllowed) {
+            if (maxAllowed < 1) {
+                throw new IllegalArgumentException("Maximum allowed should not be zero");
             }
         }
 
@@ -264,13 +283,13 @@ public class DashboardInstructorForm {
     /**
      * Overrides toString()
      * 
-     * @return String containing employeeId, courseName, startDateTime, endDateTime,
-     *         venueName, status
+     * @return String containing courseName, instructorName, startDateTime,
+     *         endDateTime, minRequired, maxAllowed, enrolled, status
      */
     @Override
     public String toString() {
-        return "DashboardInstructorForm [employeeId=" + employeeId + ", courseName=" + courseName + ", startDateTime="
-                + startDateTime + ", endDateTime=" + endDateTime + ", venueName=" + venueName + ", status=" + status
-                + "]";
+        return "DashboardPmoForm [courseName=" + courseName + ", instructorName=" + instructorName + ", startDateTime="
+                + startDateTime + ", endDateTime=" + endDateTime + ", minRequired=" + minRequired + ", maxAllowed="
+                + maxAllowed + ", enrolled=" + enrolled + ", status=" + status + "]";
     }
 }
