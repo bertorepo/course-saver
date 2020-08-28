@@ -113,6 +113,6 @@ public interface ScheduleService {
      * @param long id
      * @return 
      */
-    void findCourseScheduleById(Long Id);
+    CourseSchedule findCourseScheduleById(Long Id);
     
 }

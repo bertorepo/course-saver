@@ -124,14 +124,21 @@
 						<th></th>
 					</tr>
 				</thead>
-				<tbody th:each="courseSchedules : *{courseSchedules}">
+				<tbody th:each="courseSchedules, stat : *{courseSchedules}">
                 	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
                         <td th:text="${courseSchedules.courseName}"></td>
                         <td th:text="${courseSchedules.instructorName}"></td>
                         <td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
                         <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
                         <td th:text="${courseScheduleDetails.duration}"></td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
+						<td class="sticky1">
+								<button th:value="${courseSchedules.id}" 
+										th:id="${'update' + (stat.index + 1)}"
+										onclick="showUpdate(this.id)"
+										class="btn btn-warning">
+											<i class="fa fa-pencil"></i> Update	
+								</button>
+						</td>
 						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
 					</tr>
 				</tbody>
@@ -390,9 +397,17 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 }
 /*<![CDATA[*/
 	//Update
-	$('button[name="update"]').on('click', function() {
+	
+	function showUpdate(id) {
+	
+		var updateValue = document.getElementById(id).value;
+		var Url = "/schedules/courseSchedule/"+ updateValue +"/update";
+		//document.location.href = Url;
 		$('#updateModal').modal('show');
-	});
+	}
+	/* $('button[name="update"]').on('click', function() {
+		$('#updateModal').modal('show');
+	}); */
 	$('input[name="update"]').on('click', function() {
 		$('#updateConfirmationModal').modal('show');
 	});

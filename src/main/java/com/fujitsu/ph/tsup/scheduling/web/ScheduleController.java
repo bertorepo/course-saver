@@ -439,7 +439,7 @@ public class ScheduleController {
 		courseScheduleUpdateForm.setInstructors(instructorFormList);
 		courseScheduleUpdateForm.setVenues(venueFormList);
 		
-
+		
 		return "scheduling/viewSched";
 
     }
