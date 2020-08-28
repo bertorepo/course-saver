@@ -94,7 +94,7 @@ public interface ScheduleService {
      * Counts the Enrolled Courses by Instructor Id
      * @param long id
      */
-    void countAllEnrolledCoursesTodayByInstructorId(Long Id);
+    void countAllEnrolledCoursesByInstructorId(Long id);
     
     /**
      * Find Monthly Top Learners
@@ -113,6 +113,6 @@ public interface ScheduleService {
      * @param long id
      * @return 
      */
-    CourseSchedule findCourseScheduleById(Long Id);
+    void findCourseScheduleById(Long Id);
     
 }
