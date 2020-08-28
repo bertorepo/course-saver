@@ -67,8 +67,8 @@
 							<tr th:each="memberCourse : *{memberCourses}">
 								<td th:text="${memberCourse.getCourseName()}"></td>
 								<td th:text="${memberCourse.getInstructorName()}"></td>
-								<td th:text="${memberCourse.getStartDateTime()}"></td>
-								<td th:text="${memberCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(memberCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(memberCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${memberCourse.getVenueName()}"></td>
 							</tr>
 							
@@ -118,8 +118,8 @@
 						<tbody>
 							<tr th:each="instructorCourse : *{instructorCourses}">
 								<td th:text="${instructorCourse.getCourseName()}"></td>
-								<td th:text="${instructorCourse.getStartDateTime()}"></td>
-								<td th:text="${instructorCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(instructorCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(instructorCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${instructorCourse.getVenueName()}"></td>
 							</tr>
 							
@@ -161,8 +161,8 @@
 							<tr th:each="pmoCourse : *{pmoCourses}">
 								<td th:text="${pmoCourse.getCourseName()}"></td>
 								<td th:text="${pmoCourse.getInstructorName()}"></td>
-								<td th:text="${pmoCourse.getStartDateTime()}"></td>
-								<td th:text="${pmoCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(pmoCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(pmoCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${pmoCourse.getMinRequired()}"></td>
 								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
 								<td th:text="${pmoCourse.getEnrolled()}"></td>
@@ -233,8 +233,8 @@
 							<tr th:each="memberCourse : *{memberCourses}">
 								<td th:text="${memberCourse.getCourseName()}"></td>
 								<td th:text="${memberCourse.getInstructorName()}"></td>
-								<td th:text="${memberCourse.getStartDateTime()}"></td>
-								<td th:text="${memberCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(memberCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(memberCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${memberCourse.getVenueName()}"></td>
 							</tr>
 						</tbody>
@@ -266,8 +266,8 @@
 						<tbody>
 							<tr th:each="instructorCourse : *{instructorCourses}">
 								<td th:text="${instructorCourse.getCourseName()}"></td>
-								<td th:text="${instructorCourse.getStartDateTime()}"></td>
-								<td th:text="${instructorCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(instructorCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(instructorCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${instructorCourse.getVenueName()}"></td>
 							</tr>
 						</tbody>
@@ -314,8 +314,8 @@
 						<tbody>
 							<tr th:each="instructorCourse : *{instructorCourses}">
 								<td th:text="${instructorCourse.getCourseName()}"></td>
-								<td th:text="${instructorCourse.getStartDateTime()}"></td>
-								<td th:text="${instructorCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(instructorCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(instructorCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${instructorCourse.getVenueName()}"></td>
 							</tr>
 						</tbody>
@@ -351,8 +351,8 @@
 							<tr th:each="pmoCourse : *{pmoCourses}">
 								<td th:text="${pmoCourse.getCourseName()}"></td>
 								<td th:text="${pmoCourse.getInstructorName()}"></td>
-								<td th:text="${pmoCourse.getStartDateTime()}"></td>
-								<td th:text="${pmoCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(pmoCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(pmoCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${pmoCourse.getMinRequired()}"></td>
 								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
 								<td th:text="${pmoCourse.getEnrolled()}"></td>
@@ -412,8 +412,8 @@
 							<tr th:each="memberCourse : *{memberCourses}">
 								<td th:text="${memberCourse.getCourseName()}"></td>
 								<td th:text="${memberCourse.getInstructorName()}"></td>
-								<td th:text="${memberCourse.getStartDateTime()}"></td>
-								<td th:text="${memberCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(memberCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(memberCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${memberCourse.getVenueName()}"></td>
 							</tr>
 						</tbody>
@@ -449,8 +449,8 @@
 							<tr th:each="pmoCourse : *{pmoCourses}">
 								<td th:text="${pmoCourse.getCourseName()}"></td>
 								<td th:text="${pmoCourse.getInstructorName()}"></td>
-								<td th:text="${pmoCourse.getStartDateTime()}"></td>
-								<td th:text="${pmoCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(pmoCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(pmoCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${pmoCourse.getMinRequired()}"></td>
 								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
 								<td th:text="${pmoCourse.getEnrolled()}"></td>
@@ -519,8 +519,8 @@
 							<tr th:each="memberCourse : *{memberCourses}">
 								<td th:text="${memberCourse.getCourseName()}"></td>
 								<td th:text="${memberCourse.getInstructorName()}"></td>
-								<td th:text="${memberCourse.getStartDateTime()}"></td>
-								<td th:text="${memberCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(memberCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(memberCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${memberCourse.getVenueName()}"></td>
 							</tr>
 						</tbody>
@@ -552,8 +552,8 @@
 						<tbody>
 							<tr th:each="instructorCourse : *{instructorCourses}">
 								<td th:text="${instructorCourse.getCourseName()}"></td>
-								<td th:text="${instructorCourse.getStartDateTime()}"></td>
-								<td th:text="${instructorCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(instructorCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(instructorCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${instructorCourse.getVenueName()}"></td>
 							</tr>
 						</tbody>
@@ -589,8 +589,8 @@
 							<tr th:each="pmoCourse : *{pmoCourses}">
 								<td th:text="${pmoCourse.getCourseName()}"></td>
 								<td th:text="${pmoCourse.getInstructorName()}"></td>
-								<td th:text="${pmoCourse.getStartDateTime()}"></td>
-								<td th:text="${pmoCourse.getEndDateTime()}"></td>
+								<td th:text="${#temporals.format(pmoCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:text="${#temporals.format(pmoCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${pmoCourse.getMinRequired()}"></td>
 								<td th:text="${pmoCourse.getMaxAllowed()}"></td>
 								<td th:text="${pmoCourse.getEnrolled()}"></td>
