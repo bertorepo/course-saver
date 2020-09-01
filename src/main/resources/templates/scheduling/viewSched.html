@@ -132,7 +132,8 @@
                         <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
                         <td th:text="${courseScheduleDetails.duration}"></td>
 						<td class="sticky1">
-								<button th:value="${courseSchedules.id}" 
+								<button type="button"
+										th:value="${courseSchedules.id}" 
 										th:id="${'update' + (stat.index + 1)}"
 										onclick="showUpdate(this.id)"
 										class="btn btn-warning">
