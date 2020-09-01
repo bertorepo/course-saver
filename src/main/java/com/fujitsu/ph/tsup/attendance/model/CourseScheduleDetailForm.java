@@ -9,19 +9,22 @@ import java.time.ZonedDateTime;
 //Class Name   :CourseScheduleDetailForm.java
 //
 //<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01 | 06/24/2020 |  WS) J. Iwarat   | New Creation
-//0.02 | 06/25/2020 |  WS) J. Iwarat   | Update
-//0.03 | 07/30/2020 |  WS) R. Ramos    | Update
+//Version | Date       | Updated By                             | Content
+//--------+------------+----------------------------------------+-----------------------------------
+//0.01    | 06/24/2020 |  WS) J. Iwarat                         | New Creation
+//0.02    | 06/25/2020 |  WS) J. Iwarat                         | Update
+//0.03    | 07/30/2020 |  WS) R. Ramos                          | Update
+//0.04    | 08/26/2020 |  WS) K.Abad WS) J.Iwarat WS) R.Ramos   | Update
 //==================================================================================================
 /**
  * <pre>
  * JavaBean for CourseScheduleDetailForm
+ * In this Class,Instances or fields of the List of the data for the initial setting of the data base 
  * 
  * <pre>
  * 
- * @version 0.03
+ * @version 0.04
+ * @author k.abad
  * @author j.iwarat
  * @author r.ramos
  */
@@ -43,10 +46,13 @@ public class CourseScheduleDetailForm {
     private ZonedDateTime scheduledEndDateTime;
 
     /**
-     * End Date and Time
+     * Duration
      */
     private float duration;
 
+    /**
+     * @return
+     */
     public Long getId() {
         return id;
     }
@@ -55,26 +61,44 @@ public class CourseScheduleDetailForm {
         this.id = id;
     }
 
+    /**
+     * @return
+     */
     public ZonedDateTime getScheduledStartDateTime() {
         return scheduledStartDateTime;
     }
 
+    /**
+     * @param scheduledStartDateTime
+     */
     public void setScheduledStartDateTime(ZonedDateTime scheduledStartDateTime) {
         this.scheduledStartDateTime = scheduledStartDateTime;
     }
 
+    /**
+     * @return
+     */
     public ZonedDateTime getScheduledEndDateTime() {
         return scheduledEndDateTime;
     }
 
+    /**
+     * @param scheduledEndDateTime
+     */
     public void setScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
         this.scheduledEndDateTime = scheduledEndDateTime;
     }
     
+    /**
+     * @return
+     */
     public float getDuration() {
         return duration;
     }
 
+    /**
+     * @param duration
+     */
     public void setDuration(float duration) {
         this.duration = duration;
     }

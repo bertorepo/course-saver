@@ -30,8 +30,9 @@ import org.springframework.stereotype.Service;
 //0.04    | 07/08/2020 | WS) J.iwarat                                            | Update
 //0.05    | 07/08/2020 | WS) R.ramos                                             | Update
 //0.06    | 07/09/2020 | WS) R.ramos                                             | Update
-//0.07    | 07/30/2020 | WS) R.Ramos, WS) K.Abad            					 | Update
-//0.07    | 08/05/2020 | WS) R.Ramos, WS) K.Abad            					 | Update
+//0.07    | 07/30/2020 | WS) K.Abad, WS) R.Ramos           					     | Update
+//0.08    | 08/05/2020 | WS) K.Abad, WS) R.Ramos             					 | Update
+//0.09    | 08/26/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                   | Update
 //==================================================================================================
 /**
  * <pre>
@@ -39,7 +40,7 @@ import org.springframework.stereotype.Service;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.08
+ * @version 0.09
  * @author k.abad
  * @author m.angara
  * @author j.iwarat
@@ -238,13 +239,31 @@ public class AttendanceServiceImpl implements AttendanceService {
 	 * 
 	 * @param courseAttendance
 	 */
-
 	@Override
-	public void attend(CourseAttendance courseAttendance) {
+	public void attendLogin(CourseAttendance courseAttendance) {
 		try {
+			System.out.println("service login");
 			attendanceDao.saveAttendance(courseAttendance);
-			if (courseAttendance.getId() == null)
-				;
+		} catch (DataAccessException e) {
+			throw new IllegalArgumentException("No records found.", e);
+		}
+	}
+
+	/**
+     * <pre>
+     * Finds the course schedule and the participants and those who are attending
+     * using the course schedule detail Id Call the attendanceDao.updateLogout
+     * using the courseAttendance
+     * 
+     * <pre>
+     * 
+     * @param courseAttendance
+     */
+	@Override
+	public void attendLogout(CourseAttendance courseAttendance) {
+		try {
+			System.out.println("service logout");
+			attendanceDao.updateLogout(courseAttendance);
 		} catch (DataAccessException e) {
 			throw new IllegalArgumentException("No records found.", e);
 		}

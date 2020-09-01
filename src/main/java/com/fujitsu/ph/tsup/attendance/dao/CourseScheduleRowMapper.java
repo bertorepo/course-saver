@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import java.util.HashSet;
@@ -27,6 +26,7 @@ import org.springframework.jdbc.core.RowMapper;
 //0.01    | 06/26/2020 | WS) J. Iwarat                                   | New Creation
 //0.02    | 07/07/2020 | WS) J. Iwarat                                   | Update
 //0.03    | 07/27/2020 | WS) K. Abad, WS) J. Iwarat, WS) R.Ramos         | Update
+//0.04    | 08/26/2020 | WS) K. Abad, WS) J. Iwarat, WS) R.Ramos         | Update
 //==================================================================================================
 /**
  * <pre>
@@ -34,7 +34,7 @@ import org.springframework.jdbc.core.RowMapper;
  * In this class, it maps the row of a resultset on a per row basis
  * </pre>
  * 
- * @version 0.03
+ * @version 0.04
  * @author k.abad
  * @author j.iwarat
  * @author r.ramos
@@ -62,11 +62,9 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
          * <pre> Set<CourseScheduleDetail> fields <pre>
          */
         ZonedDateTime scheduledStartDateTime = ZonedDateTime
-                .ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toLocalDateTime()
-                .toInstant(ZoneOffset.UTC),ZoneId.of("UTC")); 
+                .ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.systemDefault());
         ZonedDateTime scheduledEndDateTime = ZonedDateTime
-                .ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toLocalDateTime()
-                .toInstant(ZoneOffset.UTC),ZoneId.of("UTC"));
+                .ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(), ZoneId.systemDefault());
        
         CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(id, 
                 scheduledStartDateTime, scheduledEndDateTime).build();

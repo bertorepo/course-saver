@@ -2,17 +2,7 @@ package com.fujitsu.ph.tsup.attendance.model;
 
 import java.time.ZonedDateTime;
 
-/**
- * <pre>
- * It is a JavaBean for Change Status Course
- * In this class, Instances of the List Data required for the Initial setting of the database
- * </pre>
- * 
- * @version 0.01
- * @author h.francisco
- *
- */
-
+import org.springframework.format.annotation.DateTimeFormat;
 //==================================================================================================
 //$Id:PR03$
 //Project Name :Training Sign up
@@ -20,9 +10,23 @@ import java.time.ZonedDateTime;
 //Class Name   :ChangeStatusParticipant.java
 //
 //<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/22/2020 | WS) h.francisco       | New Creation
+//Version | Date       | Updated By                                   | Content
+//--------+------------+----------------------------------------------+----------------------------
+//0.01    | 06/22/2020 | WS) h.francisco                              | New Creation
+//0.02    | 08/26/2020 | WS) K.Abad WS) J.Iwarat WS) R.Ramos          | Update
+//==================================================================================================
+/**
+ * <pre>
+ * It is a JavaBean for Change Status Course
+ * In this class, Instances of the List Data required for the Initial setting of the database
+ * </pre>
+ * 
+ * @version 0.02
+ * @author k.abad
+ * @author h.francisco
+ * @author j.iwarat  
+ * @author r.ramos  
+ */
 public class ChangeStatusParticipant {
 
     /**
@@ -48,7 +52,19 @@ public class ChangeStatusParticipant {
     /**
      * Participant's Login Date and Time
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) 
     private ZonedDateTime loginDateTime;
+    
+    /**
+     * Participant's Logout Date and Time
+     */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) 
+    private ZonedDateTime logoutDateTime;
+    
+    /**
+     * Email
+     */
+    private String email;
 
     /**
      * @return
@@ -120,11 +136,34 @@ public class ChangeStatusParticipant {
         this.loginDateTime = loginDateTime;
     }
 
+    /**
+     * @return
+     */
+    public ZonedDateTime getLogoutDateTime() {
+        return logoutDateTime;
+    }
+
+    /**
+     * @param logoutDateTime
+     */
+    public void setLogoutDateTime(ZonedDateTime logoutDateTime) {
+        this.logoutDateTime = logoutDateTime;
+    }
+
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "ChangeStatusParticipant [courseAttendanceId = " + courseAttendanceId + ", participantId = "
                 + participantId + ", name = " + name + ", status = " + status + ", loginDateTime = " + loginDateTime
-                + "]";
+                + ", logoutDateTime = " + logoutDateTime + ", email = " + email + "]";
     }
 
 }
