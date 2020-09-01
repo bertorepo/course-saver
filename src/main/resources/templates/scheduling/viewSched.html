@@ -146,7 +146,12 @@
 		</div> 
 		</form> 	
 		<!--Update Modal-->
-		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedule/{courseScheduleId}/update}" th:object="${updateView}" method="get">
+		<form class="form-horizontal" 
+			  action="#" 
+			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/update}" 
+			  th:object="${updateView}" 
+			  th:unless="${#httpServletRequest.requestURI != '/schedules/courseSchedules/view'"
+			  method="get">
 			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
