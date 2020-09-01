@@ -276,4 +276,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     }
 
+	@Override
+	public CourseSchedule findCourseScheduleByCourseId(Long Id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

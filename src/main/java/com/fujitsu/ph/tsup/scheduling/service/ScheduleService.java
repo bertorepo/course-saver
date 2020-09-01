@@ -115,4 +115,6 @@ public interface ScheduleService {
      */
     CourseSchedule findCourseScheduleById(Long Id);
     
+    CourseSchedule findCourseScheduleByCourseId(Long Id);
+    
 }

@@ -51,6 +51,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.scheduling.model.ChangeStatusForm;
+import com.fujitsu.ph.tsup.scheduling.model.ChangeStatusScheduleForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDeleteForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
@@ -458,7 +460,7 @@ public class ScheduleController {
 		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
 	
 		courseScheduleDeleteForm.setId(courseSchedule.getId());
-         //to be changed when the update screen is released
+        
          return "scheduling/viewSched";
 
     }
@@ -524,8 +526,8 @@ public class ScheduleController {
 		form.setVenues(venueFormList);
 		form.setInstructors(instructorFormList);
 
-		//to be changed
-    	return "redirect:/schedules/new";
+
+    	return "redirect:/schedules/viewSched";
     
     }
     
@@ -546,9 +548,37 @@ public class ScheduleController {
 
 		scheduleService.deleteCourseScheduleById(id);
 
-		return "redirect:/schedules/new";
+		return "redirect:/schedules/viewSched";
 
     }
+	
+	/**
+     * <pre>
+     * Delete the course schedule. Method = DELETE
+     * 
+     * <pre>
+     * 
+     * @param path variable          Long id
+     * @param Model                  model
+     * @param RedirectAttributes     redirectAttributes
+     * @return courseScheduleListForm and view
+     */
+	 @GetMapping("/courseSchedule/{courseId}/changeStatus")
+		public String showChangeScheduleForm(@PathVariable("courseId") long id, Model model,
+			    ChangeStatusForm changeStatusForm) {
+
+		  Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+
+		 if(changeStatusForm.getId() != 0L) {
+			 CourseSchedule courseSchedule = scheduleService.findCourseScheduleByCourseId(id);
+			 changeStatusForm.setId(courseSchedule.getId());
+			 changeStatusForm.setCourses(courseFormList);
+		 }
+	        
+	         return "scheduling/viewSched";
+
+	    }
+	    
 	
 	
 }
