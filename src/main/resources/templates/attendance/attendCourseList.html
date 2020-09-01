@@ -29,33 +29,29 @@
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
-		<form class="form-horizontal" th:object="${attendCourseList}"
-			method="get">
+		<form class="form-horizontal" th:object="${attendCourseList}" method="get">
 			<h3>
 				<i class="fa fa-calendar-o"></i> Select Training Period
 			</h3>
 			<hr>
 			<div class="card">
 				<div class="card-body">
-					<div class="form-group row justify-content-center">
-						<label class="col-lg-2">From
-							Date</label>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label" style="margin-left: 5%">From Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control"
-								id="fromDateTime" required>
+							<input type="datetime-local" class="form-control" id="fromDateTime" required>
 							<div class="text-danger" id="fromDateTime_error"></div>
-							<input type="hidden" class="form-control" name="fromDateTime"
-								id="inputFromDateTime">
+							<input type="hidden" class="form-control" name="fromDateTime" id="inputFromDateTime">
 						</div>
-						<label class="col-lg-2">To Date</label>
+						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control" id="toDateTime"
-								required>
+							<input type="datetime-local" class="form-control" id="toDateTime" required>
 							<div class="text-danger" id="toDateTime_error"></div>
-							<input type="hidden" class="form-control" name="toDateTime"
-								id="inputToDateTime">
+							<input type="hidden" class="form-control" name="toDateTime" id="inputToDateTime">
 						</div>
-						<div class="float-right"></div>
+						<div class="float-right">
+							<input type="submit" class="btn btn-success" value="Submit" th:attr="onclick=|onSubmit()|">
+						</div>
 					</div>
 				</div>
 			</div>
