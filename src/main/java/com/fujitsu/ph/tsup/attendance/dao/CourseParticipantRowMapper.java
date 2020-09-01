@@ -5,7 +5,6 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -23,6 +22,7 @@ import org.springframework.jdbc.core.RowMapper;
 //0.02    | 06/30/2020 | WS) K.Abad                                      | Update
 //0.03    | 07/07/2020 | WS) K.Abad                                      | Update
 //0.04    | 07/27/2020 | WS) K. Abad, WS) J. Iwarat, WS) R.Ramos         | Update
+//0.05    | 08/26/2020 | WS) K. Abad, WS) J. Iwarat, WS) R.Ramos         | Update
 //==================================================================================================
 /**
  * <pre>
@@ -30,7 +30,7 @@ import org.springframework.jdbc.core.RowMapper;
  * In this class, it maps the row of a resultset on a per row basis
  * </pre>
  * 
- * @version 0.04
+ * @version 0.05
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
@@ -51,21 +51,20 @@ public class CourseParticipantRowMapper implements RowMapper<CourseParticipant> 
         String participantName = rs.getString("PARTICIPANT_LAST_NAME") +  
                 ", " + rs.getString("PARTICIPANT_FIRST_NAME");
         ZonedDateTime scheduledStartDateTime = ZonedDateTime
-                .ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toLocalDateTime()
-                .toInstant(ZoneOffset.UTC),ZoneId.of("UTC")); 
+                .ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.systemDefault());
         ZonedDateTime scheduledEndDateTime = ZonedDateTime
-                .ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toLocalDateTime()
-                .toInstant(ZoneOffset.UTC),ZoneId.of("UTC"));
+                .ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(), ZoneId.systemDefault());
         Float duration = rs.getFloat("DURATION");
         ZonedDateTime registrationDate = ZonedDateTime
-                .ofInstant(rs.getTimestamp("REGISTRATION_DATE").toLocalDateTime()
-                .toInstant(ZoneOffset.UTC),ZoneId.of("UTC"));
+                .ofInstant(rs.getTimestamp("REGISTRATION_DATE").toInstant(), ZoneId.systemDefault());
         String email = rs.getString("EMAIL");
         String employeeNumber = rs.getString("EMPLOYEE_NUMBER");
-        
+        Long departmentId = rs.getLong("DEPARTMENT_ID");
+        String departmentName = rs.getString("DEPARTMENT_NAME");
+
         CourseParticipant participants = new CourseParticipant.Builder(id, courseScheduleId, courseName, 
                 instructorName, venueName, participantId, participantName, scheduledStartDateTime, 
-                scheduledEndDateTime, duration, registrationDate, email, employeeNumber).build();
+                scheduledEndDateTime, duration, registrationDate, email, employeeNumber, departmentId, departmentName).build();
         return participants;
     }
 }

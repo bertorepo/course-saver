@@ -1,5 +1,6 @@
 package com.fujitsu.ph.tsup.attendance.model;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,11 +21,23 @@ import java.util.Set;
 //Class Name   : CourseParticipantsForm.java
 //
 //<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 | WS) h.francisco       | New Creation
-//0.02    | 06/29/2020 | WS) m.angara          | Updated
+//Version | Date       | Updated By                           | Content
+//--------+------------+--------------------------------------+-------------------------------------
+//0.01    | 06/23/2020 | WS) h.francisco                      | New Creation
+//0.02    | 06/29/2020 | WS) m.angara                         | Updated
+//0.03    | 08/26/2020 | WS) K.Abad WS) J.Iwarat WS) R.Ramos  | Update
 //==================================================================================================
+/**
+ * <pre>
+ * JavaBean for CourseParticipantsForm
+ * In this Class,Instances or fields of the List of the data for the initial setting of the data base 
+ * <pre>
+ * 
+ * @version 0.03
+ * @author k.abad
+ * @author j.iwarat  
+ * @author r.ramos                         
+ */
 public class CourseParticipantsForm {
 
     /**
@@ -80,7 +93,7 @@ public class CourseParticipantsForm {
     /**
      * Name of All Participants (LASTNAME, FIRSTNAME)
      */
-    private Set<AttendanceParticipantDetail> participants;
+    private List<AttendanceParticipantDetail> participants;
 
     /**
      * Set of Course Schedule Form
@@ -230,14 +243,14 @@ public class CourseParticipantsForm {
     /**
      * @return
      */
-    public Set<AttendanceParticipantDetail> getParticipants() {
+    public List<AttendanceParticipantDetail> getParticipants() {
         return participants;
     }
 
     /**
-     * @param participants
+     * @param maxAllowed
      */
-    public void setParticipants(Set<AttendanceParticipantDetail> participants) {
+    public void setParticipants(List<AttendanceParticipantDetail> participants) {
         this.participants = participants;
     }
 

@@ -14,24 +14,27 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 //Class Name   : AttendanceService.java
 //
 //<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/23/2020 | WS) K.Abad            | New Creation
-//0.02    | 07/30/2020 | WS) R.Ramos           | Update
+//Version | Date       | Updated By                                       | Content
+//--------+------------+--------------------------------------------------+-------------------------
+//0.01    | 06/23/2020 | WS) K.Abad                                       | New Creation
+//0.02    | 07/30/2020 | WS) R.Ramos                                      | Update
+//0.03    | 08/26/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos            | Update
 //==================================================================================================
 /**
  * <pre>
-* It is the interface of attendance service
-* In this interface, it consists of the method required for the initial setting of the database
+ * It is the interface of attendance service
+ * In this interface, it consists of the method required for the initial setting of the database
  * </pre>
  * 
- * @version 0.02
+ * @version 0.03
  * @author k.abad
+ * @author j.iwarat
  * @author r.ramos
  *
  */
 
 public interface AttendanceService {
+    
     /**
      * <pre>
      * Finds all scheduled courses based on the given date range
@@ -96,12 +99,21 @@ public interface AttendanceService {
 
     /**
      * <pre>
-     * Finds the course schedule and the participants and those who are attending using the course schedule detail Id
+     * log in for attend
      * </pre>
      * 
      * @param courseAttendance
      */
-    void attend(CourseAttendance courseAttendance);
+    void attendLogin(CourseAttendance courseAttendance);
+    
+    /**
+     * <pre>
+     * log out for attend
+     * </pre>
+     * 
+     * @param courseAttendance
+     */
+    void attendLogout(CourseAttendance courseAttendance);
     
     /**
      * <pre>
