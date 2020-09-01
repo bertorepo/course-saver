@@ -348,6 +348,8 @@ public class ScheduleController {
     public String viewChangeCourseSchedule(
             @Valid @ModelAttribute("changeSchedule") CourseScheduleListForm courseScheduleListForm,
             BindingResult bindingResult, Model model) {
+	    
+	    
 
         logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", bindingResult);
@@ -408,6 +410,7 @@ public class ScheduleController {
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
      
         model.addAttribute("changeSchedule", courseScheduleListForm);
+        model.addAttribute("updateView", new CourseScheduleUpdateForm());
         return "scheduling/viewSched";
     } 
     
@@ -424,10 +427,8 @@ public class ScheduleController {
      * @return courseScheduleUpdateForm and view
      */
 	@GetMapping("/courseSchedule/{courseScheduleId}/update")
-	public String showUpdateCourseScheduleForm(@PathVariable("courseId") long id, Model model,
-			BindingResult bindingResult, CourseScheduleUpdateForm courseScheduleUpdateForm) {
-
-		logger.debug("Result: {}", bindingResult);
+	public String showUpdateCourseScheduleForm(@PathVariable("courseScheduleId") Long id, Model model,
+			CourseScheduleUpdateForm courseScheduleUpdateForm, CourseScheduleListForm courseScheduleListForm) {
 
 		if (model.containsAttribute("updateView")) {
 			return "scheduling/viewSched";
@@ -436,12 +437,31 @@ public class ScheduleController {
 		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
 		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
 		Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
-
+		List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+		
+		for(CourseScheduleDetail detail : courseSchedule.getCourseScheduleDetail()) {
+		    CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+		    detailForm.setId(detail.getId());
+		    detailForm.setScheduledStartDateTime(detail.getScheduledStartDateTime());
+		    detailForm.setScheduledEndDateTime(detail.getScheduledEndDateTime());
+		    detailForm.setDuration(detail.getDuration());
+		    
+		    detailFormList.add(detailForm);
+		}
+		
 		courseScheduleUpdateForm.setId(courseSchedule.getId());
+		courseScheduleUpdateForm.setCourseName(courseSchedule.getCourseName());
+		courseScheduleUpdateForm.setCourseId(courseSchedule.getCourseId());
+		courseScheduleUpdateForm.setInstructorId(courseSchedule.getInstructorId());
+		courseScheduleUpdateForm.setVenueId(courseSchedule.getVenueId());
+		courseScheduleUpdateForm.setMinRequired(courseSchedule.getMinRequired());
+		courseScheduleUpdateForm.setMaxAllowed(courseSchedule.getMaxAllowed());
 		courseScheduleUpdateForm.setInstructors(instructorFormList);
 		courseScheduleUpdateForm.setVenues(venueFormList);
+		courseScheduleUpdateForm.setCourseScheduleDetailList(detailFormList);
 		
-		
+		model.addAttribute("updateView", courseScheduleUpdateForm);
+		model.addAttribute("changeSchedule", courseScheduleListForm);
 		return "scheduling/viewSched";
 
     }
