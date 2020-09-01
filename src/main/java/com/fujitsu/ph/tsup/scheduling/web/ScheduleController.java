@@ -80,7 +80,8 @@ public class ScheduleController {
      * Logger Factory
      */
     private static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
-
+    
+    private CourseScheduleListForm listForm = new CourseScheduleListForm();
     /**
      * <pre>
      * View all course schedule. Method = GET
@@ -411,6 +412,8 @@ public class ScheduleController {
      
         model.addAttribute("changeSchedule", courseScheduleListForm);
         model.addAttribute("updateView", new CourseScheduleUpdateForm());
+        
+        listForm = courseScheduleListForm;
         return "scheduling/viewSched";
     } 
     
@@ -428,7 +431,7 @@ public class ScheduleController {
      */
 	@GetMapping("/courseSchedule/{courseScheduleId}/update")
 	public String showUpdateCourseScheduleForm(@PathVariable("courseScheduleId") Long id, Model model,
-			CourseScheduleUpdateForm courseScheduleUpdateForm, CourseScheduleListForm courseScheduleListForm) {
+			CourseScheduleUpdateForm courseScheduleUpdateForm) {
 
 		if (model.containsAttribute("updateView")) {
 			return "scheduling/viewSched";
@@ -461,7 +464,7 @@ public class ScheduleController {
 		courseScheduleUpdateForm.setCourseScheduleDetailList(detailFormList);
 		
 		model.addAttribute("updateView", courseScheduleUpdateForm);
-		model.addAttribute("changeSchedule", courseScheduleListForm);
+		model.addAttribute("changeSchedule", listForm);
 		return "scheduling/viewSched";
 
     }

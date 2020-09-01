@@ -151,7 +151,7 @@
 			  action="#" 
 			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/update}" 
 			  th:object="${updateView}" 
-			  th:unless="${#httpServletRequest.requestURI != '/schedules/courseSchedules/view'}"
+			  th:if="${#httpServletRequest.requestURI != '/schedules/courseSchedules/view'}"
 			  method="get">
 			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -164,37 +164,48 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group row">
+								<div class="col-lg-6">
+									<input type="hidden" class="form-control" th:field="*{id}" id="courseScheduleId">
+								</div>
+							</div>
+							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-6">
-									<input type="text" class="form-control" id="" value="Understanding SS">
+									<input type="text" class="form-control" th:field="*{courseName}">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Instructor:</label>
 								<div class="col-lg-6">
-									<select class="form-control" id="">
-										<option></option>
-										<option></option>
+									<select class="form-control" th:field="*{instructorId}">
+										<option value=""></option>
+										<option th:each="instructors : *{instructors}" 
+												th:value="${instructors.id}"
+												th:text="${instructors.name}"
+												th:selected="${instructors.id} eq *{instructorId}"></option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Venue:</label>
 								<div class="col-lg-6">
-									<select class="form-control" id="">
-										<option></option>
-										<option></option>
+									<select class="form-control" th:field="*{venueId}">
+										<option value=""></option>
+										<option th:each="venues : *{venues}" 
+												th:value="${venues.id}"
+												th:text="${venues.name}"
+												th:selected="${venues.id} eq *{venueId}"></option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Participants:</label>
 								<div class="col-lg-2">
-									<input type="text" class="form-control" id="" >
+									<input type="text" class="form-control" th:field="*{minRequired}" >
 								</div>
 								<div class="col-lg-1 text-center">—</div>
 								<div class="col-lg-2">
-									<input type="text" class="form-control" id="" >
+									<input type="text" class="form-control" th:field="*{maxAllowed}" >
 								</div>
 							</div>	
 							<div class="form-group row">
@@ -212,14 +223,15 @@
 									<label class="col-lg-6 col-form-label">Start/End Time</label>
 								</td>
 							</tr>
-							<tr>
+							<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}">
 								<td>
 									<div class="form-group row">
 										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
+											<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}">
 										</div>
 										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
+											<input type="time" class="form-control" 
+													th:id="${'startTime' + (stat.index + 1)}">
 										</div>
 									</div>
 								</td>
@@ -227,10 +239,11 @@
 									<div class="form-group row">
 										<div class="col-lg-2"></div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
+											<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
+											<input type="time" class="form-control" 
+													th:id="${'endTime' + (stat.index + 1)}">
 										</div>
 									</div>
 								</td>
@@ -408,8 +421,8 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	
 		var updateValue = document.getElementById(id).value;
 		var Url = "/schedules/courseSchedule/"+ updateValue +"/update";
-		//document.location.href = Url;
-		$('#updateModal').modal('show');
+		document.location.href = Url;
+		
 	}
 	/* $('button[name="update"]').on('click', function() {
 		$('#updateModal').modal('show');
@@ -443,12 +456,17 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	function load(){
 		var fromDateTime = $("#fromDateTime").val();
 		var toDateTime = $("#toDateTime").val();
+		var courseScheduleId = $("#courseScheduleId").val();
 		
 		var fromNewDate = fromDateTime.toString().slice(0,10);
 		var toNewDate = toDateTime.toString().slice(0,10);
 		
 		document.getElementById("fromDate").value = fromNewDate;
 		document.getElementById("toDate").value = toNewDate;
+		
+		if(courseScheduleId !== ""){
+			$('#updateModal').modal('show');
+		}
 	}
 
 	$("#fromDate").blur(function () {
