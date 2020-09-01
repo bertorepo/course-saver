@@ -140,7 +140,15 @@
 											<i class="fa fa-pencil"></i> Update	
 								</button>
 						</td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
+						<td class="sticky2">
+								<button type="button"
+										th:value="${courseSchedules.courseId}" 
+										th:id="${'delete' + (stat.index + 1)}"
+										onclick="showDelete(this.id)"
+										class="btn btn-danger">
+										<i class="fa fa-trash-o"></i> Delete
+								</button>
+					</td>
 					</tr>
 				</tbody>
 			</table>
@@ -306,7 +314,12 @@
 		</form>
 		<!--Update Confirmation Success Modal End-->
 		<!--Delete Modal-->
-		<form class="form-horizontal">
+		<form class="form-horizontal"
+			  action="#" 
+			  th:action="@{/schedules/courseSchedule/{courseId}/delete}" 
+			  th:object="${deleteView}" 
+			  th:if="${#httpServletRequest.requestURI != '/schedules/courseSchedules/view'}"
+			  method="get">
 			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -318,13 +331,14 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group row">
+								<input type="hidden" class="form-control" th:field="*{id}" id="courseId">
 								<label class="col-lg-3 col-form-label">Course ID:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="" value="ABC-123">
 								</div>
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="Understanding SS">
+									<input type="text" class="form-control" th:field="*{courseName}">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -424,6 +438,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		document.location.href = Url;
 		
 	}
+	
 	/* $('button[name="update"]').on('click', function() {
 		$('#updateModal').modal('show');
 	}); */
@@ -434,9 +449,18 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		$('#updateSuccessModal').modal('show');
 	});
 	//Delete
-	$('button[name="delete"]').on('click', function() {
+	/* $('button[name="delete"]').on('click', function() {
 		$('#deleteModal').modal('show');
-	});
+	}); */
+	
+	function showDelete(id) {
+		
+		var deleteValue = document.getElementById(id).value;
+		var Url = "/schedules/courseSchedule/"+ deleteValue +"/delete";
+		document.location.href = Url;
+		
+	}
+	
 	$('input[name="delete"]').on('click', function() {
 		$('#deleteConfirmationModal').modal('show');
 	});
@@ -457,7 +481,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		var fromDateTime = $("#fromDateTime").val();
 		var toDateTime = $("#toDateTime").val();
 		var courseScheduleId = $("#courseScheduleId").val();
-		
+		var courseId =  $("#courseId").val();
 		var fromNewDate = fromDateTime.toString().slice(0,10);
 		var toNewDate = toDateTime.toString().slice(0,10);
 		
@@ -466,6 +490,12 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		
 		if(courseScheduleId !== ""){
 			$('#updateModal').modal('show');
+
+		}
+		
+		if(courseId !== ""){
+			$('#deleteModal').modal('show');
+
 		}
 	}
 

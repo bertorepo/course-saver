@@ -464,18 +464,17 @@ public class ScheduleController {
 		courseScheduleUpdateForm.setCourseScheduleDetailList(detailFormList);
 		
 		model.addAttribute("updateView", courseScheduleUpdateForm);
+		model.addAttribute("deleteView", new CourseScheduleDeleteForm());
 		model.addAttribute("changeSchedule", listForm);
 		return "scheduling/viewSched";
 
     }
     
     
-    @GetMapping("/courseSchedule/{courseScheduleId}/delete")
+    @GetMapping("/courseSchedule/{courseId}/delete")
 	public String showDeleteCourseScheduleForm(@PathVariable("courseId") long id, Model model,
-			BindingResult bindingResult, CourseScheduleDeleteForm courseScheduleDeleteForm) {
+		 CourseScheduleDeleteForm courseScheduleDeleteForm) {
     
-		logger.debug("Result: {}", bindingResult);
-
 		if (model.containsAttribute("deleteView")) {
 			return "scheduling/viewSched";
 		}
@@ -484,6 +483,9 @@ public class ScheduleController {
 	
 		courseScheduleDeleteForm.setId(courseSchedule.getId());
         
+		model.addAttribute("deleteView", courseScheduleDeleteForm);
+		model.addAttribute("updateView", new CourseScheduleUpdateForm());
+		model.addAttribute("changeSchedule", listForm);
          return "scheduling/viewSched";
 
     }
@@ -566,7 +568,7 @@ public class ScheduleController {
      * @return courseScheduleListForm and view
      */
 	@DeleteMapping("/courseSchedules/{courseScheduleId}/delete")
-	public String submitDeleteCourseScheduleForm(@PathVariable("courseId") long id, Model model,
+	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") long id, Model model,
 			RedirectAttributes redirectAttributes) {
 
 		scheduleService.deleteCourseScheduleById(id);
