@@ -173,18 +173,18 @@
 						<div class="modal-body">
 							<div class="form-group row">
 								<div class="col-lg-6">
-									<input type="hidden" class="form-control" th:field="*{id}" id="courseScheduleId">
+									<input type="hidden" class="form-control" th:field="*{id}" id="updateCourseScheduleId">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Name:</label>
-								<div class="col-lg-6">
+								<div class="col-lg-7">
 									<input type="text" class="form-control" th:field="*{courseName}">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Instructor:</label>
-								<div class="col-lg-6">
+								<div class="col-lg-7">
 									<select class="form-control" th:field="*{instructorId}">
 										<option value=""></option>
 										<option th:each="instructors : *{instructors}" 
@@ -196,7 +196,7 @@
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Venue:</label>
-								<div class="col-lg-6">
+								<div class="col-lg-7">
 									<select class="form-control" th:field="*{venueId}">
 										<option value=""></option>
 										<option th:each="venues : *{venues}" 
@@ -208,58 +208,70 @@
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Participants:</label>
-								<div class="col-lg-2">
+								<div class="col-lg-3">
 									<input type="text" class="form-control" th:field="*{minRequired}" >
 								</div>
 								<div class="col-lg-1 text-center">—</div>
-								<div class="col-lg-2">
+								<div class="col-lg-3">
 									<input type="text" class="form-control" th:field="*{maxAllowed}" >
 								</div>
 							</div>	
 							<div class="form-group row">
-								<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap">
-						<table class="table table-responsive table-borderless text-center"  >
-							<colgroup >
-								<col style="width:55%"/>
-								<col style="width:55%"/>
-							</colgroup>
-							<tr>
-								<td>
-									<label class="col-lg-6 col-form-label">Start/End Date</label>
-								</td>
-								<td>
-									<label class="col-lg-6 col-form-label">Start/End Time</label>
-								</td>
-							</tr>
-							<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}">
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}">
-										</div>
-										<div class="col-lg-6">
-											<input type="time" class="form-control" 
-													th:id="${'startTime' + (stat.index + 1)}">
-										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
-										</div>
-										<div class="col-lg-4">
-											<input type="time" class="form-control" 
-													th:id="${'endTime' + (stat.index + 1)}">
-										</div>
-									</div>
-								</td>
-							</tr>
-							
-						</table>
-					</div>
-							</div>
+								<div class="col-lg-12" style="overflow-x:hidden;display: block; white-space: nowrap">
+									<table class="table table-responsive table-borderless text-center overflow-hidden"  >
+										<colgroup >
+											<col style="width:45%"/>
+											<col style="width:10%"/>
+											<col style="width:45%"/>
+										</colgroup>
+										<tr>
+											<td>
+												<label class="col-lg-6 col-form-label">Start/End Date</label>
+											</td>
+											<td></td>
+											<td>
+												<label class="col-lg-6 col-form-label">Start/End Time</label>
+											</td>
+										</tr>
+										<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}">
+											<td>
+												<div class="form-group row">
+													<div class="col-lg-6">
+														<input type="date" class="form-control" 
+															   th:id="${'startDate' + (stat.index + 1)}">
+													</div>
+													<div class="col-lg-6">
+														<input type="time" class="form-control" 
+																th:id="${'startTime' + (stat.index + 1)}">
+													</div>
+												</div>
+											</td>
+											<td class="d-print-none">
+												<input type="hidden" name="startDateTime" 
+												 th:id="${'startDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledStartDateTime}">
+												<input type="hidden" name="endDateTime" 
+												 th:id="${'endDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledEndDateTime}">
+												<input type="hidden" th:id="${'index' + (stat.index + 1)}"
+												 th:value="${stat.index}">
+											</td>
+											<td>
+												<div class="form-group row">
+													<div class="col-lg-6">
+														<input type="date" class="form-control" 
+															   th:id="${'endDate' + (stat.index + 1)}" >
+													</div>
+													<div class="col-lg-6">
+														<input type="time" class="form-control" 
+																th:id="${'endTime' + (stat.index + 1)}">
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>	
 						</div>
 						<div class="modal-footer">
 							<input type="submit" name="update" class="btn btn-success" data-dismiss="modal" value="Update Schedule">
@@ -331,7 +343,7 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group row">
-								<input type="hidden" class="form-control" th:field="*{id}" id="courseId">
+								<input type="hidden" class="form-control" th:field="*{id}" id="deleteCourseScheduleId">
 								<label class="col-lg-3 col-form-label">Course ID:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" th:field="*{courseId}" disabled>
@@ -480,23 +492,38 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	function load(){
 		var fromDateTime = $("#fromDateTime").val();
 		var toDateTime = $("#toDateTime").val();
-		var courseScheduleId = $("#courseScheduleId").val();
-		var courseId =  $("#courseId").val();
+		var updateCourseScheduleId = $("#updateCourseScheduleId").val();
+		var deleteCourseScheduleId =  $("#deleteCourseScheduleId").val();
 		var fromNewDate = fromDateTime.toString().slice(0,10);
 		var toNewDate = toDateTime.toString().slice(0,10);
 		
 		document.getElementById("fromDate").value = fromNewDate;
 		document.getElementById("toDate").value = toNewDate;
 		
-		if(courseScheduleId !== ""){
+		if(updateCourseScheduleId !== ""){
 			$('#updateModal').modal('show');
 
 		}
 		
-		if(courseId !== ""){
+		if(deleteCourseScheduleId !== ""){
 			$('#deleteModal').modal('show');
 
 		}
+		    
+	    var startDateTime = document.getElementById("startDateTime1").value;
+	    var endDateTime = document.getElementById("endDateTime1").value;
+	    
+	    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+	    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+	    
+	    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+	    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+	    
+	    document.getElementById("startDate1").value = rowStartDate;
+	    document.getElementById("endDate1").value = rowEndDate;
+	    
+	    document.getElementById("startTime1").value = rowStartTime;
+	    document.getElementById("endTime1").value = rowEndTime;
 	}
 
 	$("#fromDate").blur(function () {
