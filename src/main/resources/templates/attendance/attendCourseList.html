@@ -29,7 +29,8 @@
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
-		<form class="form-horizontal" th:object="${attendCourseList}" method="get">
+		<form class="form-horizontal" th:object="${attendCourseList}"
+			method="get">
 			<h3>
 				<i class="fa fa-calendar-o"></i> Select Training Period
 			</h3>
@@ -37,26 +38,31 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row">
-						<label class="col-lg-2 col-form-label" style="margin-left: 5%">From Date</label>
+						<label class="col-lg-2 col-form-label" style="margin-left: 5%">From
+							Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control" id="fromDateTime" required>
+							<input type="datetime-local" class="form-control"
+								id="fromDateTime" required>
 							<div class="text-danger" id="fromDateTime_error"></div>
-							<input type="hidden" class="form-control" name="fromDateTime" id="inputFromDateTime">
+							<input type="hidden" class="form-control" name="fromDateTime"
+								id="inputFromDateTime">
 						</div>
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control" id="toDateTime" required>
+							<input type="datetime-local" class="form-control" id="toDateTime"
+								required>
 							<div class="text-danger" id="toDateTime_error"></div>
-							<input type="hidden" class="form-control" name="toDateTime" id="inputToDateTime">
+							<input type="hidden" class="form-control" name="toDateTime"
+								id="inputToDateTime">
 						</div>
 						<div class="float-right">
-							<input type="submit" class="btn btn-success" value="Submit" th:attr="onclick=|onSubmit()|">
+							<input type="submit" class="btn btn-success" value="Submit"
+								th:attr="onclick=|onSubmit()|">
 						</div>
 					</div>
 				</div>
 			</div>
 		</form>
-
 		<!--Error Modal-->
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -78,7 +84,6 @@
 			</div>
 		</div>
 		<!--Error Modal End-->
-
 		<div style="overflow-x: auto; display: block; white-space: nowrap"
 			class="mt-5">
 			<h3>
@@ -100,7 +105,7 @@
 						<th>Instructor</th>
 						<th>Start Date/Time</th>
 						<th>End Date/Time</th>
-						<th>Duration (In HRS)</th>
+						<th>Duration</th>
 					</tr>
 				</thead>
 				<tbody
@@ -115,9 +120,9 @@
 						<td th:text="${setCourseScheduleForm.getCourseName()}"></td>
 						<td th:text="${setCourseScheduleForm.getInstructorName()}"></td>
 						<td
-							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledStartDateTime(), 'yyyy-MM-dd - HH:mm:ss a')}"></td>
+							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledStartDateTime(), 'yyyy-MM-dd HH:mm:ss')}"></td>
 						<td
-							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledEndDateTime(), 'yyyy-MM-dd - HH:mm:ss a')}"></td>
+							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledEndDateTime(), 'yyyy-MM-dd HH:mm:ss')}"></td>
 						<td th:text="${courseScheduleDetailForm.getDuration()}"></td>
 					</tr>
 				</tbody>
@@ -129,105 +134,28 @@
 			</div>
 		</div>
 	</div>
-
-
-
 	<footer th:replace="fragments/general.html :: footer"></footer>
-
 	<script th:inline="javascript">
-		//FromDateTime is Higher that ToDateTime
-		/*<![CDATA[*/
-		var errorMessage = /*[[${error}]]*/'default';
-		if (errorMessage == "To Date should be greater than or equal to From Date") {
-			document.getElementById("toDateTime_error").innerHTML = errorMessage;
-		}
-		/*]]>*/
-
-		//SUBMIT FROM/TO DATE TIME
-		function onSubmit() {
-			var toAppend = ":00.000+08:00[Asia/Singapore]";
-			var fromDateTime = document.getElementById('fromDateTime').value;
-			var toDateTime = document.getElementById('toDateTime').value;
-			var inpFromDateTime = document.getElementById('inputFromDateTime');
-			var inpToDateTime = document.getElementById('inputToDateTime');
-			var finalFromDateTime = fromDateTime + toAppend;
-			var finalToDateTime = toDateTime + toAppend;
-
-			var fromDateTimeEmpty = inpFromDateTime;
-			var toDateTimeEmpty = inpToDateTime;
-
-			if (fromDateTimeEmpty == null) {
-				fromDateTimeError = "Please Select Date and Time";
-				document.getElementById("fromDateTime_error").innerHTML = fromDateTimeError;
-			}
-			if (toDateTimeEmpty == null) {
-				toDateTimeError = "Please Select Date and Time";
-				document.getElementById("toDateTime_error").innerHTML = toDateTimeError;
-			}
-			fromDateTimeEmpty.value = finalFromDateTime;
-			toDateTimeEmpty.value = finalToDateTime;
-		}
-
-		function onValidation() {
-
-			var fromDateTimeEmpty = $("fromDateTime").val();
-			var toDateTimeEmpty = $("toDateTime").val();
-
-			if (fromDateTimeEmpty != null || toDateTimeEmpty != null) {
-				onSubmit();
-			}
-			if (fromDateTimeEmpty == null) {
-				fromDateTimeError = "Please Select Date and Time";
-				document.getElementById("fromDateTime_error").innerHTML = fromDateTimeError;
-			}
-			if (toDateTimeEmpty == null) {
-				toDateTimeError = "Please Select Date and Time";
-				document.getElementById("toDateTime_error").innerHTML = toDateTimeError;
-			}
-
-		}
-
-		//SUBMIT FROM/TO DATE TIME END
-		//SHOW ZONEDDATETIME IN TIMEDATE-LOCAL
-		/*<![CDATA[*/
-		var attendCourseList = /*[[${attendCourseList}]]*/'default';
-		var finalFromDateTime = attendCourseList.fromDateTime.slice(0, 16);
-		var finalToDateTime = attendCourseList.toDateTime.slice(0, 16);
-		var inputFromDateTime = document.getElementById('fromDateTime');
-		var inputToDateTime = document.getElementById('toDateTime');
-		inputFromDateTime.value = finalFromDateTime;
-		inputToDateTime.value = finalToDateTime;
-		/*]]>*/
-
-		init();
-		function init() {
-			addRowHandlers('data');
-		}
-		function addRowHandlers(tableId) {
-			if (document.getElementById(tableId) != null) {
-				var table = document.getElementById(tableId);
-				var rows = table.getElementsByTagName('tr');
-				var id = '';
-				var courseName = '';
-				var instructorName = '';
-				var scheduledStartDateTime = '';
-				var scheduledEndDateTime = '';
-				var duration = '';
-				for (var i = 1; i < rows.length; i++) {
-					rows[i].i = i;
-					rows[i].onclick = function() {
-						id = table.rows[this.i].cells[0].innerHTML;
-						courseName = table.rows[this.i].cells[1].innerHTML;
-						instructorName = table.rows[this.i].cells[2].innerHTML;
-						scheduledStartDateTime = table.rows[this.i].cells[3].innerHTML;
-						scheduledEndDateTime = table.rows[this.i].cells[4].innerHTML;
-						duration = table.rows[this.i].cells[5].innerHTML;
-						var callUrl = '/attendance/signin/' + id;
-						document.location.href = callUrl;
-					};
-				}
-			}
-		}
-	</script>
+        //FromDateTime is Higher that ToDateTime
+        /*<![CDATA[*/
+        var errorMessage = /*[[${error}]]*/'default';
+        if (errorMessage == "To Date should be greater than or equal to From Date") {
+            document.getElementById("toDateTime_error").innerHTML = errorMessage;
+            //         $('#errorModal').modal('show');
+        }
+        /*]]>*/
+        //SUBMIT FROM/TO DATE TIME END
+        //SHOW ZONEDDATETIME IN TIMEDATE-LOCAL
+        /*<![CDATA[*/
+        var attendCourseList = /*[[${attendCourseList}]]*/'default';
+        var finalFromDateTime = attendCourseList.fromDateTime.slice(0, 16);
+        var finalToDateTime = attendCourseList.toDateTime.slice(0, 16);
+        var inputFromDateTime = document.getElementById('fromDateTime');
+        var inputToDateTime = document.getElementById('toDateTime');
+        inputFromDateTime.value = finalFromDateTime;
+        inputToDateTime.value = finalToDateTime;
+        /*]]>*/
+    </script>
+	<script type="text/javascript" src="/js/lib/attend.js"></script>
 </body>
 </html>

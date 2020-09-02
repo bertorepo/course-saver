@@ -28,8 +28,8 @@
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"
 	type="text/javascript"></script>
+<script type="text/javascript" src="/js/lib/attendanceForAbsent.js"></script>
 </head>
-
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
@@ -42,8 +42,7 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row justify-content-center">
-						<label class="col-lg-2">Course
-							Schedule</label>
+						<label class="col-lg-2">Course Schedule</label>
 						<div class="col-lg-6">
 							<select class="form-control selectedCourse" id="selectedCourse"
 								required onchange="ValidateDropDown(this)">
@@ -54,71 +53,25 @@
 									th:text="${course.courseName}"></option>
 							</select>
 						</div>
-
-						<script th:inline="javascript">
-										function choices() {
-											var id= $('#selectedCourse').val();
-											var courseName = $('#selectedCourse :selected').text();
-											var message = 'You have signed in to '+courseName;
-			                                	if (id != "") {
-			                                    $('#successModal').modal('show');
-			                                    $('#successModal').on('shown.bs.modal',
-			                                        function() {
-			                                        $('#successModal').find('.modal-body').html(
-			                                        message);
-			                                        });
-			                                }
-										}
-										
-										function ValidateDropDown(input) {
-			                                var button = document
-			                                        .getElementById(".btn-success")
-			                                if (input.value == '') {
-			                                       document.getElementById('button').className = "btn btn-large btn-success disabled";
-			                                    buttoninput.disabled = true;
-			                                } else {
-			                                    document.getElementById('button').className = "btn btn-large btn-success";
-			                                    button.disabled = false;
-			                                }
-			                            }
-										
-										function successUrl() {
-											var id = document.getElementById("selectedCourse").value;
-											var callUrl = '/attendance/generate/' + id
-													+ '/absent';
-											document.location.href = callUrl;
-										}
-										
-										$(function() {
-											// choose target dropdown
-											var select = $('.selectedCourse');
-											select.html(select.find('option').sort(function(x, y) {
-											// to change to descending order switch "<" for ">"
-											return $(x).text() > $(y).text() ? 1 : -1;
-											}));
-											});
-
-                        				</script>
-                            <div class="col-lg-1">
-                            <div
-                                th:if="${#httpServletRequest.requestURI == '/attendance/generate/0/absent'}">
-                                <input type="button" onclick="choices()"
-                                    class="btn btn-large btn-success disabled" value="Generate"
-                                    name="button" id="button"></input>
-                            </div>
-                            <div
-                                th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/absent'}">
-                                <input type="button" onclick="choices()"
-                                    class="btn btn-large btn-success" value="Generate"
-                                    name="button" id="button"></input>
-                            </div>
-                        </div>
+						<div class="col-lg-1">
+							<div
+								th:if="${#httpServletRequest.requestURI == '/attendance/generate/0/absent'}">
+								<input type="button" onclick="choices()"
+									class="btn btn-large btn-success disabled" value="Generate"
+									name="button" id="button"></input>
+							</div>
+							<div
+								th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/absent'}">
+								<input type="button" onclick="choices()"
+									class="btn btn-large btn-success" value="Generate"
+									name="button" id="button"></input>
+							</div>
+						</div>
 
 					</div>
 				</div>
 			</div>
 		</form>
-
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -139,7 +92,6 @@
 			</div>
 		</div>
 		<!--Success Modal End-->
-
 		<!--Error Modal-->
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -164,7 +116,6 @@
 			</div>
 		</div>
 		<!--Error Modal End-->
-
 		<div class="card mt-5" id="hideTable"
 			th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/absent'}">
 			<div class="card-body">
@@ -302,7 +253,6 @@
 						</table>
 					</form>
 				</div>
-
 				<div class="col-lg-12 mt-5"
 					style="overflow-x: auto; display: block; white-space: nowrap">
 					<table class="table table-bordered text-center">
@@ -345,17 +295,5 @@
 		</div>
 	</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
-
-	<script>
-	//Message alert
-	//add if statement for the success/fail messages
-	$('input[name="success"]').on('click', function() {
-		$('#successModal').modal('show');
-	});
-	$('input[name="error"]').on('click', function() {
-		$('#errorModal').modal('show');
-	});
-	//Message alert End	
-</script>
 </body>
 </html>
