@@ -25,14 +25,12 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 	crossorigin="anonymous"></script>
-<script 
-	src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" 
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"
 	type="text/javascript"></script>
-
+<script type="text/javascript" src="/js/lib/generateAttendanceSheet.js"></script>
 </head>
-
 <body>
-
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
 		<form class="form-horizontal" th:object="${generateAttendance}"
@@ -44,8 +42,7 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row justify-content-center">
-						<label class="col-lg-2">Course
-							Schedule</label>
+						<label class="col-lg-2">Course Schedule</label>
 						<div class="col-lg-6">
 							<select class="form-control  courseSelect" id="courseId" required
 								onchange="ValidateDropDown(this)">
@@ -57,72 +54,20 @@
 							</select>
 
 						</div>
-						<script th:inline="javascript">
-							function choices() {
-								var id = $('#courseId').val();
-								var courseName = $('#courseId :selected')
-										.text();
-								var message = 'You have signed in to this '
-										+ courseName;
-								if (id != "") {
-									$('#successModal').modal('show');
-									$('#successModal').on(
-											'shown.bs.modal',
-											function() {
-												$('#successModal').find(
-														'.modal-body').html(
-														message);
-											});
-								}
-							}
-
-							function ValidateDropDown(input) {
-                                var button = document
-                                        .getElementById(".btn-success")
-                                if (input.value == '') {
-                                       document.getElementById('button').className = "btn btn-large btn-success disabled";
-                                    buttoninput.disabled = true;
-                                } else {
-                                    document.getElementById('button').className = "btn btn-large btn-success";
-                                    button.disabled = false;
-                                }
-                            }
-
-							function successUrl() {
-								var id = document.getElementById("courseId").value;
-								var callUrl = '/attendance/generate/' + id
-										+ '/present';
-								document.location.href = callUrl;
-							}
-
-							$(function() {
-								// choose target dropdown
-								var select = $('.courseSelect');
-								select.html(select.find('option')
-										.sort(
-												function(x, y) {
-													// to change to descending order switch "<" for ">"
-													return $(x).text() > $(y)
-															.text() ? 1 : -1;
-												}));
-							});
-
-						</script>
-
-							<div class="col-lg-1">
-                            <div
-                                th:if="${#httpServletRequest.requestURI == '/attendance/generate/0/present'}">
-                                <input type="button" onclick="choices()"
-                                    class="btn btn-large btn-success disabled" value="Generate"
-                                    name="button" id="button"></input>
-                            </div>
-                            <div
-                                th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/present'}">
-                                <input type="button" onclick="choices()"
-                                    class="btn btn-large btn-success" value="Generate"
-                                    name="button" id="button"></input>
-                            </div>
-                        </div>
+						<div class="col-lg-1">
+							<div
+								th:if="${#httpServletRequest.requestURI == '/attendance/generate/0/present'}">
+								<input type="button" onclick="choices()"
+									class="btn btn-large btn-success disabled" value="Generate"
+									name="button" id="button"></input>
+							</div>
+							<div
+								th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/present'}">
+								<input type="button" onclick="choices()"
+									class="btn btn-large btn-success" value="Generate"
+									name="button" id="button"></input>
+							</div>
+						</div>
 					</div>
 
 				</div>
@@ -142,14 +87,12 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<div class="form-group row">
-						</div>
+						<div class="form-group row"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Success Modal End-->
-
 		<div class="card mt-5"
 			th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/present'}">
 			<div class="card-body">
@@ -163,8 +106,8 @@
 											TITLE</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										th:text="${generateAttendance.courseName}"></label></td>
-									<td colspan="1"><label class="col-lg-8 col-form-label">DURATION (in HRS):</label>
-										<label
+									<td colspan="1"><label class="col-lg-8 col-form-label">DURATION
+											(in HRS):</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										th:text="${generateAttendance.duration}"></label></td>
 								</tr>
@@ -174,16 +117,18 @@
 									<td colspan="1"><label class="col-lg-6 col-form-label">Start</label>
 										<label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
-										id="start1"></label>
-										<label class="form-control-plaintext col-lg-12 col-form-label 
-										text-center" th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>                       
+										id="start1"></label> <label
+										class="form-control-plaintext col-lg-12 col-form-label 
+										text-center"
+										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
 									</td>
 									<td colspan="1"><label class="col-lg-6 col-form-label">End</label>
 										<label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
-										id="end1"></label>
-										<label class="form-control-plaintext col-lg-12 col-form-label 
-											text-center" th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label> 
+										id="end1"></label> <label
+										class="form-control-plaintext col-lg-12 col-form-label 
+											text-center"
+										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
 									</td>
 									<td colspan="1"><label class="col-lg-6 col-form-label">VENUE</label>
 										<label
@@ -198,16 +143,18 @@
 									<td colspan="1"><label class="col-lg-6 col-form-label">START
 											TIME</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
-										id="start2"></label>
-									<label class="form-control-plaintext col-lg-12 col-form-label 
-										text-center" th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										id="start2"></label> <label
+										class="form-control-plaintext col-lg-12 col-form-label 
+										text-center"
+										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
 									</td>
 									<td colspan="1"><label class="col-lg-6 col-form-label">END
 											TIME</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
-										id="end2"></label>
-									<label class="form-control-plaintext col-lg-12 col-form-label 
-										text-center" th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										id="end2"></label> <label
+										class="form-control-plaintext col-lg-12 col-form-label 
+										text-center"
+										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
 									</td>
 									<td colspan="1" rowspan="2"><label
 										class="col-lg-6 col-form-label">INSTRUCTOR</label>
@@ -321,8 +268,10 @@
 								<td th:text="${generateAttendanceSheet.getEmployeeNumber()}"></td>
 								<td th:text="${generateAttendanceSheet.getName()}" />
 								<td th:text="${generateAttendanceSheet.getDepartment()}"></td>
-								<td th:text="${#temporals.format(generateAttendanceSheet.getLoginDateTime(), 'HH:mm a')}"/>
-								<td th:text="${#temporals.format(generateAttendanceSheet.getLogoutDateTime(), 'HH:mm a')}"/>
+								<td
+									th:text="${#temporals.format(generateAttendanceSheet.getLoginDateTime(), 'HH:mm a')}" />
+								<td
+									th:text="${#temporals.format(generateAttendanceSheet.getLogoutDateTime(), 'HH:mm a')}" />
 
 								<td></td>
 							</tr>
@@ -333,6 +282,5 @@
 		</div>
 	</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
-
 </body>
 </html>
