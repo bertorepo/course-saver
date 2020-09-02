@@ -471,8 +471,8 @@ public class ScheduleController {
     }
     
     
-    @GetMapping("/courseSchedule/{courseId}/delete")
-	public String showDeleteCourseScheduleForm(@PathVariable("courseId") long id, Model model,
+    @GetMapping("/courseSchedule/{courseScheduleId}/delete")
+	public String showDeleteCourseScheduleForm(@PathVariable("courseScheduleId") long id, Model model,
 		 CourseScheduleDeleteForm courseScheduleDeleteForm) {
     
 		if (model.containsAttribute("deleteView")) {
@@ -482,6 +482,10 @@ public class ScheduleController {
 		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
 	
 		courseScheduleDeleteForm.setId(courseSchedule.getId());
+		courseScheduleDeleteForm.setCourseId(courseSchedule.getCourseId());
+        courseScheduleDeleteForm.setCourseName(courseSchedule.getCourseName());
+        courseScheduleDeleteForm.setInstructorName(courseSchedule.getInstructorFirstName() + " " + courseSchedule.getInstructorLastName());
+        courseScheduleDeleteForm.setVenueName(courseSchedule.getVenueName());
         
 		model.addAttribute("deleteView", courseScheduleDeleteForm);
 		model.addAttribute("updateView", new CourseScheduleUpdateForm());
