@@ -368,4 +368,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
         return courseSchedule;
     }
+
+    @Override
+    public CourseSchedule findCourseScheduleByCourseId(Long id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
