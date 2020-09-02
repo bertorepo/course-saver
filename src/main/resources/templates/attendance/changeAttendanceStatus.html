@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 <meta charset="utf-8" />
@@ -13,53 +13,53 @@
 <title>Change Attendance Status</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css"
-	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-	integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-	crossorigin="anonymous"></script>
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
 <script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-	integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-	crossorigin="anonymous"></script>
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
 <script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-	crossorigin="anonymous"></script>
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 <script
-	src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"
-	type="text/javascript"></script>
+    src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"
+    type="text/javascript"></script>
 <style type="text/css">
 div.text-danger {
-	font-size: 12px;
-	text-align: left;
+    font-size: 12px;
+    text-align: left;
 }
 </style>
 </head>
 <body>
-	<div th:insert="fragments/general.html :: header"></div>
-	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
-		<form class="form-horizontal" method="get">
+    <div th:insert="fragments/general.html :: header"></div>
+    <div class="container mt-5" style="min-height: calc(100vh - 180px)">
+        <form class="form-horizontal" method="get">
 
-			<h3>
-				<i class="fa fa-check-square-o"></i> Change Attendance Status
-			</h3>
-			<hr>
-			<div class="card">
-				<div class="card-body">
-					<div class="form-group row justify-content-center">
-						<label class="col-lg-1">Course</label>
-						<div class="col-lg-6">
-							<select class="form-control courseSelect" id="id"
-								name='courseSelect' required onchange="ValidateDropDown(this)"
-								th:each="attendanceStatus : ${changeStatusForm}">
-								<option value=""></option>
-								<option th:each="courses : ${changeStatusForm.courses}"
-									th:value="${courses.id}"
-									th:selected="${courses.id eq lastSelected}"
-									th:text="${courses.courseName}"></option>
-							</select>
-						</div>
- 						<div class="col-lg-1">
+            <h3>
+                <i class="fa fa-check-square-o"></i> Change Attendance Status
+            </h3>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row justify-content-center">
+                        <label class="col-lg-1">Course</label>
+                        <div class="col-lg-6">
+                            <select class="form-control courseSelect" id="id"
+                                name='courseSelect' required onchange="ValidateDropDown(this)"
+                                th:each="attendanceStatus : ${changeStatusForm}">
+                                <option value=""></option>
+                                <option th:each="courses : ${changeStatusForm.courses}"
+                                    th:value="${courses.id}"
+                                    th:selected="${courses.id eq lastSelected}"
+                                    th:text="${courses.courseName}"></option>
+                            </select>
+                        </div>
+                        <div class="col-lg-1">
                             <div
                                 th:if="${#lists.isEmpty(changeStatusForm.participants)}">
                                 <input type="button" onclick="choices()"
@@ -73,653 +73,292 @@ div.text-danger {
                                     name="button" id="button"></input>
                             </div>
                         </div>
-					</div>
-				</div>
-			</div>
-		</form>
-		<div class="modal fade" th:if="${message}" id="successMessage"
-			tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-			aria-hidden="true"></div>
-		<div class="card mt-5"
-			th:if="${not #lists.isEmpty(changeStatusForm.participants)}">
-			<form class="form-horizontal" id="form" action="#"
-				th:object="${changeStatusForm}"
-				th:action="@{/attendance/{courseScheduleDetailId}/participants}"
-				method="post">
-				<div class="card-body">
-					<div class="col-lg-12"
-						style="overflow-x: auto; display: block; white-space: nowrap">
-
-						<table class="table table-responsive table-borderless data"
-							id="data">
-							<colgroup>
-								<col style="width: 5%" />
-								<col style="width: 5%" />
-								<col style="width: 5%" />
-								<col style="width: 5%" />
-								<col style="width: 5%" />
-								<col style="width: 5%" />
-							</colgroup>
-							<thead>
-								<tr>
-									<td style="display: none;"><label
-										class="col-lg-10 col-form-label text-center"> Course
-											Attendance ID</label></td>
-									<td style="display: none;"><label
-										class="col-lg-10 col-form-label text-center">
-											Participant ID</label></td>
-									<td><label class="col-lg-12 col-form-label text-center">
-											Participant Name</label></td>
-									<td><label class="col-lg-10 col-form-label text-center">
-											Attendance Status</label></td>
-									<td><label class="col-lg-10 col-form-label text-center">
-											Time In</label></td>
-									<td><label class="col-lg-10 col-form-label text-center">
-											Time Out</label></td>
-								</tr>
-							</thead>
-							<tbody th:id="participantDetails">
-								<tr th:each="participants, stat : *{participants}"
-									id="courseParticipants">
-
-									<td style="display: none;">
-										<div class="col-lg-10">
-											<input type="button"
-												th:attr="onclick=|momentofDate('${stat.index + 1}')|"
-												style="display: none;"
-												class="btn btn-large btn-success auto" value="Generate"
-												name="button" id="auto">
-										</div>
-									</td>
-
-									<td style="display: none;">
-										<div class="col-lg-10">
-											<input type="text" class="form-control"
-												th:field="*{participants[__${stat.index}__].courseAttendanceId}">
-										</div>
-									</td>
-
-									<td style="display: none;">
-										<div class="col-lg-10">
-											<input type="text" class="form-control"
-												th:field="*{participants[__${stat.index}__].courseAttendanceId}">
-										</div>
-									</td>
-
-									<td style="display: none;">
-										<div class="col-lg-10">
-											<input type="text" class="form-control"
-												th:field="*{participants[__${stat.index}__].participantId}">
-										</div>
-									</td>
-
-									<td style="display: none;">
-										<div class="col-lg-10">
-											<input type="text" class="form-control"
-												th:field="*{participants[__${stat.index}__].email}">
-										</div>
-									</td>
-
-									<td style="display: none;">
-										<div class="col-lg-10">
-											<input type="text" class="form-control"
-												th:field="*{participants[__${stat.index}__].name}">
-										</div>
-									</td>
-
-									<td th:attr="onclick=|momentofDate('${stat.index + 1}')|">
-										<label class="col-lg-10 col-form-label text-center"
-										th:text="*{participants[__${stat.index}__].name}"> </label>
-
-									</td>
-									<td>
-										<div class="col-lg-11">
-											<select class="form-control"
-												th:id="${'statusDropDown' + (stat.index + 1)}"
-												name="statusDropDown" id="statusDropDown"
-												th:attr="onchange=|myFunction('${stat.index +1}')|">
-												<option value="P"
-													th:field="*{participants[__${stat.index}__].status}">Present</option>
-												<option value="A"
-													th:field="*{participants[__${stat.index}__].status}">Absent</option>
-											</select> <input type="hidden"
-												th:field="*{participants[__${stat.index}__].status}"
-												id="status" th:id="${'status' + (stat.index + 1)}"
-												name="status" />
-											<div class="text-danger" id="statusDropDown_error"></div>
-										</div>
-									</td>
-									<td class="form-group">
-										<div class="col-lg-15">
-											<input type="time" class="form-control"
-												th:attr="onchange=|momentofTime('${stat.index + 1}')|"
-												th:id="${'startTime' + (stat.index + 1)}" id="startTime"
-												name="startTime" />
-
-											<div class="text-danger"
-												th:id="${'startTime' + (stat.index + 1) + '_error'}">
-											</div>
-
-											<input type="hidden" name="startDateTime" id="startDateTime"
-												th:id="${'startDateTime' + (stat.index + 1)}"
-												th:field="*{participants[__${stat.index}__].loginDateTime}">
-
-											<input type="hidden" name="startDateTimeBackUp" value="null"
-												placeholder="null"
-												th:id="${'startDateTimeBackUp' + (stat.index + 1)}">
-
-											<input type="hidden" name="momentTime"
-												th:id="${'momentTime' + (stat.index + 1)}"> <input
-												type="hidden" name="momentDate"
-												th:id="${'momentDate' + (stat.index + 1)}"> <input
-												type="hidden" id="scheduledTime" class="form-control"
-												th:id="${'scheduledTime' + (stat.index + 1)}" /> <input
-												type="hidden" id="getDate"
-												th:id="${'getDate' + (stat.index + 1)}" /> <input
-												type="hidden" id="getTime"
-												th:id="${'getTime' + (stat.index + 1)}" /> <input
-												type="hidden" name="momentTimeAbsent"
-												th:id="${'momentTimeAbsent' + (stat.index + 1)}">
-										</div>
-									</td>
-
-									<td class="form-group">
-										<div class="col-lg-15">
-											<input type="time" class="form-control"
-												th:attr="onchange=|momentofTime('${stat.index + 1}')|"
-												th:id="${'endTime' + (stat.index + 1)}" id="endTime"
-												name="endTime" />
-
-											<div class="text-danger"
-												th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
-
-											<input type="hidden" name="endDateTime"
-												th:id="${'endDateTime' + (stat.index + 1)}"
-												th:field="*{participants[__${stat.index}__].logoutDateTime}">
-
-											<input type="hidden" name="endDateTimeBackUp" value="null"
-												placeholder="null"
-												th:id="${'endDateTimeBackUp' + (stat.index + 1)}"> <input
-												type="hidden" name="momentEndTime"
-												th:id="${'momentEndTime' + (stat.index + 1)}"> <input
-												type="hidden" name="momentEndDate"
-												th:id="${'momentEndDate' + (stat.index + 1)}"> <input
-												type="hidden" id="scheduledEndTime" class="form-control"
-												th:id="${'scheduledEndTime' + (stat.index + 1)}" /> <input
-												type="hidden" id="getEndDate"
-												th:id="${'getEndDate' + (stat.index + 1)}" /> <input
-												type="hidden" id="getEndTime"
-												th:id="${'getEndTime' + (stat.index + 1)}" /> <input
-												type="hidden" name="momentEndTimeAbsent"
-												th:id="${'momentEndTimeAbsent' + (stat.index + 1)}">
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div>
-							<div class="float-right">
-								<input type="hidden" name="id" id="id"
-									th:value="${changeStatusForm.id}"> <input type="button"
-									class="btn btn-success mr-2" th:attr="onclick=|validations()|"
-									value="Submit"> <input type="button" onclick="goBack()"
-									class="btn btn-secondary" value="Back">
-							</div>
-						</div>
-					</div>
-
-					<!--Confirmation Modal-->
-					<div class="modal fade" id="confirmModal" tabindex="-1"
-						role="dialog" aria-labelledby="exampleModalLabel"
-						aria-hidden="true" data-backdrop="static" data-keyboard="false">
-						<div class="modal-dialog modal-sm text-center">
-							<div class="modal-content">
-								<div class="modal-header alert-warning">
-									<h5 class="modal-title">Confirmation</h5>
-									<button type="button" class="close" data-dismiss="modal"
-										aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<div class="form-group row">
-										<label class="col-lg-12 col-form-label">Are you sure
-											you want to submit this form? </label>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary"
-											data-dismiss="modal">No</button>
-										<input type="hidden" name="id" id="id" />
-										<button type="submit" name="submit" value="submit"
-											class="btn btn-primary">Yes</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!--Confirmation Modal End-->
-
-				</div>
-			</form>
-		</div>
-
-		<!--Success Modal  style="display: none"-->
-		<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true"
-			data-backdrop="static" data-keyboard="false">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-success">
-						<h5 class="modal-title"></h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">You have
-								successfully changed the status of the member</label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--Success Modal End-->
-
-		<!--Error Modal-->
-		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true"
-			data-backdrop="static" data-keyboard="false">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-danger">
-						<h5 class="modal-title">Error</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<div id="error" style="color: red"></div>
-							<label class="col-lg-12 col-form-label"></label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--Error Modal End-->
-
-	</div>
-	<footer th:replace="fragments/general.html :: footer"></footer>
-	<script th:inline="javascript">
-		//changeStatusDropDown
-		function myFunction(index) {
-			var x = document.getElementById("statusDropDown" + index).value;
-			document.getElementById("status" + index).value = x;
-
-			if (x == 'P') {
-				var a = document.getElementById("id");
-				var b = a.options[a.selectedIndex].text;
-				document.getElementById("scheduledTime" + index).value = b;
-				document.getElementById("scheduledEndTime" + index).value = b;
-
-				var getScheduledTime = document.getElementById("scheduledTime"
-						+ index).value;
-				var getScheduledEndTime = document
-						.getElementById("scheduledEndTime" + index).value;
-
-				var d = moment.utc(getScheduledTime, 'YYYY-MM-DD HH:mm')
-						.format('YYYY-MM-DD');
-				var dEnd = moment.utc(getScheduledEndTime, 'YYYY-MM-DD HH:mm')
-						.format('YYYY-MM-DD');
-
-				document.getElementById("getDate" + index).value = d;
-				document.getElementById("getEndDate" + index).value = dEnd;
-
-				document.getElementById("startTime" + index).disabled = false;
-				document.getElementById("endTime" + index).disabled = false;
-
-				var start = document.getElementById("startDateTimeBackUp"
-						+ index).value;
-				document.getElementById("startDateTime" + index).value = start;
-
-				var end = document.getElementById("endDateTimeBackUp" + index).value;
-				document.getElementById("endDateTime" + index).value = end;
-
-				var startBackUp = document.getElementById("momentTimeAbsent"
-						+ index).value;
-				var endBackUp = document.getElementById("momentEndTimeAbsent"
-						+ index).value;
-
-				document.getElementById("startTime" + index).value = startBackUp;
-				document.getElementById("endTime" + index).value = endBackUp;
-			}
-
-			else if (x == 'A') {
-				document.getElementById("startTime" + index).disabled = true;
-				document.getElementById("endTime" + index).disabled = true;
-				document.getElementById("startTime" + index).value = "";
-				document.getElementById("endTime" + index).value = "";
-
-				document.getElementById("startDateTime" + index).value = null;
-				document.getElementById("endDateTime" + index).value = null;
-			}
-		}
-
-		$(document).ready(function() {
-			$(".auto").click();
-		});
-
-		$(function() {
-			// choose target dropdown
-			var select = $('.courseSelect');
-			select.html(select.find('option').sort(function(x, y) {
-				// to change to descending order switch "<" for ">"
-				return $(x).text() > $(y).text() ? 1 : -1;
-			}));
-		});
-
-		//onload
-		function momentofDate(index) {
-			var x = document.getElementById("statusDropDown" + index).value;
-
-			var transfer = document.getElementById("startDateTime" + index).value;
-			var transferEnd = document.getElementById("endDateTime" + index).value;
-
-			var t = moment.utc(transfer, 'YYYY-MM-DD HH:mm').format('HH:mm');
-			var d = moment.utc(transfer, 'YYYY-MM-DD HH:mm').format(
-					'YYYY-MM-DD');
-
-			var tEnd = moment.utc(transferEnd, 'YYYY-MM-DD HH:mm').format(
-					'HH:mm');
-			var dEnd = moment.utc(transferEnd, 'YYYY-MM-DD HH:mm').format(
-					'YYYY-MM-DD');
-
-			document.getElementById("startTime" + index).value = t;
-			document.getElementById("momentDate" + index).value = d;
-
-			document.getElementById("endTime" + index).value = tEnd;
-			document.getElementById("momentEndDate" + index).value = dEnd;
-
-			var time = document.getElementById("startTime" + index).value;
-			var timeEnd = document.getElementById("endTime" + index).value;
-			document.getElementById("momentTime" + index).value = time;
-			document.getElementById("momentEndTime" + index).value = timeEnd;
-
-			var postDate = document.getElementById("momentDate" + index).value;
-			var postTime = document.getElementById("momentTime" + index).value;
-
-			var postDateEnd = document.getElementById("momentEndDate" + index).value;
-			var postTimeEnd = document.getElementById("momentEndTime" + index).value;
-
-			var postDateTime = moment.utc(postDate + ' ' + postTime);
-			var finalPostDateTime = postDateTime.utc().format(
-					'YYYY-MM-DDTHH:mm:ss.SS+08:00');
-
-			var postDateTimeEnd = moment.utc(postDateEnd + ' ' + postTimeEnd);
-			var finalPostDateTimeEnd = postDateTimeEnd.utc().format(
-					'YYYY-MM-DDTHH:mm:ss.SS+08:00');
-
-			var momTime = document.getElementById("momentTime" + index).value;
-			var momTimeEnd = document.getElementById("momentEndTime" + index).value;
-
-			//For regex time
-			var a = document.getElementById("id");
-			var b = a.options[a.selectedIndex].text;
-			document.getElementById("scheduledTime" + index).value = b;
-			document.getElementById("scheduledEndTime" + index).value = b;
-
-			var getScheduledTime = document.getElementById("scheduledTime"
-					+ index).value;
-			var getScheduledEndTime = document
-					.getElementById("scheduledEndTime" + index).value;
-
-			var startTime = getScheduledTime.replace(/[a-zA-Z | ]+ /g, '');
-			var trimmedStartTime = startTime.replace(/--- [a-zA-Z \W 0-9 ]+/g,
-					'');
-			var endTime = getScheduledEndTime.replace(
-					/[a-zA-Z | \W 0-9]+ ---/g, '');
-
-			document.getElementById("getEndTime" + index).value = endTime;
-			var regexEndTime = document.getElementById("getEndTime" + index).value;
-
-			var d1 = moment.utc(getScheduledTime, 'YYYY-MM-DD HH:mm').format(
-					'YYYY-MM-DD');
-			var dTime1 = moment.utc(trimmedStartTime, 'YYYY-MM-DD HH:mm')
-					.format('HH:mm');
-			var dEnd1 = moment.utc(endTime, 'YYYY-MM-DD HH:mm').format(
-					'YYYY-MM-DD');
-			var dEndRegex1 = moment.utc(regexEndTime, 'YYYY-MM-DD HH:mm')
-					.format('HH:mm');
-
-			if (x == 'A') {
-				document.getElementById("startTime" + index).disabled = true;
-				document.getElementById("endTime" + index).disabled = true;
-				document.getElementById("startTime" + index).value = "";
-				document.getElementById("endTime" + index).value = "";
-
-				document.getElementById("getDate" + index).value = d1;
-				document.getElementById("getEndDate" + index).value = dEnd1;
-				document.getElementById("getTime" + index).value = dTime1;
-				document.getElementById("getEndTime" + index).value = dEndRegex1;
-				document.getElementById("startDateTime" + index).value = null;
-				document.getElementById("endDateTime" + index).value = null;
-
-			}
-
-			else if (x == 'P' && momTime != "" && momTimeEnd != "") {
-				document.getElementById("getDate" + index).value = d1;
-				document.getElementById("getEndDate" + index).value = dEnd1;
-				document.getElementById("getTime" + index).value = dTime1;
-				document.getElementById("getEndTime" + index).value = dEndRegex1;
-
-				document.getElementById("momentTimeAbsent" + index).value = time;
-				document.getElementById("momentEndTimeAbsent" + index).value = timeEnd;
-				document.getElementById("startDateTime" + index).value = finalPostDateTime;
-				document.getElementById("startDateTimeBackUp" + index).value = finalPostDateTime;
-
-				document.getElementById("endDateTime" + index).value = finalPostDateTimeEnd;
-				document.getElementById("endDateTimeBackUp" + index).value = finalPostDateTimeEnd;
-			}
-		}
-
-		//changeTime
-		function momentofTime(index) {
-			var x = document.getElementById("statusDropDown" + index).value;
-
-			var time = document.getElementById("startTime" + index).value;
-			var timeEnd = document.getElementById("endTime" + index).value;
-
-			document.getElementById("momentTime" + index).value = time;
-			document.getElementById("momentEndTime" + index).value = timeEnd;
-
-			var postDate = document.getElementById("momentDate" + index).value;
-			var postTime = document.getElementById("momentTime" + index).value;
-
-			var postDateEnd = document.getElementById("momentEndDate" + index).value;
-			var postTimeEnd = document.getElementById("momentEndTime" + index).value;
-
-			if (x == 'A') {
-				document.getElementById("startTime" + index).value = "";
-				document.getElementById("endTime" + index).value = "";
-				document.getElementById("momentTimeAbsent" + index).value = "";
-			}
-
-			else if ((x == 'P' && postDate == "" && postDateEnd == "")
-					|| (x == 'P' && postDate.length != 0 && postDateEnd.length != 0)) {
-				var getScheduledTime = document.getElementById("scheduledTime"
-						+ index).value;
-				var getScheduledEndTime = document
-						.getElementById("scheduledEndTime" + index).value;
-
-				var d = moment.utc(getScheduledTime, 'YYYY-MM-DD HH:mm')
-						.format('YYYY-MM-DD');
-				var dEnd = moment.utc(getScheduledEndTime, 'YYYY-MM-DD HH:mm')
-						.format('YYYY-MM-DD');
-				document.getElementById("getDate" + index).value = d;
-				document.getElementById("getEndDate" + index).value = dEnd;
-
-				var postDate1 = document.getElementById("getDate" + index).value;
-				var postD = document.getElementById("momentDate" + index).value = postDate1;
-
-				var postDateTime = moment.utc(postD + ' ' + postTime);
-				var finalPostDateTime = postDateTime.utc().format(
-						'YYYY-MM-DDTHH:mm:ss.SS+08:00');
-
-				document.getElementById("startDateTime" + index).value = finalPostDateTime;
-
-				var postDate1End = document
-						.getElementById("getEndDate" + index).value;
-				var postDEnd = document.getElementById("momentEndDate" + index).value = postDate1End;
-
-				var postDateTimeEnd = moment.utc(postDEnd + ' ' + postTimeEnd);
-				var finalPostDateTimeEnd = postDateTimeEnd.utc().format(
-						'YYYY-MM-DDTHH:mm:ss.SS+08:00');
-
-				document.getElementById("endDateTime" + index).value = finalPostDateTimeEnd;
-			}
-
-			else if (x == 'P' && postDate != "" && postDateEnd != "") {
-				var postDateTime1 = moment.utc(postDate + ' ' + postTime);
-				var finalPostDateTime1 = postDateTime1.utc().format(
-						'YYYY-MM-DDTHH:mm:ss.SS+08:00');
-				document.getElementById("startDateTime" + index).value = finalPostDateTime1;
-
-				var postDateTime1End = moment.utc(postDateEnd + ' '
-						+ postTimeEnd);
-				var finalPostDateTime1End = postDateTime1End.utc().format(
-						'YYYY-MM-DDTHH:mm:ss.SS+08:00');
-				document.getElementById("endDateTime" + index).value = finalPostDateTime1End;
-			}
-		}
-
-		function ValidateDropDown(input) {
-            var button = document
-                    .getElementById(".btn-success")
-            if (input.value == '') {
-                   document.getElementById('button').className = "btn btn-large btn-success disabled";
-                buttoninput.disabled = true;
-            } else {
-                document.getElementById('button').className = "btn btn-large btn-success";
-                button.disabled = false;
-            }
-        }
-
-		function choices() {
-			var id = document.getElementById("id").value;
-			if (id != "") {
-				var callUrl = '/attendance/' + id + '/participants';
-				document.location.href = callUrl;
-			}
-		}
-
-		function goBack() {
-			var callUrl = '/attendance/0/participants';
-			document.location.href = callUrl;
-		}
-
-		function validations() {
-			//Empty Fields Validation for Start and End date
-			var errorCount = 0;
-			var startTimeCount = 0;
-			var endTimeCount = 0;
-			var participantDetails = document.getElementById("data");
-			var length = participantDetails.rows.length;
-
-			for (var i = 1; i <= length; i++) {
-				var status = $("#statusDropDown" + i).val();
-				var startTime = $("#startTime" + i).val();
-				var endTime = $("#endTime" + i).val();
-				var regexEndTime = $("#getEndTime" + i).val();
-				var regexStartTime = $("#getTime" + i).val();
-
-				if (startTime !== "") {
-					startTimeCount++;
-				}
-
-				if (endTime !== "") {
-					endTimeCount++;
-				}
-
-				if (status == 'P') {
-
-					if (startTime > endTime && endTime != "") {
-						errorCount++;
-						startTimeError = "Time In Shouldn't be greater than Time Out";
-						document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
-					}
-
-					if (startTime == endTime) {
-						errorCount++;
-						startTimeError = "Time In Shouldn't be equal to Time Out";
-						document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
-					}
-
-					if (startTime == "") {
-						errorCount++;
-						startTimeError = "Please fill up Time In";
-						document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
-					}
-
-					if (endTime == "") {
-						errorCount++;
-						endTimeError = "Please fill up Time Out";
-						document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
-					}
-
-					if (startTime < regexStartTime && startTime != "") {
-						errorCount++;
-						startTimeError = "Time In should be in bound of scheduled time";
-						document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
-					}
-
-					if (endTime > regexEndTime) {
-						errorCount++;
-						endTimeError = "Time Out should be in bound scheduled time";
-						document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
-					}
-				}
-			}
-
-			for (i = 1; i <= length; i++) {
-				var status = document.getElementById("statusDropDown" + i).value;
-				var startTime = document.getElementById("startTime" + i).value;
-				var endTime = document.getElementById("endTime" + i).value;
-				var regexEndTime = document.getElementById("getEndTime" + i).value;
-				var regexStartTime = document.getElementById("getTime" + i).value;
-
-				function removeWarning() {
-					var fieldId = this.id;
-					var data = document.getElementById(fieldId).value;
-
-					if (data !== "") {
-						document.getElementById(fieldId + "_error").innerHTML = "";
-					}
-				}
-
-				document.getElementById("startTime" + i).onmousemove = removeWarning;
-				document.getElementById("endTime" + i).onmousemove = removeWarning;
-
-				if (errorCount <= 0) {
-					$('#confirmModal').modal('show');
-				}
-			}
-		}
-
-		//Success Modal Validation
-		/*<![CDATA[*/
-		var successMessage = /*[[${message}]]*/'default';
-		var element = document.getElementById('successMessage').innerHTML;
-
-		console.log(successMessage);
-		console.log(element);
-
-		if (successMessage == element) {
-			$('#successModal').modal('show');
-		}
-	</script>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="modal fade" th:if="${message}" id="successMessage"
+            tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true"></div>
+        <div class="card mt-5"
+            th:if="${not #lists.isEmpty(changeStatusForm.participants)}">
+            <form class="form-horizontal" id="form" action="#"
+                th:object="${changeStatusForm}"
+                th:action="@{/attendance/{courseScheduleDetailId}/participants}"
+                method="post">
+                <div class="card-body">
+                    <div class="col-lg-12"
+                        style="overflow-x: auto; display: block; white-space: nowrap">
+
+                        <table class="table table-responsive table-borderless data" 
+                            id="data">
+                            <colgroup>
+                                <col style="width: 5%" />
+                                <col style="width: 5%" />
+                                <col style="width: 10%" />
+                                <col style="width: 10%" />
+                                <col style="width: 5%" />
+                                <col style="width: 5%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <td style="display: none;"><label
+                                        class="col-lg-5 col-form-label text-center"> Course
+                                            Attendance ID</label></td>
+                                    <td style="display: none;"><label
+                                        class="col-lg-5 col-form-label text-center">
+                                            Participant ID</label></td>
+                                    <td><label class="col-lg-10 col-form-label text-center">
+                                            Participant Name</label></td>
+                                    <td><label class="col-lg-12 col-form-label text-center">
+                                            Attendance Status</label></td>
+                                    <td><label class="col-lg-11 col-form-label text-center">
+                                            Time In</label></td>
+                                    <td><label class="col-lg-11 col-form-label text-center">
+                                            Time Out</label></td>
+                                </tr>
+                            </thead>
+                            <tbody th:id="participantDetails">
+                                <tr th:each="participants, stat : *{participants}"
+                                    id="courseParticipants">
+
+                                    <td style="display: none;">
+                                        <div class="col-lg-10">
+                                            <input type="button"
+                                                th:attr="onclick=|momentofDate('${stat.index + 1}')|"
+                                                style="display: none;"
+                                                class="btn btn-large btn-success auto" value="Generate"
+                                                name="button" id="auto">
+                                        </div>
+                                    </td>
+
+                                    <td style="display: none;">
+                                        <div class="col-lg-10">
+                                            <input type="text" class="form-control"
+                                                th:field="*{participants[__${stat.index}__].courseAttendanceId}">
+                                        </div>
+                                    </td>
+
+                                    <td style="display: none;">
+                                        <div class="col-lg-10">
+                                            <input type="text" class="form-control"
+                                                th:field="*{participants[__${stat.index}__].courseAttendanceId}">
+                                        </div>
+                                    </td>
+
+                                    <td style="display: none;">
+                                        <div class="col-lg-10">
+                                            <input type="text" class="form-control"
+                                                th:field="*{participants[__${stat.index}__].participantId}">
+                                        </div>
+                                    </td>
+
+                                    <td style="display: none;">
+                                        <div class="col-lg-10">
+                                            <input type="text" class="form-control"
+                                                th:field="*{participants[__${stat.index}__].email}">
+                                        </div>
+                                    </td>
+
+                                    <td style="display: none;">
+                                        <div class="col-lg-15">
+                                            <input type="text" class="form-control"
+                                                th:field="*{participants[__${stat.index}__].name}">
+                                        </div>
+                                    </td>
+
+                                    <td th:attr="onclick=|momentofDate('${stat.index + 1}')|">
+                                        <label class="col-lg-10 col-form-label justify-content-center"
+                                        th:text="*{participants[__${stat.index}__].name}"> </label>
+
+                                    </td>
+                                    <td>
+                                        <div class="col-lg-15">
+                                            <select class="form-control"
+                                                th:id="${'statusDropDown' + (stat.index + 1)}"
+                                                name="statusDropDown" id="statusDropDown"
+                                                th:attr="onchange=|myFunction('${stat.index +1}')|">
+                                                <option value="P"
+                                                    th:field="*{participants[__${stat.index}__].status}">Present</option>
+                                                <option value="A"
+                                                    th:field="*{participants[__${stat.index}__].status}">Absent</option>
+                                            </select> <input type="hidden"
+                                                th:field="*{participants[__${stat.index}__].status}"
+                                                id="status" th:id="${'status' + (stat.index + 1)}"
+                                                name="status" />
+                                            <div class="text-danger text-wrap" id="statusDropDown_error"></div>
+                                        </div>
+                                    </td>
+                                    <td class="form-group">
+                                        <div class="col-lg-15">
+                                            <input type="time" class="form-control"
+                                                th:attr="onchange=|momentofTime('${stat.index + 1}')|"
+                                                th:id="${'startTime' + (stat.index + 1)}" id="startTime"
+                                                name="startTime" /></div>
+
+                                            <div class="text-danger text-wrap"
+                                                th:id="${'startTime' + (stat.index + 1) + '_error'}">
+                                            </div>
+
+                                            <input type="hidden" name="startDateTime" id="startDateTime"
+                                                th:id="${'startDateTime' + (stat.index + 1)}"
+                                                th:field="*{participants[__${stat.index}__].loginDateTime}">
+
+                                            <input type="hidden" name="startDateTimeBackUp" value="null"
+                                                placeholder="null"
+                                                th:id="${'startDateTimeBackUp' + (stat.index + 1)}">
+
+                                            <input type="hidden" name="momentTime"
+                                                th:id="${'momentTime' + (stat.index + 1)}"> <input
+                                                type="hidden" name="momentDate"
+                                                th:id="${'momentDate' + (stat.index + 1)}"> <input
+                                                type="hidden" id="scheduledTime" class="form-control"
+                                                th:id="${'scheduledTime' + (stat.index + 1)}" /> <input
+                                                type="hidden" id="getDate"
+                                                th:id="${'getDate' + (stat.index + 1)}" /> <input
+                                                type="hidden" id="getTime"
+                                                th:id="${'getTime' + (stat.index + 1)}" /> <input
+                                                type="hidden" name="momentTimeAbsent"
+                                                th:id="${'momentTimeAbsent' + (stat.index + 1)}">
+                                        
+                                    </td>
+
+                                    <td class="form-group">
+                                        <div class="col-lg-15">
+                                            <input type="time" class="form-control"
+                                                th:attr="onchange=|momentofTime('${stat.index + 1}')|"
+                                                th:id="${'endTime' + (stat.index + 1)}" id="endTime"
+                                                name="endTime" />
+
+                                            <div class="text-danger text-wrap"
+                                                th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
+
+                                            <input type="hidden" name="endDateTime"
+                                                th:id="${'endDateTime' + (stat.index + 1)}"
+                                                th:field="*{participants[__${stat.index}__].logoutDateTime}">
+
+                                            <input type="hidden" name="endDateTimeBackUp" value="null"
+                                                placeholder="null"
+                                                th:id="${'endDateTimeBackUp' + (stat.index + 1)}"> <input
+                                                type="hidden" name="momentEndTime"
+                                                th:id="${'momentEndTime' + (stat.index + 1)}"> <input
+                                                type="hidden" name="momentEndDate"
+                                                th:id="${'momentEndDate' + (stat.index + 1)}"> <input
+                                                type="hidden" id="scheduledEndTime" class="form-control"
+                                                th:id="${'scheduledEndTime' + (stat.index + 1)}" /> <input
+                                                type="hidden" id="getEndDate"
+                                                th:id="${'getEndDate' + (stat.index + 1)}" /> <input
+                                                type="hidden" id="getEndTime"
+                                                th:id="${'getEndTime' + (stat.index + 1)}" /> <input
+                                                type="hidden" name="momentEndTimeAbsent"
+                                                th:id="${'momentEndTimeAbsent' + (stat.index + 1)}">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <div class="float-right">
+                                <input type="hidden" name="id" id="id"
+                                    th:value="${changeStatusForm.id}"> <input type="button"
+                                    class="btn btn-success mr-2" th:attr="onclick=|validations()|"
+                                    value="Submit"> <input type="button" onclick="goBack()"
+                                    class="btn btn-secondary" value="Back">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Confirmation Modal-->
+                    <div class="modal fade" id="confirmModal" tabindex="-1"
+                        role="dialog" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog modal-sm text-center">
+                            <div class="modal-content">
+                                <div class="modal-header alert-warning">
+                                    <h5 class="modal-title">Confirmation</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 col-form-label">Are you sure
+                                            you want to submit this form? </label>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">No</button>
+                                        <input type="hidden" name="id" id="id" />
+                                        <button type="submit" name="submit" value="submit"
+                                            class="btn btn-primary">Yes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Confirmation Modal End-->
+
+                </div>
+            </form>
+        </div>
+
+        <!--Success Modal  style="display: none"-->
+        <div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true"
+            data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-sm text-center">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-lg-12 col-form-label">You have
+                                successfully changed the status of the member</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Success Modal End-->
+
+        <!--Error Modal-->
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true"
+            data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-sm text-center">
+                <div class="modal-content">
+                    <div class="modal-header alert-danger">
+                        <h5 class="modal-title">Error</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <div id="error" style="color: red"></div>
+                            <label class="col-lg-12 col-form-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Error Modal End-->
+
+    </div>
+    <footer th:replace="fragments/general.html :: footer"></footer>
+    <script th:inline="javascript">
+        //Success Modal Validation
+        /*<![CDATA[*/
+        var successMessage = /*[[${message}]]*/'default';
+    </script>
+    <script type="text/javascript" src="/js/lib/changeStatus.js"></script>
 </body>
 
 </html>
