@@ -115,6 +115,11 @@ public interface ScheduleService {
      */
     CourseSchedule findCourseScheduleById(Long Id);
     
-    CourseSchedule findCourseScheduleByCourseId(Long Id);
+    /**
+     * Find Course Schedule by Course Id
+     * @param long id
+     * @return 
+     */
+    CourseSchedule findCourseScheduleByCourseId(Long id);
     
 }
