@@ -259,8 +259,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     /**
      * <pre>
-     * Find Course Schedule by Id Call ScheduleDao.findCourseScheduleById by using
-     * Course Schedule Id
+     * Find Course Schedule by Id Call ScheduleDao.findCourseScheduleById by using Id
      * 
      * <pre>
      * 
@@ -276,10 +275,24 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     }
 
+    
+    /**
+     * <pre>
+     * Find Course Schedule by Id Call ScheduleDao.findCourseScheduleByCourseId by using
+     * Course Schedule Id
+     * 
+     * <pre>
+     * 
+     * @param courseSchedule
+     */
 	@Override
-	public CourseSchedule findCourseScheduleByCourseId(Long Id) {
-		// TODO Auto-generated method stub
-		return null;
+	public CourseSchedule findCourseScheduleByCourseId(Long id) {
+	    try {
+	           return scheduleDao.findCourseScheduleByCourseId(id);
+	        } catch (DataAccessException ex) {
+	            throw new IllegalArgumentException("Can't find Course Schedule");
+	        }
+		
 	}
 
 }
