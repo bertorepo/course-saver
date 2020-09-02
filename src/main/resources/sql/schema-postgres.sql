@@ -136,7 +136,7 @@ ALTER SEQUENCE tsup."DEPARTMENT_ID_seq"
     
 CREATE TABLE tsup.DEPARTMENT
 (
-    id NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
+    id bigint NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
     department_name character varying(50) NOT NULL,
     CONSTRAINT "DEPARTMENT_pkey" PRIMARY KEY (id),
     CONSTRAINT "DEPARTMENT_NAME_unique" UNIQUE (department_name)
