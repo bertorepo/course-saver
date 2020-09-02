@@ -33,7 +33,7 @@
 					</li>
 					</th:block>
 					<!--Member-->
-					<th:block sec:authorize="hasAuthority('Member')">
+					<th:block th:if="${#authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''Instructor'')') and not#authorization.expression('hasAuthority(''PMO'')')}">
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
 					</li>
@@ -46,13 +46,18 @@
 					</th:block>
 					<!--Member end-->
 					<!--PMO-->
-					<th:block sec:authorize="hasAuthority('PMO')">
+					<th:block th:if="${#authorization.expression('hasAuthority(''PMO'')') and not#authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''Instructor'')')}">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enrollment<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
+							<a class="dropdown-item" th:href="@{/enrollment/viewMemberCourse}">Enroll Member Course</a>
+						</div>
+					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
-							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
-							<a class="dropdown-item" th:href="@{/enrollment/viewMemberCourse}">Enroll Member Course</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
@@ -63,31 +68,139 @@
 						</div>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course Management <span class="caret"></span></a>
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" th:href="@{/courses/load}">Delete Course</a>
+							<a class="dropdown-item" th:href="@{/courses/load}">Manage Course</a>
 						</div>
 					</li>
 					</th:block>
 					<!--PMO end-->
 					<!--Instructor-->
-					<th:block sec:authorize="hasAuthority('Instructor')">
+					<th:block th:if="${#authorization.expression('hasAuthority(''Instructor'')') and not#authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''PMO'')')}">
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/schedules/view}">Instructor Course Schedule List</a>
-							<a class="dropdown-item" th:href="@{/attendance/schedules/0/participants}">View Instructor Course Participants</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/attendance/0/participants}">Change Attendance Status</a>
+							<a class="dropdown-item" th:href="@{/attendance/schedules/0/participants}">View Instructor Course Participants</a>
 							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
 						</div>
 					</li>
 					</th:block>
 					<!--Instructor end-->
+					<!--Member/Instructor-->
+					<th:block th:if="${#authorization.expression('hasAuthority(''Member'')') and #authorization.expression('hasAuthority(''Instructor'')') and not#authorization.expression('hasAuthority(''PMO'')')}">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enrollment<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
+							<a class="dropdown-item" th:href="@{/enrollment/mySchedules}">My Course Schedule</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/schedules/view}">Instructor Course Schedule List</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/attendance/signin}">Attend</a>
+							<a class="dropdown-item" th:href="@{/attendance/0/participants}">Change Attendance Status</a>
+							<a class="dropdown-item" th:href="@{/attendance/schedules/0/participants}">View Instructor Course Participants</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
+						</div>
+					</li>
+					</th:block>
+					<!--Member/Instructor end-->
+					<!--Instructor/PMO-->
+					<th:block th:if="${#authorization.expression('hasAuthority(''Instructor'')') and #authorization.expression('hasAuthority(''PMO'')') and not#authorization.expression('hasAuthority(''Member'')')}">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enrollment<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
+							<a class="dropdown-item" th:href="@{/enrollment/viewMemberCourse}">Enroll Member Course</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
+							<a class="dropdown-item" th:href="@{/schedules/view}">Instructor Course Schedule List</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/attendance/0/participants}">Change Attendance Status</a>
+							<a class="dropdown-item" th:href="@{/attendance/schedules/0/participants}">View Instructor Course Participants</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/absent}">Attendance for Absent</a>
+						</div>
+					</li>
+					</th:block>
+					<!--Instructor/PMO end-->
+					<!--Member/PMO-->
+					<th:block th:if="${#authorization.expression('hasAuthority(''PMO'')') and #authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''Instructor'')')}">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enrollment<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
+							<a class="dropdown-item" th:href="@{/enrollment/mySchedules}">My Course Schedule</a>
+							<a class="dropdown-item" th:href="@{/enrollment/viewMemberCourse}">Enroll Member Course</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/attendance/signin}">Attend</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/absent}">Attendance for Absent</a>
+						</div>
+					</li>
+					</th:block>
+					<!--Member/PMO end-->
+					<!--Member/Instructor/PMO-->
+					<th:block th:if="${#authorization.expression('hasAuthority(''Member'')') and #authorization.expression('hasAuthority(''Instructor'')') and #authorization.expression('hasAuthority(''PMO'')')}">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Enrollment<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/enrollment/viewCourseEnroll}">View Course Enroll</a>
+							<a class="dropdown-item" th:href="@{/enrollment/mySchedules}">My Course Schedule</a>
+							<a class="dropdown-item" th:href="@{/enrollment/viewMemberCourse}">Enroll Member Course</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
+							<a class="dropdown-item" th:href="@{/schedules/view}">Instructor Course Schedule List</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Attendance<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/attendance/signin}">Attend</a>
+							<a class="dropdown-item" th:href="@{/attendance/0/participants}">Change Attendance Status</a>
+							<a class="dropdown-item" th:href="@{/attendance/schedules/0/participants}">View Instructor Course Participants</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
+							<a class="dropdown-item" th:href="@{/attendance/generate/0/absent}">Attendance for Absent</a>
+						</div>
+					</li>
+					</th:block>
+					<!--Member/Instructor/PMO end-->
 				</ul>
 				<form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()"  th:action="@{/logout}" method="post">
 					<button class="btn btn-primary my-2 my-sm-0" ><i class="fa fa-sign-out"></i> Logout</button>
@@ -97,11 +210,10 @@
 	</div>
 
 	<footer th:fragment="footer">
-		<div class="footer-copyright text-center py-3">
+		<div class="text-center">
 			© 2020 Copyright
 		</div>
 	</footer>
-
 
 </body>
 

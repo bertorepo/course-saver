@@ -3,6 +3,7 @@ package com.fujitsu.ph.tsup.attendance.dao;
 import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
+import com.fujitsu.ph.tsup.attendance.model.ChangeStatusParticipant;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -10,9 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -36,7 +36,7 @@ import org.springframework.stereotype.Repository;
 //0.05    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.06    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.07    | 07/30/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
-//0.08    | 08/05/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
+//0.08    | 08/26/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //==================================================================================================
 /**
  * <pre>
@@ -130,6 +130,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
         String sql = "SELECT "
                 + "CSCHED.ID AS ID, " 
                 + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, "
+                + "D.ID AS DEPARTMENT_ID, "
                 + "C.NAME AS COURSE_NAME, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME,"            
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
@@ -158,7 +159,8 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "    SELECT NUMBER "
                 + "    FROM EMPLOYEE "
                 + "    WHERE ID = CPART.PARTICIPANT_ID"
-                + ") AS EMPLOYEE_NUMBER "
+                + ") AS EMPLOYEE_NUMBER, "
+                + "D.DEPARTMENT_NAME AS DEPARTMENT_NAME "
                 + "FROM COURSE_SCHEDULE AS CSCHED "
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
@@ -170,6 +172,8 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "ON CSCHED.VENUE_ID = V.ID "
                 + "INNER JOIN COURSE_PARTICIPANT AS CPART "
                 + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
+                + "INNER JOIN DEPARTMENT AS D "  
+                + "ON CSCHED.ID = D.ID "  
                 + "WHERE CSCHED.ID = :id AND CSCHED.STATUS = 'A'";
 
         SqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -195,28 +199,46 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public Set<CourseAttendance> findCourseScheduleDetailParticipantsById(Long id) {
         String sql = "SELECT "
-                + "CSCHED.ID AS ID, "
+                + "CATTEN.ID AS ID, "
                 + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, "
+                + "D.ID AS DEPARTMENT_ID, "
                 + "C.NAME AS COURSE_NAME, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "V.NAME AS VENUE_NAME, "
-                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
                 + "("
                 + "SELECT LAST_NAME "
                 + "    FROM EMPLOYEE "
-                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_LAST_NAME, "
                 + "("
                 + "    SELECT FIRST_NAME "
                 + "    FROM EMPLOYEE "
-                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_FIRST_NAME, "
-                + "CSCHED.STATUS AS STATUS, "
+                +"("                                      
+                + "SELECT NUMBER "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
+                + ") AS EMPLOYEE_NUMBER, "
+                + "("
+                + "SELECT DEPARTMENT_NAME "
+                + "     FROM DEPARTMENT "
+                + "     WHERE ID = CATTEN.PARTICIPANT_ID"
+                + ") AS DEPARTMENT_NAME, "
+                + "("
+                + "    SELECT EMAIL_ADDRESS "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID "
+                + ") AS EMAIL, "
+                + "C.DETAIL AS DETAIL, "
+                + "CATTEN.STATUS AS STATUS, "
                 + "CSCHEDDET.DURATION AS DURATION, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
                 + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
-                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME "
+                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME, "
+                + "CATTEN.LOG_OUT_DATETIME AS LOG_OUT_DATETIME "
                 + "FROM COURSE_SCHEDULE AS CSCHED "
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
@@ -229,7 +251,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "INNER JOIN COURSE_PARTICIPANT AS CPART "
                 + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
                 + "INNER JOIN COURSE_ATTENDANCE AS CATTEN "
-                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID " 
+                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
+                + "INNER JOIN DEPARTMENT AS D  "
+                + "ON CSCHED.ID = D.ID "
                 + "WHERE CSCHEDDET.ID = :id AND CSCHED.STATUS = 'A'";
 
         SqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -255,42 +279,63 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public Set<CourseAttendance> findCourseAttendanceByCourseScheduleDetailId(Long id) {
         String sql = "SELECT " 
-                + "CSCHED.ID AS ID,  " 
-                + "C.NAME AS COURSE_NAME,  "  
+                + "CATTEN.ID AS ID, "
+                + "D.ID AS DEPARTMENT_ID, "
+                + "C.NAME AS COURSE_NAME, "  
                 + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, " 
-                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME,   " 
-                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME,   " 
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, " 
                 + "V.NAME AS VENUE_NAME, " 
                 + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, " 
                 + "("
                 + "SELECT LAST_NAME "
-                + "    FROM tsup.EMPLOYEE  "
+                + "    FROM EMPLOYEE  "
                 + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_LAST_NAME, " 
                 + "("
-                + "    SELECT FIRST_NAME "
-                + "    FROM tsup.EMPLOYEE " 
+                + "SELECT FIRST_NAME "
+                + "    FROM EMPLOYEE " 
                 + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_FIRST_NAME, " 
+                + "("
+                + "SELECT NUMBER "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
+                + ") AS EMPLOYEE_NUMBER, "
+                + "("
+                + "SELECT DEPARTMENT_NAME "
+                + "     FROM DEPARTMENT "
+                + "     WHERE ID = CATTEN.PARTICIPANT_ID"
+                + ") AS DEPARTMENT_NAME, "
+                + "("
+                + "    SELECT EMAIL_ADDRESS "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID "
+                + ") AS EMAIL, "
+                + "C.DETAIL AS DETAIL, "
                 + "CSCHEDDET.DURATION AS DURATION, " 
-                + "CSCHED.STATUS AS STATUS, "
+                + "CATTEN.STATUS AS STATUS, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, " 
                 + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, " 
-                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME " 
+                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME, "
+                + "CATTEN.LOG_OUT_DATETIME AS LOG_OUT_DATETIME " 
                 + "FROM COURSE_SCHEDULE AS CSCHED  "
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
-                + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID  " 
+                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID  " 
                 + "INNER JOIN COURSE AS C " 
-                + "ON CSCHED.COURSE_ID = C.ID   "
-                + "INNER JOIN EMPLOYEE AS E  "
+                + "ON CSCHED.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
                 + "ON CSCHED.INSTRUCTOR_ID = E.ID " 
-                + "INNER JOIN VENUE AS V  " 
+                + "INNER JOIN VENUE AS V " 
                 + "ON CSCHED.VENUE_ID = V.ID " 
-                + "INNER JOIN COURSE_ATTENDANCE AS CATTEN  " 
+                + "INNER JOIN COURSE_ATTENDANCE AS CATTEN " 
                 + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID " 
+                + "INNER JOIN DEPARTMENT AS D "
+                + "ON CSCHED.ID = D.ID "
                 + "WHERE COURSE_SCHEDULE_DETAIL_ID = :id " 
                 + "AND CSCHED.STATUS = 'A'";
         
+        try {
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
                 .addValue("id", id);
         
@@ -299,6 +344,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
         
         Set<CourseAttendance> setCourseAttendance = new HashSet<CourseAttendance>(listCourseAttendance);
         return setCourseAttendance;
+        }catch(EmptyResultDataAccessException e) {
+            return null;
+        }
 
     }
 
@@ -315,22 +363,33 @@ public class AttendanceDaoImpl implements AttendanceDao {
      */
     @Override
     public void saveAttendance(CourseAttendance courseAttendance) {
-        String sql = "INSERT INTO "
-                + "COURSE_ATTENDANCE(COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT_ID, "
-                + "STATUS, LOG_IN_DATETIME, LOG_OUT_DATETIME, EMAIL)"
-                + "VALUES(:courseScheduleDetailId, :participantId, :status, "
-                + ":loginDateTime, '2020-07-01 10:00:00+08', 'r.ramos@fujitsu.com')";
+        String sql = "UPDATE COURSE_ATTENDANCE " 
+                + "SET status= 'P', log_in_datetime= 'now()' "
+                + "WHERE participant_id = :participantId AND "
+                + "course_schedule_detail_id= :courseScheduleDetailId ";
 
-        
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("courseScheduleDetailId", courseAttendance.getCourseScheduleDetailId())
                 .addValue("participantId", courseAttendance.getParticipantId())
-                .addValue("status", courseAttendance.getStatus())
                 .addValue("loginDateTime", courseAttendance.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         template.update(sql, namedParameters, generatedKeyHolder);
         generatedKeyHolder.getKeys().get("id");
+    }
+     
+    @Override
+    public void updateLogout(CourseAttendance courseAttendance) {
+        String sql = "UPDATE COURSE_ATTENDANCE SET LOG_OUT_DATETIME = :logoutDateTime "
+                + "WHERE participant_id = :participantId AND "
+                + "COURSE_SCHEDULE_DETAIL_ID = :courseScheduleDetailId ";
+    
+        
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("participantId", courseAttendance.getParticipantId())
+                .addValue("courseScheduleDetailId", courseAttendance.getCourseScheduleDetailId())
+                .addValue("logoutDateTime", courseAttendance.getLogoutDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
+        template.update(sql, namedParameters);      
     }
 
     /**
@@ -346,22 +405,45 @@ public class AttendanceDaoImpl implements AttendanceDao {
      */
     @Override
     public void updateAttendance(CourseAttendance courseAttendance) {
-        String sql = "UPDATE COURSE_ATTENDANCE SET course_schedule_detail_id = :courseScheduleDetailId, "
-                + "participant_id = :participantId, status = :status, "
-                + "log_in_datetime = 'now()', log_out_datetime = 'now()', "
-                + "email = 'null' "
-                + "WHERE id = :id ";
-
-        SqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue("id", courseAttendance.getId())
-                .addValue("courseScheduleDetailId", courseAttendance.getCourseScheduleDetailId())
-                .addValue("participantId", courseAttendance.getParticipantId())
-                .addValue("status", courseAttendance.getStatus());
-//                .addValue("loginDateTime", courseAttendance.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
-
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        template.update(sql, namedParameters, generatedKeyHolder);
-        generatedKeyHolder.getKeys().get("id");
+        String sql = "UPDATE COURSE_ATTENDANCE SET course_schedule_detail_id = :courseScheduleDetailId, "
+                + "participant_id = :participantId, "
+                + "status = :status, "
+                + "log_in_datetime = :loginDateTime, "
+                + "log_out_datetime = :logoutDateTime, "
+                + "email = :email "
+                + "WHERE participant_id = :participantId";
+
+        List<ChangeStatusParticipant> participants = courseAttendance.getParticipants();
+        
+        for(ChangeStatusParticipant changeStatusParticipant : participants) {
+           
+            if(changeStatusParticipant.getStatus() == 'P') {
+                SqlParameterSource namedParameters = new MapSqlParameterSource()
+                    .addValue("id", courseAttendance.getId()) 
+                    
+                    .addValue("courseScheduleDetailId", changeStatusParticipant.getCourseAttendanceId())
+                    .addValue("participantId", changeStatusParticipant.getParticipantId())                   
+                    .addValue("status", String.valueOf(changeStatusParticipant.getStatus()))
+                    .addValue("loginDateTime", changeStatusParticipant.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("logoutDateTime", changeStatusParticipant.getLogoutDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("email", changeStatusParticipant.getEmail());
+                     template.update(sql, namedParameters, generatedKeyHolder);  
+                     generatedKeyHolder.getKeys().get("id");
+            } else {
+                    SqlParameterSource namedParameters = new MapSqlParameterSource()
+                    .addValue("id", courseAttendance.getId()) 
+                                
+                    .addValue("courseScheduleDetailId", changeStatusParticipant.getCourseAttendanceId())
+                    .addValue("participantId", changeStatusParticipant.getParticipantId())                   
+                    .addValue("status", String.valueOf(changeStatusParticipant.getStatus()))
+                    .addValue("loginDateTime", null)
+                    .addValue("logoutDateTime", null)
+                    .addValue("email", changeStatusParticipant.getEmail());
+                    template.update(sql, namedParameters, generatedKeyHolder);  
+                    generatedKeyHolder.getKeys().get("id"); 
+             }           
+        }                 
     }
 
     /**
@@ -378,29 +460,43 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public Set<CourseAttendance> findCourseScheduleDetailById(Long id) {
         String sql = "SELECT "
-                + "CSCHED.ID AS ID, "
+                + "CATTEN.ID AS ID, "
                 + "CSCHEDDET.COURSE_SCHEDULE_ID AS COURSE_SCHEDULE_ID, "
+                + "D.ID AS DEPARTMENT_ID, "
                 + "C.NAME AS COURSE_NAME, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "V.NAME AS VENUE_NAME, "
-                + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
                 + "("
                 + "SELECT LAST_NAME "
                 + "    FROM EMPLOYEE "
-                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_LAST_NAME, "
                 + "("
                 + "    SELECT FIRST_NAME "
                 + "    FROM EMPLOYEE "
-                + "    WHERE ID = CPART.PARTICIPANT_ID"
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_FIRST_NAME, "
+                + "("
+                + "    SELECT EMAIL_ADDRESS "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID "
+                + ") AS EMAIL, "
+                + "("                         
+                + "    SELECT NUMBER "
+                + "    FROM EMPLOYEE "
+                + "    WHERE ID = CATTEN.PARTICIPANT_ID"
+                + ") AS EMPLOYEE_NUMBER, "
+                + "D.DEPARTMENT_NAME AS DEPARTMENT_NAME, "
+                + "C.DETAIL AS DETAIL, "
                 + "CSCHEDDET.DURATION AS DURATION, "
-                + "CSCHED.STATUS AS STATUS, "
+                + "CATTEN.STATUS AS STATUS, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
                 + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
-                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME "
-
+                + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME, "
+                + "CATTEN.LOG_OUT_DATETIME AS LOG_OUT_DATETIME "
+                
                 + "FROM COURSE_SCHEDULE AS CSCHED "
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
@@ -413,51 +509,43 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "INNER JOIN COURSE_PARTICIPANT AS CPART "
                 + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
                 + "INNER JOIN COURSE_ATTENDANCE AS CATTEN "
-                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID " 
+                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
+                + "INNER JOIN DEPARTMENT AS D  "
+                + "ON CSCHED.ID = D.ID "
                 + "WHERE CSCHEDDET.ID = :id AND CSCHED.STATUS = 'A'";
+        try {
+            SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
 
-        SqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue("id", id);
-        
-        List<CourseAttendance> attendanceList = template
-                .query(sql, namedParameters, new CourseAttendanceRowMapper());
-        
-        Set<CourseAttendance> setCourse = new HashSet<CourseAttendance>(attendanceList);
-        return setCourse;
+            List<CourseAttendance> attendanceList = template.query(sql, namedParameters,
+                    new CourseAttendanceRowMapper());
+
+            Set<CourseAttendance> setCourse = new HashSet<CourseAttendance>(attendanceList);
+            return setCourse;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
-    
+
     /**
-
      * <pre>
-
-     * Finds the all enrolled courses by participant
-
-     *
-
+     * Finds all the scheduled courses by participants
+     * 
      * <pre>
-
-     *
-
-     * @param fromDateTime
-
-     * @param toDateTime
-
-     * @param participantId
-
+     * 
+     * @param id
      * @return CourseParticipant
-
      * @author r.ramos
-
      */
-
     @Override
-
     public Set<CourseParticipant> findAllScheduledCoursesByParticipant(ZonedDateTime fromDateTime, ZonedDateTime toDateTime,
             Long participantId) {
 
         String query = "SELECT "
                 + "CPART.ID AS ID, "
-                + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, CSCHED.ID AS COURSE_SCHEDULE_ID, C.NAME AS COURSE_NAME, " 
+                + "D.ID AS DEPARTMENT_ID, "
+                + "CSCHEDDET.ID AS COURSE_SCHEDULE_ID, "
+                + "CSCHED.ID AS COURSE_SCHEDULE_ID, "
+                + "C.NAME AS COURSE_NAME, " 
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "V.NAME AS VENUE_NAME, " 
@@ -482,6 +570,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "    FROM EMPLOYEE "
                 + "    WHERE ID = CPART.PARTICIPANT_ID"
                 + ") AS EMPLOYEE_NUMBER, "
+                + "D.DEPARTMENT_NAME AS DEPARTMENT_NAME, "
                 + "CSCHEDDET.DURATION AS DURATION, "
                 + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
                 + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
@@ -497,6 +586,8 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "ON E.ID = CSCHED.INSTRUCTOR_ID " 
                 + "INNER JOIN tsup.VENUE AS V "
                 + "ON V.ID = CSCHED.VENUE_ID \r\n"
+                + "INNER JOIN DEPARTMENT AS D  "
+                + "ON CSCHED.ID = D.ID "
                 + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
                 + "AND CPART.PARTICIPANT_ID = :participantId "
                + "AND CSCHED.STATUS = 'A'";
@@ -513,6 +604,3 @@ public class AttendanceDaoImpl implements AttendanceDao {
     }
 
 }
-
- 
-

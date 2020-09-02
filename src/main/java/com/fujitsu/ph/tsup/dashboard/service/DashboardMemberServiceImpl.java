@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.dashboard.dao.DashboardMemberDao;
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardMember;
 
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign Up
 //System Name  :Dashboard
 //Class Name   :DashboardMemberServiceImpl.java
@@ -18,6 +18,7 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) Jm.Deguzman   | New Creation
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
 //==================================================================================================
 /**
 * <pre>
@@ -42,8 +43,8 @@ public class DashboardMemberServiceImpl implements DashboardMemberService{
      * @return Sat<DashboardMemberForm>
      */
     @Override
-    public Set<DashboardMemberForm> findCourses(Long employeeId){
-        Set<DashboardMemberForm> dashboardMember = dao.findCourses(employeeId);
+    public Set<DashboardMember> findCourses(Long employeeId){
+        Set<DashboardMember> dashboardMember = dao.findCourses(employeeId);
         if (dashboardMember.isEmpty() || dashboardMember == null) {
             throw new IllegalArgumentException("No records found");
         } 

@@ -12,9 +12,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardInstructorForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardInstructor;
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign Up
 //System Name  :Dashboard
 //Class Name   :DashboardInstructorDaoImpl.java
@@ -23,6 +23,7 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardInstructorForm;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/24/2020 |  WS) Jm.Deguzman   | New Creation
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
 //==================================================================================================
 /**
 * <pre>
@@ -48,7 +49,7 @@ public class DashboardInstructorDaoImpl implements DashboardInstructorDao {
      * @return Set<DashboardInstructorForm>
      */
     @Override
-    public Set<DashboardInstructorForm> findCourses(Long employeeId) {
+    public Set<DashboardInstructor> findCourses(Long employeeId) {
         String sql = "SELECT C.NAME AS \"C.NAME\", " +
                 "CSD.SCHEDULED_START_DATETIME AS \"CSD.SCHEDULED_START_DATETIME\", " +
                 "CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " +
@@ -71,8 +72,8 @@ public class DashboardInstructorDaoImpl implements DashboardInstructorDao {
                 .addValue("employeeId", employeeId)
                 .addValue("status", "A");
         
-        List<DashboardInstructorForm> dashboardInstructor = template.query(sql, namedParameters, new DashboardInstructorRowMapper());
-        Set<DashboardInstructorForm> setDashboardInstructor = new HashSet<DashboardInstructorForm>(dashboardInstructor);
+        List<DashboardInstructor> dashboardInstructor = template.query(sql, namedParameters, new DashboardInstructorRowMapper());
+        Set<DashboardInstructor> setDashboardInstructor = new HashSet<DashboardInstructor>(dashboardInstructor);
         return setDashboardInstructor;
     }
 

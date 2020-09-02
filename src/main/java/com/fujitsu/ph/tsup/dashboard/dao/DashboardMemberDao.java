@@ -2,9 +2,9 @@ package com.fujitsu.ph.tsup.dashboard.dao;
 
 import java.util.Set;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardMember;
 //==================================================================================================
-//$Id:$
+//$Id:PR06$
 //Project Name :Training Sign Up
 //System Name  :Dashboard
 //Class Name   :DashboardMemberDao.java
@@ -13,6 +13,7 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01 | 06/23/2020 |  WS) Jm.Deguzman   | New Creation
+//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
 //==================================================================================================
 /**
 * <pre>
@@ -40,5 +41,5 @@ public interface DashboardMemberDao {
      * @param employeeId
      * @return Set<dashboardMemberForm>
      */
-    Set<DashboardMemberForm> findCourses(Long employeeId);
+    Set<DashboardMember> findCourses(Long employeeId);
 }
