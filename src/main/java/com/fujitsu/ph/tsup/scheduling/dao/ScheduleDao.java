@@ -86,7 +86,6 @@ public interface ScheduleDao {
      */
 	void deleteCourseScheduleById(Long id);
 	
-	
-	CourseSchedule findCourseScheduleByCourseId(Long id);
+	Set<CourseSchedule> findCourseScheduleByCourseId(Long id);
 	
 }

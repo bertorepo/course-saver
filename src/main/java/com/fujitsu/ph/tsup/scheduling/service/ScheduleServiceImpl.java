@@ -286,13 +286,12 @@ public class ScheduleServiceImpl implements ScheduleService {
      * @param courseSchedule
      */
 	@Override
-	public CourseSchedule findCourseScheduleByCourseId(Long id) {
+	public Set<CourseSchedule> findCourseScheduleByCourseId(Long id) {
 	    try {
 	           return scheduleDao.findCourseScheduleByCourseId(id);
 	        } catch (DataAccessException ex) {
 	            throw new IllegalArgumentException("Can't find Course Schedule");
 	        }
-		
 	}
 
 }

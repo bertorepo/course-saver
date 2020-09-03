@@ -120,6 +120,6 @@ public interface ScheduleService {
      * @param long id
      * @return 
      */
-    CourseSchedule findCourseScheduleByCourseId(Long id);
-    
+    Set<CourseSchedule> findCourseScheduleByCourseId(Long id);
+ 
 }
