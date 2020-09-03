@@ -44,6 +44,7 @@ import static org.mockito.Mockito.when;
 //--------+------------+-------------------------------------------------+--------------------------
 //0.01    | 07/08/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | New Creation
 //0.02    | 07/08/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | Update
+//0.03    | 09/02/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | Update
 //==================================================================================================
 /**
 * <pre>
@@ -52,7 +53,7 @@ import static org.mockito.Mockito.when;
 * 
 * <pre>
 * 
-* @version 0.02
+* @version 0.03
 * @author k.abad
 * @author j.iwarat
 * @author r.ramos
@@ -159,6 +160,6 @@ public class FindCourseScheduleByIdTest {
     private CourseParticipant createCourseParticipant() {
         return new CourseParticipant.Builder(1L, 2L, "Java", "Lorenzo, Loyce", "WFH", 22L, "Abad, Kenneth", 
                 ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), ZonedDateTime.parse("2020-07-06T17:30:34.983+08:00"), 
-                2.0f, ZonedDateTime.parse("2019-08-08T09:15:24.983+08:00"), "k.abad@fujitsu.com", "220054288").build();
+                2.0f, ZonedDateTime.parse("2019-08-08T09:15:24.983+08:00"), "k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
     }
 }

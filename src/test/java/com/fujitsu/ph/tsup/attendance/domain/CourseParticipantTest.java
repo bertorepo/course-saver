@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 //Version | Date       | Updated By                                      | Content
 //--------+------------+-------------------------------------------------+--------------------------
 //0.01    | 07/06/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | New Creation
+//0.02    | 09/02/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | Update
 //==================================================================================================
 /**
 * <pre>
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 * 
 * <pre>
 * 
-* @version 0.01
+* @version 0.02
 * @author k.abad
 * @author j.iwarat
 * @author r.ramos
@@ -54,7 +55,7 @@ public class CourseParticipantTest {
         CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", 
                 "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
                 ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+                "k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertNotNull(courseParticipant);
         assertEquals(courseParticipant.getCourseName(), "java");
@@ -72,9 +73,9 @@ public class CourseParticipantTest {
     @Test
     void testId_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(null, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(null, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Id should not be empty"));
@@ -91,9 +92,9 @@ public class CourseParticipantTest {
     @Test
     void testId_IsZero() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(0L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(0L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();          
         });
         
         assertThat(argument.getMessage(), equalTo("Id should not be empty"));
@@ -109,8 +110,9 @@ public class CourseParticipantTest {
     @Test
     void testId_IsValid() {
         CourseParticipant courseParticipant = new CourseParticipant.Builder(12345L, 1000L, "java", "Lorenzo, Loyce", 
-                "WFH", 22L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();
+                "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getId(), 12345L);
         assertNotEquals(courseParticipant.getId(), 11111L);
@@ -128,9 +130,9 @@ public class CourseParticipantTest {
     @Test
     void testCourseScheduleId_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, null, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, null, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Course schedule id id should not be empty"));  
@@ -147,9 +149,9 @@ public class CourseParticipantTest {
     @Test
     void testCourseScheduleId_IsZero() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 0L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 0L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();            
         });
         
         assertThat(argument.getMessage(), equalTo("Course schedule id id should not be empty"));
@@ -164,10 +166,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testCourseScheduleId_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(12345L, 2000L, "java", 
-                "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 2000L, "java", "Lorenzo, Loyce", 
+                "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getCourseScheduleId(), 2000L);
         assertNotEquals(courseParticipant.getCourseScheduleId(), 132L);
@@ -185,9 +187,9 @@ public class CourseParticipantTest {
     @Test
     void testCourseName_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, null, "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, null, "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();         
         });
         
         assertThat(argument.getMessage(), equalTo("Course Name should not be empty"));  
@@ -204,9 +206,9 @@ public class CourseParticipantTest {
     @Test
     void testCourseName_IsEmpty() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();          
         });
         
         assertThat(argument.getMessage(), equalTo("Course Name should not be empty"));  
@@ -221,10 +223,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testCourseName_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(12345L, 2000L, "SpringBoot", 
-                "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "SpringBoot", "Lorenzo, Loyce", 
+                "WFH", 20L, "Abad, Kenneth",ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getCourseName(), "SpringBoot");
         assertNotEquals(courseParticipant.getCourseName(), "java");
@@ -243,9 +245,9 @@ public class CourseParticipantTest {
     @Test
     void testInstructorName_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", null, "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", null, "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();          
         });
         
         assertThat(argument.getMessage(), equalTo("Instructor Name should not be empty"));  
@@ -262,9 +264,9 @@ public class CourseParticipantTest {
     @Test
     void testInstructorName_IsEmpty() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();          
         });
         
         assertThat(argument.getMessage(), equalTo("Instructor Name should not be empty"));  
@@ -279,10 +281,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testInstructorName_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", 
-                "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", 
+                "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getInstructorName(), "Lorenzo, Loyce");
         assertNotEquals(courseParticipant.getInstructorName(), "De Guzman, Gene");
@@ -301,9 +303,9 @@ public class CourseParticipantTest {
     @Test
     void testVenueName_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", null, 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", null, 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();            
         });
         
         assertThat(argument.getMessage(), equalTo("Venue Name should not be empty"));  
@@ -320,9 +322,9 @@ public class CourseParticipantTest {
     @Test
     void testVenueName_IsEmpty() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Venue Name should not be empty"));  
@@ -337,10 +339,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testVenueName_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(12345L, 2000L, "SpringBoot", 
-                "Lorenzo, Loyce", "Online", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", 
+                "Online", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getVenueName(), "Online");
         assertNotEquals(courseParticipant.getVenueName(), "WFH");
@@ -359,9 +361,9 @@ public class CourseParticipantTest {
     @Test
     void testParticipantId_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", null, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", null, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();            
         });
         
         assertThat(argument.getMessage(), equalTo("Participant should not be empty"));  
@@ -378,9 +380,9 @@ public class CourseParticipantTest {
     @Test
     void testParticipantId_IsZero() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 0L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 0L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Participant should not be empty"));  
@@ -395,10 +397,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testParticipantId_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(12345L, 2000L, "SpringBoot", 
-                "Lorenzo, Loyce", "Online", 22L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", 
+                "WFH", 22L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getParticipantId(), 22L);
         assertNotEquals(courseParticipant.getParticipantId(), 11L);
@@ -416,9 +418,9 @@ public class CourseParticipantTest {
     @Test
     void testParticipantName_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, null, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, null, 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Participant Name should not be empty"));  
@@ -435,9 +437,9 @@ public class CourseParticipantTest {
     @Test
     void testParticipantName_IsEmpty() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Participant Name should not be empty"));  
@@ -452,10 +454,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testParticipantName_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", 
-                "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", 
+                "WFH", 20L, "Abad, Kenneth",ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getParticipantName(), "Abad, Kenneth");
         assertNotEquals(courseParticipant.getParticipantName(), "Pedro");
@@ -474,9 +476,9 @@ public class CourseParticipantTest {
     @Test
     void testScheduledStartDateTime_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                null, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    null, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Scheduled start date should not be empty"));  
@@ -491,10 +493,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testScheduledStartDateTime_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(12345L, 2000L, "SpringBoot", 
-                "Lorenzo, Loyce", "Online", 22L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", 
+                "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getScheduledStartDateTime(), ZonedDateTime.parse("2020-07-03T17:30:00Z"));
         assertNotEquals(courseParticipant.getScheduledStartDateTime(), ZonedDateTime.now());
@@ -513,9 +515,9 @@ public class CourseParticipantTest {
     @Test
     void testScheduledEndDateTime_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), null, 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), null, 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Scheduled end date and time should not be empty"));  
@@ -533,9 +535,9 @@ public class CourseParticipantTest {
     @Test
     void testScheduledEndDateTime_IsAfter() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-10-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-06-03T17:30:00Z"), 
+                    2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();           
         });
         
         assertThat(argument.getMessage(), equalTo("Scheduled end date and time should be greater than or equal to the the scheduled start date and time"));  
@@ -550,10 +552,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testScheduledEndDateTime_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(12345L, 2000L, "SpringBoot", 
-                "Lorenzo, Loyce", "Online", 22L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", 
+                "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getScheduledEndDateTime(), ZonedDateTime.parse("2020-07-03T17:30:00Z"));
         assertNotEquals(courseParticipant.getScheduledEndDateTime(), ZonedDateTime.now());
@@ -571,9 +573,9 @@ public class CourseParticipantTest {
     @Test
     void testRegistrationDate_IsNull() {
         IllegalArgumentException argument = assertThrows(IllegalArgumentException.class, () -> {
-                new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
-                null, "k.abad@fujitsu.com", "220054288").build();            
+            new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", "WFH", 20L, "Abad, Kenneth", 
+                    ZonedDateTime.parse("2020-07-03T17:30:00Z"), ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                    2.0f, null,"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();          
         });
         
         assertThat(argument.getMessage(), equalTo("Registration date should not be empty"));  
@@ -588,10 +590,10 @@ public class CourseParticipantTest {
      */
     @Test
     void testRegistrationDate_IsValid() {
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(12345L, 2000L, "SpringBoot", 
-                "Lorenzo, Loyce", "Online", 22L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
-                "k.abad@fujitsu.com", "220054288").build();
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1000L, "java", "Lorenzo, Loyce", 
+                "WFH", 20L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-03T17:30:00Z"), 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"), 2.0f, 
+                ZonedDateTime.parse("2020-07-03T17:30:00Z"),"k.abad@fujitsu.com", "220054288", 1L, "G3CC").build();
         
         assertEquals(courseParticipant.getRegistrationDate(), ZonedDateTime.parse("2020-07-03T17:30:00Z"));
         assertNotEquals(courseParticipant.getRegistrationDate(), ZonedDateTime.now());

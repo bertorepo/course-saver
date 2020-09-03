@@ -1,13 +1,7 @@
 package com.fujitsu.ph.tsup.attendance.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import com.fujitsu.ph.tsup.attendance.dao.AttendanceDao;
+import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -22,8 +16,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fujitsu.ph.tsup.attendance.dao.AttendanceDao;
-import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 //==================================================================================================
 //$Id:PR03$
@@ -35,6 +35,7 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 //Version | Date       | Updated By                                    | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 07/08/2020 |   WS) K.Abad, WS) J.Iwarat, WS) R.Ramos       | New Creation
+//0.02    | 09/02/2020 |   WS) K.Abad, WS) J.Iwarat, WS) R.Ramos       | Update
 //==================================================================================================
 /**
 * <pre>
@@ -42,7 +43,7 @@ import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 * In this class, test the FindCourseAttendanceByCourseScheduleDetailId of service using mockito
 * </pre>
 * 
-* @version 0.01
+* @version 0.02
 * @author k.abad
 * @author j.iwarat
 * @author r.ramos
@@ -138,8 +139,11 @@ public class FindCourseAttendanceByCourseScheduleDetailIdTest {
      */
     private CourseAttendance createCourseAttendance1() {
         CourseAttendance courseAttendance1 = new CourseAttendance.Builder(4L, 2L, "SS", "De Leon, John Carlo", "TwoNeo",
-                3L, "Abad, Kenneth", ZonedDateTime.now(), ZonedDateTime.now().plusDays(5), 2.0f,
-                ZonedDateTime.now(), "P".charAt(0)).build();
+                3L, "Abad, Kenneth", ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 2.0f,
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), "P".charAt(0),
+                "Course Description", "k.abad@fujitsu.com", 1L, "G3CC", "TRN123456").build();
         return courseAttendance1;
     }
 
@@ -151,8 +155,11 @@ public class FindCourseAttendanceByCourseScheduleDetailIdTest {
      */
     private CourseAttendance createCourseAttendance2() {
         CourseAttendance courseAttendance2 = new CourseAttendance.Builder(4L, 2L, "SS", "De Leon, John Carlo", "TwoNeo",
-                3L, "Ramon, Ramos", ZonedDateTime.now(), ZonedDateTime.now().plusDays(5), 2.0f,
-                ZonedDateTime.now(), "A".charAt(0)).build();
+                3L, "Ramos, Ramon", ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 2.0f,
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), "A".charAt(0),
+                "Course Description", "k.abad@fujitsu.com", 1L, "G3CC", "TRN123456").build();
         return courseAttendance2;
     }
 }

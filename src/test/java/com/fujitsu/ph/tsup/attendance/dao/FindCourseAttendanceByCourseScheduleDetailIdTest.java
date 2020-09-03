@@ -1,8 +1,11 @@
 package com.fujitsu.ph.tsup.attendance.dao;
 
 import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
+
 import java.util.Set;
+
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -10,20 +13,21 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 //==================================================================================================
 //$Id:PR03$
 //Project Name :Training Sign Up
 //System Name  :Attendance process
-//Class Name   :findCourseAttendanceByCourseScheduleDetailIdTest.java
+//Class Name   :FindCourseAttendanceByCourseScheduleDetailIdTest.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By                                    | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 07/08/2020 |   WS) K.Abad, WS) J.Iwarat, WS) R.Ramos       | New Creation
+//0.02    | 09/02/2020 |   WS) K.Abad, WS) J.Iwarat, WS) R.Ramos       | Update
 //==================================================================================================
 /**
 * <pre>
@@ -31,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 * In this class, test the findCourseAttendanceByCourseScheduleDetailId if retrieving data from the database
 * </pre>
 * 
-* @version 0.01
+* @version 0.02
 * @author k.abad
 * @author j.iwarat
 * @author r.ramos
@@ -39,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @JdbcTest
 @ActiveProfiles({ "postgres" })
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-public class findCourseAttendanceByCourseScheduleDetailIdTest {
+public class FindCourseAttendanceByCourseScheduleDetailIdTest {
 
     /*
      * ScheduleDao as dependency
@@ -71,7 +75,7 @@ public class findCourseAttendanceByCourseScheduleDetailIdTest {
      */
     @Test
     void testfindCourseAttendanceByCourseScheduleDetailId() {
-        Set<CourseAttendance> courseAttendanceSet = attendanceDao.findCourseAttendanceByCourseScheduleDetailId(2L);
+        Set<CourseAttendance> courseAttendanceSet = attendanceDao.findCourseAttendanceByCourseScheduleDetailId(1L);
         
         for (CourseAttendance courseAttendance : courseAttendanceSet) {
             System.out.println("\nId:" + courseAttendance.getId());
@@ -92,9 +96,7 @@ public class findCourseAttendanceByCourseScheduleDetailIdTest {
             assertEquals("Understanding SS",courseAttendance.getCourseName());
             assertEquals(2L, courseAttendance.getCourseScheduleDetailId());
             assertEquals("Two/Neo", courseAttendance.getVenueName());
-        }
-        
+        }        
         assertNotNull(courseAttendanceSet.size());
-
     }
 }

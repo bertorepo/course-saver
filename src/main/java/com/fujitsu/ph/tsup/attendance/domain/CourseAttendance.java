@@ -20,6 +20,7 @@ import com.fujitsu.ph.tsup.attendance.model.ChangeStatusParticipant;
 //0.04    | 07/08/2020 |  WS) R. Ramos                               | Updated
 //0.05    | 07/09/2020 |  WS) R. Ramos                               | Updated
 //0.06    | 08/26/2020 |  WS) K. Abad, WS) J. Iwarat, WS) R.Ramos    | Updated
+//0.07    | 09/02/2020 |  WS) K. Abad, WS) J. Iwarat, WS) R.Ramos    | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -27,7 +28,7 @@ import com.fujitsu.ph.tsup.attendance.model.ChangeStatusParticipant;
  * 
  * <pre>
  * 
- * @version 0.06
+ * @version 0.07
  * @author k.abad
  * @author j.iwarat
  * @author r.ramos
@@ -599,7 +600,7 @@ public class CourseAttendance {
 
         private void validateId(Long id) {
             if (id == null || id == 0) {
-                //throw new IllegalArgumentException("Id should not be empty");
+                throw new IllegalArgumentException("Id should not be empty");
             }
         }
 

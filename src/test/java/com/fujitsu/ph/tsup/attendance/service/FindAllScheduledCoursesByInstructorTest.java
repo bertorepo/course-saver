@@ -3,17 +3,21 @@ package com.fujitsu.ph.tsup.attendance.service;
 import com.fujitsu.ph.tsup.attendance.dao.AttendanceDao;
 import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.attendance.domain.CourseScheduleDetail;
+
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,21 +36,22 @@ import static org.mockito.Mockito.when;
 //Version | Date       | Updated By                                    | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 07/08/2020 |   WS) K.Abad, WS) J.Iwarat, WS) R.Ramos       | New Creation
+//0.02    | 09/02/2020 |   WS) K.Abad, WS) J.Iwarat, WS) R.Ramos       | Update
 //==================================================================================================
 /**
  * <pre>
 * It is the test of method of service class
-* In this class, test the findAllScheduledCourses of service using mockito
+* In this class, test the findAllScheduledCoursesByInstructor of service using mockito
  * </pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author k.abad
  * @author j.iwarat
  * @author r.ramos
  */
 
 @ExtendWith(SpringExtension.class)
-public class findAllScheduledCoursesByInstructorTest {
+public class FindAllScheduledCoursesByInstructorTest {
 
     @TestConfiguration
     static class TestContextConfiguration {
