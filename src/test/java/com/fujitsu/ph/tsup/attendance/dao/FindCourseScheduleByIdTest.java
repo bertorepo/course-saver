@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 //Version | Date       | Updated By                                      | Content
 //--------+------------+-------------------------------------------------+--------------------------
 //0.01    | 07/06/2020 |  WS) K.Abad , WS) J.Iwarat, WS) R.Ramos         | New Creation
+//0.02    | 09/02/2020 |  WS) K.Abad , WS) J.Iwarat, WS) R.Ramos         | Update
 //==================================================================================================
 /**
 * <pre>
@@ -42,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 * 
 * <pre>
 * 
-* @version 0.01
+* @version 0.02
 * @author k.abad
 * @author j.iwarat
 * @author r.ramos
@@ -87,7 +88,7 @@ class FindCourseScheduleByIdTest {
      */    
     @Test
     void testFindCourseScheduleById() {    
-        Set<CourseParticipant> courseParticipantSet = attendanceDao.findCourseScheduleById(1L);
+        Set<CourseParticipant> courseParticipantSet = attendanceDao.findCourseScheduleById(2L);
     
         for(CourseParticipant courseParticipant : courseParticipantSet) {
             System.out.println("Course ID: " + courseParticipant.getId());
@@ -104,7 +105,7 @@ class FindCourseScheduleByIdTest {
             System.out.println("Email: " + courseParticipant.getEmail());
             System.out.println("Employee Number: " + courseParticipant.getEmployeeNumber());
         
-            assertTrue(!courseParticipant.getScheduledEndDateTime()
+            assertTrue(courseParticipant.getScheduledEndDateTime()
                     .isAfter(courseParticipant.getScheduledStartDateTime()));
             assertNotNull(courseParticipantSet.size());
             assertEquals("LORENZO, LOYCE", courseParticipant.getInstructorName());

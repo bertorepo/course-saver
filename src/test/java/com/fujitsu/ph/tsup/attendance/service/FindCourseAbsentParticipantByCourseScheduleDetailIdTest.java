@@ -1,27 +1,19 @@
 package com.fujitsu.ph.tsup.attendance.service;
 
 import com.fujitsu.ph.tsup.attendance.dao.AttendanceDao;
-
 import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
 
 import java.time.ZonedDateTime;
-
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import org.springframework.context.annotation.Bean;
-
 import org.springframework.dao.DataRetrievalFailureException;
-
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,9 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import static org.mockito.ArgumentMatchers.any;
-
 import static org.mockito.Mockito.when;
 
 //==================================================================================================
@@ -45,6 +35,7 @@ import static org.mockito.Mockito.when;
 //Version | Date       | Updated By                                       | Content
 //--------+------------+--------------------------------------------------+-------------------------
 //0.01    | 07/08/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos           | New Creation
+//0.02    | 09/02/2020 |  WS) K.Abad, WS) J.Iwarat, WS) R.Ramos           | Update
 //==================================================================================================
 /**
 * <pre>
@@ -53,7 +44,7 @@ import static org.mockito.Mockito.when;
 * 
 * <pre>
 * 
-* @version 0.01
+* @version 0.02
 * @author k.abad
 * @author j.iwarat
 * @author r.ramos
@@ -128,7 +119,7 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
         assertNotEquals('A', attendanceOne.getStatus());
         assertNotEquals('A', attendanceTwo.getStatus());
         assertNotSame(ZonedDateTime.now(), attendanceFour.getLoginDateTime());
-        assertEquals(4, course.size());
+        assertEquals(2, course.size());
         assertEquals('A', attendanceThree.getStatus());
         assertEquals('A', attendanceFour.getStatus());
         assertEquals('P', attendanceTwo.getStatus());
@@ -171,9 +162,9 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
         assertNotNull(courseAttendance.size());
         assertNotEquals('A', presentOne.getStatus());
         assertNotSame('A', presentTwo.getLoginDateTime());
-        assertEquals(2, courseAttendance.size());
+        assertEquals(1, courseAttendance.size());
         assertEquals("Juan", presentOne.getParticipantName());
-        assertEquals(11L, presentTwo.getParticipantId());
+        assertEquals(20L, presentTwo.getParticipantId());
     }
     
     /**
@@ -205,10 +196,13 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      * @return courseSchedule
      */
     private CourseAttendance courseAbsentOne() {
-        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1L, "java", 
-                "Lorenzo, Loyce", "WFH", 22L, "Abad, Kenneth", ZonedDateTime.now(), ZonedDateTime.now()
-                .plusDays(5), 2.0f, ZonedDateTime.now(), 'A').absent().build();
-        return courseSchedule;
+        CourseAttendance courseAttendance = new CourseAttendance.Builder(12345L, 1L, "java", 
+                "Lorenzo, Loyce", "WFH", 22L, "Abad, Kenneth",ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 2.0f, 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 'A',
+                "Course Description", "k.abad@fujitsu.com", 1L, "G3CC", "TRN123456").absent().build();
+        return courseAttendance;
     }
 
     /**
@@ -220,10 +214,13 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      * @return courseSchedule
      */
     private CourseAttendance courseAbsentTwo() {
-        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1L, "java", 
-                "Lorenzo, Loyce", "WFH", 20L, "Velasco, Monica", ZonedDateTime.now(), ZonedDateTime.now()
-                .plusDays(5), 2.0f, ZonedDateTime.now(), 'A').absent().build();
-        return courseSchedule;
+        CourseAttendance courseAttendance = new CourseAttendance.Builder(12345L, 1L, "java", 
+                "Lorenzo, Loyce", "WFH", 20L, "Velasco, Monica", ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"),
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 2.0f, 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"),
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 'A',
+                "Course Description", "k.abad@fujitsu.com", 1L, "G3CC", "TRN123456").absent().build();
+        return courseAttendance;
     }
     
     /**
@@ -235,11 +232,14 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      * @return courseSchedule
      */
     private CourseAttendance coursePresentOne() {
-        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1L, "java", 
-                "Lorenzo, Loyce", "WFH", 10L, "Juan", ZonedDateTime.now(), ZonedDateTime.now()
-                .plusDays(5), 2.0f, ZonedDateTime.now(), 'P')
-                .present(ZonedDateTime.now()).build();
-        return courseSchedule;
+        CourseAttendance courseAttendance = new CourseAttendance.Builder(12345L, 1L, "java", 
+                "Lorenzo, Loyce", "WFH", 20L, "Juan", ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"),
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 2.0f, 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"),
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 'A',
+                "Course Description", "k.abad@fujitsu.com", 1L, "G3CC", "TRN123456")
+                .present(ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00")).build();
+        return courseAttendance;
     }
     
     /**
@@ -251,10 +251,13 @@ public class FindCourseAbsentParticipantByCourseScheduleDetailIdTest {
      * @return courseSchedule
      */
     private CourseAttendance coursePresentTwo() {
-        CourseAttendance courseSchedule = new CourseAttendance.Builder(12345L, 1L, "java", 
-                "Lorenzo, Loyce", "WFH", 11L, "Pedro", ZonedDateTime.now(), ZonedDateTime.now()
-                .plusDays(5), 2.0f, ZonedDateTime.now(), 'P')
-                .present(ZonedDateTime.now()).build();
-        return courseSchedule;
+        CourseAttendance courseAttendance = new CourseAttendance.Builder(12345L, 1L, "java", 
+                "Lorenzo, Loyce", "WFH", 20L, "Pedro", ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"),
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 2.0f, 
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"),
+                ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00"), 'A',
+                "Course Description", "k.abad@fujitsu.com", 1L, "G3CC", "TRN123456")
+                .present(ZonedDateTime.parse("2020-07-06T08:30:47.946+08:00")).build();
+        return courseAttendance;
     }
 }

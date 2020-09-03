@@ -37,13 +37,14 @@ import org.springframework.stereotype.Repository;
 //0.06    | 07/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.07    | 07/30/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.08    | 08/26/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
+//0.09    | 09/02/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access class for attendance related database access
  * </pre>
  * 
- * @version 0.08
+ * @version 0.09
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
@@ -373,9 +374,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 .addValue("participantId", courseAttendance.getParticipantId())
                 .addValue("loginDateTime", courseAttendance.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
 
-        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        template.update(sql, namedParameters, generatedKeyHolder);
-        generatedKeyHolder.getKeys().get("id");
+        template.update(sql, namedParameters);
     }
      
     @Override
@@ -405,7 +404,6 @@ public class AttendanceDaoImpl implements AttendanceDao {
      */
     @Override
     public void updateAttendance(CourseAttendance courseAttendance) {
-        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         String sql = "UPDATE COURSE_ATTENDANCE SET course_schedule_detail_id = :courseScheduleDetailId, "
                 + "participant_id = :participantId, "
                 + "status = :status, "
@@ -428,8 +426,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
                     .addValue("loginDateTime", changeStatusParticipant.getLoginDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                     .addValue("logoutDateTime", changeStatusParticipant.getLogoutDateTime().withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                     .addValue("email", changeStatusParticipant.getEmail());
-                     template.update(sql, namedParameters, generatedKeyHolder);  
-                     generatedKeyHolder.getKeys().get("id");
+                     template.update(sql, namedParameters);  
             } else {
                     SqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("id", courseAttendance.getId()) 
@@ -440,8 +437,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
                     .addValue("loginDateTime", null)
                     .addValue("logoutDateTime", null)
                     .addValue("email", changeStatusParticipant.getEmail());
-                    template.update(sql, namedParameters, generatedKeyHolder);  
-                    generatedKeyHolder.getKeys().get("id"); 
+                    template.update(sql, namedParameters);   
              }           
         }                 
     }
