@@ -10,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>View Schedule</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -28,36 +28,42 @@
 	  right: 0;
 	  background-color: white;
 	}
+	.dark-grey {
+		color: #606060;	
+	}
 	
 	</style>
 </head>
 
-<body>
+<body onload="load()">
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedules/view}" th:object="${changeSchedule}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
-			<hr>
-			<div class="card">
-				<div class="card-body">
-					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">From Date</label>
-						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
-						</div>
-						<label class="col-lg-2 col-form-label">To Date</label>
-						<div class="col-lg-3">
-							<input type="date" class="form-control" id="" >
-						</div>
-						
-					</div>
-					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
-					</div>
-				</div>
-			</div>
-		</form>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">From Date</label>
+                        <div class="col-lg-3">
+                           <input class="form-control" type="date" id="fromDate" name="fromDate"/>
+                           <!-- This is used to compile the converted date and pass it to the controller -->
+                           <input type="hidden" th:field="*{fromDateTime}" />
+                        </div>
+                        <label class="col-lg-2 col-form-label">To Date</label>
+                        <div class="col-lg-3">
+                            <input class="form-control" type="date" id="toDate" name="toDate"/>
+                            <!-- This is used to compile the converted date and pass it to the controller -->
+                            <input type="hidden" th:field="*{toDateTime}" />
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                    </div>
+                </div>
+            </div>
+             
 		<!--Error1 Modal-->
 		<div class="modal fade" id="error1Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
@@ -121,57 +127,44 @@
 						<th></th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-					<tr>
-						<td>Understanding UI</td>
-						<td>Genevieve De Guzman</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td class="sticky1"><button name="update" class="btn btn-warning"><i class="fa fa-pencil"></i> Update</button></td>
-						<td class="sticky2"><button name="delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button></td>
+				<tbody th:each="courseSchedules, stat : *{courseSchedules}">
+                	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
+                        <td th:text="${courseSchedules.courseName}"></td>
+                        <td th:text="${courseSchedules.instructorName}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
+                        <td th:text="${courseScheduleDetails.duration}"></td>
+						<td class="sticky1">
+								<a 	th:value="${courseSchedules.id}" 
+									th:id="${'update' + (stat.index + 1)}"
+									th:href="@{/schedules/courseSchedule/{courseScheduleId}/update
+												(courseScheduleId=${courseSchedules.id})}"
+									class="btn btn-warning">
+										<i class="fa fa-pencil"></i> Update	
+								</a>
+						</td>
+						<td class="sticky2">
+								<a th:value="${courseSchedules.id}" 
+								   th:id="${'delete' + (stat.index + 1)}"
+								   th:href="@{/schedules/courseSchedule/{courseScheduleId}/delete
+												(courseScheduleId=${courseSchedules.id})}"
+								   class="btn btn-danger">
+										<i class="fa fa-trash-o"></i> Delete
+								</a>
+					</td>
 					</tr>
 				</tbody>
 			</table>
-		</div>    	
+		</div> 
+		</form> 	
 		<!--Update Modal-->
-		<form class="form-horizontal">
+		<form class="form-horizontal" 
+			  action="#" 
+			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/update}" 
+			  th:object="${updateView}" 
+			  th:if="${(#httpServletRequest.requestURI != '/schedules/courseSchedules/view') 
+			  		&& (#httpServletRequest.requestURI != '/schedules/courseSchedule/{courseScheduleId}/delete')}"
+			  method="post">
 			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -183,81 +176,108 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-6">
-									<input type="text" class="form-control" id="" value="Understanding SS">
+									<input type="hidden" class="form-control" th:field="*{id}" id="updateCourseScheduleId">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<div class="col-lg-7">
+									<input type="text" class="form-control border-0 bg-white shadow-none dark-grey" 
+													   th:field="*{courseName}" 
+													   readonly>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Instructor:</label>
-								<div class="col-lg-6">
-									<select class="form-control" id="">
-										<option></option>
-										<option></option>
+								<div class="col-lg-7">
+									<select class="form-control" th:field="*{instructorId}">
+										<option value=""></option>
+										<option th:each="instructors : *{instructors}" 
+												th:value="${instructors.id}"
+												th:text="${instructors.name}"
+												th:selected="${instructors.id} eq *{instructorId}"></option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Venue:</label>
-								<div class="col-lg-6">
-									<select class="form-control" id="">
-										<option></option>
-										<option></option>
+								<div class="col-lg-7">
+									<select class="form-control" th:field="*{venueId}">
+										<option value=""></option>
+										<option th:each="venues : *{venues}" 
+												th:value="${venues.id}"
+												th:text="${venues.name}"
+												th:selected="${venues.id} eq *{venueId}"></option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Participants:</label>
-								<div class="col-lg-2">
-									<input type="text" class="form-control" id="" >
+								<div class="col-lg-3">
+									<input type="text" class="form-control" th:field="*{minRequired}" >
 								</div>
 								<div class="col-lg-1 text-center">—</div>
-								<div class="col-lg-2">
-									<input type="text" class="form-control" id="" >
+								<div class="col-lg-3">
+									<input type="text" class="form-control" th:field="*{maxAllowed}" >
 								</div>
 							</div>	
 							<div class="form-group row">
-								<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap">
-						<table class="table table-responsive table-borderless text-center"  >
-							<colgroup >
-								<col style="width:55%"/>
-								<col style="width:55%"/>
-							</colgroup>
-							<tr>
-								<td>
-									<label class="col-lg-6 col-form-label">Start/End Date</label>
-								</td>
-								<td>
-									<label class="col-lg-6 col-form-label">Start/End Time</label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
-										</div>
-										<div class="col-lg-6">
-											<input type="date" class="form-control" id="" >
-										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" id="" >
-										</div>
-									</div>
-								</td>
-							</tr>
-							
-						</table>
-					</div>
-							</div>
+								<div class="col-lg-12" style="overflow-x:hidden;display: block; white-space: nowrap">
+									<table class="table table-responsive table-borderless text-center overflow-hidden"  >
+										<colgroup >
+											<col style="width:45%"/>
+											<col style="width:10%"/>
+											<col style="width:45%"/>
+										</colgroup>
+										<tr>
+											<td>
+												<label class="col-lg-6 col-form-label">Start/End Date</label>
+											</td>
+											<td></td>
+											<td>
+												<label class="col-lg-6 col-form-label">Start/End Time</label>
+											</td>
+										</tr>
+										<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}">
+											<td>
+												<div class="form-group row">
+													<div class="col-lg-6">
+														<input type="date" class="form-control" 
+															   th:id="${'startDate' + (stat.index + 1)}">
+													</div>
+													<div class="col-lg-6">
+														<input type="time" class="form-control" 
+																th:id="${'startTime' + (stat.index + 1)}">
+													</div>
+												</div>
+											</td>
+											<td class="d-print-none">
+												<input type="hidden" name="startDateTime" 
+												 th:id="${'startDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledStartDateTime}">
+												<input type="hidden" name="endDateTime" 
+												 th:id="${'endDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledEndDateTime}">
+												<input type="hidden" th:id="${'index' + (stat.index + 1)}"
+												 th:value="${stat.index}">
+											</td>
+											<td>
+												<div class="form-group row">
+													<div class="col-lg-6">
+														<input type="date" class="form-control" 
+															   th:id="${'endDate' + (stat.index + 1)}" >
+													</div>
+													<div class="col-lg-6">
+														<input type="time" class="form-control" 
+																th:id="${'endTime' + (stat.index + 1)}">
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>	
 						</div>
 						<div class="modal-footer">
 							<input type="submit" name="update" class="btn btn-success" data-dismiss="modal" value="Update Schedule">
@@ -266,10 +286,7 @@
 					</div>
 				</div>
 			</div>
-		</form>
-		<!--Update Modal End-->
-		<!--Update Confirmation Modal-->
-		<form class="form-horizontal">
+			<!--Update Confirmation Modal-->
 			<div class="modal fade" id="updateConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
@@ -288,10 +305,8 @@
 					</div>
 				</div>
 			</div>
-		</form>
-		<!--Update Confirmation Modal End-->
-		<!--Update Confirmation Success Modal-->
-		<form class="form-horizontal">
+			<!--Update Confirmation Modal End-->
+			<!--Update Confirmation Success Modal-->
 			<div class="modal fade" id="updateSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
@@ -309,10 +324,18 @@
 					</div>
 				</div>
 			</div>
+			<!--Update Confirmation Success Modal End-->
 		</form>
-		<!--Update Confirmation Success Modal End-->
+		<!--Update Modal End-->		
+		
 		<!--Delete Modal-->
-		<form class="form-horizontal">
+		<form class="form-horizontal"
+			  action="#" 
+			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/delete}" 
+			  th:object="${deleteView}" 
+			  th:if="${(#httpServletRequest.requestURI != '/schedules/courseSchedules/view') 
+			  			&& (#httpServletRequest.requestURI != '/schedules/courseSchedule/{courseScheduleId}/update')}"
+			  method="get">
 			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -324,31 +347,47 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group row">
+								<input type="hidden" class="form-control" th:field="*{id}" id="deleteCourseScheduleId">
 								<label class="col-lg-3 col-form-label">Course ID:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="ABC-123">
+									<input type="text" class="form-control-plaintext" th:field="*{courseId}" disabled>
 								</div>
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="Understanding SS">
+									<input type="text" class="form-control-plaintext" th:field="*{courseName}" disabled>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Instructor:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="JC">
+									<input type="text" class="form-control-plaintext" th:field="*{instructorName}" disabled>
 								</div>
-								<label class="col-lg-3 col-form-label">Course Date(s):</label>
+								<label class="col-lg-3 col-form-label">Course Date and Time:</label>
+								<table> </table>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="January 2, 2020">
+								<div th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}"> 	
+								<label class="col-form-label">Start Date: 
+									<input type="text" class="form-control-plaintext" th:id="${'startDate' + (stat.index + 1)}" disabled></label>
+								<label class="col-form-label">End Date: 
+									<input type="text" class="form-control-plaintext" th:id="${'endDate' + (stat.index + 1)}" disabled> </label>
+								<br>
+								<label class="col-form-label">Start Time: 
+									<input type="text" class="form-control-plaintext" th:id="${'startTime' + (stat.index + 1)}" disabled> </label>
+								<label class="col-form-label">End Time: 
+									<input type="text" class="form-control-plaintext" th:id="${'endTime' + (stat.index + 1)}" disabled> </label>
+									<input type="hidden" name="startDateTime" 
+											th:id="${'startDateTime' + (stat.index + 1)}"
+										  	th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledStartDateTime}">
+									 <input type="hidden" name="endDateTime" 
+									 		th:id="${'endDateTime' + (stat.index + 1)}"
+									 		th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledEndDateTime}">
+									<input type="hidden" th:id="${'index' + (stat.index + 1)}"
+									 th:value="${stat.index}">
 								</div>
-								<label class="col-lg-3 col-form-label">Timeslot:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="8:00 - 10:00">
-								</div>
+							</div>
 								<label class="col-lg-3 col-form-label">Venue:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="WebEx Training">
+									<input type="text" class="form-control-plaintext" th:field="*{venueName}" disabled>
 								</div>
 							</div>	
 							<div class="form-group row">
@@ -414,27 +453,52 @@
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 <script>
-	<!--Update-->
-	$('button[name="update"]').on('click', function() {
+
+/*<![CDATA[*/
+var errorMessage = /*[[${error}]]*/ 'default';
+if(errorMessage == "To Date should be greater than or equal to From Date"){
+	$('#error1Modal').modal('show');
+}
+/*<![CDATA[*/
+	//Update
+	
+	/* function showUpdate(id) {
+	
+		var updateValue = document.getElementById(id).value;
+		var Url = "/schedules/courseSchedule/"+ updateValue +"/update";
+		document.location.href = Url;
+		
+	} */
+	
+	/* $('button[name="update"]').on('click', function() {
 		$('#updateModal').modal('show');
-	});
+	}); */
 	$('input[name="update"]').on('click', function() {
 		$('#updateConfirmationModal').modal('show');
 	});
 	$('input[name="updateConfirmation"]').on('click', function() {
 		$('#updateSuccessModal').modal('show');
 	});
-	<!--Delete-->
-	$('button[name="delete"]').on('click', function() {
+	//Delete
+	/* $('button[name="delete"]').on('click', function() {
 		$('#deleteModal').modal('show');
-	});
+	}); */
+	
+/* 	function showDelete(id) {
+		
+		var deleteValue = document.getElementById(id).value;
+		var Url = "/schedules/courseSchedule/"+ deleteValue +"/delete";
+		document.location.href = Url;
+		
+	} */
+	
 	$('input[name="delete"]').on('click', function() {
 		$('#deleteConfirmationModal').modal('show');
 	});
 	$('input[name="deleteConfirmation"]').on('click', function() {
 		$('#deleteSuccessModal').modal('show');
 	});
-	<!--Message alert-->
+	//Message alert
 	//add if statement for the success/fail messages
 	$('input[name="error1"]').on('click', function() {
 		$('#error1Modal').modal('show');
@@ -442,7 +506,77 @@
 	$('input[name="error2"]').on('click', function() {
 		$('#error2Modal').modal('show');
 	});
-	<!--Message alert End-->
+	//Message alert End
+	
+	function load(){
+		var fromDateTime = $("#fromDateTime").val();
+		var toDateTime = $("#toDateTime").val();
+		var updateCourseScheduleId = $("#updateCourseScheduleId").val();
+		var deleteCourseScheduleId =  $("#deleteCourseScheduleId").val();
+		var fromNewDate = fromDateTime.toString().slice(0,10);
+		var toNewDate = toDateTime.toString().slice(0,10);
+		
+		document.getElementById("fromDate").value = fromNewDate;
+		document.getElementById("toDate").value = toNewDate;
+		
+		if(updateCourseScheduleId !== ""){
+			$('#updateModal').modal('show');
+
+		}
+		
+		if(deleteCourseScheduleId !== ""){
+			$('#deleteModal').modal('show');
+		}
+		    
+	    var startDateTime = document.getElementById("startDateTime1").value;
+	    var endDateTime = document.getElementById("endDateTime1").value;
+	    
+	    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+	    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+	    
+	    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+	    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+	    console.log(startDateTime);
+	    
+	    document.getElementById("startDate1").value = rowStartDate;
+	    document.getElementById("endDate1").value = rowEndDate;
+	    
+	    document.getElementById("startTime1").value = rowStartTime;
+	    document.getElementById("endTime1").value = rowEndTime;
+	}
+
+	$("#fromDate").blur(function () {
+		var formDate = document.getElementById("fromDate").value;
+		var newDate = new Date(formDate);
+		var dateConcat = newDate.toISO().toString();
+		if (formDate == "") {
+			$("#fromDateTime").prop('value', null);
+		} else {
+			$("#fromDateTime").prop('value', dateConcat);
+		}
+	}); 
+	
+	$("#toDate").blur(function () {
+		var formDate = document.getElementById("toDate").value;
+		var newDate = new Date(formDate);
+		var dateConcat = newDate.toISO().toString(); 
+		if (formDate == "") {
+			$("#toDateTime").prop('value', null);
+		} else {
+			$("#toDateTime").prop('value', dateConcat);
+		}
+	}); 
+	//Format Date Inputs
+	Date.prototype.toISO = function() {
+		 return this.getUTCFullYear() +
+	        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+	        '-' + String(this.getUTCDate()).padStart(2, "0") +
+	        'T' + String(this.getUTCHours()).padStart(2, "0") +
+	        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
+	        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
+	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+	        'Z';
+	};
 </script>
 </body>
 

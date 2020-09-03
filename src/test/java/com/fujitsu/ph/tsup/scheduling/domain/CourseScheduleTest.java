@@ -45,7 +45,7 @@ public class CourseScheduleTest {
     void testCourseScheduleValid() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
 
         assertNotNull(CourseSched.getId());
         assertNotNull(CourseSched.getCourseId());
@@ -70,7 +70,7 @@ public class CourseScheduleTest {
     void testValidId() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getId(), 1L);
     }
     
@@ -83,7 +83,7 @@ public class CourseScheduleTest {
     void testInvalidId_isNull() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(null, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(null, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Id should not be empty"));
     }
@@ -97,7 +97,7 @@ public class CourseScheduleTest {
     void testInvalidId_isZero() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(0L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(0L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Id should not be empty"));
     }
@@ -112,7 +112,7 @@ public class CourseScheduleTest {
     void testValidCourseId() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getCourseId(), 1L);
     }
     
@@ -125,7 +125,7 @@ public class CourseScheduleTest {
     void testInvalidCourseId_isNull() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, null, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, null, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Course should not be empty"));
     }
@@ -139,7 +139,7 @@ public class CourseScheduleTest {
     void testValidCourseName() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getCourseName(), "JUnit");
     }
     
@@ -152,7 +152,7 @@ public class CourseScheduleTest {
     void testInvalidCourseName_isNull() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, null, 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, null, 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Course name should not be empty"));
     }
@@ -166,7 +166,7 @@ public class CourseScheduleTest {
     void testInvalidCourseName_isEmpty() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Course name should not be empty"));
     }
@@ -180,7 +180,7 @@ public class CourseScheduleTest {
     void testValidInstructorId() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getInstructorId(), 1L);
     }
     
@@ -193,7 +193,7 @@ public class CourseScheduleTest {
     void testInvalidInstructorId_isNull() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", null, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", null, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Instructor should not be empty"));
     }
@@ -207,7 +207,7 @@ public class CourseScheduleTest {
     void testInvalidInstructorId_isZero() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 0L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 0L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Instructor should not be empty"));
     }
@@ -221,7 +221,7 @@ public class CourseScheduleTest {
     void testValidInstructorLastName() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A',1).build();
         assertEquals(CourseSched.getInstructorLastName(), "Lorenzo");
     }
     
@@ -234,7 +234,7 @@ public class CourseScheduleTest {
     void testInvalidInstructorLastName_isNull() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, null, "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, null, "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
     }
@@ -248,7 +248,7 @@ public class CourseScheduleTest {
     void testInstructorLastName_isEmpty() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "", "Loyce", 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "", "Loyce", 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
     }
@@ -262,7 +262,7 @@ public class CourseScheduleTest {
     void testValidInstructorFirstName() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getInstructorFirstName(), "Loyce");
     }
     
@@ -275,7 +275,7 @@ public class CourseScheduleTest {
     void testInstructorFirstName_isNull() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", null, 1L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", null, 1L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
     }
@@ -289,7 +289,7 @@ public class CourseScheduleTest {
     void testValidVenueId() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getVenueId(), 1L);
     }
     
@@ -302,7 +302,7 @@ public class CourseScheduleTest {
     void testInvalidVenueId_isNull() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", null, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", null, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Venue should not be empty"));
     }
@@ -316,7 +316,7 @@ public class CourseScheduleTest {
     void testInvalidVenueId_isZero() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 0L, "Two/Neo", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 0L, "Two/Neo", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Venue should not be empty"));
     }
@@ -330,7 +330,7 @@ public class CourseScheduleTest {
     void testVenueName() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getVenueName(), "Two/Neo");
     }
     
@@ -343,7 +343,7 @@ public class CourseScheduleTest {
     void testInvalidVenueName_isNull() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, null, 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, null, 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Venue should not be empty"));
     }
@@ -357,7 +357,7 @@ public class CourseScheduleTest {
     void testInvalidVenueName_isEmpty() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L,1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "", 1, 1, 'A').build();
+            new CourseSchedule.Builder(1L,1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "", 1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Venue should not be empty"));
     }
@@ -372,7 +372,7 @@ public class CourseScheduleTest {
     void testValidMinRequired() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getMinRequired(), 1);
     }
 
@@ -385,7 +385,7 @@ public class CourseScheduleTest {
     void testInvalidMinRequired_isZero() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 0 , 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 0 , 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Mininum No. of Participants should be greater than 0"));
     }
@@ -399,7 +399,7 @@ public class CourseScheduleTest {
     void testInvalidMinRequired_isLessThanZero() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", -1, 1, 'A').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", -1, 1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Mininum No. of Participants should be greater than 0"));
     }
@@ -413,7 +413,7 @@ public class CourseScheduleTest {
     void testValidMaxAllowed() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getMaxAllowed(), 1);
     }
     
@@ -426,7 +426,7 @@ public class CourseScheduleTest {
     void testInvalidMaxAllowed_isLessThanZero() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L,1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, -1, 'A').build();
+            new CourseSchedule.Builder(1L,1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, -1, 'A', 1).build();
         });
         assertTrue(error.getMessage().equals("Maximum No. of Participants should not be less than 0"));
     }
@@ -440,7 +440,7 @@ public class CourseScheduleTest {
     void testValidStatus() {
 
         CourseSchedule CourseSched = new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo",
-                1, 1, 'A').build();
+                1, 1, 'A', 1).build();
         assertEquals(CourseSched.getStatus(), 'A');
     }
     
@@ -453,7 +453,7 @@ public class CourseScheduleTest {
     void testInvalidStatus_isNotAorP() {
 
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'H').build();
+            new CourseSchedule.Builder(1L, 1L, "JUnit", 1L, "Lorenzo", "Loyce", 1L, "Two/Neo", 1, 1, 'H', 1).build();
         });
         assertTrue(error.getMessage().equals("Status should be A or D only"));
     }

@@ -10,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Create Sched</title>
-	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -18,6 +18,8 @@
 	<style type="text/css">
 		[list]::-webkit-calendar-picker-indicator {
     		opacity: 0;
+    		color: dark-gray;
+    		margin-right: -12.5px;
   		}
   		
   		input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
@@ -25,9 +27,9 @@
     		margin: 0;
   		}
   		
-  		.errorMsg{
+  		div.text-danger{
+  			font-size: 12px;
   			text-align: left;
-  			margin-bottom: 1.5em;
   		}
 	</style>
 </head>
@@ -35,7 +37,7 @@
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
+		<form class="form-horizontal" id="scheduleNew" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
 		<!--Success Message-->
 		<div class="modal fade" th:if="${message}" th:text="${message}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 		<!--Success Message End-->
@@ -45,9 +47,10 @@
 				<div class="card-body">
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Name</label>
-						<div class="col-lg-5" style="">
+						<div class="col-lg-5">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
 							<input type="text" list="courses" id="courseName" placeholder="Enter Course Name" class="form-control">
+							<div class="text-danger" id="courseName_error"> </div>
 							<datalist id="courses">
 								<option value=""></option>
 							 	<option th:each="courses : *{courses}"
@@ -60,13 +63,15 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Instructor</label>
 						<div class="col-lg-5">
-							<select class="form-control" th:field="*{instructorId}" id="instructorId" >
+							<select class="form-control" th:field="*{instructorId}" id="instructorId">
 								<option value="" selected>Select Instructor</option>
 								<option th:each="instructors : *{instructors}" 
 										th:value="${instructors.id}"
 										th:text="${instructors.name}"
 										th:selected="${instructors.id} eq *{instructorId}"></option>
-							</select>
+							</select> 
+								<div class="text-danger" id="instructorId_error">
+							</div>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -79,6 +84,8 @@
 										th:text="${venues.name}"
 										th:selected="${venues.id} eq *{venueId}"></option>
 							</select>
+								<div class="text-danger" id="venueId_error">
+							</div>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -86,70 +93,96 @@
 						<div class="col-lg-2">
 							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
 									class="form-control" placeholder="Minimum Required" 
-									th:field="*{minRequired}"id="minRequired" >
+									th:field="*{minRequired}"id="minRequired" > 
+								<div class="text-danger" id="minRequired_error"> 
+							</div>
 						</div>
 						<div class="col-lg-1 text-center">—</div>
 						<div class="col-lg-2">
 							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
 									class="form-control" placeholder="Maximum Allowed" 
 									th:field="*{maxAllowed}" id="maxAllowed" >
+								<div class="text-danger" id="maxAllowed_error"> 
+							</div>
 						</div>
 					</div>
 					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap" id="dateTime">
-						<table class="table table-responsive table-borderless text-center">
-							<colgroup >
-								<col style="width:55%"/>
-								<col style="width:55%"/>
-							</colgroup>	   			
-							<tr>
-								<td>
-									<label class="col-lg-6 col-form-label">Start/End Date</label>
-								</td>
-								<td>
-									<label class="col-lg-6 col-form-label">Start/End Time</label>
-								</td>
-							</tr>
-							<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailsAsList}">
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-6">
-											<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}" >
+						<table class="table table-responsive table-borderless text-center" >
+							<colgroup>
+								<col width="10%"/>
+								<col width="20%"/>
+								<col width="20%"/>
+								<col width="10%"/>
+								<col width="20%"/>
+								<col width="20%"/>
+							</colgroup>	   		
+							<thead>
+								<tr>
+									<th colspan="3">
+										<label class="col-lg-3 col-form-label">Start Date and Start Time</label>
+									</th>
+									<th colspan="3">
+										<label class="col-lg-3 col-form-label">End Date and End Time</label>
+									</th>
+								</tr>
+							</thead>	
+							<tbody th:id="courseScheduleDetails">
+								<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailsAsList}">
+									<td class="form-group">
+										<button type="submit" value="" name="addRow" onclick="addNewRow()" class="btn btn-info"> 
+											+
+										</button>
+										<button type="submit" th:id="${'row' + (stat.index + 1)}" th:value="${stat.index + 1}" 
+												th:name="${'removeRow' + (stat.index + 1)}" onclick="removeNewRow(this.id)" 
+												class="btn btn-secondary"> 
+											-
+										</button>
+									</td>
+									<td class="form-group">
+										<div class="">
+											<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}">
+											<div class="text-danger" th:id="${'startDate' + (stat.index + 1) + '_error'}">
+											</div>
 										</div>
-										<div class="col-lg-6">
+									</td>
+									<td class="form-group">
+										<div class="">
+											<input type="time" class="form-control" 
+													th:id="${'startTime' + (stat.index + 1)}">
+											<div class="text-danger" th:id="${'startTime' + (stat.index + 1) + '_error'}"></div>
+										</div>
+									</td>
+									<td class="d-print-none">
+										<div>
+											<input type="hidden" name="startDateTime" 
+												 th:id="${'startDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledStartDateTime}">
+											<input type="hidden" name="endDateTime" 
+												 th:id="${'endDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledEndDateTime}">
+											<input type="hidden" th:id="${'index' + (stat.index + 1)}"
+											     th:value="${stat.index}">
+										</div>
+									</td>
+									<td class="form-group">
+										<div class="">
 											<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
+											<div class="text-danger" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
 										</div>
-									</div>
-								</td>
-								<td>
-									<div class="form-group row">
-										<div class="col-lg-2"></div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" 
-													th:id="${'startTime' + (stat.index + 1)}" 
-													oninput="timeOnly(this.id);" 
-													maxlength="5">
+									</td>
+									<td class="form-group">
+										<div class="">
+											<input type="time" class="form-control" 
+													th:id="${'endTime' + (stat.index + 1)}">
+											<div class="text-danger" th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
 										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" 
-													th:id="${'endTime' + (stat.index + 1)}"
-													oninput="timeOnly(this.id);" 
-													maxlength="5" >
-										</div>
-									</div>
-								</td>
-								<td style="display:none;">
-									<div>
-										<input type="hidden" name="startDateTime" 
-											 th:id="${'startDateTime' + (stat.index + 1)}"
-											 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledStartDateTime}">
-											
-										<input type="hidden" name="endDateTime" 
-											 th:id="${'endDateTime' + (stat.index + 1)}"
-											 th:field="*{courseScheduleDetailsAsList[__${stat.index}__].scheduledEndDateTime}">
-									</div>
-								</td>
-							</tr>
+									</td>
+								</tr>
+							</tbody>
 						</table>
+						<div>
+							
+						</div>
 					</div>
 					<div class="float-right">
 						<input type="button" class="btn btn-success" th:attr="onclick=|validations()|" value="Create">
@@ -183,7 +216,8 @@
 			</div>
 		</div> 
 		<!--Confirmation Modal End-->
-		</form>  
+		</form>
+		
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
@@ -215,7 +249,6 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<ul id="error" style="color:red"></ul>
 							<label class="col-lg-12 col-form-label"></label>
 						</div>	
 					</div>
@@ -224,11 +257,23 @@
 		</div>
 		<!--Error Modal End-->	
 	</div>
-
-	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 <script th:inline="javascript">
+//Add New Rows
+function addNewRow() {
+	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+	var length = courseScheduleDetails.rows.length;
+	var Url = '/schedules/new/addDate/';
+	document.getElementById("scheduleNew").action = Url;
+}
+
+function removeNewRow(id) {
+	var courseScheduleDetails = document.getElementById(id);
+	var removeRowVal = courseScheduleDetails.value;
+	var Url = '/schedules/new/removeDate/'+removeRowVal;
+	document.getElementById("scheduleNew").action = Url;
+}
 
 //Set Course ID
 $("#courseName").blur(function (){
@@ -258,139 +303,194 @@ function isLessThanToday(date){
 }  
 
 function validations() {
-	
+	var errorCount = 0;
 	var courseName = $('#courseName').val();
 	var instructor = $('#instructorId').val();
 	var venue = $('#venueId').val();
-	var minRequired = parseInt($('#minRequired').val());
-	var maxAllowed = parseInt($('#maxAllowed').val());
-	var errorMsg = new Array();
-
+	var minRequired = parseInt($('#minRequired').val().replace("", "0"));
+	var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
+	
+	
 	//Empty Fields Validations
 	if (courseName == "") {
-	    errorMsg.push("Please fill up Course Name");
+		errorCount++;
+		courseNameError = "Please fill up Course Name"; 
+        document.getElementById("courseName_error").innerHTML = courseNameError;
 	}
 	if (instructor == "") {
-	    errorMsg.push("Please fill up Instructor");
+		errorCount++;
+		instructorError = "Please fill up Instructor";
+        document.getElementById("instructorId_error").innerHTML = instructorError;
 	}
 	if (venue == "") {
-	    errorMsg.push("Please fill up Venue");
+		errorCount++;
+		venueError = "Please fill up Venue";
+        document.getElementById("venueId_error").innerHTML = venueError;
 	}
-	if (minRequired == "") {
-	    errorMsg.push("Please fill up Minimum no. of Participants");
+	if (minRequired <= 0) {
+		errorCount++;
+	  	minRequiredError = "Please fill up Minimum no. of Participants";
+	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 	}
-	if (maxAllowed == "") {
-	    errorMsg.push("Please fill up Maximum no. of Participants");
+	if (maxAllowed <=0) {
+		errorCount++;
+	  	maxAllowedError = "Please fill up Maximum no. of Participants";
+	  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
 	}
-	if (minRequired > maxAllowed) {
-	    errorMsg.push("Maximum Participants can't be greater than Minimum Participants");
+	if (minRequired !==0) {
+		if (maxAllowed <= minRequired) {
+			errorCount++;
+	  	minRequiredError = "Minimum can't be greater or equal to Maximum Participants";
+	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
+		}
 	}
-	if ((minRequired == 0) || (maxAllowed == 0)) {
-	    errorMsg.push("Minimum Participants or Maximum Participants can't be equal to zero");
-	}
-
+	
 	//Empty Fields Validation for Start and End date
-	var startDateTimeCount = 0;
-	var endDateTimeCount = 0;
+	var startDateCount = 0;
+	var startTimeCount = 0;
+	var endDateCount = 0;
+	var endTimeCount = 0;
+	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+	var length = courseScheduleDetails.rows.length;
 
-	for (var i = 1; i <= 5; i++) {
+	for (var i = 1; i <= length; i++) {
 
 	    var startDate = $("#startDate" + i).val();
 	    var startTime = $("#startTime" + i).val();
 	    var endDate = $("#endDate" + i).val();
 	    var endTime = $("#endTime" + i).val();
 
-	    if ((startDate !== "") && (startTime !== "")) {
-	        startDateTimeCount++;
+	    if (startDate !== "") {
+	        startDateCount++;
+	    }    
+	    if (startTime !== "") {
+	        startTimeCount++;
+	    }
+	    if (endDate !== "") {
+	        endDateCount++;
+	    }
+	    if (endTime !== "") {
+	        endTimeCount++;
 	    }
 
-	    if ((endDate !== "") && (endTime !== "")) {
-	        endDateTimeCount++;
-	    }
- 
+	if (startDateCount <= 0) {
+		errorCount++;
+		startDateError = "Please fill up Start Date";
+	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
+	}
+	if (startTimeCount <= 0) {
+		errorCount++;
+		startTimeError = "Please fill up Start Time";
+	  	document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
 	}
 
-	if (startDateTimeCount == 0) {
-	    errorMsg.push("Please fill up Start Date and Start Time");
+	if (endDateCount <= 0) {
+		errorCount++;
+		endDateError = "Please fill up End Date";
+	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	}
-
-	if (endDateTimeCount == 0) {
-	    errorMsg.push("Please fill up End Date and End Time");
+	if (endTimeCount <= 0) {
+		errorCount++;
+		endTimeError = "Please fill up End Time";
+	  	document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
 	}
-	 
+	
+	}
 	//Scheduled Start Date Time and Scheduled End Date Time Part
-    for(i = 1; i<=5; i++){
+    for(i = 1; i<= length; i++){
     	var startDate = document.getElementById("startDate"+i).value;
         var endDate =  document.getElementById("endDate"+i).value;
         var startTime =  document.getElementById("startTime"+i).value;
         var endTime =  document.getElementById("endTime"+i).value;
         
-        var rowStartDateTime = new Date(startDate+"T"+startTime+":00Z");
-	    var rowEndDateTime = new Date(endDate+"T"+startTime+":00Z");
+        /* var rowStartDateTime = new Date(startDate+"T"+startTime+":00Z");
+	    var rowEndDateTime = new Date(endDate+"T"+startTime+":00Z"); */
         
-        /* var rowStartDateTime = new Date(startDate);
+        var rowStartDateTime = new Date(startDate);
 	    var rowEndDateTime = new Date(endDate);
 	    
 	    rowStartDateTime.setHours(startTime.substring(0, startTime.indexOf(":")));
 	    rowStartDateTime.setMinutes(startTime.substring(startTime.indexOf(":") + 1));
 	    rowEndDateTime.setHours(endTime.substring(0, endTime.indexOf(":")));
-	    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); */
+	    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); 
+	    
+	    console.log(rowStartDateTime);
+	    console.log(rowEndDateTime);
        	
-	    if((startDateTimeCount !==0) && (endDateTimeCount !==0)) {
+	    //--> Changed StartDateTimeCount to StartDateCount
+	    if((startDateCount !==0) && (endDateCount !==0)) {
 	    	//Start and End Time Validation
         	if (startDate > endDate)  {
-        		errorMsg.push("End Date can't be greater than Start Date");
+        		errorCount++;
+        		startDateError = "Start Date can't be greater than or equal to end date";
+        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
             }
         	
         	//Start and End Date Validation
         	if (startTime > endTime) {
-        		errorMsg.push("End Time can't be greater than Start Time");
+        		errorCount++;
+        		startDateError = "Start time can't be greater than or equal to end time";
+        	  	document.getElementById("startTime" + i + "_error").innerHTML = startDateError;
             }
         	
         	//If Date is Less Than Today
-        	if (isLessThanToday(startDate) || isLessThanToday(endDate)) {
-        		errorMsg.push("Start Date and End Date should not be less than today");
+        	if (isLessThanToday(startDate)) {
+        		errorCount++;
+        		startDateError = "Date can't be less than today";
+        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
         	}
+        	
+        	if (isLessThanToday(endDate)) {
+        		errorCount++;
+        		endDateError = "Date can't be less than today";
+        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
+        	}
+        	
 	    }
-	    
+
+		function removeWarning() {
+			
+			var fieldId = this.id;
+			var data = document.getElementById(fieldId).value;
+			
+			
+			if (data !== "") {
+				document.getElementById(fieldId + "_error").innerHTML = "";
+			}
+		}
+		
+		document.getElementById("courseName").onkeyup = removeWarning;
+		document.getElementById("instructorId").onmouseleave = removeWarning;
+		document.getElementById("venueId").onmouseleave = removeWarning;
+		document.getElementById("minRequired").onkeyup = removeWarning;
+		document.getElementById("maxAllowed").onkeyup = removeWarning;
+		
+		//Remove warning for Date and Time
+		document.getElementById("startDate" + i).onmouseleave = removeWarning;
+		document.getElementById("startTime" + i).onmouseleave = removeWarning;
+		document.getElementById("endDate" + i).onmouseleave = removeWarning;
+		document.getElementById("endTime" + i).onmouseleave = removeWarning;
+		
 	    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 	    	var endDateTime = null;
 	    	var startDateTime = null;
 	    } else {
 	    	var startDateTime = rowStartDateTime.toISO().toString();
-	        console.log(rowStartDateTime);
-	        console.log(startDateTime);
+	        /* console.log(rowStartDateTime);
+	        console.log(startDateTime); */
 	    	var endDateTime = rowEndDateTime.toISO().toString();
-		    console.log(rowEndDateTime);
-		    console.log(endDateTime);
+		    /* console.log(rowEndDateTime);
+		    console.log(endDateTime); */
 	    }
 	    
 	    document.getElementById("startDateTime"+i).value = startDateTime;
 		document.getElementById("endDateTime"+i).value = endDateTime;
+	
+    }
+	if (errorCount <= 0) {
 
-		//Error Modal Validation
-	    var messageHtml = "";
-
-		errorMsg.forEach(function(message) {
-		    messageHtml += "<li class='errorMsg'>" + message + "</li>";
-		});
-
-		document.getElementById("error").innerHTML = messageHtml;
-		
-	    if(errorMsg!="") {
-		   	$('#errorModal').modal('show');
-		}
-		
-		//Confirmation Modal Validation
-		if ((courseName !== "") && (instructor !== "") && (venue !== "")
-				&& (minRequired !== "") && (maxAllowed !== "") && ((minRequired !== 0) || (maxAllowed !== 0)) 
-				&& (minRequired <= maxAllowed) && (startDateTimeCount !=0 ) && (endDateTimeCount !=0 )
-				&& !((isLessThanToday(startDate) || isLessThanToday(endDate)))
-				&& (startDate <= endDate) && (startTime < endTime)) {
-			
-			$('#confirmModal').modal('show');
-		}
-    }		
+		$('#confirmModal').modal('show');
+	}
  }
  
 //Formats the text to only accept numbers on keypress
@@ -443,7 +543,6 @@ function timeOnly(id)
 	}
 	
 }
-
 	   
 //Success Modal Validation
 

@@ -191,18 +191,18 @@ class ViewAllCourseScheduleTest {
         Set<CourseScheduleDetail> courseScheduleDetails = new HashSet<>();
         
         CourseScheduleDetail courseScheduleDetail1 = new CourseScheduleDetail.Builder(1L, ZonedDateTime.now(), 
-                ZonedDateTime.now().plusHours(8)).build();
+                ZonedDateTime.now().plusHours(8), 8f).build();
         CourseScheduleDetail courseScheduleDetail2 = new CourseScheduleDetail.Builder(1L, ZonedDateTime.now().plusDays(1), 
-                ZonedDateTime.now().plusDays(1).plusHours(8)).build();
+                ZonedDateTime.now().plusDays(1).plusHours(8), 8f).build();
         
         courseScheduleDetails.add(courseScheduleDetail1);
         courseScheduleDetails.add(courseScheduleDetail2);
         
         CourseSchedule courseSchedule1 = 
-                new CourseSchedule.Builder(1L, 1L, "name", 1L, "last", "first", 1L, "venue", 1, 10, 'A')
+                new CourseSchedule.Builder(1L, 1L, "name", 1L, "last", "first", 1L, "venue", 1, 10, 'A', 1)
                 .addDetail(courseScheduleDetails).build();
         CourseSchedule courseSchedule2 = 
-                new CourseSchedule.Builder(2L, 2L, "name2", 2L, "last2", "first2", 2L, "venue2", 1, 10, 'A')
+                new CourseSchedule.Builder(2L, 2L, "name2", 2L, "last2", "first2", 2L, "venue2", 1, 10, 'A', 1)
                 .addDetail(courseScheduleDetails).build();
         courseSchedules.add(courseSchedule1);
         courseSchedules.add(courseSchedule2);

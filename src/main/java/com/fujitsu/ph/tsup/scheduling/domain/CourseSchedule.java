@@ -86,6 +86,16 @@ public class CourseSchedule {
      * Status
      */
     private char status;
+    
+    /**
+     * Total Participants
+     */
+    private int totalParticipants;
+    
+    /**
+     * Course Details
+     */
+    private String courseDetails;
 
     /**
      * <pre>
@@ -94,7 +104,6 @@ public class CourseSchedule {
      * 
      * @param builder
      */
-    
     private CourseSchedule(Builder builder) {
         this.id = builder.id;
         this.courseId = builder.courseId;
@@ -108,7 +117,8 @@ public class CourseSchedule {
         this.maxAllowed = builder.maxAllowed;
         this.courseScheduleDetail = builder.courseScheduleDetail;
         this.status = builder.status;
-        
+        this.totalParticipants = builder.totalParticipants;
+        this.courseDetails = builder.courseDetails;
     }
     
     
@@ -166,8 +176,17 @@ public class CourseSchedule {
         return status;
     }
 
+    public int getTotalParticipants() {
+		return totalParticipants;
+	}
 
-    /**
+
+	public String getCourseDetails() {
+		return courseDetails;
+	}
+
+
+	/**
      * <pre>
      * The builder class of the course schedule. 
      * The builder is a public static member class of CourseSchedule
@@ -241,6 +260,16 @@ public class CourseSchedule {
         private char status;
         
         /**
+         * Total Participants
+         */
+        private int totalParticipants;
+        
+        /**
+         * Course Details
+         */
+        private String courseDetails;
+        
+        /**
          * <pre>
          * Creates a new instance of Builder for creating a course schedule.
          * It validates and sets the argument into the Builder instance variables. 
@@ -263,7 +292,7 @@ public class CourseSchedule {
         validateMinRequired(minRequired);
         validateCourseScheduleDetail(courseScheduleDetail);
             
-        this.status = 'A';  
+        this.status = 'O';  
         this.courseId = courseId;
         this.instructorId = instructorId;
         this.venueId = venueId;
@@ -327,7 +356,7 @@ public class CourseSchedule {
          */
     
         public Builder(Long id, Long courseId,  String courseName,Long instructorId, String instructorLastName, 
-            String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed, char status) {
+            String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed, char status, int totalParticipants) {
         
         validateId(id);
         validateCourseId(courseId);
@@ -340,6 +369,7 @@ public class CourseSchedule {
         validateVenueName(venueName);
         validateMaxAllowed(maxAllowed);
         validateStatus(status);
+        validateTotalParticipants(totalParticipants);
         
         this.id = id;
         this.courseId = courseId;
@@ -352,6 +382,7 @@ public class CourseSchedule {
         this.minRequired = minRequired;
         this.maxAllowed = maxAllowed;
         this.status = status;
+        this.totalParticipants = totalParticipants;
         
     }
 
@@ -386,6 +417,24 @@ public class CourseSchedule {
     
             return this;    
     }
+        /**
+         * <pre>
+         * Validates and add the argument into the Builder instance variables. T
+         * This method is used in displaying Course Details in Course Schedule Delete Form.
+         * <pre>
+         * 
+         * @param courseDetails
+         * @return builder
+         */
+        public Builder addCourseDetail(String courseDetails) {
+            
+            validateCourseDetails(courseDetails);
+            this.courseDetails = courseDetails;
+        
+                return this;    
+        }
+        
+        
          /**
          * Creates a new instance of the course schedule.
          * 
@@ -541,8 +590,8 @@ public class CourseSchedule {
          * @param status
          */
         private void validateStatus(char status) {
-            if(status != 'A' && status != 'D' ) {
-                throw new IllegalArgumentException("Status should be A or D only");
+            if(status != 'O' && status != 'D') {
+                throw new IllegalArgumentException("Status should be 'O' and 'D' only");
         }
     }
     
@@ -559,6 +608,20 @@ public class CourseSchedule {
                 throw new IllegalArgumentException("The schedule should have at least 1 record");
         }
     }
+        private void validateTotalParticipants(int totalParticipants) {
+        	 if(totalParticipants < 0 ) {
+                 throw new IllegalArgumentException("Total Participants value should be numeric");
+         }
+    }
+        
+        private void validateCourseDetails(String courseDetails) {
+       	 if(venueName == null || venueName.isEmpty()) {
+                throw new IllegalArgumentException("Course Details should not be empty");
+        }
+   }
+     
+        
+        
 
         @Override
         public String toString() {

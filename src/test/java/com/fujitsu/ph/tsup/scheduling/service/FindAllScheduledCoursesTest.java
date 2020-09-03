@@ -123,11 +123,11 @@ public class FindAllScheduledCoursesTest {
      */
     private CourseSchedule createViewCourseSchedule() {
         CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
+                new CourseScheduleDetail.Builder(1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5), 1f).build();
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
         courseScheduleDetailSet.add(courseScheduleDetail);
         
-        return new CourseSchedule.Builder(1L, 1L, "Dummy", 1L, "Dummy", "Dummy", 1L, "Dummy", 1, 10, "A".charAt(0))
+        return new CourseSchedule.Builder(1L, 1L, "Dummy", 1L, "Dummy", "Dummy", 1L, "Dummy", 1, 10, "A".charAt(0), 1)
                     .addDetail(courseScheduleDetailSet).build();
     }
 }
