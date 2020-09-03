@@ -480,12 +480,26 @@ public class ScheduleController {
 		}
 		
 		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
-	
+		   
+        List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+		
 		courseScheduleDeleteForm.setId(courseSchedule.getId());
 		courseScheduleDeleteForm.setCourseId(courseSchedule.getCourseId());
         courseScheduleDeleteForm.setCourseName(courseSchedule.getCourseName());
         courseScheduleDeleteForm.setInstructorName(courseSchedule.getInstructorFirstName() + " " + courseSchedule.getInstructorLastName());
         courseScheduleDeleteForm.setVenueName(courseSchedule.getVenueName());
+        courseScheduleDeleteForm.setCourseScheduleDetailList(detailFormList);
+        
+		
+		for(CourseScheduleDetail detail : courseSchedule.getCourseScheduleDetail()) {
+		    CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+		    detailForm.setId(detail.getId());
+		    detailForm.setScheduledStartDateTime(detail.getScheduledStartDateTime());
+		    detailForm.setScheduledEndDateTime(detail.getScheduledEndDateTime());
+		    detailForm.setDuration(detail.getDuration());
+		    
+		    detailFormList.add(detailForm);
+		}
         
 		model.addAttribute("deleteView", courseScheduleDeleteForm);
 		model.addAttribute("updateView", new CourseScheduleUpdateForm());
