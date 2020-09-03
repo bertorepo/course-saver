@@ -613,8 +613,12 @@ public class ScheduleController {
 		  Set<CourseForm> courseFormList = scheduleService.findAllCourses();
 
 		 if(changeStatusForm.getId() != 0L) {
-			 CourseSchedule courseSchedule = scheduleService.findCourseScheduleByCourseId(id);
-			 changeStatusForm.setId(courseSchedule.getId());
+			 Set<CourseSchedule> courseSchedule = scheduleService.findCourseScheduleByCourseId(id);
+			 
+			 for(CourseSchedule courseSched : courseSchedule) {
+			     changeStatusForm.setId(courseSched.getId());
+			 }
+			 
 			 changeStatusForm.setCourses(courseFormList);
 		 }
 	        
