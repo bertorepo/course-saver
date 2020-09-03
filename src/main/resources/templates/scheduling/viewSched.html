@@ -164,7 +164,7 @@
 			  th:object="${updateView}" 
 			  th:if="${(#httpServletRequest.requestURI != '/schedules/courseSchedules/view') 
 			  		&& (#httpServletRequest.requestURI != '/schedules/courseSchedule/{courseScheduleId}/delete')}"
-			  method="get">
+			  method="post">
 			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -286,10 +286,7 @@
 					</div>
 				</div>
 			</div>
-		</form>
-		<!--Update Modal End-->
-		<!--Update Confirmation Modal-->
-		<form class="form-horizontal">
+			<!--Update Confirmation Modal-->
 			<div class="modal fade" id="updateConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
@@ -308,10 +305,8 @@
 					</div>
 				</div>
 			</div>
-		</form>
-		<!--Update Confirmation Modal End-->
-		<!--Update Confirmation Success Modal-->
-		<form class="form-horizontal">
+			<!--Update Confirmation Modal End-->
+			<!--Update Confirmation Success Modal-->
 			<div class="modal fade" id="updateSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
@@ -329,8 +324,10 @@
 					</div>
 				</div>
 			</div>
+			<!--Update Confirmation Success Modal End-->
 		</form>
-		<!--Update Confirmation Success Modal End-->
+		<!--Update Modal End-->		
+		
 		<!--Delete Modal-->
 		<form class="form-horizontal"
 			  action="#" 
