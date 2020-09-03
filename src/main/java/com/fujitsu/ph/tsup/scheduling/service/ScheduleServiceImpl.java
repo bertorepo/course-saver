@@ -294,4 +294,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 	        }
 	}
 
+	@Override
+	public Set<CourseSchedule> changeScheduleStatus() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

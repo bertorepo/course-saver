@@ -122,4 +122,6 @@ public interface ScheduleService {
      */
     Set<CourseSchedule> findCourseScheduleByCourseId(Long id);
  
+    
+    Set<CourseSchedule> changeScheduleStatus();
 }

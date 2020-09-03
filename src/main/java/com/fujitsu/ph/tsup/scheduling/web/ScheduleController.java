@@ -598,17 +598,17 @@ public class ScheduleController {
 	
 	/**
      * <pre>
-     * Delete the course schedule. Method = DELETE
+     * Change the schedule status. Method = GET
      * 
      * <pre>
      * 
-     * @param path variable          Long id
+     * @param path variable          Long courseId
      * @param Model                  model
-     * @param RedirectAttributes     redirectAttributes
-     * @return courseScheduleListForm and view
+     * @param ChangeStatusForm       changeStatusForm
+     * @return changeStatusForm and view
      */
 	 @GetMapping("/courseSchedule/{courseId}/changeStatus")
-		public String showChangeScheduleStatusForm(@PathVariable("courseId") long id, Model model,
+		public String showChangeScheduleForm(@PathVariable("courseId") long id, Model model,
 			    ChangeStatusForm changeStatusForm) {
 
 		  Set<CourseForm> courseFormList = scheduleService.findAllCourses();
@@ -623,10 +623,48 @@ public class ScheduleController {
 			 changeStatusForm.setCourses(courseFormList);
 		 }
 	        
-	         return "scheduling/viewSched";
+	         return "scheduling/changeScheduleStatus";
 
 	    }
-	    
-	
-	
+	 
+	 	/**
+	     * <pre>
+	     * Change the schedule status. Method = POST
+	     * 
+	     * <pre>
+	     * 
+	     * @param path variable          Long courseId
+	     * @param Model                  model
+	     * @param ChangeStatusForm       changeStatusForm
+	     * @param BindingResult 		 bindingResult
+	     * @return changeStatusForm and view
+	     */
+	@PostMapping("/courseSchedule/{courseId}/changeStatus")
+	public String submitChangeScheduleForm(@PathVariable("courseId") long id, Model model,
+			ChangeStatusForm changeStatusForm, BindingResult bindingResult) {
+
+		Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+
+		if (changeStatusForm.getId() != 0L) {
+			Set<CourseSchedule> courseSchedule = scheduleService.findCourseScheduleByCourseId(id);
+			for (CourseSchedule courseSched : courseSchedule) {
+				changeStatusForm.setId(courseSched.getId());
+			}
+
+			changeStatusForm.setCourses(courseFormList);
+		}
+
+		if (bindingResult.hasErrors()) {
+
+			return "scheduling/changeScheduleStatus";
+		}
+
+		Set<CourseSchedule> courseScheduleSet = new HashSet<>();
+
+		courseScheduleSet = scheduleService.changeScheduleStatus();
+		
+		return "scheduling/changeScheduleStatus";
+
+	}
+
 }
