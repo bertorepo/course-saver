@@ -1,5 +1,6 @@
 package com.fujitsu.ph.tsup.scheduling.model;
 
+import java.util.List;
 import java.util.Set;
 
 public class CourseScheduleDeleteForm {
@@ -43,6 +44,19 @@ public class CourseScheduleDeleteForm {
      * Set of course schedule details
      */
     private Set<CourseScheduleDetailForm> courseScheduleDetails;
+    
+    /**
+     * List of Course Schedule Detail
+     */
+    private List<CourseScheduleDetailForm> courseScheduleDetailList;
+
+	public List<CourseScheduleDetailForm> getCourseScheduleDetailList() {
+		return courseScheduleDetailList;
+	}
+
+	public void setCourseScheduleDetailList(List<CourseScheduleDetailForm> courseScheduleDetailList) {
+		this.courseScheduleDetailList = courseScheduleDetailList;
+	}
 
 	public Long getId() {
 		return id;
@@ -112,7 +126,10 @@ public class CourseScheduleDeleteForm {
 	public String toString() {
 		return "CourseScheduleDeleteForm [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName
 				+ ", instructorName=" + instructorName + ", venueId=" + venueId + ", venueName=" + venueName
-				+ ", courseDetails=" + courseDetails + ", courseScheduleDetails=" + courseScheduleDetails + "]";
+				+ ", courseDetails=" + courseDetails + ", courseScheduleDetails=" + courseScheduleDetails
+				+ ", courseScheduleDetailList=" + courseScheduleDetailList + "]";
 	}
+
+	
     
 }

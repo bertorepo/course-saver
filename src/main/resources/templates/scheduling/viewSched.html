@@ -358,17 +358,32 @@
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" th:field="*{instructorName}" disabled>
 								</div>
-								<label class="col-lg-3 col-form-label">Course Date(s):</label>
+								<label class="col-lg-3 col-form-label">Course Date and Time:</label>
+								<table> </table>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="January 2, 2020">
+								<div th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}"> 	
+								<label class="col-form-label">Start Date: 
+									<input type="text" class="form-control-plaintext" th:id="${'startDate' + (stat.index + 1)}" disabled></label>
+								<label class="col-form-label">End Date: 
+									<input type="text" class="form-control-plaintext" th:id="${'endDate' + (stat.index + 1)}" disabled> </label>
+								<br>
+								<label class="col-form-label">Start Time: 
+									<input type="text" class="form-control-plaintext" th:id="${'startTime' + (stat.index + 1)}" disabled> </label>
+								<label class="col-form-label">End Time: 
+									<input type="text" class="form-control-plaintext" th:id="${'endTime' + (stat.index + 1)}" disabled> </label>
+									<input type="hidden" name="startDateTime" 
+												 th:id="${'startDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledStartDateTime}">
+												 <input type="hidden" name="endDateTime" 
+												 th:id="${'endDateTime' + (stat.index + 1)}"
+												 th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledEndDateTime}">
+												<input type="hidden" th:id="${'index' + (stat.index + 1)}"
+												 th:value="${stat.index}">
 								</div>
-								<label class="col-lg-3 col-form-label">Timeslot:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="" value="8:00 - 10:00">
-								</div>
+							</div>
 								<label class="col-lg-3 col-form-label">Venue:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" th:field="*{venueName}"  value="WebEx Training">
+									<input type="text" class="form-control-plaintext" th:field="*{venueName}" disabled>
 								</div>
 							</div>	
 							<div class="form-group row">
@@ -517,6 +532,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	    
 	    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
 	    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+	    console.log(startDateTime);
 	    
 	    document.getElementById("startDate1").value = rowStartDate;
 	    document.getElementById("endDate1").value = rowEndDate;
