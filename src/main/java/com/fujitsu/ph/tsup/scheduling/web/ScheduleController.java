@@ -412,6 +412,7 @@ public class ScheduleController {
      
         model.addAttribute("changeSchedule", courseScheduleListForm);
         model.addAttribute("updateView", new CourseScheduleUpdateForm());
+        model.addAttribute("deleteView", new CourseScheduleDeleteForm());
         
         listForm = courseScheduleListForm;
         return "scheduling/viewSched";
@@ -607,7 +608,7 @@ public class ScheduleController {
      * @return courseScheduleListForm and view
      */
 	 @GetMapping("/courseSchedule/{courseId}/changeStatus")
-		public String showChangeScheduleForm(@PathVariable("courseId") long id, Model model,
+		public String showChangeScheduleStatusForm(@PathVariable("courseId") long id, Model model,
 			    ChangeStatusForm changeStatusForm) {
 
 		  Set<CourseForm> courseFormList = scheduleService.findAllCourses();
