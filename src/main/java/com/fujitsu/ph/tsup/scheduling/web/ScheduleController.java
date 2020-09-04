@@ -25,6 +25,7 @@ package com.fujitsu.ph.tsup.scheduling.web;
 *
 */
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -284,6 +285,8 @@ public class ScheduleController {
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+        Set<CourseSchedule> courseSchedules = 
+                scheduleService.findAllScheduledCourses(ZonedDateTime.now(), ZonedDateTime.now().plusYears(1));
 
         logger.debug("CourseScheduleNewForm: {}", form);
         logger.debug("Result: {}", bindingResult);
@@ -294,6 +297,33 @@ public class ScheduleController {
             form.setInstructors(instructorFormList);
             model.addAttribute("scheduleNew", form);
             return "scheduling/createSched";
+        }
+        
+        for(CourseSchedule courseSchedule : courseSchedules) {
+            for(CourseScheduleDetail cSchedDet: courseSchedule.getCourseScheduleDetail()) {
+                
+                //Check if there is any conflicting schedules when submitting form
+                if(((courseSchedule.getCourseId() == form.getCourseId()) || 
+                        (courseSchedule.getInstructorId() == form.getInstructorId()) ||
+                        (courseSchedule.getVenueId() == form.getVenueId())) && 
+                        (form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> 
+                            i.getScheduledEndDateTime().equals(cSchedDet.getScheduledEndDateTime()))) &&
+                        (form.getCourseScheduleDetailsAsList().stream().anyMatch(o -> 
+                            o.getScheduledStartDateTime().equals(cSchedDet.getScheduledStartDateTime())))) {
+                    
+                        form.setCourses(courseFormList);
+                        form.setVenues(venueFormList);
+                        form.setInstructors(instructorFormList);
+                        model.addAttribute("conflict", 
+                                                "The Schedule you have submitted has conflict with " + 
+                                                        courseSchedule.getCourseName()+" [" +
+                                                        DateTimeFormatter.ofPattern("yyyy-MMM-dd hh:mm a")
+                                                             .format(cSchedDet.getScheduledStartDateTime()) +" - " + 
+                                                        DateTimeFormatter.ofPattern("yyyy-MMM-dd hh:mm a")
+                                                                .format(cSchedDet.getScheduledEndDateTime()) +"]");
+                        model.addAttribute("scheduleNew", form);
+                }
+            }
         }
         
         Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
