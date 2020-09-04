@@ -27,14 +27,14 @@ import static org.mockito.Mockito.when;
 //$Id:PR03$
 //Project Name : Training Sign up
 //System Name  : Attendance process 
-//Class Name   : FindCourseScheduleDetailById.java
+//Class Name   : FindCourseScheduleDetailByIdTest.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By                                     | Content
 //--------+------------+------------------------------------------------+-----------------
 //0.01    | 07/08/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | New Creation
 //0.02    | 07/09/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | Updated
-//0.03    | 09/02/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | Update
+//0.03    | 09/02/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos          | Updated
 //========================================================================================
 /**
  * <pre>
