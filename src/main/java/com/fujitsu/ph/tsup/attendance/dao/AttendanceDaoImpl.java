@@ -1,6 +1,7 @@
 package com.fujitsu.ph.tsup.attendance.dao;
 
 import com.fujitsu.ph.tsup.attendance.domain.CourseAttendance;
+
 import com.fujitsu.ph.tsup.attendance.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.attendance.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.attendance.model.ChangeStatusParticipant;
@@ -16,8 +17,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 //==================================================================================================
@@ -38,13 +37,14 @@ import org.springframework.stereotype.Repository;
 //0.07    | 07/30/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.08    | 08/26/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.09    | 09/02/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
+//0.10    | 09/03/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access class for attendance related database access
  * </pre>
  * 
- * @version 0.09
+ * @version 0.10
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
