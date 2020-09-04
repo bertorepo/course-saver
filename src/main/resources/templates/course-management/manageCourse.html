@@ -58,6 +58,54 @@
 		</div>
 	</div>
 	<!--Confirm Modal End-->
+	
+	<!-- Info modal -->
+								<div class="modal fade" id="infoModal" tabindex="-1"
+									role="dialog" aria-labelledby="exampleModalLabel"
+									aria-hidden="true">
+
+									<form id="infoModalFormId"
+										th:action="@{/courses/__${courseIdInput}__/delete}" method="get">
+										<div class="modal-dialog modal-lg">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">Course Information</h5>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+
+													<div class="form-group row">
+														<input type="hidden" id="courseIdInput" name="courseIdInput"></input>
+														<label class="col-lg-3 col-form-label">Course
+															Name:</label>
+
+														<div class="col-lg-9">
+															<label class="col-lg-3 col-form-label" id="courseName"
+																name="courseName"></label>
+														</div>
+														<label class="col-lg-3 col-form-label">Detail:</label>
+														<div class="col-lg-9">
+															<label class="col-lg-3 col-form-label" id="courseDetail"
+																name="courseDetail">Hello world</label>
+														</div>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button type="submit" class="btn btn-danger"
+														href="#confirmModal">Delete</button>
+													<input type="button" class="btn btn-primary"
+														data-dismiss="modal" value="Back">
+												</div>
+											</div>
+										</div>
+									</form>
+									<!-- </form> -->
+								</div>
+
+								<!-- Info modal End-->
 
 	<!--Succes Modal-->
 	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
@@ -122,8 +170,8 @@
 							<th>Detail</th>
 							<th style="width: 20%;">Action</th>
 						</thead>
-						<tbody>
-							<tr th:each="course : *{courseList}">
+						<tbody th:each="course : *{courseList}">
+							<tr>
 								<td th:text="${course.name}"></td>
 								<td th:text="${course.detail}">Sample2</td>
 								<td><input type="submit" value="Delete"
@@ -132,57 +180,8 @@
 
 								</td>
 
-								<!-- Info modal -->
-								<div class="modal fade" id="infoModal" tabindex="-1"
-									role="dialog" aria-labelledby="exampleModalLabel"
-									aria-hidden="true">
-
-									<form id="infoModalFormId"
-										th:action="@{/courses/__${course.id}__/delete}" method="get">
-										<div class="modal-dialog modal-lg">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title">Course Information</h5>
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-												<div class="modal-body">
-
-													<div class="form-group row">
-														<!-- th:field="*{id}" -->
-														<input type="hidden" id="courseId" name="courseId"></input>
-														<label class="col-lg-3 col-form-label">Course
-															Name:</label>
-
-														<div class="col-lg-9">
-															<label class="col-lg-3 col-form-label" id="courseName"
-																name="courseName"></label>
-														</div>
-														<label class="col-lg-3 col-form-label">Detail:</label>
-														<div class="col-lg-9">
-															<label class="col-lg-3 col-form-label" id="courseDetail"
-																name="courseDetail">Hello world</label>
-														</div>
-													</div>
-												</div>
-												<div class="modal-footer">
-													<button type="submit" class="btn btn-danger"
-														href="#confirmModal">Delete</button>
-													<input type="button" class="btn btn-primary"
-														data-dismiss="modal" value="Back">
-												</div>
-											</div>
-										</div>
-									</form>
-									<!-- </form> -->
-								</div>
-
-								<!-- Info modal End-->
-
-
 							</tr>
+							
 						</tbody>
 
 					</table>
@@ -198,14 +197,14 @@
 	</div>
 
 	<script type="text/javascript" th:inline="javascript">
-		var value;
+
 
 		function deleteButton(id, courseName, detail) {
 
-			document.getElementById("courseId").value = id;
+			document.getElementById("courseIdInput").value = id;
 			document.getElementById("courseName").innerHTML = courseName;
 			document.getElementById("courseDetail").innerHTML = detail;
-			value = id;
+
 			$('#infoModal').modal('show');
 
 		}
