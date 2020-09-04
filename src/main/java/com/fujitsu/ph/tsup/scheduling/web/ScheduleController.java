@@ -553,7 +553,7 @@ public class ScheduleController {
      * @return courseScheduleListForm and view
      */
     @PostMapping("/courseSchedule/{courseScheduleId}/update")
-    public String submitUpdateCourseScheduleForm(@PathVariable("courseScheduleId") long id, CourseScheduleNewForm form,
+    public String submitUpdateCourseScheduleForm(@PathVariable("courseScheduleId") long id, CourseScheduleUpdateForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
 		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
@@ -572,7 +572,7 @@ public class ScheduleController {
 		Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
 
 		// For looping inside the binded List
-		for (CourseScheduleDetailForm courseSchedDetForm : form.getCourseScheduleDetailsAsList()) {
+		for (CourseScheduleDetailForm courseSchedDetForm : form.getCourseScheduleDetailList()) {
 			if ((courseSchedDetForm.getScheduledStartDateTime() != null)
 					&& (courseSchedDetForm.getScheduledEndDateTime() != null)) {
 				courseScheduleDetailsAsListSet.add(courseSchedDetForm);
@@ -585,13 +585,13 @@ public class ScheduleController {
 		Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
 
 		for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
-			CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L,
+			CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(form.getId(),
 					courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime(), 0.0f)
 							.build();
 			courseScheduleDetailSet.add(courseScheduleDetail);
 		}
 
-		CourseSchedule courseSchedule = new CourseSchedule.Builder(form.getCourseId(), form.getInstructorId(),
+		CourseSchedule courseSchedule = new CourseSchedule.Builder(form.getId(), form.getCourseId(), form.getInstructorId(),
 				form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet).maxAllowed(form.getMaxAllowed())
 						.build();
 		
