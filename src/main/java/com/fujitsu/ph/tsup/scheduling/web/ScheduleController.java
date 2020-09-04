@@ -552,8 +552,8 @@ public class ScheduleController {
      * @param RedirectAttributes     redirectAttributes
      * @return courseScheduleListForm and view
      */
-    @PostMapping("/courseSchedule/courseScheduleId/update")
-    public String submitUpdateCourseScheduleForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
+    @PostMapping("/courseSchedule/{courseScheduleId}/update")
+    public String submitUpdateCourseScheduleForm(@PathVariable("courseScheduleId") long id, CourseScheduleNewForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
 		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
@@ -565,8 +565,8 @@ public class ScheduleController {
 		if (bindingResult.hasErrors()) {
 			form.setVenues(venueFormList);
 			form.setInstructors(instructorFormList);
-			model.addAttribute("scheduleNew", form);
-			return "scheduling/createSched";
+			model.addAttribute("updateView", form);
+			return "scheduling/viewSched";
 		}
 
 		Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
@@ -594,14 +594,15 @@ public class ScheduleController {
 		CourseSchedule courseSchedule = new CourseSchedule.Builder(form.getCourseId(), form.getInstructorId(),
 				form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet).maxAllowed(form.getMaxAllowed())
 						.build();
-
+		
 		scheduleService.updateCourseSchedule(courseSchedule);
-
+		
 		form.setVenues(venueFormList);
 		form.setInstructors(instructorFormList);
-
-
-    	return "redirect:/schedules/viewSched";
+		
+	
+		model.addAttribute("changeSchedule", listForm);
+    	return "redirect:/schedules/courseSchedules/view";
     
     }
     
