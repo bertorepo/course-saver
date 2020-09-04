@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 //$Id:PR03$
 //Project Name :Training Sign Up
 //System Name  :Attendance process
-//Class Name   :findAllScheduledCoursesTest.java
+//Class Name   :FindAllScheduledCoursesTest.java
 //
 //<<Modification History>>
 //Version | Date       | Updated By                                    | Content
@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @JdbcTest
 @ActiveProfiles({ "postgres" })
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class findAllScheduledCoursesTest {
+class FindAllScheduledCoursesTest {
     
     /*
      * ScheduleDao as dependency
