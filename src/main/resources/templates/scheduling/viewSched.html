@@ -31,7 +31,10 @@
 	.dark-grey {
 		color: #606060;	
 	}
-	
+	div.text-danger{
+  			font-size: 12px;
+  			text-align: left;
+  		}
 	</style>
 </head>
 
@@ -164,7 +167,7 @@
 			  th:object="${updateView}" 
 			  th:if="${#httpServletRequest.requestURI != '/schedules/courseSchedules/view'}"
 			  method="post">
-			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static"  >
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -199,28 +202,32 @@
 												th:text="${instructors.name}"
 												th:selected="${instructors.id} eq *{instructorId}"></option>
 									</select>
+									<div class="text-danger" id="instructorId_error"></div>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Venue:</label>
 								<div class="col-lg-7">
-									<select class="form-control" th:field="*{venueId}">
+									<select class="form-control" th:field="*{venueId}" id="venueId">
 										<option value=""></option>
 										<option th:each="venues : *{venues}" 
 												th:value="${venues.id}"
 												th:text="${venues.name}"
 												th:selected="${venues.id} eq *{venueId}"></option>
 									</select>
+									<div class="text-danger" id="venueId_error"></div>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Participants:</label>
 								<div class="col-lg-3">
-									<input type="text" class="form-control" th:field="*{minRequired}" >
+									<input type="text" class="form-control" th:field="*{minRequired}" id="minRequired">
+									<div class="text-danger" id="minRequired_error"></div>
 								</div>
 								<div class="col-lg-1 text-center">—</div>
 								<div class="col-lg-3">
-									<input type="text" class="form-control" th:field="*{maxAllowed}" >
+									<input type="text" class="form-control" th:field="*{maxAllowed}"  id="maxAllowed" >
+									<div class="text-danger" id="maxAllowed_error"></div>
 								</div>
 							</div>	
 							<div class="form-group row">
@@ -246,10 +253,14 @@
 													<div class="col-lg-6">
 														<input type="date" class="form-control" 
 															   th:id="${'startDate' + (stat.index + 1)}">
+														<div class="text-danger" th:id="${'startDate' + (stat.index + 1) + '_error'}">
+														</div>
 													</div>
 													<div class="col-lg-6">
 														<input type="time" class="form-control" 
 																th:id="${'startTime' + (stat.index + 1)}">
+														<div class="text-danger" th:id="${'startTime' + (stat.index + 1) + '_error'}">
+														</div>
 													</div>
 												</div>
 											</td>
@@ -268,10 +279,12 @@
 													<div class="col-lg-6">
 														<input type="date" class="form-control" 
 															   th:id="${'endDate' + (stat.index + 1)}" >
+														<div class="text-danger" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
 													</div>
 													<div class="col-lg-6">
 														<input type="time" class="form-control" 
 																th:id="${'endTime' + (stat.index + 1)}">
+														<div class="text-danger" th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
 													</div>
 												</div>
 											</td>
@@ -281,8 +294,8 @@
 							</div>	
 						</div>
 						<div class="modal-footer">
-							<input type="button" name="update" class="btn btn-success" data-dismiss="modal" value="Update Schedule">
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+							<input type="button" name="update" class="btn btn-success" data-dismiss="modal" value="Update Schedule" th:attr="onclick=|validations()|">
+							<input type="button" class="btn btn-danger" data-dismiss="modal" name="backButton" value="Back">
 						</div>
 					</div>
 				</div>
@@ -467,10 +480,127 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 /*<![CDATA[*/
 	//Update
 	
+	function validations() {
+		var errorCount = 0;
+		var instructor = $('#instructorId').val();
+		var venue = $('#venueId').val();
+		var minRequired = parseInt($('#minRequired').val().replace("", "0"));
+		var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
+		
+		
+		//Empty Fields Validations
+		if (instructor == "") {
+			errorCount++;
+			instructorError = "Please fill up Instructor";
+	        document.getElementById("instructorId_error").innerHTML = instructorError;
+		}
+		if (venue == "") {
+			errorCount++;
+			venueError = "Please fill up Venue";
+	        document.getElementById("venueId_error").innerHTML = venueError;
+		}
+		if (minRequired <= 0) {
+			errorCount++;
+		  	minRequiredError = "Please fill up Minimum no. of Participants";
+		  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
+		}
+		if (maxAllowed <=0) {
+			errorCount++;
+		  	maxAllowedError = "Please fill up Maximum no. of Participants";
+		  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
+		}
+		if (minRequired !==0) {
+			if (maxAllowed <= minRequired) {
+				errorCount++;
+		  	minRequiredError = "Minimum can't be greater or equal to Maximum Participants";
+		  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
+			}
+		}
+		//Scheduled Start Date Time and Scheduled End Date Time Part
+	    for(i = 1; i<= length; i++){
+	    	var startDate = document.getElementById("startDate"+i).value;
+	        var endDate =  document.getElementById("endDate"+i).value;
+	        var startTime =  document.getElementById("startTime"+i).value;
+	        var endTime =  document.getElementById("endTime"+i).value;
+	        
+	        /* var rowStartDateTime = new Date(startDate+"T"+startTime+":00Z");
+		    var rowEndDateTime = new Date(endDate+"T"+startTime+":00Z"); */
+	        
+	        var rowStartDateTime = new Date(startDate);
+		    var rowEndDateTime = new Date(endDate);
+		    
+		    rowStartDateTime.setHours(startTime.substring(0, startTime.indexOf(":")));
+		    rowStartDateTime.setMinutes(startTime.substring(startTime.indexOf(":") + 1));
+		    rowEndDateTime.setHours(endTime.substring(0, endTime.indexOf(":")));
+		    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); 
+		    
+		    console.log(rowStartDateTime);
+		    console.log(rowEndDateTime);
+	       	
+	
+		    	//Start and End Time Validation
+	        	if (startDate > endDate)  {
+	        		errorCount++;
+	        		startDateError = "Start Date can't be greater than or equal to end date";
+	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
+	            } 
+	        	
+	        	//Start and End Date Validation
+	        	if (startTime > endTime) {
+	        		errorCount++;
+	        		startDateError = "Start time can't be greater than or equal to end time";
+	        	  	document.getElementById("startTime" + i + "_error").innerHTML = startDateError;
+	            }
+	        	
+	        	//If Date is Less Than Today
+	        	if (isLessThanToday(startDate)) {
+	        		errorCount++;
+	        		startDateError = "Date can't be less than today";
+	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
+	        	}
+	        	
+	        	if (isLessThanToday(endDate)) {
+	        		errorCount++;
+	        		endDateError = "Date can't be less than today";
+	        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
+	        	}
+	    }
+
+	
+		if (errorCount <= 0) {
+			$('#updateConfirmationModal').modal('show');
+		}
+			
+		  $('#updateModal').on('hide.bs.modal', function(e) {
+		       e.preventDefault();
+		   }); 
+  
+		   
+		   //error message remove warning
+		   function removeWarning() {
+				
+				var fieldId = this.id;
+				var data = document.getElementById(fieldId).value;
+				
+				
+				if (data !== "") {
+					document.getElementById(fieldId + "_error").innerHTML = "";
+				}
+			}
+			
+			document.getElementById("instructorId").onmouseleave = removeWarning;
+			document.getElementById("venueId").onmouseleave = removeWarning;
+			document.getElementById("minRequired").onkeyup = removeWarning;
+			document.getElementById("maxAllowed").onkeyup = removeWarning;
+		
+	
+}
+	
 	function submitUpdate() {
 		var updateCourseScheduleId = $("#updateCourseScheduleId").val();
 		var Url = "/schedules/courseSchedule/"+ updateCourseScheduleId +"/update";
 		document.getElementById("updateView").action = Url;
+
 		
 	}
 	
@@ -479,9 +609,9 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	}); */
 	
 	
-	$('input[name="update"]').on('click', function() {
+	/* $('input[name="update"]').on('click', function() {
 		$('#updateConfirmationModal').modal('show');
-	});
+	}); */
 	/* $('input[name="updateConfirmation"]').on('click', function() {
 		$('#updateSuccessModal').modal('show');
 	}); */
@@ -543,7 +673,6 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	    
 	    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
 	    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-	    console.log(startDateTime);
 	    
 	    document.getElementById("startDate1").value = rowStartDate;
 	    document.getElementById("endDate1").value = rowEndDate;
