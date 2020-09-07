@@ -572,10 +572,13 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		}
 			
 		  $('#updateModal').on('hide.bs.modal', function(e) {
-		       e.preventDefault();
+			  if(errorCount > 0) {
+				  e.preventDefault();
+			  }
+			  errorCount = 0;
+		    
 		   }); 
   
-		   
 		   //error message remove warning
 		   function removeWarning() {
 				
