@@ -244,6 +244,7 @@
 											<col style="width:10%"/>
 											<col style="width:45%"/>
 										</colgroup>
+										<thead>
 										<tr>
 											<td>
 												<label class="col-lg-6 col-form-label">Start/End Date</label>
@@ -253,6 +254,8 @@
 												<label class="col-lg-6 col-form-label">Start/End Time</label>
 											</td>
 										</tr>
+										</thead>
+										<tbody id='updateCourseScheduleDetails'>
 										<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}">
 											<td>
 												<div class="form-group row">
@@ -295,12 +298,13 @@
 												</div>
 											</td>
 										</tr>
+										</tbody>
 									</table>
 								</div>
 							</div>	
 						</div>
 						<div class="modal-footer">
-							<input type="button" name="update" class="btn btn-success" data-dismiss="modal" value="Update Schedule" th:attr="onclick=|validations()|">
+							<input type="button" name="update" class="btn btn-success" value="Update Schedule" th:attr="onclick=|validations()|">
 							<input type="button" class="btn btn-danger" data-dismiss="modal" name="backButton" value="Back">
 						</div>
 					</div>
@@ -518,13 +522,19 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		return dateEntry < today;
 	}
 	
+	function isToday(date){
+		
+	}
+	
 	function validations() {
+		
 		var errorCount = 0;
 		var instructor = $('#instructorId').val();
 		var venue = $('#venueId').val();
 		var minRequired = parseInt($('#minRequired').val().replace("", "0"));
 		var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
-		
+		var courseScheduleDetails = document.getElementById("updateCourseScheduleDetails");
+		var length = courseScheduleDetails.rows.length;
 		
 		//Empty Fields Validations
 		if (instructor == "") {
@@ -574,21 +584,23 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		    
 		    console.log(rowStartDateTime);
 		    console.log(rowEndDateTime);
-	       	
 	
 		    	//Start and End Time Validation
 	        	if (startDate > endDate)  {
 	        		errorCount++;
-	        		startDateError = "Start Date can't be greater than or equal to end date";
+	        		startDateError = "Start Date can't be greater <br> than or equal to end date";
 	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
 	            } 
 	        	
 	        	//Start and End Date Validation
-	        	if (startTime > endTime) {
-	        		errorCount++;
-	        		startDateError = "Start time can't be greater than or equal to end time";
-	        	  	document.getElementById("startTime" + i + "_error").innerHTML = startDateError;
-	            }
+	        	if (startDate == endDate) {
+	        		if (startTime > endTime) {
+		        		errorCount++;
+		        		endStartTimeError = "Start time can't be greater <br> than or equal to end time";
+		        	  	document.getElementById("startTime" + i + "_error").innerHTML = endStartTimeError;
+		        	  	document.getElementById("endTime" + i + "_error").innerHTML = endStartTimeError;
+		            }
+	        	}
 	        	
 	        	//If Date is Less Than Today
 	        	if (isLessThanToday(startDate)) {
@@ -602,10 +614,39 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	        		endDateError = "Date can't be less than today";
 	        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	        	}
+	        	
+	        	if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
+	        		errorCount++;
+	        		document.getElementById("startDate" + i + "_error").innerHTML = "Start Date cannot be null.";
+	        		document.getElementById("endDate" + i + "_error").innerHTML = "End Date cannot be null.";
+	        		document.getElementById("startTime" + i + "_error").innerHTML = "Start Time cannot be null.";
+	        	  	document.getElementById("endTime" + i + "_error").innerHTML = "End Time cannot be null.";
+	    	    } else {
+	    	    	var startDateTime = rowStartDateTime.toISO().toString();
+	    	        /* console.log(rowStartDateTime);
+	    	        console.log(startDateTime); */
+	    	    	var endDateTime = rowEndDateTime.toISO().toString();
+	    		    /* console.log(rowEndDateTime);
+	    		    console.log(endDateTime); */
+	    	    }
+	        	
+	        	document.getElementById("startDate" + i).oninput = removeWarning;
+	    		document.getElementById("startTime" + i).oninput = removeWarning;
+	    		document.getElementById("endDate" + i).oninput = removeWarning;
+	    		document.getElementById("endTime" + i).oninput = removeWarning;   		
+	    		
+	    		document.getElementById("instructorId").oninput = removeWarning;
+				document.getElementById("venueId").oninput = removeWarning;
+				document.getElementById("minRequired").oninput = removeWarning;
+				document.getElementById("maxAllowed").oninput = removeWarning;
+				
+				document.getElementById("startDateTime"+i).value = startDateTime;
+	    		document.getElementById("endDateTime"+i).value = endDateTime; 
 	    }
 
 	
 		if (errorCount <= 0) {
+			$('#updateModal').modal('hide');
 			$('#updateConfirmationModal').modal('show');
 		}
 			
@@ -629,10 +670,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 				}
 			}
 			
-			document.getElementById("instructorId").onmouseleave = removeWarning;
-			document.getElementById("venueId").onmouseleave = removeWarning;
-			document.getElementById("minRequired").onkeyup = removeWarning;
-			document.getElementById("maxAllowed").onkeyup = removeWarning;
+			
 	}
 	
 	function submitUpdate() {
@@ -759,6 +797,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 			$("#toDateTime").prop('value', dateConcat);
 		}
 	}); 
+	
 	//Format Date Inputs
 	Date.prototype.toISO = function() {
 		 return this.getUTCFullYear() +
