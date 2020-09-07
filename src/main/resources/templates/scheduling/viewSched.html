@@ -102,10 +102,10 @@
 			</div>
 		</div>
 		<!--Error2 Modal End-->
-		<!--Buttons for messages (delete these)-->
+		<!--Buttons for messages (delete these)
 			<input type="button" name="error1" class="btn btn-danger" value="Error 1">
 			<input type="button" name="error2" class="btn btn-danger" value="Error 2">
-		<!--Buttons for messages (delete these) End-->	
+		Buttons for messages (delete these) End-->	
 		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
 			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%">
@@ -159,11 +159,10 @@
 		</form> 	
 		<!--Update Modal-->
 		<form class="form-horizontal" 
-			  action="#" 
+			  id="updateView" 
 			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/update}" 
 			  th:object="${updateView}" 
-			  th:if="${(#httpServletRequest.requestURI != '/schedules/courseSchedules/view') 
-			  		&& (#httpServletRequest.requestURI != '/schedules/courseSchedule/{courseScheduleId}/delete')}"
+			  th:if="${#httpServletRequest.requestURI != '/schedules/courseSchedules/view'}"
 			  method="post">
 			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -177,11 +176,13 @@
 						<div class="modal-body">
 							<div class="form-group row">
 								<div class="col-lg-6">
-									<input type="hidden" class="form-control" th:field="*{id}" id="updateCourseScheduleId">
+									<input type="hidden" th:field="*{id}" id="updateCourseScheduleId">
+									
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<input type="hidden" th:field="*{courseId}">
 								<div class="col-lg-7">
 									<input type="text" class="form-control border-0 bg-white shadow-none dark-grey" 
 													   th:field="*{courseName}" 
@@ -280,7 +281,7 @@
 							</div>	
 						</div>
 						<div class="modal-footer">
-							<input type="submit" name="update" class="btn btn-success" data-dismiss="modal" value="Update Schedule">
+							<input type="button" name="update" class="btn btn-success" data-dismiss="modal" value="Update Schedule">
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
 						</div>
 					</div>
@@ -295,11 +296,14 @@
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div class="modal-body">
+						<div class="modal-body" style="text-align: center">
 							Are you sure you want to update this schedule?
 						</div>
 						<div class="modal-footer">
-							<input type="submit" name="updateConfirmation" class="btn btn-success" data-dismiss="modal" value="Yes">
+							<button type="submit" id="update" 
+									name="update"value="submit" 
+									onclick="submitUpdate()"
+									class="btn btn-success">Yes</button>
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
 						</div>
 					</div>
@@ -307,7 +311,7 @@
 			</div>
 			<!--Update Confirmation Modal End-->
 			<!--Update Confirmation Success Modal-->
-			<div class="modal fade" id="updateSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" th:if="${success}" id="updateSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
 						<div class="modal-header alert-success">
@@ -319,14 +323,16 @@
 							Schedule has been updated
 						</div>
 						<div class="modal-footer">
-							<input type="submit" name="updateSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
+							<input type="button" name="updateSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
 						</div>
 					</div>
 				</div>
 			</div>
-			<!--Update Confirmation Success Modal End-->
+			<!--Update Confirmation Success Modal End-->		
 		</form>
 		<!--Update Modal End-->		
+		
+		
 		
 		<!--Delete Modal-->
 		<form class="form-horizontal"
@@ -450,7 +456,8 @@
 	</div>
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
-<script>
+	
+<script th:inline="javascript">
 
 /*<![CDATA[*/
 var errorMessage = /*[[${error}]]*/ 'default';
@@ -460,23 +467,25 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 /*<![CDATA[*/
 	//Update
 	
-	/* function showUpdate(id) {
-	
-		var updateValue = document.getElementById(id).value;
-		var Url = "/schedules/courseSchedule/"+ updateValue +"/update";
-		document.location.href = Url;
+	function submitUpdate() {
+		var updateCourseScheduleId = $("#updateCourseScheduleId").val();
+		var Url = "/schedules/courseSchedule/"+ updateCourseScheduleId +"/update";
+		document.getElementById("updateView").action = Url;
 		
-	} */
+	}
 	
 	/* $('button[name="update"]').on('click', function() {
 		$('#updateModal').modal('show');
 	}); */
+	
+	
 	$('input[name="update"]').on('click', function() {
 		$('#updateConfirmationModal').modal('show');
 	});
-	$('input[name="updateConfirmation"]').on('click', function() {
+	/* $('input[name="updateConfirmation"]').on('click', function() {
 		$('#updateSuccessModal').modal('show');
-	});
+	}); */
+	
 	//Delete
 	/* $('button[name="delete"]').on('click', function() {
 		$('#deleteModal').modal('show');
@@ -575,6 +584,15 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
 	        'Z';
 	};
+	
+	/*<![CDATA[*/
+	var successMessage = /*[[${success}]]*/ 'default';
+
+	if (successMessage == "Success!") {
+
+		$('#updateSuccessModal').modal('show');
+	}
+	/*]]>*/
 </script>
 </body>
 

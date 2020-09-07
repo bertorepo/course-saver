@@ -553,8 +553,14 @@ public class ScheduleController {
      * @return courseScheduleListForm and view
      */
     @PostMapping("/courseSchedule/{courseScheduleId}/update")
-    public String submitUpdateCourseScheduleForm(@PathVariable("courseScheduleId") long id, CourseScheduleUpdateForm form,
-            BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String submitUpdateCourseScheduleForm(@PathVariable("courseScheduleId") long id, 
+            @Valid @ModelAttribute("updateView") CourseScheduleUpdateForm form, BindingResult bindingResult, 
+            Model model, RedirectAttributes redirectAttributes) {
+        
+        CourseScheduleListForm courseSchedListForm = new CourseScheduleListForm();
+        
+        courseSchedListForm.setFromDateTime(listForm.getFromDateTime());
+        courseSchedListForm.setToDateTime(listForm.getToDateTime());
 
 		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
 		Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
@@ -601,7 +607,8 @@ public class ScheduleController {
 		form.setInstructors(instructorFormList);
 		
 	
-		model.addAttribute("changeSchedule", listForm);
+		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
+		redirectAttributes.addFlashAttribute("success", "Success!");
     	return "redirect:/schedules/courseSchedules/view";
     
     }
