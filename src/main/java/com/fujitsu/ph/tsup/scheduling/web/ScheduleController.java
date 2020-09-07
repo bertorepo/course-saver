@@ -625,11 +625,12 @@ public class ScheduleController {
      * @return courseScheduleListForm and view
      */
 	@DeleteMapping("/courseSchedules/{courseScheduleId}/delete")
-	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") long id, Model model,
+	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") Long id, Model model,
 			RedirectAttributes redirectAttributes) {
 
 		scheduleService.deleteCourseScheduleById(id);
-
+		
+		model.addAttribute("success", "The Course Schedule["+id+"] has been successfully deleted.");
 		return "redirect:/schedules/viewSched";
 
     }
