@@ -97,16 +97,11 @@ public interface ScheduleService {
     void countAllEnrolledCoursesByInstructorId(Long id);
     
     /**
-     * Find Monthly Top Learners
+     * Find Top Learners
      * @param long id
      */
-    List<TopLearnersForm> findMonthlyTopLearners();
+    List<TopLearnersForm> findTopLearners(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
     
-    /**
-     * Find Quarterly Top Learners
-     * @param long id
-     */
-    List<TopLearnersForm> findQuarterlyTopLearners();
     
     /**
      * Find Course Schedule by Id
