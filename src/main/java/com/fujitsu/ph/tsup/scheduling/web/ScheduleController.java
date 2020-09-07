@@ -645,23 +645,28 @@ public class ScheduleController {
      * @param ChangeStatusForm       changeStatusForm
      * @return changeStatusForm and view
      */
-	 @GetMapping("/courseSchedule/{courseId}/changeStatus")
-		public String showChangeScheduleForm(@PathVariable("courseId") long id, Model model,
-			    ChangeStatusForm changeStatusForm) {
+	@GetMapping("/courseSchedule/{courseId}/changeStatus")
+	public String showChangeScheduleForm(@PathVariable("courseId") long id, Model model,
+			ChangeStatusForm changeStatusForm) {
 
-		  Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+		if (model.containsAttribute("changeStatus")) {
+			return "scheduling/changeScheduleStatus";
+		}
 
-		 if(changeStatusForm.getId() != 0L) {
-			 Set<CourseSchedule> courseSchedule = scheduleService.findCourseScheduleByCourseId(id);
-			 
-			 for(CourseSchedule courseSched : courseSchedule) {
-			     changeStatusForm.setId(courseSched.getId());
-			 }
-			 
-			 changeStatusForm.setCourses(courseFormList);
-		 }
-	        
-	         return "scheduling/changeScheduleStatus";
+		Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+
+		if (changeStatusForm.getId() != 0L) {
+			Set<CourseSchedule> courseSchedule = scheduleService.findCourseScheduleByCourseId(id);
+
+			for (CourseSchedule courseSched : courseSchedule) {
+				changeStatusForm.setId(courseSched.getId());
+			}
+
+			changeStatusForm.setCourses(courseFormList);
+		}
+		model.addAttribute("changeStatus", changeStatusForm);
+		model.addAttribute("lastSelected", id);
+		return "scheduling/changeScheduleStatus";
 
 	    }
 	 
