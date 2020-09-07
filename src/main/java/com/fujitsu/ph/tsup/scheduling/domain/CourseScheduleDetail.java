@@ -260,7 +260,7 @@ public class CourseScheduleDetail {
          */
         
         private void validateDuration(float duration) {
-            if(duration == 0.0f) {
+            if(duration <= 0.0f) {
                 throw new IllegalArgumentException("Duration should not be null/zero/empty");
             }
         }
