@@ -31,6 +31,12 @@
 	.dark-grey {
 		color: #606060;	
 	}
+	.black {
+		color: #000000;
+	}
+	.ml-n65 {
+		margin: -0.75rem !important;
+	}
 	div.text-danger{
   			font-size: 12px;
   			text-align: left;
@@ -368,51 +374,76 @@
 							<div class="form-group row">
 								<input type="hidden" class="form-control" th:field="*{id}" id="deleteCourseScheduleId">
 								<label class="col-lg-3 col-form-label">Course ID:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" th:field="*{courseId}" disabled>
+								<div class="col-lg-9 mb-3">
+									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
+										th:field="*{courseId}" readonly>
 								</div>
 								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<div class="col-lg-9 mb-3">
+									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
+										th:field="*{courseName}" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label">Instructor:</label>
+								<div class="col-lg-9 mb-3">
+									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
+										th:field="*{instructorName}" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label">Course Date and Time:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" th:field="*{courseName}" disabled>
+								<table class="ml-n1 mb-3">
+									<tbody th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}"> 
+										<tr>
+											<th><label class="col-form-label">Start Date: </label></th>
+											<th><label class="col-form-label">End Date: </label></th>
+										</tr>	
+										<tr>
+											<td><input type="text" class="form-control border-0 bg-white shadow-none black ml-n65" 
+													th:id="${'startDate' + (stat.index + 1)}" readonly></td>
+											<td><input type="text" class="form-control border-0 bg-white shadow-none black ml-n65" 
+													th:id="${'endDate' + (stat.index + 1)}" readonly> </td>
+										</tr>
+										<tr>
+											<th class="pt-3"><label class="col-form-label">Start Time: </label></th>
+											<th class="pt-3"><label class="col-form-label">End Time: </label></th>
+										</tr>
+										<tr>
+											<td>
+												<input type="text" class="form-control border-0 bg-white shadow-none black ml-n65" 
+													th:id="${'startTime' + (stat.index + 1)}" readonly> 
+											</td>
+											<td><input type="text" class="form-control border-0 bg-white shadow-none black ml-n65" 
+													th:id="${'endTime' + (stat.index + 1)}" readonly> </td>
+										</tr>
+										<tr>
+											<td>
+												<input type="hidden" name="startDateTime" 
+													th:id="${'startDateTime' + (stat.index + 1)}"
+											  		th:field=
+											  			"*{courseScheduleDetailList[__${stat.index}__].scheduledStartDateTime}">
+											 	<input type="hidden" name="endDateTime" 
+											 		th:id="${'endDateTime' + (stat.index + 1)}"
+											 		th:field=
+											 			"*{courseScheduleDetailList[__${stat.index}__].scheduledEndDateTime}">
+												<input type="hidden" th:id="${'index' + (stat.index + 1)}" 
+														th:value="${stat.index}">
+											</td>
+										</tr>
+										</tbody> 
+									</table>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Instructor:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" th:field="*{instructorName}" disabled>
-								</div>
-								<label class="col-lg-3 col-form-label">Course Date and Time:</label>
-								<table> </table>
-								<div class="col-lg-9">
-								<div th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}"> 	
-								<label class="col-form-label">Start Date: 
-									<input type="text" class="form-control-plaintext" th:id="${'startDate' + (stat.index + 1)}" disabled></label>
-								<label class="col-form-label">End Date: 
-									<input type="text" class="form-control-plaintext" th:id="${'endDate' + (stat.index + 1)}" disabled> </label>
-								<br>
-								<label class="col-form-label">Start Time: 
-									<input type="text" class="form-control-plaintext" th:id="${'startTime' + (stat.index + 1)}" disabled> </label>
-								<label class="col-form-label">End Time: 
-									<input type="text" class="form-control-plaintext" th:id="${'endTime' + (stat.index + 1)}" disabled> </label>
-									<input type="hidden" name="startDateTime" 
-											th:id="${'startDateTime' + (stat.index + 1)}"
-										  	th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledStartDateTime}">
-									 <input type="hidden" name="endDateTime" 
-									 		th:id="${'endDateTime' + (stat.index + 1)}"
-									 		th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledEndDateTime}">
-									<input type="hidden" th:id="${'index' + (stat.index + 1)}"
-									 th:value="${stat.index}">
-								</div>
-							</div>
 								<label class="col-lg-3 col-form-label">Venue:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" th:field="*{venueName}" disabled>
+									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
+										th:field="*{venueName}" readonly>
 								</div>
 							</div>	
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Details:</label>
 								<div class="col-lg-9">
-									<label class="col-form-label">Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World</label>
+									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
+										th:field="*{courseDetails}" readonly>
 								</div>
 							</div>
 						</div>
@@ -479,6 +510,13 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 }
 /*<![CDATA[*/
 	//Update
+	
+	//Checks if Date is Today
+	function isLessThanToday(date){
+		var dateEntry = new Date(date);
+		var today = new Date((new Date).setHours(0, 0, 0, 0));
+		return dateEntry < today;
+	}
 	
 	function validations() {
 		var errorCount = 0;
@@ -595,9 +633,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 			document.getElementById("venueId").onmouseleave = removeWarning;
 			document.getElementById("minRequired").onkeyup = removeWarning;
 			document.getElementById("maxAllowed").onkeyup = removeWarning;
-		
-	
-}
+	}
 	
 	function submitUpdate() {
 		var updateCourseScheduleId = $("#updateCourseScheduleId").val();
@@ -651,37 +687,55 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	function load(){
 		var fromDateTime = $("#fromDateTime").val();
 		var toDateTime = $("#toDateTime").val();
-		var updateCourseScheduleId = $("#updateCourseScheduleId").val();
-		var deleteCourseScheduleId =  $("#deleteCourseScheduleId").val();
 		var fromNewDate = fromDateTime.toString().slice(0,10);
 		var toNewDate = toDateTime.toString().slice(0,10);
 		
 		document.getElementById("fromDate").value = fromNewDate;
 		document.getElementById("toDate").value = toNewDate;
 		
-		if(updateCourseScheduleId !== ""){
-			$('#updateModal').modal('show');
-
+		if ($("#updateView").length > 0){
+			var updateCourseScheduleId = $("#updateCourseScheduleId").val();
+			if(updateCourseScheduleId !== ""){
+				$('#updateModal').modal('show');
+			}
+		    
+		    var startDateTime = document.getElementById("startDateTime1").value;
+		    var endDateTime = document.getElementById("endDateTime1").value;
+		    
+		    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+		    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+		    
+		    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+		    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+		    
+		    document.getElementById("startDate1").value = rowStartDate;
+		    document.getElementById("endDate1").value = rowEndDate;
+		    
+		    document.getElementById("startTime1").value = rowStartTime;
+		    document.getElementById("endTime1").value = rowEndTime;
 		}
 		
-		if(deleteCourseScheduleId !== ""){
-			$('#deleteModal').modal('show');
-		}
+		if ($("#deleteView").length > 0) {
+			var deleteCourseScheduleId =  $("#deleteCourseScheduleId").val();
+			if(deleteCourseScheduleId !== ""){
+				$('#deleteModal').modal('show');
+			}
+			
+			var startDateTime = document.getElementById("startDateTime1").value;
+		    var endDateTime = document.getElementById("endDateTime1").value;
 		    
-	    var startDateTime = document.getElementById("startDateTime1").value;
-	    var endDateTime = document.getElementById("endDateTime1").value;
-	    
-	    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-	    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
-	    
-	    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-	    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-	    
-	    document.getElementById("startDate1").value = rowStartDate;
-	    document.getElementById("endDate1").value = rowEndDate;
-	    
-	    document.getElementById("startTime1").value = rowStartTime;
-	    document.getElementById("endTime1").value = rowEndTime;
+		    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+		    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+		    
+		    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+		    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+		    
+		    document.getElementById("startDate1").value = rowStartDate;
+		    document.getElementById("endDate1").value = rowEndDate;
+		    
+		    document.getElementById("startTime1").value = rowStartTime;
+		    document.getElementById("endTime1").value = rowEndTime;
+		}
 	}
 
 	$("#fromDate").blur(function () {

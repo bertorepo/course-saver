@@ -285,7 +285,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
     @Override
     public int countAllEnrolledCoursesByInstructorId(long id) {
         String query = "SELECT COUNT(COURSE_ID) "
-                     + "FROM COURSE_SCHEDULE "
+                     + "FROM COURSE_SCHEDULE AS CSCHED "
                      + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "  
                      + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
                      + "WHERE INSTRUCTOR_ID = :id "
