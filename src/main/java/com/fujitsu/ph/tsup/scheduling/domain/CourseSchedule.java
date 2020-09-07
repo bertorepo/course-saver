@@ -292,15 +292,14 @@ public class CourseSchedule {
         validateMinRequired(minRequired);
         validateCourseScheduleDetail(courseScheduleDetail);
             
-        this.status = 'O';  
+        this.status = 'A';  
         this.courseId = courseId;
         this.instructorId = instructorId;
         this.venueId = venueId;
         this.minRequired = minRequired;
         this.courseScheduleDetail = courseScheduleDetail;
-    
         
-    }
+        }
         
         /**
          * <pre>
@@ -334,7 +333,7 @@ public class CourseSchedule {
         this.minRequired = minRequired;
         this.courseScheduleDetail = courseScheduleDetail;
         
-    }
+        }
         /**
          * <pre>
          * Creates a new instance of Builder for creating a course schedule.
@@ -384,7 +383,7 @@ public class CourseSchedule {
         this.status = status;
         this.totalParticipants = totalParticipants;
         
-    }
+        }
 
         /**
          * <pre>
@@ -399,9 +398,34 @@ public class CourseSchedule {
         validateMaxAllowed(maxAllowed);
         this.maxAllowed = maxAllowed;
         
-            return this;
+        return this;
         
-    }
+        }
+        
+        public Builder done() {
+            
+            this.status = 'D';
+            return this;
+        }
+        
+        public Builder ongoing() {
+            
+            this.status = 'O';
+            return this;
+        }
+        
+        public Builder active() {
+            
+            this.status = 'A';
+            return this;
+        }
+        
+        public Builder cancelled() {
+            
+            this.status = 'C';
+            return this;
+        }
+        
         /**
          * <pre>
          * Validates and sets the argument into the Builder instance variables 
@@ -412,11 +436,12 @@ public class CourseSchedule {
          */
         public Builder addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
         
-        validateCourseScheduleDetail(courseScheduleDetail);
-        this.courseScheduleDetail = courseScheduleDetail;
+            validateCourseScheduleDetail(courseScheduleDetail);
+            this.courseScheduleDetail = courseScheduleDetail;
     
             return this;    
-    }
+        }
+        
         /**
          * <pre>
          * Validates and add the argument into the Builder instance variables. T
@@ -431,7 +456,7 @@ public class CourseSchedule {
             validateCourseDetails(courseDetails);
             this.courseDetails = courseDetails;
         
-                return this;    
+            return this;    
         }
         
         
@@ -443,7 +468,7 @@ public class CourseSchedule {
         public CourseSchedule build() {
         
             return new CourseSchedule(this);
-    }
+        }
         /**
          * <pre>
          * Validate the id based on the condition below. 
@@ -455,9 +480,9 @@ public class CourseSchedule {
         private void validateId(Long id) {
             if(id == null || id == 0L) {
              throw new IllegalArgumentException("Id should not be empty");
+            }
         }
-    }
-    
+        
         /**
          * <pre>
          * Validate the course id based on the condition below. 
@@ -469,9 +494,8 @@ public class CourseSchedule {
         private void validateCourseId(Long courseId) {  
             if(courseId == null || courseId == 0L) {
              throw new IllegalArgumentException("Course should not be empty");
+            }
         }
-        
-    }
         /**
          * <pre>
          * Validate the instructor id based on the condition below. 
@@ -483,9 +507,8 @@ public class CourseSchedule {
         private void validateInstructorId(Long instructorId) {
             if(instructorId == null || instructorId == 0L) {
                 throw new IllegalArgumentException("Instructor should not be empty");
+            }
         }
-        
-    }
     
         /**
          * <pre>
@@ -498,8 +521,8 @@ public class CourseSchedule {
         private void validateVenueId(Long venueId) {
             if(venueId == null || venueId == 0L) {
                 throw new IllegalArgumentException("Venue should not be empty");
+            }
         }
-    }
         /**
          * <pre>
          * Validate the minimum number of participants based on the condition below. 
@@ -511,8 +534,8 @@ public class CourseSchedule {
         private void validateMinRequired(int minRequired) {
             if(minRequired <= 0 ) {
                 throw new IllegalArgumentException("Mininum No. of Participants should be greater than 0");
+            }
         }
-    }
         /**
          * <pre>
          * Validate the course name based on the condition below. 
@@ -524,9 +547,9 @@ public class CourseSchedule {
         private void validateCourseName(String courseName) {
             if(courseName == null || courseName.isEmpty()) {
                 throw new IllegalArgumentException("Course name should not be empty");
+            }
         }
-    }
-        
+            
         /**
          * <pre>
          * Validate the instructor last name based on the condition below. 
@@ -538,8 +561,8 @@ public class CourseSchedule {
         private void validateInstructorLastName(String instructorLastName) {
             if(instructorLastName == null || instructorLastName.isEmpty()) {
                 throw new IllegalArgumentException("Instructor Name should not be empty");
+            }
         }
-    }
         /**
          * <pre>
          * Validate the instructor first name based on the condition below. 
@@ -551,8 +574,8 @@ public class CourseSchedule {
         private void validateInstructorFirstName(String instructorFirstName) {
             if(instructorFirstName == null || instructorFirstName.isEmpty()) {
                 throw new IllegalArgumentException("Instructor Name should not be empty");
+            }
         }
-    }
         /**
          * <pre>
          * Validate the venue name based on the condition below. 
@@ -564,8 +587,8 @@ public class CourseSchedule {
         private void validateVenueName(String venueName) {
             if(venueName == null || venueName.isEmpty()) {
                 throw new IllegalArgumentException("Venue should not be empty");
+            }
         }
-    }
     
         /**
          * <pre>
@@ -578,8 +601,8 @@ public class CourseSchedule {
         private void validateMaxAllowed(int maxAllowed) {
             if(maxAllowed < 0) {
                 throw new IllegalArgumentException("Maximum No. of Participants should not be less than 0");
+            }
         }
-    }
         
         /**
          * <pre>
@@ -590,8 +613,8 @@ public class CourseSchedule {
          * @param status
          */
         private void validateStatus(char status) {
-            if(status != 'O' && status != 'D') {
-                throw new IllegalArgumentException("Status should be 'O' and 'D' only");
+            if(status != 'O' && status != 'D' && status != 'A' && status != 'C') {
+                throw new IllegalArgumentException("Status should be 'A','C','O' or 'D' only");
         }
     }
     
@@ -606,23 +629,20 @@ public class CourseSchedule {
         private void validateCourseScheduleDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
             if(courseScheduleDetail.isEmpty() || courseScheduleDetail == null) {
                 throw new IllegalArgumentException("The schedule should have at least 1 record");
+            }
         }
-    }
         private void validateTotalParticipants(int totalParticipants) {
         	 if(totalParticipants < 0 ) {
                  throw new IllegalArgumentException("Total Participants value should be numeric");
-         }
-    }
+        	 }
+        }
         
         private void validateCourseDetails(String courseDetails) {
        	 if(venueName == null || venueName.isEmpty()) {
                 throw new IllegalArgumentException("Course Details should not be empty");
+       	     }
         }
-   }
-     
         
-        
-
         @Override
         public String toString() {
             return "Builder [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", instructorId="

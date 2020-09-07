@@ -520,6 +520,7 @@ public class ScheduleController {
         courseScheduleDeleteForm.setInstructorName(courseSchedule.getInstructorFirstName() + " " + courseSchedule.getInstructorLastName());
         courseScheduleDeleteForm.setVenueName(courseSchedule.getVenueName());
         courseScheduleDeleteForm.setCourseScheduleDetailList(detailFormList);
+        courseScheduleDeleteForm.setCourseDetails(courseSchedule.getCourseDetails());
         
 		
 		for(CourseScheduleDetail detail : courseSchedule.getCourseScheduleDetail()) {
