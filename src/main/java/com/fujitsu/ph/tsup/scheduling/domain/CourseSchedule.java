@@ -384,6 +384,27 @@ public class CourseSchedule {
         this.totalParticipants = totalParticipants;
         
         }
+        
+        /**
+         * <pre>
+         * Creates a new instance of Builder for creating a course schedule.
+         * It validates and sets the argument into the Builder instance variables. 
+         * This method is used for changing status of course schedule
+         * <pre>
+         * 
+         * @param Id
+         * @param courseId
+         */
+    
+        public Builder(Long id, Long courseId) {
+        
+            validateId(id);
+            validateCourseId(courseId);
+            
+            this.id = id;
+            this.courseId = courseId;
+        
+        }
 
         /**
          * <pre>
