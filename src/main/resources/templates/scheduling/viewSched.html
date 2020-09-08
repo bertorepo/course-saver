@@ -171,7 +171,7 @@
 			  id="updateView" 
 			  th:object="${updateView}" 
 			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/update(courseScheduleId = *{id})}" 
-			  th:if="${#httpServletRequest.requestURI != '/schedules/courseSchedules/view'}"
+			  th:if="${#strings.contains(#httpServletRequest.requestURI, 'update')}"
 			  method="post">
 			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static"  >
 				<div class="modal-dialog modal-lg">
@@ -360,10 +360,10 @@
 		
 		<!--Delete Modal-->
 		<form class="form-horizontal"
-			  action="#" 
+			  id="deleteView"
 			  th:object="${deleteView}" 
 			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/delete(courseScheduleId = *{id})}" 
-			  th:if="${#httpServletRequest.requestURI == '/schedules/courseSchedule/{courseScheduleId}/delete'}"
+			  th:if="${#strings.contains(#httpServletRequest.requestURI, 'delete')}"
 			  method="get">
 			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
