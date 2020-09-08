@@ -89,8 +89,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + " WHERE COURSE_SCHEDULE_ID = CSCHED.ID) AS TOTAL_PARTICIPANTS, "
                 + "CSCHED.STATUS AS STATUS, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + " CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + " CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
                 + "CSCHEDDET.DURATION AS DURATION "
                 + "FROM COURSE_SCHEDULE AS CSCHED " 
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
@@ -101,8 +103,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + " ON CSCHED.INSTRUCTOR_ID = E.ID " 
                 + "INNER JOIN VENUE AS V " 
                 + " ON CSCHED.VENUE_ID = V.ID "
-                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
-                + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME";
+                + "WHERE SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
+                + "ORDER BY ID, SCHEDULED_START_DATETIME";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
                 .addValue("fromDateTime", fromDateTime.toOffsetDateTime())
@@ -242,8 +244,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
         
         String courseSchedDetSql = "UPDATE COURSE_SCHEDULE_DETAIL "
                                  + "SET COURSE_SCHEDULE_ID = :course_schedule_id, "
-                                 + "SCHEDULED_START_DATETIME = :scheduled_start_datetime, "
-                                 + "SCHEDULED_END_DATETIME = :scheduled_end_datetime, "
+                                 + "RESCHEDULED_START_DATETIME = :scheduled_start_datetime, "
+                                 + "RESCHEDULED_END_DATETIME = :scheduled_end_datetime, "
                                  + "DURATION = :duration "
                                  + "WHERE ID = :csdet_id";
         
@@ -348,8 +350,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + " WHERE COURSE_SCHEDULE_ID = CSCHED.ID) AS TOTAL_PARTICIPANTS, "
                 + "CSCHED.STATUS AS STATUS, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + " CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + " CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
                 + "CSCHEDDET.DURATION AS DURATION "
                 + "FROM COURSE_SCHEDULE AS CSCHED " 
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
@@ -390,8 +394,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + " WHERE COURSE_SCHEDULE_ID = CSCHED.ID) AS TOTAL_PARTICIPANTS, "
                 + "CSCHED.STATUS AS STATUS, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + " CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + " CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
                 + "CSCHEDDET.DURATION AS DURATION "
                 + "FROM COURSE_SCHEDULE AS CSCHED " 
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
@@ -403,7 +409,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "INNER JOIN VENUE AS V " 
                 + " ON CSCHED.VENUE_ID = V.ID "
                 + "WHERE CSCHED.COURSE_ID = :c_id "
-                + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME";
+                + "ORDER BY ID, SCHEDULED_START_DATETIME";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
                 .addValue("c_id", id);
