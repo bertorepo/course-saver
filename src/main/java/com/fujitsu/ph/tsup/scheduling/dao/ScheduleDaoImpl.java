@@ -330,7 +330,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
     }
 
     @Override
-    public CourseSchedule findCourseScheduleById(long id) {
+    public CourseSchedule findCourseScheduleById(Long id) {
         String query = "SELECT " 
                 + "CSCHED.ID AS ID, " 
                 + "CSCHED.COURSE_ID AS COURSE_ID, "
@@ -414,4 +414,5 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
         return courseSchedule;
     }
+
 }

@@ -204,14 +204,16 @@ public class ScheduleServiceImpl implements ScheduleService {
      * <pre>
      * 
      * @param courseSchedule
+     * @return 
      */
     @Override
-    public void countAllEnrolledCoursesByInstructorId(Long id) {
+    public int countAllEnrolledCoursesByInstructorId(Long id) {
         try {
-            scheduleDao.countAllEnrolledCoursesByInstructorId(id);
+        	return scheduleDao.countAllEnrolledCoursesByInstructorId(id);
         } catch (DataAccessException ex) {
             throw new IllegalArgumentException("Can't Find Enrolled Courses");
         }
+	
     }
 
     

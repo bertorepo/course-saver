@@ -93,8 +93,9 @@ public interface ScheduleService {
     /**
      * Counts the Enrolled Courses by Instructor Id
      * @param long id
+     * @return 
      */
-    void countAllEnrolledCoursesByInstructorId(Long id);
+    int countAllEnrolledCoursesByInstructorId(Long id);
     
     /**
      * Find Top Learners

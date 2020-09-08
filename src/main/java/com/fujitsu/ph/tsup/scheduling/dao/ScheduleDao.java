@@ -65,7 +65,7 @@ public interface ScheduleDao {
      */
 	Set<VenueForm> findAllVenues();
 	
-	CourseSchedule findCourseScheduleById(long id);
+	CourseSchedule findCourseScheduleById(Long id);
 	
 	 /**
      * Saves the CourseSchedule and CourseScheduleDetail object

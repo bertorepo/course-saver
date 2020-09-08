@@ -62,6 +62,7 @@ import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleUpdateForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleViewForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 
@@ -123,7 +124,13 @@ public class ScheduleController {
         Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
                 courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
 
-        Set<CourseScheduleViewForm> courseScheduleViewFormSet = new HashSet<>();
+        List<TopLearnersForm> monthlyTopLearnerList = scheduleService.findTopLearners(ZonedDateTime.now(), ZonedDateTime.now().plusMonths(1));
+        
+        List<TopLearnersForm> quarterlyTopLearnerList = scheduleService.findTopLearners(ZonedDateTime.now(), ZonedDateTime.now().plusMonths(4));
+        
+        int totalTrainings = scheduleService.countAllEnrolledCoursesByInstructorId(employeeId);
+        
+        		Set<CourseScheduleViewForm> courseScheduleViewFormSet = new HashSet<>();
 
         for (CourseSchedule courseSched : courseSchedule) {
             CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
@@ -151,7 +158,9 @@ public class ScheduleController {
             courseScheduleViewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
             courseScheduleViewFormSet.add(courseScheduleViewForm);
         }
-        
+        courseScheduleListForm.setTotalTrainings(totalTrainings);
+        courseScheduleListForm.setMonthlyTopLearners(monthlyTopLearnerList);
+        courseScheduleListForm.setQuarterlyTopLearners(quarterlyTopLearnerList);
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
         //model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
         model.addAttribute("scheduleView", courseScheduleListForm);
