@@ -563,7 +563,7 @@ public class ScheduleController {
      * @return courseScheduleListForm and view
      */
     @PostMapping("/courseSchedule/{courseScheduleId}/update")
-    public String submitUpdateCourseScheduleForm(@PathVariable("courseScheduleId") long id, 
+    public String submitUpdateCourseScheduleForm(@PathVariable("courseScheduleId") Long id, 
             @Valid @ModelAttribute("updateView") CourseScheduleUpdateForm form, BindingResult bindingResult, 
             Model model, RedirectAttributes redirectAttributes) {
         
@@ -601,13 +601,13 @@ public class ScheduleController {
 		Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
 
 		for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
-			CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(form.getId(),
+			CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseSchedDetForm.getId() ,id,
 					courseSchedDetForm.getScheduledStartDateTime(), courseSchedDetForm.getScheduledEndDateTime(), 0.0f)
 							.build();
 			courseScheduleDetailSet.add(courseScheduleDetail);
 		}
 
-		CourseSchedule courseSchedule = new CourseSchedule.Builder(form.getId(), form.getCourseId(), form.getInstructorId(),
+		CourseSchedule courseSchedule = new CourseSchedule.Builder(id, form.getCourseId(), form.getInstructorId(),
 				form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet).maxAllowed(form.getMaxAllowed())
 						.build();
 		
@@ -619,6 +619,9 @@ public class ScheduleController {
 	
 		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
 		redirectAttributes.addFlashAttribute("success", "Success!");
+		
+		listForm = null;
+		
     	return "redirect:/schedules/courseSchedules/view";
     
     }
@@ -637,11 +640,20 @@ public class ScheduleController {
 	@DeleteMapping("/courseSchedules/{courseScheduleId}/delete")
 	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") Long id, Model model,
 			RedirectAttributes redirectAttributes) {
+	    
+	    CourseScheduleListForm courseSchedListForm = new CourseScheduleListForm();
+        
+        courseSchedListForm.setFromDateTime(listForm.getFromDateTime());
+        courseSchedListForm.setToDateTime(listForm.getToDateTime());
 
 		scheduleService.deleteCourseScheduleById(id);
 		
-		model.addAttribute("success", "The Course Schedule["+id+"] has been successfully deleted.");
-		return "redirect:/schedules/viewSched";
+		redirectAttributes.addFlashAttribute("success", "The Course Schedule["+id+"] has been successfully deleted.");
+		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
+		
+		listForm = null;
+		
+		return "redirect:/schedules/courseSchedules/view";
 
     }
 	

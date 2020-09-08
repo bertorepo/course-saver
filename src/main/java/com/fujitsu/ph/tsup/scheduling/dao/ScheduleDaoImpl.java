@@ -421,4 +421,19 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return courseSchedule;
     }
 
+    @Override
+    public void updateCourseScheduleStatus(Set<CourseSchedule> courseSchedules) {
+        String sql = "UPDATE COURSE_SCHEDULE "
+                + "SET STATUS = :status "
+                + "WHERE ID = :id AND COURSE_ID = :course_id";
+        
+        for(CourseSchedule courseSchedule : courseSchedules) {
+            SqlParameterSource courseSchedParameters = new MapSqlParameterSource()
+                    .addValue("status", courseSchedule.getStatus())
+                    .addValue("id", courseSchedule.getId())
+                    .addValue("course_id", courseSchedule.getCourseId());
+            template.update(sql, courseSchedParameters);
+        }
+    }
+
 }

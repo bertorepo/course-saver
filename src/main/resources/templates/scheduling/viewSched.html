@@ -169,8 +169,8 @@
 		<!--Update Modal-->
 		<form class="form-horizontal" 
 			  id="updateView" 
-			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/update}" 
 			  th:object="${updateView}" 
+			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/update(courseScheduleId = *{id})}" 
 			  th:if="${#httpServletRequest.requestURI != '/schedules/courseSchedules/view'}"
 			  method="post">
 			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static"  >
@@ -282,6 +282,8 @@
 												 th:field="*{courseScheduleDetailList[__${stat.index}__].scheduledEndDateTime}">
 												<input type="hidden" th:id="${'index' + (stat.index + 1)}"
 												 th:value="${stat.index}">
+												<input type="hidden" name="courseScheduleDetailId" 
+												 th:field="*{courseScheduleDetailList[__${stat.index}__].id}"/>
 											</td>
 											<td>
 												<div class="form-group row">
@@ -325,7 +327,6 @@
 						<div class="modal-footer">
 							<button type="submit" id="update" 
 									name="update"value="submit" 
-									onclick="submitUpdate()"
 									class="btn btn-success">Yes</button>
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
 						</div>
@@ -360,10 +361,9 @@
 		<!--Delete Modal-->
 		<form class="form-horizontal"
 			  action="#" 
-			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/delete}" 
 			  th:object="${deleteView}" 
-			  th:if="${(#httpServletRequest.requestURI != '/schedules/courseSchedules/view') 
-			  			&& (#httpServletRequest.requestURI != '/schedules/courseSchedule/{courseScheduleId}/update')}"
+			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/delete(courseScheduleId = *{id})}" 
+			  th:if="${#httpServletRequest.requestURI == '/schedules/courseSchedule/{courseScheduleId}/delete'}"
 			  method="get">
 			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
@@ -520,10 +520,6 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		var dateEntry = new Date(date);
 		var today = new Date((new Date).setHours(0, 0, 0, 0));
 		return dateEntry < today;
-	}
-	
-	function isToday(date){
-		
 	}
 	
 	function validations() {

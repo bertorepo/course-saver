@@ -146,13 +146,20 @@ public class CourseScheduleDetail {
             validateCourseScheduleId(courseScheduleId);
             validateScheduledStartDateTime(scheduledStartDateTime);
             validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
-            validateDuration(duration);
             
             this.id = id;
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
-            this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = duration;
+            this.scheduledEndDateTime = scheduledEndDateTime;  
+            
+            if(duration <= 0.0f) {
+                duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
+                validateDuration(duration);
+                this.duration = duration;
+            } else {
+                validateDuration(duration);
+                this.duration = duration;
+            }
         }
         
         /**

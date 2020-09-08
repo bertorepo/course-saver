@@ -88,4 +88,6 @@ public interface ScheduleDao {
 	
 	Set<CourseSchedule> findCourseScheduleByCourseId(Long id);
 	
+	void updateCourseScheduleStatus(Set<CourseSchedule> courseSchedules);
+	
 }
