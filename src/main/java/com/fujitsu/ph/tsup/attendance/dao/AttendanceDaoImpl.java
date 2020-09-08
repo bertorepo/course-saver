@@ -38,13 +38,14 @@ import org.springframework.stereotype.Repository;
 //0.08    | 08/26/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.09    | 09/02/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.10    | 09/03/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
+//0.11    | 09/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access class for attendance related database access
  * </pre>
  * 
- * @version 0.10
+ * @version 0.11
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
@@ -90,8 +91,10 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "    WHERE COURSE_SCHEDULE_ID = CSCHED.ID"
                 + ") AS PARTICIPANT_ID,"
                 + "CSCHED.STATUS AS STATUS,"
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME,"
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME "
                 + "FROM COURSE_SCHEDULE AS CSCHED " 
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID " 
@@ -147,8 +150,10 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "    FROM EMPLOYEE "
                 + "    WHERE ID = CPART.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_FIRST_NAME, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
                 + "CSCHEDDET.DURATION AS DURATION, "
                 + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
                 +"("
@@ -236,8 +241,10 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "C.DETAIL AS DETAIL, "
                 + "CATTEN.STATUS AS STATUS, "
                 + "CSCHEDDET.DURATION AS DURATION, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
                 + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME, "
                 + "CATTEN.LOG_OUT_DATETIME AS LOG_OUT_DATETIME "
                 + "FROM COURSE_SCHEDULE AS CSCHED "
@@ -316,8 +323,10 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "C.DETAIL AS DETAIL, "
                 + "CSCHEDDET.DURATION AS DURATION, " 
                 + "CATTEN.STATUS AS STATUS, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, " 
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, " 
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
                 + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME, "
                 + "CATTEN.LOG_OUT_DATETIME AS LOG_OUT_DATETIME " 
                 + "FROM COURSE_SCHEDULE AS CSCHED  "
@@ -488,8 +497,10 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "C.DETAIL AS DETAIL, "
                 + "CSCHEDDET.DURATION AS DURATION, "
                 + "CATTEN.STATUS AS STATUS, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
                 + "CATTEN.LOG_IN_DATETIME AS LOG_IN_DATETIME, "
                 + "CATTEN.LOG_OUT_DATETIME AS LOG_OUT_DATETIME "
                 
@@ -569,8 +580,10 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "D.DEPARTMENT_NAME AS DEPARTMENT_NAME, "
                 + "CSCHEDDET.DURATION AS DURATION, "
                 + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME "
                 + "FROM COURSE_SCHEDULE AS CSCHED "
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + "ON CSCHEDDET.COURSE_SCHEDULE_ID = CSCHED.ID "
