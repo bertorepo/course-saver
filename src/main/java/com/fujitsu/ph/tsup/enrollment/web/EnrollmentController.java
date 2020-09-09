@@ -6,12 +6,16 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
+import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollCancelForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrolledListForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
+import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
+
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -134,44 +138,85 @@ public class EnrollmentController {
 //            System.out.println("SECOND TO DATE TIME: "+form.getToDateTime());
         }
 
-        if(form.getFromDateTime().isAfter(form.getToDateTime())) {
+        if(form.getFromDateTime().isAfter(form.getToDateTime()) || form.getFromDateTime().isEqual(form.getToDateTime())) {
         	  model.addAttribute(form);
               model.addAttribute("error", "To Date should be greater than or equal to From Date");
               model.addAttribute("nullMessage", "No schedules found");
               return "enrollment/viewCourseEnroll";
         }
+        
+        Set<CourseSchedule> courseScheduleAllActive = enrollmentService.findAllActiveCourseSchedule();
+        System.out.println(courseScheduleAllActive.size() + "SIZE OF COURSE ACTIVE");
+        Set<CourseScheduleForm> courseScheduleSetForm = new HashSet<>();
+        for(CourseSchedule courseSchedule:courseScheduleAllActive) {
+        	
+        	CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
+        	
+        	courseScheduleForm.setId(courseSchedule.getId());
+        	courseScheduleForm.setCourseId(courseSchedule.getCourseId());
+        	courseScheduleForm.setCourseName(courseSchedule.getCourseName());
+        	courseScheduleForm.setInstructorId(courseSchedule.getInstructorId());
+        	courseScheduleForm.setInstructorName(courseSchedule.getInstructorLastName()+" "+courseSchedule.getInstructorFirstName());
+        	courseScheduleForm.setVenueId(courseSchedule.getVenueId());
+        	courseScheduleForm.setVenueName(courseSchedule.getVenueName());
+        	courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
+        	courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
+        	courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
 
+        	CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+        	CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+        	
+        	courseScheduleDetailForm.setId(courseScheduleDetail.getId());
+        	courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+        	courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+        	courseScheduleDetailForm.setDuration(courseScheduleDetail.getDuration());
+        	
+        	courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailForm);
+        	courseScheduleSetForm.add(courseScheduleForm);
+        	System.out.println("(COURSE ACTIVE)Course Id: " + courseScheduleForm.getCourseId());
+        	System.out.println("(COURSE ACTIVE)Course Name: " + courseScheduleForm.getCourseName());
+        	System.out.println("(COURSE ACTIVE)Instructor Name: " + courseScheduleForm.getInstructorName());
+        	System.out.println("(COURSE ACTIVE)Course Schedule Detail Id: " + courseScheduleDetailForm.getId());
+        	System.out.println("(COURSE ACTIVE)Start DateTime: " + courseScheduleDetailForm.getScheduledStartDateTime());
+        	System.out.println("(COURSE ACTIVE)End DateTime: " + courseScheduleDetailForm.getScheduledEndDateTime());
+        	System.out.println("(COURSE ACTIVE)Duration: " + courseScheduleDetailForm.getDuration());
+        	System.out.println("(COURSE ACTIVE)Venue Name: " + courseScheduleForm.getVenueName());
+        	System.out.println("(COURSE ACTIVE)Min Participants: " + courseScheduleForm.getMinRequired());
+        	System.out.println("(COURSE ACTIVE)Max Participants: " + courseScheduleForm.getMaxAllowed());
+        	System.out.println("(COURSE ACTIVE)Total Participants: " + courseScheduleForm.getTotalParticipants());
+        	
+        }
+        model.addAttribute("activeCourseSchedule", courseScheduleSetForm);
         try {
         	Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
             		form.getFromDateTime(), form.getToDateTime());
-        	
-        Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
-        for (CourseSchedule courseSchedule : courseSchedules) {
-            CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
-            courseScheduleForm.setId(courseSchedule.getId());
-            courseScheduleForm.setCourseName(courseSchedule.getCourseName());
-            courseScheduleForm.setInstructorName(
-                    courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
-            courseScheduleForm.setVenueName(courseSchedule.getVenueName());
-            courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
-            courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
-            courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
-            Set<CourseScheduleDetail> courseScheduleDetailFormSets = courseSchedule.getCourseScheduleDetail();
-            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
+        	Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
-            for (CourseScheduleDetail courseScheduleDetail : courseScheduleDetailFormSets) {
-                CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
-                
-                courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
-                courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
-                courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
-                courseScheduleDetailFormSet.add(courseSchedDetailForm);
-            }
-            courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
-            courseScheduleFormSet.add(courseScheduleForm);
-            form.setCourseSchedules(courseScheduleFormSet);
-        }
+	        for (CourseSchedule courseSchedule : courseSchedules) {
+	            CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
+	            courseScheduleForm.setId(courseSchedule.getId());
+	            courseScheduleForm.setCourseName(courseSchedule.getCourseName());
+	            courseScheduleForm.setInstructorName(
+	                    courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
+	            courseScheduleForm.setVenueName(courseSchedule.getVenueName());
+	            courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
+	            courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
+	            courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
+	            
+	            CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+	            CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
+
+	            courseSchedDetailForm.setId(courseScheduleDetail.getId());
+	            courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+	            courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+	            courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
+	            
+	            courseScheduleForm.setCourseScheduleDetails(courseSchedDetailForm);
+	            courseScheduleFormSet.add(courseScheduleForm);
+	            form.setCourseSchedules(courseScheduleFormSet);
+	        }
+        
         
         model.addAttribute("viewCourseEnroll",form);
         logger.debug("courseScheduleListForm: {}", form);
@@ -234,25 +279,16 @@ public class EnrollmentController {
                 courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
                 courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
 
-                Set<CourseScheduleDetail> courseSchedDetSet = enrolledCourse.getCourseScheduleDetail();
-                Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
-
-                for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
-
-                    CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-
-                    courseScheduleDetailForm
-                            .setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
-                    courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
-                    courseScheduleDetailForm.setDuration(courseScheduleDetail.getDuration());
-
-                    courseScheduleDetailFormSet.add(courseScheduleDetailForm);
-                }
-
-                courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
+                CourseScheduleDetail courseSchedDet = enrolledCourse.getCourseScheduleDetail();
+                
+                CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+                courseScheduleDetailForm.setScheduledStartDateTime(courseSchedDet.getScheduledStartDateTime());
+                courseScheduleDetailForm.setScheduledEndDateTime(courseSchedDet.getScheduledEndDateTime());
+                courseScheduleDetailForm.setDuration(courseSchedDet.getDuration());
+                
+                courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailForm);
                 courseSchedules.add(courseEnrollmentForm);
                 courseEnrolledListForm.setCourseScheduleDetailForm(courseSchedules);
-
             }
         } catch (Exception e) {
 
@@ -303,51 +339,10 @@ public class EnrollmentController {
      * courseParticipant Return the Course decline form and view. Return also a
      * success message.
      */
-    @DeleteMapping("/myschedules/{courseParticipantId}/decline")
-    public String submitCourseDeclineForm(@Valid @ModelAttribute("courseDecline") CourseDeclineForm form,
-            BindingResult bindingresult, Model model, RedirectAttributes redirectAttributes) {
-    	
-        logger.debug("courseDeclineForm:{}", form);
-        logger.debug("BindingResult:{}", bindingresult);
-
-        if (bindingresult.hasErrors()) {
-        	model.addAttribute("courseDecline", form);
-            return "/enrollment/myCourseSched";
-        }
-
- CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-        
-        courseScheduleDetailForm.setId(courseScheduleDetailForm.getId());
-        courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetailForm.getScheduledStartDateTime());
-        courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetailForm.getScheduledEndDateTime());
-        
-        
-        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetailsForm();
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-        
-        for(CourseScheduleDetailForm courseSchedsDetail : courseScheduleDetailFormSet) {
-        CourseScheduleDetail courseScheduleDetail= new CourseScheduleDetail.Builder(courseSchedsDetail.getId(),
-                courseSchedsDetail.getScheduledStartDateTime(), courseSchedsDetail.getScheduledEndDateTime())
-                            .build();
-        courseScheduleDetailSet.add(courseScheduleDetail);  
-        }
-
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(form.getId()).build();
-
-        enrollmentService.declineCourse(courseParticipant);
-
-        CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
-
-        courseDeclineForm.setId(courseParticipant.getId());
-        courseDeclineForm.setCourseName(courseParticipant.getCourseName());
-        courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
-        courseDeclineForm.setVenueName(courseParticipant.getVenueName());
-        courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
-        courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
-        courseDeclineForm.setReason(courseParticipant.getReason());
-        
-        redirectAttributes.addFlashAttribute("courseDecline", courseParticipant);
-        return "/enrollment/myCourseSched";
+    @DeleteMapping("/myschedules/{courseScheduleId}/decline")
+    public String submitCourseDeclineForm(@RequestBody CourseDeclineForm courseDeclineForm) {
+    	System.out.println("WORKS");
+    	return "awt";
     }
 
     
@@ -360,20 +355,12 @@ public class EnrollmentController {
         }
 
         CourseSchedule courseSchedule = enrollmentService.findCourseScheduleById(id);
-
-        Set<CourseScheduleDetail> courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
-        Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
-
-        for (CourseScheduleDetail newCourseScheduleDetail : courseScheduleDetail) {
-
-            CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
-
-            courseScheduleDetailForm.setId(newCourseScheduleDetail.getCourseScheduleId());
-            courseScheduleDetailForm.setScheduledStartDateTime(newCourseScheduleDetail.getScheduledStartDateTime());
-            courseScheduleDetailForm.setScheduledEndDateTime(newCourseScheduleDetail.getScheduledEndDateTime());
-
-            courseScheduleDetailFormSet.add(courseScheduleDetailForm);
-        }
+        CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+        CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+        
+        courseScheduleDetailForm.setId(courseScheduleDetail.getCourseScheduleId());
+        courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+        courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
 
         CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
 
@@ -382,7 +369,7 @@ public class EnrollmentController {
         courseEnrollmentForm.setInstructorName(
                 courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
         courseEnrollmentForm.setVenueName(courseSchedule.getVenueName());
-        courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
+        courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailForm);
         courseEnrollmentForm.setRegistrationDate(ZonedDateTime.now());
 
         model.addAttribute("courseEnrollmentForm", courseEnrollmentForm);
@@ -394,28 +381,48 @@ public class EnrollmentController {
     @PostMapping("/schedules/{courseScheduleId}/enroll")
     public String submitCourseEnrollmentForm(@Valid @ModelAttribute("enroll") CourseEnrollmentForm courseEnrollmentForm,
             BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    	 logger.debug("submitCourseEnrollmentForm:{}", courseEnrollmentForm);
+         logger.debug("Result:{}", result);
+         
+         if (result.hasErrors()) {
+         	redirectAttributes.addFlashAttribute("errorMsg", result.getAllErrors());
+         	return "redirect:/enrollment/viewCourseEnroll";
+         }
 
-        logger.debug("submitCourseEnrollmentForm:{}", courseEnrollmentForm);
-        logger.debug("Result:{}", result);
-        
-        if (result.hasErrors()) {
-        	redirectAttributes.addFlashAttribute("errorMsg", result.getAllErrors());
-        	return "redirect:/enrollment/viewCourseEnroll";
-        }
+         try {
+         	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+         	System.out.println("(POST ENROLL)ID: " + courseEnrollmentForm.getId());
+             System.out.println("(POST ENROLL)Course Schedule ID: " + courseEnrollmentForm.getCourseScheduleId());
+             System.out.println("(POST ENROLL)Course Name: " + courseEnrollmentForm.getCourseName());
+             System.out.println("(POST ENROLL)Instructor Name: " + courseEnrollmentForm.getInstructorName());
+             System.out.println("(POST ENROLL)Venue Name: " + courseEnrollmentForm.getVenueName());
+             System.out.println("(POST ENROLL)Registration Date: " + courseEnrollmentForm.getRegistrationDate());
+             
+             System.out.println("(POST USER) EMPLOYEE NUMBER: " + user.getEmployeeNumber());
+             System.out.println("(POST USER)EMPLOYEE USERNAME: " + user.getUserName());
+             System.out.println("(Continue Here)");
+             
+             CourseScheduleDetailForm courseScheduleDetailForm = courseEnrollmentForm.getCourseScheduleDetails();
+             
+             System.out.println("(POST ENROLL)Course Schedule Detail ID: " + courseScheduleDetailForm.getId());
+             
+             CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailForm.getId()).build();
 
-        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(),
-                user.getId(), ZonedDateTime.now()).build();
-        try {
-        	  enrollmentService.enroll(courseParticipant);
+             CourseParticipant courseParticipant = new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(),
+                     user.getId(),user.getUserName()+"@fujitsu.com" , ZonedDateTime.now()).addDetail(courseScheduleDetail).build();
+             
+             System.out.println("(Course Participant) CourseScheduleId: " + courseParticipant.getCourseScheduleId());
+             
+             
+         	  enrollmentService.enroll(courseParticipant);
 
-              redirectAttributes.addFlashAttribute("successMsg", "Successfully Enrolled a Course!!!");
-              redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
-        }catch(Exception e) {
-        	redirectAttributes.addFlashAttribute("duplicateMessage", e.getMessage());
-        }
+               redirectAttributes.addFlashAttribute("successMessage", "Successfully Enrolled a Course!!!");
+               redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
+         }catch(Exception e) {
+         	redirectAttributes.addFlashAttribute("duplicateMessage", e.getMessage());
+         }
 
-        return "redirect:/enrollment/viewCourseEnroll";
+         return "redirect:/enrollment/viewCourseEnroll";
     }
     
     /**
@@ -426,7 +433,7 @@ public class EnrollmentController {
      * @return
      */
     @PostMapping("/schedules/{courseScheduleId}/cancel")
-    public String submitCourseEnrollmentCancelForm(@RequestParam Long id, Model model, 
+    public String submitCourseEnrollmentCancelForm(@RequestParam("courseScheduleId") Long id, Model model, 
             RedirectAttributes redirectAttributes) {
         enrollmentService.cancel(id);
         redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
@@ -445,32 +452,292 @@ public class EnrollmentController {
     public String viewAllMemberCourse(
             @Valid @ModelAttribute("viewCourseEnroll") CourseScheduleListForm form, BindingResult result,
             Model model) {
-        logger.debug("CourseScheduleListForm: {}", form);
+    	logger.debug("CourseScheduleListForm: {}", form);
         logger.debug("Result: {}", result);
+        
 
+        
         if (result.hasErrors()) {
             model.addAttribute("errorMessage", result.getAllErrors());
             return "enrollment/viewMemberCourse";
         }
-
+        
         if (form.getFromDateTime() == null) {
-            form.setFromDateTime(ZonedDateTime.now().minusMonths(1));
+//        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
+        	form.setFromDateTime(ZonedDateTime.now());
+//        	System.out.println("SECOND FROM DATE TIME: "+form.getFromDateTime());
         }
         
         if (form.getToDateTime() == null) {
-            form.setToDateTime(ZonedDateTime.now().plusDays(5));
+//        	form.setToDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-10 08:30:00").toInstant(),ZoneId.of("UTC")));
+        	form.setToDateTime(ZonedDateTime.now().plusDays(5));
+//            System.out.println("SECOND TO DATE TIME: "+form.getToDateTime());
         }
+
+        if(form.getFromDateTime().isAfter(form.getToDateTime()) || form.getFromDateTime().isEqual(form.getToDateTime())) {
+        	  model.addAttribute(form);
+              model.addAttribute("error", "To Date should be greater than or equal to From Date");
+              model.addAttribute("nullMessage", "No schedules found");
+              return "enrollment/viewMemberCourse";
+        }
+        System.out.println("From Date Time: "+ form.getFromDateTime());
+        System.out.println("To Date Time: "+ form.getToDateTime());
+
+        try {
+        	Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
+            		form.getFromDateTime(), form.getToDateTime());
+
+        	Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
+
+	        for (CourseSchedule courseSchedule : courseSchedules) {
+	            CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
+	            courseScheduleForm.setId(courseSchedule.getId());
+	            courseScheduleForm.setCourseName(courseSchedule.getCourseName());
+	            courseScheduleForm.setInstructorName(
+	                    courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
+	            courseScheduleForm.setVenueName(courseSchedule.getVenueName());
+	            courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
+	            courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
+	            courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
+	            
+	            CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+	            CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
+
+	            courseSchedDetailForm.setId(courseScheduleDetail.getId());
+	            courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+	            courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+	            courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
+	            
+	            courseScheduleForm.setCourseScheduleDetails(courseSchedDetailForm);
+	            courseScheduleFormSet.add(courseScheduleForm);
+	            form.setCourseSchedules(courseScheduleFormSet);
+	        }
         
-        Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
-                form.getFromDateTime(), form.getToDateTime());
         
+        model.addAttribute("viewMemberCourse",form);
+        logger.debug("courseScheduleListForm: {}", form);
         
-        model.addAttribute("courseSchedules",courseSchedules);
-//        model.addAttribute("participantForm", new Participant());
-        
-        System.out.println(courseSchedules);
-        return "enrollment/viewMemberCourse";	
+        }catch(Exception e){
+        	model.addAttribute("nullMessage", e.getMessage());
+        }
+        return "enrollment/viewMemberCourse";
     }
+    
+    /**
+     * Find all active course schedules by month/quarter - ajax
+     * @param queryBy
+     * @return
+     */
+    @PostMapping("/findSchedules")
+    @ResponseBody
+    public Set<CourseSchedule> findAllCourseScheduleByMonthOrQuarter(@RequestBody String queryBy){
+//    	String queryBy = "Quarter";
+    	Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>();
+//    	System.out.println("STRING IS: " + queryBy);
+    	try {
+    		courseScheduleSet = enrollmentService.findAllCouresScheduleByMonthOrQuarter(queryBy);
+        	return courseScheduleSet;
+    	}catch(Exception e) {
+//    		return e.getMessage();
+    		return courseScheduleSet;
+    	}
+    	
+    }
+    
+    /**
+     * Find all below minimum course schedule - ajax
+     * @return
+     */
+    @GetMapping("/getAllScheduleBelowMinimum")
+    @ResponseBody
+    public Set<CourseScheduleForm> findAllCourseScheduleBelowMinimumParticipants(){
+//    	System.out.println("CANCE BELOW MINIMUM");
+    	try{
+    		Set<CourseSchedule> courseScheduleSet = enrollmentService.findAllCourseScheduleBelowMinimumParticipants();
+    		Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
+    		
+    		for(CourseSchedule courseSchedule:courseScheduleSet) {
+    			CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
+    			CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
+    			CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+    			
+    			courseScheduleForm.setId(courseSchedule.getId());
+    			courseScheduleForm.setCourseName(courseSchedule.getCourseName());
+    			courseScheduleForm.setInstructorName(courseSchedule.getInstructorFirstName() + " " + courseSchedule.getInstructorLastName());
+    			courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
+    			courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
+    			
+    			courseScheduleDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+    			courseScheduleDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+    			courseScheduleDetailForm.setDuration(courseScheduleDetail.getDuration());
+    			courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailForm);
+    			
+    			courseScheduleFormSet.add(courseScheduleForm);
+    			
+//    			System.out.println("CONTROLLER COURSE " + courseScheduleForm.getId() + " " + courseScheduleForm.getCourseName());
+//    			System.out.println("START:" + courseScheduleDetailForm.getScheduledStartDateTime() + " END: " + courseScheduleDetailForm.getScheduledEndDateTime() + " Duration: " + courseScheduleDetailForm.getDuration() );
+    		}
+    		return courseScheduleFormSet;
+    	}catch(Exception e) {
+    		throw new IllegalArgumentException("Cant get CourseSchedule Below Minimum" + e.getMessage());
+    	}
+    	
+    }
+    /**
+     * Reschedule course schedule
+     * @param form
+     * @param result
+     * @param model
+     * @param redirectAttributes
+     * @return
+     */
+    @PostMapping("/reschedule")
+    public String rescheduleCourseScheduleById(@Valid @ModelAttribute("courseScheduleDetailForm") CourseScheduleDetailForm form,BindingResult result,Model model,
+    			RedirectAttributes redirectAttributes) {
+    	System.out.println("RESCHEDULE!");
+    	System.out.println("(RESCHEDULE)Course Schedule Detail ID: " + form.getId());
+    	System.out.println("(RESCHEDULE)Scheduled Start DateTime: " + form.getScheduledStartDateTime());
+    	System.out.println("(RESCHEDULE)Scheduled End DateTime: " + form.getScheduledEndDateTime());
+    	
+    	Long durationToHours = Duration.between(form.getScheduledStartDateTime(), form.getScheduledEndDateTime()).toHours();
+        Long durationToMinutes = Duration.between(form.getScheduledStartDateTime(), form.getScheduledEndDateTime()).toMinutes();
+        float duration = 0;
+        if (durationToMinutes % 60 == 0) {
+        	duration = durationToHours;
+        } else {
+        	float minutes = durationToMinutes % 60;
+        	float hour = durationToMinutes /60;
+        	duration = hour + (minutes/60);
+        }
+    	CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(form.getId(), form.getScheduledStartDateTime(), form.getScheduledEndDateTime(), duration).build();
+    	System.out.println("CONTROLLER ID: " + courseScheduleDetail.getId());
+    	System.out.println("CONTROLLER START: " + courseScheduleDetail.getScheduledStartDateTime());
+    	System.out.println("CONTROLLER END: " + courseScheduleDetail.getScheduledEndDateTime());
+    	System.out.println("CONTROLLER DURATION: "+ courseScheduleDetail.getDuration());
+    	enrollmentService.rescheduleCourseScheduleById(courseScheduleDetail);
+    	return "redirect:/enrollment/viewCourseEnroll";
+    }
+    
+    /**
+     * Find all member not enrolled in course schedule
+     * @param courseScheduleId
+     * @return
+     */
+    @PostMapping("/notEnrolledByCourseScheduleId")
+    @ResponseBody
+    public Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(@RequestBody Long courseScheduleId){
+    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	CourseParticipant courseParticipant = new CourseParticipant.Builder().addCourseScheduleIdAndEmployeeNumber(courseScheduleId, user.getEmployeeNumber()).build();
+    	Set<CourseParticipant> courseParticipantSet = enrollmentService.findAllMemberNotEnrolledByCourseScheduleId(courseParticipant);
+    	return courseParticipantSet;
+    }
+    
+    /**
+     * Find all member enrolled in course schedule
+     * @param courseScheduleId
+     * @return
+     */
+    @PostMapping("/findEnrolledMember")
+    @ResponseBody
+    public Set<CourseParticipant> findAllEnrolledMemberByCourseScheduleId(@RequestBody Long courseScheduleId){
+    	System.out.println("courseID: " + courseScheduleId);
+    	System.out.println("FINDING ENROLLED MEMBER BY COURSE SCHEDULE ID: " + courseScheduleId);
+    	return enrollmentService.findAllParticipantByCourseScheduleId(courseScheduleId);
+    }
+    
+    /**
+     * Find all member not enrolled in course schedule
+     * @param search
+     * @param request
+     * @return
+     */
+    @PostMapping("/findMember")
+    @ResponseBody
+    public Set<CourseParticipant> findMember(@RequestBody SearchForm search, HttpServletRequest request){
+    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    	System.out.println("CourseScheduleId: " + search.getCourseScheduleId() + " SEARCH: " +search.getSearch() );
+		System.out.println("REQUEST: " + request);
+		search.setEmployeeNumber(user.getEmployeeNumber());
+		
+		return enrollmentService.findMemberNotEnrolledByCourseScheduleId(search);
+    	
+    }
+    
+    /**
+     * Enroll a member to course schedule
+     * @param courseEnrollmentForm
+     * @param result
+     * @param model
+     * @param redirectAttributes
+     * @return
+     */
+    @PostMapping("/enrollMember")
+    public String submitCourseEnrollmentMemberForm(@Valid @ModelAttribute CourseEnrollmentForm courseEnrollmentForm,
+            BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    	try {
+	    		System.out.println("CourseScheduleId: " + courseEnrollmentForm.getCourseScheduleId() + 
+	        			" CourseScheduleDetailId: " + courseEnrollmentForm.getCourseScheduleDetails().getId() +
+	        			" ParticipantId: " + courseEnrollmentForm.getId() + "EMAIL: " + courseEnrollmentForm.getEmailAddress());
+	        	System.out.println("IT WORKS");
+	        	System.out.println("(POST ENROLL)Participant ID: " + courseEnrollmentForm.getId());
+	            System.out.println("(POST ENROLL)Course Schedule ID: " + courseEnrollmentForm.getCourseScheduleId());
+	            System.out.println("(POST ENROLL)Email: " + courseEnrollmentForm.getCourseName());
+	           
+	            CourseScheduleDetailForm courseScheduleDetailForm = courseEnrollmentForm.getCourseScheduleDetails();
+	            System.out.println("(POST ENROLL)Course Schedule Detail ID: " + courseScheduleDetailForm.getId());
+
+	            CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailForm.getId()).build();
+
+	            CourseParticipant courseParticipant = new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(),
+	            		courseEnrollmentForm.getId(), courseEnrollmentForm.getEmailAddress(), ZonedDateTime.now()).addDetail(courseScheduleDetail).build();
+	        	  enrollmentService.enroll(courseParticipant);
+	            
+	            redirectAttributes.addFlashAttribute("successMsg", "Successfully Enrolled a Member!!!");
+	            redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
+    	}catch(Exception e){
+    		System.out.println(e.getMessage());
+    	}
+    	return "redirect:/enrollment/viewMemberCourse";
+    }
+    
+    /**
+     * Cancel all below minimum participant course schedule
+     * @param courseEnrollCancelForm
+     * @param result
+     * @param model
+     * @param redirectAttributes
+     * @return
+     */
+    @PostMapping("/cancelCourseSchedules")
+    public String cancelCourseScheduleByMinimumParticipants(@Valid @ModelAttribute CourseEnrollCancelForm courseEnrollCancelForm,
+            BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    	
+    	Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>();
+    	for(Long id:courseEnrollCancelForm.getIds()) {
+    		CourseSchedule courseSchedule = new CourseSchedule.Builder(id).cancel().build();
+    		courseScheduleSet.add(courseSchedule);
+    	}
+    	enrollmentService.cancelCourseSchedules(courseScheduleSet);
+    	redirectAttributes.addFlashAttribute("successMessage", "Successfully cancelled all course schedule below minimum participant.");
+    	return "redirect:/enrollment/viewCourseEnroll";
+    }
+
+//    @PostMapping("/findSchedules")
+//    @ResponseBody
+//    public Set<CourseSchedule> findAllCourseScheduleByMonthOrQuarter(@RequestBody String queryBy){
+////    	String queryBy = "Quarter";
+//    	Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>();
+////    	System.out.println("STRING IS: " + queryBy);
+//    	try {
+//    		courseScheduleSet = enrollmentService.findAllCouresScheduleByMonthOrQuarter(queryBy);
+//        	return courseScheduleSet;
+//    	}catch(Exception e) {
+////    		return e.getMessage();
+//    		return courseScheduleSet;
+//    	}
+//    	
+//    }
+    
     
 //    @RequestMapping(value = "/viewEnrolled", method = RequestMethod.GET)
 //	public @ResponseBody List<Participant> viewMemberEnrolled (@RequestParam Long id) {

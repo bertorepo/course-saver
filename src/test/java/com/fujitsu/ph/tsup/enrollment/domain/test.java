@@ -60,19 +60,14 @@ public class test {
         System.out.println("Duration:" + courseParticipant.getRegistrationDate());
         System.out.println("Registration Date:" + courseParticipant.getRegistrationDate());
 
-        
-        for (CourseScheduleDetail courseSchedDet : courseParticipant.getCourseScheduleDetail()) {
-            /**
-             * Checks if Scheduled Start DateTime is in between fromDateTime and toDateTime
-             */
-            assertTrue((!courseSchedDet.getScheduledStartDateTime().isBefore(fromDateTime))
-                    && courseSchedDet.getScheduledStartDateTime().isBefore(toDateTime));
-            System.out.println("Course Schedule ID: " + courseSchedDet.getCourseScheduleId());
-            System.out.println("Scheduled Start Date Time: " + courseSchedDet.getScheduledStartDateTime());
-            System.out.println("Scheduled End Date Time: " + courseSchedDet.getScheduledEndDateTime());
-            System.out.println("Duration: " + courseSchedDet.getDuration());
-
-        }
+        CourseScheduleDetail courseSchedDet = courseParticipant.getCourseScheduleDetail();
+        assertTrue((!courseSchedDet.getScheduledStartDateTime().isBefore(fromDateTime))
+                && courseSchedDet.getScheduledStartDateTime().isBefore(toDateTime));
+        System.out.println("Course Schedule ID: " + courseSchedDet.getCourseScheduleId());
+        System.out.println("Scheduled Start Date Time: " + courseSchedDet.getScheduledStartDateTime());
+        System.out.println("Scheduled End Date Time: " + courseSchedDet.getScheduledEndDateTime());
+        System.out.println("Duration: " + courseSchedDet.getDuration());
+      
         assertEquals("DE LEON, JC", courseParticipant.getInstructorName());
         assertNotEquals("DE GUZMAN, GENEVIEVE", courseParticipant.getParticipantName());
         assertEquals("Understanding SS", courseParticipant.getCourseName());

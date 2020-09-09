@@ -62,13 +62,12 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailId,
                 courseScheduleId, scheduledStartDateTime, scheduledEndDateTime, duration).build();
         
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-        
-        courseScheduleDetailSet.add(courseScheduleDetail);
+//        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+//        courseScheduleDetailSet.add(courseScheduleDetail);
         
         CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseScheduleId, courseName,
                 instructorName, venueName, participantId, participantName, registrationDate)
-                        .addDetail(courseScheduleDetailSet).build();
+                        .addDetail(courseScheduleDetail).build();
         
         return courseParticipant;
     }

@@ -172,6 +172,24 @@ public class CourseScheduleDetail {
           this.scheduledEndDateTime = scheduledEndDateTime;
           this.duration = duration;
       }
+      //NEW
+      
+      public Builder(Long id, ZonedDateTime scheduledStartDateTime,
+              ZonedDateTime scheduledEndDateTime, float duration) {
+    	  validateId(id);
+    	  validateScheduledStartDateTime(scheduledStartDateTime);
+          validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
+          
+          this.id = id;
+          this.scheduledStartDateTime = scheduledStartDateTime;
+          this.scheduledEndDateTime = scheduledEndDateTime;
+          this.duration = duration;
+      }
+      
+      public Builder(Long id) {
+    	  validateId(id);
+    	  this.id = id;
+      }
 
       /**
        * Creates a new instance of the course schedule detail

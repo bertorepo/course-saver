@@ -96,6 +96,6 @@ public class FindAllScheduledCoursesTest {
         courseScheduleDetailSet.add(courseScheduleDetail);
         
         return new CourseSchedule.Builder(1L, 1L, "SpringMVC", 1L, "Lorenzo", "Loyce", 1L, "TwoNeo", 1, 
-                100, 50, "A".charAt(0)).addDetail(courseScheduleDetailSet).build();
+                100, 50, "A".charAt(0)).addDetail(courseScheduleDetail).build();
     }
 } 

@@ -18,8 +18,11 @@ import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,7 +209,121 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             } catch(DataAccessException ex) {
                 throw new IllegalArgumentException(" Can't cancel Course.");
             }
-        }       
+        }
+
+
+
+	@Override
+	public void cancelCourseSchedules(Set<CourseSchedule> courseScheduleSet) {
+		// TODO Auto-generated method stub
+		try {
+			enrollmentDao.cancelCourseSchedulesById(courseScheduleSet);
+		}catch(Exception e) {
+			throw new IllegalArgumentException("Cant Cancel Course Schedule Set.");
+		}
+	}
+
+
+
+	@Override
+	public Set<CourseSchedule> findAllActiveCourseSchedule() {
+		// TODO Auto-generated method stub
+		return enrollmentDao.findAllActiveCourseSchedule();
+	}
+
+
+
+	@Override
+	public Set<CourseSchedule> findAllCouresScheduleByMonthOrQuarter(String queryBy) {
+		// TODO Auto-generated method stub
+		Set<CourseSchedule> courseSchedule = new HashSet<CourseSchedule>();
+		if(queryBy.equals("month")) {
+			courseSchedule = enrollmentDao.findAllCourseScheduleByMonth();
+		}else if(queryBy.equals("quarter")) {
+			courseSchedule = enrollmentDao.findAllCourseScheduleByQuarter();
+		}
+		
+		//validation
+		if(courseSchedule == null || courseSchedule.isEmpty()) {
+			throw new IllegalArgumentException("No Course Schedule found!");
+		}
+		return courseSchedule;
+	}
+
+
+
+	@Override
+	public void rescheduleCourseScheduleById(CourseScheduleDetail courseScheduleDetail) {
+		// TODO Auto-generated method stub
+		System.out.println("SERVICE");
+		try {
+			enrollmentDao.reschedule(courseScheduleDetail);
+		}catch(Exception e) {
+			throw new IllegalArgumentException("Can not reschedule course schedule" + e.getMessage());
+		}
+	}
+
+
+
+	@Override
+	public Set<CourseSchedule> findAllCourseScheduleBelowMinimumParticipants() {
+		// TODO Auto-generated method stub
+		try {
+			Set<CourseSchedule> courseScheduleSet = enrollmentDao.findAllCourseScheduleBelowMinimumParticipants();
+			return courseScheduleSet;
+		}catch(Exception e) {
+			throw new IllegalArgumentException("Cant get CourseSchedules below minimum" + e.getMessage());
+		}
+	}
+
+
+
+	@Override
+	public Set<CourseParticipant> findAllParticipantByCourseScheduleId(Long courseScheduleId) {
+		// TODO Auto-generated method stub
+		Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>();
+		try {
+			courseParticipantSet = enrollmentDao.findAllParticipantByCourseScheduleId(courseScheduleId);
+			if(courseParticipantSet == null || courseParticipantSet.isEmpty()) {
+				throw new IllegalArgumentException("No Course Participant Found.");
+			}
+			return courseParticipantSet;
+		}catch(Exception e) {
+			throw new IllegalArgumentException("Can not find Course Participant in this Course Schedule");
+		}
+	}
+
+
+
+	@Override
+	public Set<CourseParticipant> findAllMemberNotEnrolledByCourseScheduleId(CourseParticipant courseParticipant) {
+		// TODO Auto-generated method stub
+		try {
+			if(courseParticipant == null) {
+				throw new IllegalArgumentException("Course Participant Null");
+			}
+			return enrollmentDao.findAllMemberNotEnrolledByCourseScheduleId(courseParticipant);
+		}catch(Exception e) {
+			throw new IllegalArgumentException(e.getMessage());
+		}
+	}
+
+
+
+	@Override
+	public Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(SearchForm searchForm) {
+		// TODO Auto-generated method stub
+		try {
+			System.out.println("1");
+			Set<CourseParticipant> courseParticipantSet = enrollmentDao.findMemberNotEnrolledByCourseScheduleId(searchForm);
+			if(courseParticipantSet == null || courseParticipantSet.isEmpty()) {
+				throw new IllegalArgumentException("No Participants Found");
+			}
+			return courseParticipantSet;
+		}catch(Exception e) {
+			throw new IllegalArgumentException("Can not find Course Participants");
+		}
+	}       
     
     /** Finds the participant of course by Id */
 //    @Override

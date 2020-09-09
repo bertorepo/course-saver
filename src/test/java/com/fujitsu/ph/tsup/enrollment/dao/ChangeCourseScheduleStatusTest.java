@@ -47,11 +47,10 @@ class ChangeCourseScheduleStatusTest {
 		System.out.println("Minimum Required: "+ courseSched.getMinRequired());
 		System.out.println("Maximum Allowed"+ courseSched.getMaxAllowed());
 		System.out.println("Status: "+ courseSched.getStatus());
-		for(CourseScheduleDetail  courseSchedDet : courseSched.getCourseScheduleDetail()) {
-			System.out.println("CourseSchedule ID: "+ courseSchedDet.getCourseScheduleId());
-			System.out.println("StartDateTime: "+ courseSchedDet.getScheduledStartDateTime());
-			System.out.println("EndDateTime"+ courseSchedDet.getScheduledEndDateTime() + "\n");
-		}
+		CourseScheduleDetail  courseSchedDet = courseSched.getCourseScheduleDetail();
+		System.out.println("CourseSchedule ID: "+ courseSchedDet.getCourseScheduleId());
+		System.out.println("StartDateTime: "+ courseSchedDet.getScheduledStartDateTime());
+		System.out.println("EndDateTime"+ courseSchedDet.getScheduledEndDateTime() + "\n");
 		assertNull(courseSched);
 		//assertNotEquals(courseSched, courseSchedule);
 		//assertEquals(courseSched.getStatus(), 'D');

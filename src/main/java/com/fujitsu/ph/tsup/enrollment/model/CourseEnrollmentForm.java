@@ -38,9 +38,13 @@ public class CourseEnrollmentForm {
 
     /* Venue Name */
     private String venueName;
+    
+    /* Email Address */
+    //NEW
+    private String emailAddress;
 
     /* Course Participant ID */
-    private Set<CourseScheduleDetailForm> courseScheduleDetails;
+    private CourseScheduleDetailForm courseScheduleDetails;
 
     /* Course Participant ID */
     private ZonedDateTime registrationDate;
@@ -69,9 +73,17 @@ public class CourseEnrollmentForm {
     public String getVenueName() {
         return venueName;
     }
+    
+    public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
 
     /** Course Schedule Details Getter */
-    public Set<CourseScheduleDetailForm> getCourseScheduleDetails() {
+    public CourseScheduleDetailForm getCourseScheduleDetails() {
         return courseScheduleDetails;
     }
 
@@ -108,7 +120,7 @@ public class CourseEnrollmentForm {
     }
 
     /** CourseScheduleDetails Setter */
-    public void setCourseScheduleDetails(Set<CourseScheduleDetailForm> courseScheduleDetails) {
+    public void setCourseScheduleDetails(CourseScheduleDetailForm courseScheduleDetails) {
         this.courseScheduleDetails = courseScheduleDetails;
     }
 

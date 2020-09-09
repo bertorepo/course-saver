@@ -90,7 +90,7 @@ class CancelTest {
 		CourseScheduleDetail csd2 = new CourseScheduleDetail.Builder(2L, 2L, ZonedDateTime.now(), ZonedDateTime.now().plusDays(5)).build();
 		courseSchedDetailSet.add(csd1);
 		courseSchedDetailSet.add(csd2);
-		return new CourseSchedule.Builder(10L, 10L, "PeerReview", 10L, "DeGuzman", "Gene", 10L, "EcoTower", 10, 20, 15, 'A').addDetail(courseSchedDetailSet).build();
+		return new CourseSchedule.Builder(10L, 10L, "PeerReview", 10L, "DeGuzman", "Gene", 10L, "EcoTower", 10, 20, 15, 'A').addDetail(csd1).build();
 		
 	}
 	
