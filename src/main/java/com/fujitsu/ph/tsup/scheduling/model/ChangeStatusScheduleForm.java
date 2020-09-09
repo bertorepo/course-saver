@@ -1,7 +1,6 @@
 package com.fujitsu.ph.tsup.scheduling.model;
 
 import java.util.List;
-import java.util.Set;
 
 public class ChangeStatusScheduleForm {
 	/**
@@ -39,17 +38,16 @@ public class ChangeStatusScheduleForm {
      */
     private String courseName;
     
+    
     /**
-     * Set of course schedule details
+     * List of course schedule details
      */
-    private Set<CourseScheduleDetailForm> courseScheduleDetails;
+    private List<CourseScheduleDetailForm> courseScheduleDetailList;
 
     /**
      * String(Active/Done)
      */
     private String status;
-    
-    private List<CourseScheduleDetailForm> courseScheduleDetailList;
     
 
 	public Long getId() {
@@ -108,13 +106,6 @@ public class ChangeStatusScheduleForm {
 		this.courseName = courseName;
 	}
 
-	public Set<CourseScheduleDetailForm> getCourseScheduleDetails() {
-		return courseScheduleDetails;
-	}
-
-	public void setCourseScheduleDetails(Set<CourseScheduleDetailForm> courseScheduleDetails) {
-		this.courseScheduleDetails = courseScheduleDetails;
-	}
 
 	public String getStatus() {
 		return status;
@@ -138,8 +129,8 @@ public class ChangeStatusScheduleForm {
 	public String toString() {
 		return "ChangeStatusScheduleForm [id=" + id + ", courseId=" + courseId + ", instructorId=" + instructorId
 				+ ", instructorName=" + instructorName + ", venueId=" + venueId + ", venueName=" + venueName
-				+ ", courseName=" + courseName + ", courseScheduleDetails=" + courseScheduleDetails + ", status="
-				+ status + ", courseScheduleDetailList=" + courseScheduleDetailList + "]";
+				+ ", courseName=" + courseName + ", courseScheduleDetailList=" + courseScheduleDetailList + ", status="
+				+ status + "]";
 	}
 
 	
