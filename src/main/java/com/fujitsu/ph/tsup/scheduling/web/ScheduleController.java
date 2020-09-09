@@ -677,16 +677,48 @@ public class ScheduleController {
 		}
 
 		Set<CourseForm> courseFormList = scheduleService.findAllCourses();
-
-		if (changeStatusForm.getId() != 0L) {
-			Set<CourseSchedule> courseSchedule = scheduleService.findCourseScheduleByCourseId(id);
+		
+		List<ChangeStatusScheduleForm> changeStatusFormList = new ArrayList<>();
+		List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+		
+		if (id != 0L) {
+			Set<CourseSchedule> courseSchedule = scheduleService.findCourseScheduleByCourseId(id);	
+			changeStatusForm.setId(id);
 
 			for (CourseSchedule courseSched : courseSchedule) {
-				changeStatusForm.setId(courseSched.getId());
+				ChangeStatusScheduleForm changeStatusScheduleForm = new ChangeStatusScheduleForm();
+				changeStatusScheduleForm.setInstructorId(courseSched.getInstructorId());
+				changeStatusScheduleForm.setInstructorName(
+						courseSched.getInstructorFirstName() + " " + courseSched.getInstructorLastName());
+				changeStatusScheduleForm.setVenueId(courseSched.getVenueId());
+				changeStatusScheduleForm.setVenueName(courseSched.getVenueName());
+				changeStatusScheduleForm.setCourseScheduleDetailList(detailFormList);
+				
+				changeStatusFormList.add(changeStatusScheduleForm);
+				
+				if (courseSched.getStatus() == 'A') {
+					changeStatusScheduleForm.setStatus("Active");
+				} else if (courseSched.getStatus() == 'O') {
+					changeStatusScheduleForm.setStatus("Ongoing");
+				} else if (courseSched.getStatus() == 'D') {
+					changeStatusScheduleForm.setStatus("Done");
+				} else if (courseSched.getStatus() == 'C') {
+					changeStatusScheduleForm.setStatus("Close");
+				}
+				for (CourseScheduleDetail detail : courseSched.getCourseScheduleDetail()) {
+					CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+					detailForm.setId(detail.getId());
+					detailForm.setScheduledStartDateTime(detail.getScheduledStartDateTime());
+					detailForm.setScheduledEndDateTime(detail.getScheduledEndDateTime());
+					detailForm.setDuration(detail.getDuration());
+					detailFormList.add(detailForm);
+				}
 			}
 
-			changeStatusForm.setCourses(courseFormList);
 		}
+		changeStatusForm.setCourses(courseFormList);
+		changeStatusForm.setCourseSchedules(changeStatusFormList);
+		
 		model.addAttribute("changeStatus", changeStatusForm);
 		model.addAttribute("lastSelected", id);
 		return "scheduling/changeScheduleStatus";
