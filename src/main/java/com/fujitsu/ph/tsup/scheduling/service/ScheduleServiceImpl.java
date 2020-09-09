@@ -1,5 +1,7 @@
 package com.fujitsu.ph.tsup.scheduling.service;
 
+import java.time.Duration;
+import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
@@ -202,14 +204,16 @@ public class ScheduleServiceImpl implements ScheduleService {
      * <pre>
      * 
      * @param courseSchedule
+     * @return 
      */
     @Override
-    public void countAllEnrolledCoursesByInstructorId(Long id) {
+    public int countAllEnrolledCoursesByInstructorId(Long id) {
         try {
-            scheduleDao.countAllEnrolledCoursesByInstructorId(id);
+        	return scheduleDao.countAllEnrolledCoursesByInstructorId(id);
         } catch (DataAccessException ex) {
             throw new IllegalArgumentException("Can't Find Enrolled Courses");
         }
+	
     }
 
     
@@ -221,38 +225,16 @@ public class ScheduleServiceImpl implements ScheduleService {
      * <pre>
      */
     @Override
-    public List<TopLearnersForm> findMonthlyTopLearners() {
+    public List<TopLearnersForm> findTopLearners(ZonedDateTime fromDateTime,
+            ZonedDateTime toDateTime) {
         try {
-            List<TopLearnersForm> topLearnersMonthly = scheduleDao.findMonthlyTopLearners();
-            if (topLearnersMonthly == null || topLearnersMonthly.isEmpty()) {
-                throw new IllegalArgumentException("No Top Learners for Monthly");
+            if (Period.between(fromDateTime.toLocalDate(), toDateTime.toLocalDate()).getMonths() >= 4) {
+                return scheduleDao.findQuarterlyTopLearners();
+            } else {
+                return scheduleDao.findMonthlyTopLearners();
             }
-
-            return topLearnersMonthly;
         } catch (DataAccessException ex) {
             throw new IllegalArgumentException("No Top Learners for Monthly");
-        }
-
-    }
-
-    /**
-     * <pre>
-     * Finds all Top Learners for Quarterly Call scheduleDao.findMonthlyTopLearners and return the
-     * result
-     * 
-     * <pre>
-     */
-    @Override
-    public List<TopLearnersForm> findQuarterlyTopLearners() {
-        try {
-            List<TopLearnersForm> topLearnersQuarterly = scheduleDao.findMonthlyTopLearners();
-            if (topLearnersQuarterly == null || topLearnersQuarterly.isEmpty()) {
-                throw new IllegalArgumentException("No Top Learners for Quarterly");
-            }
-
-            return topLearnersQuarterly;
-        } catch (DataAccessException ex) {
-            throw new IllegalArgumentException("No Top Learners for Quarterly");
         }
 
     }
@@ -299,5 +281,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

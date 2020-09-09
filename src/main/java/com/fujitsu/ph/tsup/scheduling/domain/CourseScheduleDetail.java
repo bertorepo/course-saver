@@ -146,13 +146,20 @@ public class CourseScheduleDetail {
             validateCourseScheduleId(courseScheduleId);
             validateScheduledStartDateTime(scheduledStartDateTime);
             validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
-            validateDuration(duration);
             
             this.id = id;
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
-            this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = duration;
+            this.scheduledEndDateTime = scheduledEndDateTime;  
+            
+            if(duration <= 0.0f) {
+                duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
+                validateDuration(duration);
+                this.duration = duration;
+            } else {
+                validateDuration(duration);
+                this.duration = duration;
+            }
         }
         
         /**
@@ -260,7 +267,7 @@ public class CourseScheduleDetail {
          */
         
         private void validateDuration(float duration) {
-            if(duration == 0.0f) {
+            if(duration <= 0.0f) {
                 throw new IllegalArgumentException("Duration should not be null/zero/empty");
             }
         }

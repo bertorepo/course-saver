@@ -10,39 +10,52 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>Change Schedule Status</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	
 </head>
 
 <body>
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
-		<form class="form-horizontal">
+		<form class="form-horizontal" th:object="${changeStatus}" method="get">
 			<h3><i class="fa fa-pencil-square-o"></i> Change Schedule Status</h3>
 			<hr>
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row justify-content-center">
 						<label class="col-lg-2 col-form-label">Select Course</label>
-						<div class="col-lg-5">
-							<select class="form-control">
-								<option>Understanding SS</option>
+						<div class="col-lg-5" >
+							<select class="form-control courseSelect" id="courses" onchange="validateDropDown(this)" >
+								<option value=""></option>
+								<option th:each="courses : *{courses}" 
+									th:value="${courses.id}"
+									th:text="${courses.name}"
+									th:selected="${courses.id eq lastSelected}"></option>
 							</select>
 						</div>
 						<div class="float-right">
-							<input type="submit" class="btn btn-success" value="Search">
+							<div
+								th:if="${#httpServletRequest.requestURI == '/schedules/courseSchedule/0/changeStatus'}">
+								<input type="button" onclick="changeUrl()"
+									class="btn btn-large btn-success disabled" value="Search"
+									name="button" id="button"></input>
+							</div>
+							<div
+								th:if="${#httpServletRequest.requestURI != '/schedules/courseSchedule/0/changeStatus'}">
+								<input type="button" onclick="changeUrl()"
+									class="btn btn-large btn-success" value="Search" 
+									name="button"
+									id="button"></input>
+							</div>
 						</div>
 					</div>
-					
 				</div>
 			</div>
-		</form>
-		
+
 		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%">
 				<colgroup >
@@ -63,70 +76,26 @@
 						<th>Change Status</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td>Genevieve De Guzman</td>
-						<td>Two/Neo</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
+				<tbody th:each="courseSchedules, stat : *{courseSchedules}">
+                	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetailList}">
+                        <td th:text="${courseSchedules.instructorName}"></td>
+                        <td th:text="${courseSchedules.venueName}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
+                        <td th:text="${courseScheduleDetails.duration}"></td>
 						<td>
 							<select class="form-control">
 								<option>Active</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>Genevieve De Guzman</td>
-						<td>Two/Neo</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td>
-							<select class="form-control">
-								<option>Active</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>Genevieve De Guzman</td>
-						<td>Two/Neo</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td>
-							<select class="form-control">
-								<option>Active</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>Genevieve De Guzman</td>
-						<td>Two/Neo</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td>
-							<select class="form-control">
-								<option>Active</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>Genevieve De Guzman</td>
-						<td>Two/Neo</td>
-						<td>2020/01/01 08:00:00</td>
-						<td>2020/01/01 10:00:00</td>
-						<td>2 hours</td>
-						<td>
-							<select class="form-control">
-								<option>Active</option>
+								<option>Ongoing</option>
+								<option>Done</option>
+								<option>Close</option>
 							</select>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-		</div>    	
+		</div> 
+	</form>   	
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
@@ -159,6 +128,32 @@
 		$('#successModal').modal('show');
 	});
 	<!--Message alert End-->
+	
+	function changeUrl() {
+	    var id = document.getElementById("courses").value;
+	    if (id != "") {
+	        var callUrl = '/schedules/courseSchedule/' + id + '/changeStatus';
+	        document.location.href = callUrl;
+	    }
+	}
+
+	$(function() {
+	    var select = $('.courseSelect');
+	    select.html(select.find('option').sort(function(x, y) {
+	        return $(x).text() > $(y).text() ? 1 : -1;
+	    }));
+	});
+
+	function validateDropDown(input) {
+	    var button = document.getElementById(".btn-success")
+	    if (input.value == '') {
+	        document.getElementById('button').className = "btn btn-large btn-success disabled";
+	        buttoninput.disabled = true;
+	    } else {
+	        document.getElementById('button').className = "btn btn-large btn-success";
+	        button.disabled = false;
+	    }
+	}
 </script>
 </body>
 

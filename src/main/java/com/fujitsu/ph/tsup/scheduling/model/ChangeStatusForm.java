@@ -18,7 +18,7 @@ public class ChangeStatusForm {
 	/**
      * List of course schedules
      */
-	private List<CourseScheduleViewForm> courseSchedules;
+	private List<ChangeStatusScheduleForm> courseSchedules;
 
 	public long getId() {
 		return id;
@@ -36,11 +36,12 @@ public class ChangeStatusForm {
 		this.courses = courses;
 	}
 
-	public List<CourseScheduleViewForm> getCourseSchedules() {
+	
+	public List<ChangeStatusScheduleForm> getCourseSchedules() {
 		return courseSchedules;
 	}
 
-	public void setCourseSchedules(List<CourseScheduleViewForm> courseSchedules) {
+	public void setCourseSchedules(List<ChangeStatusScheduleForm> courseSchedules) {
 		this.courseSchedules = courseSchedules;
 	}
 
