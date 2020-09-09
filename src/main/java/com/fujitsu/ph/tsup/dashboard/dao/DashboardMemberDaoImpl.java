@@ -51,8 +51,8 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
     public Set<DashboardMember> findCourses(Long employeeId) {
         String sql = "SELECT C.NAME AS \"C.NAME\", " + 
                 "   CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME, " + 
-                "    CSD.SCHEDULED_START_DATETIME AS \"CSD.SCHEDULED_START_DATETIME\", " + 
-                "    CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " + 
+                "   COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS \"CSD.SCHEDULED_START_DATETIME\", " +
+                "   COALESCE(CSD.RESCHEDULED_END_DATETIME, CSD.SCHEDULED_END_DATETIME) AS \"CSD.SCHEDULED_END_DATETIME\", " +
                 "    V.NAME AS \"V.NAME\", " + 
                 "     E.ID AS \"E.ID\", " +
                 "    CS.STATUS AS \"CS.STATUS\" " +
@@ -73,6 +73,8 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 "    GROUP BY" + 
                 "    C.NAME, " + 
                 "    FULL_NAME, " + 
+                "    CSD.RESCHEDULED_START_DATETIME, " +
+                "    CSD.RESCHEDULED_END_DATETIME, " +
                 "    CSD.SCHEDULED_START_DATETIME, " + 
                 "    CSD.SCHEDULED_END_DATETIME, " + 
                 "    V.NAME, " + 

@@ -49,9 +49,11 @@ public class DashboardPmoDaoImpl implements DashboardPmoDao {
     @Override
     public Set<DashboardPmo> findCourses() {
         String sql = "SELECT C.NAME AS \"C.NAME\" , " +
-                "CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME, " +
-                "CSD.SCHEDULED_START_DATETIME  AS \"CSD.SCHEDULED_START_DATETIME\", " +
-                "CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " +
+                "CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME , " +
+//                "CSD.SCHEDULED_START_DATETIME  AS \"CSD.SCHEDULED_START_DATETIME\", " +
+//                "CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " +
+                "COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS \"CSD.SCHEDULED_START_DATETIME\", " +
+                "COALESCE(CSD.RESCHEDULED_END_DATETIME, CSD.SCHEDULED_END_DATETIME) AS \"CSD.SCHEDULED_END_DATETIME\", " +
                 "CS.MIN_REQUIRED AS \"CS.MIN_REQUIRED\", " +
                 "CS.MAX_ALLOWED AS \"CS.MAX_ALLOWED\", " +
                 "COUNT(CP.ID) AS ENROLLED, " +
@@ -69,6 +71,8 @@ public class DashboardPmoDaoImpl implements DashboardPmoDao {
                 "GROUP BY " +
                 "C.NAME, " +
                 "FULL_NAME, " +
+                "CSD.RESCHEDULED_START_DATETIME, " +
+                "CSD.RESCHEDULED_END_DATETIME, " +
                 "CSD.SCHEDULED_START_DATETIME, " +
                 "CSD.SCHEDULED_END_DATETIME, " +
                 "CS.MIN_REQUIRED, " +

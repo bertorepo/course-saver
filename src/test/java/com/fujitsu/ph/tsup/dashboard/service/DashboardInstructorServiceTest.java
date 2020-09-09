@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fujitsu.ph.tsup.dashboard.dao.DashboardInstructorDao;
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardInstructorForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardInstructor;
 
 @ExtendWith(SpringExtension.class)
 class DashboardInstructorServiceTest {
@@ -47,8 +47,8 @@ class DashboardInstructorServiceTest {
 
     @Test
     void testFindCourses_Valid() {
-        Set<DashboardInstructorForm> dashboardSet = new HashSet<DashboardInstructorForm>();
-        DashboardInstructorForm dashboardInstructor = new DashboardInstructorForm.Builder("Understanding UI",
+        Set<DashboardInstructor> dashboardSet = new HashSet<DashboardInstructor>();
+        DashboardInstructor dashboardInstructor = new DashboardInstructor.Builder("Understanding UI",
                 ZonedDateTime.now(), ZonedDateTime.now().plus(2, ChronoUnit.HOURS), "Online", 1L, "A").build();
         dashboardSet.add(dashboardInstructor);
 
@@ -60,7 +60,7 @@ class DashboardInstructorServiceTest {
 
     @Test
     void testFindCourses_Invalid() {
-        Set<DashboardInstructorForm> dashboardSet = new HashSet<DashboardInstructorForm>();
+        Set<DashboardInstructor> dashboardSet = new HashSet<DashboardInstructor>();
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             when(dao.findCourses(any(Long.class))).thenReturn(dashboardSet);
             assertEquals(dashboardSet, service.findCourses(1L));

@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fujitsu.ph.tsup.dashboard.dao.DashboardMemberDao;
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardMember;
 
 @ExtendWith(SpringExtension.class)
 class DashboardMemberServiceTest {
@@ -56,8 +56,8 @@ class DashboardMemberServiceTest {
 
     @Test
     void testFindCourses_Valid() {
-        Set<DashboardMemberForm> dashboardSet = new HashSet<DashboardMemberForm>();
-        DashboardMemberForm dashboardMember = new DashboardMemberForm.Builder("Understanding SS",
+        Set<DashboardMember> dashboardSet = new HashSet<DashboardMember>();
+        DashboardMember dashboardMember = new DashboardMember.Builder("Understanding SS",
                 "de Guzman, Genevieve", ZonedDateTime.now(), ZonedDateTime.now().plus(2, ChronoUnit.HOURS), "Online",
                 1L, "A").build();
         dashboardSet.add(dashboardMember);
@@ -69,7 +69,7 @@ class DashboardMemberServiceTest {
 
     @Test
     void testFindCourses_Invalid() {
-        Set<DashboardMemberForm> dashboardSet = new HashSet<DashboardMemberForm>();
+        Set<DashboardMember> dashboardSet = new HashSet<DashboardMember>();
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             when(dao.findCourses(any(Long.class))).thenReturn(dashboardSet);
             assertEquals(dashboardSet, service.findCourses(1L));
