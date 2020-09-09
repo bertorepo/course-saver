@@ -69,5 +69,4 @@ class DashboardInstructorServiceTest {
         assertTrue(error.getMessage().equals("No records found"));
 
     }
-
 }

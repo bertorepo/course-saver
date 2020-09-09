@@ -35,7 +35,4 @@ class DashboardPmoDaoTest {
         Set<DashboardPmo> dashboardPmo = dao.findCourses();
         assertEquals(3, dashboardPmo.size());
     }
-    
-    
-
 }

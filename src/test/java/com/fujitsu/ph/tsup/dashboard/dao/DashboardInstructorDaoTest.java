@@ -40,7 +40,4 @@ class DashboardInstructorDaoTest {
         Set<DashboardInstructor> dashboardInstructor = dao.findCourses(1L);
         assertEquals(1, dashboardInstructor.size());
     }
-    
-    
-
 }

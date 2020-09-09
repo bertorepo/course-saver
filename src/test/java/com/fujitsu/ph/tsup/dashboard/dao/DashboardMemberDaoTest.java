@@ -48,7 +48,4 @@ class DashboardMemberDaoTest {
         Set<DashboardMember> dashboardMember = dao.findCourses(1L);
         assertEquals(2, dashboardMember.size());
     }
-    
-    
-
 }
