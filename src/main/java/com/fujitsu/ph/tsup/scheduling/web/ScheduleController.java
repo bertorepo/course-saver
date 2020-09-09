@@ -111,7 +111,7 @@ public class ScheduleController {
         }
 
         if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
-            courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
+            courseScheduleListForm.setFromDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
             courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
 
@@ -399,7 +399,7 @@ public class ScheduleController {
         }
 
         if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
-            courseScheduleListForm.setFromDateTime(ZonedDateTime.now());
+            courseScheduleListForm.setFromDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
             courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
 
