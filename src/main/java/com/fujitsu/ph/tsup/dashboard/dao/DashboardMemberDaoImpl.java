@@ -19,18 +19,22 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardMember;
 //Class Name   :DashboardMemberDaoImpl.java
 //
 //<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01 | 06/23/2020 |  WS) Jm.Deguzman   | New Creation
-//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
+//Version | Date       | Updated By                                   | Content
+//--------+------------+----------------------------------------------+-----------------------------
+//0.01    | 06/23/2020 |  WS) Jm.Deguzman                             | New Creation
+//0.02    | 08/24/2020 |  WS) Jm.Deguzman                             | Updated
+//0.03    | 09/09/2020 |  WS) K.abad, WS) J.Iwarat, WS) R.Ramos       | Updated
 //==================================================================================================
 /**
 * <pre>
 * The data access implementation to get the data from the database
 * <pre>
 * 
-* @version 0.01
+* @version 0.03
+* @author k.abad
 * @author Jm.Deguzman
+* @author j.iwarat
+* @author r.ramos
 */
 @Repository
 public class DashboardMemberDaoImpl implements DashboardMemberDao {
@@ -51,10 +55,10 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
     public Set<DashboardMember> findCourses(Long employeeId) {
         String sql = "SELECT C.NAME AS \"C.NAME\", " + 
                 "   CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME, " + 
-                "    CSD.SCHEDULED_START_DATETIME AS \"CSD.SCHEDULED_START_DATETIME\", " + 
-                "    CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " + 
+                "   COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS \"CSD.SCHEDULED_START_DATETIME\", " +
+                "   COALESCE(CSD.RESCHEDULED_END_DATETIME, CSD.SCHEDULED_END_DATETIME) AS \"CSD.SCHEDULED_END_DATETIME\", " +
                 "    V.NAME AS \"V.NAME\", " + 
-                "     E.ID AS \"E.ID\", " +
+                "    E.ID AS \"E.ID\", " +
                 "    CS.STATUS AS \"CS.STATUS\" " +
                 " FROM COURSE_SCHEDULE CS " + 
                 " LEFT JOIN EMPLOYEE E ON CS.INSTRUCTOR_ID = E.ID " + 
@@ -73,6 +77,8 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 "    GROUP BY" + 
                 "    C.NAME, " + 
                 "    FULL_NAME, " + 
+                "    CSD.RESCHEDULED_START_DATETIME, " +
+                "    CSD.RESCHEDULED_END_DATETIME, " +
                 "    CSD.SCHEDULED_START_DATETIME, " + 
                 "    CSD.SCHEDULED_END_DATETIME, " + 
                 "    V.NAME, " + 

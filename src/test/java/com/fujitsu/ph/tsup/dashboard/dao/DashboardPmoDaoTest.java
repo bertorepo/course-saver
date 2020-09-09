@@ -12,7 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmo;
 
 @JdbcTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -32,10 +32,7 @@ class DashboardPmoDaoTest {
     
     @Test
     void findCourses() {
-        Set<DashboardPmoForm> dashboardPmo = dao.findCourses();
+        Set<DashboardPmo> dashboardPmo = dao.findCourses();
         assertEquals(3, dashboardPmo.size());
     }
-    
-    
-
 }

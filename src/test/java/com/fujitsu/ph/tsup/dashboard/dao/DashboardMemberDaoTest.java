@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardMember;
 
 @JdbcTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -45,10 +45,7 @@ class DashboardMemberDaoTest {
     
     @Test
     void testFindCourses() {
-        Set<DashboardMemberForm> dashboardMember = dao.findCourses(1L);
+        Set<DashboardMember> dashboardMember = dao.findCourses(1L);
         assertEquals(2, dashboardMember.size());
     }
-    
-    
-
 }

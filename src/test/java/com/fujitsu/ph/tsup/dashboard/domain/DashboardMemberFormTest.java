@@ -11,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardMemberForm;
-
 @ExtendWith(SpringExtension.class)
 class DashboardMemberFormTest {
 
@@ -28,7 +26,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder(null, "de Leon, JC", startDateTime, endDateTime, "Online", 1L, "A").build();
+            new DashboardMember.Builder(null, "de Leon, JC", startDateTime, endDateTime, "Online", 1L, "A").build();
         });
         assertTrue(error.getMessage().equals("Course Name should not be empty"));
     }
@@ -40,7 +38,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("", "de Leon, JC", startDateTime, endDateTime, "Online", 1L, "A").build();
+            new DashboardMember.Builder("", "de Leon, JC", startDateTime, endDateTime, "Online", 1L, "A").build();
         });
         assertTrue(error.getMessage().equals("Course Name should not be empty"));
     }
@@ -57,7 +55,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", null, startDateTime, endDateTime, "Online", 1L, "A")
+            new DashboardMember.Builder("Goal Setting", null, startDateTime, endDateTime, "Online", 1L, "A")
                     .build();
         });
         assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
@@ -70,7 +68,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "", startDateTime, endDateTime, "Online", 1L, "A").build();
+            new DashboardMember.Builder("Goal Setting", "", startDateTime, endDateTime, "Online", 1L, "A").build();
         });
         assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
     }
@@ -88,7 +86,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "de Leon, JC", null, endDateTime, "Online", 1L, "A")
+            new DashboardMember.Builder("Goal Setting", "de Leon, JC", null, endDateTime, "Online", 1L, "A")
                     .build();
         });
         assertTrue(error.getMessage().equals("Start Date Time should not be empty"));
@@ -107,7 +105,7 @@ class DashboardMemberFormTest {
         ZonedDateTime startDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "de Leon, JC", startDateTime, null, "Online", 1L, "A")
+            new DashboardMember.Builder("Goal Setting", "de Leon, JC", startDateTime, null, "Online", 1L, "A")
                     .build();
         });
         assertTrue(error.getMessage().equals("End Date Time should not be empty"));
@@ -125,7 +123,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "de Leon. JC", startDateTime, endDateTime, null, 1L, "A")
+            new DashboardMember.Builder("Goal Setting", "de Leon. JC", startDateTime, endDateTime, null, 1L, "A")
                     .build();
         });
         assertTrue(error.getMessage().equals("Venue Name should not be empty"));
@@ -138,7 +136,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "", 1L, "A")
+            new DashboardMember.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "", 1L, "A")
                     .build();
         });
         assertTrue(error.getMessage().equals("Venue Name should not be empty"));
@@ -156,7 +154,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "Online", null,
+            new DashboardMember.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "Online", null,
                     "A").build();
         });
         assertTrue(error.getMessage().equals("Employee ID should not be empty"));
@@ -169,7 +167,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "Online", 0L,
+            new DashboardMember.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "Online", 0L,
                     "A").build();
         });
         assertTrue(error.getMessage().equals("Employee ID should not be empty"));
@@ -187,7 +185,7 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "de Leon JC", startDateTime, endDateTime, "Online", 1L,
+            new DashboardMember.Builder("Goal Setting", "de Leon JC", startDateTime, endDateTime, "Online", 1L,
                     null).build();
         });
         assertTrue(error.getMessage().equals("Status should not be empty"));
@@ -200,18 +198,18 @@ class DashboardMemberFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardMemberForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "Online", 1L, "")
+            new DashboardMember.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "Online", 1L, "")
                     .build();
         });
         assertTrue(error.getMessage().equals("Status should not be empty"));
     }
 
-    private DashboardMemberForm dashboardMember() {
+    private DashboardMember dashboardMember() {
         ZonedDateTime startDateTime = ZonedDateTime.parse("07/03/20 10:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
-        return new DashboardMemberForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "Online", 1L,
+        return new DashboardMember.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, "Online", 1L,
                 "A").build();
     }
 }
