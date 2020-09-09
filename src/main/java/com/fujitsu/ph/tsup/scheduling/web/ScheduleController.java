@@ -618,7 +618,7 @@ public class ScheduleController {
 		
 	
 		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
-		redirectAttributes.addFlashAttribute("success", "Success!");
+		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been updated");
 		
 		listForm = null;
 		
@@ -648,7 +648,7 @@ public class ScheduleController {
 
 		scheduleService.deleteCourseScheduleById(id);
 		
-		redirectAttributes.addFlashAttribute("success", "The Course Schedule["+id+"] has been successfully deleted.");
+		redirectAttributes.addFlashAttribute("deleteSuccess", "The Course Schedule["+id+"] has been successfully deleted.");
 		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
 		
 		listForm = null;

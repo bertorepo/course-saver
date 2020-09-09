@@ -334,29 +334,29 @@
 				</div>
 			</div>
 			<!--Update Confirmation Modal End-->
-			<!--Update Confirmation Success Modal-->
-			<div class="modal fade" th:if="${success}" id="updateSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-						<div class="modal-header alert-success">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							Schedule has been updated
-						</div>
-						<div class="modal-footer">
-							<input type="button" name="updateSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--Update Confirmation Success Modal End-->		
 		</form>
 		<!--Update Modal End-->		
 		
-		
+		<!--Update Confirmation Success Modal-->
+		<div class="modal fade" th:if="${updateSuccess}" id="updateSuccessModal" 
+				tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p th:if="${updateSuccess}" th:text="${updateSuccess}" id="updated"></p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" name="updateSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Update Confirmation Success Modal End-->		
 		
 		<!--Delete Modal-->
 		<form class="form-horizontal"
@@ -770,6 +770,18 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		    document.getElementById("startTime1").value = rowStartTime;
 		    document.getElementById("endTime1").value = rowEndTime;
 		}
+		
+		if($("#updateSuccessModal").length > 0){
+			/*<![CDATA[*/
+			var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
+			
+			var updated = document.getElementById("updated").innerHTML;
+
+			if (updateSucess == updated) {
+				$('#updateSuccessModal').modal('show');
+			}
+			/*]]>*/
+		}
 	}
 
 	$("#fromDate").blur(function () {
@@ -806,14 +818,8 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	        'Z';
 	};
 	
-	/*<![CDATA[*/
-	var successMessage = /*[[${success}]]*/ 'default';
-
-	if (successMessage == "Success!") {
-
-		$('#updateSuccessModal').modal('show');
-	}
-	/*]]>*/
+	
+	
 </script>
 </body>
 

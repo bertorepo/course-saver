@@ -103,7 +103,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + " ON CSCHED.INSTRUCTOR_ID = E.ID " 
                 + "INNER JOIN VENUE AS V " 
                 + " ON CSCHED.VENUE_ID = V.ID "
-                + "WHERE SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
+                + "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, " 
+                + " CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
                 + "ORDER BY ID, SCHEDULED_START_DATETIME";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
