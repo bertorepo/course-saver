@@ -302,11 +302,10 @@ function load(){
 	}
 	
 	//Success Modal Validation
-	  
 	if($("#successModal").length > 0){
 		/*<![CDATA[*/
 	    var successMessage = /*[[${message}]]*/ 'default';
-	    var element = document.getElementById('successMessage').innerHTML;
+	    var element = document.getElementById('successConfirmed').value;
 
 	    console.log(successMessage);
 	    console.log(element);
