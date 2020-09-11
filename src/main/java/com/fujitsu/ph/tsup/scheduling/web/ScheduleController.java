@@ -164,7 +164,6 @@ public class ScheduleController {
         courseScheduleListForm.setMonthlyTopLearners(monthlyTopLearnerList);
         courseScheduleListForm.setQuarterlyTopLearners(quarterlyTopLearnerList);
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
-        //model.addAttribute("memberTrainingsToday", dashboardMemberService.getTrainingsToday(employeeId));
         model.addAttribute("scheduleView", courseScheduleListForm);
         return "scheduling/instructorCourseScheduleList";
     }    
