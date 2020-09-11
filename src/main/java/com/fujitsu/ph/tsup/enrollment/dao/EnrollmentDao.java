@@ -161,7 +161,15 @@ public interface EnrollmentDao {
      */
     Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(SearchForm searchForm);
     
+    /**
+     * Find available course schedule by course id
+     * @param courseId
+     * @return
+     */
+    Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule);
     
+    
+    void updateCourseParticipant(CourseParticipant courseParticipant);
 	/**
 	 * <pre>
 	 *

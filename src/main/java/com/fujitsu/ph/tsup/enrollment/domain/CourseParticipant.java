@@ -38,6 +38,9 @@ public class CourseParticipant {
 	/** courseScheduleId **/
 	private Long courseScheduleId;
 
+	/** Course Id**/
+	private Long couresId;
+	
 	/** courseName **/
 	private String courseName;
 
@@ -77,6 +80,7 @@ public class CourseParticipant {
 
 	private CourseParticipant(Builder builder) {
 		this.id = builder.id;
+		this.couresId = builder.courseId;
 		this.courseScheduleId = builder.courseScheduleId;
 		this.courseName = builder.courseName;
 		this.instructorName = builder.instructorName;
@@ -94,6 +98,10 @@ public class CourseParticipant {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public Long getCourseId() {
+		return couresId;
 	}
 
 	public Long getCourseScheduleId() {
@@ -159,6 +167,9 @@ public class CourseParticipant {
 
 		/** id **/
 		private Long id;
+		
+		/** Course Id**/
+		private Long courseId;
 
 		/** from the Course Schedule id **/
 		private Long courseScheduleId;
@@ -345,6 +356,41 @@ public class CourseParticipant {
 			this.employeeNumber = employeeNumber;
 			this.participantName = participantName;
 			this.email = email;
+		}
+		public Builder(Long id, Long courseId, Long courseScheduleId, String courseName, String instructorName, String venueName,
+                Long participantId, String participantName, ZonedDateTime registrationDate) {
+
+            validateId(id);
+            validateId(courseId);
+            validateCourseScheduleId(courseScheduleId);
+            validateParticipantId(participantId);
+            validateRegistrationDate(registrationDate);
+            validateCourseName(courseName);
+            validateInstructorName(instructorName);
+            validateVenueName(venueName);
+            validateParticipantName(participantName);
+
+
+            this.id = id;
+            this.courseId = courseId;
+            this.courseScheduleId = courseScheduleId;
+            this.courseName = courseName;
+            this.instructorName = instructorName;
+            this.venueName = venueName;
+            this.participantId = participantId;
+            this.participantName = participantName;
+            this.registrationDate = registrationDate;         
+        }
+		
+		public Builder(Long id, Long courseScheduleId, Long participantId) {
+			validateId(id);
+			validateCourseScheduleId(courseScheduleId);
+			validateParticipantId(participantId);
+
+			
+			this.id = id;
+			this.courseScheduleId = courseScheduleId;
+			this.participantId = participantId;
 		}
 		
 		public Builder() {

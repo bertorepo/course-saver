@@ -111,4 +111,12 @@ public interface EnrollmentService {
 	 * @return
 	 */
 	Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(SearchForm searchForm);
+	/**
+	 * Find availabel course schedule by course id
+	 * @param courseId
+	 * @return
+	 */
+	Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule);
+	
+	void updateSchedule(CourseParticipant courseParticipant);
 }

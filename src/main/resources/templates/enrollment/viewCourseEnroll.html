@@ -195,20 +195,6 @@
 									<div class="form-group row" id="div-inputs">
 										
 									</div>
-<!-- 								<table class="table table-bordered table-responsive" style="width:100%"> -->
-<!-- 									<colgroup > -->
-<!-- 										<col style="width:100%"/> -->
-<!-- 									</colgroup> -->
-<!-- 									<thead class="text-center"> -->
-<!-- 										<tr> -->
-<!-- 											<th>Course Schedule Id</th> -->
-<!-- 										</tr> -->
-<!-- 									</thead> -->
-<!-- 									<tbody id="cancel-below-minimum-id"> -->
-										
-<!-- 									</tbody> -->
-<!-- 								</table> -->
-								
 								<button type="submit" name="submit" value="submit" class="btn btn-primary" >Yes</button>
 							</form>
 							
@@ -472,10 +458,10 @@
 							<form class="form-horizontal" action="#" 
 									th:action="@{/enrollment/schedules/{courseScheduleId}/enroll}" 
 									th:object="${courseEnrollmentForm}" method="post">
-								<input type="text" id="courseScheduleIdHidden" name="courseScheduleId">
-								<input type="text" id="courseScheduleCourseNameHidden" name="courseName">
-								<input type="text" id="courseScheduleInstructorNameHidden" name="instructorName">
-								<input type="text" id="courseScheduleDetailIdHidden" name="courseScheduleDetails.id">
+								<input type="hidden" id="courseScheduleIdHidden" name="courseScheduleId">
+								<input type="hidden" id="courseScheduleCourseNameHidden" name="courseName">
+								<input type="hidden" id="courseScheduleInstructorNameHidden" name="instructorName">
+								<input type="hidden" id="courseScheduleDetailIdHidden" name="courseScheduleDetails.id">
 								<input type="hidden" id="courseScheduleDateHidden" name="">
 								<input type="hidden" id="courseScheduleTimeHidden" name="">
 								<input type="hidden" id="courseScheduleDescriptionHidden" name="">
@@ -578,7 +564,7 @@
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|">
 									
 						<td th:text="${courseScheduleId}"/>
-						<td th:text="${courseScheduleDetail.id}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
 						<td th:text="${courseScheduleDetail.scheduledStartDateTime}" />
 						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"/>

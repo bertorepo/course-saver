@@ -26,8 +26,11 @@ import java.util.Set;
 public class CourseEnrollmentForm {
     /* Course Participant ID */
     private Long id;
+    
+    /* Course Id*/
+    private Long courseId;
 
-    /* Course Schedule ID */
+	/* Course Schedule ID */
     private Long courseScheduleId;
 
     /* Course Name */
@@ -53,7 +56,16 @@ public class CourseEnrollmentForm {
     public Long getId() {
         return id;
     }
-
+    /* Course Id Getter*/
+	public Long getCourseId() {
+		return courseId;
+	}
+	
+	/* Course Id Setter*/
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
+	}
+	
     /** Schedule ID Getter */
     public Long getCourseScheduleId() {
         return courseScheduleId;

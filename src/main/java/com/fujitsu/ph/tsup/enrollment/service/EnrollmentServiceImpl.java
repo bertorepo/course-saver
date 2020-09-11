@@ -323,6 +323,39 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		}catch(Exception e) {
 			throw new IllegalArgumentException("Can not find Course Participants");
 		}
+	}
+
+
+
+	@Override
+	public Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule) {
+		// TODO Auto-generated method stub
+		return enrollmentDao.findCourseScheduleByCourseId(courseSchedule);
+	}
+
+
+
+	@Override
+	public void updateSchedule(CourseParticipant courseParticipant) {
+
+			CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
+			if (courseRecord == null){
+          	 throw new IllegalArgumentException("This course schedule id " +courseParticipant
+                       .getCourseScheduleId()+ " is not existing");
+			}
+
+	        CourseParticipant participantRecord = enrollmentDao
+	                .findCourseParticipantByCourseScheduleIdAndParticipantId
+	                (courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
+
+	//        System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
+	        if(participantRecord != null){ 
+	        	throw new IllegalArgumentException("You are already enrolled to this course.");
+	           
+	        }else if(participantRecord == null) {
+	        	enrollmentDao.updateCourseParticipant(courseParticipant);
+	        }
+	        
 	}       
     
     /** Finds the participant of course by Id */

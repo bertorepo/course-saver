@@ -1,5 +1,31 @@
 package com.fujitsu.ph.tsup.enrollment.web;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
@@ -13,49 +39,6 @@ import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
-import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
-
-import java.time.Duration;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.fujitsu.ph.auth.model.FpiUser;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
-import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
-import com.fujitsu.ph.tsup.enrollment.model.CourseEnrolledListForm;
-import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
-import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
-import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
-import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 
 //=======================================================
@@ -273,6 +256,7 @@ public class EnrollmentController {
                 CourseEnrollmentForm courseEnrollmentForm = new CourseEnrollmentForm();
 
                 courseEnrollmentForm.setId(enrolledCourse.getId());
+                courseEnrollmentForm.setCourseId(enrolledCourse.getCourseId());
                 courseEnrollmentForm.setCourseScheduleId(enrolledCourse.getCourseScheduleId());
                 courseEnrollmentForm.setCourseName(enrolledCourse.getCourseName());
                 courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
@@ -720,6 +704,38 @@ public class EnrollmentController {
     	enrollmentService.cancelCourseSchedules(courseScheduleSet);
     	redirectAttributes.addFlashAttribute("successMessage", "Successfully cancelled all course schedule below minimum participant.");
     	return "redirect:/enrollment/viewCourseEnroll";
+    }
+    
+    @PostMapping("/findCourseSchedule")
+    @ResponseBody
+    public Set<CourseSchedule> findCourseScheduleByCourseId(@RequestBody CourseSchedule courseSchedule){
+    	System.out.println("Course ID: " + courseSchedule.getCourseId());
+    	System.out.println("Course Schedule ID: " + courseSchedule.getId());
+
+    	return enrollmentService.findCourseScheduleByCourseId(courseSchedule);
+    }
+
+    @PostMapping("/updateSchedule")
+    public String updateCourseSchedule(@Valid @ModelAttribute CourseEnrollmentForm courseEnrollmentForm,
+    			BindingResult bindingResult,
+    			Model model,
+    			RedirectAttributes redirectAttributes) {
+    	System.out.println("To be replaced: " + courseEnrollmentForm.getId());
+    	System.out.println("New Course Schedule ID: " + courseEnrollmentForm.getCourseScheduleId());
+    	
+    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	try {
+    		CourseParticipant courseParticipant = new CourseParticipant.Builder(courseEnrollmentForm.getId(), 
+        			courseEnrollmentForm.getCourseScheduleId(), user.getId()).build();
+        	
+        	enrollmentService.updateSchedule(courseParticipant);
+        	redirectAttributes.addFlashAttribute("successMessage", "Successfully change schedule");
+    	}catch(Exception e) {
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+    	}
+    	
+    	
+    	return "redirect:/enrollment/mySchedules";
     }
 
 //    @PostMapping("/findSchedules")
