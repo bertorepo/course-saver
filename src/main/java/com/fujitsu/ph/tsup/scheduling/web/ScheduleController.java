@@ -45,8 +45,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.auth.model.FpiUser;
@@ -637,9 +639,9 @@ public class ScheduleController {
      * @param RedirectAttributes     redirectAttributes
      * @return courseScheduleListForm and view
      */
-	@DeleteMapping("/courseSchedules/{courseScheduleId}/delete")
-	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") Long id, Model model,
-			RedirectAttributes redirectAttributes) {
+    @DeleteMapping("/courseSchedule/{courseScheduleId}/scheduleDelete")
+	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") Long id, 
+	        Model model, RedirectAttributes redirectAttributes) {
 	    
 	    CourseScheduleListForm courseSchedListForm = new CourseScheduleListForm();
         
