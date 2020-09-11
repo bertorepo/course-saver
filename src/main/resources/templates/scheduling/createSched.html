@@ -34,36 +34,37 @@
 	</style>
 </head>
 
-<body>
+<body onload="load()">
 	<div th:insert="fragments/general.html :: header"> </div>
 	<div class="container mt-5">
 		<form class="form-horizontal" id="scheduleNew" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
-		<!--Success Message-->
-		<div class="modal fade" th:if="${message}" th:text="${message}" id="successMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 		<!--Success Message End-->
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
 			<div class="card">
 				<div class="card-body">
-					<div class="form-group row">
+					<div class="form-group row align-items-center justify-content-center">
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5">
 							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
-							<input type="text" list="courses" id="courseName" placeholder="Enter Course Name" class="form-control">
+							<input type="text" list="courses" id="courseName" 
+										placeholder="Enter Course Name" class="form-control custom-select custom-select-md">
+							<i class="chevron"></i>
 							<div class="text-danger" id="courseName_error"> </div>
-							<datalist id="courses">
+							<datalist id="courses" >
 								<option value=""></option>
 							 	<option th:each="courses : *{courses}"
 							 			th:attr="data-value = ${courses.id}"
-							 			th:value="${courses.name}"></option>
+							 			th:value="${courses.name}"
+							 			th:selected="${courses.id} eq *{courseId}"></option>
 							</datalist>
 							<input type="hidden" th:id="*{courseId}" th:field="*{courseId}"/>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row align-items-center justify-content-center">
 						<label class="col-lg-2 col-form-label">Instructor</label>
 						<div class="col-lg-5">
-							<select class="form-control" th:field="*{instructorId}" id="instructorId">
+							<select class="form-control custom-select custom-select-md" th:field="*{instructorId}" id="instructorId">
 								<option value="" selected>Select Instructor</option>
 								<option th:each="instructors : *{instructors}" 
 										th:value="${instructors.id}"
@@ -74,10 +75,10 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row align-items-center justify-content-center">
 						<label class="col-lg-2 col-form-label">Venue</label>
 						<div class="col-lg-5">
-							<select class="form-control" th:field="*{venueId}" id="venueId">
+							<select class="form-control custom-select custom-select-md" th:field="*{venueId}" id="venueId">
 								<option value="" selected>Select Venue</option>
 								<option th:each="venues : *{venues}" 
 										th:value="${venues.id}"
@@ -88,7 +89,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row align-items-center justify-content-center">
 						<label class="col-lg-2 col-form-label">Participants</label>
 						<div class="col-lg-2">
 							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
@@ -106,7 +107,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap" id="dateTime">
+					<div class="mt-5 col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap" id="dateTime">
 						<table class="table table-responsive table-borderless text-center" >
 							<colgroup>
 								<col width="10%"/>
@@ -140,7 +141,9 @@
 									</td>
 									<td class="form-group">
 										<div class="">
-											<input type="date" class="form-control" th:id="${'startDate' + (stat.index + 1)}">
+											<input type="date" class="form-control"
+															   th:id="${'startDate' + (stat.index + 1)}"
+															   onblur="datetimeBlur()">
 											<div class="text-danger" th:id="${'startDate' + (stat.index + 1) + '_error'}">
 											</div>
 										</div>
@@ -148,7 +151,8 @@
 									<td class="form-group">
 										<div class="">
 											<input type="time" class="form-control" 
-													th:id="${'startTime' + (stat.index + 1)}">
+													th:id="${'startTime' + (stat.index + 1)}"
+													onblur="datetimeBlur()">
 											<div class="text-danger" th:id="${'startTime' + (stat.index + 1) + '_error'}"></div>
 										</div>
 									</td>
@@ -166,14 +170,17 @@
 									</td>
 									<td class="form-group">
 										<div class="">
-											<input type="date" class="form-control" th:id="${'endDate' + (stat.index + 1)}" >
+											<input type="date" class="form-control" 
+																th:id="${'endDate' + (stat.index + 1)}" 
+																onblur="datetimeBlur()">
 											<div class="text-danger" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
 										</div>
 									</td>
 									<td class="form-group">
 										<div class="">
 											<input type="time" class="form-control" 
-													th:id="${'endTime' + (stat.index + 1)}">
+													th:id="${'endTime' + (stat.index + 1)}"
+													onblur="datetimeBlur()">
 											<div class="text-danger" th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
 										</div>
 									</td>
@@ -219,7 +226,8 @@
 		</form>
 		
 		<!--Success Modal-->
-		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
+						aria-hidden="true"  data-backdrop="static" data-keyboard="false" th:if="${message}" >
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
@@ -230,7 +238,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">Schedule has been created</label>
+							<input type="hidden" id="successConfirmed" th:value="${message}"/>
+							<label class="col-lg-12 col-form-label" >The Schedule has been created!</label>
 						</div>	
 					</div>
 				</div>
@@ -260,6 +269,106 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 <script th:inline="javascript">
+//Set Values on load
+function load(){
+	
+	//Setting Course Name on Load
+	var courseName = $("#courses option:selected").val();
+	
+	if((courseName !== "") && (courseName !== undefined) && (courseName !== null)) {
+		document.getElementById("courseName").value = courseName;
+	}
+	
+	//Setting values on Course Schedule Details
+	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+	var length = courseScheduleDetails.rows.length;
+	
+	for(i=1; i<=length ; i++){
+		
+		var startDateTime = document.getElementById("startDateTime"+i).value;
+	    var endDateTime = document.getElementById("endDateTime"+i).value;
+	    
+	    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+	    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+	    
+	    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+	    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+	    
+	    document.getElementById("startDate"+i).value = rowStartDate;
+	    document.getElementById("endDate"+i).value = rowEndDate;
+	    
+	    document.getElementById("startTime"+i).value = rowStartTime;
+	    document.getElementById("endTime"+i).value = rowEndTime;
+	}
+	
+	//Success Modal Validation
+	  
+	if($("#successModal").length > 0){
+		/*<![CDATA[*/
+	    var successMessage = /*[[${message}]]*/ 'default';
+	    var element = document.getElementById('successMessage').innerHTML;
+
+	    console.log(successMessage);
+	    console.log(element);
+
+	    if (successMessage == element) {
+
+	        $('#successModal').modal('show');
+	    }
+	    /*]]>*/
+	}
+}
+
+//Setting Date and Time on blur
+function datetimeBlur(){
+	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+	var length = courseScheduleDetails.rows.length;
+	for (var i = 1; i <= length; i++) {
+
+	    var startDate = $("#startDate" + i).val();
+	    var startTime = $("#startTime" + i).val();
+	    var endDate = $("#endDate" + i).val();
+	    var endTime = $("#endTime" + i).val();
+	    
+	    if(startDate !== ""){
+	    	var rowStartDateTime = new Date(startDate);
+	    }
+	    
+	    if(endDate !== ""){
+	    	var rowEndDateTime = new Date(endDate);
+	    }
+	    
+	    if(startTime !== ""){
+	    	rowStartDateTime.setHours(startTime.substring(0, startTime.indexOf(":")));
+		    rowStartDateTime.setMinutes(startTime.substring(startTime.indexOf(":") + 1));
+	    }
+	    
+	    if(endTime !=="") {
+	    	rowEndDateTime.setHours(endTime.substring(0, endTime.indexOf(":")));
+		    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); 
+	    }
+	    
+	    if((startDate == "") && (startTime == "")){
+	    	var startDateTime = null;
+	    }
+	    
+	    if((endDate == "") && (endTime == "")){
+	    	var endDateTime = null;
+	    }
+	    
+	    if((startDate !== "") && (startTime !== "")){
+	    	var startDateTime = rowStartDateTime.toISO().toString();
+	    	document.getElementById("startDateTime"+i).value = startDateTime;
+	    }
+	    
+	    if((endDate !== "") && (endTime !== "")){
+	    	var endDateTime = rowEndDateTime.toISO().toString();
+	    	document.getElementById("endDateTime"+i).value = endDateTime;
+	    }
+	}
+}
+
+
 //Add New Rows
 function addNewRow() {
 	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
@@ -282,6 +391,8 @@ $("#courseName").blur(function (){
 	
 	document.getElementById("courseId").value = courseId;
 });
+
+
 
 //Format Date Inputs
 Date.prototype.toISO = function() {
@@ -307,6 +418,7 @@ function validations() {
 	var courseName = $('#courseName').val();
 	var instructor = $('#instructorId').val();
 	var venue = $('#venueId').val();
+	var courseId = $('#courseId').val();
 	var minRequired = parseInt($('#minRequired').val().replace("", "0"));
 	var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
 	
@@ -317,6 +429,13 @@ function validations() {
 		courseNameError = "Please fill up Course Name"; 
         document.getElementById("courseName_error").innerHTML = courseNameError;
 	}
+	
+	if ((courseId == "undefined") || (courseId == null) || (courseId == "")) {
+		errorCount++;
+		courseNameError = 'No Course found with the name, "'+courseName+'".  Please Select from the List.'; 
+        document.getElementById("courseName_error").innerHTML = courseNameError;
+	}
+	
 	if (instructor == "") {
 		errorCount++;
 		instructorError = "Please fill up Instructor";
@@ -459,17 +578,17 @@ function validations() {
 			}
 		}
 		
-		document.getElementById("courseName").onkeyup = removeWarning;
-		document.getElementById("instructorId").onmouseleave = removeWarning;
-		document.getElementById("venueId").onmouseleave = removeWarning;
-		document.getElementById("minRequired").onkeyup = removeWarning;
-		document.getElementById("maxAllowed").onkeyup = removeWarning;
+		document.getElementById("courseName").oninput = removeWarning;
+		document.getElementById("instructorId").oninput = removeWarning;
+		document.getElementById("venueId").oninput = removeWarning;
+		document.getElementById("minRequired").oninput = removeWarning;
+		document.getElementById("maxAllowed").oninput = removeWarning;
 		
 		//Remove warning for Date and Time
-		document.getElementById("startDate" + i).onmouseleave = removeWarning;
-		document.getElementById("startTime" + i).onmouseleave = removeWarning;
-		document.getElementById("endDate" + i).onmouseleave = removeWarning;
-		document.getElementById("endTime" + i).onmouseleave = removeWarning;
+		document.getElementById("startDate" + i).oninput = removeWarning;
+		document.getElementById("startTime" + i).oninput = removeWarning;
+		document.getElementById("endDate" + i).oninput = removeWarning;
+		document.getElementById("endTime" + i).oninput = removeWarning;
 		
 	    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 	    	var endDateTime = null;
@@ -544,20 +663,7 @@ function timeOnly(id)
 	
 }
 	   
-//Success Modal Validation
 
-/*<![CDATA[*/
-var successMessage = /*[[${message}]]*/ 'default';
-var element = document.getElementById('successMessage').innerHTML;
-
-console.log(successMessage);
-console.log(element);
-
-if (successMessage == element) {
-
-    $('#successModal').modal('show');
-}
-/*]]>*/
 </script>
 </body>
 

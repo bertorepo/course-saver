@@ -218,15 +218,10 @@ public class ScheduleController {
                                     Model model, RedirectAttributes redirectAttributes) {
         
         logger.debug("CourseScheduleNewForm : {}", form);
-        List<CourseScheduleDetailForm> newCourseScheduleDetailForm = new ArrayList<>();
+        List<CourseScheduleDetailForm> courseScheduleDetailFormList = form.getCourseScheduleDetailsAsList();
+        courseScheduleDetailFormList.add(new CourseScheduleDetailForm());
         
-        List<CourseScheduleDetailForm> newCourseScheduleDetailFormRow = 
-                    new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[1]));
-        
-        newCourseScheduleDetailForm.addAll(form.getCourseScheduleDetailsAsList());
-        newCourseScheduleDetailForm.addAll(newCourseScheduleDetailFormRow);
-        
-        form.setCourseScheduleDetailsAsList(newCourseScheduleDetailForm);
+        form.setCourseScheduleDetailsAsList(courseScheduleDetailFormList);
         
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
