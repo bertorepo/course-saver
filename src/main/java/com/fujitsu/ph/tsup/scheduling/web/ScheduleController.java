@@ -639,7 +639,7 @@ public class ScheduleController {
      * @param RedirectAttributes     redirectAttributes
      * @return courseScheduleListForm and view
      */
-    @DeleteMapping("/courseSchedule/{courseScheduleId}/scheduleDelete")
+    @DeleteMapping("/courseSchedule/{courseScheduleId}/deleted")
 	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") Long id, 
 	        Model model, RedirectAttributes redirectAttributes) {
 	    

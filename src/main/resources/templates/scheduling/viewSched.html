@@ -363,7 +363,7 @@
 			  id="deleteView"
 			  th:object="${deleteView}" 
 			  th:method="delete"
-			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/scheduleDelete(courseScheduleId = *{id})}" 
+			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/deleted(courseScheduleId = *{id})}" 
 			  th:if="${#strings.contains(#httpServletRequest.requestURI, 'delete')}">
 			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
