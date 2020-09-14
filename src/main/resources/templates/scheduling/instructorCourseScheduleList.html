@@ -84,8 +84,8 @@
                 	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
                         <td th:text="${courseSchedules.courseName}"></td>
                         <td th:text="${courseSchedules.instructorName}"></td>
-                        <td th:text="${courseScheduleDetails.scheduledStartDateTime}"></td>
-                        <td th:text="${courseScheduleDetails.scheduledEndDateTime}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
                         <td th:text="${courseScheduleDetails.duration}"></td>
                     </tr>
                 </tbody>
@@ -168,11 +168,11 @@
    
     <footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
-		<!--View Top Learners-->
+		/* <!--View Top Learners--> */
 			$('a[name="topLearners"]').on('click', function() {
 				$('#viewTopLearnersModal').modal('show');
 	});
-		<!--View Top Learners end-->
+		/* <!--View Top Learners end--> */
 		/*<![CDATA[*/
 			var errorMessage = /*[[${error}]]*/ 'default';
 			if(errorMessage == "To Date should be greater than or equal to From Date"){
