@@ -119,5 +119,5 @@ public interface ScheduleService {
     Set<CourseSchedule> findCourseScheduleByCourseId(Long id);
  
     
-    Set<CourseSchedule> changeScheduleStatus();
+    void changeScheduleStatus(Set<CourseSchedule> courseSchedules);
 }

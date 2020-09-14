@@ -277,9 +277,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public Set<CourseSchedule> changeScheduleStatus() {
-		// TODO Auto-generated method stub
-		return null;
+	public void changeScheduleStatus(Set<CourseSchedule> courseSchedules) {
+		try {
+		    scheduleDao.updateCourseScheduleStatus(courseSchedules);
+		} catch (DataAccessException ex) {
+		    throw new IllegalArgumentException("Can't update Course Schedule Status.");
+		}
 	}
 
 
