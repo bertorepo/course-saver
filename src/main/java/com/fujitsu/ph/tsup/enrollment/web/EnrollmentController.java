@@ -313,7 +313,7 @@ public class EnrollmentController {
         model.addAttribute("courseDecline", courseDeclineForm);
         return "enrollment/myCourseSched";
     }
-
+//
     /**
      * Method for submitCourseDeclineForm
      * 
