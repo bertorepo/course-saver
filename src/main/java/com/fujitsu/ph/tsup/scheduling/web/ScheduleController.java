@@ -1,6 +1,8 @@
 package com.fujitsu.ph.tsup.scheduling.web;
 
 
+import java.time.ZoneId;
+
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -29,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -291,7 +294,9 @@ public class ScheduleController {
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
         Set<CourseSchedule> courseSchedules = 
-                scheduleService.findAllScheduledCourses(ZonedDateTime.now(), ZonedDateTime.now().plusYears(1));
+                scheduleService.findAllScheduledCourses(ZonedDateTime.now().withHour(0).withMinute(0), 
+                                        ZonedDateTime.now().plusYears(1));
+        Iterator<CourseSchedule> scheduleItr = courseSchedules.iterator();
 
         logger.debug("CourseScheduleNewForm: {}", form);
         logger.debug("Result: {}", bindingResult);
@@ -304,32 +309,58 @@ public class ScheduleController {
             return "scheduling/createSched";
         }
         
-        for(CourseSchedule courseSchedule : courseSchedules) {
-            for(CourseScheduleDetail cSchedDet: courseSchedule.getCourseScheduleDetail()) {
+        while(scheduleItr.hasNext()) {
+            CourseSchedule courseSchedule = scheduleItr.next();
+            Set<CourseScheduleDetail> cSchedDetail = courseSchedule.getCourseScheduleDetail();
+            
+            Iterator<CourseScheduleDetail> detailItr = cSchedDetail.iterator();
+            while(detailItr.hasNext()) {
                 
+                CourseScheduleDetail cSchedDet = detailItr.next();
                 //Check if there is any conflicting schedules when submitting form
-                if(((courseSchedule.getCourseId() == form.getCourseId()) || 
+                if(((courseSchedule.getCourseId() == form.getCourseId()) ||
                         (courseSchedule.getInstructorId() == form.getInstructorId()) ||
-                        (courseSchedule.getVenueId() == form.getVenueId())) && 
+                        (courseSchedule.getVenueId() == form.getVenueId())) &&
+                        //Checks if there's a same schedule that matches the submitted Schedule
                         (form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> 
-                            i.getScheduledEndDateTime().equals(cSchedDet.getScheduledEndDateTime()))) &&
+                            i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
+                                .equals(cSchedDet.getScheduledEndDateTime()))) &&
                         (form.getCourseScheduleDetailsAsList().stream().anyMatch(o -> 
-                            o.getScheduledStartDateTime().equals(cSchedDet.getScheduledStartDateTime())))) {
+                            o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
+                                .equals(cSchedDet.getScheduledStartDateTime())))) {
                     
+                        List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+                        
+                        for (CourseScheduleDetailForm detForm : form.getCourseScheduleDetailsAsList()) {
+                            CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+                            detailForm.setScheduledEndDateTime(detForm.getScheduledEndDateTime()
+                                                                        .withZoneSameInstant(ZoneId.systemDefault()));
+                            detailForm.setScheduledStartDateTime(detForm.getScheduledStartDateTime()
+                                                                        .withZoneSameInstant(ZoneId.systemDefault()));
+                            detailFormList.add(detailForm);
+                        }
+                        
+                        form.setCourseId(form.getCourseId());
+                        form.setCourseScheduleDetailsAsList(detailFormList);
                         form.setCourses(courseFormList);
                         form.setVenues(venueFormList);
                         form.setInstructors(instructorFormList);
-                        model.addAttribute("conflict", 
+                        model.addAttribute("error", 
                                                 "The Schedule you have submitted has conflict with " + 
                                                         courseSchedule.getCourseName()+" [" +
-                                                        DateTimeFormatter.ofPattern("yyyy-MMM-dd hh:mm a")
-                                                             .format(cSchedDet.getScheduledStartDateTime()) +" - " + 
-                                                        DateTimeFormatter.ofPattern("yyyy-MMM-dd hh:mm a")
-                                                                .format(cSchedDet.getScheduledEndDateTime()) +"]");
+                                                        DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
+                                                             .format(cSchedDet.getScheduledStartDateTime()
+                                                                     .withZoneSameInstant(ZoneId.systemDefault())) +" - " + 
+                                                        DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
+                                                                .format(cSchedDet.getScheduledEndDateTime()
+                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +"]");
                         model.addAttribute("scheduleNew", form);
-                }
+                        return "scheduling/createSched";
+                } 
             }
         }
+        
+        System.out.println("The Schedule has no Conflicts with other Schedule");
         
         Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
         

@@ -58,7 +58,7 @@
 							 			th:value="${courses.name}"
 							 			th:selected="${courses.id} eq *{courseId}"></option>
 							</datalist>
-							<input type="hidden" th:id="*{courseId}" th:field="*{courseId}"/>
+							<input type="hidden" th:id="courseId" th:field="*{courseId}"/>
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
@@ -247,18 +247,21 @@
 		</div>
 		<!--Success Modal End-->
 		<!--Error Modal-->
-		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal fade" id="errorModal" th:if="${error}" tabindex="-1" role="dialog" 
+				aria-labelledby="exampleModalLabel" aria-hidden="true" 
+				data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-danger">
-						<h5 class="modal-title">Error</h5>
+						<h5 id="errorTitle" class="modal-title"></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label"></label>
+							<input type="hidden" th:value="${error}" id="hasError"/>
+							<label class="col-lg-12 col-form-label" th:if="${error}" th:text="${error}"></label>
 						</div>	
 					</div>
 				</div>
@@ -273,7 +276,7 @@
 function load(){
 	
 	//Setting Course Name on Load
-	var courseName = $("#courses option:selected").val();
+	var courseName = $("#courses option[data-value='"+$('#courseId').val()+"']").val();
 	
 	if((courseName !== "") && (courseName !== undefined) && (courseName !== null)) {
 		document.getElementById("courseName").value = courseName;
@@ -313,6 +316,26 @@ function load(){
 	    if (successMessage == element) {
 
 	        $('#successModal').modal('show');
+	    }
+	    /*]]>*/
+	}
+	
+	//Success Modal Validation
+	if($("#errorModal").length > 0){
+		/*<![CDATA[*/
+	    var errorMessage = /*[[${error}]]*/ 'default';
+	    var element = document.getElementById('hasError').value;
+	    
+	    if(element.includes('conflict')){
+	    	document.getElementById('errorTitle').innerHTML = "Conflict!";
+	    }
+
+	    console.log(successMessage);
+	    console.log(element);
+
+	    if (errorMessage == element) {
+
+	        $('#errorModal').modal('show');
 	    }
 	    /*]]>*/
 	}
