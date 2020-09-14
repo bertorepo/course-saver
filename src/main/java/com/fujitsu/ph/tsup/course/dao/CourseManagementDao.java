@@ -20,6 +20,10 @@ public interface CourseManagementDao {
 
     // Method for deleting Course by Id
     void deleteCourseById(Long id);
-
+    
+    // Method for loading all course in Course View
     Set<Course> findAllCourses();
+    
+    // Method for searching Courses by Name
+    Set<Course> findCoursesByName(String name);
 }

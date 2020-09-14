@@ -103,4 +103,21 @@ public class CourseManagementController {
 
         return "redirect:/courses/load#successModal";
     }
+    
+    @PostMapping("/search")
+    public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model) {
+    	
+    	if(searchCourseName.isEmpty()) {
+    		return "redirect:/courses/load";
+    	}
+    	
+    	Set<Course> course = courseManagementService.findCoursesByName(searchCourseName);
+    	
+    	List<Course> listOfCourse = course.stream()
+                .collect(Collectors.toList());
+    	
+    	model.addAttribute("courseList", listOfCourse);
+    	
+    	return "course-management/manageCourse";
+    }
 }
