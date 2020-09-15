@@ -351,6 +351,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 	//        System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
 	        if(participantRecord != null){ 
 	        	throw new IllegalArgumentException("You are already enrolled to this course.");
+	       
 	           
 	        }else if(participantRecord == null) {
 	        	enrollmentDao.updateCourseParticipant(courseParticipant);

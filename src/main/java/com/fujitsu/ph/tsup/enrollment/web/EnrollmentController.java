@@ -2,8 +2,11 @@ package com.fujitsu.ph.tsup.enrollment.web;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -238,7 +241,7 @@ public class EnrollmentController {
 
             model.addAttribute("myCourseSched", courseEnrolledListForm);
             model.addAttribute("errorMessage", "No Course Schedule Found");
-            model.addAttribute("error", "Invalid Date Input");
+            model.addAttribute("error", "To Date should be greater than or equal to From Date");
             return "enrollment/myCourseSched";
         }
 
@@ -249,7 +252,7 @@ public class EnrollmentController {
             Set<CourseParticipant> enrolledCourses = enrollmentService.findAllEnrolledCoursesByParticipantId(
                     user.getId(), courseEnrolledListForm.getFromDateTime(), courseEnrolledListForm.getToDateTime());
 
-            Set<CourseEnrollmentForm> courseSchedules = new HashSet<CourseEnrollmentForm>();
+            List<CourseEnrollmentForm> courseSchedules = new ArrayList<CourseEnrollmentForm>();
 
             for (CourseParticipant enrolledCourse : enrolledCourses) {
 
@@ -274,6 +277,14 @@ public class EnrollmentController {
                 courseSchedules.add(courseEnrollmentForm);
                 courseEnrolledListForm.setCourseScheduleDetailForm(courseSchedules);
             }
+            
+            
+            List<CourseEnrollmentForm> setSortedCourseScheduleForm = courseSchedules.stream().collect(Collectors.toCollection(ArrayList::new));
+            List<CourseEnrollmentForm> sortedCourseScheduleForm = setSortedCourseScheduleForm.stream().sorted((e1, e2) ->
+            e1.getCourseName().compareTo(e2.getCourseName())).collect(Collectors.toList());
+            
+            courseEnrolledListForm.setCourseScheduleDetailForm(sortedCourseScheduleForm);
+            
         } catch (Exception e) {
 
             model.addAttribute("errorMessage", e.getMessage());
@@ -680,6 +691,7 @@ public class EnrollmentController {
 	            redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
     	}catch(Exception e){
     		System.out.println(e.getMessage());
+    		model.addAttribute("errorMessage01", e.getMessage());
     	}
     	return "redirect:/enrollment/viewMemberCourse";
     }
@@ -721,7 +733,8 @@ public class EnrollmentController {
     			Model model,
     			RedirectAttributes redirectAttributes) {
     	System.out.println("To be replaced: " + courseEnrollmentForm.getId());
-    	System.out.println("New Course Schedule ID: " + courseEnrollmentForm.getCourseScheduleId());
+    	System.out.println("New Course Schedule ID: " + courseEnrollmentForm.getCourseScheduleId());  	
+
     	
     	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	try {
@@ -729,7 +742,7 @@ public class EnrollmentController {
         			courseEnrollmentForm.getCourseScheduleId(), user.getId()).build();
         	
         	enrollmentService.updateSchedule(courseParticipant);
-        	redirectAttributes.addFlashAttribute("successMessage", "Successfully change schedule");
+        	redirectAttributes.addFlashAttribute("successMessageChangeSchedule", "Successfully change schedule");
     	}catch(Exception e) {
     		redirectAttributes.addFlashAttribute("error", e.getMessage());
     	}

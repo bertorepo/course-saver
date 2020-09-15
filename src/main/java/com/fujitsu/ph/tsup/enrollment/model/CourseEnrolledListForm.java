@@ -23,6 +23,7 @@ package com.fujitsu.ph.tsup.enrollment.model;
 * 
 */
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,7 +39,7 @@ public class CourseEnrolledListForm {
     private ZonedDateTime toDateTime;
 
     /* Set of Course Enrollment Form */
-    private Set<CourseEnrollmentForm> courseSchedules;
+    private List<CourseEnrollmentForm> courseSchedules;
 
     /** From Date and Time Getter */
     public ZonedDateTime getFromDateTime() {
@@ -61,12 +62,12 @@ public class CourseEnrolledListForm {
     }
 
     /** Set of Course Enrollment Form Getter */
-    public Set<CourseEnrollmentForm> getCourseSchedules() {
+    public List<CourseEnrollmentForm> getCourseSchedules() {
         return courseSchedules;
     }
 
     /** Set of Course Enrollment Form Setter */
-    public void setCourseScheduleDetailForm(Set<CourseEnrollmentForm> courseSchedules) {
+    public void setCourseScheduleDetailForm(List<CourseEnrollmentForm> courseSchedules) {
         this.courseSchedules = courseSchedules;
     }
     
