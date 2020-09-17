@@ -120,10 +120,10 @@ function momentofDate(index) {
 
 	var d1 = moment.utc(getScheduledTime, 'YYYY-MM-DD HH:mm').format(
 			'YYYY-MM-DD');
-	var dTime1 = moment.utc(trimmedStartTime, 'YYYY-MM-DD HH:mm').format(
+	var dTime1 = moment.utc(trimmedStartTime, 'YYYY-MM-DD HH:mm').subtract(1,'hours').format(
 			'HH:mm');
 	var dEnd1 = moment.utc(endTime, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD');
-	var dEndRegex1 = moment.utc(regexEndTime, 'YYYY-MM-DD HH:mm').format(
+	var dEndRegex1 = moment.utc(regexEndTime, 'YYYY-MM-DD HH:mm').add(1,'hours').format(
 			'HH:mm');
 
 	if (x == 'A') {
