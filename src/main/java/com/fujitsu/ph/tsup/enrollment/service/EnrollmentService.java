@@ -25,6 +25,8 @@ import java.util.Set;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 
 public interface EnrollmentService {
 	
@@ -57,4 +59,64 @@ public interface EnrollmentService {
 
 	/** Add the participant of course by Id */
 //	Integer addEnrolledMembersById(Participant participant);
+	
+	/**
+	 * Cancel all course schedule below minimum participants
+	 * @param courseScheduleSet
+	 */
+	void cancelCourseSchedules(Set<CourseSchedule> courseScheduleSet);
+	
+	/**
+	 * Find all Active Course schedule
+	 * @return
+	 */
+	Set<CourseSchedule> findAllActiveCourseSchedule();
+	
+	/**
+	 * Find all course schedule by month/quarter
+	 * @param queryBy
+	 * @return
+	 */
+	Set<CourseSchedule> findAllCouresScheduleByMonthOrQuarter(String queryBy);
+	
+	/**
+	 * Reschedule Course schedule
+	 * @param courseScheduleDetail
+	 */
+	void rescheduleCourseScheduleById(CourseScheduleDetail courseScheduleDetail);
+	
+	/**
+	 * Find all course schedule below minimum
+	 * @return
+	 */
+	Set<CourseSchedule> findAllCourseScheduleBelowMinimumParticipants();
+
+	/**
+	 * Find all participant in course schedule
+	 * @param courseScheduleId
+	 * @return
+	 */
+	Set<CourseParticipant> findAllParticipantByCourseScheduleId(Long courseScheduleId);
+	
+	/**
+	 * find all members not enrolled in course schedule
+	 * @param courseParticipant
+	 * @return
+	 */
+	Set<CourseParticipant> findAllMemberNotEnrolledByCourseScheduleId(CourseParticipant courseParticipant);
+	
+	/**
+	 * Search feature - find all participant not enroled in course schedule and in search criteria
+	 * @param searchForm
+	 * @return
+	 */
+	Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(SearchForm searchForm);
+	/**
+	 * Find availabel course schedule by course id
+	 * @param courseId
+	 * @return
+	 */
+	Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule);
+	
+	void updateSchedule(CourseParticipant courseParticipant);
 }

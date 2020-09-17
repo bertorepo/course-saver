@@ -15,9 +15,13 @@
 	href="../css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
 	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-	integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-	crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" -->
+<!-- 	integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" -->
+<!-- 	crossorigin="anonymous"></script> -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script th:src="@{/js/myCourseSched.js}"></script>
+<!-- <script th:src="@{/js/viewMemberCourse.js}"></script> -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 	integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
@@ -33,6 +37,12 @@
   position: sticky;
   right: 0;
   background-color: white;
+}
+.hide {
+  display:none;
+}
+.example1 {
+  text-align: center;
 }
 </style>
 
@@ -52,23 +62,28 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">From Date</label>
+
+						<label class="col-lg-2 col-form-label" style="margin-left: 5%">From
+							Date</label>
 						<div class="col-lg-3">
 							<input type="datetime-local" class="form-control"
-								id="fromDateTime"> <input type="hidden"
-								class="for-control" name="fromDateTime" id="inputFromDateTime">
+								id="fromDateTime" required> <input type="hidden"
+								class="form-control" name="fromDateTime" id="inputFromDateTime">
 						</div>
+
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
-							<input type="datetime-local" class="form-control" id="toDateTime">
-							<input type="hidden" class="for-control" name="toDateTime"
+							<input type="datetime-local" class="form-control" id="toDateTime"
+								required>
+							<div class="text-danger" id="toDateTime_error"></div>
+							<input type="hidden" class="form-control" name="toDateTime"
 								id="inputToDateTime">
 						</div>
-					</div>
-					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit"
-							onclick="submitDateTime()">
 
+						<div class="float-right">
+							<input type="submit" class="btn btn-success" value="Submit"
+								onclick="submitDateTime()">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -133,17 +148,24 @@
 						<td th:text="${courseSchedules.courseName}"></td>
 						<td th:text="${courseSchedules.instructorName}"></td>
 						<td th:text="${courseSchedules.venueName}"></td>
-						<td th:text="${courseEnrollmentForm.scheduledStartDateTime}"></td>
-						<td th:text="${courseEnrollmentForm.scheduledEndDateTime}"></td>
-						<td  th:text="${courseEnrollmentForm.duration}"></td>
-						<td  class="sticky">
+						<td th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (EEEE) - HH:mm a')}"></td>
+						<td th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (EEEE) - HH:mm a')}"></td>
+						<td th:text="|${courseEnrollmentForm.duration} hour/s|"></td>
+						<td class="sticky">
 							<!--@RequestParam -->
 							<button
-								th:attr="onclick=|decline('${courseSchedules.courseScheduleId}','${courseSchedules.courseName}','${courseSchedules.instructorName}','${courseSchedules.venueName}','${courseEnrollmentForm.scheduledStartDateTime}','${courseEnrollmentForm.scheduledEndDateTime}')|"
+								th:attr="onclick=|decline('${courseSchedules.courseScheduleId}','${courseSchedules.courseName}','${courseSchedules.instructorName}','${courseSchedules.venueName}','${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM-dd-yyyy , HH:mm a (EEEE)')}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM-dd-yyyy , HH:mm a (EEEE)')}')|"
 								class="btn btn-danger" name="">
 								<i class="fa fa-times"></i> Decline
-							</button> 				
+							</button>
+
+							<button
+								th:attr="onclick=|declineUpdate('${courseSchedules.courseId}','${courseSchedules.courseName}','${courseSchedules.courseScheduleId}')|"
+								class="btn btn-danger">
+								<i class="fa fa-times"></i> Change Schedule
+							</button>
 						</td>
+
 					</tr>
 				</tbody>
 			</table>
@@ -154,10 +176,91 @@
 			</div>
 		</div>
 
-		<!--Table Data End-->
+		<!-- Table Data End -->
 
-		<!--Cancel Registration Modal -->
-		
+		<!-- Change Course Schedule Modal -->
+		<div class="modal fade" id="changeCourseSchedModal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+			data-keyboard="false" data-backdrop="static">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">
+							Change Course Schedule (<span id="changeCourseSchedule"></span> )
+						</h5>
+						<input type="hidden" id="courseScheduleId_replace">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<table class="table table-bordered table-responsive"
+							style="width: 100%" id="updateTable">
+							<colgroup>
+								<col style="width: 30%" />
+								<col style="width: 10%" />
+								<col style="width: 25%" />
+								<col style="width: 25%" />
+								<col style="width: 10%" />
+							</colgroup>
+							<thead class="text-center">
+								<tr>
+									<th>Instructor</th>
+									<th>Venue</th>
+									<th>Start Date/Time</th>
+									<th>End Date/Time</th>
+								</tr>
+							</thead>
+							<tbody class="text-center" id="change-course-schedule-body">
+							</tbody>
+						</table>
+						<div class="text-center">
+					<strong >------ END ------</strong>
+				</div>
+						<div class="modal-footer">
+						<input type="button" class="btn btn-danger" data-dismiss="modal"
+							value="Back">
+					</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<!--Change Course Schedule Modal End-->
+
+		<!--Change Course Schedule Confirmation Modal-->
+		<div class="modal fade" id="confirmChangeScheduleModal_id"
+			tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title">Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Are you sure you want to change course schedule? </label>
+						</div>
+						<div class="modal-footer">
+							<form th:action="@{/enrollment/updateSchedule}" method="post" th:object="${courseEnrollmentForm}">
+									<input type="hidden" name="id" id="confirmId"> 
+									<input type="hidden" name="courseScheduleId" id="confirmCourseScheduleId">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+								<button type="submit" name="submit" value="submit" class="btn btn-success">Yes</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Change Course Schedule Confirmation Modal End-->
+
+		<!--Cancel Registration Modal -->		
 		<div class="modal fade" id="declineModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
@@ -227,7 +330,6 @@
 				</div>
 			</div>
 		</div>
-
 		<!--Decline Modal End-->
 
 		<!-- Confirm Decline Modal -->
@@ -281,70 +383,54 @@
 				</div>
 			</div>
 		</div>
+		</div>
 		<!--Success Modal End -->
 
-
+</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
-		//DECLINE MODAL
-		/*<![CDATA[*/
-		function decline(courseId, courseName, instructorName, venueName, scheduledStartDateTime, scheduledEndDateTime) {
-			var startDate = scheduledStartDateTime.slice(0,10);
-			var endDate = scheduledEndDateTime.slice(0,10);
-			var startTime = scheduledStartDateTime.slice(11,16);
-			var endTime = scheduledEndDateTime.slice(11,16);
-			var courseIdInput = document.getElementById('courseSchedId');
-			var courseNameInput = document.getElementById('courseSchedName');
-			var courseInstructorInput = document.getElementById('courseSchedInstructor');
-			var courseVenueInput = document.getElementById('courseSchedVenue');
+	
+	
+	
 
-			var dateInput = document.getElementById('courseSchedDate');
-			var timeInput = document.getElementById('courseSchedTime');
-			courseIdInput.value = courseId;
-			courseNameInput.value = courseName;
-			courseInstructorInput.value = instructorName;
-			courseVenueInput.value = venueName;
-			dateInput.value = startDate+" to "+endDate;
-			timeInput.value = startTime+" to "+endTime 
-			
-			$('#declineModal').modal('show');	
+		//FromDateTime is Higher that ToDateTime
+		/*<![CDATA[*/
+		var errorMessage = /*[[${error}]]*/'default';
+		if (errorMessage == "To Date should be greater than or equal to From Date") {
+			document.getElementById("toDateTime_error").innerHTML = errorMessage;
 		}
 		/*]]>*/
 		
-		
 		//Confirm Decline Modal 
-	
 		/*<![CDATA[*/
-		function confirmModal(){
-			$('#confirmationModal').modal('show');		
-			$('#declineModal').modal('hide');} 	
-		/*]]>*/	
-		
-		//Back Modal
-		function backModal(){
-			$('#confirmationModal').modal('hide');		
-			$('#declineModal').modal('show');
-			} 
-		
+		function confirmModal() {
+			$('#confirmationModal').modal('show');
+			$('#declineModal').modal('hide');
+		}
 		/*]]>*/
 
-		
+		//Back Modal
+		function backModal() {
+			$('#confirmationModal').modal('hide');
+			$('#declineModal').modal('show');
+		}
+
+		/*]]>*/
+
 		//Confirm Decline Modal 
 		/*<![CDATA[*/
-		function confirmModal(){
+		function confirmModal() {
 			$('#confirmationModal').modal('show');
-		} 
+		}
 		/*]]>*/
-		
-		
+
 		//Success Modal 
 		/*<![CDATA[*/
-		function successfullModal(){
+		function successfullModal() {
 			$('#successModal').modal('show');
-		} 
+		}
 		/*]]>*/
-		
-		
+
 		//SHOW ZONEDDATETIME IN TIMEDATE-LOCAL
 		/*<![CDATA[*/
 		function submitDateTime() {
@@ -373,21 +459,25 @@
 		//FromDateTime is Higher that ToDateTime
 		/*<![CDATA[*/
 		var error = /*[[${error}]]*/'default';
-		if (error == "Invalid Date Input") {
+		if (error == "Invalid Date Input"
+				|| error == "You are already enrolled to this course.") {
 			document.getElementById("message").innerHTML = error;
 			$('#errorModal').modal('show');
 		}
 		/*]]>*/
-		
 
 		//Successfuly canceled a Course Schedule
 		/*<![CDATA[*/
 		var successMessage = /*[[${successMessage}]]*/'default';
-		if (successMessage == "Successfully Canceled the Course Schedule") {
+		if (successMessage == "Successfully Canceled the Course Schedule"
+				|| successMessage == "Successfully change schedule") {
+			alert(successMessage);
 			document.getElementById("successMessage").innerHTML = successMessage;
 			$('#successModal').modal('show');
 		}
 		/*]]>*/
+		
+		
 	</script>
 </body>
 

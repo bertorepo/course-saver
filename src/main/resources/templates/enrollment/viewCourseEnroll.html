@@ -12,7 +12,10 @@
 	<title>View Course Enroll</title>
 	<link rel="stylesheet" type="text/css" href="../css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<!-- 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script th:src="@{/js/viewCourseEnroll.js}"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<style>
@@ -45,9 +48,9 @@
 							<input type="datetime-local" class="form-control" id="toDateTime" >
 							<input type="hidden" class="form-control" name="toDateTime" id="inputToDateTime">
 						</div>
-					</div>
-					<div class="float-right">
+						<div class="float-right">
 						<input type="submit" class="btn btn-success" value="Submit" onClick="onSubmit()">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -122,11 +125,268 @@
 				</div>
 			</div>
 		</div>
-		<!--Success Modal End-->	
+		<!--Success Modal End-->
 
+		<!--Cancel Below Minimum Modal data-keyboard="false" data-backdrop="static" add this to the div modal-->
+			<div class="modal fade" id="cancelMinimumModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Cancel Below Minimum</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+						<form class="table table-bordered table-responsive">
+							<input type="hidden" id="cancelBelowMinimumLength" value = 0>
+							<table class="table table-bordered table-responsive" style="width:100%">
+								<colgroup >
+									<col style="width:50%"/>
+									<col style="width:25%"/>
+									<col style="width:25%"/>
+								</colgroup>
+								<thead class="text-center">
+									<tr>
+										<th>Course Details</th>
+										<th>Participants</th>
+										<th>Minimum Required</th>
+									</tr>
+								</thead>
+								<tbody id="cancel-below-minimum-table-body">
+									
+								</tbody>
+							</table>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-success" id="cancelBelowMinimumButton">
+									Confirm Cancellation
+							</button>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
+		<!--Cancel Below Minimum Modal End-->
+		
+		<!--Confirm Cancel Below Minimum Modal-->
+		<div class="modal fade" id="cancelModal" tabindex="-1" 
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title">Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Are you sure you want to Cancel All Course
+								Schedule Below Minimum Participants?
+							</label>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
+							
+							<form th:action="@{/enrollment/cancelCourseSchedules}" 
+							method="post" th:object="${courseEnrollCancelForm}">
+									<div class="form-group row" id="div-inputs">
+										
+									</div>
+								<button type="submit" name="submit" value="submit" class="btn btn-primary" >Yes</button>
+							</form>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Confirm Cancel Below Minimum Modal End-->
+
+		<!--Reschedule Modal-->
+			<div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="header-modal"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group row">
+								<input type="hidden" id="rescheduleCourseScheduleDetailId" value="wart" >
+								<label class="col-lg-4 col-form-label">Start DateTime:</label>
+								<div class="col-lg-6">
+									<input type="datetime-local" class="form-control-plaintext" id="rescheduleStartDateTime">
+									<input type="hidden" class="form-control-plaintext" id="rescheduleStartDateTime_old">
+								</div>
+								<label class="col-lg-4 col-form-label">End DateTime:</label>
+								<div class="col-lg-6">
+									<input type="datetime-local" class="form-control-plaintext" id="rescheduleEndDateTime">
+									<input type="hidden" class="form-control-plaintext" id="rescheduleEndDateTime_old">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-success" onclick="confirmReschedule()">
+									Reschedule
+							</button>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
+		<!--Reschedule Modal End-->
+
+		<!--Reschedule Confirmation Modal-->
+		<div class="modal fade" id="confirmRescheduleModal" tabindex="-1" 
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title">Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Are you sure you want to reschedule this course? 
+							</label>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
+							
+							<form   id="form" action="#" 
+								th:action="@{/enrollment/reschedule}"  method="post" th:object="${courseScheduleDetailForm}">
+								<input type="hidden" name="id" id="confirmRescheduleCSDID" />
+								<input type="hidden" name="scheduledStartDateTime" id="confirmRescheduleCSDStartDateTime" />
+								<input type="hidden" name="scheduledEndDateTime" id="confirmRescheduleCSDEndDateTime" />
+								
+								<button type="submit" name="submit" value="submit" class="btn btn-primary" >Yes</button>
+							</form>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Reschedule Confirmation Modal End-->
+
+		<!--ENROLL MEMBER-->
+			<div class="modal fade" id="registerMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Enroll Member <span id="registerCourse"></span></h5>
+							<input type="hidden" id="registerCourseScheduleId">
+							<input type="hidden" id="registerCourseScheduleDetailId">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+						
+							<div class="md-form active-cyan active-cyan-2 mb-3">
+								<input class="form-control" id="searchInput" type="text"  aria-label="Search">
+								
+							</div>
+							<table class="table table-bordered table-responsive" style="width:100%">
+								<colgroup >
+									<col style="width:50%"/>
+									<col style="width:25%"/>
+									<col style="width:25%"/>
+								</colgroup>
+								<thead class="text-center">
+									<tr>
+										<th>Employee Number</th>
+										<th>Employee Name</th>
+										<th>Email</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="search-body-table">
+
+								</tbody>
+							</table>
+							
+							<hr>
+							<h5 style="font-weight : bold">List of Enrolled Members</h5>
+								<table class="table table-bordered table-responsive" style="width:100%">
+								<colgroup >
+									<col style="width:33%"/>
+									<col style="width:33%"/>
+									<col style="width:33%"/>
+									
+									
+								</colgroup>
+								<thead class="text-center">
+									<tr>
+										<th>Employee Number</th>
+										<th>Employee Name</th>
+										<th>Email</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="enrolled-data">
+
+								</tbody>
+							</table>
+							
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-success">
+									Confirm Cancellation
+							</button>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+						</div>
+					</div>
+				</div>
+			</div>
+		<!--ENROLL MEMBER END-->
+		
+		<!--Enroll Member Confirmation Modal-->
+		<div class="modal fade" id="confirmEnrollMemberModal" tabindex="-1" 
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title">Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Are you sure you want to Enroll <span id="enrollMemberName"></span>
+							to <span id="enrollMemberCourseName"></span>?
+							</label>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
+							
+							<form id="form" action="#" 
+								th:action="@{/enrollment/enrollMember}" th:object="${courseEnrollmentForm}"
+									 method="post">
+								<input type="hidden" name="id" id="confirmEnrollMemberParticipantId" />
+								<input type="hidden" name="courseScheduleId" id="confirmEnrollMemberCourseScheduleId" />
+								<input type="hidden" name="courseScheduleDetails.id" id="confirmEnrollMemberCourseScheduleDetailId" />
+								<input type="hidden" name="courseScheduleDetails.id" id="confirmEnrollMemberCourseScheduleDetailId" />
+								<input type="hidden" name="emailAddress" id="confirmEnrollMemberEmailAddress" />
+								
+								<button type="submit" name="submit" value="submit" class="btn btn-primary" >Yes</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Enroll Member Confirmation Modal End-->
 
 		<!--Register Modal-->
-		
 			<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -138,6 +398,7 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group row">
+									<input type="hidden" id="courseRegistrationCSDId" disabled>
 								<label class="col-lg-3 col-form-label">Course Schedule ID:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="courseRegistrationId" name="courseRegistrationId" disabled >
@@ -159,9 +420,9 @@
 									<input type="text" class="form-control-plaintext" id="courseRegistrationTime" disabled>
 								</div>
 							</div>
-							<div class="alert alert-danger text-center">
-								<h5>This is a REQUIRED training</h5>
-							</div>	
+							<div class="">
+								<h5 style="color:red">This is a required training</h5>
+							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
 								<div class="col-lg-9">
@@ -200,6 +461,7 @@
 								<input type="hidden" id="courseScheduleIdHidden" name="courseScheduleId">
 								<input type="hidden" id="courseScheduleCourseNameHidden" name="courseName">
 								<input type="hidden" id="courseScheduleInstructorNameHidden" name="instructorName">
+								<input type="hidden" id="courseScheduleDetailIdHidden" name="courseScheduleDetails.id">
 								<input type="hidden" id="courseScheduleDateHidden" name="">
 								<input type="hidden" id="courseScheduleTimeHidden" name="">
 								<input type="hidden" id="courseScheduleDescriptionHidden" name="">
@@ -246,8 +508,8 @@
 									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
 								</div>
 							</div>	
-							<div class="alert alert-danger text-center">
-								<h5>This is a REQUIRED training</h5>
+							<div class="">
+								<h5 style="color:red">This is a required training</h5>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
@@ -266,7 +528,7 @@
 		<!--Information Modal End-->
 
 		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-			<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
+			<h3><i class="fa fa-list"></i> List of Available Courses</h3>
 			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
 					th:object="${viewCourseEnroll}">
 				<colgroup >
@@ -284,7 +546,7 @@
 						<th>Instructor</th>
 						<th>Start Date Time</th>
 						<th>End Date Time</th>
-						<th>Duration</th>
+						<th>Duration(Hrs)</th>
 						<th>Venue</th>
 						<th>Minimum Number of Participants</th>
 						<th>Maximum Number of Participants</th>
@@ -302,7 +564,7 @@
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|">
 									
 						<td th:text="${courseScheduleId}"/>
-						<td th:text="${courseSchedule.getCourseName()}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
 						<td th:text="${courseScheduleDetail.scheduledStartDateTime}" />
 						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"/>
@@ -313,16 +575,22 @@
 						<td th:text="${courseSchedule.maxAllowed}"/>
 						<td th:text="${courseSchedule.totalParticipants}"/>
 
-						<td sec:authorize="hasAuthority('PMO')" class="sticky">
-							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|">
-								<i class="fa fa-times"></i> Cancel
-							</button>
-						</td>
+<!-- 						<td sec:authorize="hasAuthority('PMO')" class="sticky"> -->
+<!-- 							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|"> -->
+<!-- 								<i class="fa fa-times"></i> Cancel -->
+<!-- 							</button> -->
+<!-- 						</td> -->
 
-						<td sec:authorize="hasAuthority('Member')" class="sticky">
-							<button th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
-									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|" 
+						<td sec:authorize="hasAuthority('Member')">
+							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
+									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
+									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
+									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}')|" 
 									type="button" class="btn btn-success">Register</button>
+									
+							<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
+							type="button" class="btn btn-success" 
+							title="Participants in this schedule is already full" disabled>Register</button>
 						</td>
 					</tr>
 				</tbody>
@@ -334,6 +602,112 @@
 			</div>
 			
 		</div>
+		
+		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
+			<h3><i class="fa fa-list"></i> List of All Available Course
+			<button id="cancelBelowMinimumbtn" class="btn btn-danger float-right" name="" disabled>
+				Cancel Below Minimum 
+			</button></h3>
+			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
+			th:object="${activeCourseSchedule}">
+				<colgroup >
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:10%"/>
+					<col style="width:15%"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Course IDs</th>
+						<th>Course Name</th>
+						<th>Instructor</th>
+						<th>Start Date Time</th>
+						<th>End Date Time</th>
+						<th>Duration(Hrs)</th>
+						<th>Venue</th>
+						<th>Minimum Number of Participants</th>
+						<th>Maximum Number of Participants</th>
+						<th>Total Number of Participants</th>
+						
+					
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="courseSchedule:${activeCourseSchedule}"
+						th:with="courseScheduleDetail = ${courseSchedule.getCourseScheduleDetails()}">
+						
+						<td th:text="${courseSchedule.getId()}"></td>
+						<td th:text="${courseSchedule.courseName}"></td>
+						<td th:text="${courseSchedule.instructorName}"></td>
+						
+						<td th:text="${courseScheduleDetail.scheduledStartDateTime}"></td>
+						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"></td>
+						<td th:text="${courseScheduleDetail.duration}"></td>
+						
+						<td th:text="${courseSchedule.venueName}"></td>
+						<td th:text="${courseSchedule.minRequired}"></td>
+						<td th:text="${courseSchedule.maxAllowed}"></td>
+						<td th:text="${courseSchedule.totalParticipants}"></td>
+					</tr>
+				</tbody>
+			</table>
+<!-- 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}"> -->
+<!-- 				<div class="alert alert-dismissible alert-danger text-center"> -->
+<!-- 					<strong th:text="${nullMessage}"></strong>  -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			
+		</div>
+		
+		<!-- CANCELATION & RESCHEDULE -->
+		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
+			<h3><i class="fa fa-list"></i>List of Available Course by <span id="listNames"> Months/Quarter</span>
+			<div class="col-lg-2 float-right">
+				<select class="form-control"  id="dropDown">
+					<option value="month">Month</option>
+					<option value="quarter">Quarter</option>
+				</select>
+			</div></h3>
+			<table id="data table3" class="table table-bordered table-responsive text-center" style="width:100%" 
+			th:object="${activeCourseSchedule}">
+				<colgroup >
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:10%"/>
+					<col style="width:15%"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Course ID</th>
+						<th>Course Name</th>
+						<th>Instructor</th>
+						<th>Start Date Time</th>
+						<th>End Date Time</th>
+						<th>Duration(Hrs)</th>
+						<th>Venue</th>
+						<th>Minimum Number of Participants</th>
+						<th>Maximum Number of Participants</th>
+						<th>Total Number of Participants</th>
+						<th></th>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody id="table-body">
+					
+				</tbody>
+			</table>
+<!-- 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}"> -->
+<!-- 				<div class="alert alert-dismissible alert-danger text-center"> -->
+<!-- 					<strong th:text="${nullMessage}"></strong>  -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+		</div>
+		<!-- CANCELATION & RESCHEDULE END-->
+		
 	</div>
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
@@ -453,20 +827,24 @@
 	//Information Modal End
 	
 	//Confirmation
-	function cancellation(courseId,courseName){
-		$('#confirmModal').modal('show');
-		document.getElementById("courseName").innerHTML = courseName ;
-		var input = document.getElementById("id");
-		input.value=courseId
-	}
+// 	function cancellation(courseId,courseName){
+// 		$('#confirmModal').modal('show');
+// 		document.getElementById("courseName").innerHTML = courseName ;
+// 		var input = document.getElementById("id");
+// 		input.value=courseId
+// 	}
 
 	//SHOW REGISTRATION POP UP
-	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, endDateTime){
+	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, endDateTime, courseScheduleDetailId){
 // 		alert(courseScheduleId + courseScheduleName + courseScheduleInstructorName);
+// 	alert("Course Schedule Detail ID: " + courseScheduleDetailId);
+// 		alert(courseScheduleDetailId);
 		var startDate = startDateTime.slice(0,10);
 		var startTime = startDateTime.slice(11,22);
 		var endDate = endDateTime.slice(0,10);
 		var endTime = endDateTime.slice(11,22);
+		
+		document.getElementById('courseRegistrationCSDId').value = courseScheduleDetailId;
 		
 		var idInput = document.getElementById('courseRegistrationId');
 		idInput.value = courseScheduleId;
@@ -490,6 +868,9 @@
 	//SHOW REGISTRATION CONFIRMATION POP UP
 	function registrationConfirm(){
 // 		alert(id);
+		var csdId = document.getElementById('courseRegistrationCSDId').value;
+		document.getElementById('courseScheduleDetailIdHidden').value=csdId;
+		
 		var id = document.getElementById('courseRegistrationId').value;
 		var courseScheduleIdHidden = document.getElementById('courseScheduleIdHidden');
 		courseScheduleIdHidden.value = id;
@@ -531,7 +912,9 @@
 	//Successfuly canceled a Course Schedule
 	/*<![CDATA[*/
 	var successMessage = /*[[${successMessage}]]*/ 'default';
-	if(successMessage == "Successfully Canceled the Course Schedule"){
+	if(successMessage == "Successfully Canceled the Course Schedule" || successMessage == "Successfully Enrolled a Course!!!"
+			|| successMessage == "Successfully cancelled all course schedule below minimum participant."){
+
 		document.getElementById("successMessage").innerHTML = successMessage;
 		$('#successModal').modal('show');
 	}
@@ -577,6 +960,7 @@
 
 	var courseEnrollmentForm = /*[[${courseEnrollmentForm}]]*/ 'default';
 	if(successMsg == "Successfully Enrolled a Course!!!"){
+		alert("1");
 		var courseId = courseEnrollmentForm.courseScheduleId;
 		var courseName = courseEnrollmentForm.courseName;
 		var instructorName = courseEnrollmentForm.instructorName;

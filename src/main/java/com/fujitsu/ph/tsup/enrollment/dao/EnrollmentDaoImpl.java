@@ -42,6 +42,8 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 //import com.fujitsu.ph.tsup.enrollment.model.MemberSchedule;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 
 @Repository
 public class EnrollmentDaoImpl implements EnrollmentDao {
@@ -169,6 +171,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      **/
     @Override
     public void saveCourseParticipant(CourseParticipant courseParticipant) {
+    	
     	 String saveCourseParticipantSql = "INSERT INTO COURSE_PARTICIPANT"
                  + "(COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE)"
                  + "VALUES (:courseScheduleId, :participantId, :registrationDate)";
@@ -179,6 +182,17 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                  .addValue("registrationDate", courseParticipant.getRegistrationDate().withZoneSameInstant(ZoneId.of("UTC"))
                          .toOffsetDateTime());
          template.update(saveCourseParticipantSql, saveCourseParticipantParameters);
+         
+         String saveAttendance = "INSERT INTO COURSE_ATTENDANCE"
+     	 		+ "(COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT_ID, STATUS, LOG_IN_DATETIME, LOG_OUT_DATETIME, EMAIL) "
+     	 		+ "VALUES (:courseScheduleDetailId, :participantId, 'A', 'now()', 'now()', :email)";
+     	 
+          SqlParameterSource saveAttendanceParameters = new MapSqlParameterSource()
+         		 .addValue("courseScheduleDetailId", courseParticipant.getCourseScheduleDetail().getId())
+         		 .addValue("participantId", courseParticipant.getParticipantId())
+         		 .addValue("email", courseParticipant.getEmail());
+
+          template.update(saveAttendance, saveAttendanceParameters);
     }
 
     
@@ -195,7 +209,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, 
             ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
-        String query = "SELECT CPART.ID AS COURSE_PARTICIPANT_ID,"
+        String query = "SELECT CPART.ID AS COURSE_PARTICIPANT_ID, "
+        		+ "C.ID AS COURSE_ID, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, CSCHED.ID AS COURSE_SCHEDULE_ID, C.NAME AS COURSE_NAME, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
@@ -344,4 +359,382 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 		        .getStatus()).addValue("id", courseSchedule.getId());
 		template.update(sql, namedParameters);
     }
+    
+    /**
+     * Find All Active Course Schedule
+     * @return
+     */
+	@Override
+	public Set<CourseSchedule> findAllActiveCourseSchedule() {
+		// TODO Auto-generated method stub
+		String query = "SELECT C.NAME AS COURSE_NAME, "
+                + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "CS.VENUE_ID AS VENUE_ID, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
+                + "CS.MAX_ALLOWED AS MAX_ALLOWED, "
+                    + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
+                    + "WHERE COURSE_SCHEDULE_ID = CS.ID), "
+                + "CS.STATUS AS STATUS, "
+                + "CSD.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSD.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CSD.DURATION AS DURATION "
+                + "FROM COURSE_SCHEDULE AS CS " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSD "
+                + "ON CS.ID = CSD.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CS.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CS.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V "
+                + "ON CS.VENUE_ID = V.ID "
+                + "WHERE CS.STATUS = 'A' "
+                +" ORDER BY CS.ID";
+      
+       List<CourseSchedule> courseScheduleList = template.query(query, new EnrollmentRowMapperCourseSchedule());
+       Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+//       for(CourseSchedule courseSchedule:courseScheduleSet) {
+//       	System.out.println("\n(DAO)Course Schedule ID: " + courseSchedule.getId());
+//       	System.out.println("(DAO)Course ID: " + courseSchedule.getCourseId());
+//       	System.out.println("(DAO)Course Name: " + courseSchedule.getCourseName());
+//       	System.out.println("(DAO)Minimum: " + courseSchedule.getMinRequired()+ "\tMaximum: " +courseSchedule.getMaxAllowed() +"\tTotal: " +courseSchedule.getTotalParticipants() );
+//       	System.out.println("(DAO)Venue Name: " + courseSchedule.getVenueName() + "\t Venue ID: " + courseSchedule.getVenueId() );
+//       	System.out.println("(DAO)Instructor ID: " + courseSchedule.getInstructorId() + "\tInstructor Name: " + courseSchedule.getInstructorFirstName() +" "+ courseSchedule.getInstructorLastName());
+//       	System.out.println("(DAO)Course Name: " + courseSchedule.getCourseName() + "\n");
+//       }
+       return courseScheduleSet;
+	}
+
+    /**
+     * Cancel Course Schedule By Id
+     * @param courseScheduleSet
+     */
+	@Override
+	public void cancelCourseSchedulesById(Set<CourseSchedule> courseScheduleSet) {
+		// TODO Auto-generated method stub
+		String sql = "UPDATE COURSE_SCHEDULE SET status = :status WHERE id = :id";
+		for(CourseSchedule courseSchedule:courseScheduleSet) {
+			System.out.println("(DAO) COURSE_SCHEDULE_ID" + courseSchedule.getId());
+			SqlParameterSource namedParameters = new MapSqlParameterSource()
+					.addValue("status", courseSchedule.getStatus())
+					.addValue("id", courseSchedule.getId());
+			template.update(sql, namedParameters);
+		}
+	}
+
+	@Override
+	public Set<CourseSchedule> findAllCourseScheduleBelowMinimumParticipants() {
+		String sql = "SELECT C.NAME AS COURSE_NAME, "
+                + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "CS.VENUE_ID AS VENUE_ID, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
+                + "CS.MAX_ALLOWED AS MAX_ALLOWED, "
+                    + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
+                    + "WHERE COURSE_SCHEDULE_ID = CS.ID), "
+                + "CS.STATUS AS STATUS, "
+                + "CSD.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSD.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CSD.DURATION AS DURATION "
+                + "FROM COURSE_SCHEDULE AS CS " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSD "
+                + "ON CS.ID = CSD.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CS.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CS.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V "
+                + "ON CS.VENUE_ID = V.ID "
+                + "WHERE CS.STATUS = 'A' "
+                + "AND (SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT WHERE COURSE_SCHEDULE_ID = CS.ID) < MIN_REQUIRED"
+                +" ORDER BY CS.ID";
+		List<CourseSchedule> courseScheduleList = template.query(sql, new EnrollmentRowMapperCourseSchedule());
+		Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+		return courseScheduleSet;
+	}
+
+	@Override
+	public Set<CourseParticipant> findTopLearnerByMonth() {
+		// TODO Auto-generated method stub
+		String sql="SELECT"
+				+ "	CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
+				+ "E.LAST_NAME AS PARTICIPANT_LAST_NAME, "
+				+ "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME, "
+				+ "COUNT(CATTEN.PARTICIPANT_ID) AS COURSE_ATTENDED "
+				+ "FROM COURSE_ATTENDANCE AS CATTEN "
+				+ "INNER JOIN EMPLOYEE AS E "
+				+ "ON CATTEN.PARTICIPANT_ID = E.ID "
+				+ "WHERE STATUS = 'P' "
+				+ "AND EXTRACT(MONTH FROM LOG_IN_DATETIME) = EXTRACT(MONTH FROM NOW()) "
+				+ "GROUP BY CATTEN.PARTICIPANT_ID, E.LAST_NAME, E.FIRST_NAME "
+				+ "ORDER BY COUNT(CATTEN.PARTICIPANT_ID) DESC "
+				+ "LIMIT 10;";
+		
+		List<CourseParticipant> courseParticipant = template.query(sql, new EnrollmentRowMapperTopLearnerCourseParticipant());
+		Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>(courseParticipant);
+		return courseParticipantSet;
+	}
+
+	@Override
+	public Set<CourseParticipant> findTopLearnerByQuarter() {
+		// TODO Auto-generated method stub
+		String sql="SELECT"
+				+ "	CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
+				+ "E.LAST_NAME AS PARTICIPANT_LAST_NAME, "
+				+ "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME, "
+				+ "COUNT(CATTEN.PARTICIPANT_ID) AS COURSE_ATTENDED "
+				+ "FROM COURSE_ATTENDANCE AS CATTEN "
+				+ "INNER JOIN EMPLOYEE AS E "
+				+ "ON CATTEN.PARTICIPANT_ID = E.ID "
+				+ "WHERE STATUS = 'P' "
+				+ "AND EXTRACT(QUARTER FROM LOG_IN_DATETIME) = EXTRACT(QUARTER FROM NOW()) "
+				+ "GROUP BY CATTEN.PARTICIPANT_ID, E.LAST_NAME, E.FIRST_NAME "
+				+ "ORDER BY COUNT(CATTEN.PARTICIPANT_ID) DESC "
+				+ "LIMIT 10;";
+		List<CourseParticipant> courseParticipant = template.query(sql, new EnrollmentRowMapperTopLearnerCourseParticipant());
+		Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>(courseParticipant);
+		return courseParticipantSet;
+	}
+
+	@Override
+	public Set<CourseSchedule> findAllCourseScheduleByMonth() {
+		// TODO Auto-generated method stub
+		String sql = "SELECT C.NAME AS COURSE_NAME, "
+                + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "CS.VENUE_ID AS VENUE_ID, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
+                + "CS.MAX_ALLOWED AS MAX_ALLOWED, "
+                    + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
+                    + "WHERE COURSE_SCHEDULE_ID = CS.ID), "
+                + "CS.STATUS AS STATUS, "
+                + "COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSD.RESCHEDULED_END_DATETIME, CSD.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
+                + "CSD.DURATION AS DURATION "
+                + "FROM COURSE_SCHEDULE AS CS " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSD "
+                + "ON CS.ID = CSD.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CS.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CS.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V "
+                + "ON CS.VENUE_ID = V.ID "
+                + "WHERE CS.STATUS = 'A' "
+                + "AND EXTRACT(MONTH FROM CSD.SCHEDULED_START_DATETIME) = EXTRACT(MONTH FROM NOW()) "
+                +" ORDER BY CS.ID";
+		List<CourseSchedule> courseScheduleList = template.query(sql, new EnrollmentRowMapperCourseSchedule());
+		Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+		return courseScheduleSet;
+	}
+
+	@Override
+	public Set<CourseSchedule> findAllCourseScheduleByQuarter() {
+		// TODO Auto-generated method stub
+		String sql = "SELECT C.NAME AS COURSE_NAME, "
+                + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "CS.VENUE_ID AS VENUE_ID, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
+                + "CS.MAX_ALLOWED AS MAX_ALLOWED, "
+                    + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
+                    + "WHERE COURSE_SCHEDULE_ID = CS.ID), "
+                + "CS.STATUS AS STATUS, "
+                + "COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSD.RESCHEDULED_END_DATETIME, CSD.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
+                + "CSD.DURATION AS DURATION "
+                + "FROM COURSE_SCHEDULE AS CS " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSD "
+                + "ON CS.ID = CSD.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CS.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CS.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V "
+                + "ON CS.VENUE_ID = V.ID "
+                + "WHERE CS.STATUS = 'A' "
+                + "AND EXTRACT(QUARTER FROM CSD.SCHEDULED_START_DATETIME) = EXTRACT(QUARTER FROM NOW()) "
+                +" ORDER BY CS.ID";
+		List<CourseSchedule> courseScheduleList = template.query(sql, new EnrollmentRowMapperCourseSchedule());
+		Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+		return courseScheduleSet;
+	}
+
+	@Override
+	public void reschedule(CourseScheduleDetail courseScheduleDetail) {
+		// TODO Auto-generated method stub
+		String query = "UPDATE COURSE_SCHEDULE_DETAIL SET RESCHEDULED_START_DATETIME = :startDateTime, "
+				+ "		RESCHEDULED_END_DATETIME = :endDateTime,"
+				+ "		DURATION = :duration "
+				+ "		WHERE ID = :id";
+		SqlParameterSource namedParameters = new MapSqlParameterSource()
+				.addValue("startDateTime", courseScheduleDetail.getScheduledStartDateTime().toOffsetDateTime())
+				.addValue("endDateTime", courseScheduleDetail.getScheduledEndDateTime().toOffsetDateTime())
+				.addValue("duration", courseScheduleDetail.getDuration())
+				.addValue("id", courseScheduleDetail.getId());
+		template.update(query, namedParameters);
+	}
+
+	@Override
+	public Set<CourseParticipant> findAllParticipantByCourseScheduleId(Long courseParticipant) {
+		// TODO Auto-generated method stub
+		String query = "SELECT E.NUMBER AS EMPLOYEE_ID, "
+				+ "						E.ID as EMP_ID, " 
+		 		+ "			E.LAST_NAME AS EMPLOYEE_LAST_NAME, "
+		 		+ "			E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
+		 		+ "			E.EMAIL_ADDRESS AS EMAIL "
+		 		+ "		FROM COURSE_PARTICIPANT AS CP INNER JOIN EMPLOYEE AS E ON CP.PARTICIPANT_ID = E.ID "
+		 		+ "		WHERE CP.COURSE_SCHEDULE_ID = :courseScheduleId";
+
+	        SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
+	                .addValue("courseScheduleId",courseParticipant);
+	        
+	        List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
+	                new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
+	        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+	    	
+	        return courseEnrolled;
+	}
+
+	@Override
+	public Set<CourseParticipant> findAllMemberNotEnrolledByCourseScheduleId(CourseParticipant courseSchedule) {
+		// TODO Auto-generated method stub
+		String query ="SELECT E.NUMBER AS EMPLOYEE_ID, "+ 
+				"						E.ID as EMP_ID, " + 
+				"						E.LAST_NAME AS EMPLOYEE_LAST_NAME, " + 
+				"						E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, " + 
+				"						E.EMAIL_ADDRESS AS EMAIL, " + 
+				"						E.DEPARTMENT_ID AS DEPARTMENT " + 
+				"				FROM TSUP.EMPLOYEE E " + 
+				"				WHERE DEPARTMENT_ID = 2 " + 
+				"				AND E.NUMBER " + 
+				"					NOT IN (SELECT E.NUMBER " + 
+				"							FROM TSUP.EMPLOYEE E " + 
+				"							INNER JOIN TSUP.COURSE_PARTICIPANT CP " + 
+				"							ON E.ID = CP.PARTICIPANT_ID " + 
+				"							WHERE CP.COURSE_SCHEDULE_ID = 1)";
+		
+		SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
+                .addValue("courseScheduleId",courseSchedule)
+                .addValue("employeeNumber", 12345678);
+        
+        List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
+                new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
+        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+    	
+        return courseEnrolled;
+	}
+
+	@Override
+	public Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(SearchForm searchForm) {
+		// TODO Auto-generated method stub
+		String sql="SELECT E.NUMBER AS EMPLOYEE_ID, "+ 
+				"		E.ID as EMP_ID, " + 
+				"		E.LAST_NAME AS EMPLOYEE_LAST_NAME, " + 
+				"		E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, " + 
+				"		E.EMAIL_ADDRESS AS EMAIL, " + 
+				"		E.DEPARTMENT_ID AS DEPARTMENT " + 
+				"FROM TSUP.EMPLOYEE E  " + 
+				"WHERE DEPARTMENT_ID = (SELECT E.DEPARTMENT_ID FROM tsup.EMPLOYEE E WHERE E.NUMBER = :employeeNumber) " + 
+				"AND LOWER(CONCAT(E.FIRST_NAME, E.LAST_NAME, E.USERNAME)) LIKE :search " + 
+				"AND E.NUMBER  " + 
+				"NOT IN (SELECT E.NUMBER " + 
+				"	FROM TSUP.EMPLOYEE E " + 
+				"	INNER JOIN TSUP.COURSE_PARTICIPANT CP " + 
+				"	ON E.ID = CP.PARTICIPANT_ID " + 
+				"	WHERE E.DEPARTMENT_ID = (SELECT E.DEPARTMENT_ID FROM tsup.EMPLOYEE E WHERE E.NUMBER = :employeeNumber) " + 
+				"	AND CP.COURSE_SCHEDULE_ID = :courseScheduleId) " + 
+				"";
+		System.out.println("search: " +"%" + searchForm.getSearch() + "%");
+		SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
+                .addValue("employeeNumber", searchForm.getEmployeeNumber())
+                .addValue("search", "%" + searchForm.getSearch() + "%")
+                .addValue("courseScheduleId", searchForm.getCourseScheduleId());
+        List<CourseParticipant> courseEnrolledList = template.query(sql, courseEnrolledParameters,
+                new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
+        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+        return courseEnrolled;
+	}
+	
+	@Override
+	public Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule) {
+		// TODO Auto-generated method stub
+		
+		String query = "SELECT C.NAME AS COURSE_NAME, "
+                + "CS.ID AS ID, "
+                + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "//Added
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
+                + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "CS.VENUE_ID AS VENUE_ID, "
+                + "V.NAME AS VENUE_NAME, "
+                + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
+                + "CS.MAX_ALLOWED AS MAX_ALLOWED, "
+                + "C.DETAIL AS COURSE_DETAIL, "
+                    + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
+                    + "WHERE COURSE_SCHEDULE_ID = CS.ID), "
+                + "CS.STATUS AS STATUS, "
+                + "CSD.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
+                + "CSD.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME, "
+                + "CSD.DURATION AS DURATION "
+                + "FROM COURSE_SCHEDULE AS CS " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSD "
+                + "ON CS.ID = CSD.COURSE_SCHEDULE_ID "
+                + "INNER JOIN COURSE AS C "
+                + "ON CS.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
+                + "ON CS.INSTRUCTOR_ID = E.ID "
+                + "INNER JOIN VENUE AS V "
+                + "ON CS.VENUE_ID = V.ID "
+                + "WHERE CS.STATUS = 'A' " 
+				+"	AND (SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM TSUP.COURSE_PARTICIPANT " 
+				+"         WHERE COURSE_SCHEDULE_ID = CS.ID) < CS.MAX_ALLOWED " 
+				+"	AND CS.COURSE_ID = :courseId"
+				+ " AND NOT CS.ID = :courseScheduleId";
+		
+        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                .addValue("courseId", courseSchedule.getCourseId())
+                .addValue("courseScheduleId", courseSchedule.getId());
+        
+        List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters, 
+                new EnrollmentRowMapperCourseSchedule());
+        
+        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        return courseScheduleSet;
+	}
+
+	@Override
+	public void updateCourseParticipant(CourseParticipant courseParticipant) {
+
+		String query = "UPDATE COURSE_PARTICIPANT "
+				+ "		SET COURSE_SCHEDULE_ID = :courseScheduleId, REGISTRATION_DATE = now() "
+				+ "		WHERE COURSE_SCHEDULE_ID = :id AND PARTICIPANT_ID = :participantId;";
+		SqlParameterSource updateCourseParticipantParameters = new MapSqlParameterSource()
+				.addValue("courseScheduleId", courseParticipant.getCourseScheduleId())
+				.addValue("id", courseParticipant.getId())
+				.addValue("participantId", courseParticipant.getParticipantId());
+		template.update(query, updateCourseParticipantParameters);
+
+	}
 }

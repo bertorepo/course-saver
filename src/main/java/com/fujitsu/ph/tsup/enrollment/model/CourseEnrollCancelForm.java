@@ -1,4 +1,5 @@
 package com.fujitsu.ph.tsup.enrollment.model;
+import java.util.List;
 //=================================================================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -43,7 +44,7 @@ public class CourseEnrollCancelForm {
     private String venueName;
 
     /* Set of course schedule details */
-    private Set<CourseScheduleDetailForm> courseScheduleDetail;
+    private CourseScheduleDetailForm courseScheduleDetail;
 
     /* Minimum number of participants */
     private int minRequired;
@@ -53,6 +54,17 @@ public class CourseEnrollCancelForm {
 
     /* Total Number of Participants currently enrolled */
     private int totalParticipants;
+    
+    /* Course Schedule Id's to be cancelled*/
+    private List<Long> ids;
+    
+    public List<Long> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<Long> ids) {
+		this.ids = ids;
+	}
 
     /** get Course Schedule id */
     public Long getId() {
@@ -125,12 +137,12 @@ public class CourseEnrollCancelForm {
     }
 
     /** get Set of course schedule details */
-    public Set<CourseScheduleDetailForm> getCourseScheduleDetails() {
+    public CourseScheduleDetailForm getCourseScheduleDetails() {
         return courseScheduleDetail;
     }
 
     /** set Set of course schedule details */
-    public void setCourseScheduleDetails(Set<CourseScheduleDetailForm> courseScheduleDetail) {
+    public void setCourseScheduleDetails(CourseScheduleDetailForm courseScheduleDetail) {
         this.courseScheduleDetail = courseScheduleDetail;
     }
 

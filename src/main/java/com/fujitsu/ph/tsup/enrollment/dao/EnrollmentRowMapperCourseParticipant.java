@@ -42,6 +42,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
     @Override
     public CourseParticipant mapRow(ResultSet rs, int rowNum) throws SQLException {
         Long id = rs.getLong("COURSE_PARTICIPANT_ID");
+        Long courseId = rs.getLong("COURSE_ID");
         Long courseScheduleDetailId = rs.getLong("COURSE_SCHEDULE_DETAIL_ID");
         Long courseScheduleId = rs.getLong("COURSE_SCHEDULE_ID");
         String courseName = rs.getString("COURSE_NAME");
@@ -62,13 +63,12 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailId,
                 courseScheduleId, scheduledStartDateTime, scheduledEndDateTime, duration).build();
         
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+//        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+//        courseScheduleDetailSet.add(courseScheduleDetail);
         
-        courseScheduleDetailSet.add(courseScheduleDetail);
-        
-        CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseScheduleId, courseName,
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseId, courseScheduleId, courseName,
                 instructorName, venueName, participantId, participantName, registrationDate)
-                        .addDetail(courseScheduleDetailSet).build();
+                        .addDetail(courseScheduleDetail).build();
         
         return courseParticipant;
     }

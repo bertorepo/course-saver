@@ -69,16 +69,16 @@ class FindAllScheduledCoursesTest {
         for(CourseSchedule courseSchedule : courseScheduleSet) {
             System.out.println("Course Name: "+ courseSchedule.getCourseName());
             System.out.println("Instructor Name: "+courseSchedule.getInstructorFirstName()+" "+
-                    courseSchedule.getInstructorLastName());           
-            for(CourseScheduleDetail courseScheduleDetail : courseSchedule.getCourseScheduleDetail()) {
-                assertTrue((!courseScheduleDetail.getScheduledStartDateTime().isBefore(fromDateTime)) 
-                        && courseScheduleDetail.getScheduledStartDateTime().isBefore(toDateTime));
-                System.out.println("Scheduled Start Date and Time: "+courseScheduleDetail
-                        .getScheduledStartDateTime());
-                System.out.println("Scheduled End Date and Time: "+courseScheduleDetail
-                        .getScheduledEndDateTime());
-                System.out.println("Duration: "+courseScheduleDetail.getDuration()+"\n");           
-            }
+                    courseSchedule.getInstructorLastName());
+            CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+            assertTrue((!courseScheduleDetail.getScheduledStartDateTime().isBefore(fromDateTime)) 
+                    && courseScheduleDetail.getScheduledStartDateTime().isBefore(toDateTime));
+            System.out.println("Scheduled Start Date and Time: "+courseScheduleDetail
+                    .getScheduledStartDateTime());
+            System.out.println("Scheduled End Date and Time: "+courseScheduleDetail
+                    .getScheduledEndDateTime());
+            System.out.println("Duration: "+courseScheduleDetail.getDuration()+"\n");           
+
         }
         System.out.println("Course Schedule Size:" + courseScheduleSet.size()+"\n");
         assertNotNull(courseScheduleSet.size());

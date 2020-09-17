@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 
 import java.util.Set;
 
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant.Builder;
+
 //==================================================================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -36,6 +38,9 @@ public class CourseParticipant {
 	/** courseScheduleId **/
 	private Long courseScheduleId;
 
+	/** Course Id**/
+	private Long couresId;
+	
 	/** courseName **/
 	private String courseName;
 
@@ -52,7 +57,13 @@ public class CourseParticipant {
 	private String participantName;
 
 	/** courseScheduleDetails **/
-	private Set<CourseScheduleDetail> courseScheduleDetail;
+	private CourseScheduleDetail courseScheduleDetail;
+	
+	/**User Email**/
+	private String email;
+
+	/** employee number**/
+	private String employeeNumber;
 
 	/** registrationDate **/
 	private ZonedDateTime registrationDate;
@@ -69,12 +80,15 @@ public class CourseParticipant {
 
 	private CourseParticipant(Builder builder) {
 		this.id = builder.id;
+		this.couresId = builder.courseId;
 		this.courseScheduleId = builder.courseScheduleId;
 		this.courseName = builder.courseName;
 		this.instructorName = builder.instructorName;
 		this.venueName = builder.venueName;
 		this.participantId = builder.participantId;
 		this.participantName = builder.participantName;
+		this.email = builder.email;
+		this.employeeNumber = builder.employeeNumber;
 		this.courseScheduleDetail = builder.courseScheduleDetail;
 		this.registrationDate = builder.registrationDate;
 		this.reason = builder.reason;
@@ -84,6 +98,10 @@ public class CourseParticipant {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public Long getCourseId() {
+		return couresId;
 	}
 
 	public Long getCourseScheduleId() {
@@ -110,7 +128,15 @@ public class CourseParticipant {
 		return participantName;
 	}
 
-	public Set<CourseScheduleDetail> getCourseScheduleDetail() {
+	public String getEmail() {
+		return email;
+	}
+	
+	public String getEmployeeNumber() {
+		return employeeNumber;
+	}
+
+	public CourseScheduleDetail getCourseScheduleDetail() {
 		return courseScheduleDetail;
 	}
 
@@ -141,6 +167,9 @@ public class CourseParticipant {
 
 		/** id **/
 		private Long id;
+		
+		/** Course Id**/
+		private Long courseId;
 
 		/** from the Course Schedule id **/
 		private Long courseScheduleId;
@@ -160,8 +189,14 @@ public class CourseParticipant {
 		/** Participant Name(LASTNAME, FIRSTNAME) **/
 		private String participantName;
 
+		/**User Email**/
+		private String email;
+
+		/** employee number **/
+		private String employeeNumber;
+
 		/** The course schedule detail **/
-		private Set<CourseScheduleDetail> courseScheduleDetail;
+		private CourseScheduleDetail courseScheduleDetail;
 
 		/** Registration Date **/
 		private ZonedDateTime registrationDate;
@@ -241,7 +276,6 @@ public class CourseParticipant {
 			validateVenueName(venueName);
 			validateParticipantName(participantName);
 
-
 			this.id = id;
 			this.courseScheduleId = courseScheduleId;
 			this.courseName = courseName;
@@ -266,14 +300,16 @@ public class CourseParticipant {
 			this.registrationDate = registrationDate;
 		}
 		
-		public Builder(Long courseScheduleId, Long participantId, ZonedDateTime registrationDate) {
+		public Builder(Long courseScheduleId, Long participantId, String email, ZonedDateTime registrationDate) {
 
 			validateCourseScheduleId(courseScheduleId);
 			validateParticipantId(participantId);
 			validateRegistrationDate(registrationDate);
+			validateEmail(email);
 			
 			this.courseScheduleId = courseScheduleId;
 			this.participantId = participantId;
+			this.email = email;
 			this.registrationDate = registrationDate;
 		}
 		
@@ -300,12 +336,74 @@ public class CourseParticipant {
             this.participantName = participantName;
             this.registrationDate = registrationDate;         
         }
+		//NEW
+		public Builder(Long participantId, String participantName) {
+			validateParticipantId(participantId);
+			validateParticipantName(participantName);
+			
+			this.participantId = participantId;
+			this.participantName = participantName;
+		}
 		
+
+		public Builder(Long participantId, String employeeNumber, String participantName, String email) {
+			validateParticipantId(participantId);
+			validateEmployeeNumber(employeeNumber);
+			validateParticipantName(participantName);
+			validateEmail(email);
+			
+			this.participantId = participantId;
+			this.employeeNumber = employeeNumber;
+			this.participantName = participantName;
+			this.email = email;
+		}
+		public Builder(Long id, Long courseId, Long courseScheduleId, String courseName, String instructorName, String venueName,
+                Long participantId, String participantName, ZonedDateTime registrationDate) {
+
+            validateId(id);
+            validateId(courseId);
+            validateCourseScheduleId(courseScheduleId);
+            validateParticipantId(participantId);
+            validateRegistrationDate(registrationDate);
+            validateCourseName(courseName);
+            validateInstructorName(instructorName);
+            validateVenueName(venueName);
+            validateParticipantName(participantName);
+
+
+            this.id = id;
+            this.courseId = courseId;
+            this.courseScheduleId = courseScheduleId;
+            this.courseName = courseName;
+            this.instructorName = instructorName;
+            this.venueName = venueName;
+            this.participantId = participantId;
+            this.participantName = participantName;
+            this.registrationDate = registrationDate;         
+        }
 		
+		public Builder(Long id, Long courseScheduleId, Long participantId) {
+			validateId(id);
+			validateCourseScheduleId(courseScheduleId);
+			validateParticipantId(participantId);
+
+			
+			this.id = id;
+			this.courseScheduleId = courseScheduleId;
+			this.participantId = participantId;
+		}
 		
+		public Builder() {
+			
+		}
 		
-		
-		
+		public Builder addCourseScheduleIdAndEmployeeNumber(Long courseScheduleId , String employeeNumber) {
+			validateCourseScheduleId(courseScheduleId);
+			validateEmployeeNumber(employeeNumber);
+			return this;
+			
+		}
+
 
 		/**
 		 * <pre>
@@ -316,7 +414,7 @@ public class CourseParticipant {
 		 * @param courseScheduleDetail
 		 * @return builder
 		 */
-		public Builder addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
+		public Builder addDetail(CourseScheduleDetail courseScheduleDetail) {
 
 			validateCourseScheduleDetail(courseScheduleDetail);
 			this.courseScheduleDetail = courseScheduleDetail;
@@ -488,8 +586,8 @@ public class CourseParticipant {
 		 * 
 		 * @param courseScheduleDetail
 		 */
-		private void validateCourseScheduleDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
-			if (courseScheduleDetail == null || courseScheduleDetail.isEmpty()) {
+		private void validateCourseScheduleDetail(CourseScheduleDetail courseScheduleDetail) {
+			if (courseScheduleDetail == null || courseScheduleDetail.getId() == 0) {
 				throw new IllegalArgumentException("Course Schedule Detail should have atleast 1 record");
 			}
 		}
@@ -506,6 +604,19 @@ public class CourseParticipant {
 		private void validateReason(String reason) {
 			if (reason == null || reason.isEmpty()) {
 				throw new IllegalArgumentException("Reason should not be empty");
+			}
+		}
+		
+		//NEW
+		private void validateEmail(String email) {
+			if(email == null || email.isEmpty()) {
+				throw new IllegalArgumentException("Email shoud not be empty");
+			}
+		}
+		
+		private void validateEmployeeNumber(String employeeNumber) {
+			if(employeeNumber == null || employeeNumber.isEmpty()) {
+				throw new IllegalArgumentException("Employee Number is Invalid");
 			}
 		}
 
