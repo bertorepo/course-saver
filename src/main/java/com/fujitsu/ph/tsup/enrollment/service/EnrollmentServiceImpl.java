@@ -12,6 +12,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.01    | 06/25/2020 | WS) T.Oviedo          | New Creation
 //0.01    | 07/08/2020 | WS) K.Freo            | Update
 //0.01    | 07/08/2020 | WS) M.lumontad        | Update
+//0.02    | 09/07/2020 | WS) J.Yu              | Update
 //==================================================================================================
 
 import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
@@ -20,7 +21,8 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
-
+import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
+import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -55,8 +57,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         try {
                Set<CourseSchedule> courseScheduleSet = enrollmentDao
                        .findAllScheduledCourses(fromDateTime, toDateTime);
-                 if (courseScheduleSet == null || courseScheduleSet.isEmpty()){
-                        throw new IllegalArgumentException("No schedules found");
+                 if (courseScheduleSet == null || courseScheduleSet.isEmpty()){                       
                   }
                 return courseScheduleSet;
            } catch(DataAccessException ex) {
@@ -357,7 +358,21 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 	        	enrollmentDao.updateCourseParticipant(courseParticipant);
 	        }
 	        
-	}       
+	}
+	
+	@Override
+    public List<TopLearnerForm> findTopLearner(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {      
+        try {
+            if (Period.between(fromDateTime.toLocalDate(), toDateTime.toLocalDate()).getMonths() >= 4) {
+                return enrollmentDao.findTopLearnerByQuarter();
+            } else {
+                return enrollmentDao.findTopLearnerByMonth();
+            }            
+        } catch (DataAccessException ex) {
+            throw new IllegalArgumentException("No Top Learners");
+        }
+
+    }
     
     /** Finds the participant of course by Id */
 //    @Override

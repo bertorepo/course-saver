@@ -8,7 +8,8 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 06/24/2020  | WS) T.Oviedo          | New Creation
+//0.01    | 06/24/2020 | WS) T.Oviedo          | New Creation
+//0.02    | 08/24/2020 | WS) J.Yu              | Update
 //==================================================================================================
 /**
 * <pre>
@@ -18,15 +19,15 @@ package com.fujitsu.ph.tsup.enrollment.service;
 * @version 0.01
 * @author t.oviedo                    
 */
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Set;
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
+import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Set;
 
 public interface EnrollmentService {
 	
@@ -106,17 +107,20 @@ public interface EnrollmentService {
 	Set<CourseParticipant> findAllMemberNotEnrolledByCourseScheduleId(CourseParticipant courseParticipant);
 	
 	/**
-	 * Search feature - find all participant not enroled in course schedule and in search criteria
+	 * Search feature - find all participant not enrolled in course schedule and in search criteria
 	 * @param searchForm
 	 * @return
 	 */
 	Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(SearchForm searchForm);
 	/**
-	 * Find availabel course schedule by course id
+	 * Find available course schedule by course id
 	 * @param courseId
 	 * @return
 	 */
 	Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule);
+	
+	 /** Finds the top 10 learners */
+    List<TopLearnerForm> findTopLearner(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
 	
 	void updateSchedule(CourseParticipant courseParticipant);
 }

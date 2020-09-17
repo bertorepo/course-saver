@@ -46,6 +46,7 @@
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
 							<input type="datetime-local" class="form-control" id="toDateTime" >
+							<div class="text-danger" id="toDateTime_error"></div>
 							<input type="hidden" class="form-control" name="toDateTime" id="inputToDateTime">
 						</div>
 						<div class="float-right">
@@ -54,8 +55,248 @@
 					</div>
 				</div>
 			</div>
+		
+		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
+			<h3><i class="fa fa-list"></i> List of Available Courses
+			<div class="float-right mt-3">
+            <h4><a href="" name="topLearners" data-toggle="modal" data-target="#topLearnersModal"><i class="fa fa-search"></i> View Top Learners...</a></h4>
+            </div></h3>
+			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
+					th:object="${viewCourseEnroll}">
+				<colgroup >
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:10%"/>
+					<col style="width:15%"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Course ID</th>
+						<th>Course Name</th>
+						<th>Instructor</th>
+						<th>Start Date Time</th>
+						<th>End Date Time</th>
+						<th>Duration(Hrs)</th>
+						<th>Venue</th>
+						<th>Minimum Number of Participants</th>
+						<th>Maximum Number of Participants</th>
+						<th>Total Number of Participants</th>
+						<th  class="sticky"></th>
+					
+					</tr>
+				</thead>
+				<tbody th:each="courseSchedule : *{courseSchedules}"
+						th:with="courseScheduleDetails = ${courseSchedule.getCourseScheduleDetails()}">
+						
+					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
+							th:with="courseScheduleId = ${courseSchedule.id}"
+							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|">
+									
+						<td th:text="${courseScheduleId}"/>
+						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
+						<td th:text="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (EEEE) - HH:mm a')}" />
+						<td th:text="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (EEEE) - HH:mm a')}"/>
+						<td th:text="${courseScheduleDetail.duration}"/>
+
+						<td th:text="${courseSchedule.venueName}"/>
+						<td th:text="${courseSchedule.minRequired}"/>
+						<td th:text="${courseSchedule.maxAllowed}"/>
+						<td th:text="${courseSchedule.totalParticipants}"/>
+
+<!-- 						<td sec:authorize="hasAuthority('PMO')" class="sticky"> -->
+<!-- 							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|"> -->
+<!-- 								<i class="fa fa-times"></i> Cancel -->
+<!-- 							</button> -->
+<!-- 						</td> -->
+
+						<td class="sticky" sec:authorize="hasAuthority('Member')">
+							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
+									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
+									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
+									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}')|" 
+									type="button" class="btn btn-success">Register</button>
+									
+							<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
+							type="button" class="btn btn-success" 
+							title="Participants in this schedule is already full" disabled>Register</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}">
+				<div class="alert alert-dismissible alert-danger text-center">
+					<strong th:text="${nullMessage}"></strong> 
+				</div>
+			</div>
+			
+		</div>
+		
+		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
+			<h3><i class="fa fa-list"></i> List of All Available Course
+			<button id="cancelBelowMinimumbtn" class="btn btn-danger float-right" name="" disabled>
+				Cancel Below Minimum 
+			</button></h3>
+			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
+			th:object="${activeCourseSchedule} ">
+				<colgroup >
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:10%"/>
+					<col style="width:15%"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Course IDs</th>
+						<th>Course Name</th>
+						<th>Instructor</th>
+						<th>Start Date Time</th>
+						<th>End Date Time</th>
+						<th>Duration(Hrs)</th>
+						<th>Venue</th>
+						<th>Minimum Number of Participants</th>
+						<th>Maximum Number of Participants</th>
+						<th>Total Number of Participants</th>
+						
+					
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="courseSchedule:${activeCourseSchedule}"
+						th:with="courseScheduleDetail = ${courseSchedule.getCourseScheduleDetails()}">
+						
+						<td th:text="${courseSchedule.getId()}"></td>
+						<td th:text="${courseSchedule.courseName}"></td>
+						<td th:text="${courseSchedule.instructorName}"></td>
+						
+						<td th:text="${courseScheduleDetail.scheduledStartDateTime}"></td>
+						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"></td>
+						<td th:text="${courseScheduleDetail.duration}"></td>
+						
+						<td th:text="${courseSchedule.venueName}"></td>
+						<td th:text="${courseSchedule.minRequired}"></td>
+						<td th:text="${courseSchedule.maxAllowed}"></td>
+						<td th:text="${courseSchedule.totalParticipants}"></td>
+					</tr>
+				</tbody>
+			</table>
+<!-- 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}"> -->
+<!-- 				<div class="alert alert-dismissible alert-danger text-center"> -->
+<!-- 					<strong th:text="${nullMessage}"></strong>  -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			
+		</div>
+		
+		<!-- CANCELATION & RESCHEDULE -->
+		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5" >
+			<h3><i class="fa fa-list"></i>List of Available Course by <span id="listNames"> Months/Quarter</span>
+			<div class="col-lg-2 float-right">
+				<select class="form-control"  id="dropDown">
+					<option value="month">Month</option>
+					<option value="quarter">Quarter</option>
+				</select>
+			</div></h3>
+			<table id="data table3" class="table table-bordered table-responsive text-center" style="width:100%" 
+			th:object="${activeCourseSchedule}">
+				<colgroup >
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:10%"/>
+					<col style="width:15%"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Course ID</th>
+						<th>Course Name</th>
+						<th>Instructor</th>
+						<th>Start Date Time</th>
+						<th>End Date Time</th>
+						<th>Duration(Hrs)</th>
+						<th>Venue</th>
+						<th>Minimum Number of Participants</th>
+						<th>Maximum Number of Participants</th>
+						<th>Total Number of Participants</th>
+						<th></th>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody id="table-body">
+					
+				</tbody>
+			</table>
+<!-- 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}"> -->
+<!-- 				<div class="alert alert-dismissible alert-danger text-center"> -->
+<!-- 					<strong th:text="${nullMessage}"></strong>  -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+		</div>
+		<!-- CANCELATION & RESCHEDULE END-->
+			
+		<!--Top Learners Modal-->		
+		<div class="modal fade" id="topLearnersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg text-center">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Top Learners</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                        	<div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        		<h5><b>Quarter</b></h5>
+                            	<table class="table table-bordered">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th>
+                            				<th>Employee</th>
+                            			</tr>
+                            		</thead>
+                            		<tbody th:each="topLearnerByQuarter : *{topLearnerByQuarter}">
+                            			<tr>
+                            				<td th:text="${topLearnerByQuarter.place}"></td>
+                            				<td th:text="${topLearnerByQuarter.participantName}"></td>
+                            			</tr>
+                            		</tbody>
+                            	</table>
+                            </div>
+                            <div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        		<h5><b>Month</b></h5>
+                            	<table class="table table-bordered">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th>
+                            				<th>Employee</th>
+                            			</tr>
+                            		</thead>
+                            		<tbody th:each="topLearnerByMonth : *{topLearnerByMonth}">
+                            			<tr>
+                            				<td th:text="${topLearnerByMonth.place}"></td>
+                            				<td th:text="${topLearnerByMonth.participantName}"></td>
+                            			</tr>
+                            		</tbody>
+                            	</table>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div> 
+		<!--Top Learners Modal End-->
+		
+		
 		</form>
-		<!--Error Modal-->
+		
+		<!-- <!-- Error Modal
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
@@ -73,7 +314,8 @@
 				</div>
 			</div>
 		</div>
-		<!--Error Modal End-->
+		Error Modal End 
+		-->
 		
 		<!--Confirmation Modal-->
 		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -526,187 +768,8 @@
 			</div>
 		</form>
 		<!--Information Modal End-->
-
-		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-			<h3><i class="fa fa-list"></i> List of Available Courses</h3>
-			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
-					th:object="${viewCourseEnroll}">
-				<colgroup >
-					<col style="width:20%"/>
-					<col style="width:20%"/>
-					<col style="width:30%"/>
-					<col style="width:30%"/>
-					<col style="width:10%"/>
-					<col style="width:15%"/>
-				</colgroup>
-				<thead>
-					<tr>
-						<th>Course ID</th>
-						<th>Course Name</th>
-						<th>Instructor</th>
-						<th>Start Date Time</th>
-						<th>End Date Time</th>
-						<th>Duration(Hrs)</th>
-						<th>Venue</th>
-						<th>Minimum Number of Participants</th>
-						<th>Maximum Number of Participants</th>
-						<th>Total Number of Participants</th>
-						<th  class="sticky"></th>
-					
-					</tr>
-				</thead>
-				<tbody th:each="courseSchedule : *{courseSchedules}"
-						th:with="courseScheduleDetails = ${courseSchedule.getCourseScheduleDetails()}">
-						
-					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
-							th:with="courseScheduleId = ${courseSchedule.id}"
-							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
-									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|">
-									
-						<td th:text="${courseScheduleId}"/>
-						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
-						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
-						<td th:text="${courseScheduleDetail.scheduledStartDateTime}" />
-						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"/>
-						<td th:text="${courseScheduleDetail.duration}"/>
-
-						<td th:text="${courseSchedule.venueName}"/>
-						<td th:text="${courseSchedule.minRequired}"/>
-						<td th:text="${courseSchedule.maxAllowed}"/>
-						<td th:text="${courseSchedule.totalParticipants}"/>
-
-<!-- 						<td sec:authorize="hasAuthority('PMO')" class="sticky"> -->
-<!-- 							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|"> -->
-<!-- 								<i class="fa fa-times"></i> Cancel -->
-<!-- 							</button> -->
-<!-- 						</td> -->
-
-						<td sec:authorize="hasAuthority('Member')">
-							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
-									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
-									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
-									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}')|" 
-									type="button" class="btn btn-success">Register</button>
-									
-							<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
-							type="button" class="btn btn-success" 
-							title="Participants in this schedule is already full" disabled>Register</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}">
-				<div class="alert alert-dismissible alert-danger text-center">
-					<strong th:text="${nullMessage}"></strong> 
-				</div>
-			</div>
-			
-		</div>
 		
-		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-			<h3><i class="fa fa-list"></i> List of All Available Course
-			<button id="cancelBelowMinimumbtn" class="btn btn-danger float-right" name="" disabled>
-				Cancel Below Minimum 
-			</button></h3>
-			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
-			th:object="${activeCourseSchedule}">
-				<colgroup >
-					<col style="width:20%"/>
-					<col style="width:20%"/>
-					<col style="width:30%"/>
-					<col style="width:30%"/>
-					<col style="width:10%"/>
-					<col style="width:15%"/>
-				</colgroup>
-				<thead>
-					<tr>
-						<th>Course IDs</th>
-						<th>Course Name</th>
-						<th>Instructor</th>
-						<th>Start Date Time</th>
-						<th>End Date Time</th>
-						<th>Duration(Hrs)</th>
-						<th>Venue</th>
-						<th>Minimum Number of Participants</th>
-						<th>Maximum Number of Participants</th>
-						<th>Total Number of Participants</th>
-						
-					
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="courseSchedule:${activeCourseSchedule}"
-						th:with="courseScheduleDetail = ${courseSchedule.getCourseScheduleDetails()}">
-						
-						<td th:text="${courseSchedule.getId()}"></td>
-						<td th:text="${courseSchedule.courseName}"></td>
-						<td th:text="${courseSchedule.instructorName}"></td>
-						
-						<td th:text="${courseScheduleDetail.scheduledStartDateTime}"></td>
-						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"></td>
-						<td th:text="${courseScheduleDetail.duration}"></td>
-						
-						<td th:text="${courseSchedule.venueName}"></td>
-						<td th:text="${courseSchedule.minRequired}"></td>
-						<td th:text="${courseSchedule.maxAllowed}"></td>
-						<td th:text="${courseSchedule.totalParticipants}"></td>
-					</tr>
-				</tbody>
-			</table>
-<!-- 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}"> -->
-<!-- 				<div class="alert alert-dismissible alert-danger text-center"> -->
-<!-- 					<strong th:text="${nullMessage}"></strong>  -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-			
-		</div>
 		
-		<!-- CANCELATION & RESCHEDULE -->
-		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-			<h3><i class="fa fa-list"></i>List of Available Course by <span id="listNames"> Months/Quarter</span>
-			<div class="col-lg-2 float-right">
-				<select class="form-control"  id="dropDown">
-					<option value="month">Month</option>
-					<option value="quarter">Quarter</option>
-				</select>
-			</div></h3>
-			<table id="data table3" class="table table-bordered table-responsive text-center" style="width:100%" 
-			th:object="${activeCourseSchedule}">
-				<colgroup >
-					<col style="width:20%"/>
-					<col style="width:20%"/>
-					<col style="width:30%"/>
-					<col style="width:30%"/>
-					<col style="width:10%"/>
-					<col style="width:15%"/>
-				</colgroup>
-				<thead>
-					<tr>
-						<th>Course ID</th>
-						<th>Course Name</th>
-						<th>Instructor</th>
-						<th>Start Date Time</th>
-						<th>End Date Time</th>
-						<th>Duration(Hrs)</th>
-						<th>Venue</th>
-						<th>Minimum Number of Participants</th>
-						<th>Maximum Number of Participants</th>
-						<th>Total Number of Participants</th>
-						<th></th>
-						<td></td>
-					</tr>
-				</thead>
-				<tbody id="table-body">
-					
-				</tbody>
-			</table>
-<!-- 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}"> -->
-<!-- 				<div class="alert alert-dismissible alert-danger text-center"> -->
-<!-- 					<strong th:text="${nullMessage}"></strong>  -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-		</div>
-		<!-- CANCELATION & RESCHEDULE END-->
 		
 	</div>
 	
@@ -899,16 +962,7 @@
 		
 	}
 	//SHOW REGISTRATION CONFIRMATION POP UP
-	
-	//FromDateTime is Higher that ToDateTime
-	/*<![CDATA[*/
-	var errorMessage = /*[[${error}]]*/ 'default';
-	if(errorMessage ==  "To Date should be greater than or equal to From Date"){
-		document.getElementById("message").innerHTML = errorMessage;
-		$('#errorModal').modal('show');
-	}
-	/*]]>*/
-	
+		
 	//Successfuly canceled a Course Schedule
 	/*<![CDATA[*/
 	var successMessage = /*[[${successMessage}]]*/ 'default';
@@ -990,6 +1044,20 @@
 	
 	/*]]>*/
 	//REGISTRATION END
+	
+	<!--View Top Learners-->
+	$('a[name="topLearners"]').on('click', function() {
+		$('#topLearnersModal').modal('show');
+	});
+	<!--View Top Learners end-->
+	
+	//FromDateTime is Higher that ToDateTime
+	/*<![CDATA[*/
+	var errorMessage = /*[[${error}]]*/'default';
+	if (errorMessage == "To Date should be greater than From Date") {
+		document.getElementById("toDateTime_error").innerHTML = errorMessage;
+	}
+	/*]]>*/
 	
 	
 </script>
