@@ -30,10 +30,14 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -309,14 +313,11 @@ public class ScheduleController {
             return "scheduling/createSched";
         }
         
-        while(scheduleItr.hasNext()) {
-            CourseSchedule courseSchedule = scheduleItr.next();
+        for(CourseSchedule courseSchedule : courseSchedules) {
             Set<CourseScheduleDetail> cSchedDetail = courseSchedule.getCourseScheduleDetail();
             
-            Iterator<CourseScheduleDetail> detailItr = cSchedDetail.iterator();
-            while(detailItr.hasNext()) {
-                
-                CourseScheduleDetail cSchedDet = detailItr.next();
+            for(CourseScheduleDetail cSchedDet: cSchedDetail) {
+
                 //Check if there is any conflicting schedules when submitting form
                 if(((courseSchedule.getCourseId() == form.getCourseId()) ||
                         (courseSchedule.getInstructorId() == form.getInstructorId()) ||
@@ -696,7 +697,7 @@ public class ScheduleController {
      * @return changeStatusForm and view
      */
 	@GetMapping("/courseSchedule/{courseId}/changeStatus")
-	public String showChangeScheduleForm(@PathVariable("courseId") long id, Model model,
+	public String showChangeStatusScheduleForm(@PathVariable("courseId") Long id, Model model,
 			ChangeStatusForm changeStatusForm) {
 
 		if (model.containsAttribute("changeStatus")) {
@@ -706,22 +707,36 @@ public class ScheduleController {
 		Set<CourseForm> courseFormList = scheduleService.findAllCourses();
 		
 		List<ChangeStatusScheduleForm> changeStatusFormList = new ArrayList<>();
-		List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+		List<ChangeStatusScheduleForm> changeStatusFormListSorted = new ArrayList<>();
+		
 		
 		if (id != 0L) {
 			Set<CourseSchedule> courseSchedule = scheduleService.findCourseScheduleByCourseId(id);	
 			changeStatusForm.setId(id);
 
 			for (CourseSchedule courseSched : courseSchedule) {
+			    List<CourseScheduleDetailForm> detailForms = new ArrayList<>();
 				ChangeStatusScheduleForm changeStatusScheduleForm = new ChangeStatusScheduleForm();
+				changeStatusScheduleForm.setId(courseSched.getId());
+				changeStatusScheduleForm.setCourseId(courseSched.getCourseId());
+				changeStatusScheduleForm.setCourseName(courseSched.getCourseName());
 				changeStatusScheduleForm.setInstructorId(courseSched.getInstructorId());
 				changeStatusScheduleForm.setInstructorName(
 						courseSched.getInstructorFirstName() + " " + courseSched.getInstructorLastName());
 				changeStatusScheduleForm.setVenueId(courseSched.getVenueId());
 				changeStatusScheduleForm.setVenueName(courseSched.getVenueName());
-				changeStatusScheduleForm.setCourseScheduleDetailList(detailFormList);
 				
-				changeStatusFormList.add(changeStatusScheduleForm);
+				for (CourseScheduleDetail detail : courseSched.getCourseScheduleDetail()) {
+                    CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+                    detailForm.setId(detail.getId());
+                    detailForm.setScheduledStartDateTime(detail.getScheduledStartDateTime());
+                    detailForm.setScheduledEndDateTime(detail.getScheduledEndDateTime());
+                    detailForm.setDuration(detail.getDuration());
+                    detailForms.add(detailForm);
+                    
+                    /* System.out.print(detailForm.getId()+" "); */
+                }
+				changeStatusScheduleForm.setCourseScheduleDetails(detailForms);
 				
 				if (courseSched.getStatus() == 'A') {
 					changeStatusScheduleForm.setStatus("Active");
@@ -732,19 +747,30 @@ public class ScheduleController {
 				} else if (courseSched.getStatus() == 'C') {
 					changeStatusScheduleForm.setStatus("Close");
 				}
-				for (CourseScheduleDetail detail : courseSched.getCourseScheduleDetail()) {
-					CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
-					detailForm.setId(detail.getId());
-					detailForm.setScheduledStartDateTime(detail.getScheduledStartDateTime());
-					detailForm.setScheduledEndDateTime(detail.getScheduledEndDateTime());
-					detailForm.setDuration(detail.getDuration());
-					detailFormList.add(detailForm);
-				}
+				
+				changeStatusFormList.add(changeStatusScheduleForm);
+                /*
+                 * System.out.println(changeStatusScheduleForm.getId());
+                 * System.out.println();
+                 */
 			}
+			
+			//Sorts the List
+	        changeStatusFormListSorted = changeStatusFormList.stream()
+                    .sorted(Collections.reverseOrder(Comparator.comparing(x -> 
+                                x.getCourseScheduleDetails().stream().findFirst().get().getScheduledStartDateTime())))
+                    .collect(Collectors.toList());
 
 		}
+		
+		
+		
+        /*
+         * changeStatusFormListSorted.forEach(i -> { System.out.println(i); });
+         */
+            		        
 		changeStatusForm.setCourses(courseFormList);
-		changeStatusForm.setCourseSchedules(changeStatusFormList);
+		changeStatusForm.setCourseSchedules(changeStatusFormListSorted);
 		
 		model.addAttribute("changeStatus", changeStatusForm);
 		model.addAttribute("lastSelected", id);
@@ -765,31 +791,72 @@ public class ScheduleController {
 	     * @return changeStatusForm and view
 	     */
 	@PostMapping("/courseSchedule/{courseId}/changeStatus")
-	public String submitChangeScheduleForm(@PathVariable("courseId") long id, Model model,
-			ChangeStatusForm changeStatusForm, BindingResult bindingResult) {
+	public String submitChangeStatusScheduleForm(@PathVariable("courseId") Long id, 
+	        @Valid @ModelAttribute("changeStatus") ChangeStatusForm changeStatusForm, 
+	        BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
 		Set<CourseForm> courseFormList = scheduleService.findAllCourses();
-
-		if (changeStatusForm.getId() != 0L) {
-			Set<CourseSchedule> courseSchedule = scheduleService.findCourseScheduleByCourseId(id);
-			for (CourseSchedule courseSched : courseSchedule) {
-				changeStatusForm.setId(courseSched.getId());
-			}
-
-			changeStatusForm.setCourses(courseFormList);
-		}
-
-		if (bindingResult.hasErrors()) {
-
-			return "scheduling/changeScheduleStatus";
-		}
-
-		Set<CourseSchedule> courseScheduleSet = new HashSet<>();
-
-		courseScheduleSet = scheduleService.changeScheduleStatus();
+        Set<CourseSchedule> courseScheduleSet = new HashSet<>();
+        
+        if (bindingResult.hasErrors()) {
+            changeStatusForm.setCourseSchedules(changeStatusForm.getCourseSchedules());
+            changeStatusForm.setCourses(courseFormList);
+            model.addAttribute("changeStatus", changeStatusForm);
+            return "scheduling/changeScheduleStatus";
+        }
+        
+        changeStatusForm.getCourseSchedules().forEach(x -> {
+             
+            if(x.getStatus().contains("Active")) {
+                
+                CourseSchedule schedule = 
+                        new CourseSchedule.Builder(x.getId(), x.getCourseId()).active().build();
+                //System.out.println(schedule);
+                
+                courseScheduleSet.add(schedule);
+                
+            } else if(x.getStatus().contains("Ongoing")) {
+                
+                CourseSchedule schedule = 
+                        new CourseSchedule.Builder(x.getId(), x.getCourseId()).ongoing().build();
+                
+                //System.out.println(schedule);
+                courseScheduleSet.add(schedule);
+                
+            } else if(x.getStatus().contains("Done")) {
+                
+                CourseSchedule schedule = 
+                        new CourseSchedule.Builder(x.getId(), x.getCourseId()).done().build();
+                
+                //System.out.println(schedule);
+                courseScheduleSet.add(schedule);
+                
+            } else if(x.getStatus().contains("Close")) {
+                
+                CourseSchedule schedule = 
+                        new CourseSchedule.Builder(x.getId(), x.getCourseId()).cancelled().build();
+                
+                //System.out.println(schedule);
+                courseScheduleSet.add(schedule);
+                
+            }   
+            
+            /*
+             * System.out.println(x); System.out.println(courseScheduleSet);
+             */
+        });
 		
-		return "scheduling/changeScheduleStatus";
-
+        /*
+         * courseScheduleSet.forEach(x -> { System.out.println(x); });
+         */
+        scheduleService.changeScheduleStatus(courseScheduleSet);        
+        
+        System.out.println(changeStatusForm.getCourseSchedules().get(0).getCourseName());
+        
+        redirectAttributes
+            .addFlashAttribute("changeStatusSuccess", "You successfully changed the status of Schedules in "+
+                    changeStatusForm.getCourseSchedules().get(0).getCourseName()+".");
+        
+        return "redirect:/schedules/courseSchedule/"+id+"/changeStatus";
 	}
-
 }

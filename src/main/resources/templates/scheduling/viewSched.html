@@ -45,9 +45,9 @@
 </head>
 
 <body onload="load()">
-	<div th:insert="fragments/general.html :: header"> </div>
+	<div th:insert="fragments/general.html :: header" > </div>
 	
-	<div class="container mt-5">
+	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
 		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedules/view}" th:object="${changeSchedule}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
             <hr>
@@ -326,7 +326,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="submit" id="update" 
-									name="update"value="submit" 
+									name="update" value="submit" 
 									class="btn btn-success">Yes</button>
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
 						</div>

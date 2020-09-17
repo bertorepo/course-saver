@@ -18,9 +18,9 @@
 </head>
 
 <body onload="load()">
-	<div th:insert="fragments/general.html :: header"> </div>
+	<div th:insert="fragments/general.html :: header" > </div>
     
-    <div class="container mt-5">
+    <div class="container mt-5" style="min-height: calc(100vh - 180px)">
         <form class="form-horizontal" action="#" th:action="@{/schedules/view}" th:object="${scheduleView}" method="get">
             <h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
             <hr>

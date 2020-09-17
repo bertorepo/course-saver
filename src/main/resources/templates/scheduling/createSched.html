@@ -35,8 +35,8 @@
 </head>
 
 <body onload="load()">
-	<div th:insert="fragments/general.html :: header"> </div>
-	<div class="container mt-5">
+	<div th:insert="fragments/general.html :: header" > </div>
+	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
 		<form class="form-horizontal" id="scheduleNew" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
 		<!--Success Message End-->
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
@@ -282,9 +282,16 @@ function load(){
 		document.getElementById("courseName").value = courseName;
 	}
 	
+	
+	
 	//Setting values on Course Schedule Details
 	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
 	var length = courseScheduleDetails.rows.length;
+	
+	//Disable Remove button if Course Schedule Details is 1
+	if(length <=1){
+		document.getElementById("row1").disabled = true;
+	}
 	
 	for(i=1; i<=length ; i++){
 		
