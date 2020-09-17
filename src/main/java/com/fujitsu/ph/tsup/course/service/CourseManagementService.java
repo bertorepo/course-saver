@@ -20,5 +20,7 @@ public interface CourseManagementService {
     Course findCourseById(Long id);
     
     Set<Course> findAllCourses();
+    
+    Set<Course> findCoursesByName(String name);
 
 }
