@@ -52,7 +52,7 @@ function changeScheduleModal(data) {
 		var endDate = courseScheduleDetail.scheduledEndDateTime.slice(0, 10);
 		var startTime = courseScheduleDetail.scheduledStartDateTime.slice(11, 19);
 		var endTime = courseScheduleDetail.scheduledEndDateTime.slice(11, 19);
-		var startDateTimeInput = startDate +" "+startTime;
+		var startDateTimeInput = startDate + " " + startTime;
 		var endDateTimeInput = endDate + " " + endTime;
 		/* Date Time Modification End*/
 
@@ -73,6 +73,7 @@ function changeScheduleModal(data) {
 		td.append(change);
 		tr.append(td);
 		table.append(tr);
+
 
 		change.addEventListener("click", function() {
 			showChangeScheduleConfirmationModal(object.id);
@@ -98,24 +99,34 @@ function showChangeScheduleConfirmationModal(courseScheduleId) {
 
 //DECLINE MODAL
 /*<![CDATA[*/
-function decline(courseId, courseName, instructorName, venueName,
-	scheduledStartDateTime, scheduledEndDateTime) {
+function decline(courseName, instructorName, venueName,
+	scheduledStartDateTime, scheduledEndDateTime, courseScheduleId,
+	participantId, registrationDate, id) {
 	var startDate = scheduledStartDateTime.slice(0, 11);
 	var endDate = scheduledEndDateTime.slice(0, 11);
 	var startTime = scheduledStartDateTime.slice(14, 22);
 	var endTime = scheduledEndDateTime.slice(14, 22);
-	var courseIdInput = document.getElementById('courseSchedId');
-	var courseNameInput = document.getElementById('courseSchedName');
-	var courseInstructorInput = document
-		.getElementById('courseSchedInstructor');
-	var courseVenueInput = document.getElementById('courseSchedVenue');
 
+	var courseNameInput = document.getElementById('courseSchedName');
+	var courseInstructorInput = document.getElementById('courseSchedInstructor');
 	var dateInput = document.getElementById('courseSchedDate');
 	var timeInput = document.getElementById('courseSchedTime');
-	courseIdInput.value = courseId;
+	var courseVenueInput = document.getElementById('courseSchedVenue');
 	courseNameInput.value = courseName;
 	courseInstructorInput.value = instructorName;
 	courseVenueInput.value = venueName;
+
+
+
+	var courseIdInput = document.getElementById('courseId');
+	var participantIdInput = document.getElementById('participantId');
+	var registrationDateIdInput = document.getElementById('registrationDate');
+	var courseParticipantIdInput = document.getElementById('courseParticipantId');
+
+	courseIdInput.value = courseScheduleId;
+	participantIdInput.value = participantId;
+	registrationDateIdInput.value = registrationDate;
+	courseParticipantIdInput.value = id;
 	if (startDate == endDate) {
 		dateInput.value = startDate;
 		timeInput.value = startTime + " to " + endTime;
@@ -125,6 +136,37 @@ function decline(courseId, courseName, instructorName, venueName,
 	}
 
 	$('#declineModal').modal('show');
+
+	var training = " training?";
+	var MainConfirmNameInput = document.getElementById('mainConfirmCourseName') ;
+	MainConfirmNameInput.value = courseName + training;
+
+	var confirmNameInput = document.getElementById('confirmCourseName');
+	confirmNameInput.value = courseName;
+
+	var confirmCourseIdInput = document.getElementById('confirmCourseId');
+	confirmCourseIdInput.value = courseScheduleId;
+
+	var confirmParticipantIdInput = document.getElementById('confirmParticipantId');
+	confirmParticipantIdInput.value = participantId;
+
+	var confirmRegistrationDateInput = document.getElementById('confirmRegistrationDate');
+	confirmRegistrationDateInput.value = registrationDate;
+
+	var confirmCourseParticipantIdInput = document.getElementById('confirmCourseParticipantId');
+	confirmCourseParticipantIdInput.value = id;
+
+
 }
-		/*]]>*/
+/*]]>*/
+
+
+//Confirm Decline Modal 
+/*<![CDATA[*/
+function confirmDecline() {
+	$('#confirmationModal').modal('show');
+	$('#declineModal').modal('hide');
+}
+/*]]>*/
+
 

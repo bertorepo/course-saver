@@ -65,6 +65,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.01    | 08/05/2020 | WS) J.Yu        | Updated
 //0.02    | 09/15/2020 | WS) J.Yu        | Updated
 //=======================================================
+
 /**
  * <pre>
  * The implementation of Enrollment Controller
@@ -278,6 +279,7 @@ public class EnrollmentController {
                 courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
                 courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
                 courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
+                courseEnrollmentForm.setParticipantId(enrolledCourse.getParticipantId());
 
                 CourseScheduleDetail courseSchedDet = enrolledCourse.getCourseScheduleDetail();
                 
