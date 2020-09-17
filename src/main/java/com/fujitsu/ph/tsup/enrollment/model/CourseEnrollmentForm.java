@@ -44,6 +44,7 @@ public class CourseEnrollmentForm {
     public void setParticipantId(Long participantId) {
         this.participantId = participantId;
     }
+    
 
     /* Instructor Name (LASTNAME, FIRSTNAME) */
     private String instructorName;

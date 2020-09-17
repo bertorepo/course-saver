@@ -74,6 +74,7 @@ function changeScheduleModal(data) {
 		tr.append(td);
 		table.append(tr);
 
+
 		change.addEventListener("click", function() {
 			showChangeScheduleConfirmationModal(object.id);
 		});
