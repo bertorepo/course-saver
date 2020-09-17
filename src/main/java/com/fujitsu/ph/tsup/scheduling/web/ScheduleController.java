@@ -1,6 +1,8 @@
 package com.fujitsu.ph.tsup.scheduling.web;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 
 //=======================================================
@@ -299,8 +301,8 @@ public class ScheduleController {
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
         Set<CourseSchedule> courseSchedules = 
                 scheduleService.findAllScheduledCourses(ZonedDateTime.now().withHour(0).withMinute(0), 
-                                        ZonedDateTime.now().plusYears(1));
-        Iterator<CourseSchedule> scheduleItr = courseSchedules.iterator();
+                                        ZonedDateTime.now().withHour(23).withMinute(59)
+                                            .withSecond(59).withYear(9999));
 
         logger.debug("CourseScheduleNewForm: {}", form);
         logger.debug("Result: {}", bindingResult);
