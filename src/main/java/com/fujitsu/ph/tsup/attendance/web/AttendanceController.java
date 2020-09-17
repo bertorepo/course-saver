@@ -57,6 +57,7 @@ import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
 //0.05    | 07/30/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos   								 | Update
 //0.06    | 08/05/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos   								 | Update
 //0.07    | 08/26/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos                                   | Update
+//0.08    | 09/17/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos                                   | Update
 //===================================================================================================================
 /**
  * <pre>
@@ -64,7 +65,7 @@ import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.07
+ * @version 0.08
  * @author k.abad
  * @author m.angara
  * @author h.francisco
@@ -112,8 +113,8 @@ public class AttendanceController {
     @GetMapping("/schedules/{courseScheduleId}/participants")
     public String showCourseParticipantsForm(@PathVariable("courseScheduleId") Long id, Model model) {
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ZonedDateTime toDateTime = ZonedDateTime.now().plusMonths(5);
-        ZonedDateTime fromDateTime = ZonedDateTime.now().minusMonths(5);
+        ZonedDateTime toDateTime = ZonedDateTime.now().plusDays(5);
+        ZonedDateTime fromDateTime = ZonedDateTime.now();
 
         logger.debug("Model:{}", model);
 
@@ -201,8 +202,8 @@ public class AttendanceController {
           
         FpiUser user = (FpiUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        ZonedDateTime toDateTime = ZonedDateTime.now().plusMonths(5);
-        ZonedDateTime fromDateTime = ZonedDateTime.now().minusMonths(5);
+        ZonedDateTime toDateTime = ZonedDateTime.now().plusDays(5);
+        ZonedDateTime fromDateTime = ZonedDateTime.now();
         
         List<ChangeStatusParticipant> participantAsList = new ArrayList<ChangeStatusParticipant>();
         Set<ChangeStatusCourse> changeStatusCourseSet = new HashSet<ChangeStatusCourse>();
@@ -285,8 +286,8 @@ public class AttendanceController {
         
         FpiUser user = (FpiUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        ZonedDateTime toDateTime = ZonedDateTime.now().plusMonths(5);
-        ZonedDateTime fromDateTime = ZonedDateTime.now().minusMonths(5);
+        ZonedDateTime toDateTime = ZonedDateTime.now().plusDays(5);
+        ZonedDateTime fromDateTime = ZonedDateTime.now();
 
         model.addAttribute("changeStatusForm", form);
         
@@ -334,8 +335,8 @@ public class AttendanceController {
     public String showGenerateAttendanceForm(@PathVariable("courseScheduleDetailId") Long id, Model model) {
 
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ZonedDateTime fromDate = ZonedDateTime.now().minusMonths(5);
-        ZonedDateTime toDate = ZonedDateTime.now().plusMonths(5);
+        ZonedDateTime fromDate = ZonedDateTime.now();
+        ZonedDateTime toDate = ZonedDateTime.now().plusDays(5);
 
         GenerateAttendanceForm generateAttendanceForm = new GenerateAttendanceForm();
 
@@ -427,8 +428,8 @@ public class AttendanceController {
     public String showGenerateAbsentForm(@PathVariable("courseScheduleDetailId") Long id, Model model) {
         FpiUser user = (FpiUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        ZonedDateTime fromDate = ZonedDateTime.now().minusMonths(5);
-        ZonedDateTime toDate = ZonedDateTime.now().plusMonths(5);
+        ZonedDateTime fromDate = ZonedDateTime.now();
+        ZonedDateTime toDate = ZonedDateTime.now().plusDays(5);
 
         logger.debug("Model:{}{}", model,id);
         
@@ -613,7 +614,7 @@ public class AttendanceController {
         }
         
         if (form.getFromDateTime() == null) {
-            form.setFromDateTime(ZonedDateTime.now().minusMonths(5));
+            form.setFromDateTime(ZonedDateTime.now());
         }
         
         if (form.getToDateTime() == null) {
