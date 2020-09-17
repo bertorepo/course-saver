@@ -12,7 +12,7 @@
 	<title>View Schedule</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<style>
@@ -45,9 +45,9 @@
 </head>
 
 <body onload="load()">
-	<div th:insert="fragments/general.html :: header"> </div>
+	<div th:insert="fragments/general.html :: header" > </div>
 	
-	<div class="container mt-5">
+	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
 		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedules/view}" th:object="${changeSchedule}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
             <hr>
@@ -326,7 +326,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="submit" id="update" 
-									name="update"value="submit" 
+									name="update" value="submit" 
 									class="btn btn-success">Yes</button>
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
 						</div>
@@ -334,37 +334,37 @@
 				</div>
 			</div>
 			<!--Update Confirmation Modal End-->
-			<!--Update Confirmation Success Modal-->
-			<div class="modal fade" th:if="${success}" id="updateSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-						<div class="modal-header alert-success">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							Schedule has been updated
-						</div>
-						<div class="modal-footer">
-							<input type="button" name="updateSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--Update Confirmation Success Modal End-->		
 		</form>
 		<!--Update Modal End-->		
 		
-		
+		<!--Update Confirmation Success Modal-->
+		<div class="modal fade" th:if="${updateSuccess}" id="updateSuccessModal" 
+				tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p class="text-center" th:if="${updateSuccess}" th:text="${updateSuccess}" id="updated"></p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" name="updateSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Update Confirmation Success Modal End-->		
 		
 		<!--Delete Modal-->
 		<form class="form-horizontal"
 			  id="deleteView"
 			  th:object="${deleteView}" 
-			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/delete(courseScheduleId = *{id})}" 
-			  th:if="${#strings.contains(#httpServletRequest.requestURI, 'delete')}"
-			  method="get">
+			  th:method="delete"
+			  th:action="@{/schedules/courseSchedule/{courseScheduleId}/deleted(courseScheduleId = *{id})}" 
+			  th:if="${#strings.contains(#httpServletRequest.requestURI, 'delete')}">
 			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -452,7 +452,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<input type="submit" name="delete" class="btn btn-success" data-dismiss="modal" value="Delete Schedule">
+							<input type="button" name="delete" class="btn btn-success" value="Delete Schedule">
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
 						</div>
 					</div>
@@ -471,34 +471,39 @@
 							Are you sure you want to delete this schedule?
 						</div>
 						<div class="modal-footer">
-							<input type="submit" name="deleteConfirmation" class="btn btn-success" data-dismiss="modal" value="Yes">
+							<button type="submit" id="deleteBtn" 
+										name="deleteConfirmation" 
+										class="btn btn-success" 
+										th:value="*{id}">Yes</button>
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
 						</div>
 					</div>
 				</div>
 			</div>
 		<!--Delete Confirmation Modal End-->
+		</form>
+		<!--Delete Modal End-->
+		
 		<!--Delete Confirmation Success Modal-->
-			<div class="modal fade" id="deleteSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-						<div class="modal-header alert-success">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							The schedule has been successfully deleted
-						</div>
-						<div class="modal-footer">
-							<input type="submit" name="deleteSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
-						</div>
+		<div class="modal fade" th:if="${deleteSuccess}" id="deleteSuccessModal" tabindex="-1" 
+					role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p class="text-center" th:if="${deleteSuccess}" th:text="${deleteSuccess}" id="deleted"></p>
+					</div>
+					<div class="modal-footer">
+						<input type="submit" name="deleteSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
 					</div>
 				</div>
 			</div>
+		</div>
 		<!--Delete Confirmation Success Modal End-->
-		</form>
-		<!--Delete Modal End-->
 		
 		
 	</div>
@@ -507,13 +512,51 @@
 	
 <script th:inline="javascript">
 
-/*<![CDATA[*/
-var errorMessage = /*[[${error}]]*/ 'default';
-if(errorMessage == "To Date should be greater than or equal to From Date"){
-	$('#error1Modal').modal('show');
-}
-/*<![CDATA[*/
+	/*<![CDATA[*/
+	var errorMessage = /*[[${error}]]*/ 'default';
+	if(errorMessage == "To Date should be greater than or equal to From Date"){
+		$('#error1Modal').modal('show');
+	}
+	/*<![CDATA[*/
 	//Update
+	
+	/* function submitDelete(id){
+		
+		var deleteValue = document.getElementById(id).value;
+		var fromDate = document.getElementById("fromDateTime").value;
+		var toDate = document.getElementById("toDateTime").value;
+		var Url = "/schedules/courseSchedule/"+ deleteValue +"/scheduleDelete";
+		
+		var deleteForm = {
+				"courseId" : document.getElementById("courseId").value,
+				"courseName" : document.getElementById("courseName").value,
+				"instructorName" : document.getElementById("instructorName").value,
+				"courseScheduleDetailList" : {
+					"scheduledStartDateTime" : document.getElementById("startDateTime1"),
+					"scheduledEndDateTime" : document.getElementById("endDateTime1")
+				},
+				"venueName" : document.getElementById("venueName"),
+				"courseDetails" : document.getElementById("courseDetails")
+		};
+		
+		$.ajax({
+			type: "DELETE",
+			url: Url,
+			data: JSON.stringify(deleteForm),
+			contentType: "application/json",
+			dataType: "text",
+			success: function (result) {
+				document.location.href = "/schedules/courseSchedules/view"
+				document.getElementById("fromDateTime").value = fromDate;
+				document.getElementById("toDateTime").value = toDate;
+			},
+			error: function (xhr, error) {
+				console.log(xhr.status);
+				console.log(error);
+			}
+			
+		});
+	}; */
 	
 	//Checks if Date is Today
 	function isLessThanToday(date){
@@ -681,7 +724,6 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		$('#updateModal').modal('show');
 	}); */
 	
-	
 	/* $('input[name="update"]').on('click', function() {
 		$('#updateConfirmationModal').modal('show');
 	}); */
@@ -704,6 +746,7 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	
 	$('input[name="delete"]').on('click', function() {
 		$('#deleteConfirmationModal').modal('show');
+		$('#deleteModal').modal('hide');
 	});
 	$('input[name="deleteConfirmation"]').on('click', function() {
 		$('#deleteSuccessModal').modal('show');
@@ -770,6 +813,30 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 		    document.getElementById("startTime1").value = rowStartTime;
 		    document.getElementById("endTime1").value = rowEndTime;
 		}
+		
+		if($("#updateSuccessModal").length > 0){
+			/*<![CDATA[*/
+			var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
+			
+			var updated = document.getElementById("updated").innerHTML;
+
+			if (updateSuccess == updated) {
+				$('#updateSuccessModal').modal('show');
+			}
+			/*]]>*/
+		}
+		
+		if($("#deleteSuccessModal").length > 0){
+			/*<![CDATA[*/
+			var deleteSuccess = /*[[${updateSuccess}]]*/ 'default';
+			
+			var deleted = document.getElementById("deleted").innerHTML;
+
+			if (deleteSuccess == updated) {
+				$('#deleteSuccessModal').modal('show');
+			}
+			/*]]>*/
+		}
 	}
 
 	$("#fromDate").blur(function () {
@@ -806,14 +873,8 @@ if(errorMessage == "To Date should be greater than or equal to From Date"){
 	        'Z';
 	};
 	
-	/*<![CDATA[*/
-	var successMessage = /*[[${success}]]*/ 'default';
-
-	if (successMessage == "Success!") {
-
-		$('#updateSuccessModal').modal('show');
-	}
-	/*]]>*/
+	
+	
 </script>
 </body>
 

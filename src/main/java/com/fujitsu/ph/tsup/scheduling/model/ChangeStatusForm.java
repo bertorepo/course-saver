@@ -8,7 +8,7 @@ public class ChangeStatusForm {
 	/**
      * Course Id
      */
-	private long id;
+	private Long id;
 	
 	/**
      * List of courses
@@ -20,11 +20,11 @@ public class ChangeStatusForm {
      */
 	private List<ChangeStatusScheduleForm> courseSchedules;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

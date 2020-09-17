@@ -1,6 +1,7 @@
 package com.fujitsu.ph.tsup.scheduling.model;
 
 import java.util.List;
+import java.util.Set;
 
 public class ChangeStatusScheduleForm {
 	/**
@@ -42,7 +43,7 @@ public class ChangeStatusScheduleForm {
     /**
      * List of course schedule details
      */
-    private List<CourseScheduleDetailForm> courseScheduleDetailList;
+    private List<CourseScheduleDetailForm> courseScheduleDetails;
 
     /**
      * String(Active/Done)
@@ -117,19 +118,19 @@ public class ChangeStatusScheduleForm {
 	
 	
 
-	public List<CourseScheduleDetailForm> getCourseScheduleDetailList() {
-		return courseScheduleDetailList;
+	public List<CourseScheduleDetailForm> getCourseScheduleDetails() {
+		return courseScheduleDetails;
 	}
 
-	public void setCourseScheduleDetailList(List<CourseScheduleDetailForm> courseScheduleDetailList) {
-		this.courseScheduleDetailList = courseScheduleDetailList;
+	public void setCourseScheduleDetails(List<CourseScheduleDetailForm> courseScheduleDetails) {
+		this.courseScheduleDetails = courseScheduleDetails;
 	}
 
 	@Override
 	public String toString() {
 		return "ChangeStatusScheduleForm [id=" + id + ", courseId=" + courseId + ", instructorId=" + instructorId
 				+ ", instructorName=" + instructorName + ", venueId=" + venueId + ", venueName=" + venueName
-				+ ", courseName=" + courseName + ", courseScheduleDetailList=" + courseScheduleDetailList + ", status="
+				+ ", courseName=" + courseName + ", courseScheduleDetails=" + courseScheduleDetails + ", status="
 				+ status + "]";
 	}
 
