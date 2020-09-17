@@ -10,12 +10,14 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //Version | Date       | Updated By | Content
 //--------+------------+-----------------------+------
 //0.01    | 06/24/2020 |  WS) J.Yu  | New Creation
+//0.02    | 09/14/2020 |  WS) J.Yu  | Update
 //====================================================
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
+import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import java.time.ZonedDateTime;
@@ -110,17 +112,11 @@ public interface EnrollmentDao {
      */
     Set<CourseSchedule> findAllCourseScheduleBelowMinimumParticipants();
     
-    /**
-     * Find TopLearner of the Month
-     * @return
-     */
-    Set<CourseParticipant> findTopLearnerByMonth();
-
-    /**
-     * Find TopLearner of the Quarter
-     * @return
-     */
-    Set<CourseParticipant> findTopLearnerByQuarter();
+    /** Finds the top 10 learners of the month */
+    List<TopLearnerForm> findTopLearnerByMonth();
+    
+    /** Finds the top 10 learners of the quarter */
+    List<TopLearnerForm> findTopLearnerByQuarter();
     
     /**
      * Find CourseSchedule By Month

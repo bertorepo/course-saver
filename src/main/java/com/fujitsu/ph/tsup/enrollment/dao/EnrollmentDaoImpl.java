@@ -1,11 +1,17 @@
 package com.fujitsu.ph.tsup.enrollment.dao;
 
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
+//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
+//import com.fujitsu.ph.tsup.enrollment.model.MemberSchedule;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
+import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -29,6 +35,7 @@ import org.springframework.stereotype.Repository;
 //0.02    | 06/30/2020 | WS) K.Freo            | Updated
 //0.03    | 07/07/2020 | WS) J.Yu              | Updated
 //0.03    | 07/14/2020 | WS) T.Oviedo          | Updated
+//0.04    | 09/14/2020 | WS) J.Yu              | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -38,12 +45,7 @@ import org.springframework.stereotype.Repository;
 * @version 0.01
 * @author m.lumontad                      
 */
-import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
-//import com.fujitsu.ph.tsup.enrollment.model.MemberSchedule;
-import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
-import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
+
 
 @Repository
 public class EnrollmentDaoImpl implements EnrollmentDao {
@@ -464,47 +466,38 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 	}
 
 	@Override
-	public Set<CourseParticipant> findTopLearnerByMonth() {
-		// TODO Auto-generated method stub
-		String sql="SELECT"
-				+ "	CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
-				+ "E.LAST_NAME AS PARTICIPANT_LAST_NAME, "
-				+ "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME, "
-				+ "COUNT(CATTEN.PARTICIPANT_ID) AS COURSE_ATTENDED "
-				+ "FROM COURSE_ATTENDANCE AS CATTEN "
-				+ "INNER JOIN EMPLOYEE AS E "
-				+ "ON CATTEN.PARTICIPANT_ID = E.ID "
-				+ "WHERE STATUS = 'P' "
-				+ "AND EXTRACT(MONTH FROM LOG_IN_DATETIME) = EXTRACT(MONTH FROM NOW()) "
-				+ "GROUP BY CATTEN.PARTICIPANT_ID, E.LAST_NAME, E.FIRST_NAME "
-				+ "ORDER BY COUNT(CATTEN.PARTICIPANT_ID) DESC "
-				+ "LIMIT 10;";
-		
-		List<CourseParticipant> courseParticipant = template.query(sql, new EnrollmentRowMapperTopLearnerCourseParticipant());
-		Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>(courseParticipant);
-		return courseParticipantSet;
-	}
+    public List<TopLearnerForm> findTopLearnerByMonth() {
+        String query = " SELECT "  
+                + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
+                + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, " 
+                + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME " 
+                + "FROM COURSE_ATTENDANCE AS CATTEN "  
+                + "INNER JOIN EMPLOYEE AS E" 
+                + " ON CATTEN.PARTICIPANT_ID = E.ID "  
+                + "WHERE STATUS = 'P'" 
+                + " AND EXTRACT(MONTH FROM LOG_IN_DATETIME) = EXTRACT(MONTH FROM NOW()) " 
+                + "GROUP BY CATTEN.PARTICIPANT_ID, E.LAST_NAME, E.FIRST_NAME " 
+                + "ORDER BY COUNT(CATTEN.PARTICIPANT_ID) DESC;";
+       List<TopLearnerForm> topLearnerByMonth = template.query(query, new EnrollmentRowMapperTopLearner());
+       return topLearnerByMonth;
+    }
 
-	@Override
-	public Set<CourseParticipant> findTopLearnerByQuarter() {
-		// TODO Auto-generated method stub
-		String sql="SELECT"
-				+ "	CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
-				+ "E.LAST_NAME AS PARTICIPANT_LAST_NAME, "
-				+ "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME, "
-				+ "COUNT(CATTEN.PARTICIPANT_ID) AS COURSE_ATTENDED "
-				+ "FROM COURSE_ATTENDANCE AS CATTEN "
-				+ "INNER JOIN EMPLOYEE AS E "
-				+ "ON CATTEN.PARTICIPANT_ID = E.ID "
-				+ "WHERE STATUS = 'P' "
-				+ "AND EXTRACT(QUARTER FROM LOG_IN_DATETIME) = EXTRACT(QUARTER FROM NOW()) "
-				+ "GROUP BY CATTEN.PARTICIPANT_ID, E.LAST_NAME, E.FIRST_NAME "
-				+ "ORDER BY COUNT(CATTEN.PARTICIPANT_ID) DESC "
-				+ "LIMIT 10;";
-		List<CourseParticipant> courseParticipant = template.query(sql, new EnrollmentRowMapperTopLearnerCourseParticipant());
-		Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>(courseParticipant);
-		return courseParticipantSet;
-	}
+    @Override
+    public List<TopLearnerForm> findTopLearnerByQuarter() {
+        String query = " SELECT "  
+            + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, "
+            + "E.LAST_NAME AS PARTICIPANT_LAST_NAME, " 
+            + "E.FIRST_NAME AS PARTICIPANT_FIRST_NAME " 
+            + "FROM COURSE_ATTENDANCE AS CATTEN "  
+            + "INNER JOIN EMPLOYEE AS E" 
+            + " ON CATTEN.PARTICIPANT_ID = E.ID "  
+            + "WHERE STATUS = 'P'" 
+            + " AND EXTRACT(QUARTER FROM LOG_IN_DATETIME) = EXTRACT(QUARTER FROM NOW()) " 
+            + "GROUP BY CATTEN.PARTICIPANT_ID, E.LAST_NAME, E.FIRST_NAME " 
+            + "ORDER BY COUNT(CATTEN.PARTICIPANT_ID) DESC;";
+    List<TopLearnerForm> topLearnerByQuarter = template.query(query, new EnrollmentRowMapperTopLearner());
+    return topLearnerByQuarter;
+    }
 
 	@Override
 	public Set<CourseSchedule> findAllCourseScheduleByMonth() {

@@ -42,6 +42,7 @@ import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
+import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 
 //=======================================================
@@ -62,6 +63,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.01    | 07/01/2020 | WS) T.Oviedo    | Updated
 //0.01    | 07/30/2020 | WS) M.Lumontad  | Updated
 //0.01    | 08/05/2020 | WS) J.Yu        | Updated
+//0.02    | 09/15/2020 | WS) J.Yu        | Updated
 //=======================================================
 /**
  * <pre>
@@ -126,10 +128,15 @@ public class EnrollmentController {
 
         if(form.getFromDateTime().isAfter(form.getToDateTime()) || form.getFromDateTime().isEqual(form.getToDateTime())) {
         	  model.addAttribute(form);
-              model.addAttribute("error", "To Date should be greater than or equal to From Date");
+              model.addAttribute("error", "To Date should be greater than From Date");
               model.addAttribute("nullMessage", "No schedules found");
+              
               return "enrollment/viewCourseEnroll";
         }
+        
+        List<TopLearnerForm> listTopLearnerByMonth = enrollmentService.findTopLearner(ZonedDateTime.now(), ZonedDateTime.now().plusMonths(1));
+        
+        List<TopLearnerForm> listTopLearnerByQuarter = enrollmentService.findTopLearner(ZonedDateTime.now(), ZonedDateTime.now().plusMonths(4));
         
         Set<CourseSchedule> courseScheduleAllActive = enrollmentService.findAllActiveCourseSchedule();
         System.out.println(courseScheduleAllActive.size() + "SIZE OF COURSE ACTIVE");
@@ -159,6 +166,8 @@ public class EnrollmentController {
         	
         	courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailForm);
         	courseScheduleSetForm.add(courseScheduleForm);
+        	form.setTopLearnerByMonth(listTopLearnerByMonth);
+            form.setTopLearnerByQuarter(listTopLearnerByQuarter);
         	System.out.println("(COURSE ACTIVE)Course Id: " + courseScheduleForm.getCourseId());
         	System.out.println("(COURSE ACTIVE)Course Name: " + courseScheduleForm.getCourseName());
         	System.out.println("(COURSE ACTIVE)Instructor Name: " + courseScheduleForm.getInstructorName());
@@ -173,10 +182,12 @@ public class EnrollmentController {
         	
         }
         model.addAttribute("activeCourseSchedule", courseScheduleSetForm);
-        try {
+
         	Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
             		form.getFromDateTime(), form.getToDateTime());
-
+        	
+        	
+        	
         	Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
 	        for (CourseSchedule courseSchedule : courseSchedules) {
@@ -201,15 +212,17 @@ public class EnrollmentController {
 	            courseScheduleForm.setCourseScheduleDetails(courseSchedDetailForm);
 	            courseScheduleFormSet.add(courseScheduleForm);
 	            form.setCourseSchedules(courseScheduleFormSet);
+	            
+	            
+	            for(TopLearnerForm top : listTopLearnerByQuarter) {
+
+	                System.out.println("PartName" + top.getParticipantName());}
 	        }
         
         
         model.addAttribute("viewCourseEnroll",form);
         logger.debug("courseScheduleListForm: {}", form);
         
-        }catch(Exception e){
-        	model.addAttribute("nullMessage", e.getMessage());
-        }
         return "enrollment/viewCourseEnroll";
     } 
 
