@@ -21,10 +21,9 @@ package com.fujitsu.ph.tsup.enrollment.model;
 */
 
 import java.time.ZonedDateTime;
-import java.util.Set;
 
 public class CourseEnrollmentForm {
-    /* Course Participant ID */
+    /* Course ID */
     private Long id;
     
     /* Course Id*/
@@ -35,6 +34,16 @@ public class CourseEnrollmentForm {
 
     /* Course Name */
     private String courseName;
+    
+    /* Course participant ID */
+    private Long participantId;
+
+    public Long getParticipantId() {
+        return participantId;
+    }
+    public void setParticipantId(Long participantId) {
+        this.participantId = participantId;
+    }
 
     /* Instructor Name (LASTNAME, FIRSTNAME) */
     private String instructorName;

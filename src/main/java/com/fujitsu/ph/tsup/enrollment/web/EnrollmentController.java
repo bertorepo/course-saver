@@ -265,6 +265,7 @@ public class EnrollmentController {
                 courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
                 courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
                 courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
+                courseEnrollmentForm.setParticipantId(enrolledCourse.getParticipantId());
 
                 CourseScheduleDetail courseSchedDet = enrolledCourse.getCourseScheduleDetail();
                 
