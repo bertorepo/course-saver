@@ -43,5 +43,9 @@ public class CourseManagementServiceImpl implements CourseManagementService {
 
         return courseManagementDao.findAllCourses();
     }
-
+    
+    @Override
+    public Set<Course> findCoursesByName(String name) {
+    	return courseManagementDao.findCoursesByName(name);
+    }
 }

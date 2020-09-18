@@ -81,7 +81,7 @@ public class CourseSchedule {
 	/**
 	 * The course schedule details
 	 */
-	private Set<CourseScheduleDetail> courseScheduleDetail;
+	private CourseScheduleDetail courseScheduleDetail;
 
 	/**
 	 * Total number of participants
@@ -166,7 +166,7 @@ public class CourseSchedule {
 		return maxAllowed;
 	}
 
-	public Set<CourseScheduleDetail> getCourseScheduleDetail() {
+	public CourseScheduleDetail getCourseScheduleDetail() {
 		return courseScheduleDetail;
 	}
 
@@ -244,7 +244,7 @@ public class CourseSchedule {
 		/**
 		 * The course schedule details
 		 */
-		private Set<CourseScheduleDetail> courseScheduleDetail;
+		private CourseScheduleDetail courseScheduleDetail;
 
 		/**
 		 * Total number of participants
@@ -380,7 +380,7 @@ public class CourseSchedule {
 		 * @param courseScheduleDetail
 		 * @return builder
 		 */
-		public Builder addDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
+		public Builder addDetail(CourseScheduleDetail courseScheduleDetail) {
 
 			validateCourseScheduleDetail(courseScheduleDetail);
 			this.courseScheduleDetail = courseScheduleDetail;
@@ -588,8 +588,8 @@ public class CourseSchedule {
 		 * 
 		 * @param courseScheduleDetail
 		 */
-		private void validateCourseScheduleDetail(Set<CourseScheduleDetail> courseScheduleDetail) {
-			if (courseScheduleDetail.isEmpty() || courseScheduleDetail == null) {
+		private void validateCourseScheduleDetail(CourseScheduleDetail courseScheduleDetail) {
+			if (courseScheduleDetail.getId() == 0 || courseScheduleDetail == null) {
 				throw new IllegalArgumentException("The schedule should have at least 1 record");
 			}
 		}

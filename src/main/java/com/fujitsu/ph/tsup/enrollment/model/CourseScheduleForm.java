@@ -43,7 +43,7 @@ public class CourseScheduleForm {
     private String venueName;
 
     /* Set of course schedule details */
-    private Set<CourseScheduleDetailForm> courseScheduleDetail;
+    private CourseScheduleDetailForm courseScheduleDetail;
 
     /* Minimum number of participants */
     private int minRequired;
@@ -125,12 +125,12 @@ public class CourseScheduleForm {
     }
 
     /** get Set of course schedule details */
-    public Set<CourseScheduleDetailForm> getCourseScheduleDetails() {
+    public CourseScheduleDetailForm getCourseScheduleDetails() {
         return courseScheduleDetail;
     }
 
     /** set Set of course schedule details */
-    public void setCourseScheduleDetails(Set<CourseScheduleDetailForm> courseScheduleDetail) {
+    public void setCourseScheduleDetails(CourseScheduleDetailForm courseScheduleDetail) {
         this.courseScheduleDetail = courseScheduleDetail;
     }
 

@@ -92,7 +92,7 @@ public class CourseScheduleNewForm{
      * List used to Bind Course Schedule Detail Inputs
      */
     private List<CourseScheduleDetailForm> courseScheduleDetailsAsList = 
-                new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[5]));
+            new ArrayList<>(Arrays.asList(new CourseScheduleDetailForm[1]));
     
     public void setId(Long id) {
         this.id = id;

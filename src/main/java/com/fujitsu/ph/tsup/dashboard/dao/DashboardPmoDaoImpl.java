@@ -18,19 +18,23 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmo;
 //Class Name   :DashboardPmoDaoImpl.java
 //
 //<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01 | 06/25/2020 |  WS) Jm.Deguzman   | New Creation
-//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
-//0.03 | 08/28/2020 |  WS) Jm.Deguzman   | Updated
+//Version | Date       | Updated By                                   | Content
+//--------+------------+----------------------------------------------+-----------------------------
+//0.01    | 06/25/2020 |  WS) Jm.Deguzman                             | New Creation
+//0.02    | 08/24/2020 |  WS) Jm.Deguzman                             | Updated
+//0.03    | 08/28/2020 |  WS) Jm.Deguzman                             | Updated
+//0.04    | 09/09/2020 |  WS) K.abad, WS) J.Iwarat, WS) R.Ramos       | Updated
 //==================================================================================================
 /**
 * <pre>
 * The data access implementation to get the data from the database
 * <pre>
 * 
-* @version 0.01
+* @version 0.04
+* @author k.abad
 * @author Jm.Deguzman
+* @author j.iwarat
+* @author r.ramos
 */
 @Repository
 public class DashboardPmoDaoImpl implements DashboardPmoDao {
@@ -49,9 +53,9 @@ public class DashboardPmoDaoImpl implements DashboardPmoDao {
     @Override
     public Set<DashboardPmo> findCourses() {
         String sql = "SELECT C.NAME AS \"C.NAME\" , " +
-                "CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME, " +
-                "CSD.SCHEDULED_START_DATETIME  AS \"CSD.SCHEDULED_START_DATETIME\", " +
-                "CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " +
+                "CONCAT(E.LAST_NAME , ', ', E.FIRST_NAME) AS FULL_NAME , " +
+                "COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS \"CSD.SCHEDULED_START_DATETIME\", " +
+                "COALESCE(CSD.RESCHEDULED_END_DATETIME, CSD.SCHEDULED_END_DATETIME) AS \"CSD.SCHEDULED_END_DATETIME\", " +
                 "CS.MIN_REQUIRED AS \"CS.MIN_REQUIRED\", " +
                 "CS.MAX_ALLOWED AS \"CS.MAX_ALLOWED\", " +
                 "COUNT(CP.ID) AS ENROLLED, " +
@@ -69,6 +73,8 @@ public class DashboardPmoDaoImpl implements DashboardPmoDao {
                 "GROUP BY " +
                 "C.NAME, " +
                 "FULL_NAME, " +
+                "CSD.RESCHEDULED_START_DATETIME, " +
+                "CSD.RESCHEDULED_END_DATETIME, " +
                 "CSD.SCHEDULED_START_DATETIME, " +
                 "CSD.SCHEDULED_END_DATETIME, " +
                 "CS.MIN_REQUIRED, " +

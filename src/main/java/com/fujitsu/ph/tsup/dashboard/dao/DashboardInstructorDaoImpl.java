@@ -20,18 +20,22 @@ import com.fujitsu.ph.tsup.dashboard.domain.DashboardInstructor;
 //Class Name   :DashboardInstructorDaoImpl.java
 //
 //<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01 | 06/24/2020 |  WS) Jm.Deguzman   | New Creation
-//0.02 | 08/24/2020 |  WS) Jm.Deguzman   | Updated
+//Version | Date       | Updated By                                   | Content
+//--------+------------+----------------------------------------------+-----------------------------
+//0.01    | 06/24/2020 |  WS) Jm.Deguzman                             | New Creation
+//0.02    | 08/24/2020 |  WS) Jm.Deguzman                             | Updated
+//0.03    | 09/09/2020 |  WS) K.abad, WS) J.Iwarat, WS) R.Ramos       | Updated
 //==================================================================================================
 /**
 * <pre>
 * The data access implementation to get the data from the database
 * <pre>
 * 
-* @version 0.01
+* @version 0.03
+* @author k.abad
 * @author Jm.Deguzman
+* @author j.iwarat
+* @author r.ramos
 */
 @Repository
 public class DashboardInstructorDaoImpl implements DashboardInstructorDao {
@@ -51,8 +55,8 @@ public class DashboardInstructorDaoImpl implements DashboardInstructorDao {
     @Override
     public Set<DashboardInstructor> findCourses(Long employeeId) {
         String sql = "SELECT C.NAME AS \"C.NAME\", " +
-                "CSD.SCHEDULED_START_DATETIME AS \"CSD.SCHEDULED_START_DATETIME\", " +
-                "CSD.SCHEDULED_END_DATETIME AS \"CSD.SCHEDULED_END_DATETIME\", " +
+                "COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS \"CSD.SCHEDULED_START_DATETIME\", " +
+                "COALESCE(CSD.RESCHEDULED_END_DATETIME, CSD.SCHEDULED_END_DATETIME) AS \"CSD.SCHEDULED_END_DATETIME\", " +
                 "V.NAME AS \"V.NAME\", "+
                 "E.ID AS \"E.ID\", " +
                 "CS.STATUS  AS \"CS.STATUS\" " +

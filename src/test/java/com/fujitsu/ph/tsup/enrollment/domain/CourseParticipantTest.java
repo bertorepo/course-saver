@@ -419,15 +419,15 @@ class CourseParticipantTest {
 		CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L,
 				ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z")).build();
 
-		Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-		courseScheduleDetailSet.add(courseScheduleDetail);
+//		Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+//		courseScheduleDetailSet.add(courseScheduleDetail);
 
 		CourseParticipant courseParticipant = new CourseParticipant.Builder(1L, 1L, "DUMMY", "DUMMY", "DUMMY", 1L,
 				"DUMMY", ZonedDateTime.parse("2016-11-16T17:21:00Z"), "DUMMY",
-				ZonedDateTime.parse("2016-11-16T17:21:00Z")).addDetail(courseScheduleDetailSet).build();
+				ZonedDateTime.parse("2016-11-16T17:21:00Z")).addDetail(courseScheduleDetail).build();
 
 		assertNotNull(courseParticipant.getCourseScheduleDetail());
-		assertEquals(courseScheduleDetailSet, courseParticipant.getCourseScheduleDetail());
+		assertEquals(courseScheduleDetail, courseParticipant.getCourseScheduleDetail());
 	}
 
 }

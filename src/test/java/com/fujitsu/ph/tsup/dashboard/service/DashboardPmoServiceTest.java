@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fujitsu.ph.tsup.dashboard.dao.DashboardPmoDao;
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
+import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmo;
 
 @ExtendWith(SpringExtension.class)
 class DashboardPmoServiceTest {
@@ -42,8 +42,8 @@ class DashboardPmoServiceTest {
 
     @Test
     void testFindCourses_Valid() {
-        Set<DashboardPmoForm> dashboardSet = new HashSet<DashboardPmoForm>();
-        DashboardPmoForm dashboardPmo = new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", ZonedDateTime.now(),
+        Set<DashboardPmo> dashboardSet = new HashSet<DashboardPmo>();
+        DashboardPmo dashboardPmo = new DashboardPmo.Builder("Goal Setting", "de Leon, JC", ZonedDateTime.now(),
                 ZonedDateTime.now().plus(2, ChronoUnit.HOURS), 10, 20, 1, "A").build();
         dashboardSet.add(dashboardPmo);
 
@@ -54,7 +54,7 @@ class DashboardPmoServiceTest {
 
     @Test
     void testFindCourses_Invalid() {
-        Set<DashboardPmoForm> dashboardSet = new HashSet<DashboardPmoForm>();
+        Set<DashboardPmo> dashboardSet = new HashSet<DashboardPmo>();
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
             when(dao.findCourses()).thenReturn(dashboardSet);
             assertEquals(dashboardSet, service.findCourses());
@@ -63,5 +63,4 @@ class DashboardPmoServiceTest {
         assertTrue(error.getMessage().equals("No records found"));
 
     }
-
 }

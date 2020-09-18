@@ -28,8 +28,12 @@ public class CourseDeclineForm {
 
     /* Course Name */
     private String courseName;
+    
+    /* Course Schedule Id*/
+    //NEW
+    private Long courseScheduleId;
 
-    /* Instructor Name (LASTNAME, FIRSTNAME) */
+	/* Instructor Name (LASTNAME, FIRSTNAME) */
     private String instructorName;
 
     /* Venue Name */
@@ -39,7 +43,7 @@ public class CourseDeclineForm {
     private String participantName;
 
     /* Set of course schedule details */
-    private Set<CourseScheduleDetailForm> courseScheduleDetailsForm;
+    private CourseScheduleDetailForm courseScheduleDetailsForm;
 
     /* Registration Date **/
     private ZonedDateTime registrationDate;
@@ -66,6 +70,14 @@ public class CourseDeclineForm {
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
+    
+    public Long getCourseScheduleId() {
+		return courseScheduleId;
+	}
+
+	public void setCourseScheduleId(Long courseScheduleId) {
+		this.courseScheduleId = courseScheduleId;
+	}
 
     /** Instructor Name (LASTNAME, FIRSTNAME) Getter */
     public String getInstructorName() {
@@ -98,12 +110,12 @@ public class CourseDeclineForm {
     }
 
     /** Set of course schedule details Getter */
-    public Set<CourseScheduleDetailForm> getCourseScheduleDetailsForm() {
+    public CourseScheduleDetailForm getCourseScheduleDetailsForm() {
         return courseScheduleDetailsForm;
     }
 
     /** Set of course schedule details Setter */
-    public void setCourseScheduleDetailsForm(Set<CourseScheduleDetailForm> courseScheduleDetailsForm) {
+    public void setCourseScheduleDetailsForm(CourseScheduleDetailForm courseScheduleDetailsForm) {
         this.courseScheduleDetailsForm = courseScheduleDetailsForm;
     }
 

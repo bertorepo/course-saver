@@ -57,12 +57,12 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         CourseScheduleDetail courseScheduleDetail = 
                 new CourseScheduleDetail.Builder(courseScheduleDetailId, id, scheduledStartDateTime, scheduledEndDateTime,duration).build();
         
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-        courseScheduleDetailSet.add(courseScheduleDetail);
+//        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+//        courseScheduleDetailSet.add(courseScheduleDetail);
         
         CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
                 instructorLastName, instructorFirstName, venueId, venueName, minRequired, 
-                maxAllowed, totalParticipants, status).addDetail(courseScheduleDetailSet).build();
+                maxAllowed, totalParticipants, status).addDetail(courseScheduleDetail).build();
        
         return courseSchedule; 
     }

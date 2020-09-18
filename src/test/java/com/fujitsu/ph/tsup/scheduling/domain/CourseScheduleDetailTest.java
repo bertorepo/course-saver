@@ -131,4 +131,15 @@ public class CourseScheduleDetailTest {
         assertTrue(error.getMessage().equals("Scheduled end date and time should be greater than or "
                 + "equal to the the scheduled start date and time"));
     }
+    
+    @Test
+    void testInvalidDuration_isZero() {
+        Exception error = assertThrows(IllegalArgumentException.class, () -> {
+            new CourseScheduleDetail.Builder(1L, 1L,
+                    ZonedDateTime.parse("2016-11-16T17:21:00Z"), ZonedDateTime.parse("2016-11-16T17:21:00Z").plusHours(5), 0.0f)
+                            .build();
+        });
+        
+        assertTrue(error.getMessage().equals("Duration should not be null/zero/empty"));
+    }
 }

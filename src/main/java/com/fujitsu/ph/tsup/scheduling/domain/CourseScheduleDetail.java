@@ -150,8 +150,16 @@ public class CourseScheduleDetail {
             this.id = id;
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
-            this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = duration;
+            this.scheduledEndDateTime = scheduledEndDateTime;  
+            
+            if(duration <= 0.0f) {
+                duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
+                validateDuration(duration);
+                this.duration = duration;
+            } else {
+                validateDuration(duration);
+                this.duration = duration;
+            }
         }
         
         /**
@@ -166,7 +174,7 @@ public class CourseScheduleDetail {
          * @param scheduledEndDateTime
          */
         public Builder(Long courseScheduleId, ZonedDateTime scheduledStartDateTime, 
-                ZonedDateTime scheduledEndDateTime) {
+                ZonedDateTime scheduledEndDateTime, float duration) {
             validateCourseScheduleId(courseScheduleId);
             validateScheduledStartDateTime(scheduledStartDateTime);
             validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
@@ -174,7 +182,10 @@ public class CourseScheduleDetail {
             this.courseScheduleId = courseScheduleId;
             this.scheduledStartDateTime = scheduledStartDateTime;
             this.scheduledEndDateTime = scheduledEndDateTime;
-            this.duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
+            duration = computeDuration(scheduledStartDateTime, scheduledEndDateTime);
+            
+            validateDuration(duration);
+            this.duration = duration;
         }
         
         /**
@@ -245,6 +256,19 @@ public class CourseScheduleDetail {
                 throw new IllegalArgumentException("Scheduled end date and time should be greater than or "
                         + "equal to the the scheduled start date and time");
                 
+            }
+        }
+        
+        /**
+         * <pre>
+         * Validate the Duration based on the condition below. 
+         * If it is invalid then throw an IllegalArgumentException with the corresponding message.
+         * <pre>
+         */
+        
+        private void validateDuration(float duration) {
+            if(duration <= 0.0f) {
+                throw new IllegalArgumentException("Duration should not be null/zero/empty");
             }
         }
         

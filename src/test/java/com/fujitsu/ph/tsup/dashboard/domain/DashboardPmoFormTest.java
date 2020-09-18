@@ -12,8 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fujitsu.ph.tsup.dashboard.domain.DashboardPmoForm;
-
 @ExtendWith(SpringExtension.class)
 class DashboardPmoFormTest {
 
@@ -28,7 +26,7 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder(null, "de Leon, JC", startDateTime, endDateTime, 10, 
+            new DashboardPmo.Builder(null, "de Leon, JC", startDateTime, endDateTime, 10, 
                     30, 3, "A").build();
         });
         assertTrue(error.getMessage().equals("Course Name should not be empty"));
@@ -41,7 +39,7 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("", "de Leon, JC", startDateTime, endDateTime, 10, 
+            new DashboardPmo.Builder("", "de Leon, JC", startDateTime, endDateTime, 10, 
                     30, 3, "A").build();
         });
         assertTrue(error.getMessage().equals("Course Name should not be empty"));
@@ -58,7 +56,7 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("Goal Setting", null, startDateTime, endDateTime, 10, 
+            new DashboardPmo.Builder("Goal Setting", null, startDateTime, endDateTime, 10, 
                     30, 3, "A").build();
         });
         assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
@@ -71,7 +69,7 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("Goal Setting", "", startDateTime, endDateTime, 10, 
+            new DashboardPmo.Builder("Goal Setting", "", startDateTime, endDateTime, 10, 
                     30, 3, "A").build();
         });
         assertTrue(error.getMessage().equals("Instructor Name should not be empty"));
@@ -88,7 +86,7 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", null, endDateTime, 10, 
+            new DashboardPmo.Builder("Goal Setting", "de Leon, JC", null, endDateTime, 10, 
                     30, 3, "A").build();
         });
         assertTrue(error.getMessage().equals("Start Date Time should not be empty"));
@@ -105,7 +103,7 @@ class DashboardPmoFormTest {
         ZonedDateTime startDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", startDateTime, null, 10, 
+            new DashboardPmo.Builder("Goal Setting", "de Leon, JC", startDateTime, null, 10, 
                     30, 3, "A").build();
         });
         assertTrue(error.getMessage().equals("End Date Time should not be empty"));
@@ -121,7 +119,7 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 0, 
+            new DashboardPmo.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 0, 
                     30, 3, "A").build();
         });
         assertTrue(error.getMessage().equals("Minimum required should not be zero"));
@@ -137,7 +135,7 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 10, 
+            new DashboardPmo.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 10, 
                     0, 3, "A").build();
         });
         assertTrue(error.getMessage().equals("Maximum allowed should not be zero"));
@@ -158,7 +156,7 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 10, 
+            new DashboardPmo.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 10, 
                     30, 3, null).build();
         });
         assertTrue(error.getMessage().equals("Status should not be empty"));
@@ -171,17 +169,17 @@ class DashboardPmoFormTest {
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         Exception error = assertThrows(IllegalArgumentException.class, () -> {
-            new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 10, 
+            new DashboardPmo.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 10, 
                     30, 3, "").build();
         });
         assertTrue(error.getMessage().equals("Status should not be empty"));
     }
-    private DashboardPmoForm dashboardPmo() {
+    private DashboardPmo dashboardPmo() {
         ZonedDateTime startDateTime = ZonedDateTime.parse("07/03/20 10:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
         ZonedDateTime endDateTime = ZonedDateTime.parse("07/03/20 12:00.00.000 +08:00",
                 DateTimeFormatter.ofPattern("dd/MM/yy HH:mm.ss.SSS XXX"));
-        return new DashboardPmoForm.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 10, 30, 3, "A")
+        return new DashboardPmo.Builder("Goal Setting", "de Leon, JC", startDateTime, endDateTime, 10, 30, 3, "A")
                 .build();
     }
 }

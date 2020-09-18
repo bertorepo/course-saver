@@ -126,7 +126,7 @@ public class CreateCourseScheduleTest {
      */
     private CourseSchedule createCourseSchedule() {
         CourseScheduleDetail courseScheduleDetail = 
-                new CourseScheduleDetail.Builder(1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5)).build();
+                new CourseScheduleDetail.Builder(1L, ZonedDateTime.now(), ZonedDateTime.now().plusHours(5), 1f).build();
         Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
         courseScheduleDetailSet.add(courseScheduleDetail);
         return new CourseSchedule.Builder(1L, 1L, 1L, 1, courseScheduleDetailSet).maxAllowed(10).build();

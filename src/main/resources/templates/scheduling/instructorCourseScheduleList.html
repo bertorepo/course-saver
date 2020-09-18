@@ -18,9 +18,9 @@
 </head>
 
 <body onload="load()">
-	<div th:insert="fragments/general.html :: header"> </div>
+	<div th:insert="fragments/general.html :: header" > </div>
     
-    <div class="container mt-5">
+    <div class="container mt-5" style="min-height: calc(100vh - 180px)">
         <form class="form-horizontal" action="#" th:action="@{/schedules/view}" th:object="${scheduleView}" method="get">
             <h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
             <hr>
@@ -50,8 +50,8 @@
 				<div class="card-body text-center align-items-center d-flex justify-content-center">
 					<div style="overflow-x:auto;">
 						<h4>You have</h4>
-						<h2>0</h2>
-						<h4>training/s to attend today</h3>
+						<h2 th:text="*{totalTrainings}"> </h2>
+						<h4>training/s to attend today</h4>
 					</div>
 				</div>
 			</div>
@@ -66,10 +66,9 @@
                 <colgroup >
                     <col style="width:20%"/>
                     <col style="width:20%"/>
-                    <col style="width:10%"/>
                     <col style="width:20%"/>
                     <col style="width:20%"/>
-                    <col style="width:10%"/>
+                    <col style="width:20%"/>
                 </colgroup>
                 <thead>
                     <tr>
@@ -84,13 +83,66 @@
                 	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
                         <td th:text="${courseSchedules.courseName}"></td>
                         <td th:text="${courseSchedules.instructorName}"></td>
-                        <td th:text="${courseScheduleDetails.scheduledStartDateTime}"></td>
-                        <td th:text="${courseScheduleDetails.scheduledEndDateTime}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
+                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
                         <td th:text="${courseScheduleDetails.duration}"></td>
                     </tr>
                 </tbody>
             </table>
         </div> 
+         <!--View Top Learners Modal-->
+        <div class="modal fade" id="viewTopLearnersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg text-center">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Top Learners</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                        	<div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        		<h5><b>Quarter (Current Quarter)</b></h5>
+                            	<table class="table table-bordered">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th>
+                            				<th>Employee</th>
+                            			</tr>
+                            		</thead>
+                            		<tbody th:each="quarterlyTopLearners : *{quarterlyTopLearners}">
+                            			<tr>
+                            				<td th:text="${quarterlyTopLearners.place}"></td>
+                            				<td th:text="${quarterlyTopLearners.participantName}"></td>
+                            			</tr>
+                            		</tbody>
+                            	</table>
+                            </div>
+                            <div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        		<h5><b>Month (Current Month)</b></h5>
+                            	<table class="table table-bordered">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th>
+                            				<th>Employee</th>
+                            			</tr>
+                            		</thead>
+                            		<tbody th:each="monthlyTopLearners : *{monthlyTopLearners}">
+                            			<tr>
+                            				<td th:text="${monthlyTopLearners.place}"></td>
+                            				<td th:text="${monthlyTopLearners.participantName}"></td>
+                            			</tr>
+                            		</tbody>
+                            	</table>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div> 
+    <!--View Top Learners Modal end-->
+        
         </form>
         <!--Error Modal-->
         <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,139 +164,14 @@
         </div>  
     </div>
     <!--Error Modal end-->
-    <!--View Top Learners Modal-->
-        <div class="modal fade" id="viewTopLearnersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg text-center">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Top Learners</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group row">
-                        	<div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
-                        		<h5><b>Quarter (Current Quarter)</b></h5>
-                            	<table class="table table-bordered">
-                            		<thead>
-                            			<tr>
-                            				<th>#</th>
-                            				<th>Employee</th>
-                            			</tr>
-                            		</thead>
-                            		<tbody>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			
-                            		</tbody>
-                            	</table>
-                            </div>
-                            <div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
-                        		<h5><b>Month (Current Month)</b></h5>
-                            	<table class="table table-bordered">
-                            		<thead>
-                            			<tr>
-                            				<th>#</th>
-                            				<th>Employee</th>
-                            			</tr>
-                            		</thead>
-                            		<tbody>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            			<tr>
-                            				<td>1</td>
-                            				<td>Gene De Guzman</td>
-                            			</tr>
-                            		</tbody>
-                            	</table>
-                            </div>
-                        </div>  
-                    </div>
-                </div>
-            </div>
-        </div> 
-    <!--View Top Learners Modal end-->
-    </div>
+   
     <footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
-		<!--View Top Learners-->
+		/* <!--View Top Learners--> */
 			$('a[name="topLearners"]').on('click', function() {
 				$('#viewTopLearnersModal').modal('show');
 	});
-		<!--View Top Learners end-->
+		/* <!--View Top Learners end--> */
 		/*<![CDATA[*/
 			var errorMessage = /*[[${error}]]*/ 'default';
 			if(errorMessage == "To Date should be greater than or equal to From Date"){

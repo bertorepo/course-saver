@@ -3,7 +3,7 @@
  */
 package com.fujitsu.ph.tsup.course.dao;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -63,9 +63,22 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
         String query = "SELECT * FROM COURSE";
 
         List<Course> courseList = template.query(query, new CourseRowMapper());
-        Set<Course> courses = new HashSet<>(courseList);
+        Set<Course> courses = new LinkedHashSet<>(courseList);
 
         return courses;
+    }
+    
+    @Override
+    public Set<Course> findCoursesByName(String name) {
+    	
+    	String query = "SELECT * FROM COURSE WHERE LOWER(name) LIKE LOWER('%"+ name +"%')";
+    	
+    	SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("name", name);
+    	
+    	List<Course> courseList = template.query(query, sqlParameterSource, new CourseRowMapper());
+        Set<Course> courses = new LinkedHashSet<>(courseList);
+    	
+    	return courses;
     }
 
 }

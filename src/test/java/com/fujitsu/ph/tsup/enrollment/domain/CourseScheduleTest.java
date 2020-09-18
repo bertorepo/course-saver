@@ -37,7 +37,7 @@ public class CourseScheduleTest {
 		CourseScheduleDetail csd2 = new CourseScheduleDetail.Builder(2L, 2L, ZonedDateTime.now(), ZonedDateTime.now().plusDays(5)).build();
 		courseScheduleDetail.add(csd1);
 		courseScheduleDetail.add(csd2);
-		return new CourseSchedule.Builder(10L, 10L, "PeerReview", 10L, "DeGuzman", "Gene", 10L, "EcoTower", 10, 20, 15, 'A').addDetail(courseScheduleDetail).build();
+		return new CourseSchedule.Builder(10L, 10L, "PeerReview", 10L, "DeGuzman", "Gene", 10L, "EcoTower", 10, 20, 15, 'A').addDetail(csd1).build();
 	}
 	
 	@Test
@@ -186,7 +186,8 @@ public class CourseScheduleTest {
 	
 	@Test
 	void testInvalidateCourseScheduleDetail() {
-		Set<CourseScheduleDetail> courseScheduleDetail = new HashSet<CourseScheduleDetail>();
+//		Set<CourseScheduleDetail> courseScheduleDetail = new HashSet<CourseScheduleDetail>();
+		CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(0L).build();
 		Exception expected = assertThrows(IllegalArgumentException.class, () -> {
             new CourseSchedule.Builder(10L, 10L, "PeerReview", 10L, "DeGuzman", "Gene", 10L, "EcoTower", 10, 20, 0, 'A').addDetail(courseScheduleDetail);
         });
