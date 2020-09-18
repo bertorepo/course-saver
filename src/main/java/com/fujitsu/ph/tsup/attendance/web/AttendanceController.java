@@ -176,7 +176,6 @@ public class AttendanceController {
         model.addAttribute("lastSelected", id);
         model.addAttribute("courseParticipant", courseParticipantsForm);
         return "attendance/viewInstructorCourseParticipants";
-
     }
 
     /**

@@ -58,7 +58,6 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         int maxAllowed = rs.getInt("MAX_ALLOWED");
         int totalParticipants = rs.getInt("PARTICIPANT_ID");
         char status = rs.getString("STATUS").charAt(0);
-
         /*
          * <pre> Set<CourseScheduleDetail> fields <pre>
          */
