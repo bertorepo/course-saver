@@ -183,9 +183,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                            .Builder(findCourseParticipant.getId())
                            .decline(courseParticipant.getReason())
                            .build();
-             
-         enrollmentDao.deleteCourseParticipantById(courseParticipant.getCourseScheduleId());
-         enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
+         
+        enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
+        enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
+         
          } catch (DataAccessException ex) {
              throw new IllegalArgumentException(" Can't decline Course.");       
                  }     
