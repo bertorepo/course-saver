@@ -58,6 +58,7 @@ import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
 //0.06    | 08/05/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos   								 | Update
 //0.07    | 08/26/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos                                   | Update
 //0.08    | 09/17/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos                                   | Update
+//0.09    | 09/18/2020 | WS) K.Abad, WS) J.Iwarat, WS) R.Ramos                                   | Update
 //===================================================================================================================
 /**
  * <pre>
@@ -65,7 +66,7 @@ import com.fujitsu.ph.tsup.attendance.service.AttendanceService;
  * In this class, it implements the AttendanceService class for the initial setting of the database
  * </pre>
  * 
- * @version 0.08
+ * @version 0.09
  * @author k.abad
  * @author m.angara
  * @author h.francisco
@@ -129,9 +130,10 @@ public class AttendanceController {
 
         for (CourseSchedule courseSchedule : courseScheduleList) {
             CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
-            courseScheduleForm.setCourseId(courseSchedule.getCourseId());
+
             Set<CourseScheduleDetail> CourseScheduleDetailSet = courseSchedule.getCourseScheduleDetail();
             for (CourseScheduleDetail courseScheduleDetail : CourseScheduleDetailSet) {
+                courseScheduleForm.setCourseId(courseScheduleDetail.getCourseScheduleId());
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mma");
                 String formattedStartDate = courseScheduleDetail.getScheduledStartDateTime().format(formatter);
                 String formattedEndDate = courseScheduleDetail.getScheduledEndDateTime().format(formatter);
@@ -174,7 +176,6 @@ public class AttendanceController {
         model.addAttribute("lastSelected", id);
         model.addAttribute("courseParticipant", courseParticipantsForm);
         return "attendance/viewInstructorCourseParticipants";
-
     }
 
     /**
@@ -212,10 +213,10 @@ public class AttendanceController {
         
         for(CourseSchedule courseSchedule : courseScheduleSet) {
             ChangeStatusCourse changeStatusCourseForm = new ChangeStatusCourse();
-            changeStatusCourseForm.setId(courseSchedule.getId());
             Set<CourseScheduleDetail> CourseScheduleDetailSet = courseSchedule.getCourseScheduleDetail();
             
             for (CourseScheduleDetail courseScheduleDetail : CourseScheduleDetailSet) {
+                changeStatusCourseForm.setId(courseScheduleDetail.getId());
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mma");
                 String formattedStartDate = courseScheduleDetail.getScheduledStartDateTime().format(formatter);
                 String formattedEndDate = courseScheduleDetail.getScheduledEndDateTime().format(formatter);
@@ -352,10 +353,10 @@ public class AttendanceController {
 
         for (CourseSchedule courseSchedule : courseScheduleList) {
             GenerateAttendanceCourse generateAttendanceCourseForm = new GenerateAttendanceCourse();
-            generateAttendanceCourseForm.setId(courseSchedule.getId());
 
             Set<CourseScheduleDetail> CourseScheduleDetailSet = courseSchedule.getCourseScheduleDetail();
             for (CourseScheduleDetail courseScheduleDetail : CourseScheduleDetailSet) {
+                generateAttendanceCourseForm.setId(courseScheduleDetail.getId());
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mma");
                 String formattedStartDate = courseScheduleDetail.getScheduledStartDateTime().format(formatter);
                 String formattedEndDate = courseScheduleDetail.getScheduledEndDateTime().format(formatter);
@@ -442,10 +443,10 @@ public class AttendanceController {
 
         for (CourseSchedule courseSchedule : courseScheduleSet) {
             GenerateAttendanceCourse generateAttendanceCourseForm = new GenerateAttendanceCourse(); 
-            generateAttendanceCourseForm.setId(courseSchedule.getId());
                        
             Set<CourseScheduleDetail> CourseScheduleDetailSet = courseSchedule.getCourseScheduleDetail();
             for (CourseScheduleDetail courseScheduleDetail : CourseScheduleDetailSet) {
+                generateAttendanceCourseForm.setId(courseScheduleDetail.getId());
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mma");
                 String formattedStartDate = courseScheduleDetail.getScheduledStartDateTime().format(formatter);
                 String formattedEndDate = courseScheduleDetail.getScheduledEndDateTime().format(formatter);

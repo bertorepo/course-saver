@@ -39,13 +39,14 @@ import org.springframework.stereotype.Repository;
 //0.09    | 09/02/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.10    | 09/03/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //0.11    | 09/08/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
+//0.12    | 09/18/2020 | WS) K.abad, WS) J.Iwarat, WS) R.Ramos                     | Update
 //==================================================================================================
 /**
  * <pre>
  * The data access class for attendance related database access
  * </pre>
  * 
- * @version 0.11
+ * @version 0.12
  * @author k.abad
  * @author h.francisco
  * @author j.iwarat
@@ -76,6 +77,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
             Long instructorId) {
                 String sql = "SELECT " 
                 + "CSCHED.ID AS ID, " 
+                + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
                 + "CSCHED.COURSE_ID AS COURSE_ID," 
                 + "C.NAME AS COURSE_NAME,"
                 + "CSCHED.INSTRUCTOR_ID AS INSTRUCTOR_ID," 
@@ -103,8 +105,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "INNER JOIN EMPLOYEE AS E " 
                 + "ON CSCHED.INSTRUCTOR_ID = E.ID "
                 + "INNER JOIN VENUE AS V " 
-                + "ON CSCHED.VENUE_ID = V.ID " 
-                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
+                + "ON CSCHED.VENUE_ID = V.ID "
+                + "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
                 + "AND CSCHED.INSTRUCTOR_ID = :instructorId "
                 + "AND CSCHED.STATUS = 'A' "
                 + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
@@ -166,7 +169,13 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "    FROM EMPLOYEE "
                 + "    WHERE ID = CPART.PARTICIPANT_ID"
                 + ") AS EMPLOYEE_NUMBER, "
-                + "D.DEPARTMENT_NAME AS DEPARTMENT_NAME "
+                + "("
+                + "    SELECT DEPT.DEPARTMENT_NAME "
+                + "    FROM DEPARTMENT AS DEPT "
+                + "    INNER JOIN EMPLOYEE AS EMP "
+                + "    ON EMP.DEPARTMENT_ID = DEPT.ID "
+                + "    WHERE EMP.ID = CATTEN.PARTICIPANT_ID"
+                + ") AS DEPARTMENT_NAME "
                 + "FROM COURSE_SCHEDULE AS CSCHED "
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
@@ -178,8 +187,10 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "ON CSCHED.VENUE_ID = V.ID "
                 + "INNER JOIN COURSE_PARTICIPANT AS CPART "
                 + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
-                + "INNER JOIN DEPARTMENT AS D "  
-                + "ON CSCHED.ID = D.ID "  
+                + "INNER JOIN COURSE_ATTENDANCE AS CATTEN "
+                + "ON CSCHEDDET.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
+                + "INNER JOIN DEPARTMENT AS D  "
+                + "ON E.DEPARTMENT_ID = D.ID " 
                 + "WHERE CSCHED.ID = :id AND CSCHED.STATUS = 'A'";
 
         SqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -229,9 +240,11 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS EMPLOYEE_NUMBER, "
                 + "("
-                + "SELECT DEPARTMENT_NAME "
-                + "     FROM DEPARTMENT "
-                + "     WHERE ID = CATTEN.PARTICIPANT_ID"
+                + "     SELECT DEPT.DEPARTMENT_NAME "
+                + "     FROM DEPARTMENT AS DEPT "
+                + "     INNER JOIN EMPLOYEE AS EMP "
+                + "     ON EMP.DEPARTMENT_ID = DEPT.ID "
+                + "     WHERE EMP.ID = CATTEN.PARTICIPANT_ID"
                 + ") AS DEPARTMENT_NAME, "
                 + "("
                 + "    SELECT EMAIL_ADDRESS "
@@ -259,9 +272,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "INNER JOIN COURSE_PARTICIPANT AS CPART "
                 + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
                 + "INNER JOIN COURSE_ATTENDANCE AS CATTEN "
-                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
+                + "ON CSCHEDDET.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
                 + "INNER JOIN DEPARTMENT AS D  "
-                + "ON CSCHED.ID = D.ID "
+                + "ON E.DEPARTMENT_ID = D.ID "
                 + "WHERE CSCHEDDET.ID = :id AND CSCHED.STATUS = 'A'";
 
         SqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -296,24 +309,26 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "V.NAME AS VENUE_NAME, " 
                 + "CATTEN.PARTICIPANT_ID AS PARTICIPANT_ID, " 
                 + "("
-                + "SELECT LAST_NAME "
+                + "    SELECT LAST_NAME "
                 + "    FROM EMPLOYEE  "
                 + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_LAST_NAME, " 
                 + "("
-                + "SELECT FIRST_NAME "
+                + "     SELECT FIRST_NAME "
                 + "    FROM EMPLOYEE " 
                 + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS PARTICIPANT_FIRST_NAME, " 
                 + "("
-                + "SELECT NUMBER "
+                + "    SELECT NUMBER "
                 + "    FROM EMPLOYEE "
                 + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS EMPLOYEE_NUMBER, "
                 + "("
-                + "SELECT DEPARTMENT_NAME "
-                + "     FROM DEPARTMENT "
-                + "     WHERE ID = CATTEN.PARTICIPANT_ID"
+                + "     SELECT DEPT.DEPARTMENT_NAME "
+                + "     FROM DEPARTMENT AS DEPT "
+                + "     INNER JOIN EMPLOYEE AS EMP "
+                + "     ON EMP.DEPARTMENT_ID = DEPT.ID "
+                + "     WHERE EMP.ID = CATTEN.PARTICIPANT_ID"
                 + ") AS DEPARTMENT_NAME, "
                 + "("
                 + "    SELECT EMAIL_ADDRESS "
@@ -339,9 +354,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "INNER JOIN VENUE AS V " 
                 + "ON CSCHED.VENUE_ID = V.ID " 
                 + "INNER JOIN COURSE_ATTENDANCE AS CATTEN " 
-                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID " 
-                + "INNER JOIN DEPARTMENT AS D "
-                + "ON CSCHED.ID = D.ID "
+                + "ON CSCHEDDET.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
+                + "INNER JOIN DEPARTMENT AS D  "
+                + "ON E.DEPARTMENT_ID = D.ID "
                 + "WHERE COURSE_SCHEDULE_DETAIL_ID = :id " 
                 + "AND CSCHED.STATUS = 'A'";
         
@@ -419,7 +434,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "log_in_datetime = :loginDateTime, "
                 + "log_out_datetime = :logoutDateTime, "
                 + "email = :email "
-                + "WHERE participant_id = :participantId";
+                + "WHERE participant_id = :participantId AND course_schedule_detail_id = :courseScheduleDetailId";
 
         List<ChangeStatusParticipant> participants = courseAttendance.getParticipants();
         
@@ -493,7 +508,13 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "    FROM EMPLOYEE "
                 + "    WHERE ID = CATTEN.PARTICIPANT_ID"
                 + ") AS EMPLOYEE_NUMBER, "
-                + "D.DEPARTMENT_NAME AS DEPARTMENT_NAME, "
+                + "("
+                + "    SELECT DEPT.DEPARTMENT_NAME "
+                + "    FROM DEPARTMENT AS DEPT "
+                + "    INNER JOIN EMPLOYEE AS EMP "
+                + "    ON EMP.DEPARTMENT_ID = DEPT.ID "
+                + "    WHERE EMP.ID = CATTEN.PARTICIPANT_ID "
+                + ") AS DEPARTMENT_NAME, "
                 + "C.DETAIL AS DETAIL, "
                 + "CSCHEDDET.DURATION AS DURATION, "
                 + "CATTEN.STATUS AS STATUS, "
@@ -516,9 +537,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "INNER JOIN COURSE_PARTICIPANT AS CPART "
                 + "ON CSCHED.ID = CPART.COURSE_SCHEDULE_ID "
                 + "INNER JOIN COURSE_ATTENDANCE AS CATTEN "
-                + "ON CSCHED.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
+                + "ON CSCHEDDET.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
                 + "INNER JOIN DEPARTMENT AS D  "
-                + "ON CSCHED.ID = D.ID "
+                + "ON E.DEPARTMENT_ID = D.ID "
                 + "WHERE CSCHEDDET.ID = :id AND CSCHED.STATUS = 'A'";
         try {
             SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
@@ -577,7 +598,13 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "    FROM EMPLOYEE "
                 + "    WHERE ID = CPART.PARTICIPANT_ID"
                 + ") AS EMPLOYEE_NUMBER, "
-                + "D.DEPARTMENT_NAME AS DEPARTMENT_NAME, "
+                + "("
+                + "    SELECT DEPT.DEPARTMENT_NAME "
+                + "    FROM DEPARTMENT AS DEPT "
+                + "    INNER JOIN EMPLOYEE AS EMP "
+                + "    ON EMP.DEPARTMENT_ID = DEPT.ID "
+                + "    WHERE EMP.ID = CATTEN.PARTICIPANT_ID "
+                + ") AS DEPARTMENT_NAME, "
                 + "CSCHEDDET.DURATION AS DURATION, "
                 + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
                 + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
@@ -595,8 +622,10 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "ON E.ID = CSCHED.INSTRUCTOR_ID " 
                 + "INNER JOIN tsup.VENUE AS V "
                 + "ON V.ID = CSCHED.VENUE_ID \r\n"
+                + "INNER JOIN COURSE_ATTENDANCE AS CATTEN "
+                + "ON CSCHEDDET.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
                 + "INNER JOIN DEPARTMENT AS D  "
-                + "ON CSCHED.ID = D.ID "
+                + "ON E.DEPARTMENT_ID = D.ID "
                 + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
                 + "AND CPART.PARTICIPANT_ID = :participantId "
                + "AND CSCHED.STATUS = 'A'";
