@@ -73,6 +73,9 @@ public class CourseParticipant {
 
 	/** declineDate **/
 	private ZonedDateTime declineDate;
+	
+	/** Course Details **/
+	private String courseDetails;
 
 	protected CourseParticipant() {
 
@@ -93,6 +96,7 @@ public class CourseParticipant {
 		this.registrationDate = builder.registrationDate;
 		this.reason = builder.reason;
 		this.declineDate = builder.declineDate;
+		this.courseDetails = builder.courseDetails;
 
 	}
 
@@ -151,6 +155,10 @@ public class CourseParticipant {
 	public ZonedDateTime getDeclineDate() {
 		return declineDate;
 	}
+	
+	public String getCourseDetails() {
+        return courseDetails;
+    }
 
 	/**
 	 * <pre>
@@ -206,6 +214,9 @@ public class CourseParticipant {
 
 		/** Decline Date **/
 		private ZonedDateTime declineDate;
+		
+		/** Course Details **/
+	    private String courseDetails;
 
 		/**
 		 * <pre>
@@ -421,6 +432,14 @@ public class CourseParticipant {
 
 			return this;
 		}
+		
+		public Builder addCourseDetails(String courseDetails) {
+		    
+		    validateCourseDetails(courseDetails);
+		    this.courseDetails = courseDetails;
+		    
+		    return this;
+		}
 
 		/**
 		 * <pre>
@@ -619,6 +638,13 @@ public class CourseParticipant {
 				throw new IllegalArgumentException("Employee Number is Invalid");
 			}
 		}
+		
+		//NEW
+		private void validateCourseDetails(String courseDetails) {
+	         if(venueName == null || venueName.isEmpty()) {
+	                throw new IllegalArgumentException("Course Details should not be empty");
+	             }
+	        }
 
 	}
 	

@@ -22,12 +22,18 @@ package com.fujitsu.ph.tsup.enrollment.model;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CourseDeclineForm {
 	 /* COURSE_PARTICIPANT.Id */
     private Long id;
 
     /* Course Name */
     private String courseName;
+    
+    /* Course Id */
+    //New
+    private Long courseId;
     
     /* Course Schedule Id*/
     //NEW
@@ -46,10 +52,14 @@ public class CourseDeclineForm {
     private CourseScheduleDetailForm courseScheduleDetailsForm;
 
     /* Registration Date **/
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime registrationDate;
 
     /* Reason for non-participation */
     private String reason;
+    
+    /* Course Details */
+    private String details;
 
     /** COURSE_PARTICIPANT.Id Getter */
     public Long getId() {
@@ -71,6 +81,14 @@ public class CourseDeclineForm {
         this.courseName = courseName;
     }
     
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
     public Long getCourseScheduleId() {
 		return courseScheduleId;
 	}
@@ -139,9 +157,25 @@ public class CourseDeclineForm {
         this.reason = reason;
     }
     
-    public String toString() {
-        return "CourseDeclineForm [id=" + id + ", courseName=" + courseName + ", instructorName=" + instructorName
-        		+ ", venueName=" + venueName + ", participantName=" + participantName + ", courseScheduleDetailsForm=" 
-        		+ courseScheduleDetailsForm + ", registrationDate=" + registrationDate + ", reason=" + reason + "]";
+    
+    public String getDetails() {
+        return details;
     }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    @Override
+    public String toString() {
+        return "CourseDeclineForm [id=" + id + ", courseName=" + courseName
+                + ", courseId=" + courseId + ", courseScheduleId="
+                + courseScheduleId + ", instructorName=" + instructorName
+                + ", venueName=" + venueName + ", participantName="
+                + participantName + ", courseScheduleDetailsForm="
+                + courseScheduleDetailsForm + ", registrationDate="
+                + registrationDate + ", reason=" + reason + ", details="
+                + details + "]";
+    }
+ 
 }
