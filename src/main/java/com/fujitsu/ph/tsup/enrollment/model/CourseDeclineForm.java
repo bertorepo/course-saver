@@ -177,5 +177,4 @@ public class CourseDeclineForm {
                 + registrationDate + ", reason=" + reason + ", details="
                 + details + "]";
     }
- 
 }

@@ -42,7 +42,7 @@ public class CourseScheduleDetailForm {
     public Long getId() {
         return id;
     }
-
+    
     /** Course ID Setter */
     public void setId(Long id) {
         this.id = id;

@@ -38,7 +38,7 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 
 public class EnrollmentRowMapperCourseParticipant implements RowMapper<CourseParticipant> {
-
+	
     @Override
     public CourseParticipant mapRow(ResultSet rs, int rowNum) throws SQLException {
         Long id = rs.getLong("COURSE_PARTICIPANT_ID");

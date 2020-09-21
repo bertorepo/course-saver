@@ -97,7 +97,6 @@ public class CourseParticipant {
 		this.reason = builder.reason;
 		this.declineDate = builder.declineDate;
 		this.courseDetails = builder.courseDetails;
-
 	}
 
 	public Long getId() {

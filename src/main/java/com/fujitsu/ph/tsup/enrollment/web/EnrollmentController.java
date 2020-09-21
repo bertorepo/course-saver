@@ -191,7 +191,6 @@ public class EnrollmentController {
             		form.getFromDateTime(), form.getToDateTime());
         	
         	
-        	
         	Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
 	        for (CourseSchedule courseSchedule : courseSchedules) {

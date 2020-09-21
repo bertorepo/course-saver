@@ -174,7 +174,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
      **/
     @Override
     public void declineCourse(CourseParticipant courseParticipant) {
-
+    	
         try {
         CourseParticipant findCourseParticipant = enrollmentDao.findCourseParticipantById(courseParticipant.getId());
              
