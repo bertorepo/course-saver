@@ -187,9 +187,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
          template.update(saveCourseParticipantSql, saveCourseParticipantParameters);
          
          String saveAttendance = "INSERT INTO COURSE_ATTENDANCE"
-     	 		+ "(COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT_ID, STATUS, LOG_IN_DATETIME, LOG_OUT_DATETIME, EMAIL) "
-     	 		+ "VALUES (:courseScheduleDetailId, :participantId, 'A', 'now()', 'now()', :email)";
-     	 
+     	 		+ "(COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT_ID, STATUS, EMAIL) "
+     	 		+ "VALUES (:courseScheduleDetailId, :participantId, 'A', :email)";
+         
           SqlParameterSource saveAttendanceParameters = new MapSqlParameterSource()
          		 .addValue("courseScheduleDetailId", courseParticipant.getCourseScheduleDetail().getId())
          		 .addValue("participantId", courseParticipant.getParticipantId())
