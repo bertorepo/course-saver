@@ -2,6 +2,7 @@ package com.fujitsu.ph.tsup.enrollment.web;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -82,6 +83,8 @@ public class EnrollmentController {
 
     @Autowired
     private EnrollmentService enrollmentService;
+    
+    private CourseEnrolledListForm enrolledListForm = new CourseEnrolledListForm();
 
     /**
      * <pre>
@@ -186,7 +189,6 @@ public class EnrollmentController {
 
         	Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
             		form.getFromDateTime(), form.getToDateTime());
-        	
         	
         	
         	Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
@@ -307,6 +309,9 @@ public class EnrollmentController {
         }
         
         model.addAttribute("myCourseSched", courseEnrolledListForm);
+        model.addAttribute("courseDecline", new CourseDeclineForm());
+        
+        enrolledListForm = courseEnrolledListForm;
 
         return "enrollment/myCourseSched";
     }
@@ -320,22 +325,35 @@ public class EnrollmentController {
      * from the previous step into the CourseDeclineForm Return the Course decline
      * form and view
      */
-    @GetMapping("/myschedules/{courseParticipantId}/decline")
-    public String showCourseDeclineForm(@PathVariable("courseParticipantId") Long id, Model model) {
+    @GetMapping("/mySchedules/{courseId}/decline")
+    public String showCourseDeclineForm(@PathVariable("courseId") Long id, Model model, 
+            CourseDeclineForm courseDeclineForm) {
         logger.debug("Model:{}", model);
-
-        CourseDeclineForm courseDeclineForm = new CourseDeclineForm();
+        
+        System.out.println(id);
 
         CourseParticipant courseParticipant = enrollmentService.findCourseParticipantById(id);
+        
+        CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+        
+        detailForm.setId(courseParticipant.getCourseScheduleDetail().getId());
+        detailForm.setScheduledStartDateTime(courseParticipant.getCourseScheduleDetail().getScheduledStartDateTime());
+        detailForm.setScheduledEndDateTime(courseParticipant.getCourseScheduleDetail().getScheduledEndDateTime());
+        detailForm.setDuration(courseParticipant.getCourseScheduleDetail().getDuration());
 
-        courseDeclineForm.setId(courseParticipant.getId());
+        courseDeclineForm.setId(id);
         courseDeclineForm.setCourseName(courseParticipant.getCourseName());
+        courseDeclineForm.setCourseId(courseParticipant.getCourseId());
+        courseDeclineForm.setCourseScheduleId(courseParticipant.getCourseScheduleId());
         courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
         courseDeclineForm.setVenueName(courseParticipant.getVenueName());
         courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
         courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
-        courseDeclineForm.setReason(courseParticipant.getReason());
-
+        courseDeclineForm.setDetails(courseParticipant.getCourseDetails());
+        
+        courseDeclineForm.setCourseScheduleDetailsForm(detailForm);
+        
+        model.addAttribute("myCourseSched", enrolledListForm);
         model.addAttribute("courseDecline", courseDeclineForm);
         return "enrollment/myCourseSched";
     }
@@ -349,10 +367,66 @@ public class EnrollmentController {
      * courseParticipant Return the Course decline form and view. Return also a
      * success message.
      */
-    @DeleteMapping("/myschedules/{courseScheduleId}/decline")
-    public String submitCourseDeclineForm(@RequestBody CourseDeclineForm courseDeclineForm) {
-    	System.out.println("WORKS");
-    	return "awt";
+    @DeleteMapping("/mySchedules/{courseScheduleId}/decline")
+    public String submitCourseDeclineForm(@PathVariable("courseScheduleId") Long id,
+                @Valid @ModelAttribute("courseDecline") CourseDeclineForm courseDeclineForm,
+                Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes ) {
+        
+        logger.debug("courseDeclineForm:{}", courseDeclineForm);
+        logger.debug("BindingResult:{}", bindingResult);
+
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("courseDecline", courseDeclineForm);
+            return "enrollment/myCourseSched";
+        }
+        
+        CourseEnrolledListForm listForm = new CourseEnrolledListForm();
+        listForm.setFromDateTime(enrolledListForm.getFromDateTime());
+        listForm.setToDateTime(enrolledListForm.getToDateTime());
+        
+        CourseScheduleDetailForm courseSchedsDetail = courseDeclineForm.getCourseScheduleDetailsForm();
+        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+        
+        CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseDeclineForm.getCourseScheduleId(),
+                courseSchedsDetail.getScheduledStartDateTime(), courseSchedsDetail.getScheduledEndDateTime())
+                            .build();
+        courseScheduleDetailSet.add(courseScheduleDetail);    
+        
+
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(id, 
+                courseDeclineForm.getCourseId(), courseDeclineForm.getCourseScheduleId(), courseDeclineForm.getCourseName(), 
+                courseDeclineForm.getInstructorName(), courseDeclineForm.getVenueName(), courseDeclineForm.getId(), 
+                courseDeclineForm.getParticipantName(), courseDeclineForm.getRegistrationDate())
+                .decline(courseDeclineForm.getReason()).build();
+
+        enrollmentService.declineCourse(courseParticipant);
+
+        /*
+         * courseDeclineForm.setId(courseParticipant.getId());
+         * courseDeclineForm.setCourseName(courseParticipant.getCourseName());
+         * courseDeclineForm.setInstructorName(courseParticipant.
+         * getInstructorName());
+         * courseDeclineForm.setVenueName(courseParticipant.getVenueName());
+         * courseDeclineForm.setParticipantName(courseParticipant.
+         * getParticipantName());
+         * courseDeclineForm.setRegistrationDate(courseParticipant.
+         * getRegistrationDate());
+         * courseDeclineForm.setReason(courseParticipant.getReason());
+         */
+        
+        redirectAttributes.addFlashAttribute("myCourseSched", listForm);
+        
+        //Success Message
+        redirectAttributes.addFlashAttribute("courseDeclineSuccess", "You have successfully declined to "
+                    +courseDeclineForm.getCourseName()+" ["
+                        +DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
+                        .format(courseDeclineForm.getCourseScheduleDetailsForm()
+                                .getScheduledStartDateTime())+" - "
+                        +DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
+                                .format(courseDeclineForm.getCourseScheduleDetailsForm()
+                                        .getScheduledEndDateTime())+"].");
+    	return "redirect:/enrollment/mySchedules";
     }
 
     

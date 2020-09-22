@@ -158,14 +158,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public CourseParticipant findCourseParticipantById(Long id) {
         try {
-             CourseParticipant courseParticipant = enrollmentDao.findCourseParticipantById(id); 
-                             if(courseParticipant == null ) {
-                                 throw new IllegalArgumentException("Participant not Found");
-                             } 
-                                 return courseParticipant;   
-                         } catch (DataAccessException ex) {
-                             throw new IllegalArgumentException(" Participant not Found ");  
-             }
+             return enrollmentDao.findCourseParticipantById(id);   
+        } catch (DataAccessException ex) {
+             throw new IllegalArgumentException(" Participant not Found ");  
+        }
     }
     
     /**
@@ -178,7 +174,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
      **/
     @Override
     public void declineCourse(CourseParticipant courseParticipant) {
-
+    	
         try {
         CourseParticipant findCourseParticipant = enrollmentDao.findCourseParticipantById(courseParticipant.getId());
              
@@ -187,9 +183,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                            .Builder(findCourseParticipant.getId())
                            .decline(courseParticipant.getReason())
                            .build();
-             
-         enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
-         enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
+         
+        enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
+        enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
+         
          } catch (DataAccessException ex) {
              throw new IllegalArgumentException(" Can't decline Course.");       
                  }     
