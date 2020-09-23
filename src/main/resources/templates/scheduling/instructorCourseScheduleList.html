@@ -29,13 +29,13 @@
                     <div class="form-group row">
                         <label class="col-lg-2 col-form-label">From Date</label>
                         <div class="col-lg-3">
-                           <input class="form-control" type="date" id="fromDate" name="fromDate"/>
+                           <input class="form-control" type="datetime-local" id="fromDate" name="fromDate"/>
                            <!-- This is used to compile the converted date and pass it to the controller -->
                            <input type="hidden" th:field="*{fromDateTime}" />
                         </div>
                         <label class="col-lg-2 col-form-label">To Date</label>
                         <div class="col-lg-3">
-                            <input class="form-control" type="date" id="toDate" name="toDate"/>
+                            <input class="form-control" type="datetime-local" id="toDate" name="toDate"/>
                             <!-- This is used to compile the converted date and pass it to the controller -->
                             <input type="hidden" th:field="*{toDateTime}" />
                         </div>
@@ -166,63 +166,18 @@
     <!--Error Modal end-->
    
     <footer th:replace="fragments/general.html :: footer"></footer>
+    
+    <script th:src="@{/js/lib/scheduling/scheduling-common.js}"></script>
+    <script th:src="@{/js/lib/scheduling/instructorCourseScheduleList.js}"></script>
+    
+    <!-- FOR CDATA -->
 	<script th:inline="javascript">
-		/* <!--View Top Learners--> */
-			$('a[name="topLearners"]').on('click', function() {
-				$('#viewTopLearnersModal').modal('show');
-	});
-		/* <!--View Top Learners end--> */
 		/*<![CDATA[*/
 			var errorMessage = /*[[${error}]]*/ 'default';
 			if(errorMessage == "To Date should be greater than or equal to From Date"){
 				$('#errorModal').modal('show');
 			}
 		/*<![CDATA[*/
-			
-		function load(){
-			var fromDateTime = $("#fromDateTime").val();
-			var toDateTime = $("#toDateTime").val();
-			
-			var fromNewDate = fromDateTime.toString().slice(0,10);
-			var toNewDate = toDateTime.toString().slice(0,10);
-			
-			document.getElementById("fromDate").value = fromNewDate;
-			document.getElementById("toDate").value = toNewDate;
-		}
-	
-		$("#fromDate").blur(function () {
-			var formDate = document.getElementById("fromDate").value;
-			var newDate = new Date(formDate);
-			var dateConcat = newDate.toISO().toString();
-			if (formDate == "") {
-				$("#fromDateTime").prop('value', null);
-			} else {
-				$("#fromDateTime").prop('value', dateConcat);
-			}
-		}); 
-		
-		$("#toDate").blur(function () {
-			var formDate = document.getElementById("toDate").value;
-			var newDate = new Date(formDate);
-			var dateConcat = newDate.toISO().toString(); 
-			if (formDate == "") {
-				$("#toDateTime").prop('value', null);
-			} else {
-				$("#toDateTime").prop('value', dateConcat);
-			}
-		}); 
-		
-		//Format Date Inputs
-		Date.prototype.toISO = function() {
-			 return this.getUTCFullYear() +
-		        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
-		        '-' + String(this.getUTCDate()).padStart(2, "0") +
-		        'T' + String(this.getUTCHours()).padStart(2, "0") +
-		        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
-		        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
-		        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-		        'Z';
-		};
 	</script>
 </body>
 </html>
