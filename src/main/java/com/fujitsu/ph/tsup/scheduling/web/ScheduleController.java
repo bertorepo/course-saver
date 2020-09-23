@@ -232,11 +232,15 @@ public class ScheduleController {
         
         for (CourseScheduleDetailForm detForm : courseScheduleDetailFormList) {
             CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+            if (detForm.getScheduledEndDateTime() != null) {
+                detailForm.setScheduledEndDateTime(detForm.getScheduledEndDateTime()
+                        .withZoneSameInstant(ZoneId.systemDefault()));
+            }
+            if (detForm.getScheduledStartDateTime() != null) {
+                detailForm.setScheduledStartDateTime(detForm.getScheduledStartDateTime()
+                        .withZoneSameInstant(ZoneId.systemDefault()));
+            }
             
-            detailForm.setScheduledEndDateTime(detForm.getScheduledEndDateTime()
-                                                        .withZoneSameInstant(ZoneId.systemDefault()));
-            detailForm.setScheduledStartDateTime(detForm.getScheduledStartDateTime()
-                                                        .withZoneSameInstant(ZoneId.systemDefault()));
             detailFormList.add(detailForm);
         }
         
