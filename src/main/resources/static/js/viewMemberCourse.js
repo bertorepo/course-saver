@@ -100,7 +100,7 @@ function findEnrolledMemberByCourseScheduleId(courseScheduleId){
 			toTableEnrolledMember(data);
 		},
 		error: function(){
-			alert("ERROR findEnrolledMember");
+		
 		}
 	});
 	
