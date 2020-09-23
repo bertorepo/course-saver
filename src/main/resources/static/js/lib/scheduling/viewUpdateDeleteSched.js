@@ -121,16 +121,14 @@ function validations() {
 				document.getElementById("minRequired").oninput = removeWarning;
 				document.getElementById("maxAllowed").oninput = removeWarning;
 				
-				setTimeout(function(){document.getElementById("courseName") = removeWarning;}, 5000);
-				setTimeout(function(){document.getElementById("instructorId") = removeWarning;}, 5000);
-				setTimeout(function(){document.getElementById("venueId") = removeWarning;}, 5000);
-				setTimeout(function(){document.getElementById("minRequired") = removeWarning;}, 5000);
-				setTimeout(function(){document.getElementById("maxAllowed") = removeWarning;}, 5000);
+				var errs = document.querySelectorAll(".er");
 				
-				setTimeout(function(){document.getElementById("startDate" + i) = removeWarning;}, 5000);
-				setTimeout(function(){document.getElementById("startTime" + i) = removeWarning;}, 5000);
-				setTimeout(function(){document.getElementById("endDate" + i) = removeWarning;}, 5000);
-				setTimeout(function(){document.getElementById("endTime" + i) = removeWarning;}, 5000);
+				setTimeout(function(){
+					for (i = 0; i < errs.length; i++) {
+						
+						errs[i].innerHTML = " ";	
+					}
+					}, 10000);
 				
 				document.getElementById("startDateTime"+i).value = startDateTime;
 	    		document.getElementById("endDateTime"+i).value = endDateTime; 

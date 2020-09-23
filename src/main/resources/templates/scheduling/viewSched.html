@@ -208,7 +208,7 @@
 												th:text="${instructors.name}"
 												th:selected="${instructors.id} eq *{instructorId}"></option>
 									</select>
-									<div class="text-danger" id="instructorId_error"></div>
+									<div class="text-danger er" id="instructorId_error"></div>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -221,19 +221,19 @@
 												th:text="${venues.name}"
 												th:selected="${venues.id} eq *{venueId}"></option>
 									</select>
-									<div class="text-danger" id="venueId_error"></div>
+									<div class="text-danger er" id="venueId_error"></div>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Participants:</label>
 								<div class="col-lg-3">
 									<input type="text" class="form-control" th:field="*{minRequired}" id="minRequired">
-									<div class="text-danger" id="minRequired_error"></div>
+									<div class="text-danger er" id="minRequired_error"></div>
 								</div>
 								<div class="col-lg-1 text-center">—</div>
 								<div class="col-lg-3">
 									<input type="text" class="form-control" th:field="*{maxAllowed}"  id="maxAllowed" >
-									<div class="text-danger" id="maxAllowed_error"></div>
+									<div class="text-danger er" id="maxAllowed_error"></div>
 								</div>
 							</div>	
 							<div class="form-group row">
@@ -262,13 +262,13 @@
 													<div class="col-lg-6">
 														<input type="date" class="form-control" 
 															   th:id="${'startDate' + (stat.index + 1)}">
-														<div class="text-danger" th:id="${'startDate' + (stat.index + 1) + '_error'}">
+														<div class="text-danger er" th:id="${'startDate' + (stat.index + 1) + '_error'}">
 														</div>
 													</div>
 													<div class="col-lg-6">
 														<input type="time" class="form-control" 
 																th:id="${'startTime' + (stat.index + 1)}">
-														<div class="text-danger" th:id="${'startTime' + (stat.index + 1) + '_error'}">
+														<div class="text-danger er" th:id="${'startTime' + (stat.index + 1) + '_error'}">
 														</div>
 													</div>
 												</div>
@@ -290,13 +290,13 @@
 													<div class="col-lg-6">
 														<input type="date" class="form-control" 
 															   th:id="${'endDate' + (stat.index + 1)}" >
-														<div class="text-danger" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
+														<div class="text-danger er" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
 														
 													</div>
 													<div class="col-lg-6">
 														<input type="time" class="form-control" 
 																th:id="${'endTime' + (stat.index + 1)}">
-														<div class="text-danger" th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
+														<div class="text-danger er" th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
 													</div>
 												</div>
 											</td>
