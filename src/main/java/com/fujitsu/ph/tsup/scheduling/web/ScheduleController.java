@@ -368,10 +368,14 @@ public class ScheduleController {
                         
                         for (CourseScheduleDetailForm detForm : form.getCourseScheduleDetailsAsList()) {
                             CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
-                            detailForm.setScheduledEndDateTime(detForm.getScheduledEndDateTime()
-                                                                        .withZoneSameInstant(ZoneId.systemDefault()));
-                            detailForm.setScheduledStartDateTime(detForm.getScheduledStartDateTime()
-                                                                        .withZoneSameInstant(ZoneId.systemDefault()));
+                            if (detForm.getScheduledEndDateTime() != null) {
+                                detailForm.setScheduledEndDateTime(detForm.getScheduledEndDateTime()
+                                        .withZoneSameInstant(ZoneId.systemDefault()));
+                            }
+                            if (detForm.getScheduledStartDateTime() != null) {
+                                detailForm.setScheduledStartDateTime(detForm.getScheduledStartDateTime()
+                                        .withZoneSameInstant(ZoneId.systemDefault()));
+                            }
                             detailFormList.add(detailForm);
                         }
                         

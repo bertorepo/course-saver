@@ -586,17 +586,39 @@
 				var startDateTime = document.getElementById("startDateTime1").value;
 			    var endDateTime = document.getElementById("endDateTime1").value;
 			    
-			    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-			    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+			    var startDate = startDateTime.substring(0, startDateTime.indexOf("T")).replace(/[-]/gi, "/");
+			    var endDate = endDateTime.substring(0, endDateTime.indexOf("T")).replace(/[-]/gi, "/");
 			    
+			    document.getElementById("startDate1").value = startDate;
+			    document.getElementById("endDate1").value = endDate;
+		    
 			    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
 			    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
 			    
-			    document.getElementById("startDate1").value = rowStartDate;
-			    document.getElementById("endDate1").value = rowEndDate;
+			    var startHours = parseInt(rowStartTime.substring(0, startDateTime.indexOf(":")));
+			    var startMinutes = rowStartTime.substring(3, 5);
 			    
-			    document.getElementById("startTime1").value = rowStartTime;
-			    document.getElementById("endTime1").value = rowEndTime;
+			    if(startHours > 12){
+			    	var startTime = String(startHours-12).padStart(2, "0") +":"+ startMinutes + " PM";
+			    	document.getElementById("startTime1").value = startTime;
+			    } else if(startHours == 12) {
+			    	document.getElementById("startTime1").value = rowStartTime + " PM";
+			    } else {
+			    	document.getElementById("startTime1").value = rowStartTime + " AM";
+			    }
+			    
+			    var endHours = parseInt(rowEndTime.substring(0, endDateTime.indexOf(":")));
+			    var endMinutes = rowEndTime.substring(3, 5);
+			    
+			    if(endHours > 12){
+			    	var endTime = String(endHours-12).padStart(2, "0") + ":" + endMinutes + " PM";
+			    	document.getElementById("endTime1").value = endTime;
+			    } else if(endHours == 12){
+			    	document.getElementById("endTime1").value = rowEndTime + " PM";
+			    } else {
+			    	document.getElementById("endTime1").value = rowEndTime + " AM";
+			    }
+			   
 			}
 			
 			if($("#updateSuccessModal").length > 0){
@@ -643,7 +665,6 @@
 			    /*]]>*/
 			}
 		}
-	
 		
 	</script>
 </body>
