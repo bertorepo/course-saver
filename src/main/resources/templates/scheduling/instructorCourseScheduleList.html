@@ -29,13 +29,13 @@
                     <div class="form-group row">
                         <label class="col-lg-2 col-form-label">From Date</label>
                         <div class="col-lg-3">
-                           <input class="form-control" type="datetime-local" id="fromDate" name="fromDate"/>
+                           <input class="form-control" type="date" id="fromDate" name="fromDate"/>
                            <!-- This is used to compile the converted date and pass it to the controller -->
                            <input type="hidden" th:field="*{fromDateTime}" />
                         </div>
                         <label class="col-lg-2 col-form-label">To Date</label>
                         <div class="col-lg-3">
-                            <input class="form-control" type="datetime-local" id="toDate" name="toDate"/>
+                            <input class="form-control" type="date" id="toDate" name="toDate"/>
                             <!-- This is used to compile the converted date and pass it to the controller -->
                             <input type="hidden" th:field="*{toDateTime}" />
                         </div>
