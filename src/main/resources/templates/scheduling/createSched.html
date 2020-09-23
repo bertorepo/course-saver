@@ -272,7 +272,84 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 	<script th:src="@{/js/lib/scheduling/scheduling-common.js}"></script>
-	<script th:inline="javascript" th:src="@{/js/lib/scheduling/createSched.js}"></script>
+	<script th:src="@{/js/lib/scheduling/createSched.js}"></script>
+	
+	<!-- For CDATA -->
+	<script th:inline="javascript">
+	//Set Values on load
+	function load(){
+		
+		//Setting Course Name on Load
+		var courseName = $("#courses option[data-value='"+$('#courseId').val()+"']").val();
+		
+		if((courseName !== "") && (courseName !== undefined) && (courseName !== null)) {
+			document.getElementById("courseName").value = courseName;
+		}
+		
+		//Setting values on Course Schedule Details
+		var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+		var length = courseScheduleDetails.rows.length;
+		
+		//Disable Remove button if Course Schedule Details is 1
+		if(length <=1){
+			document.getElementById("row1").disabled = true;
+		}
+		
+		for(i=1; i<=length ; i++){
+			
+			var startDateTime = document.getElementById("startDateTime"+i).value;
+		    var endDateTime = document.getElementById("endDateTime"+i).value;
+		    
+		    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+		    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+		    
+		    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+		    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+		    
+		    document.getElementById("startDate"+i).value = rowStartDate;
+		    document.getElementById("endDate"+i).value = rowEndDate;
+		    
+		    document.getElementById("startTime"+i).value = rowStartTime;
+		    document.getElementById("endTime"+i).value = rowEndTime;
+		}
+		
+		//Success Modal Validation
+		if($("#successModal").length > 0){
+			/*<![CDATA[*/
+		    var successMessage = /*[[${message}]]*/ 'default';
+		    var element = document.getElementById('successConfirmed').value;
+
+		    console.log(successMessage);
+		    console.log(element);
+
+		    if (successMessage == element) {
+
+		        $('#successModal').modal('show');
+		    }
+		    /*]]>*/
+		}
+		
+		//Success Modal Validation
+		if($("#errorModal").length > 0){
+			/*<![CDATA[*/
+		    var errorMessage = /*[[${error}]]*/ 'default';
+		    var element = document.getElementById('hasError').value;
+		    
+		    if(element.includes('conflict')){
+		    	document.getElementById('errorTitle').innerHTML = "Conflict!";
+		    }
+
+		    console.log(successMessage);
+		    console.log(element);
+
+		    if (errorMessage == element) {
+
+		        $('#errorModal').modal('show');
+		    }
+		    /*]]>*/
+		}
+	}
+	</script>
 </body>
 
 </html>

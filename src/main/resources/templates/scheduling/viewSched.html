@@ -510,381 +510,99 @@
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
-<script th:inline="javascript">
-
-	/*<![CDATA[*/
-	var errorMessage = /*[[${error}]]*/ 'default';
-	if(errorMessage == "To Date should be greater than or equal to From Date"){
-		$('#error1Modal').modal('show');
-	}
-	/*<![CDATA[*/
-	//Update
+	<script th:src="@{/js/lib/scheduling/scheduling-common.js}"></script>
+	<script th:src="@{/js/lib/scheduling/viewUpdateDeleteSched.js}"></script>
 	
-	/* function submitDelete(id){
+	<!-- For CDATA -->
+	<script th:inline="javascript">
+	
+		/*<![CDATA[*/
+		var errorMessage = /*[[${error}]]*/ 'default';
+		if(errorMessage == "To Date should be greater than or equal to From Date"){
+			$('#error1Modal').modal('show');
+		}
+		/*<![CDATA[*/
 		
-		var deleteValue = document.getElementById(id).value;
-		var fromDate = document.getElementById("fromDateTime").value;
-		var toDate = document.getElementById("toDateTime").value;
-		var Url = "/schedules/courseSchedule/"+ deleteValue +"/scheduleDelete";
-		
-		var deleteForm = {
-				"courseId" : document.getElementById("courseId").value,
-				"courseName" : document.getElementById("courseName").value,
-				"instructorName" : document.getElementById("instructorName").value,
-				"courseScheduleDetailList" : {
-					"scheduledStartDateTime" : document.getElementById("startDateTime1"),
-					"scheduledEndDateTime" : document.getElementById("endDateTime1")
-				},
-				"venueName" : document.getElementById("venueName"),
-				"courseDetails" : document.getElementById("courseDetails")
-		};
-		
-		$.ajax({
-			type: "DELETE",
-			url: Url,
-			data: JSON.stringify(deleteForm),
-			contentType: "application/json",
-			dataType: "text",
-			success: function (result) {
-				document.location.href = "/schedules/courseSchedules/view"
-				document.getElementById("fromDateTime").value = fromDate;
-				document.getElementById("toDateTime").value = toDate;
-			},
-			error: function (xhr, error) {
-				console.log(xhr.status);
-				console.log(error);
-			}
+		function load(){
+			var fromDateTime = $("#fromDateTime").val();
+			var toDateTime = $("#toDateTime").val();
+			var fromNewDate = fromDateTime.toString().slice(0,10);
+			var toNewDate = toDateTime.toString().slice(0,10);
 			
-		});
-	}; */
-	
-	//Checks if Date is Today
-	function isLessThanToday(date){
-		var dateEntry = new Date(date);
-		var today = new Date((new Date).setHours(0, 0, 0, 0));
-		return dateEntry < today;
-	}
-	
-	function validations() {
-		
-		var errorCount = 0;
-		var instructor = $('#instructorId').val();
-		var venue = $('#venueId').val();
-		var minRequired = parseInt($('#minRequired').val().replace("", "0"));
-		var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
-		var courseScheduleDetails = document.getElementById("updateCourseScheduleDetails");
-		var length = courseScheduleDetails.rows.length;
-		
-		//Empty Fields Validations
-		if (instructor == "") {
-			errorCount++;
-			instructorError = "Please fill up Instructor";
-	        document.getElementById("instructorId_error").innerHTML = instructorError;
-		}
-		if (venue == "") {
-			errorCount++;
-			venueError = "Please fill up Venue";
-	        document.getElementById("venueId_error").innerHTML = venueError;
-		}
-		if (minRequired <= 0) {
-			errorCount++;
-		  	minRequiredError = "Please fill up Minimum no. of Participants";
-		  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
-		}
-		if (maxAllowed <=0) {
-			errorCount++;
-		  	maxAllowedError = "Please fill up Maximum no. of Participants";
-		  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
-		}
-		if (minRequired !==0) {
-			if (maxAllowed <= minRequired) {
-				errorCount++;
-		  	minRequiredError = "Minimum can't be greater or equal to Maximum Participants";
-		  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
-			}
-		}
-		//Scheduled Start Date Time and Scheduled End Date Time Part
-	    for(i = 1; i<= length; i++){
-	    	var startDate = document.getElementById("startDate"+i).value;
-	        var endDate =  document.getElementById("endDate"+i).value;
-	        var startTime =  document.getElementById("startTime"+i).value;
-	        var endTime =  document.getElementById("endTime"+i).value;
-	        
-	        /* var rowStartDateTime = new Date(startDate+"T"+startTime+":00Z");
-		    var rowEndDateTime = new Date(endDate+"T"+startTime+":00Z"); */
-	        
-	        var rowStartDateTime = new Date(startDate);
-		    var rowEndDateTime = new Date(endDate);
-		    
-		    rowStartDateTime.setHours(startTime.substring(0, startTime.indexOf(":")));
-		    rowStartDateTime.setMinutes(startTime.substring(startTime.indexOf(":") + 1));
-		    rowEndDateTime.setHours(endTime.substring(0, endTime.indexOf(":")));
-		    rowEndDateTime.setMinutes(endTime.substring(endTime.indexOf(":") + 1)); 
-		    
-		    console.log(rowStartDateTime);
-		    console.log(rowEndDateTime);
-	
-		    	//Start and End Time Validation
-	        	if (startDate > endDate)  {
-	        		errorCount++;
-	        		startDateError = "Start Date can't be greater <br> than or equal to end date";
-	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
-	            } 
-	        	
-	        	//Start and End Date Validation
-	        	if (startDate == endDate) {
-	        		if (startTime > endTime) {
-		        		errorCount++;
-		        		endStartTimeError = "Start time can't be greater <br> than or equal to end time";
-		        	  	document.getElementById("startTime" + i + "_error").innerHTML = endStartTimeError;
-		        	  	document.getElementById("endTime" + i + "_error").innerHTML = endStartTimeError;
-		            }
-	        	}
-	        	
-	        	//If Date is Less Than Today
-	        	if (isLessThanToday(startDate)) {
-	        		errorCount++;
-	        		startDateError = "Date can't be less than today";
-	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
-	        	}
-	        	
-	        	if (isLessThanToday(endDate)) {
-	        		errorCount++;
-	        		endDateError = "Date can't be less than today";
-	        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
-	        	}
-	        	
-	        	//If Datetime is equal Validation
-	        	if ((startDate == endDate) && (startTime == endTime)) {
-	        		errorCount++;
-	        		startDateError = "Start Date Time and End Date Time shouldn't be equal";
-	        		endDateError = "Start Date Time and End Date Time shouldn't be equal";
-	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
-	        		document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
-	        	}
-	        	
-	        	if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
-	        		errorCount++;
-	        		document.getElementById("startDate" + i + "_error").innerHTML = "Start Date cannot be null.";
-	        		document.getElementById("endDate" + i + "_error").innerHTML = "End Date cannot be null.";
-	        		document.getElementById("startTime" + i + "_error").innerHTML = "Start Time cannot be null.";
-	        	  	document.getElementById("endTime" + i + "_error").innerHTML = "End Time cannot be null.";
-	    	    } else {
-	    	    	var startDateTime = rowStartDateTime.toISO().toString();
-	    	        /* console.log(rowStartDateTime);
-	    	        console.log(startDateTime); */
-	    	    	var endDateTime = rowEndDateTime.toISO().toString();
-	    		    /* console.log(rowEndDateTime);
-	    		    console.log(endDateTime); */
-	    	    }
-	        	
-	        	document.getElementById("startDate" + i).oninput = removeWarning;
-	    		document.getElementById("startTime" + i).oninput = removeWarning;
-	    		document.getElementById("endDate" + i).oninput = removeWarning;
-	    		document.getElementById("endTime" + i).oninput = removeWarning;   		
-	    		
-	    		document.getElementById("instructorId").oninput = removeWarning;
-				document.getElementById("venueId").oninput = removeWarning;
-				document.getElementById("minRequired").oninput = removeWarning;
-				document.getElementById("maxAllowed").oninput = removeWarning;
-				
-				document.getElementById("startDateTime"+i).value = startDateTime;
-	    		document.getElementById("endDateTime"+i).value = endDateTime; 
-	    }
-
-	
-		if (errorCount <= 0) {
-			$('#updateModal').modal('hide');
-			$('#updateConfirmationModal').modal('show');
-		}
+			document.getElementById("fromDate").value = fromNewDate;
+			document.getElementById("toDate").value = toNewDate;
 			
-		  $('#updateModal').on('hide.bs.modal', function(e) {
-			  if(errorCount > 0) {
-				  e.preventDefault();
-			  }
-			  errorCount = 0;
-		    
-		   }); 
-  
-		   //error message remove warning
-		   function removeWarning() {
-				
-				var fieldId = this.id;
-				var data = document.getElementById(fieldId).value;
-				
-				
-				if (data !== "") {
-					document.getElementById(fieldId + "_error").innerHTML = "";
+			if ($("#updateView").length > 0){
+				var updateCourseScheduleId = $("#updateCourseScheduleId").val();
+				if(updateCourseScheduleId !== ""){
+					$('#updateModal').modal('show');
 				}
+			    
+			    var startDateTime = document.getElementById("startDateTime1").value;
+			    var endDateTime = document.getElementById("endDateTime1").value;
+			    
+			    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+			    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+			    
+			    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+			    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+			    
+			    document.getElementById("startDate1").value = rowStartDate;
+			    document.getElementById("endDate1").value = rowEndDate;
+			    
+			    document.getElementById("startTime1").value = rowStartTime;
+			    document.getElementById("endTime1").value = rowEndTime;
 			}
 			
-			
-	}
-	
-	function submitUpdate() {
-		var updateCourseScheduleId = $("#updateCourseScheduleId").val();
-		var Url = "/schedules/courseSchedule/"+ updateCourseScheduleId +"/update";
-		document.getElementById("updateView").action = Url;
-
-		
-	}
-	
-	/* $('button[name="update"]').on('click', function() {
-		$('#updateModal').modal('show');
-	}); */
-	
-	/* $('input[name="update"]').on('click', function() {
-		$('#updateConfirmationModal').modal('show');
-	}); */
-	/* $('input[name="updateConfirmation"]').on('click', function() {
-		$('#updateSuccessModal').modal('show');
-	}); */
-	
-	//Delete
-	/* $('button[name="delete"]').on('click', function() {
-		$('#deleteModal').modal('show');
-	}); */
-	
-/* 	function showDelete(id) {
-		
-		var deleteValue = document.getElementById(id).value;
-		var Url = "/schedules/courseSchedule/"+ deleteValue +"/delete";
-		document.location.href = Url;
-		
-	} */
-	
-	$('input[name="delete"]').on('click', function() {
-		$('#deleteConfirmationModal').modal('show');
-		$('#deleteModal').modal('hide');
-	});
-	$('input[name="deleteConfirmation"]').on('click', function() {
-		$('#deleteSuccessModal').modal('show');
-	});
-	//Message alert
-	//add if statement for the success/fail messages
-	$('input[name="error1"]').on('click', function() {
-		$('#error1Modal').modal('show');
-	});
-	$('input[name="error2"]').on('click', function() {
-		$('#error2Modal').modal('show');
-	});
-	//Message alert End
-	
-	function load(){
-		var fromDateTime = $("#fromDateTime").val();
-		var toDateTime = $("#toDateTime").val();
-		var fromNewDate = fromDateTime.toString().slice(0,10);
-		var toNewDate = toDateTime.toString().slice(0,10);
-		
-		document.getElementById("fromDate").value = fromNewDate;
-		document.getElementById("toDate").value = toNewDate;
-		
-		if ($("#updateView").length > 0){
-			var updateCourseScheduleId = $("#updateCourseScheduleId").val();
-			if(updateCourseScheduleId !== ""){
-				$('#updateModal').modal('show');
-			}
-		    
-		    var startDateTime = document.getElementById("startDateTime1").value;
-		    var endDateTime = document.getElementById("endDateTime1").value;
-		    
-		    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-		    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
-		    
-		    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-		    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-		    
-		    document.getElementById("startDate1").value = rowStartDate;
-		    document.getElementById("endDate1").value = rowEndDate;
-		    
-		    document.getElementById("startTime1").value = rowStartTime;
-		    document.getElementById("endTime1").value = rowEndTime;
-		}
-		
-		if ($("#deleteView").length > 0) {
-			var deleteCourseScheduleId =  $("#deleteCourseScheduleId").val();
-			if(deleteCourseScheduleId !== ""){
-				$('#deleteModal').modal('show');
+			if ($("#deleteView").length > 0) {
+				var deleteCourseScheduleId =  $("#deleteCourseScheduleId").val();
+				if(deleteCourseScheduleId !== ""){
+					$('#deleteModal').modal('show');
+				}
+				
+				var startDateTime = document.getElementById("startDateTime1").value;
+			    var endDateTime = document.getElementById("endDateTime1").value;
+			    
+			    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+			    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+			    
+			    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+			    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+			    
+			    document.getElementById("startDate1").value = rowStartDate;
+			    document.getElementById("endDate1").value = rowEndDate;
+			    
+			    document.getElementById("startTime1").value = rowStartTime;
+			    document.getElementById("endTime1").value = rowEndTime;
 			}
 			
-			var startDateTime = document.getElementById("startDateTime1").value;
-		    var endDateTime = document.getElementById("endDateTime1").value;
-		    
-		    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-		    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
-		    
-		    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-		    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-		    
-		    document.getElementById("startDate1").value = rowStartDate;
-		    document.getElementById("endDate1").value = rowEndDate;
-		    
-		    document.getElementById("startTime1").value = rowStartTime;
-		    document.getElementById("endTime1").value = rowEndTime;
-		}
-		
-		if($("#updateSuccessModal").length > 0){
-			/*<![CDATA[*/
-			var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
-			
-			var updated = document.getElementById("updated").innerHTML;
-
-			if (updateSuccess == updated) {
-				$('#updateSuccessModal').modal('show');
+			if($("#updateSuccessModal").length > 0){
+				/*<![CDATA[*/
+				var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
+				
+				var updated = document.getElementById("updated").innerHTML;
+	
+				if (updateSuccess == updated) {
+					$('#updateSuccessModal').modal('show');
+				}
+				/*]]>*/
 			}
-			/*]]>*/
-		}
-		
-		if($("#deleteSuccessModal").length > 0){
-			/*<![CDATA[*/
-			var deleteSuccess = /*[[${updateSuccess}]]*/ 'default';
 			
-			var deleted = document.getElementById("deleted").innerHTML;
-
-			if (deleteSuccess == updated) {
-				$('#deleteSuccessModal').modal('show');
+			if($("#deleteSuccessModal").length > 0){
+				/*<![CDATA[*/
+				var deleteSuccess = /*[[${updateSuccess}]]*/ 'default';
+				
+				var deleted = document.getElementById("deleted").innerHTML;
+	
+				if (deleteSuccess == updated) {
+					$('#deleteSuccessModal').modal('show');
+				}
+				/*]]>*/
 			}
-			/*]]>*/
 		}
-	}
-
-	$("#fromDate").blur(function () {
-		var formDate = document.getElementById("fromDate").value;
-		var newDate = new Date(formDate);
-		var dateConcat = newDate.toISO().toString();
-		if (formDate == "") {
-			$("#fromDateTime").prop('value', null);
-		} else {
-			$("#fromDateTime").prop('value', dateConcat);
-		}
-	}); 
 	
-	$("#toDate").blur(function () {
-		var formDate = document.getElementById("toDate").value;
-		var newDate = new Date(formDate);
-		var dateConcat = newDate.toISO().toString(); 
-		if (formDate == "") {
-			$("#toDateTime").prop('value', null);
-		} else {
-			$("#toDateTime").prop('value', dateConcat);
-		}
-	}); 
-	
-	//Format Date Inputs
-	Date.prototype.toISO = function() {
-		 return this.getUTCFullYear() +
-	        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
-	        '-' + String(this.getUTCDate()).padStart(2, "0") +
-	        'T' + String(this.getUTCHours()).padStart(2, "0") +
-	        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
-	        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
-	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-	        'Z';
-	};
-	
-	
-	
-</script>
+		
+	</script>
 </body>
 
 </html>

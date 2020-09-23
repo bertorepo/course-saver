@@ -1,3 +1,25 @@
+//For HTML with FromDateTime and ToDateTime
+$("#fromDate").blur(function () {
+	var formDate = document.getElementById("fromDate").value;
+	var newDate = new Date(formDate);
+	var dateConcat = newDate.toISO().toString();
+	if (formDate == "") {
+		$("#fromDateTime").prop('value', null);
+	} else {
+		$("#fromDateTime").prop('value', dateConcat);
+	}
+}); 
+
+$("#toDate").blur(function () {
+	var formDate = document.getElementById("toDate").value;
+	var newDate = new Date(formDate);
+	var dateConcat = newDate.toISO().toString(); 
+	if (formDate == "") {
+		$("#toDateTime").prop('value', null);
+	} else {
+		$("#toDateTime").prop('value', dateConcat);
+	}
+}); 
 
 //Format Date Inputs
 Date.prototype.toISO = function() {
