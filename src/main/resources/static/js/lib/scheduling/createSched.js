@@ -261,6 +261,25 @@ function validations() {
         	  	document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
         	}
         	
+        	if((length >= 2) && i > 1) {
+        		var startDateBefore = document.getElementById("startDate"+(i-1)).value;
+                var endDateBefore =  document.getElementById("endDate"+(i-1)).value;
+                var startTimeBefore =  document.getElementById("startTime"+(i-1)).value;
+                var endTimeBefore =  document.getElementById("endTime"+(i-1)).value;
+        		
+                if((startDate == startDateBefore) && (endDate == endDateBefore) && 
+                		(startTime == startTimeBefore) && (endTime == endTimeBefore)) {
+                
+                	errorCount++;
+            		startDateError = "Start Date Time and End Date Time should be not the same.";
+            		endDateError = "Start Date Time and End Date Time should be not the same.";
+            	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
+            		document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
+            		document.getElementById("startDate" + (i-1) + "_error").innerHTML = startDateError;
+            		document.getElementById("endDate" + (i-1) + "_error").innerHTML = endDateError;
+                
+                }
+        	}
         	
 	    }
 
@@ -286,6 +305,17 @@ function validations() {
 		document.getElementById("startTime" + i).oninput = removeWarning;
 		document.getElementById("endDate" + i).oninput = removeWarning;
 		document.getElementById("endTime" + i).oninput = removeWarning;
+		
+		setTimeout(function(){document.getElementById("courseName") = removeWarning;}, 5000);
+		setTimeout(function(){document.getElementById("instructorId") = removeWarning;}, 5000);
+		setTimeout(function(){document.getElementById("venueId") = removeWarning;}, 5000);
+		setTimeout(function(){document.getElementById("minRequired") = removeWarning;}, 5000);
+		setTimeout(function(){document.getElementById("maxAllowed") = removeWarning;}, 5000);
+		
+		setTimeout(function(){document.getElementById("startDate" + i) = removeWarning;}, 5000);
+		setTimeout(function(){document.getElementById("startTime" + i) = removeWarning;}, 5000);
+		setTimeout(function(){document.getElementById("endDate" + i) = removeWarning;}, 5000);
+		setTimeout(function(){document.getElementById("endTime" + i) = removeWarning;}, 5000);
 		
 	    if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 	    	var endDateTime = null;

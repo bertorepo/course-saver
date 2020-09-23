@@ -291,6 +291,7 @@
 														<input type="date" class="form-control" 
 															   th:id="${'endDate' + (stat.index + 1)}" >
 														<div class="text-danger" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
+														
 													</div>
 													<div class="col-lg-6">
 														<input type="time" class="form-control" 
@@ -505,6 +506,28 @@
 		</div>
 		<!--Delete Confirmation Success Modal End-->
 		
+		<!--Error Modal-->
+		<div class="modal fade" id="errorModal" th:if="${error}" tabindex="-1" role="dialog" 
+				aria-labelledby="exampleModalLabel" aria-hidden="true" 
+				data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 id="errorTitle" class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<input type="hidden" th:value="${error}" id="hasError"/>
+							<label class="col-lg-12 col-form-label" th:if="${error}" th:text="${error}"></label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Error Modal End-->	
 		
 	</div>
 	
@@ -598,6 +621,26 @@
 					$('#deleteSuccessModal').modal('show');
 				}
 				/*]]>*/
+			}
+			
+			//Conflict Modal Validation
+			if($("#errorModal").length > 0){
+				/*<![CDATA[*/
+			    var errorMessage = /*[[${error}]]*/ 'default';
+			    var element = document.getElementById('hasError').value;
+			    
+			    if(element.includes('conflict')){
+			    	document.getElementById('errorTitle').innerHTML = "Conflict!";
+			    }
+
+			    console.log(successMessage);
+			    console.log(element);
+
+			    if (errorMessage == element) {
+
+			        $('#errorModal').modal('show');
+			    }
+			    /*]]>*/
 			}
 		}
 	

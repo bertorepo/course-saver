@@ -227,9 +227,22 @@ public class ScheduleController {
         
         logger.debug("CourseScheduleNewForm : {}", form);
         List<CourseScheduleDetailForm> courseScheduleDetailFormList = form.getCourseScheduleDetailsAsList();
-        courseScheduleDetailFormList.add(new CourseScheduleDetailForm());
         
-        form.setCourseScheduleDetailsAsList(courseScheduleDetailFormList);
+        List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+        
+        for (CourseScheduleDetailForm detForm : courseScheduleDetailFormList) {
+            CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+            
+            detailForm.setScheduledEndDateTime(detForm.getScheduledEndDateTime()
+                                                        .withZoneSameInstant(ZoneId.systemDefault()));
+            detailForm.setScheduledStartDateTime(detForm.getScheduledStartDateTime()
+                                                        .withZoneSameInstant(ZoneId.systemDefault()));
+            detailFormList.add(detailForm);
+        }
+        
+        detailFormList.add(new CourseScheduleDetailForm());
+        
+        form.setCourseScheduleDetailsAsList(detailFormList);
         
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
@@ -262,11 +275,22 @@ public class ScheduleController {
         
          List<CourseScheduleDetailForm> newCourseScheduleDetailForm = form.getCourseScheduleDetailsAsList();
          
+         List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+         
          int index = row - 1;
          
          newCourseScheduleDetailForm.remove(index);
          
-         form.setCourseScheduleDetailsAsList(newCourseScheduleDetailForm);
+         for (CourseScheduleDetailForm detForm : newCourseScheduleDetailForm) {
+             CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+             detailForm.setScheduledEndDateTime(detForm.getScheduledEndDateTime()
+                                                         .withZoneSameInstant(ZoneId.systemDefault()));
+             detailForm.setScheduledStartDateTime(detForm.getScheduledStartDateTime()
+                                                         .withZoneSameInstant(ZoneId.systemDefault()));
+             detailFormList.add(detailForm);
+         }
+         
+         form.setCourseScheduleDetailsAsList(detailFormList);
          
          Set<CourseForm> courseFormList = scheduleService.findAllCourses();
          Set<VenueForm> venueFormList = scheduleService.findAllVenues();
@@ -614,6 +638,59 @@ public class ScheduleController {
 			model.addAttribute("updateView", form);
 			return "scheduling/viewSched";
 		}
+		
+		Set<CourseSchedule> courseSchedules = 
+                scheduleService.findAllScheduledCourses(ZonedDateTime.now().withHour(0).withMinute(0), 
+                                        ZonedDateTime.now().withHour(23).withMinute(59)
+                                            .withSecond(59).withYear(9999));
+		
+		
+		for(CourseSchedule courseSchedule : courseSchedules) {
+            Set<CourseScheduleDetail> cSchedDetail = courseSchedule.getCourseScheduleDetail();
+            
+            for(CourseScheduleDetail cSchedDet: cSchedDetail) {
+
+                //Check if there is any conflicting schedules when submitting form
+                if(((courseSchedule.getCourseId() == form.getCourseId()) ||
+                        (courseSchedule.getInstructorId() == form.getInstructorId()) ||
+                        (courseSchedule.getVenueId() == form.getVenueId())) &&
+                        //Checks if there's a same schedule that matches the submitted Schedule
+                        (form.getCourseScheduleDetailList().stream().anyMatch(i -> 
+                            i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
+                                .equals(cSchedDet.getScheduledEndDateTime()))) &&
+                        (form.getCourseScheduleDetailList().stream().anyMatch(o -> 
+                            o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
+                                .equals(cSchedDet.getScheduledStartDateTime())))) {
+                    
+                        List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+                        
+                        for (CourseScheduleDetailForm detForm : form.getCourseScheduleDetailList()) {
+                            CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
+                            detailForm.setScheduledEndDateTime(detForm.getScheduledEndDateTime()
+                                                                        .withZoneSameInstant(ZoneId.systemDefault()));
+                            detailForm.setScheduledStartDateTime(detForm.getScheduledStartDateTime()
+                                                                        .withZoneSameInstant(ZoneId.systemDefault()));
+                            detailFormList.add(detailForm);
+                        }
+                        
+                        form.setCourseId(form.getCourseId());
+                        form.setCourseScheduleDetailList(detailFormList);
+                        form.setVenues(venueFormList);
+                        form.setInstructors(instructorFormList);
+                        model.addAttribute("error", 
+                                                "The Schedule you have updated has conflict with " + 
+                                                        courseSchedule.getCourseName()+" [" +
+                                                        DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
+                                                             .format(cSchedDet.getScheduledStartDateTime()
+                                                                     .withZoneSameInstant(ZoneId.systemDefault())) +" - " + 
+                                                        DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
+                                                                .format(cSchedDet.getScheduledEndDateTime()
+                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +"]");
+                        model.addAttribute("updateView", form);
+                        return "scheduling/viewSched";
+                } 
+            }
+        }
 
 		Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
 
