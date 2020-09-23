@@ -846,10 +846,15 @@ public class ScheduleController {
                  */
 			}
 			
+			Comparator<ChangeStatusScheduleForm> compareStartDate = Comparator
+                    .comparing(x -> x.getCourseScheduleDetails().stream().findAny().get().getScheduledStartDateTime());
+			
+			Comparator<ChangeStatusScheduleForm> compareEndDate = Comparator
+                    .comparing(x -> x.getCourseScheduleDetails().stream().findAny().get().getScheduledEndDateTime());
+			
 			//Sorts the List
 	        changeStatusFormListSorted = changeStatusFormList.stream()
-                    .sorted(Collections.reverseOrder(Comparator.comparing(x -> 
-                                x.getCourseScheduleDetails().stream().findFirst().get().getScheduledStartDateTime())))
+                    .sorted(Collections.reverseOrder(compareStartDate.thenComparing(compareEndDate)))
                     .collect(Collectors.toList());
 
 		}
