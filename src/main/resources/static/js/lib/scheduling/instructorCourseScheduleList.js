@@ -9,8 +9,8 @@ function load(){
 	var fromDateTime = $("#fromDateTime").val();
 	var toDateTime = $("#toDateTime").val();
 	
-	var fromNewDate = fromDateTime.toString().slice(0,10);
-	var toNewDate = toDateTime.toString().slice(0,10);
+	var fromNewDate = fromDateTime.toString().slice(0,16);
+	var toNewDate = toDateTime.toString().slice(0,16);
 	
 	document.getElementById("fromDate").value = fromNewDate;
 	document.getElementById("toDate").value = toNewDate;
