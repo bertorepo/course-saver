@@ -224,13 +224,41 @@ function validations() {
         		endDateError = "Date can't be less than today";
         	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
         	}
-        	//If Datetime is equal Validation
-        	if ((startDate == endDate) && (startTime == endTime)) {
+        	if((startDate !== "") && (endDate !== "")) {
+        		//If Datetime is equal Validation
+            	if ((startDate == endDate) && (startTime == endTime)) {
+            		errorCount++;
+            		startDateError = "Start Date Time and End Date Time shouldn't be equal";
+            		endDateError = "Start Date Time and End Date Time shouldn't be equal";
+            	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
+            		document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
+            	}
+        		
+        	}
+        	
+        	if(startDate == "") {
         		errorCount++;
-        		startDateError = "Start Date Time and End Date Time shouldn't be equal";
-        		endDateError = "Start Date Time and End Date Time shouldn't be equal";
+        		startDateError = "Please fill up Start Date";
         	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
-        		document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
+        	}
+        	
+        	if(endDate == "") {
+        		errorCount++;
+        		endDateError = "Please fill up End Date";
+        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
+        	}
+        	
+        	
+        	if (startTime == "") {
+        		errorCount++;
+        		startTimeError = "Please fill up Start Time";
+        	  	document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
+        	}
+        	
+        	if (endTime == "") {
+        		errorCount++;
+        		endTimeError = "Please fill up End Time";
+        	  	document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
         	}
         	
         	
