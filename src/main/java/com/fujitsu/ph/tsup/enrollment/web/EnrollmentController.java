@@ -184,11 +184,12 @@ public class EnrollmentController {
         }
         model.addAttribute("activeCourseSchedule", courseScheduleSetForm);
 
+        try {
+        	
+        
         	Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
             		form.getFromDateTime(), form.getToDateTime());
-        	
-        	
-        	
+
         	Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
 
 	        for (CourseSchedule courseSchedule : courseSchedules) {
@@ -219,6 +220,9 @@ public class EnrollmentController {
 
 	                System.out.println("PartName" + top.getParticipantName());}
 	        }
+        }catch(Exception e) {
+        	model.addAttribute("nullMessage", e.getMessage());
+        }
         
         
         model.addAttribute("viewCourseEnroll",form);

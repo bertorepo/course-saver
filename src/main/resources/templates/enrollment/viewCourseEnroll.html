@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</div>
-		
+		</form>
 		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of Available Courses
 			<div class="float-right mt-3">
@@ -136,7 +136,7 @@
 		
 		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of All Available Course
-			<button id="cancelBelowMinimumbtn" class="btn btn-danger float-right" name="" disabled>
+			<button id="cancelBelowMinimumbtn" class="btn btn-danger float-right"  >
 				Cancel Below Minimum 
 			</button></h3>
 			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
@@ -291,10 +291,7 @@
             </div>
         </div> 
 		<!--Top Learners Modal End-->
-		
-		
-		</form>
-		
+
 		<!-- <!-- Error Modal
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
@@ -1044,11 +1041,11 @@
 	/*]]>*/
 	//REGISTRATION END
 	
-	<!--View Top Learners-->
+
 	$('a[name="topLearners"]').on('click', function() {
 		$('#topLearnersModal').modal('show');
 	});
-	<!--View Top Learners end-->
+
 	
 	//FromDateTime is Higher that ToDateTime
 	/*<![CDATA[*/
