@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</div>
-		</form>
+		
 		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of Available Courses
 			<div class="float-right mt-3">
@@ -130,9 +130,62 @@
 				<div class="alert alert-dismissible alert-danger text-center">
 					<strong th:text="${nullMessage}"></strong> 
 				</div>
-			</div>
-			
+			</div>			
 		</div>
+		
+		<!--Top Learners Modal-->		
+		<div class="modal fade" id="topLearnersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg text-center">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Top Learners</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                        	<div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        		<h5><b>Quarter</b></h5>
+                            	<table class="table table-bordered">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th>
+                            				<th>Employee</th>
+                            			</tr>
+                            		</thead>
+                            		<tbody th:each="topLearnerByQuarter : *{topLearnerByQuarter}">
+                            			<tr>
+                            				<td th:text="${topLearnerByQuarter.place}"></td>
+                            				<td th:text="${topLearnerByQuarter.participantName}"></td>
+                            			</tr>
+                            		</tbody>
+                            	</table>
+                            </div>
+                            <div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        		<h5><b>Month</b></h5>
+                            	<table class="table table-bordered">
+                            		<thead>
+                            			<tr>
+                            				<th>#</th>
+                            				<th>Employee</th>
+                            			</tr>
+                            		</thead>
+                            		<tbody th:each="topLearnerByMonth : *{topLearnerByMonth}">
+                            			<tr>
+                            				<td th:text="${topLearnerByMonth.place}"></td>
+                            				<td th:text="${topLearnerByMonth.participantName}"></td>
+                            			</tr>
+                            		</tbody>
+                            	</table>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div> 
+		<!--Top Learners Modal End-->
+		</form>
 		
 		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of All Available Course
@@ -239,59 +292,6 @@
 		</div>
 		<!-- CANCELATION & RESCHEDULE END-->
 			
-		<!--Top Learners Modal-->		
-		<div class="modal fade" id="topLearnersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg text-center">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Top Learners</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group row">
-                        	<div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
-                        		<h5><b>Quarter</b></h5>
-                            	<table class="table table-bordered">
-                            		<thead>
-                            			<tr>
-                            				<th>#</th>
-                            				<th>Employee</th>
-                            			</tr>
-                            		</thead>
-                            		<tbody th:each="topLearnerByQuarter : *{topLearnerByQuarter}">
-                            			<tr>
-                            				<td th:text="${topLearnerByQuarter.place}"></td>
-                            				<td th:text="${topLearnerByQuarter.participantName}"></td>
-                            			</tr>
-                            		</tbody>
-                            	</table>
-                            </div>
-                            <div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
-                        		<h5><b>Month</b></h5>
-                            	<table class="table table-bordered">
-                            		<thead>
-                            			<tr>
-                            				<th>#</th>
-                            				<th>Employee</th>
-                            			</tr>
-                            		</thead>
-                            		<tbody th:each="topLearnerByMonth : *{topLearnerByMonth}">
-                            			<tr>
-                            				<td th:text="${topLearnerByMonth.place}"></td>
-                            				<td th:text="${topLearnerByMonth.participantName}"></td>
-                            			</tr>
-                            		</tbody>
-                            	</table>
-                            </div>
-                        </div>  
-                    </div>
-                </div>
-            </div>
-        </div> 
-		<!--Top Learners Modal End-->
-
 		<!-- <!-- Error Modal
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
