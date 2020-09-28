@@ -1,9 +1,9 @@
 SET search_path = tsup;
 --EMPLOYEE
 INSERT INTO tsup.EMPLOYEE(ID, NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES (4, 'A10210', 'DUMMY', 'DUMMY', 'd.example', 'dummy@fujitsu.ph', 1);
+	VALUES (4, 'A10210', 'Lorenzo', 'Loyce', 'l.lorenzo', 'l.lorenzo@fujitsu.ph', 1);
 INSERT INTO tsup.EMPLOYEE(ID, NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES (5, 'A10456', 'TEST', 'TEST', 't.example', 'test@fujitsu.ph', 1);
+	VALUES (5, 'A10456', 'de Leon', 'JC', 'j.deleon', 'j.deleon@fujitsu.ph', 1);
 INSERT INTO tsup.EMPLOYEE(ID, NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
 	VALUES (6, 'A15893', 'MACABUDBUD', 'JAY IAN', 'j.macabudbud', 'j.macabudbud@fujitsu.ph', 1);
 
