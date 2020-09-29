@@ -66,9 +66,10 @@ function changeScheduleModal(data) {
 
 		var change = document.createElement('button');
 
-		change.innerHTML = "Change"
+		change.innerHTML = "<span class='fa fa-exchange'><" + "/span>";
+		change.title = "Change Course Schedule";
 		change.classList.add("btn");
-		change.classList.add("btn-success");
+		change.classList.add("btn-primary");
 
 		td.append(change);
 		tr.append(td);
@@ -138,7 +139,7 @@ function decline(courseName, instructorName, venueName,
 	$('#declineModal').modal('show');
 
 	var training = " training?";
-	var MainConfirmNameInput = document.getElementById('mainConfirmCourseName') ;
+	var MainConfirmNameInput = document.getElementById('mainConfirmCourseName');
 	MainConfirmNameInput.value = courseName + training;
 
 	var confirmNameInput = document.getElementById('confirmCourseName');
@@ -158,6 +159,43 @@ function decline(courseName, instructorName, venueName,
 
 
 }
+
+function declinedCourseSchedule(courseParticipantId,
+	courseName,
+	courseScheduleId,
+	registrationDate,
+	instructorName,
+	venueName,
+	startDateTime,
+	endDateTime,
+	duration,
+	courseId) {
+
+	var startDate = startDateTime.slice(0, 18);
+	var endDate = endDateTime.slice(0, 18);
+	var startTime = startDateTime.slice(21, 29);
+	var endTime = endDateTime.slice(21, 29);
+
+
+
+
+	document.getElementById('courseParticipantIdHidden').value = courseParticipantId;
+	document.getElementById('courseScheduleIdHidden').value = courseScheduleId;
+	document.getElementById('courseName').value = courseName;
+	document.getElementById('courseSchedInstructor').value = instructorName;
+	document.getElementById('courseSchedDate').value = startDate + " to " + endDate;
+
+	document.getElementById('courseSchedTime').value = startTime + " to " + endTime + " ( " + duration + " ) hour/(s)";
+	document.getElementById('courseSchedVenue').value = venueName;
+	document.getElementById('participantName').value = "No need to insert this";
+	document.getElementById('registrationDate').value = registrationDate;
+	document.getElementById('courseIdHidden').value = courseId;
+
+	document.getElementById('mainConfirmCourseName').value = courseName + " ? ";
+	$('#declineMemberModal').modal('show');
+
+}
+
 /*]]>*/
 
 
@@ -165,8 +203,19 @@ function decline(courseName, instructorName, venueName,
 /*<![CDATA[*/
 function confirmDecline() {
 	$('#confirmationModal').modal('show');
-	$('#declineModal').modal('hide');
+	$('#declineMemberModal').modal('hide');
 }
 /*]]>*/
+
+/*
+ * Back Modal
+ * from Confirmation of Decline back to Decline Member Modal
+ */
+function backModal() {
+	$('#confirmationModal').modal('hide');
+	$('#declineMemberModal').modal('show');
+}
+
+
 
 

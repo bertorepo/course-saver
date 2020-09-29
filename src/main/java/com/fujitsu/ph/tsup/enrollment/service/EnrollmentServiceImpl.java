@@ -180,7 +180,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public void declineCourse(CourseParticipant courseParticipant) {
 
-        try {
+       
         CourseParticipant findCourseParticipant = enrollmentDao.findCourseParticipantById(courseParticipant.getId());
              
         CourseParticipant dbCourseParticipant = 
@@ -191,9 +191,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
              
          enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
          enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
-         } catch (DataAccessException ex) {
-             throw new IllegalArgumentException(" Can't decline Course.");       
-                 }     
+      
     } 
     
     @Override
