@@ -29,8 +29,6 @@ import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -38,7 +36,7 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 
 public class EnrollmentRowMapperCourseParticipant implements RowMapper<CourseParticipant> {
-
+    
     @Override
     public CourseParticipant mapRow(ResultSet rs, int rowNum) throws SQLException {
         Long id = rs.getLong("COURSE_PARTICIPANT_ID");
@@ -46,6 +44,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         Long courseScheduleDetailId = rs.getLong("COURSE_SCHEDULE_DETAIL_ID");
         Long courseScheduleId = rs.getLong("COURSE_SCHEDULE_ID");
         String courseName = rs.getString("COURSE_NAME");
+        String courseDetails = rs.getString("DETAILS");
         String instructorName = rs.getString("INSTRUCTOR_LAST_NAME") + ", " + rs.getString("INSTRUCTOR_FIRST_NAME");
         String venueName = rs.getString("VENUE_NAME");
         Long participantId = rs.getLong("PARTICIPANT_ID");
@@ -59,7 +58,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(
                 rs.getTimestamp("SCHEDULED_END_DATETIME").toLocalDateTime().toInstant(ZoneOffset.UTC),
                 ZoneId.of("UTC"));
-       
+        
         CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailId,
                 courseScheduleId, scheduledStartDateTime, scheduledEndDateTime, duration).build();
         
@@ -68,7 +67,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         
         CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseId, courseScheduleId, courseName,
                 instructorName, venueName, participantId, participantName, registrationDate)
-                        .addDetail(courseScheduleDetail).build();
+                        .addDetail(courseScheduleDetail).addCourseDetails(courseDetails).build();
         
         return courseParticipant;
     }

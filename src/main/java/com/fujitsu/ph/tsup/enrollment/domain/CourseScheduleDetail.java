@@ -176,8 +176,8 @@ public class CourseScheduleDetail {
       
       public Builder(Long id, ZonedDateTime scheduledStartDateTime,
               ZonedDateTime scheduledEndDateTime, float duration) {
-    	  validateId(id);
-    	  validateScheduledStartDateTime(scheduledStartDateTime);
+          validateId(id);
+          validateScheduledStartDateTime(scheduledStartDateTime);
           validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
           
           this.id = id;
@@ -187,8 +187,8 @@ public class CourseScheduleDetail {
       }
       
       public Builder(Long id) {
-    	  validateId(id);
-    	  this.id = id;
+          validateId(id);
+          this.id = id;
       }
 
       /**
@@ -294,12 +294,12 @@ public class CourseScheduleDetail {
       }
   }
 
-	@Override
-	public String toString() {
-		return "CourseScheduleDetail [id=" + id + ", courseScheduleId=" + courseScheduleId + ", scheduledStartDateTime="
-				+ scheduledStartDateTime + ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration=" + duration
-				+ "]";
-	}
+    @Override
+    public String toString() {
+        return "CourseScheduleDetail [id=" + id + ", courseScheduleId=" + courseScheduleId + ", scheduledStartDateTime="
+                + scheduledStartDateTime + ", scheduledEndDateTime=" + scheduledEndDateTime + ", duration=" + duration
+                + "]";
+    }
   
   
 }

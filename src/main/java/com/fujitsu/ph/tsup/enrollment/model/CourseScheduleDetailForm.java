@@ -21,14 +21,18 @@ package com.fujitsu.ph.tsup.enrollment.model;
 */
 import java.time.ZonedDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CourseScheduleDetailForm {
     /* Course ID */
     private Long id;
 
     /* Course Schedule Start Date */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime scheduledStartDateTime;
 
     /* Course Schedule End Date */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime scheduledEndDateTime;
 
     /* Course Duration */
@@ -38,7 +42,7 @@ public class CourseScheduleDetailForm {
     public Long getId() {
         return id;
     }
-
+    
     /** Course ID Setter */
     public void setId(Long id) {
         this.id = id;
@@ -53,7 +57,7 @@ public class CourseScheduleDetailForm {
     public void setScheduledStartDateTime(ZonedDateTime scheduledStartDateTime) {
         this.scheduledStartDateTime = scheduledStartDateTime;
     }
-
+    
     /** Course Schedule End Date Getter */
     public ZonedDateTime getScheduledEndDateTime() {
         return scheduledEndDateTime;

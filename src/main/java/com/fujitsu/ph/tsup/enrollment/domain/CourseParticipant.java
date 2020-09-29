@@ -2,10 +2,6 @@ package com.fujitsu.ph.tsup.enrollment.domain;
 
 import java.time.ZonedDateTime;
 
-import java.util.Set;
-
-import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant.Builder;
-
 //==================================================================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -73,6 +69,9 @@ public class CourseParticipant {
 
 	/** declineDate **/
 	private ZonedDateTime declineDate;
+	
+	/** Course Details **/
+    private String courseDetails;
 
 	protected CourseParticipant() {
 
@@ -93,6 +92,7 @@ public class CourseParticipant {
 		this.registrationDate = builder.registrationDate;
 		this.reason = builder.reason;
 		this.declineDate = builder.declineDate;
+		this.courseDetails = builder.courseDetails;
 
 	}
 
@@ -152,6 +152,9 @@ public class CourseParticipant {
 		return declineDate;
 	}
 
+    public String getCourseDetails() {
+        return courseDetails;
+    }
 	/**
 	 * <pre>
 	 * The builder class of the course participant The builder is a public static
@@ -206,6 +209,10 @@ public class CourseParticipant {
 
 		/** Decline Date **/
 		private ZonedDateTime declineDate;
+		
+		  
+        /** Course Details **/
+        private String courseDetails;
 
 		/**
 		 * <pre>
@@ -422,6 +429,15 @@ public class CourseParticipant {
 			return this;
 		}
 
+		  public Builder addCourseDetails(String courseDetails) {
+	            
+	            validateCourseDetails(courseDetails);
+	            this.courseDetails = courseDetails;
+	            
+	            return this;
+	        }
+
+		
 		/**
 		 * <pre>
 		 * Validates and add the argument into the Builder instance variables
@@ -602,9 +618,10 @@ public class CourseParticipant {
 		 * @param reason
 		 */
 		private void validateReason(String reason) {
-			if (reason == null || reason.isEmpty()) {
-				throw new IllegalArgumentException("Reason should not be empty");
+			if (reason == null || reason.trim().length() == 0) {
+				throw new IllegalArgumentException("Reason must not be Empty");
 			}
+		
 		}
 		
 		//NEW
@@ -619,6 +636,13 @@ public class CourseParticipant {
 				throw new IllegalArgumentException("Employee Number is Invalid");
 			}
 		}
+		
+		//NEW
+        private void validateCourseDetails(String courseDetails) {
+             if(venueName == null || venueName.isEmpty()) {
+                    throw new IllegalArgumentException("Course Details should not be empty");
+                 }
+            }
 
 	}
 	

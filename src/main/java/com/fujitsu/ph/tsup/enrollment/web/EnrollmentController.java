@@ -82,6 +82,7 @@ public class EnrollmentController {
 
     @Autowired
     private EnrollmentService enrollmentService;
+    private CourseEnrolledListForm enrolledListForm = new CourseEnrolledListForm();
 
     /**
      * <pre>
@@ -292,6 +293,7 @@ public class EnrollmentController {
                 courseScheduleDetailForm.setScheduledEndDateTime(courseSchedDet.getScheduledEndDateTime());
                 courseScheduleDetailForm.setDuration(courseSchedDet.getDuration());
                 
+                
                 courseEnrollmentForm.setCourseScheduleDetails(courseScheduleDetailForm);
                 courseSchedules.add(courseEnrollmentForm);
                 courseEnrolledListForm.setCourseScheduleDetailForm(courseSchedules);
@@ -343,7 +345,7 @@ public class EnrollmentController {
         model.addAttribute("courseDecline", courseDeclineForm);
         return "enrollment/myCourseSched";
     }
-//
+
     /**
      * Method for submitCourseDeclineForm
      * 
@@ -353,10 +355,70 @@ public class EnrollmentController {
      * courseParticipant Return the Course decline form and view. Return also a
      * success message.
      */
-    @DeleteMapping("/myschedules/{courseScheduleId}/decline")
-    public String submitCourseDeclineForm(@RequestBody CourseDeclineForm courseDeclineForm) {
-    	System.out.println("WORKS");
-    	return "awt";
+    @DeleteMapping("/mySchedules/decline")
+    public String submitCourseDeclineForm(@Valid @ModelAttribute("courseDecline") CourseDeclineForm courseDeclineForm,
+                Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes ) {
+        
+        System.out.println("DELETE MAPPING");
+        logger.debug("courseDeclineForm:{}", courseDeclineForm);
+        logger.debug("BindingResult:{}", bindingResult);
+
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("courseDecline", courseDeclineForm);
+            return "enrollment/myCourseSched";
+        }
+     
+        try {
+        
+        CourseEnrolledListForm listForm = new CourseEnrolledListForm();
+        listForm.setFromDateTime(enrolledListForm.getFromDateTime());
+        listForm.setToDateTime(enrolledListForm.getToDateTime());
+        
+        
+        System.out.println("ID: " + courseDeclineForm.getId());
+        System.out.println("courseName: " + courseDeclineForm.getCourseName());
+        System.out.println("courseId: " + courseDeclineForm.getCourseId());
+        System.out.println("courseScheduleId: " + courseDeclineForm.getCourseScheduleId());
+        System.out.println("instructorName: " + courseDeclineForm.getInstructorName());
+        System.out.println("venueName: " + courseDeclineForm.getVenueName());
+        System.out.println("registrationDate: " + courseDeclineForm.getRegistrationDate());
+        System.out.println("Reason: " + courseDeclineForm.getReason());
+
+        CourseParticipant courseParticipant = new CourseParticipant.Builder(courseDeclineForm.getId(), 
+                courseDeclineForm.getCourseId(),
+                courseDeclineForm.getCourseScheduleId(),
+                courseDeclineForm.getCourseName(),
+                courseDeclineForm.getInstructorName(),
+                courseDeclineForm.getVenueName(),
+                courseDeclineForm.getId(), 
+                courseDeclineForm.getParticipantName(),
+                courseDeclineForm.getRegistrationDate())
+              
+                .decline(courseDeclineForm.getReason()).build();
+
+        enrollmentService.declineCourse(courseParticipant);
+
+        redirectAttributes.addFlashAttribute("myCourseSched", listForm);
+        
+        /*
+         * Success Message
+         * an attribute to be passed to Thymeleaf to show Success Message
+         */
+        redirectAttributes.addFlashAttribute("courseDeclineSuccess", "You have declined the course successfully!");
+        return "redirect:/enrollment/mySchedules";
+        
+        
+        } catch (Exception e) {
+            
+            /*
+             * Error Message
+             * an attribute to be passed to Thymeleaf to show Error Message
+             */
+            redirectAttributes.addFlashAttribute("errorDeclineMessage", e.getMessage());
+        
+    }
+        return "redirect:/enrollment/mySchedules";
     }
 
     

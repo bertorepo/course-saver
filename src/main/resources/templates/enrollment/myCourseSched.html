@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>My Course Sched</title>
+<title>My Course Schedules</title>
 <link rel="stylesheet" type="text/css"
 	href="/css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
@@ -45,9 +45,12 @@
   text-align: center;
 }
 .confirmDecline{
- width: 300px; 
+ width: 450px; 
  overflow: hidden;
  border: none;
+}
+textarea{
+resize: none
 }
 </style>
 
@@ -94,29 +97,6 @@
 			</div>
 		</form>	
 		
-			<!-- Error Modal -->
-		
-		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-danger">
-						<h5 class="modal-title"></h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label" id="message"></label>
-						</div>	
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<!--Error Modal End-->
-		
-		
 		<!--Table Data -->
 		<div style="overflow-x: auto; display: block; white-space: nowrap"
 			class="mt-5">
@@ -143,11 +123,11 @@
 						<th>Start Date/Time</th>
 						<th>End Date/Time</th>
 						<th>Duration</th>
-						<th>Course Schedule ID</th>
-						<th>Participant ID</th>
-						<th>Registration Date</th>
-						<th>Course Participant ID</th>
-						<th class="sticky"></th>
+						<th class="hide">Course Schedule ID</th>
+						<th class="hide">Participant ID</th>
+						<th class="hide">Registration Date</th>
+						<th class="hide">Course Participant ID</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody th:each="courseSchedules : *{courseSchedules}">
@@ -157,26 +137,33 @@
 						<td th:text="${courseSchedules.courseName}"></td>
 						<td th:text="${courseSchedules.instructorName}"></td>
 						<td th:text="${courseSchedules.venueName}"></td>					
-						<td th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (EEEE) - HH:mm a')}"></td>
-						<td th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (EEEE) - HH:mm a')}"></td>
+						<td th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"></td>
+						<td th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"></td>
 						<td th:text="|${courseEnrollmentForm.duration} hour/s|"></td>
-						<td th:text="${courseSchedules.courseScheduleId}"></td>
-						<td th:text="${courseSchedules.participantId}"></td>
-						<td th:text="${courseSchedules.registrationDate}"></td>
-						<td th:text="${courseSchedules.id}"></td>
+						<td class="hide" th:text="${courseSchedules.courseScheduleId}"></td>
+						<td class="hide" th:text="${courseSchedules.participantId}"></td>
+						<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
+						<td class="hide" th:text="${courseSchedules.id}"></td>
 						<td class="sticky">
-							<!--@RequestParam -->
-							<a
-								th:href="@{/enrollment/mySchedules/{courseParticipantId}/decline
-								(courseParticipantId = ${courseSchedules.id})}"
-								class="btn btn-danger" name="">
-								<i class="fa fa-times"></i> Decline
-							</a>
+							<button title="Decline"
+ 								th:attr="onclick=|declinedCourseSchedule('${courseSchedules.id}',
+ 									'${courseSchedules.courseName}',
+ 									'${courseSchedules.courseScheduleId}',
+ 									'${courseSchedules.registrationDate}',
+ 									'${courseSchedules.instructorName}',
+ 									'${courseSchedules.venueName}',
+ 									'${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
+ 									'${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
+ 									'${courseEnrollmentForm.duration}',
+ 									'${courseSchedules.courseId}')|"
+ 								class="btn btn-danger">
+ 								<i class="fa fa-trash-o fa-lg"></i>
+ 							</button>
 
-							<button
+							<button title="Change Schedule"
 								th:attr="onclick=|declineUpdate('${courseSchedules.courseId}','${courseSchedules.courseName}','${courseSchedules.courseScheduleId}')|"
-								class="btn btn-danger">
-								<i class="fa fa-times"></i> Change Schedule
+								class="btn btn-primary">
+								<i class="fa fa-edit"></i>
 							</button>
 						</td>
 
@@ -188,8 +175,31 @@
 					<strong th:text="${errorMessage}"></strong>
 				</div>
 			</div>
+			<!-- Table Data End -->
+		
+		<!-- Error Modal -->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" id="message"></label>
+						</div>	
+					</div>
+				</div>
+			</div>
 		</div>
-		<!-- Table Data End -->
+		</div>
+		<!--Error Modal End-->
+		
+		
+		
 
 		<!-- Change Course Schedule Modal -->
 		<div class="modal fade" id="changeCourseSchedModal" tabindex="-1"
@@ -223,6 +233,7 @@
 									<th>Venue</th>
 									<th>Start Date/Time</th>
 									<th>End Date/Time</th>
+									<th>Action</th>
 								</tr>
 							</thead>
 							<tbody class="text-center" id="change-course-schedule-body">
@@ -232,7 +243,7 @@
 					<strong >******* END *******</strong>
 				</div>
 						<div class="modal-footer">
-						<input type="button" class="btn btn-danger" data-dismiss="modal"
+						<input type="button" class="btn btn-secondary" data-dismiss="modal"
 							value="Back">
 					</div>
 					</div>
@@ -257,14 +268,15 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">Are you sure you want to change course schedule? </label>
+							<label class="col-lg-12 col-form-label ">Are you sure you want to change course schedule? </label>
 						</div>
 						<div class="modal-footer">
 							<form th:action="@{/enrollment/updateSchedule}" method="post" th:object="${courseEnrollmentForm}">
 									<input type="hidden" name="id" id="confirmId"> 
 									<input type="hidden" name="courseScheduleId" id="confirmCourseScheduleId">
+								<button type="submit" name="submit" value="submit" class="btn btn-primary">Yes</button>
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-								<button type="submit" name="submit" value="submit" class="btn btn-success">Yes</button>
+								
 							</form>
 						</div>
 					</div>
@@ -278,142 +290,117 @@
 			  id="declineView"
 			  th:object="${courseDecline}" 
 			  th:method="delete"
-			  th:action="@{/enrollment/mySchedules/{courseId}/decline(courseId = *{courseId})}" 
-			  th:if="${#strings.contains(#httpServletRequest.requestURI, 'decline')}">
-		<div class="modal fade" id="declineModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title"><i class="fa fa-info-circle"></i> Course Information</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label">Course Name:</label>
-							<div class="col-lg-9">
-								<input type="text" class="form-control border-0 bg-white shadow-none"
-									th:field="*{courseName}" id="courseName" readonly>
-								<input type="hidden" th:field="*{courseId}"/>
-							</div>
-							<label class="col-lg-3 col-form-label">Instructor Name:</label>
-							<div class="col-lg-9">
-								<input type="text" class="form-control border-0 bg-white shadow-none"
-									th:field="*{instructorName}" id="courseSchedInstructor" readonly>
-							</div>
-							<label class="col-lg-3 col-form-label">Course Date:</label>
-							<div class="col-lg-9">
-								<input type="text" class="form-control border-0 bg-white shadow-none"
-									id="courseSchedDate" readonly>
-							</div>
-							<div class="d-print-none">
-								<input type="hidden" name="startDateTime" 
-									th:id="${'startDateTime'}"
-							  		th:value=
-							  			"*{courseScheduleDetailsForm.scheduledStartDateTime}">
-							 	<input type="hidden" name="endDateTime" 
-							 		th:id="${'endDateTime'}"
-							 		th:value=
-							 			"*{courseScheduleDetailsForm.scheduledEndDateTime}">
-							 	<input type="hidden" name="fieldStartDateTime" 
-									th:id="${'fieldStartDateTime'}"
-							  		th:field=
-							  			"*{courseScheduleDetailsForm.scheduledStartDateTime}">
-							 	<input type="hidden" name="fieldEndDateTime" 
-							 		th:id="${'fieldEndDateTime'}"
-							 		th:field=
-							 			"*{courseScheduleDetailsForm.scheduledEndDateTime}">
-							 	<input type="hidden" 
-							 		th:id="${'detailId'}"
-							 		th:value=
-							 			"*{courseScheduleDetailsForm.id}" name=id>
-							</div>
-							<label class="col-lg-3 col-form-label">Time slot:</label>
-							<div class="col-lg-9">
-								<input type="text" class="form-control border-0 bg-white shadow-none"
-									id="courseSchedTime" readonly>
-							</div>
-							<label class="col-lg-3 col-form-label">Venue Name:</label>
-							<div class="col-lg-9">
-								<input type="text" class="form-control border-0 bg-white shadow-none"
-									id="courseSchedVenue" th:field="*{venueName}" readonly>
-							</div>
-							<label class="col-lg-3 col-form-label">Participant Name:</label>
-							<div class="col-lg-9">
-								<input type="hidden" th:field="*{id}">
-								<input type="text" class="form-control border-0 bg-white shadow-none"
-									id="participantName" th:field="*{participantName}" readonly>
-							</div>
-							<label class="col-lg-3 col-form-label">Registration Date:</label>
-							<div class="col-lg-9">
-								<input type="text" class="form-control border-0 bg-white shadow-none"
-									id="registrationDate" th:name="*{'registrationDate'}" th:value="*{registrationDate}" readonly>
-							</div>
+			  th:action="@{/enrollment/mySchedules/decline}">
+			<div class="modal fade" id="declineMemberModal"
+			tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true" data-keyboard="false" data-backdrop="static">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title"><i class="fa fa-info-circle"></i> Course Information</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
 						</div>
-						</div>
-						<div class="alert alert-danger text-center">
-							<h5>This is a REQUIRED training</h5>
-						</div>
-						<div class="ml-1 form-group row">
-							<label class="col-lg-3 col-form-label">Course Description:</label>
-							<div class="col-lg-9">
+						<div class="modal-body">
+							<div class="form-group row">
+								<input type="hidden" name="courseId" id="courseIdHidden">
+								<input type="hidden" name="id" id="courseParticipantIdHidden">
+								<input type="hidden" name="courseScheduleId" id="courseScheduleIdHidden">
+								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
-									<input type="hidden" th:field="*{details}">
-									<label class="col-form-label" th:text="*{details}"></label>
+									<input type="text" class="form-control border-0 bg-white shadow-none"
+										name="courseName" id="courseName" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label">Instructor Name:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none"
+										name="instructorName" id="courseSchedInstructor" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label">Course Date:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none"
+										id="courseSchedDate" readonly>
+								</div>
+
+								<label class="col-lg-3 col-form-label">Time slot:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none"
+										id="courseSchedTime" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label">Venue Name:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none"
+										id="courseSchedVenue" name="venueName" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label hide">Participant Name:</label>
+								<div class="col-lg-9 hide">
+									<input type="text" class="form-control border-0 bg-white shadow-none hide"
+										id="participantName" name="participantName" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label hide">Registration Date:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none hide"
+										id="registrationDate" name="registrationDate" readonly>
+								</div>
+							</div>
+							</div>
+							<div class="alert alert-danger text-center">
+								<h5>This is a REQUIRED training</h5>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" onclick="confirmDecline()">
+									<i class="fa fa-trash-o fa-lg"></i> Decline
+								</button>
+							<input type="button" class="btn btn-secondary" data-dismiss="modal"
+								value="Back">
+							</div>
+						</div>
+						
+					</div>
+				</div>	
+			<!--Decline Modal End-->
+			
+			<!-- Confirm Decline Modal -->
+			
+				<div class="modal fade" id="confirmationModal"
+			tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true" data-keyboard="false" data-backdrop="static">
+				
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title"><i class="fa fa-question-circle"></i> Are you sure you want to decline the course registration for	
+							<input class="modal-title confirmDecline" id="mainConfirmCourseName" disabled>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+					
+							
+							<div class="form-group">
+								<h4 class="col-lg-12 col-form-label">Please write the reason
+									for your course decline.</h4>
+								<h4 class="text-danger col-lg-12 col-form-label" >*This is a required field.</h4>
+								<div class="col-lg-12">
+									<textarea name="reason" cols="3" rows="3" class="form-control" maxlength="150"></textarea>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-success" onclick="confirmDecline()">
-								 Decline Course Registration
-							</button>
-						<input type="button" class="btn btn-secondary" data-dismiss="modal"
-							value="Back">
+							<button type="submit" class="btn btn-primary" name="decline" id="declineBtn">Confirm</button>
+							<button type="button" class="btn btn-secondary" onclick="backModal()" data-dismiss="modal">Back</button>
 						</div>
-					</div>
-					
-				</div>
-			</div>	
-		
-		
-		<!-- Confirm Decline Modal -->
-		<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-					<h5 class="modal-title">Are you sure you want to course decline your registration for
-						<input type="text" class="confirmDecline" id="mainConfirmCourseName" 
-						 th:value="*{courseName}"
-						 disabled> ?</h5>
-						<div class="form-group">
-							<h4 class="col-lg-12 col-form-label">Please write the reason
-								for your course decline.</h4>
-							<p class="text-danger">*This is a required field.</p>
-							<div class="col-lg-12">
-								<textarea th:field="*{reason}" cols="80" rows="10" resize="none"></textarea>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-success" name="decline" id="declineBtn">Confirm Course decline</button>
-						<button class="btn btn-secondary" onclick="backModal()" data-dismiss="modal">Back</button>
 					</div>
 				</div>
 			</div>
-		</div>
 		</form>	
 		
-		<!--Decline Modal End-->
+		
 		<!-- Confirm Decline Modal End-->							
 				
 		<!-- Success Modal -->
@@ -436,85 +423,13 @@
 		</div>
 		</div>
 		<!--Success Modal End -->
-		
-		<!-- Decline Success Modal -->
-		<div class="modal fade" th:if="*{courseDeclineSuccess}" id="declineSuccessModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<h5 class="col-lg-20 col-form-label" align= "center" th:text="*{courseDeclineSuccess}" id="declined"></h5>
-					<div class="modal-body" align= "center">
-						<button type="button" class="btn btn-primary btn-success" data-dismiss="modal">Okay</button>
-				</div>
-			</div>
-		</div>
-		</div>
-		<!-- Decline Success Modal End -->
 
 </div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
 	
 	
-		function load(){
-			
-			if ($("#declineView").length > 0) {
-				var declineCourseSchedule =  $("#courseName").val();
-				if(declineCourseSchedule !== ""){
-					$('#declineModal').modal('show');
-				}
-				
-				var startDateTime = document.getElementById("startDateTime").value;
-			    var endDateTime = document.getElementById("endDateTime").value;
-			    var registrationDate = document.getElementById("registrationDate").value;
-			    
-			    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-			    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
-			    var rowRegDate = registrationDate.substring(0, registrationDate.indexOf("T"));
-			    
-			    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-			    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-			    var rowRegTime = registrationDate.substring(registrationDate.indexOf("T") + 1, registrationDate.indexOf("T") + 6);
-			    
-			    document.getElementById("courseSchedDate").value = rowStartDate+ " to " +rowEndDate;
-			    
-			    document.getElementById("courseSchedTime").value = rowStartTime+ " to " +rowEndTime;
-			    
-
-		        var rowStartDateTime = new Date(rowStartDate);
-			    var rowEndDateTime = new Date(rowEndDate);
-			    
-			    rowStartDateTime.setHours(rowStartTime.substring(0, rowStartTime.indexOf(":")));
-			    rowStartDateTime.setMinutes(rowStartTime.substring(rowStartTime.indexOf(":") + 1));
-			    rowEndDateTime.setHours(rowEndTime.substring(0, rowEndTime.indexOf(":")));
-			    rowEndDateTime.setMinutes(rowEndTime.substring(rowEndTime.indexOf(":") + 1));
-			    
-			    var startDateTime = rowStartDateTime.toISO().toString();
-			    var endDateTime = rowEndDateTime.toISO().toString()
-			    
-			    document.getElementById("fieldStartDateTime").value = startDateTime;
-			    document.getElementById("fieldEndDateTime").value = endDateTime;
-			    
-			}
-			
-			if($("#declineSuccessModal").length > 0){
-				/*<![CDATA[*/
-				var declineSuccess = /*[[${courseDeclineSuccess}]]*/ 'default';
-				
-				var declined = document.getElementById("declined").innerHTML;
-
-				if (declineSuccess == declined) {
-					$('#declineSuccessModal').modal('show');
-				}
-				/*]]>*/
-			}		
-		}
+	
 		
 
 		//FromDateTime is Higher that ToDateTime
@@ -525,12 +440,6 @@
 		}
 		/*]]>*/
 
-		//Back Modal
-		function backModal() {
-			$('#confirmationModal').modal('hide');
-			$('#declineModal').modal('show');
-		}
-
 		/*]]>*/
 
 		//Confirm Decline Modal 
@@ -539,6 +448,7 @@
 			$('#confirmationModal').modal('show');
 		}
 		/*]]>*/
+		
 
 		//Success Modal 
 		/*<![CDATA[*/
@@ -571,43 +481,8 @@
 		inputFromDateTime.value = finalFromDateTime;
 		inputToDateTime.value = finalToDateTime;
 		/*]]>*/
-
-		//Successfuly canceled a Course Schedule
-		/*<![CDATA[*/
-		var successMessage = /*[[${successMessage}]]*/'default';
-		if (successMessage == "Successfully Canceled the Course Schedule"
-				|| successMessage == "Successfully change schedule") {
-			alert(successMessage);
-			document.getElementById("successMessage").innerHTML = successMessage;
-			$('#successModal').modal('show');
-		}
-		/*]]>*/
 		
-		
-		//Successfuly canceled a Course Schedule
-		/*<![CDATA[*/
-		var successMessageChangeSchedule = /*[[${successMessageChangeSchedule}]]*/'default';
-		if (successMessageChangeSchedule == "Successfully change schedule") {
-			document.getElementById("successMessage").innerHTML = successMessageChangeSchedule;
-			$('#successModal').modal('show');
-		}
-		/*]]>*/
-		
-
-		//Format Date Inputs
-		Date.prototype.toISO = function() {
-			 return this.getUTCFullYear() +
-		        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
-		        '-' + String(this.getUTCDate()).padStart(2, "0") +
-		        'T' + String(this.getUTCHours()).padStart(2, "0") +
-		        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
-		        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
-		        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-		        'Z';
-		};
-
-	
-		/**
+			/**
 		 ** Error, Employee already enrolled
 		 **/
 		/*<![CDATA[*/
@@ -617,7 +492,41 @@
 			$('#errorModal').modal('show');
 		}
 		/*]]>*/
+		
+
+			//Successfuly canceled a Course Schedule
+		/*<![CDATA[*/
+		var successMessageChangeSchedule = /*[[${successMessageChangeSchedule}]]*/'default';
+		if (successMessageChangeSchedule == "Successfully change schedule") {
+			document.getElementById("successMessage").innerHTML = successMessageChangeSchedule;
+			$('#successModal').modal('show');
+		}
+		/*]]>*/
+		
+		
+		
+		//Successfuly canceled a Course Schedule
+		/*<![CDATA[*/
+		var courseDeclineSuccess = /*[[${courseDeclineSuccess}]]*/'default';
+		if (courseDeclineSuccess == "You have declined the course successfully!") {
+			document.getElementById("successMessage").innerHTML = courseDeclineSuccess;
+			$('#successModal').modal('show');
+		}
+		/*]]>*/
+		
+		
+		/* 
+		 *Error, Employee already enrolled
+		 */
+		/*<![CDATA[*/
+		var errorDeclineMessage = /*[[${errorDeclineMessage}]]*/'default';
+		if (errorDeclineMessage == "Reason must not be Empty") {
+			document.getElementById("message").innerHTML = errorDeclineMessage;
+			$('#errorModal').modal('show');
+		}
+		/*]]>*/
+		
+	
 	</script>
 </body>
-
 </html>

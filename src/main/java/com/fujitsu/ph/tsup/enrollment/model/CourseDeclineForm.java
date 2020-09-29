@@ -20,20 +20,25 @@ package com.fujitsu.ph.tsup.enrollment.model;
 * @author k.freo                   
 */
 import java.time.ZonedDateTime;
-import java.util.Set;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class CourseDeclineForm {
-	 /* COURSE_PARTICIPANT.Id */
+     /* COURSE_PARTICIPANT.Id */
     private Long id;
 
     /* Course Name */
     private String courseName;
     
+    /* Course Id */
+    //New
+    private Long courseId;
+    
     /* Course Schedule Id*/
     //NEW
     private Long courseScheduleId;
 
-	/* Instructor Name (LASTNAME, FIRSTNAME) */
+    /* Instructor Name (LASTNAME, FIRSTNAME) */
     private String instructorName;
 
     /* Venue Name */
@@ -46,10 +51,14 @@ public class CourseDeclineForm {
     private CourseScheduleDetailForm courseScheduleDetailsForm;
 
     /* Registration Date **/
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime registrationDate;
 
     /* Reason for non-participation */
     private String reason;
+    
+    /* Course Details */
+    private String details;
 
     /** COURSE_PARTICIPANT.Id Getter */
     public Long getId() {
@@ -71,13 +80,21 @@ public class CourseDeclineForm {
         this.courseName = courseName;
     }
     
-    public Long getCourseScheduleId() {
-		return courseScheduleId;
-	}
+    public Long getCourseId() {
+        return courseId;
+    }
 
-	public void setCourseScheduleId(Long courseScheduleId) {
-		this.courseScheduleId = courseScheduleId;
-	}
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
+    public Long getCourseScheduleId() {
+        return courseScheduleId;
+    }
+
+    public void setCourseScheduleId(Long courseScheduleId) {
+        this.courseScheduleId = courseScheduleId;
+    }
 
     /** Instructor Name (LASTNAME, FIRSTNAME) Getter */
     public String getInstructorName() {
@@ -139,9 +156,24 @@ public class CourseDeclineForm {
         this.reason = reason;
     }
     
+    
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    @Override
     public String toString() {
-        return "CourseDeclineForm [id=" + id + ", courseName=" + courseName + ", instructorName=" + instructorName
-        		+ ", venueName=" + venueName + ", participantName=" + participantName + ", courseScheduleDetailsForm=" 
-        		+ courseScheduleDetailsForm + ", registrationDate=" + registrationDate + ", reason=" + reason + "]";
+        return "CourseDeclineForm [id=" + id + ", courseName=" + courseName
+                + ", courseId=" + courseId + ", courseScheduleId="
+                + courseScheduleId + ", instructorName=" + instructorName
+                + ", venueName=" + venueName + ", participantName="
+                + participantName + ", courseScheduleDetailsForm="
+                + courseScheduleDetailsForm + ", registrationDate="
+                + registrationDate + ", reason=" + reason + ", details="
+                + details + "]";
     }
 }
