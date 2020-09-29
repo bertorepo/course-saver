@@ -8,7 +8,7 @@ $(document).ready(function() {
 	findCourseSchedule("month");
 	
 	//Disabled Cancel Below Minimum Button if there are no course schedule
-//	cancelBelowMinimumCallDisabledButton();
+	cancelBelowMinimumCallDisabledButton();
 
 	//On dropdown change value
 	dropDown = $("#dropDown");
@@ -37,7 +37,6 @@ function cancelBelowMinimumCallDisabledButton(){
 		dataType:"json",
 		contentType: 'application/json',
 		success: function(data){
-			alert("success");
 			if(data.length > 0){
 				
 				$("#cancelBelowMinimumbtn").attr("disabled", false);

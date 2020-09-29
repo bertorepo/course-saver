@@ -103,12 +103,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
             
             if (courseRecord == null){
-//                throw new IllegalArgumentException("This course " +courseParticipant
-//                        .getCourseName()+ " is not existing");
             	 throw new IllegalArgumentException("This course schedule id " +courseParticipant
                          .getCourseScheduleId()+ " is not existing");
             }
-//            System.out.println("COURSE NAME: "+courseRecord.getCourseName());
+
             CourseParticipant participantRecord = enrollmentDao
                     .findCourseParticipantByCourseScheduleIdAndParticipantId
                     (courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
@@ -116,7 +114,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             if(participantRecord != null){
                 throw new IllegalArgumentException("You are already enrolled in this course.");
             }
-
+            
             enrollmentDao.saveCourseParticipant(courseParticipant);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("Can't Access Course Participant");

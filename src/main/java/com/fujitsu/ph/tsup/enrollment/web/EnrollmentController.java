@@ -170,17 +170,17 @@ public class EnrollmentController {
         	courseScheduleSetForm.add(courseScheduleForm);
         	form.setTopLearnerByMonth(listTopLearnerByMonth);
             form.setTopLearnerByQuarter(listTopLearnerByQuarter);
-        	System.out.println("(COURSE ACTIVE)Course Id: " + courseScheduleForm.getCourseId());
-        	System.out.println("(COURSE ACTIVE)Course Name: " + courseScheduleForm.getCourseName());
-        	System.out.println("(COURSE ACTIVE)Instructor Name: " + courseScheduleForm.getInstructorName());
-        	System.out.println("(COURSE ACTIVE)Course Schedule Detail Id: " + courseScheduleDetailForm.getId());
-        	System.out.println("(COURSE ACTIVE)Start DateTime: " + courseScheduleDetailForm.getScheduledStartDateTime());
-        	System.out.println("(COURSE ACTIVE)End DateTime: " + courseScheduleDetailForm.getScheduledEndDateTime());
-        	System.out.println("(COURSE ACTIVE)Duration: " + courseScheduleDetailForm.getDuration());
-        	System.out.println("(COURSE ACTIVE)Venue Name: " + courseScheduleForm.getVenueName());
-        	System.out.println("(COURSE ACTIVE)Min Participants: " + courseScheduleForm.getMinRequired());
-        	System.out.println("(COURSE ACTIVE)Max Participants: " + courseScheduleForm.getMaxAllowed());
-        	System.out.println("(COURSE ACTIVE)Total Participants: " + courseScheduleForm.getTotalParticipants());
+//        	System.out.println("(COURSE ACTIVE)Course Id: " + courseScheduleForm.getCourseId());
+//        	System.out.println("(COURSE ACTIVE)Course Name: " + courseScheduleForm.getCourseName());
+//        	System.out.println("(COURSE ACTIVE)Instructor Name: " + courseScheduleForm.getInstructorName());
+//        	System.out.println("(COURSE ACTIVE)Course Schedule Detail Id: " + courseScheduleDetailForm.getId());
+//        	System.out.println("(COURSE ACTIVE)Start DateTime: " + courseScheduleDetailForm.getScheduledStartDateTime());
+//        	System.out.println("(COURSE ACTIVE)End DateTime: " + courseScheduleDetailForm.getScheduledEndDateTime());
+//        	System.out.println("(COURSE ACTIVE)Duration: " + courseScheduleDetailForm.getDuration());
+//        	System.out.println("(COURSE ACTIVE)Venue Name: " + courseScheduleForm.getVenueName());
+//        	System.out.println("(COURSE ACTIVE)Min Participants: " + courseScheduleForm.getMinRequired());
+//        	System.out.println("(COURSE ACTIVE)Max Participants: " + courseScheduleForm.getMaxAllowed());
+//        	System.out.println("(COURSE ACTIVE)Total Participants: " + courseScheduleForm.getTotalParticipants());
         	
         }
         model.addAttribute("activeCourseSchedule", courseScheduleSetForm);
@@ -427,7 +427,7 @@ public class EnrollmentController {
     public String showCourseEnrollmentForm(@PathVariable("courseScheduleId")Long id, Model model, RedirectAttributes redirectAttributes) {
         logger.debug("Model:{}", model);
         if (model.containsAttribute("courseEnrollmentForm")) {
-            return "enrollment/viewCourseEnroll";
+            return "enrollment/viewCourseEnroll";	
         }
 
         CourseSchedule courseSchedule = enrollmentService.findCourseScheduleById(id);
@@ -465,39 +465,22 @@ public class EnrollmentController {
          	return "redirect:/enrollment/viewCourseEnroll";
          }
 
-         try {
+//         try {
          	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-         	System.out.println("(POST ENROLL)ID: " + courseEnrollmentForm.getId());
-             System.out.println("(POST ENROLL)Course Schedule ID: " + courseEnrollmentForm.getCourseScheduleId());
-             System.out.println("(POST ENROLL)Course Name: " + courseEnrollmentForm.getCourseName());
-             System.out.println("(POST ENROLL)Instructor Name: " + courseEnrollmentForm.getInstructorName());
-             System.out.println("(POST ENROLL)Venue Name: " + courseEnrollmentForm.getVenueName());
-             System.out.println("(POST ENROLL)Registration Date: " + courseEnrollmentForm.getRegistrationDate());
-             
-             System.out.println("(POST USER) EMPLOYEE NUMBER: " + user.getEmployeeNumber());
-             System.out.println("(POST USER)EMPLOYEE USERNAME: " + user.getUserName());
-             System.out.println("(Continue Here)");
              
              CourseScheduleDetailForm courseScheduleDetailForm = courseEnrollmentForm.getCourseScheduleDetails();
-             
-             System.out.println("(POST ENROLL)Course Schedule Detail ID: " + courseScheduleDetailForm.getId());
-             
              CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailForm.getId()).build();
-
              CourseParticipant courseParticipant = new CourseParticipant.Builder(courseEnrollmentForm.getCourseScheduleId(),
                      user.getId(),user.getUserName()+"@fujitsu.com" , ZonedDateTime.now()).addDetail(courseScheduleDetail).build();
-             
-             System.out.println("(Course Participant) CourseScheduleId: " + courseParticipant.getCourseScheduleId());
-             
-             
-         	  enrollmentService.enroll(courseParticipant);
 
+         	  enrollmentService.enroll(courseParticipant);
+         	  System.out.println("ADDING FLASH ATTRIBUTE");
                redirectAttributes.addFlashAttribute("successMessage", "Successfully Enrolled a Course!!!");
                redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
-         }catch(Exception e) {
-         	redirectAttributes.addFlashAttribute("duplicateMessage", e.getMessage());
-         }
-
+               System.out.println("ADDING FLASH ATTRIBUTE");
+//         }catch(Exception e) {
+//         	redirectAttributes.addFlashAttribute("duplicateMessage", e.getMessage());
+//         }
          return "redirect:/enrollment/viewCourseEnroll";
     }
     
