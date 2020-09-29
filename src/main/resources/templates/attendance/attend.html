@@ -16,7 +16,6 @@
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
-<script type="text/javascript" src="/js/lib/attend.js"></script>
 </head>
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
@@ -150,5 +149,6 @@
 		var courseName = $('#coursesName').text();
 		var message = 'You have ' + message + ' in to this ' + courseName;
 	</script>
+	<script type="text/javascript" src="/js/lib/attend.js"></script>
 </body>
 </html>
