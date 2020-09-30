@@ -78,7 +78,7 @@ div.text-danger{
 }
 
 [list]::-webkit-calendar-picker-indicator {
-	opacity: 0;
+	opacity:0;
 	color: dark-gray;
 	margin-right: -12.5px;
 }
