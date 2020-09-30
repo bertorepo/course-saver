@@ -686,6 +686,7 @@ public class EnrollmentController {
     @ResponseBody
     public Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(@RequestBody Long courseScheduleId){
     	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	
     	CourseParticipant courseParticipant = new CourseParticipant.Builder().addCourseScheduleIdAndEmployeeNumber(courseScheduleId, user.getEmployeeNumber()).build();
     	Set<CourseParticipant> courseParticipantSet = enrollmentService.findAllMemberNotEnrolledByCourseScheduleId(courseParticipant);
     	return courseParticipantSet;

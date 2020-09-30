@@ -99,7 +99,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     	  System.out.println("MY COURSE ID 2: " +courseParticipant.getCourseScheduleId());
           System.out.println("FPI USER ID 2: "+courseParticipant.getParticipantId());
          
-        try {
+//        try {
             CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
             
             if (courseRecord == null){
@@ -116,9 +116,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             }
             
             enrollmentDao.saveCourseParticipant(courseParticipant);
-        } catch (DataAccessException e) {
-            throw new IllegalArgumentException("Can't Access Course Participant");
-        }
+//        } catch (DataAccessException e) {
+//            throw new IllegalArgumentException("Can't Access Course Participant");
+//        }
     }
 
     /** 
