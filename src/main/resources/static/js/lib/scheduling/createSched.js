@@ -205,12 +205,14 @@ function validations() {
         	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
             }
         	
-        	//Start and End Date Validation
-        	if (startTime > endTime) {
-        		errorCount++;
-        		startDateError = "Start time can't be greater than or equal to end time";
-        	  	document.getElementById("startTime" + i + "_error").innerHTML = startDateError;
-            }
+        	if(startDate == endDate) {
+        		//Start and End Date Validation
+            	if (startTime > endTime) {
+            		errorCount++;
+            		startDateError = "Start time can't be greater than or equal to end time";
+            	  	document.getElementById("startTime" + i + "_error").innerHTML = startDateError;
+                }
+        	}
         	
         	//If Date is Less Than Today
         	if (isLessThanToday(startDate)) {
