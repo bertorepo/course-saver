@@ -895,9 +895,6 @@
 
 	//SHOW REGISTRATION POP UP
 	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, endDateTime, courseScheduleDetailId){
-// 		alert(courseScheduleId + courseScheduleName + courseScheduleInstructorName);
-// 	alert("Course Schedule Detail ID: " + courseScheduleDetailId);
-// 		alert(courseScheduleDetailId);
 		var startDate = startDateTime.slice(0,10);
 		var startTime = startDateTime.slice(11,22);
 		var endDate = endDateTime.slice(0,10);
@@ -962,13 +959,12 @@
 	//Successfuly canceled a Course Schedule
 	/*<![CDATA[*/
 	var successMessage = /*[[${successMessage}]]*/ 'default';
-	alert("Success: " + successMessage);
-// 	if(successMessage == "Successfully Canceled the Course Schedule" || successMessage == "Successfully Enrolled a Course!!!"
-// 			|| successMessage == "Successfully cancelled all course schedule below minimum participant."){
-// 		alert(successMessage);
-// 		document.getElementById("successMessage").innerHTML = successMessage;
-// 		$('#successModal').modal('show');
-// 	}
+	if(successMessage == "Successfully Canceled the Course Schedule" 
+			|| successMessage == "Successfully Enrolled a Course!!!"
+			|| successMessage == "Successfully cancelled all course schedule below minimum participant."){
+		document.getElementById("successMessage").innerHTML = successMessage;
+		$('#successModal').modal('show');
+	}
 	/*]]>*/
 	
 	//No Record Found
@@ -1012,7 +1008,7 @@
 
 	var courseEnrollmentForm = /*[[${courseEnrollmentForm}]]*/ 'default';
 	if(successMsg == "Successfully Enrolled a Course!!!"){
-		alert("1");
+
 		var courseId = courseEnrollmentForm.courseScheduleId;
 		var courseName = courseEnrollmentForm.courseName;
 		var instructorName = courseEnrollmentForm.instructorName;

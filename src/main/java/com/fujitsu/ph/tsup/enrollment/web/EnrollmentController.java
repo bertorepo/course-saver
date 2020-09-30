@@ -457,15 +457,16 @@ public class EnrollmentController {
     @PostMapping("/schedules/{courseScheduleId}/enroll")
     public String submitCourseEnrollmentForm(@Valid @ModelAttribute("enroll") CourseEnrollmentForm courseEnrollmentForm,
             BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    	System.out.println("START ENROLL");
     	 logger.debug("submitCourseEnrollmentForm:{}", courseEnrollmentForm);
          logger.debug("Result:{}", result);
-         
+         System.out.println("IF ENROLL");
          if (result.hasErrors()) {
          	redirectAttributes.addFlashAttribute("errorMsg", result.getAllErrors());
          	return "redirect:/enrollment/viewCourseEnroll";
          }
-
-//         try {
+         System.out.println("TRY ENROLL");
+         try {
          	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
              
              CourseScheduleDetailForm courseScheduleDetailForm = courseEnrollmentForm.getCourseScheduleDetails();
@@ -478,9 +479,9 @@ public class EnrollmentController {
                redirectAttributes.addFlashAttribute("successMessage", "Successfully Enrolled a Course!!!");
                redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
                System.out.println("ADDING FLASH ATTRIBUTE");
-//         }catch(Exception e) {
-//         	redirectAttributes.addFlashAttribute("duplicateMessage", e.getMessage());
-//         }
+         }catch(Exception e) {
+         	redirectAttributes.addFlashAttribute("duplicateMessage", e.getMessage());
+         }
          return "redirect:/enrollment/viewCourseEnroll";
     }
     
@@ -686,9 +687,13 @@ public class EnrollmentController {
     @ResponseBody
     public Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(@RequestBody Long courseScheduleId){
     	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	
-    	CourseParticipant courseParticipant = new CourseParticipant.Builder().addCourseScheduleIdAndEmployeeNumber(courseScheduleId, user.getEmployeeNumber()).build();
-    	Set<CourseParticipant> courseParticipantSet = enrollmentService.findAllMemberNotEnrolledByCourseScheduleId(courseParticipant);
+    	Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>();
+//    	try {
+    		CourseParticipant courseParticipant = new CourseParticipant.Builder().addCourseScheduleIdAndEmployeeNumber(courseScheduleId, user.getEmployeeNumber()).build();
+        	courseParticipantSet = enrollmentService.findAllMemberNotEnrolledByCourseScheduleId(courseParticipant);
+//    	}catch(Exception e) {
+//    		e.printStackTrace();
+//    	}
     	return courseParticipantSet;
     }
     
@@ -700,9 +705,14 @@ public class EnrollmentController {
     @PostMapping("/findEnrolledMember")
     @ResponseBody
     public Set<CourseParticipant> findAllEnrolledMemberByCourseScheduleId(@RequestBody Long courseScheduleId){
-    	System.out.println("courseID: " + courseScheduleId);
-    	System.out.println("FINDING ENROLLED MEMBER BY COURSE SCHEDULE ID: " + courseScheduleId);
-    	return enrollmentService.findAllParticipantByCourseScheduleId(courseScheduleId);
+    	Set<CourseParticipant> courseParticipant = new HashSet<CourseParticipant>();
+    	
+//    	try {
+    		courseParticipant = enrollmentService.findAllParticipantByCourseScheduleId(courseScheduleId);
+//    	}catch(Exception e) {
+//    		e.printStackTrace();
+//    	}
+    	return courseParticipant;
     }
     
     /**
@@ -715,11 +725,16 @@ public class EnrollmentController {
     @ResponseBody
     public Set<CourseParticipant> findMember(@RequestBody SearchForm search, HttpServletRequest request){
     	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//    	System.out.println("CourseScheduleId: " + search.getCourseScheduleId() + " SEARCH: " +search.getSearch() );
+    	Set<CourseParticipant> courseParticipant = new HashSet<CourseParticipant>();
 		System.out.println("REQUEST: " + request);
-		search.setEmployeeNumber(user.getEmployeeNumber());
+//		try {
+			search.setEmployeeNumber(user.getEmployeeNumber());
+			courseParticipant = enrollmentService.findMemberNotEnrolledByCourseScheduleId(search);
+//    	}catch(Exception e) {
+//    		e.printStackTrace();
+//    	}
+		return courseParticipant;
 		
-		return enrollmentService.findMemberNotEnrolledByCourseScheduleId(search);
     	
     }
     

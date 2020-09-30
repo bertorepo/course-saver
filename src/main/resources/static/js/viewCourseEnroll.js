@@ -271,18 +271,18 @@ function confirmReschedule(){
 	var startDateTime = document.getElementById('rescheduleStartDateTime').value;
 	var endDateTime = document.getElementById('rescheduleEndDateTime').value;
 	
-	var momentStartDateTime = mooment(startDateTime);
-	var momentEndDateTime = mooment(endDateTime);
+	var momentStartDateTime = moment(startDateTime);
+	var momentEndDateTime = moment(endDateTime);
 	
 	var oldStartDateTime = document.getElementById('rescheduleStartDateTime_old').value;
 	var oldEndDateTime = document.getElementById('rescheduleEndDateTime_old').value;
-	
-	alert("START: " + startDateTime);
-	alert("START OLD: " + oldStartDateTime);
-	alert("END OLD: " + oldEndDateTime);
-	alert("END: " + endDateTime);
-	alert("START MOMENT: " + momentStartDateTime);
-	alert("END MOMENT: " + momentEndDateTime);
+//	
+//	alert("START: " + startDateTime);
+//	alert("START OLD: " + oldStartDateTime);
+//	alert("END OLD: " + oldEndDateTime);
+//	alert("END: " + endDateTime);
+//	alert("START MOMENT: " + momentStartDateTime);
+//	alert("END MOMENT: " + momentEndDateTime);
 	//validate here
 	if(oldStartDateTime.isAfter(startDateTime)){
 		alert("DONE");
