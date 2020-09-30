@@ -141,7 +141,7 @@ function momentofDate(index) {
 
 	}
 
-	else if (x == 'P' && momTime != "" && momTimeEnd != "") {
+	else if (x == 'P' && momTime != "" ) {
 		document.getElementById("getDate" + index).value = d1;
 		document.getElementById("getEndDate" + index).value = dEnd1;
 		document.getElementById("getTime" + index).value = dTime1;
