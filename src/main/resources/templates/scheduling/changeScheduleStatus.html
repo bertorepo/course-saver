@@ -12,34 +12,15 @@
 	<title>Change Schedule Status</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
 	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
-	<style type="text/css">
-	.sticky-table{
-		overflow-y: auto;
-		background-color: white;
-		height: 47vh;
-		border: 1px solid transparent;
-	}
-	
-	.sticky-table thead th{
-		position: -webkit-sticky;
-		position: sticky;
-		background-color: white;
-		border: 1px solid #ccc;
-		top: -1px;
-		border-collapse: separate;
-		border-spacing: 0;
-	}
-	
-	</style>
-
 </head>
 <body onload="load()">
 	<div th:insert="fragments/general.html :: header" > </div>
 	
-	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
+	<div class="container mt-5 div_minheight">
 		<form class="form-horizontal" th:object="${changeStatus}" 
 			th:action="@{/schedules/courseSchedule/{courseId}/changeStatus(courseId = *{id})}" method="post">
 			<h3><i class="fa fa-pencil-square-o"></i> Change Schedule Status</h3>
@@ -78,9 +59,9 @@
 				</div>
 			</div>
 
-		<div style="overflow-x:auto; display: block; white-space: nowrap;" 
+		<div class="nw_block"
 				th:if="${#httpServletRequest.requestURI != '/schedules/courseSchedule/0/changeStatus'}">
-			<table id="data" class="table table-bordered table-responsive text-center sticky-table" style="width:100%;">
+			<table id="data" class="table table-bordered table-responsive text-center sticky-table width_max">
 				<colgroup >
 					<col style="width:20%"/>
 					<col style="width:20%"/>
@@ -184,7 +165,7 @@
 		</div>
 		<!--Success Modal End-->
 	
-		<footer style="bottom: 0; right:0; position:fixed;" th:replace="fragments/general.html :: footer"></footer>
+		<footer class="footer_bottom_fix" th:replace="fragments/general.html :: footer"></footer>
 	</div>
 	
 	<script th:src="@{/js/lib/scheduling/scheduling-common.js}"></script>

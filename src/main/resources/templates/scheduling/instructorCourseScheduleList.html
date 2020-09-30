@@ -12,6 +12,7 @@
     <title>Instructor Course Schedule List</title>
     <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
 	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -20,7 +21,7 @@
 <body onload="load()">
 	<div th:insert="fragments/general.html :: header" > </div>
     
-    <div class="container mt-5" style="min-height: calc(100vh - 180px)">
+    <div class="container mt-5 div_minheight">
         <form class="form-horizontal" action="#" th:action="@{/schedules/view}" th:object="${scheduleView}" method="get">
             <h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
             <hr>
@@ -56,13 +57,13 @@
 				</div>
 			</div>
 			</div>
-            <div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-            <p><h3 style="display:inline"><i class="fa fa-list"></i> My Courses</h3>
+            <div class="mt-5 nw_block">
+            <p><h3 class="d_inline_all"><i class="fa fa-list"></i> My Courses</h3>
             <div class="float-right mt-3">
             	<a href="" name="topLearners" data-toggle="modal" data-target="#viewTopeLearnersModal"><i class="fa fa-search"></i> View Top Learners...</a>
             </div></p>
             
-            <table id="data" class="table table-bordered text-center" style="width:100%">
+            <table id="data" class="table table-bordered text-center width_max" >
                 <colgroup >
                     <col style="width:20%"/>
                     <col style="width:20%"/>
@@ -102,7 +103,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
-                        	<div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                        	<div class="col-lg-6 nw_block">
                         		<h5><b>Quarter (Current Quarter)</b></h5>
                             	<table class="table table-bordered">
                             		<thead>
@@ -119,7 +120,7 @@
                             		</tbody>
                             	</table>
                             </div>
-                            <div class="col-lg-6" style="overflow-x:auto;display: block; white-space: nowrap">
+                            <div class="col-lg-6 nw_block" >
                         		<h5><b>Month (Current Month)</b></h5>
                             	<table class="table table-bordered">
                             		<thead>
