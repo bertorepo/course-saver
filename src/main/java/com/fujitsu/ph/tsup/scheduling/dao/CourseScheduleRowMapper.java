@@ -13,14 +13,6 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 //
 //=======================================================
 
-/**
-* <pre>
-* Custom RowMapper Class for findAllScheduledCourses()
-* <pre>
-* @version 0.01
-* @author j.balanon
-*
-*/
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,12 +27,24 @@ import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 
 /**
- * 
- * @author j.balanon
- *
- */
+* <pre>
+* Custom RowMapper Class for findAllScheduledCourses()
+* <pre>
+* @version 0.01
+* @author j.balanon
+*
+*/
+
 public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
 
+	 /**
+     * <pre>
+     * Maps the Rows returned by ResultSet
+     * <pre>
+     * @param ResultSet cs
+     * @param int rowNum
+     * @throws SQLException
+     */
     @Override
     public CourseSchedule mapRow(ResultSet cs, int rowNum) throws SQLException {
 

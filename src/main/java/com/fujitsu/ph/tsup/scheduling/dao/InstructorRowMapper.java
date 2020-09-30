@@ -12,6 +12,14 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 //
 //=======================================================
 
+import java.sql.ResultSet;
+
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
+import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+
 /**
 * <pre>
 * Custom RowMapper Class for findAllInstructors()
@@ -20,14 +28,7 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 * @author j.macabugao
 *
 */
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.jdbc.core.RowMapper;
-
-import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 public class InstructorRowMapper implements RowMapper<InstructorForm>{
-	
 	
 	/**
      * <pre>
