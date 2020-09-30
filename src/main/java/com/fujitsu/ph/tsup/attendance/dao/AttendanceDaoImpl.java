@@ -78,17 +78,19 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime,
             Long instructorId) {
-                String sql = "SELECT " 
-                + "CSCHED.ID AS ID, " 
+                FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+       
+                String sql = "SELECT "
+                + "CSCHED.ID AS ID, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CSCHED.COURSE_ID AS COURSE_ID," 
+                + "CSCHED.COURSE_ID AS COURSE_ID,"
                 + "C.NAME AS COURSE_NAME,"
-                + "CSCHED.INSTRUCTOR_ID AS INSTRUCTOR_ID," 
+                + "CSCHED.INSTRUCTOR_ID AS INSTRUCTOR_ID,"
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME,"
-                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME," 
-                + "CSCHED.VENUE_ID AS VENUE_ID," 
+                + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME,"
+                + "CSCHED.VENUE_ID AS VENUE_ID,"
                 + "V.NAME AS VENUE_NAME,"
-                + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED," 
+                + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED,"
                 + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED,"
                 + "("
                 + "SELECT COUNT(PARTICIPANT_ID) "
@@ -100,30 +102,50 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
                 + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
                 + "CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME "
-                + "FROM COURSE_SCHEDULE AS CSCHED " 
+                + "FROM COURSE_SCHEDULE AS CSCHED "
                 + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
-                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID " 
+                + "ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
                 + "INNER JOIN COURSE AS C "
-                + "ON CSCHED.COURSE_ID = C.ID " 
-                + "INNER JOIN EMPLOYEE AS E " 
+                + "ON CSCHED.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E "
                 + "ON CSCHED.INSTRUCTOR_ID = E.ID "
-                + "INNER JOIN VENUE AS V " 
-                + "ON CSCHED.VENUE_ID = V.ID "
-                + "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
-                + "AND CSCHED.INSTRUCTOR_ID = :instructorId "
-                + "AND CSCHED.STATUS = 'A' "
-                + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
-
-        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
-                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .addValue("instructorId", instructorId);
-       
-        List<CourseSchedule> listCourseSchedule = template.query(sql, courseScheduleParameters,
-                new CourseScheduleRowMapper());
-        Set<CourseSchedule> setCourseSchedule = new HashSet<CourseSchedule>(listCourseSchedule);
-        return setCourseSchedule;
+                + "INNER JOIN VENUE AS V "
+                + "ON CSCHED.VENUE_ID = V.ID ";
+               
+               
+       if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
+            sql +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                    + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CSCHED.STATUS = 'A' "
+                    + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
+           
+            SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                    .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("instructorId", instructorId);
+           
+            List<CourseSchedule> listCourseSchedule = template.query(sql, courseScheduleParameters,
+                            new CourseScheduleRowMapper());
+            Set<CourseSchedule> setCourseSchedule = new HashSet<CourseSchedule>(listCourseSchedule);
+            return setCourseSchedule;
+        } else {
+           
+            sql +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                    + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CSCHED.INSTRUCTOR_ID = :instructorId "
+                    + "AND CSCHED.STATUS = 'A' "
+                    + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
+           
+            SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                    .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("instructorId", instructorId);
+           
+            List<CourseSchedule> listCourseSchedule = template.query(sql, courseScheduleParameters,
+                            new CourseScheduleRowMapper());
+            Set<CourseSchedule> setCourseSchedule = new HashSet<CourseSchedule>(listCourseSchedule);
+            return setCourseSchedule;
+        }
     }
     /**
      * <pre>
