@@ -41,12 +41,25 @@ public interface ScheduleDao {
      */
 	Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime scheduledStartDateTime, 
 			ZonedDateTime scheduledEndDateTime );
-	
+	/**
+     * Count all enrolled courses by Instructor Id
+     * @param long id
+     * 
+     */
 	int countAllEnrolledCoursesByInstructorId(long id);
 	
+	 /**
+     * Finds monthly top learners
+     * 
+     */
 	List<TopLearnersForm> findMonthlyTopLearners();
 	
+	 /**
+     * Finds all quarterly top learners
+     * 
+     */
 	List<TopLearnersForm> findQuarterlyTopLearners();
+	
 	 /**
      * Finds all courses
      * 
@@ -65,6 +78,11 @@ public interface ScheduleDao {
      */
 	Set<VenueForm> findAllVenues();
 	
+	 /**
+     * Finds all course schedule by Id
+     * @param long id
+     * 
+     */
 	CourseSchedule findCourseScheduleById(Long id);
 	
 	 /**
@@ -86,8 +104,18 @@ public interface ScheduleDao {
      */
 	void deleteCourseScheduleById(Long id);
 	
+	 /**
+     * Finds course schedule by course Id
+     * @param long id
+     * 
+     */
 	Set<CourseSchedule> findCourseScheduleByCourseId(Long id);
 	
+	 /**
+     * Update course schedule status
+     * @param courseSchedules
+     * 
+     */
 	void updateCourseScheduleStatus(Set<CourseSchedule> courseSchedules);
 	
 }

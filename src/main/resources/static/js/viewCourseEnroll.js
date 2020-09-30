@@ -276,16 +276,16 @@ function confirmReschedule(){
 	
 	var oldStartDateTime = document.getElementById('rescheduleStartDateTime_old').value;
 	var oldEndDateTime = document.getElementById('rescheduleEndDateTime_old').value;
-//	
-//	alert("START: " + startDateTime);
-//	alert("START OLD: " + oldStartDateTime);
-//	alert("END OLD: " + oldEndDateTime);
-//	alert("END: " + endDateTime);
-//	alert("START MOMENT: " + momentStartDateTime);
-//	alert("END MOMENT: " + momentEndDateTime);
+	
+	//alert("START: " + startDateTime);
+	//alert("START OLD: " + oldStartDateTime);
+	//alert("END OLD: " + oldEndDateTime);
+	//alert("END: " + endDateTime);
+	//alert("START MOMENT: " + momentStartDateTime);
+	//alert("END MOMENT: " + momentEndDateTime);
 	//validate here
-	if(oldStartDateTime.isAfter(startDateTime)){
-		alert("DONE");
+
+
 		var confirmRescheduleInputId = document.getElementById('confirmRescheduleCSDID');
 		var confirmRescheduleInputStartDateTime = document.getElementById('confirmRescheduleCSDStartDateTime');
 		var confirmRescheduleInputEndDateTime = document.getElementById('confirmRescheduleCSDEndDateTime');
@@ -294,11 +294,6 @@ function confirmReschedule(){
 		confirmRescheduleInputStartDateTime.value = startDateTime+toAppend;
 		confirmRescheduleInputEndDateTime.value = endDateTime+toAppend;
 		$('#confirmRescheduleModal').modal('show');
-	}else if(startDateTime.isAfter(oldStartDateTime)){
-		alert("the hell");
-	}
-	else{
-		alert("Hi");
-	}
+	
 
-}
+}

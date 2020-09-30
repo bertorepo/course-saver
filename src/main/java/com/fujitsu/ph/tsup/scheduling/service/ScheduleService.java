@@ -114,10 +114,13 @@ public interface ScheduleService {
     /**
      * Find Course Schedule by Course Id
      * @param long id
-     * @return 
+     * 
      */
     Set<CourseSchedule> findCourseScheduleByCourseId(Long id);
  
-    
+    /**
+     * Change Schedule Status
+     * @param changeScheduleStatus
+     */
     void changeScheduleStatus(Set<CourseSchedule> courseSchedules);
 }

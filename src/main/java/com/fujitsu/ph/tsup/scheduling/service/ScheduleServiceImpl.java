@@ -276,6 +276,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 	        }
 	}
 
+	/**
+     * <pre>
+     * Change Schedule Status by ScheduleDao.updateCourseScheduleStatus by using
+     * Course Schedule Id
+     * 
+     * <pre>
+     * 
+     * @param courseSchedule
+     */
 	@Override
 	public void changeScheduleStatus(Set<CourseSchedule> courseSchedules) {
 		try {

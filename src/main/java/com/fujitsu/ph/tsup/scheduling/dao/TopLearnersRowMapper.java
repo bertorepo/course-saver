@@ -13,6 +13,13 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 //
 //=======================================================
 
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
+
+import org.springframework.jdbc.core.RowMapper;
 /**
 * <pre>
 * Custom RowMapper Class for findTopLearners()
@@ -21,16 +28,16 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 * @author jc.jimenez
 *
 */
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
-
-import org.springframework.jdbc.core.RowMapper;
-
 public class TopLearnersRowMapper implements RowMapper <TopLearnersForm>{
     
+	/**
+     * <pre>
+     * Maps the Rows returned by ResultSet
+     * <pre>
+     * @param ResultSet tpl
+     * @param int rowNum
+     * @throws SQLException
+     */
     @Override
     public TopLearnersForm mapRow(ResultSet tpl, int rowNum) throws SQLException {
         TopLearnersForm topLearnersForm = new TopLearnersForm();

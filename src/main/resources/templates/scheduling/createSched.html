@@ -12,31 +12,15 @@
 	<title>Create Sched</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
 	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
-	<style type="text/css">
-		[list]::-webkit-calendar-picker-indicator {
-    		opacity: 0;
-    		color: dark-gray;
-    		margin-right: -12.5px;
-  		}
-  		
-  		input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
-    		-webkit-appearance : none;
-    		margin: 0;
-  		}
-  		
-  		div.text-danger{
-  			font-size: 12px;
-  			text-align: left;
-  		}
-	</style>
 </head>
 
 <body onload="load()">
 	<div th:insert="fragments/general.html :: header" > </div>
-	<div class="container mt-5" style="min-height: calc(100vh - 180px)">
+	<div class="container mt-5 div_minheight">
 		<form class="form-horizontal" id="scheduleNew" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
 		<!--Success Message End-->
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
@@ -46,7 +30,6 @@
 					<div class="form-group row align-items-center justify-content-center">
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5">
-							<!-- <input type="text" class="form-control" id="*{courseId}" > -->
 							<input type="text" list="courses" id="courseName" 
 										placeholder="Enter Course Name" class="form-control custom-select custom-select-md">
 							<div class="text-danger er" id="courseName_error"> </div>
