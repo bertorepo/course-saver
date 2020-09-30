@@ -285,6 +285,14 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
 	}
 
+    /**
+     * <pre>
+     * Count all Enrolled Courses By Instructor
+     * 
+     * <pre>
+     * 
+     * @param Long id
+     */
     @Override
     public int countAllEnrolledCoursesByInstructorId(long id) {
         String query = "SELECT COUNT(COURSE_ID) "
@@ -298,6 +306,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return template.queryForObject(query, countParameters, Integer.class);
     }
 
+    /**
+     * <pre>
+     * Find monthly top learners 
+     * <pre>
+     */
     @Override
     public List<TopLearnersForm> findMonthlyTopLearners() {
         String query = " SELECT "  
@@ -315,6 +328,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return monthlyTopLearners;
     }
 
+    /**
+     * <pre>
+     * Find quarterly top learners 
+     * <pre>
+     */
     @Override
     public List<TopLearnersForm> findQuarterlyTopLearners() {
         String query = " SELECT "  
@@ -332,6 +350,14 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return quarterlyTopLearners;
     }
 
+    /**
+     * <pre>
+     * Find a course schedule by id
+     * 
+     * <pre>
+     * 
+     * @param Long id
+     */
     @Override
     public CourseSchedule findCourseScheduleById(Long id) {
         String query = "SELECT " 
@@ -376,6 +402,14 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return courseSchedule;
     }
 
+    /**
+     * <pre>
+     * Find course schedule by course id
+     * 
+     * <pre>
+     * 
+     * @param Long id
+     */
     @Override
     public Set<CourseSchedule> findCourseScheduleByCourseId(Long id) {
         String query = "SELECT " 
@@ -422,6 +456,14 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return courseSchedule;
     }
 
+    /**
+     * <pre>
+     * Update a course schedule status
+     * 
+     * <pre>
+     * 
+     * @param courseSchedules
+     */
     @Override
     public void updateCourseScheduleStatus(Set<CourseSchedule> courseSchedules) {
         String sql = "UPDATE COURSE_SCHEDULE "

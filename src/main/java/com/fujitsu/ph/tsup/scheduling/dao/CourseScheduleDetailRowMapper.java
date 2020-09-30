@@ -31,9 +31,24 @@ import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 //import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 
 import org.springframework.jdbc.core.RowMapper;
-
+/**
+* <pre>
+* Custom RowMapper Class for findAllScheduledCourses()
+* <pre>
+* @version 0.01
+* @author j.balanon
+*
+*/
 public class CourseScheduleDetailRowMapper implements RowMapper <CourseScheduleDetailForm>{
-    
+	
+	 /**
+     * <pre>
+     * Maps the Rows returned by ResultSet
+     * <pre>
+     * @param ResultSet csd
+     * @param int rowNum
+     * @throws SQLException
+     */
     @Override
     public  CourseScheduleDetailForm mapRow(ResultSet csd, int rowNum) throws SQLException {
         
