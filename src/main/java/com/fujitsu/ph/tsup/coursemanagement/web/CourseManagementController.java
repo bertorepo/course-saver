@@ -69,46 +69,8 @@ public class CourseManagementController {
         return "redirect:/course-management/courseDelete";
     }
     
-    /**
-     * Author: WS)C.Arias
-     * <pre>
-     * Create the course. Method = GET
-     * 
-     * <pre>
-     * @return course Form and view
-     */
-    @GetMapping("/create")
-    public String showCreateCourseForm(Model model) {
-    	
-    	model.addAttribute("create");
-    	
-    	return "course-management/courseCreate";
-    	
-    }
     
-    /**
-     * Author: WS)C.Arias
-     * <pre>
-     * Create the course. Method = POST
-     * 
-     * <pre>
-     * 
-     * @param CourseForm form
-     * @param BindingResult bindingResult
-     * @return course Form and view
-     */
-    @PostMapping("/create")
-    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult,
-    		Model model) {
-		
-    		Set<Course> courseSize = courseManagementService.findCourseByName(form.getName());
-    		if(courseSize == null) {
-    			Course courseDetails = new Course.Builder(form.getName(),form.getDetail()).build();
-    			courseManagementService.createCourse(courseDetails);
-    		} else {
-    			model.addAttribute("successMessage", "The course is already existing.");
-    		}
-    		  
-        	return "course-management/courseCreate";
+    
+    
     	
 }

@@ -7,12 +7,5 @@ public interface CourseManagementDao {
     Course findCourseById(Long id);
 
     void deleteCourseById(Long id);
-    
-    /**
-     * Finds course by name
-     * 
-     */
-    Set<Course> findCourseByName(String name);
-    
-    void createCourse(Course course);
+
 }
