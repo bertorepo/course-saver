@@ -36,5 +36,44 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
         template.update(query, namedParameters);
 
     }
+    
+    @Override
+    public Set<Course> findCourseByName(String name){
+    	
+    	String query = "SELECT * FROM COURSE WHERE NAME =" + "'" +name+"'";
+    	
+    	try {
+    		
+    		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                    .addValue("name", name);
+        	
+    		System.out.println("query : " + query.toString());
+        	List<Course> courseList = template.query(query, sqlParameterSource, new CourseRowMapper());
+            Set<Course> courses = new HashSet<>(courseList);
+
+            return courses;
+    		
+    	} catch(EmptyResultDataAccessException e) {
+    		
+    		return null;
+    		
+    	}
+    	
+    }
+    
+    @Override
+    public void createCourse(Course course) {
+    	
+    	String query = "INSERT INTO course"
+    			+ " (name, detail)"
+    			+ " VALUES(:name, :detail)";
+    	
+    	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+    			.addValue("name", course.getName())
+    			.addValue("detail", course.getDetail());
+    	
+    	template.update(query, sqlParameterSource);
+    	
+    }
 
 }
