@@ -82,9 +82,8 @@
 			</div>
 		</div>
 		<!--Success Modal End-->
-		<div class="card mt-5"
-			th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/present'}">
-			<div class="card-body">
+		<div class="card mt-5" th:if="${not #lists.isEmpty(generateAttendance.participants)}">			
+			<div class="card-body" th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/present'}">
 				<div class="col-lg-12" style="overflow-x: auto">
 					<form class="form-horizontal" th:object="${generateAttendance}"
 						method="get">
