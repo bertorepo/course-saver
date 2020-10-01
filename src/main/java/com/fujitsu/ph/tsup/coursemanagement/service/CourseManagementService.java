@@ -8,5 +8,5 @@ public interface CourseManagementService {
     void deleteCourseById(Long id);
 
     Course findCourseById(Long id);
-
+    
 }

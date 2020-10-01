@@ -26,4 +26,7 @@ public interface CourseManagementDao {
     
     // Method for searching Courses by Name
     Set<Course> findCoursesByName(String name);
+    
+    //Method for creating courses
+    void createCourse(Course course);
 }

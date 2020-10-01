@@ -36,5 +36,5 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
         template.update(query, namedParameters);
 
     }
-
+    
 }

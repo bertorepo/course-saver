@@ -7,4 +7,5 @@ public interface CourseManagementDao {
     Course findCourseById(Long id);
 
     void deleteCourseById(Long id);
+
 }

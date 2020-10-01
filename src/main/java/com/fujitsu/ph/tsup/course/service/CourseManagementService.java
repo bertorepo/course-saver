@@ -22,5 +22,7 @@ public interface CourseManagementService {
     Set<Course> findAllCourses();
     
     Set<Course> findCoursesByName(String name);
+    
+    void createCourse(Course course);
 
 }

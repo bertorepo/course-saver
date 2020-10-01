@@ -46,6 +46,40 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     
     @Override
     public Set<Course> findCoursesByName(String name) {
-    	return courseManagementDao.findCoursesByName(name);
+
+    	Set<Course> courseFormList = courseManagementDao.findCoursesByName(name);
+    	
+    	try {
+    		
+        	if(courseFormList == null || courseFormList.isEmpty()) {
+        		
+        		return null;
+        		
+        	} else {
+        		
+        		return courseFormList;
+        		
+        	}
+        	
+    	} catch(Exception ex) {
+    		
+    		ex.printStackTrace();
+    		
+    	}
+    	
+    	 return courseFormList;
+    	
+    
+    }
+    
+    /**
+     * Author: WS)C.Arias
+     * Creates course.
+     */
+    public void createCourse(Course course) {
+    	
+    	//call the dao method
+    	courseManagementDao.createCourse(course);
+    	
     }
 }
