@@ -39,8 +39,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
+import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
@@ -71,6 +73,8 @@ public class ScheduleDaoImpl implements ScheduleDao {
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime,
             ZonedDateTime toDateTime) {
+        
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String query = "SELECT " 
                 + "CSCHED.ID AS ID, " 
@@ -102,11 +106,19 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "INNER JOIN EMPLOYEE AS E"
                 + " ON CSCHED.INSTRUCTOR_ID = E.ID " 
                 + "INNER JOIN VENUE AS V " 
-                + " ON CSCHED.VENUE_ID = V.ID "
-                + "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, " 
-                + " CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
-                + "ORDER BY ID, SCHEDULED_START_DATETIME";
-
+                + " ON CSCHED.VENUE_ID = V.ID ";
+        
+        if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
+            query += "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, " 
+                    + " CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "ORDER BY ID, SCHEDULED_START_DATETIME";
+        } else {
+            query += "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, " 
+                    + " CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND (STATUS NOT IN ('C', 'D'))"
+                    + "ORDER BY ID, SCHEDULED_START_DATETIME";
+            
+        }
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
                 .addValue("fromDateTime", fromDateTime.toOffsetDateTime())
                 .addValue("toDateTime", toDateTime.toOffsetDateTime());
