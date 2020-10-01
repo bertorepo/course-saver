@@ -33,7 +33,7 @@
 .sticky-table{
 	overflow-y: auto;
 	background-color: white;
-	height: 43.2vh;
+	max-height: 43.2vh;
 	border-spacing: 0px;
 	border-collapse: separate;
 	border: 1px solid transparent;

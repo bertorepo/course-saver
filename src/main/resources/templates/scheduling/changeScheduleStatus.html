@@ -80,8 +80,9 @@
 						<th>Change Status</th>
 					</tr>
 				</thead>
-				<tbody th:each="courseSchedules, stat : *{courseSchedules}">
-                	<tr th:each="courseScheduleDetails, detStat: *{courseSchedules[__${stat.index}__].courseScheduleDetails}">
+				<tbody>
+				<th:block th:each="courseSchedules, stat : *{courseSchedules}">
+					<tr th:each="courseScheduleDetails, detStat: *{courseSchedules[__${stat.index}__].courseScheduleDetails}">
                         <td>
                         	<input type="hidden" class="form-control bg-white border-0 shadow-0" 
                         		   th:field="*{courseSchedules[__${stat.index}__].instructorName}"/>
@@ -135,9 +136,10 @@
 							<input type="hidden" th:field="*{courseSchedules[__${stat.index}__].status}"/>
 						</td>
 					</tr>
+				</th:block>
 				</tbody>
 			</table>
-			<div class="float-right mt-2">
+			<div class="float-right">
 				<button type="submit" th:if="*{not #lists.isEmpty(courseSchedules)}" 
 						 id="changeStatus" name="changeStatus" class="btn btn-success">Submit</button>
 			</div>	
