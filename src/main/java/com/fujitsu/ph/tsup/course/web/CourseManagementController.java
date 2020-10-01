@@ -162,4 +162,7 @@ public class CourseManagementController {
     		}
     		  
         	return "course-management/courseCreate";
+        	
+    }
+    
 }
