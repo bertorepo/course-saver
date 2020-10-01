@@ -87,9 +87,8 @@
 			</div>
 		</div>
 		<!--Error Modal End-->
-		<div class="card mt-5"
-			th:if="${#httpServletRequest.requestURI != '/attendance/schedules/0/participants'}">
-			<div class="card-body">
+		<div class="card mt-5" th:if="${not #lists.isEmpty(courseParticipant.participants)}">			
+			<div class="card-body" th:if="${#httpServletRequest.requestURI != '/attendance/schedules/0/participants'}">
 				<div class="col-lg-12" style="overflow-x: auto">
 					<form class="form-horizontal" th:object="${courseParticipant}"
 						method="get">
