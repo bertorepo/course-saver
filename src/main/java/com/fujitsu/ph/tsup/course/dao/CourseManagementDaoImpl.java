@@ -80,5 +80,20 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     	
     	return courses;
     }
+    
+    @Override
+    public void createCourse(Course course) {
+    	
+    	String query = "INSERT INTO course"
+    			+ " (name, detail)"
+    			+ " VALUES(:name, :detail)";
+    	
+    	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+    			.addValue("name", course.getName())
+    			.addValue("detail", course.getDetail());
+    	
+    	template.update(query, sqlParameterSource);
+    	
+    }
 
 }
