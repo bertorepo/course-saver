@@ -24,6 +24,9 @@
 	  right: 0;
 	  background-color: #F8F8FF;
 	}
+	.hide {
+  display:none;
+}
 	</style> 
 </head>
 
@@ -72,15 +75,16 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="align-middle">Course ID</th>
+						<th class="align-middle hide">Course ID</th>
 						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
-						<th class="align-middle">Start Date Time</th>
-						<th class="align-middle">End Date Time</th>
+						<th class="align-middle">Start Date/Time<br><hr> End Date/Time</th>
+						<th class="align-middle hide">Start Date Time</th>
+						<th class="align-middle hide">End Date Time</th>
 						<th class="align-middle">Duration(Hrs)</th>
 						<th class="align-middle">Venue</th>
-						<th class="align-middle">Minimum <br> Number of <br> Participants</th>
-						<th class="align-middle">Maximum <br> Number of <br> Participants</th>
+						<th class="align-middle hide">Minimum <br> Number of <br> Participants</th>
+						<th class="align-middle hide">Maximum <br> Number of <br> Participants</th>
 						<th class="align-middle">Total <br> Number of <br> Participants</th>
 						<th class="sticky"></th>
 					
@@ -94,17 +98,21 @@
 							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|">
 									
-						<td th:text="${courseScheduleId}"/>
-						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
-						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
-						<td th:text="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (EEEE) - HH:mm a')}" />
-						<td th:text="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (EEEE) - HH:mm a')}"/>
-						<td th:text="${courseScheduleDetail.duration}"/>
+						<td class="hide" th:text="${courseScheduleId}"/>
+						<td class="align-middle" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td class="align-middle" th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
+						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')} + '&lt;br /&gt; <hr>' + 
+						${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
+						
+						
+						<td class="hide" th:text="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E) HH:mm a')}"/>
+						<td class="hide" th:text="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
+						<td class="align-middle" th:text="${courseScheduleDetail.duration}"/>
 
-						<td th:text="${courseSchedule.venueName}"/>
-						<td th:text="${courseSchedule.minRequired}"/>
-						<td th:text="${courseSchedule.maxAllowed}"/>
-						<td th:text="${courseSchedule.totalParticipants}"/>
+						<td class="align-middle" th:text="${courseSchedule.venueName}"/>
+						<td class="hide" th:text="${courseSchedule.minRequired}"/>
+						<td class="hide" th:text="${courseSchedule.maxAllowed}"/>
+						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
 
 <!-- 						<td sec:authorize="hasAuthority('PMO')" class="sticky"> -->
 <!-- 							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|"> -->
@@ -204,11 +212,11 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="align-middle">Course ID</th>
+						<th class="align-middle hide">Course ID</th>
 						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
-						<th class="align-middle">Start Date Time</th>
-						<th class="align-middle">End Date Time</th>
+						<th class="align-middle hide">Start Date Time</th>
+						<th class="align-middle hide">End Date Time</th>
 						<th class="align-middle">Duration(Hrs)</th>
 						<th class="align-middle">Venue</th>
 						<th class="align-middle">Minimum <br> Number of <br> Participants</th>
@@ -222,12 +230,12 @@
 					<tr th:each="courseSchedule:${activeCourseSchedule}"
 						th:with="courseScheduleDetail = ${courseSchedule.getCourseScheduleDetails()}">
 						
-						<td th:text="${courseSchedule.getId()}"></td>
+						<td class="hide" th:text="${courseSchedule.getId()}"></td>
 						<td th:text="${courseSchedule.courseName}"></td>
 						<td th:text="${courseSchedule.instructorName}"></td>
 						
-						<td th:text="${courseScheduleDetail.scheduledStartDateTime}"></td>
-						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"></td>
+						<td class="hide" th:text="${courseScheduleDetail.scheduledStartDateTime}"></td>
+						<td class="hide" th:text="${courseScheduleDetail.scheduledEndDateTime}"></td>
 						<td th:text="${courseScheduleDetail.duration}"></td>
 						
 						<td th:text="${courseSchedule.venueName}"></td>

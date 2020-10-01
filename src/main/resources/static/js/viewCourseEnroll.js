@@ -264,36 +264,26 @@ function reschedule(csId, csName, csdId, csdStartDateTime, csdEndDateTime){
 	$('#rescheduleModal').modal('show');
 }
 
-function confirmReschedule(){
-	var x = 0;
+function confirmReschedule() {
 	var toAppend = ":00.000+08:00[Asia/Singapore]";
 	var courseScheduleDetailId = document.getElementById('rescheduleCourseScheduleDetailId').value;
 	var startDateTime = document.getElementById('rescheduleStartDateTime').value;
 	var endDateTime = document.getElementById('rescheduleEndDateTime').value;
-	
+
 	var momentStartDateTime = moment(startDateTime);
 	var momentEndDateTime = moment(endDateTime);
-	
-	var oldStartDateTime = document.getElementById('rescheduleStartDateTime_old').value;
-	var oldEndDateTime = document.getElementById('rescheduleEndDateTime_old').value;
-	
-	//alert("START: " + startDateTime);
-	//alert("START OLD: " + oldStartDateTime);
-	//alert("END OLD: " + oldEndDateTime);
-	//alert("END: " + endDateTime);
-	//alert("START MOMENT: " + momentStartDateTime);
-	//alert("END MOMENT: " + momentEndDateTime);
-	//validate here
 
-
+	if (momentStartDateTime.isAfter(momentEndDateTime)) {
+		alert("End Date/Time should be greater than or equal to Start Date/Time");
+	} else {
 		var confirmRescheduleInputId = document.getElementById('confirmRescheduleCSDID');
 		var confirmRescheduleInputStartDateTime = document.getElementById('confirmRescheduleCSDStartDateTime');
 		var confirmRescheduleInputEndDateTime = document.getElementById('confirmRescheduleCSDEndDateTime');
-		
-		confirmRescheduleInputId.value = courseScheduleDetailId;
-		confirmRescheduleInputStartDateTime.value = startDateTime+toAppend;
-		confirmRescheduleInputEndDateTime.value = endDateTime+toAppend;
-		$('#confirmRescheduleModal').modal('show');
-	
 
-}
+		confirmRescheduleInputId.value = courseScheduleDetailId;
+		confirmRescheduleInputStartDateTime.value = startDateTime + toAppend;
+		confirmRescheduleInputEndDateTime.value = endDateTime + toAppend;
+		$('#confirmRescheduleModal').modal('show');
+	}
+}
+
