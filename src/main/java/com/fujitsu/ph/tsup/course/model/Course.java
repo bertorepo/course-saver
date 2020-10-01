@@ -137,6 +137,21 @@ public class Course {
             this.name = name;
 
         }
+        
+        /** Builder Constructor
+         * @param name
+         * @param detail
+         */
+        
+        public Builder(String name, String detail) {
+        	
+        	validateName(name);
+        	validateDetail(detail);
+        	
+        	this.name = name;
+        	this.detail = detail;
+        	
+        }
  
         /** Builder Constructor
          * @param detail
