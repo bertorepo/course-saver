@@ -72,6 +72,10 @@ public class CourseParticipant {
 	
 	/** Course Details **/
     private String courseDetails;
+    
+  //new
+    /** Department Id **/
+    private Long departmentId;
 
 	protected CourseParticipant() {
 
@@ -93,6 +97,9 @@ public class CourseParticipant {
 		this.reason = builder.reason;
 		this.declineDate = builder.declineDate;
 		this.courseDetails = builder.courseDetails;
+		
+		//new
+		this.departmentId = builder.departmentId;
 
 	}
 
@@ -155,6 +162,11 @@ public class CourseParticipant {
     public String getCourseDetails() {
         return courseDetails;
     }
+    
+    //new
+    public Long getDepartmentId() {
+    	return departmentId;
+    }
 	/**
 	 * <pre>
 	 * The builder class of the course participant The builder is a public static
@@ -213,7 +225,11 @@ public class CourseParticipant {
 		  
         /** Course Details **/
         private String courseDetails;
-
+        
+        //new 
+        /** Department Id **/
+        private Long departmentId;
+        
 		/**
 		 * <pre>
 		 * Creates a new instance of Builder for creating a participants. It validates
@@ -407,6 +423,9 @@ public class CourseParticipant {
 		public Builder addCourseScheduleIdAndEmployeeNumber(Long courseScheduleId , String employeeNumber) {
 			validateCourseScheduleId(courseScheduleId);
 			validateEmployeeNumber(employeeNumber);
+			
+			this.courseScheduleId = courseScheduleId;
+			this.employeeNumber = employeeNumber;
 			return this;
 			
 		}
@@ -436,7 +455,11 @@ public class CourseParticipant {
 	            
 	            return this;
 	        }
-
+		  //new
+		  public Builder addDepartmentId(Long departmentId) {
+			  this.departmentId = departmentId;
+			  return this;
+		  }
 		
 		/**
 		 * <pre>

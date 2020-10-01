@@ -570,8 +570,10 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public Set<CourseParticipant> findAllParticipantByCourseScheduleId(Long courseParticipant) {
         // TODO Auto-generated method stub
-        String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " + "						E.ID as EMP_ID, "
-                + "			E.LAST_NAME AS EMPLOYEE_LAST_NAME, " + "			E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
+        String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " 
+        		+ "						E.ID as EMP_ID, "
+                + "			E.LAST_NAME AS EMPLOYEE_LAST_NAME, " 
+                + "			E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
                 + "			E.EMAIL_ADDRESS AS EMAIL "
                 + "		FROM COURSE_PARTICIPANT AS CP INNER JOIN EMPLOYEE AS E ON CP.PARTICIPANT_ID = E.ID "
                 + "		WHERE CP.COURSE_SCHEDULE_ID = :courseScheduleId";
@@ -587,21 +589,29 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     }
 
     @Override
-    public Set<CourseParticipant> findAllMemberNotEnrolledByCourseScheduleId(CourseParticipant courseSchedule) {
+    public Set<CourseParticipant> findAllMemberNotEnrolledByCourseScheduleId(CourseParticipant courseParticipant) {
+    	System.out.println("START OF DAO");
+    	System.out.println("DAO COURSE SCHEDULE ID: " + courseParticipant.getCourseScheduleId());
+    	System.out.println("DAO EMPLOYEE NUMBER: " + courseParticipant.getEmployeeNumber());
         // TODO Auto-generated method stub
-        String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " + "						E.ID as EMP_ID, "
+        String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " + "						"
+        		+ "						E.ID as EMP_ID, "
                 + "						E.LAST_NAME AS EMPLOYEE_LAST_NAME, "
                 + "						E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
                 + "						E.EMAIL_ADDRESS AS EMAIL, "
-                + "						E.DEPARTMENT_ID AS DEPARTMENT " + "				FROM TSUP.EMPLOYEE E "
-                + "				WHERE DEPARTMENT_ID = 2 " + "				AND E.NUMBER "
-                + "					NOT IN (SELECT E.NUMBER " + "							FROM TSUP.EMPLOYEE E "
+                + "						E.DEPARTMENT_ID AS DEPARTMENT " 
+                + "				FROM TSUP.EMPLOYEE E "
+                + "				WHERE DEPARTMENT_ID = (SELECT E.DEPARTMENT_ID FROM tsup.EMPLOYEE E WHERE E.NUMBER = :employeeNumber) " 
+                + "				AND E.NUMBER "
+                + "					NOT IN (SELECT E.NUMBER " 
+                + "							FROM TSUP.EMPLOYEE E "
                 + "							INNER JOIN TSUP.COURSE_PARTICIPANT CP "
                 + "							ON E.ID = CP.PARTICIPANT_ID "
-                + "							WHERE CP.COURSE_SCHEDULE_ID = 1)";
+                + "							WHERE CP.COURSE_SCHEDULE_ID = :courseScheduleId)";
 
         SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
-                .addValue("courseScheduleId", courseSchedule).addValue("employeeNumber", 12345678);
+                .addValue("courseScheduleId", courseParticipant.getCourseScheduleId())
+                .addValue("employeeNumber", courseParticipant.getEmployeeNumber());
 
         List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipantByCourseScheduleId());

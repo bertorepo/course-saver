@@ -22,13 +22,15 @@ function searchAjax(search){
 		dataType: "json",
 		contentType: 'application/json', 
 		success : function (data) {
-			alert("success");
+//			alert("success");
 			toTableMemberList(data);
 		},
 		error: function(xhr, ajaxOptions, thrownError){
-			alert("ERROR searchAjax");
-			alert(xhr.status);
-		    alert(thrownError);
+			document.getElementById('message').innerHTML="The search returned zero results";
+			$('#errorModal').modal('show');
+//			alert("ERROR searchAjax");
+//			alert(xhr.status);
+//		    alert(thrownError);
 		}
 	});
 }
