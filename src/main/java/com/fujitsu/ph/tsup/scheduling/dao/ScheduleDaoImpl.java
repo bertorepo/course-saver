@@ -75,6 +75,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
             ZonedDateTime toDateTime) {
         
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        ZonedDateTime fromDateTimeConflictLowerLimit = ZonedDateTime.now().withHour(0).withMinute(0);
+        
+        ZonedDateTime toDateTimeConflictUpperLimit = ZonedDateTime.now().withHour(23).withMinute(59)
+                                                                            .withSecond(59).withYear(9999);
 
         String query = "SELECT " 
                 + "CSCHED.ID AS ID, " 
@@ -108,7 +113,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "INNER JOIN VENUE AS V " 
                 + " ON CSCHED.VENUE_ID = V.ID ";
         
-        if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
+        if((!(user.getRoles().contains("Instructor")) || 
+                    (user.getRoles().contains("PMO"))) &&
+                    !(fromDateTime.equals(fromDateTimeConflictLowerLimit) && 
+                            toDateTime.equals(toDateTimeConflictUpperLimit))) {
             query += "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, " 
                     + " CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
                     + "ORDER BY ID, SCHEDULED_START_DATETIME";
