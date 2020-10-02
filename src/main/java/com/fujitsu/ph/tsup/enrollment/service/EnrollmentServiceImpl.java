@@ -187,8 +187,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                            .decline(courseParticipant.getReason())
                            .build();
              
-         enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
          enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
+         enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
       
     } 
     

@@ -336,11 +336,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 
         System.out.println("\nCourse Participant ID who decline: " + courseParticipant.getId() + "\n");
      
-        String sql = "DELETE FROM COURSE_PARTICIPANT WHERE id = :id";
-        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", courseParticipant.getId());
-        template.update(sql, namedParameters);
-        
-        System.out.println("\nCourse Participant ID to be deleted: " + courseParticipant.getId() + "\n");
+       
     }
     
 
@@ -355,15 +351,15 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      */
     @Override
     public void deleteCourseParticipantById(Long id) {
-        /*
-         * KeyHolder generatedKeyHolder = new GeneratedKeyHolder(); String sql =
-         * "DELETE FROM COURSE_PARTICIPANT WHERE id = :id"; SqlParameterSource
-         * namedParameters = new MapSqlParameterSource().addValue("id", id);
-         * template.update(sql, namedParameters, generatedKeyHolder);
-         * 
-         * Long key = (Long) generatedKeyHolder.getKeys().get("id");
-         * System.out.println("\nCourse Participant ID to be deleted: " + key + "\n");
-         */
+        
+         KeyHolder generatedKeyHolder = new GeneratedKeyHolder(); String sql =
+         "DELETE FROM COURSE_PARTICIPANT WHERE id = :id"; SqlParameterSource
+         namedParameters = new MapSqlParameterSource().addValue("id", id);
+         template.update(sql, namedParameters, generatedKeyHolder);
+         
+         Long key = (Long) generatedKeyHolder.getKeys().get("id");
+         System.out.println("\nCourse Participant ID to be deleted: " + key + "\n");
+         
     }
 
     

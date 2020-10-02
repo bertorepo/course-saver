@@ -31,7 +31,10 @@
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5">
 							<input type="text" list="courses" id="courseName" 
-										placeholder="Enter Course Name" class="form-control custom-select custom-select-md">
+										placeholder="Enter Course Name" 
+										class="form-control custom-select custom-select-md"
+										onmousedown="courseNameOnDown(this.id)"
+										onchange="courseNameOnChange()">
 							<div class="text-danger er" id="courseName_error"> </div>
 							<datalist id="courses" >
 								<option value=""></option>

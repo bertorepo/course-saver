@@ -251,7 +251,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 	public void updateCourseSchedule(CourseSchedule courseSchedule) {
 		String sql = "UPDATE COURSE_SCHEDULE "
 		           + "SET COURSE_ID = :course_id, INSTRUCTOR_ID = :instructor_id, VENUE_ID = :venue_id, "
-		           + "MIN_REQUIRED = :min_required, MAX_ALLOWED = :max_allowed  "
+		           + "MIN_REQUIRED = :min_required, MAX_ALLOWED = :max_allowed , STATUS = 'A' "
 		           + "WHERE ID = :cs_id";
 		
 		SqlParameterSource courseSchedParameters = new MapSqlParameterSource()

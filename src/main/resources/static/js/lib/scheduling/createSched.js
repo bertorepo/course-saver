@@ -49,11 +49,40 @@ function datetimeBlur(){
 	}
 }
 
+function courseNameOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
+	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+	}
+}
+
+function courseNameOnChange(){
+	
+	var courseName = $("#courseName").val();
+	var holder = document.getElementById("courseName").placeholder;
+	
+	if(courseName == "" && (holder !== "Enter Course Name" || holder !== "")){
+		document.getElementById("courseName").value = holder;
+		
+		var courseId = $('#courses [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("courseId").value = courseId;
+		
+	} else {
+		var courseId = $('#courses [value="'+ courseName +'"]').data('value');
+		
+		document.getElementById("courseId").value = courseId;
+	}
+}
 
 //Add New Rows
 function addNewRow() {
-	var courseScheduleDetails = document.getElementById("courseScheduleDetails");
-	var length = courseScheduleDetails.rows.length;
 	var Url = '/schedules/new/addDate/';
 	document.getElementById("scheduleNew").action = Url;
 }
@@ -64,14 +93,6 @@ function removeNewRow(id) {
 	var Url = '/schedules/new/removeDate/'+removeRowVal;
 	document.getElementById("scheduleNew").action = Url;
 }
-
-//Set Course ID
-$("#courseName").blur(function (){
-	var courseName = $("#courseName").val();
-	var courseId = $('#courses [value="'+ courseName +'"]').data('value');
-	
-	document.getElementById("courseId").value = courseId;
-});
 
 function validations() {
 	var errorCount = 0;
