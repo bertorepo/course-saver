@@ -1061,6 +1061,16 @@
 	}
 	/*]]>*/
 	
+	//ERROR ENROLL
+	/*<![CDATA[*/
+	var errorMessageReschedule = /*[[${errorMessageReschedule}]]*/ 'default';
+	if(errorMessageReschedule == "Hours Count must stay the same!"){
+		document.getElementById("message").innerHTML = errorMessageReschedule;
+		$('#errorModal').modal('show');
+	}
+	
+	
+	
 	
 </script>
 </body>

@@ -658,7 +658,7 @@ public class EnrollmentController {
     	System.out.println("(RESCHEDULE)Course Schedule Detail ID: " + form.getId());
     	System.out.println("(RESCHEDULE)Scheduled Start DateTime: " + form.getScheduledStartDateTime());
     	System.out.println("(RESCHEDULE)Scheduled End DateTime: " + form.getScheduledEndDateTime());
-    	
+    	try {
     	Long durationToHours = Duration.between(form.getScheduledStartDateTime(), form.getScheduledEndDateTime()).toHours();
         Long durationToMinutes = Duration.between(form.getScheduledStartDateTime(), form.getScheduledEndDateTime()).toMinutes();
         float duration = 0;
@@ -676,7 +676,12 @@ public class EnrollmentController {
     	System.out.println("CONTROLLER DURATION: "+ courseScheduleDetail.getDuration());
     	enrollmentService.rescheduleCourseScheduleById(courseScheduleDetail);
     	return "redirect:/enrollment/viewCourseEnroll";
+    	   }catch(NullPointerException e){
+    	       redirectAttributes.addFlashAttribute("errorMessageReschedule", "Hours Count must stay the same!");
+    	   }
+    	return "redirect:/enrollment/viewCourseEnroll";
     }
+    
     
     /**
      * Find all member not enrolled in course schedule

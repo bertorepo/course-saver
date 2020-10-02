@@ -309,27 +309,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 new EnrollmentRowMapperCourseParticipant());
         return courseParticipant;
     }
-
-    /**
-     * <pre>
-     *
-     * deleteCourseParticipantById
-     *
-     * @author k.freo
-     * 
-     *         <pre>
-     */
-    @Override
-    public void deleteCourseParticipantById(Long id) {
-        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        String sql = "DELETE FROM COURSE_PARTICIPANT WHERE id = :id";
-        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-        template.update(sql, namedParameters, generatedKeyHolder);
-
-        Long key = (Long) generatedKeyHolder.getKeys().get("id");
-        System.out.println("\nCourse Participant ID to be deleted: " + key + "\n");
-    }
-
+    
     /**
      * <pre>
      *
@@ -355,7 +335,38 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         template.update(courseParticipantSql, coursenonpartParameters);
 
         System.out.println("\nCourse Participant ID who decline: " + courseParticipant.getId() + "\n");
+     
+        String sql = "DELETE FROM COURSE_PARTICIPANT WHERE id = :id";
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", courseParticipant.getId());
+        template.update(sql, namedParameters);
+        
+        System.out.println("\nCourse Participant ID to be deleted: " + courseParticipant.getId() + "\n");
     }
+    
+
+    /**
+     * <pre>
+     *
+     * deleteCourseParticipantById
+     *
+     * @author k.freo
+     * 
+     *         <pre>
+     */
+    @Override
+    public void deleteCourseParticipantById(Long id) {
+        /*
+         * KeyHolder generatedKeyHolder = new GeneratedKeyHolder(); String sql =
+         * "DELETE FROM COURSE_PARTICIPANT WHERE id = :id"; SqlParameterSource
+         * namedParameters = new MapSqlParameterSource().addValue("id", id);
+         * template.update(sql, namedParameters, generatedKeyHolder);
+         * 
+         * Long key = (Long) generatedKeyHolder.getKeys().get("id");
+         * System.out.println("\nCourse Participant ID to be deleted: " + key + "\n");
+         */
+    }
+
+    
 
     @Override
     public void changeCourseScheduleStatus(CourseSchedule courseSchedule) {
@@ -690,6 +701,15 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("id", courseParticipant.getId())
                 .addValue("participantId", courseParticipant.getParticipantId());
         template.update(query, updateCourseParticipantParameters);
-
+        
+        
+        String query01 = "UPDATE COURSE_ATTENDANCE "
+                + "SET COURSE_SCHEDULE_DETAIL_ID = :courseScheduleDetailId "
+                + "WHERE COURSE_SCHEDULE_ID = :id AND PARTICIPANT_ID = :participantId;";
+        SqlParameterSource updateAttendanceParameters = new MapSqlParameterSource()
+                .addValue("courseScheduleDetailId", courseParticipant.getCourseScheduleDetail().getId())
+                .addValue("id", courseParticipant.getId())
+                .addValue("participantId", courseParticipant.getParticipantId());
+        template.update(query01, updateAttendanceParameters);
     }
 }
