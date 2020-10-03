@@ -494,6 +494,10 @@
 							<label class="col-lg-12 col-form-label" th:if="${error}" th:text="${error}"></label>
 						</div>	
 					</div>
+					<div class="modal-footer">
+						<button type="button" name="goToModal" 
+								id="goToModal" class="btn btn-secondary" data-dismiss="modal">Okay</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -515,6 +519,10 @@
 			$('#error1Modal').modal('show');
 		}
 		/*<![CDATA[*/
+			
+		$("#goToModal").click(function(){
+			$('#updateModal').modal('show');
+		});
 		
 		function load(){
 			var fromDateTime = $("#fromDateTime").val();
@@ -527,7 +535,7 @@
 			
 			if ($("#updateView").length > 0){
 				var updateCourseScheduleId = $("#updateCourseScheduleId").val();
-				if(updateCourseScheduleId !== ""){
+				if(updateCourseScheduleId !== "" && $("#errorModal").length == 0){
 					$('#updateModal').modal('show');
 				}
 			    
@@ -625,7 +633,6 @@
 			    	document.getElementById('errorTitle').innerHTML = "Conflict!";
 			    }
 
-			    console.log(successMessage);
 			    console.log(element);
 
 			    if (errorMessage == element) {
