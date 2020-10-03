@@ -412,6 +412,8 @@ public class EnrollmentController {
         
         } catch (Exception e) {
             
+            e.printStackTrace();
+            
             /*
              * Error Message
              * an attribute to be passed to Thymeleaf to show Error Message

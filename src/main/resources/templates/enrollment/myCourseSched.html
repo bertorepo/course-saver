@@ -151,6 +151,7 @@ resize: none
 						<td class="hide" th:text="${courseSchedules.participantId}"></td>
 						<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
 						<td class="hide" th:text="${courseSchedules.id}"></td>
+					
 						<td class="sticky align-middle">
 							<button th:if="${courseSchedules.attendanceStatus == 'A'}" title="Decline"
  								th:attr="onclick=|declinedCourseSchedule('${courseSchedules.id}',
@@ -401,7 +402,7 @@ resize: none
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary" name="decline" id="declineBtn">Confirm</button>
+							<input type="submit" class="btn btn-primary" name="decline" id="declineBtn" value="Confirm">
 							<button type="button" class="btn btn-secondary" onclick="backModal()" data-dismiss="modal">Back</button>
 						</div>
 					</div>
