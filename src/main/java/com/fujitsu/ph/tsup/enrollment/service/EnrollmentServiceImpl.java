@@ -185,7 +185,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                  new CourseParticipant
                            .Builder(findCourseParticipant.getId())
                            .decline(courseParticipant.getReason())
-                           .build();
+                           .addDetail(findCourseParticipant.getCourseScheduleDetail()).build();
              
          enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
          enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());

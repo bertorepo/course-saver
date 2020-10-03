@@ -1,5 +1,6 @@
 package com.fujitsu.ph.tsup.enrollment.dao;
 
+import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
@@ -19,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 //=================================================================================================
@@ -335,6 +337,19 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         template.update(courseParticipantSql, coursenonpartParameters);
 
         System.out.println("\nCourse Participant ID who decline: " + courseParticipant.getId() + "\n");
+        
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        KeyHolder generatedKeyHolder = new GeneratedKeyHolder(); 
+        String sql = "DELETE FROM COURSE_ATTENDANCE "
+                   + "WHERE COURSE_SCHEDULE_DETAIL_ID = :cscheddet_id "
+                   + "AND PARTICIPANT_ID = :part_id "; 
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("cscheddet_id", courseParticipant.getCourseScheduleDetail().getId())
+                .addValue("part_id", user.getId());
+        template.update(sql, namedParameters, generatedKeyHolder);
+        
+        Long key = (Long) generatedKeyHolder.getKeys().get("id");
+        System.out.println("\nCourse Participant ID to be deleted: " + key + "\n");
      
        
     }
