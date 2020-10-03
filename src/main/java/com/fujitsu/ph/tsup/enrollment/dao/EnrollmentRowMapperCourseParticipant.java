@@ -58,6 +58,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(
                 rs.getTimestamp("SCHEDULED_END_DATETIME").toLocalDateTime().toInstant(ZoneOffset.UTC),
                 ZoneId.of("UTC"));
+        String status = rs.getString("ATTENDANCE_STATUS");
         
         CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailId,
                 courseScheduleId, scheduledStartDateTime, scheduledEndDateTime, duration).build();
@@ -67,7 +68,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         
         CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseId, courseScheduleId, courseName,
                 instructorName, venueName, participantId, participantName, registrationDate)
-                        .addDetail(courseScheduleDetail).addCourseDetails(courseDetails).build();
+                        .addDetail(courseScheduleDetail).addCourseDetails(courseDetails).addAttendanceStatus(status).build();
         
         return courseParticipant;
     }

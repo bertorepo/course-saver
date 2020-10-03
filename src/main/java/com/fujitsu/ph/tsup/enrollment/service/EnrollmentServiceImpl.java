@@ -141,6 +141,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
               }
                 return courseParticipant;
             } catch(DataAccessException ex) {
+                ex.printStackTrace();
                 throw new IllegalArgumentException("Can't Access Id");
             }
         } 
