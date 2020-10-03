@@ -10,12 +10,11 @@
 	<meta name="description" content="" />
 	<meta name="author" content="" />
 	<title>My Course Decline</title>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	
+	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+	<script th:src="@{/js/app/popper.min.js}"></script>
+	<script th:src="@{/js/app/bootstrap.min.js}"></script>
 </head>
 
 <body>
@@ -109,7 +108,7 @@
 						<td th:text="${CourseSchedule.getCourseName()}"></td>
 						<td th:text="${CourseSchedule.getIntstructorName()}"></td>
 						<td th:text="${CourseSchedule.getScheduledStartDateTime()}"></td>
-						<td th:text="${CourseSchedule.getScheduledEndDateTime()}"</td>
+						<td th:text="${CourseSchedule.getScheduledEndDateTime()}"></td>
 						<td th:text="${CourseSchedule.getDuration()}"></td>
 					</tr>
 					
@@ -214,7 +213,7 @@
 	$('input[name="cancel"]').on('click', function() {
 		$('#confirmModal').modal('show');
 	});
-	<!--Message alert-->
+// 	<!--Message alert-->
 	//add if statement for the success/fail messages
 	$('input[name="error"]').on('click', function() {
 		$('#errorModal').modal('show');
@@ -222,7 +221,7 @@
 	$('input[name="success"]').on('click', function() {
 		$('#successModal').modal('show');
 	});
-	<!--Message alert End-->
+// 	<!--Message alert End-->
 	</script>
 </body>
 
