@@ -61,6 +61,8 @@ public class CourseEnrollmentForm {
 
     /* Course Participant ID */
     private ZonedDateTime registrationDate;
+    
+    private String attendanceStatus;
 
     /** Course Participant ID Getter */
     public Long getId() {
@@ -99,6 +101,10 @@ public class CourseEnrollmentForm {
     public String getEmailAddress() {
 		return emailAddress;
 	}
+    
+    public String getAttendanceStatus() {
+        return attendanceStatus;
+    }
 
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
@@ -149,5 +155,9 @@ public class CourseEnrollmentForm {
     /** Registration Date Setter */
     public void setRegistrationDate(ZonedDateTime registrationDate) {
         this.registrationDate = registrationDate;
+    }
+    
+    public void setAttendanceStatus(String attendanceStatus) {
+        this.attendanceStatus = attendanceStatus;
     }
 }

@@ -238,7 +238,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CSCHEDDET.DURATION AS DURATION, " 
                 + "CPART.REGISTRATION_DATE AS REGISTRATION_DATE, "
                 + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
-                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
+                + "CATTEN.STATUS AS ATTENDANCE_STATUS "
                 + "FROM tsup.COURSE_SCHEDULE AS CSCHED  " 
                 + "INNER JOIN tsup.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "
                 + "ON CSCHEDDET.COURSE_SCHEDULE_ID = CSCHED.ID " 
@@ -250,6 +251,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "ON E.ID = CSCHED.INSTRUCTOR_ID "
                 + "INNER JOIN tsup.VENUE AS V " 
                 + "ON V.ID = CSCHED.VENUE_ID "
+                + "INNER JOIN tsup.COURSE_ATTENDANCE AS CATTEN "
+                + "ON CPART.PARTICIPANT_ID = CATTEN.PARTICIPANT_ID "
                 + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
                 + "AND CPART.PARTICIPANT_ID = :participantId " 
                 + "AND CSCHED.STATUS = 'A' ";
@@ -714,13 +717,23 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         template.update(query, updateCourseParticipantParameters);
         
         
-        String query01 = "UPDATE COURSE_ATTENDANCE "
-                + "SET COURSE_SCHEDULE_DETAIL_ID = :courseScheduleDetailId "
-                + "WHERE COURSE_SCHEDULE_ID = :id AND PARTICIPANT_ID = :participantId;";
-        SqlParameterSource updateAttendanceParameters = new MapSqlParameterSource()
-                .addValue("courseScheduleDetailId", courseParticipant.getCourseScheduleDetail().getId())
+        String updateAttendance = "UPDATE tsup.COURSE_ATTENDANCE AS CATTEN\r\n"
+                + "SET COURSE_SCHEDULE_DETAIL_ID = SCHED_REPLACE.COURSE_SCHEDULE_DETAIL_ID\r\n"
+                + "FROM (SELECT SCHEDDET1.ID AS COURSE_SCHEDULE_DETAIL_ID\r\n"
+                + "        FROM tsup.COURSE_SCHEDULE AS SCHED1\r\n"
+                + "          INNER JOIN tsup.COURSE_SCHEDULE_DETAIL AS SCHEDDET1\r\n"
+                + "          ON SCHED1.ID = SCHEDDET1.COURSE_SCHEDULE_ID\r\n"
+                + "         WHERE SCHED1.ID = :courseScheduleId) AS SCHED_REPLACE\r\n"
+                + "WHERE CATTEN.COURSE_SCHEDULE_DETAIL_ID = (SELECT SCHEDDET2.ID\r\n"
+                + "        FROM tsup.COURSE_SCHEDULE AS SCHED2\r\n"
+                + "          INNER JOIN tsup.COURSE_SCHEDULE_DETAIL AS SCHEDDET2\r\n"
+                + "          ON SCHED2.ID = SCHEDDET2.COURSE_SCHEDULE_ID\r\n"
+                + "         WHERE SCHED2.ID = :id)\r\n"
+                + "        AND CATTEN.PARTICIPANT_ID = :participantId";
+        SqlParameterSource updateCourseAttendanceParameters = new MapSqlParameterSource()
+                .addValue("courseScheduleId", courseParticipant.getCourseScheduleId())
                 .addValue("id", courseParticipant.getId())
                 .addValue("participantId", courseParticipant.getParticipantId());
-        template.update(query01, updateAttendanceParameters);
+        template.update(updateAttendance, updateCourseAttendanceParameters);
     }
 }

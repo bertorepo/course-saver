@@ -76,6 +76,10 @@ public class CourseParticipant {
   //new
     /** Department Id **/
     private Long departmentId;
+    
+    //new
+    /** Attendance Status **/
+    private String attendanceStatus;
 
 	protected CourseParticipant() {
 
@@ -97,6 +101,7 @@ public class CourseParticipant {
 		this.reason = builder.reason;
 		this.declineDate = builder.declineDate;
 		this.courseDetails = builder.courseDetails;
+		this.attendanceStatus = builder.attendanceStatus;
 		
 		//new
 		this.departmentId = builder.departmentId;
@@ -167,6 +172,11 @@ public class CourseParticipant {
     public Long getDepartmentId() {
     	return departmentId;
     }
+    
+    //new
+    public String getAttendanceStatus() {
+        return attendanceStatus;
+    }
 	/**
 	 * <pre>
 	 * The builder class of the course participant The builder is a public static
@@ -229,6 +239,10 @@ public class CourseParticipant {
         //new 
         /** Department Id **/
         private Long departmentId;
+        
+        //new
+        /** Attendance Status **/
+        private String attendanceStatus;
         
 		/**
 		 * <pre>
@@ -459,6 +473,12 @@ public class CourseParticipant {
 		  public Builder addDepartmentId(Long departmentId) {
 			  this.departmentId = departmentId;
 			  return this;
+		  }
+		  
+		  //new
+		  public Builder addAttendanceStatus(String status) {
+		      this.attendanceStatus = status;
+		      return this;
 		  }
 		
 		/**
