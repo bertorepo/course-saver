@@ -83,13 +83,13 @@ INSERT INTO tsup.course_schedule(course_id, instructor_id, venue_id, min_require
 --Course Schedule Details
 INSERT INTO tsup.COURSE_SCHEDULE_DETAIL(COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, 
 	DURATION)
-	VALUES (1, '2020-08-11 10:00:00', '2020-07-01 19:00:00', 9);
+	VALUES (1, '2020-07-01 19:00:00',  '2020-08-11 10:00:00',  9);
 INSERT INTO tsup.COURSE_SCHEDULE_DETAIL(COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, 
 	DURATION)
-	VALUES (2, '2020-08-11 10:00:00', '2020-07-01 19:00:00', 9);
+	VALUES (2, '2020-07-01 19:00:00', '2020-08-11 10:00:00', 9);
 INSERT INTO tsup.COURSE_SCHEDULE_DETAIL(COURSE_SCHEDULE_ID, SCHEDULED_START_DATETIME, SCHEDULED_END_DATETIME, 
 	DURATION)
-	VALUES (2, '2020-08-11 10:00:00', '2020-07-01 19:00:00', 9);
+	VALUES (2, '2020-07-01 19:00:00', '2020-08-11 10:00:00', 9);
 INSERT INTO tsup.course_schedule_detail(course_schedule_id, scheduled_start_datetime, scheduled_end_datetime, duration)
 	VALUES (1, '2020-07-01 10:00:00', '2020-07-01 11:00:00', 2);
 INSERT INTO tsup.course_schedule_detail(course_schedule_id, scheduled_start_datetime, scheduled_end_datetime, duration)
