@@ -698,6 +698,7 @@ public class ScheduleController {
                                                         DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
                                                                 .format(cSchedDet.getScheduledEndDateTime()
                                                                         .withZoneSameInstant(ZoneId.systemDefault())) +"]");
+                        model.addAttribute("changeSchedule", courseSchedListForm);
                         model.addAttribute("updateView", form);
                         return "scheduling/viewSched";
                 } 
