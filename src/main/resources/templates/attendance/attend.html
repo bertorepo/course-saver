@@ -16,6 +16,11 @@
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
+<style type="text/css">
+div.text-danger {
+    font-size: 20px;
+}
+</style>
 </head>
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
@@ -76,9 +81,17 @@
 						</div>
 					</div>
 					<div class="text-center">
+						<div class = "text-danger"
+							th:if="not *{#temporals.createNow() le scheduledStartDateTime.plusMinutes(15).toLocalDateTime()}">
+							The Course is Ongoing. If you still want to Sign In, Please Request for Change Attendance</div>
+							<div class = "text-danger"
+							th:if="not *{#temporals.createNow() ge scheduledStartDateTime.minusMinutes(30).toLocalDateTime()}">
+							The Course has not yet started.</div>
 						<div th:if="*{logoutDateTime} == null">
 							<div th:if="*{loginDateTime} == null">
-								<input type="submit" name="signin" id="buttonIn"
+								<input type="submit" name="signin" id="buttonIn" 
+								th:if="*{#temporals.createNow() le scheduledStartDateTime.plusMinutes(15).toLocalDateTime()
+								&& #temporals.createNow() ge scheduledStartDateTime.minusMinutes(30).toLocalDateTime()}"							
 									class="btn btn-success mr-2" value="Sign In"> <input
 									type="button" onclick="Back()" name="back" id="bt"
 									class="btn btn-secondary" value="Back">
