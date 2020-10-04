@@ -1,12 +1,12 @@
 var changeCourseSchedule;
 
-$(document).ready(function() {
-	//	alert("Welcome");
-	//	changeCourseSchedule = $('#changeSched');
-	//	changeCourseSchedule.click(function(){
-	//		changeSchedule();
-	//	});
-});
+//$(document).ready(function() {
+//	//	alert("Welcome");
+//	//	changeCourseSchedule = $('#changeSched');
+//	//	changeCourseSchedule.click(function(){
+//	//		changeSchedule();
+//	//	});
+//});
 function declineUpdate(courseId, courseName, courseScheduleId) {
 	//	alert("Course ID: " + courseId + " Course Name: " + courseName + " Course Schedule Id: " + courseScheduleId);
 
@@ -54,6 +54,14 @@ function changeScheduleModal(data) {
 		var endTime = courseScheduleDetail.scheduledEndDateTime.slice(11, 19);
 		var startDateTimeInput = startDate + " " + startTime;
 		var endDateTimeInput = endDate + " " + endTime;
+		
+		var isDoneDate = new Date(courseScheduleDetail.scheduledEndDateTime.slice(0, 10));
+		isDoneDate.setHours(endTime.substring(0, 1));
+		isDoneDate.setMinutes(endTime.substring(3, 4));
+		console.log(isDoneDate);
+		
+		var today = new Date();
+		console.log(today);
 		/* Date Time Modification End*/
 
 		var tr = document.createElement('tr');
@@ -63,23 +71,31 @@ function changeScheduleModal(data) {
 			'<td>' + startDateTimeInput + '</td>' +
 			'<td>' + endDateTimeInput + '</td>';
 		var td = document.createElement('td');
+		
+		if (isDoneDate <= new Date()){
+			var notice = document.createElement('p');
+			notice.innerHTML = "The Course has already Ended.";
+			td.append(notice);
+		} else {
+			var change = document.createElement('button');
 
-		var change = document.createElement('button');
+			change.innerHTML = "<span class='fa fa-exchange'><" + "/span>";
+			change.title = "Change Course Schedule";
+			change.classList.add("btn");
+			change.classList.add("btn-primary");
+			td.append(change);
+			
+			change.addEventListener("click", function() {
+				showChangeScheduleConfirmationModal(object.id);
+			});
 
-		change.innerHTML = "<span class='fa fa-exchange'><" + "/span>";
-		change.title = "Change Course Schedule";
-		change.classList.add("btn");
-		change.classList.add("btn-primary");
+		}
 
-		td.append(change);
 		tr.append(td);
 		table.append(tr);
 
 
-		change.addEventListener("click", function() {
-			showChangeScheduleConfirmationModal(object.id);
-		});
-
+		
 	});
 
 	$('#changeCourseSchedModal').modal('show');
