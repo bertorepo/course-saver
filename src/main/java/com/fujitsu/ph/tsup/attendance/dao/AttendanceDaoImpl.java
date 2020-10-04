@@ -116,7 +116,6 @@ public class AttendanceDaoImpl implements AttendanceDao {
        if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
             sql +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
                     + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
-                    + "AND CSCHED.INSTRUCTOR_ID = :instructorId "
                     + "AND CSCHED.STATUS = 'A' "
                     + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
            
