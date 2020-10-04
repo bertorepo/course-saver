@@ -46,7 +46,7 @@ public interface ScheduleDao {
      * @param long id
      * 
      */
-	int countAllEnrolledCoursesByInstructorId(long id);
+	int countAllEnrolledCoursesByInstructorId(Long id);
 	
 	 /**
      * Finds monthly top learners
