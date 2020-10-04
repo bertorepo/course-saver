@@ -1,6 +1,9 @@
 package com.fujitsu.ph.tsup.scheduling.dao;
 
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 //=======================================================
 //$Id: PR02$
 //Project Name: Training Sign Up
@@ -315,20 +318,23 @@ public class ScheduleDaoImpl implements ScheduleDao {
      */
     @Override
     public int countAllEnrolledCoursesByInstructorId(Long id) {
-        String query = "SELECT COUNT(COURSE_ID) "
+        String query = "SELECT COUNT(C.NAME) "
                      + "FROM COURSE_SCHEDULE AS CSCHED "
+                     + "INNER JOIN COURSE AS C "
+                     + " ON CSCHED.COURSE_ID = C.ID "
                      + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "  
                      + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
                      + "INNER JOIN EMPLOYEE AS E "
-                     + " ON CSCHED.INSTRUCTOR_ID = E.ID"
+                     + " ON CSCHED.INSTRUCTOR_ID = E.ID "
                      + "WHERE CSCHED.INSTRUCTOR_ID = :id "
-                     + "AND :today BETWEEN CSCHEDDET.SCHEDULED_START_DATETIME AND CSCHEDDET.SCHEDULED_END_DATETIME"
+                     + "AND :today BETWEEN "
+                     + " DATE(COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, CSCHEDDET.SCHEDULED_START_DATETIME)) AND "
+                     + " DATE(COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, CSCHEDDET.SCHEDULED_END_DATETIME)) "
                      + "AND (CSCHED.STATUS = 'A' OR CSCHED.STATUS = 'O');";
         
         SqlParameterSource countParameters = new MapSqlParameterSource()
                                                     .addValue("id", id)
-                                                    .addValue("today", ZonedDateTime.now()
-                                                                            .withHour(0).withMinute(0).toOffsetDateTime());
+                                                    .addValue("today", LocalDate.now());
         return template.queryForObject(query, countParameters, Integer.class);
     }
 
