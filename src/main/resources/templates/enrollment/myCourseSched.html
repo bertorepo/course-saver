@@ -120,7 +120,8 @@ resize: none
 						<th class="align-middle">Actions</th>
 					</tr>
 				</thead>
-				<tbody th:each="courseSchedules : *{courseSchedules}">
+				<tbody id="scheds">
+				<th:block th:each="courseSchedules : *{courseSchedules}">
 					<tr
 						th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
 						
@@ -142,7 +143,8 @@ resize: none
 						<td class="hide" th:text="${courseSchedules.id}"></td>
 					
 						<td class="sticky align-middle">
-							<button th:if="${courseSchedules.attendanceStatus == 'A'}" title="Decline"
+							<button th:if="${courseSchedules.attendanceStatus == 'A' } " 
+								title="Decline"
  								th:attr="onclick=|declinedCourseSchedule('${courseSchedules.id}',
  									'${courseSchedules.courseName}',
  									'${courseSchedules.courseScheduleId}',
@@ -157,16 +159,28 @@ resize: none
  								<i class="fa fa-trash-o fa-lg"></i>
  							</button>
 
-							<button th:if="${courseSchedules.attendanceStatus == 'A'}" title="Change Schedule"
+							<button th:if="${courseSchedules.attendanceStatus == 'A'}" 
+										title="Change Schedule"
 								th:attr="onclick=|declineUpdate('${courseSchedules.courseId}','${courseSchedules.courseName}','${courseSchedules.courseScheduleId}')|"
 								class="btn btn-primary">
 								<i class="fa fa-edit"></i>
 							</button>
 							
 							<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
+							<p th:if="${courseSchedules.attendanceStatus == 'A' &&
+									 #temporals.createNow() ge courseEnrollmentForm.scheduledStartDateTime.toLocalDateTime()}"
+								class="text-warning mt-2">
+								The Course is already ongoing.
+							</p>
+							<p th:if="${courseSchedules.attendanceStatus == 'A' &&
+									courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() le #temporals.createNow()}"
+								class="text-warning mt-2">
+								The Course has already ended.
+							</p>
 						</td>
-
 					</tr>
+				</th:block>
+					
 				</tbody>
 			</table>
 			<div th:if="${#lists.isEmpty(myCourseSched.courseSchedules)}">
@@ -426,9 +440,6 @@ resize: none
 </div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
-	
-	
-	
 		
 
 		//FromDateTime is Higher that ToDateTime
