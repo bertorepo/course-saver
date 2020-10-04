@@ -13,18 +13,12 @@
 <title>My Course Schedules</title>
 <link rel="stylesheet" type="text/css"
 	href="/css/app/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" -->
-<!-- 	integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" -->
-<!-- 	crossorigin="anonymous"></script> -->
-  <script th:src="@{/js/myCourseSched.js}"></script>
-<!-- <script th:src="@{/js/viewMemberCourse.js}"></script> -->
-<script th:src="@{/js/app/bootstrap.min.js}"></script>
-<script th:src="@{/js/app/moment.min.js}"></script>
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<script th:src="@{/js/myCourseSched.js}"></script>
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
+<script th:src="@{/js/app/moment.min.js}"></script>
 
 <style>
 .sticky {
@@ -126,7 +120,8 @@ resize: none
 						<th class="align-middle">Actions</th>
 					</tr>
 				</thead>
-				<tbody th:each="courseSchedules : *{courseSchedules}">
+				<tbody id="scheds">
+				<th:block th:each="courseSchedules : *{courseSchedules}">
 					<tr
 						th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
 						
@@ -147,8 +142,19 @@ resize: none
 						<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
 						<td class="hide" th:text="${courseSchedules.id}"></td>
 					
-						<td class="sticky align-middle">
-							<button th:if="${courseSchedules.attendanceStatus == 'A'}" title="Decline"
+						<td class="sticky align-middle" 
+							th:attr="data-container='body', 
+									 data-toggle='tooltip', 
+									 data-placement='top',
+									 title = ${courseEnrollmentForm.scheduledStartDateTime.toLocalDateTime() 
+									 			ge #temporals.createNow()
+									 			&& courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() 
+									 		   		le #temporals.createNow()} 
+									 			? 'The Course is already ongoing.' : 
+									 		 (${courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() 
+									 		   		le #temporals.createNow()} ? 'The Course has already ended.' : '') ">
+							<button th:if="${courseSchedules.attendanceStatus == 'A' } " 
+								title="Decline"
  								th:attr="onclick=|declinedCourseSchedule('${courseSchedules.id}',
  									'${courseSchedules.courseName}',
  									'${courseSchedules.courseScheduleId}',
@@ -162,8 +168,9 @@ resize: none
  								class="btn btn-danger">
  								<i class="fa fa-trash-o fa-lg"></i>
  							</button>
-
-							<button th:if="${courseSchedules.attendanceStatus == 'A'}" title="Change Schedule"
+ 							
+							<button th:if="${courseSchedules.attendanceStatus == 'A'}" 
+										title="Change Schedule"
 								th:attr="onclick=|declineUpdate('${courseSchedules.courseId}','${courseSchedules.courseName}','${courseSchedules.courseScheduleId}')|"
 								class="btn btn-primary">
 								<i class="fa fa-edit"></i>
@@ -171,8 +178,9 @@ resize: none
 							
 							<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
 						</td>
-
 					</tr>
+				</th:block>
+					
 				</tbody>
 			</table>
 			<div th:if="${#lists.isEmpty(myCourseSched.courseSchedules)}">
@@ -432,10 +440,9 @@ resize: none
 </div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
-	
-	
-	
-		
+		$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+		})
 
 		//FromDateTime is Higher that ToDateTime
 		/*<![CDATA[*/
@@ -518,7 +525,6 @@ resize: none
 			$('#successModal').modal('show');
 		}
 		/*]]>*/
-		
 		
 		/* 
 		 *Error, Employee already enrolled
