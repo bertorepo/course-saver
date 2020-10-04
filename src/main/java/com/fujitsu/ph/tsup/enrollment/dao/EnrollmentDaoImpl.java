@@ -67,6 +67,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      **/
     @Override
     public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String query = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
@@ -92,10 +93,13 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "INNER JOIN EMPLOYEE AS E " 
                 + "ON CS.INSTRUCTOR_ID = E.ID " 
                 + "INNER JOIN VENUE AS V "
-                + "ON CS.VENUE_ID = V.ID " 
-                + "WHERE CSD.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
-                + "AND CS.STATUS = 'A' " 
-                + "ORDER BY CS.ID";
+                + "ON CS.VENUE_ID = V.ID "; 
+
+        if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
+            query +=  "WHERE COALESCE(CSD.RESCHEDULED_START_DATETIME, "
+                    + "CSD.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CS.STATUS = 'A' "
+                    + "ORDER BY CS.ID, CSD.SCHEDULED_START_DATETIME ";
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
                 .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                 .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
@@ -103,8 +107,21 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 new EnrollmentRowMapperCourseSchedule());
         Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
+        } else {           
+            query +=  "WHERE COALESCE(CSD.RESCHEDULED_START_DATETIME, "
+                    + "CSD.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CS.INSTRUCTOR_ID = :instructorId "
+                    + "AND CS.STATUS = 'A' "
+                    + "ORDER BY CS.ID, CSD.SCHEDULED_START_DATETIME ";
+            SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                    .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
+            List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
+                    new EnrollmentRowMapperCourseSchedule());
+            Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+            return courseScheduleSet;
+        }
     }
-
     /**
      * Method to sort the table tsup.course_schedule by tsup.course_schedule.id
      * and tsup.course_schedule.status
@@ -223,6 +240,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, ZonedDateTime fromDateTime,
             ZonedDateTime toDateTime) {
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String query = "SELECT CPART.ID AS COURSE_PARTICIPANT_ID, " 
                 + "C.ID AS COURSE_ID, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
@@ -252,11 +270,29 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "INNER JOIN tsup.VENUE AS V " 
                 + "ON V.ID = CSCHED.VENUE_ID "
                 + "INNER JOIN tsup.COURSE_ATTENDANCE AS CATTEN "
-                + "ON CPART.PARTICIPANT_ID = CATTEN.PARTICIPANT_ID AND CSCHEDDET.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID "
-                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
-                + "AND CPART.PARTICIPANT_ID = :participantId " 
-                + "AND CSCHED.STATUS = 'A' ";
+                + "ON CPART.PARTICIPANT_ID = CATTEN.PARTICIPANT_ID AND CSCHEDDET.ID = CATTEN.COURSE_SCHEDULE_DETAIL_ID ";
 
+        if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
+            query +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                    + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CSCHED.STATUS = 'A' "
+                    + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
+        SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
+                .addValue("participantId", participantId)
+                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
+
+        List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
+                new EnrollmentRowMapperCourseParticipant());
+        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+
+        return courseEnrolled;
+    } else {
+        query +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                + "AND CPART.PARTICIPANT_ID = :participantId " 
+                + "AND CSCHED.STATUS = 'A' "
+                + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
         SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
                 .addValue("participantId", participantId)
                 .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
@@ -268,6 +304,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 
         return courseEnrolled;
     }
+  }
+
 
     /**
      * <pre>
@@ -302,8 +340,10 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + " WHERE ID = CPART.PARTICIPANT_ID) AS DECLINE_DATE, " 
                 + "CPART.PARTICIPANT_ID AS PARTICIPANT_ID, "
                 + "CSCHEDDET.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CSCHEDDET.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
-                + "CSCHEDDET.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME," 
+                + "COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
+                + "COALESCE(CSCHEDDET.RESCHEDULED_END_DATETIME, "
+                + "CSCHEDDET.SCHEDULED_END_DATETIME) AS SCHEDULED_END_DATETIME, "
                 + "CSCHEDDET.DURATION AS DURATION, "
                 + "CATTEN.STATUS AS ATTENDANCE_STATUS "
                 + "FROM COURSE_SCHEDULE AS CSCHED " 

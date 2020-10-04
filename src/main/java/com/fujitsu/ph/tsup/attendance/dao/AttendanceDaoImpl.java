@@ -595,7 +595,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public Set<CourseParticipant> findAllScheduledCoursesByParticipant(ZonedDateTime fromDateTime, ZonedDateTime toDateTime,
             Long participantId) {
-
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String query = "SELECT "
                 + "CPART.ID AS ID, "
                 + "D.ID AS DEPARTMENT_ID, "
@@ -651,10 +651,13 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 + "INNER JOIN tsup.VENUE AS V "
                 + "ON V.ID = CSCHED.VENUE_ID \r\n"
                 + "INNER JOIN DEPARTMENT AS D  "
-                + "ON E.DEPARTMENT_ID = D.ID "
-                + "WHERE CSCHEDDET.SCHEDULED_START_DATETIME BETWEEN :fromDateTime AND :toDateTime "
-                + "AND CPART.PARTICIPANT_ID = :participantId "
-               + "AND CSCHED.STATUS = 'A'";
+                + "ON E.DEPARTMENT_ID = D.ID ";
+
+        if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
+            query +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                    + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CSCHED.STATUS = 'A' "
+                    + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
         
         SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
                 .addValue("fromDateTime",  fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
@@ -664,7 +667,21 @@ public class AttendanceDaoImpl implements AttendanceDao {
                 new CourseParticipantRowMapper());
         Set<CourseParticipant> setCourseParticipant = new HashSet<>(listCourseEnrolled);
         return setCourseParticipant;
-
+        } else {
+            query +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
+                    + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CPART.PARTICIPANT_ID = :participantId "
+                    + "AND CSCHED.STATUS = 'A' "
+                    + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
+            
+            SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
+                    .addValue("fromDateTime",  fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("participantId", participantId);
+            List<CourseParticipant> listCourseEnrolled = template.query(query, courseEnrolledParameters,
+                    new CourseParticipantRowMapper());
+            Set<CourseParticipant> setCourseParticipant = new HashSet<>(listCourseEnrolled);
+            return setCourseParticipant;
+        }
     }
-
 }
