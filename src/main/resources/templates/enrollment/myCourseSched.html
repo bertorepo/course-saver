@@ -142,7 +142,15 @@ resize: none
 						<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
 						<td class="hide" th:text="${courseSchedules.id}"></td>
 					
-						<td class="sticky align-middle">
+						<td class="sticky align-middle" 
+							th:attr="data-container='body', 
+									 data-toggle='tooltip', 
+									 data-placement='top',
+									 title = ${#temporals.createNow() ge 
+									 			courseEnrollmentForm.scheduledStartDateTime.toLocalDateTime()} 
+									 			? 'The Course is already ongoing.' : 
+									 		 (${courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() 
+									 		   		le #temporals.createNow()} ? 'The Course has already ended.' : '') ">
 							<button th:if="${courseSchedules.attendanceStatus == 'A' } " 
 								title="Decline"
  								th:attr="onclick=|declinedCourseSchedule('${courseSchedules.id}',
@@ -167,16 +175,6 @@ resize: none
 							</button>
 							
 							<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
-							<p th:if="${courseSchedules.attendanceStatus == 'A' &&
-									 #temporals.createNow() ge courseEnrollmentForm.scheduledStartDateTime.toLocalDateTime()}"
-								class="text-warning mt-2">
-								The Course is already ongoing.
-							</p>
-							<p th:if="${courseSchedules.attendanceStatus == 'A' &&
-									courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() le #temporals.createNow()}"
-								class="text-warning mt-2">
-								The Course has already ended.
-							</p>
 						</td>
 					</tr>
 				</th:block>
@@ -440,7 +438,9 @@ resize: none
 </div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
-		
+		$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+		})
 
 		//FromDateTime is Higher that ToDateTime
 		/*<![CDATA[*/
