@@ -275,6 +275,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
             query +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
                     + "CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CPART.PARTICIPANT_ID = :participantId " 
                     + "AND CSCHED.STATUS = 'A' "
                     + "ORDER BY CSCHED.ID, CSCHEDDET.SCHEDULED_START_DATETIME ";
         SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
