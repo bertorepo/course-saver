@@ -146,8 +146,10 @@ resize: none
 							th:attr="data-container='body', 
 									 data-toggle='tooltip', 
 									 data-placement='top',
-									 title = ${#temporals.createNow() ge 
-									 			courseEnrollmentForm.scheduledStartDateTime.toLocalDateTime()} 
+									 title = ${courseEnrollmentForm.scheduledStartDateTime.toLocalDateTime() 
+									 			ge #temporals.createNow()
+									 			&& courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() 
+									 		   		le #temporals.createNow()} 
 									 			? 'The Course is already ongoing.' : 
 									 		 (${courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() 
 									 		   		le #temporals.createNow()} ? 'The Course has already ended.' : '') ">
