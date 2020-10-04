@@ -314,15 +314,21 @@ public class ScheduleDaoImpl implements ScheduleDao {
      * @param Long id
      */
     @Override
-    public int countAllEnrolledCoursesByInstructorId(long id) {
+    public int countAllEnrolledCoursesByInstructorId(Long id) {
         String query = "SELECT COUNT(COURSE_ID) "
                      + "FROM COURSE_SCHEDULE AS CSCHED "
                      + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSCHEDDET "  
                      + " ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "
-                     + "WHERE INSTRUCTOR_ID = :id "
-                     + "AND NOW() BETWEEN CSCHEDDET.SCHEDULED_START_DATETIME AND CSCHEDDET.SCHEDULED_END_DATETIME;";
+                     + "INNER JOIN EMPLOYEE AS E "
+                     + " ON CSCHED.INSTRUCTOR_ID = E.ID"
+                     + "WHERE CSCHED.INSTRUCTOR_ID = :id "
+                     + "AND :today BETWEEN CSCHEDDET.SCHEDULED_START_DATETIME AND CSCHEDDET.SCHEDULED_END_DATETIME"
+                     + "AND (CSCHED.STATUS = 'A' OR CSCHED.STATUS = 'O');";
         
-        SqlParameterSource countParameters = new MapSqlParameterSource().addValue("id", id);
+        SqlParameterSource countParameters = new MapSqlParameterSource()
+                                                    .addValue("id", id)
+                                                    .addValue("today", ZonedDateTime.now()
+                                                                            .withHour(0).withMinute(0).toOffsetDateTime());
         return template.queryForObject(query, countParameters, Integer.class);
     }
 
