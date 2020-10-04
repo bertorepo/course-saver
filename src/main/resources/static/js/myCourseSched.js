@@ -56,8 +56,8 @@ function changeScheduleModal(data) {
 		var endDateTimeInput = endDate + " " + endTime;
 		
 		var isDoneDate = new Date(courseScheduleDetail.scheduledEndDateTime.slice(0, 10));
-		isDoneDate.setHours(endTime.substring(0, 1));
-		isDoneDate.setMinutes(endTime.substring(3, 4));
+		isDoneDate.setHours(courseScheduleDetail.scheduledEndDateTime.substring(11, 13));
+		isDoneDate.setMinutes(courseScheduleDetail.scheduledEndDateTime.substring(14, 16));
 		console.log(isDoneDate);
 		
 		var today = new Date();
@@ -72,7 +72,7 @@ function changeScheduleModal(data) {
 			'<td>' + endDateTimeInput + '</td>';
 		var td = document.createElement('td');
 		
-		if (isDoneDate <= new Date()){
+		if (isDoneDate < new Date()){
 			var notice = document.createElement('p');
 			notice.innerHTML = "The Course has already Ended.";
 			td.append(notice);
