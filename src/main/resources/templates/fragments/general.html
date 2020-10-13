@@ -135,6 +135,8 @@
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
+							<a class="dropdown-item" th:href="@{/schedules/courseSchedules/view}">View and Change Schedule</a>
+							<a class="dropdown-item" th:href="@{/schedules/courseSchedule/0/changeStatus}">Change Schedule Status</a>
 							<a class="dropdown-item" th:href="@{/schedules/view}">Instructor Course Schedule List</a>
 						</div>
 					</li>
@@ -145,6 +147,13 @@
 							<a class="dropdown-item" th:href="@{/attendance/schedules/0/participants}">View Instructor Course Participants</a>
 							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
 							<a class="dropdown-item" th:href="@{/attendance/generate/0/absent}">Attendance for Absent</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/courses/create}">Create Course</a>
+							<a class="dropdown-item" th:href="@{/courses/load}">Manage Course</a>
 						</div>
 					</li>
 					</th:block>
@@ -163,6 +172,8 @@
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Schedule<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
+							<a class="dropdown-item" th:href="@{/schedules/courseSchedules/view}">View and Change Schedule</a>
+							<a class="dropdown-item" th:href="@{/schedules/courseSchedule/0/changeStatus}">Change Schedule Status</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
@@ -171,6 +182,13 @@
 							<a class="dropdown-item" th:href="@{/attendance/signin}">Attend</a>
 							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
 							<a class="dropdown-item" th:href="@{/attendance/generate/0/absent}">Attendance for Absent</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/courses/create}">Create Course</a>
+							<a class="dropdown-item" th:href="@{/courses/load}">Manage Course</a>
 						</div>
 					</li>
 					</th:block>
@@ -190,6 +208,8 @@
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/schedules/new}">Create Schedule</a>
 							<a class="dropdown-item" th:href="@{/schedules/view}">Instructor Course Schedule List</a>
+							<a class="dropdown-item" th:href="@{/schedules/courseSchedules/view}">View and Change Schedule</a>
+							<a class="dropdown-item" th:href="@{/schedules/courseSchedule/0/changeStatus}">Change Schedule Status</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
@@ -200,6 +220,13 @@
 							<a class="dropdown-item" th:href="@{/attendance/schedules/0/participants}">View Instructor Course Participants</a>
 							<a class="dropdown-item" th:href="@{/attendance/generate/0/present}">Generate Attendance Sheet</a>
 							<a class="dropdown-item" th:href="@{/attendance/generate/0/absent}">Attendance for Absent</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Course<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/courses/create}">Create Course</a>
+							<a class="dropdown-item" th:href="@{/courses/load}">Manage Course</a>
 						</div>
 					</li>
 					</th:block>
