@@ -52,13 +52,10 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
                 resultSet.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.systemDefault());
         ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(
                 resultSet.getTimestamp("SCHEDULED_END_DATETIME").toInstant(), ZoneId.systemDefault());
-        float duration = resultSet.getFloat("DURATION");//Added
+        float duration = resultSet.getFloat("DURATION");
         
         CourseScheduleDetail courseScheduleDetail = 
                 new CourseScheduleDetail.Builder(courseScheduleDetailId, id, scheduledStartDateTime, scheduledEndDateTime,duration).build();
-        
-//        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-//        courseScheduleDetailSet.add(courseScheduleDetail);
         
         CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
                 instructorLastName, instructorFirstName, venueId, venueName, minRequired, 

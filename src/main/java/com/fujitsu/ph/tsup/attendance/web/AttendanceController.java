@@ -224,7 +224,6 @@ public class AttendanceController {
                         formattedStartDate + " --- " + 
                         formattedEndDate);
           }    
-
             changeStatusCourseSet.add(changeStatusCourseForm);
         }      
             form.setId(id);

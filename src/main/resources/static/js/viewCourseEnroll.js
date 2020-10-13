@@ -182,8 +182,7 @@ function toTable(data){
 	var len = data.length;
 	var table = document.getElementById('table-body')
 	
-	data.forEach(function(object){
-		
+	data.forEach(function(object){		
 		var courseScheduleDetail = object.courseScheduleDetail;
 		var tr = document.createElement('tr'); 
 		tr.innerHTML = 

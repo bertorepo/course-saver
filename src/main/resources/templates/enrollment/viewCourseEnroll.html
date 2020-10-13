@@ -114,12 +114,6 @@
 						<td class="hide" th:text="${courseSchedule.maxAllowed}"/>
 						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
 
-<!-- 						<td sec:authorize="hasAuthority('PMO')" class="sticky"> -->
-<!-- 							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|"> -->
-<!-- 								<i class="fa fa-times"></i> Cancel -->
-<!-- 							</button> -->
-<!-- 						</td> -->
-
 						<td class="sticky" sec:authorize="hasAuthority('Member')">
 							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
 									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',

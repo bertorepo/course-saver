@@ -24,5 +24,4 @@ public class EnrollmentRowMapperCourseParticipantByCourseScheduleIdAndParticipan
 		CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseScheduleId, participantId, registrationDateTime).build();
 		return courseParticipant;
 	}
-
 }

@@ -59,10 +59,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         String status = rs.getString("ATTENDANCE_STATUS");
         
         CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailId,
-                courseScheduleId, scheduledStartDateTime, scheduledEndDateTime, duration).build();
-        
-//        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
-//        courseScheduleDetailSet.add(courseScheduleDetail);
+                courseScheduleId, scheduledStartDateTime, scheduledEndDateTime, duration).build();        
         
         CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseId, courseScheduleId, courseName,
                 instructorName, venueName, participantId, participantName, registrationDate)
