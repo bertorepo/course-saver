@@ -900,9 +900,11 @@
 	//SHOW REGISTRATION POP UP
 	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, endDateTime, courseScheduleDetailId){
 		var startDate = startDateTime.slice(0,10);
-		var startTime = startDateTime.slice(11,22);
+		var startTime = moment.utc(startDateTime, 'YYYY-MM-DD HH:mm').format(
+		'HH:mm A');
 		var endDate = endDateTime.slice(0,10);
-		var endTime = endDateTime.slice(11,22);
+		var endTime = moment.utc(endDateTime, 'YYYY-MM-DD HH:mm').format(
+		'HH:mm A');
 		
 		document.getElementById('courseRegistrationCSDId').value = courseScheduleDetailId;
 		
