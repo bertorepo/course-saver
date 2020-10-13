@@ -61,19 +61,23 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 "    E.ID AS \"E.ID\", " +
                 "    CS.STATUS AS \"CS.STATUS\" " +
                 " FROM COURSE_SCHEDULE CS " + 
-                " LEFT JOIN EMPLOYEE E ON CS.INSTRUCTOR_ID = E.ID " + 
-                " LEFT JOIN COURSE_SCHEDULE_DETAIL CSD ON CS.ID = CSD.COURSE_SCHEDULE_ID " + 
-                " LEFT JOIN VENUE V ON CS.VENUE_ID=V.ID " + 
-                " LEFT JOIN COURSE C ON CS.COURSE_ID = C.ID " + 
-                " LEFT JOIN COURSE_PARTICIPANT CP ON CS.ID = CP.COURSE_SCHEDULE_ID " + 
+                " INNER JOIN EMPLOYEE E ON CS.INSTRUCTOR_ID = E.ID " + 
+                " INNER JOIN COURSE_SCHEDULE_DETAIL CSD ON CS.ID = CSD.COURSE_SCHEDULE_ID " + 
+                " INNER JOIN VENUE V ON CS.VENUE_ID=V.ID " + 
+                " INNER JOIN COURSE C ON CS.COURSE_ID = C.ID " + 
+                " INNER JOIN COURSE_PARTICIPANT CP ON CS.ID = CP.COURSE_SCHEDULE_ID " + 
                 " WHERE C.NAME NOT IN (SELECT C.NAME " + 
                 "                      FROM COURSE_SCHEDULE CS " + 
                 "                      INNER JOIN COURSE_PARTICIPANT CP " + 
-                "                      ON CS.ID =CP.COURSE_SCHEDULE_ID " + 
+                "                      ON CS.ID = CP.COURSE_SCHEDULE_ID " + 
                 "                      INNER JOIN COURSE C " + 
                 "                      ON CS.COURSE_ID = C.ID " + 
+                "                      INNER JOIN COURSE_SCHEDULE_DETAIL CSDET " +
+                "                      ON CSD.COURSE_SCHEDULE_ID = CS.ID " +      
                 "                      WHERE CP.PARTICIPANT_ID = :employeeId AND " +
-                "                      CS.STATUS IN ('D', 'C'))" + 
+                "                      CS.STATUS IN ('D', 'C') AND " +
+                "                      :today > DATE(COALESCE(CSDET.RESCHEDULED_END_DATETIME, "+
+                "                                                 CSDET.SCHEDULED_END_DATETIME))) " +  
                 "    GROUP BY" + 
                 "    C.NAME, " + 
                 "    FULL_NAME, " + 
@@ -88,7 +92,8 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 "    LIMIT 5 ";
  
         SqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue("employeeId", employeeId);
+                .addValue("employeeId", employeeId)
+                .addValue("today", LocalDate.now());
         
         List<DashboardMember> dashboardMember = template.query(sql, namedParameters, new DashboardMemberRowMapper());
         Set<DashboardMember> setDashboardMember = new HashSet<DashboardMember>(dashboardMember);
