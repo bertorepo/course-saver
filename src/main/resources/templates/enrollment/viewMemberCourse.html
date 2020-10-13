@@ -295,8 +295,8 @@
 						<td th:text="${courseScheduleId}"/>
 						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
-						<td th:text="${courseScheduleDetail.scheduledStartDateTime}" />
-						<td th:text="${courseScheduleDetail.scheduledEndDateTime}"/>
+						<td th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')}" />
+						<td th:utext="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
 						<td th:text="${courseScheduleDetail.duration}"/>
 
 						<td th:text="${courseSchedule.venueName}"/>
@@ -367,9 +367,11 @@
 // 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
 
 		var startDate = scheduleStartDateTime.slice(0,10);
-		var startTime = scheduleStartDateTime.slice(11,22);
+		var startTime = moment.utc(scheduleStartDateTime, 'YYYY-MM-DD HH:mm').format(
+		'HH:mm A');
 		var endDate = scheduleEndDateTime.slice(0,10);
-		var endTime = scheduleEndDateTime.slice(11,22);
+		var endTime = moment.utc(scheduleEndDateTime, 'YYYY-MM-DD HH:mm').format(
+		'HH:mm A');
 
 		var idInput = document.getElementById('infoId');
 		idInput.value = id;

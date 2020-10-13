@@ -190,8 +190,10 @@ function toTable(data){
 			'<td>' + object.id + '</td>' +
 			'<td>' + object.courseName + '</td>' +
 			'<td>' + object.instructorLastName + ' ' + object.instructorFirstName + '</td>' +
-			'<td>' + courseScheduleDetail.scheduledStartDateTime + '</td>' +
-			'<td>' + courseScheduleDetail.scheduledEndDateTime + '</td>' +
+			'<td>' + moment.utc(courseScheduleDetail.scheduledStartDateTime, 'YYYY-MM-DD HH:mm').format(
+			'MMM DD, YYYY (ddd)- HH:mm A') + '</td>' +
+			'<td>' + moment.utc(courseScheduleDetail.scheduledEndDateTime, 'YYYY-MM-DD HH:mm').format(
+			'MMM DD, YYYY (ddd)- HH:mm A') + '</td>' +
 			'<td>' + courseScheduleDetail.duration + '</td>' +
 			'<td>' + object.venueName + '</td>' +
 			'<td>' + object.minRequired + '</td>' +

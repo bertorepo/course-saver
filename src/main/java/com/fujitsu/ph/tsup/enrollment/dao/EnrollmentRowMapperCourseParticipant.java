@@ -50,14 +50,12 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         Long participantId = rs.getLong("PARTICIPANT_ID");
         String participantName = rs.getString("PARTICIPANT_LAST_NAME") + ", " + rs.getString("PARTICIPANT_FIRST_NAME");
         float duration = rs.getFloat("DURATION");
-        ZonedDateTime registrationDate = ZonedDateTime.ofInstant(rs.getTimestamp("REGISTRATION_DATE").toInstant(),
-                ZoneId.of("UTC"));
+        ZonedDateTime registrationDate = ZonedDateTime.ofInstant(
+                rs.getTimestamp("REGISTRATION_DATE").toInstant(), ZoneId.systemDefault());
         ZonedDateTime scheduledStartDateTime = ZonedDateTime.ofInstant(
-                rs.getTimestamp("SCHEDULED_START_DATETIME").toLocalDateTime().toInstant(ZoneOffset.UTC),
-                ZoneId.of("UTC"));
+                rs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.systemDefault());
         ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(
-                rs.getTimestamp("SCHEDULED_END_DATETIME").toLocalDateTime().toInstant(ZoneOffset.UTC),
-                ZoneId.of("UTC"));
+                rs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(), ZoneId.systemDefault());
         String status = rs.getString("ATTENDANCE_STATUS");
         
         CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(courseScheduleDetailId,

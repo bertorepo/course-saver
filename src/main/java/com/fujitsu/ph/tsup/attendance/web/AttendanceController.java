@@ -115,7 +115,7 @@ public class AttendanceController {
     public String showCourseParticipantsForm(@PathVariable("courseScheduleId") Long id, Model model) {
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ZonedDateTime toDateTime = ZonedDateTime.now().plusDays(5);
-        ZonedDateTime fromDateTime = ZonedDateTime.now();
+        ZonedDateTime fromDateTime = ZonedDateTime.now().minusHours(15);
 
         logger.debug("Model:{}", model);
 
@@ -204,7 +204,7 @@ public class AttendanceController {
         FpiUser user = (FpiUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
         ZonedDateTime toDateTime = ZonedDateTime.now().plusDays(5);
-        ZonedDateTime fromDateTime = ZonedDateTime.now();
+        ZonedDateTime fromDateTime = ZonedDateTime.now().minusHours(15);
         
         List<ChangeStatusParticipant> participantAsList = new ArrayList<ChangeStatusParticipant>();
         Set<ChangeStatusCourse> changeStatusCourseSet = new HashSet<ChangeStatusCourse>();
@@ -336,7 +336,7 @@ public class AttendanceController {
     public String showGenerateAttendanceForm(@PathVariable("courseScheduleDetailId") Long id, Model model) {
 
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ZonedDateTime fromDate = ZonedDateTime.now();
+        ZonedDateTime fromDate = ZonedDateTime.now().minusHours(15);
         ZonedDateTime toDate = ZonedDateTime.now().plusDays(5);
 
         GenerateAttendanceForm generateAttendanceForm = new GenerateAttendanceForm();
@@ -429,7 +429,7 @@ public class AttendanceController {
     public String showGenerateAbsentForm(@PathVariable("courseScheduleDetailId") Long id, Model model) {
         FpiUser user = (FpiUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        ZonedDateTime fromDate = ZonedDateTime.now();
+        ZonedDateTime fromDate = ZonedDateTime.now().minusHours(15);
         ZonedDateTime toDate = ZonedDateTime.now().plusDays(5);
 
         logger.debug("Model:{}{}", model,id);

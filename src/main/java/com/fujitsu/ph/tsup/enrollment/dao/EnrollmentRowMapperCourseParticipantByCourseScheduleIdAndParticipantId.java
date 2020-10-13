@@ -18,7 +18,8 @@ public class EnrollmentRowMapperCourseParticipantByCourseScheduleIdAndParticipan
 		Long participantId = rs.getLong("PARTICIPANT_ID");
 		
 		ZonedDateTime registrationDateTime = ZonedDateTime
-				.ofInstant(rs.getTimestamp("REGISTRATION_DATE_TIME").toInstant(), ZoneId.of("UTC"));
+				.ofInstant(rs.getTimestamp("REGISTRATION_DATE_TIME")
+				.toInstant(), ZoneId.systemDefault());
 		
 		CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseScheduleId, participantId, registrationDateTime).build();
 		return courseParticipant;

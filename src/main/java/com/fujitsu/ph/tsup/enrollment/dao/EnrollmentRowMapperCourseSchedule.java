@@ -48,10 +48,10 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         int maxAllowed = resultSet.getInt("MAX_ALLOWED");
         int totalParticipants = resultSet.getInt("TOTAL_PARTICIPANTS");
         char status = resultSet.getString("STATUS").charAt(0);
-        ZonedDateTime scheduledStartDateTime = ZonedDateTime.ofInstant(resultSet.getTimestamp("SCHEDULED_START_DATETIME").toLocalDateTime().toInstant(ZoneOffset.UTC),
-                ZoneId.of("UTC"));
-        ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(resultSet.getTimestamp("SCHEDULED_END_DATETIME").toLocalDateTime().toInstant(ZoneOffset.UTC),
-                ZoneId.of("UTC"));
+        ZonedDateTime scheduledStartDateTime = ZonedDateTime.ofInstant(
+                resultSet.getTimestamp("SCHEDULED_START_DATETIME").toInstant(), ZoneId.systemDefault());
+        ZonedDateTime scheduledEndDateTime = ZonedDateTime.ofInstant(
+                resultSet.getTimestamp("SCHEDULED_END_DATETIME").toInstant(), ZoneId.systemDefault());
         float duration = resultSet.getFloat("DURATION");//Added
         
         CourseScheduleDetail courseScheduleDetail = 
