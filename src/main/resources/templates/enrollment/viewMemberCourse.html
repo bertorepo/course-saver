@@ -242,7 +242,7 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
 								<div class="col-lg-9">
-									<label class="col-form-label">Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World</label>
+									<input type="text" class="form-control-plaintext" id="infoCourseDesc" disabled>
 								</div>
 							</div>
 						</div>
@@ -289,7 +289,7 @@
 					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
 							th:with="courseScheduleId = ${courseSchedule.id}"
 							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
-									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}')|">
+									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}', '${courseSchedule.courseDetails}')|">
 									
 						<td th:text="${courseScheduleId}"/>
 						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
@@ -362,7 +362,7 @@
 	}
 
 	//Information Modal
-	function showInformation(id, courseName, instructorName, scheduleStartDateTime, scheduleEndDateTime){
+	function showInformation(id, courseName, instructorName, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
 // 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
 
 		var startDate = scheduleStartDateTime.slice(0,10);
@@ -374,6 +374,8 @@
 
 		var idInput = document.getElementById('infoId');
 		idInput.value = id;
+		
+		document.getElementById('infoCourseDesc').value = courseDetails;
 		
 		var courseNameInput = document.getElementById('infoCourseName');
 		courseNameInput.value = courseName;

@@ -565,6 +565,7 @@ public class EnrollmentController {
 	            courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
 	            courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
 	            courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
+	            courseScheduleForm.setCourseDetails(courseSchedule.getCourseDetails());
 	            
 	            CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
 	            CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
