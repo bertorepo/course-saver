@@ -119,7 +119,7 @@ public class EnrollmentController {
         }
         if (form.getFromDateTime() == null) {
 //        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
-        	form.setFromDateTime(ZonedDateTime.now());
+        	form.setFromDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
 //        	System.out.println("SECOND FROM DATE TIME: "+form.getFromDateTime());
         }
         if (form.getToDateTime() == null) {
@@ -254,7 +254,7 @@ public class EnrollmentController {
 
         if (courseEnrolledListForm.getFromDateTime() == null || courseEnrolledListForm.getToDateTime() == null) {
 
-            courseEnrolledListForm.setFromDateTime(ZonedDateTime.now());
+            courseEnrolledListForm.setFromDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
             courseEnrolledListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
 
@@ -530,7 +530,7 @@ public class EnrollmentController {
         
         if (form.getFromDateTime() == null) {
 //        	form.setFromDateTime( ZonedDateTime.ofInstant(Timestamp.valueOf("2020-07-01 08:30:00").toInstant(),ZoneId.of("UTC")));
-        	form.setFromDateTime(ZonedDateTime.now());
+        	form.setFromDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
 //        	System.out.println("SECOND FROM DATE TIME: "+form.getFromDateTime());
         }
         

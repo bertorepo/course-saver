@@ -112,13 +112,15 @@
 						<td class="align-middle" th:text="${courseSchedule.venueName}"/>
 						<td class="hide" th:text="${courseSchedule.minRequired}"/>
 						<td class="hide" th:text="${courseSchedule.maxAllowed}"/>
+						<td class="hide" th:text="${courseSchedule.courseDetails}"></td>
 						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
 
 						<td class="sticky" sec:authorize="hasAuthority('Member')">
 							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
 									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
 									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
-									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}')|" 
+									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}', 
+									'${courseSchedule.courseDetails}')|" 
 									type="button" class="btn btn-success">Register</button>
 									
 							<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
@@ -666,8 +668,7 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
 								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseDescription" 
-											value="Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World"  disabled>
+									<input type="text" class="form-control-plaintext" id="courseDescription" disabled>
 								</div>
 							</div>
 						</div>
@@ -898,7 +899,8 @@
 // 	}
 
 	//SHOW REGISTRATION POP UP
-	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, endDateTime, courseScheduleDetailId){
+	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, 
+			endDateTime, courseScheduleDetailId, courseDetails){
 		var startDate = startDateTime.slice(0,10);
 		var startTime = moment.utc(startDateTime, 'YYYY-MM-DD HH:mm').format(
 		'HH:mm A');
@@ -907,6 +909,8 @@
 		'HH:mm A');
 		
 		document.getElementById('courseRegistrationCSDId').value = courseScheduleDetailId;
+		
+		document.getElementById('courseDescription').value = courseDetails;
 		
 		var idInput = document.getElementById('courseRegistrationId');
 		idInput.value = courseScheduleId;

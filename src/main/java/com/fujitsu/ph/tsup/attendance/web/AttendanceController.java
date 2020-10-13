@@ -614,7 +614,7 @@ public class AttendanceController {
         }
         
         if (form.getFromDateTime() == null) {
-            form.setFromDateTime(ZonedDateTime.now());
+            form.setFromDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
         }
         
         if (form.getToDateTime() == null) {
