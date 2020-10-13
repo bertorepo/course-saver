@@ -56,9 +56,17 @@ function courseNameOnDown(id){
 	if(holder == "" && faceVal !== ""){
 		document.getElementById(id).placeholder = faceVal;
 		document.getElementById(id).value = '';
+		
+		var courseId = $('#courses [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("courseId").value = courseId;
 	} else {
 		document.getElementById(id).placeholder = holder;
 		document.getElementById(id).value = '';
+		
+		var courseId = $('#courses [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("courseId").value = courseId;
 	}
 }
 
