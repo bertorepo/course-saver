@@ -64,7 +64,8 @@
 							<th>Venue</th>
 						</thead>
 						<tbody>
-							<tr th:each="memberCourse : *{memberCourses}">
+							<tr th:if ="${memberCourse.getStatus() == 'A' || memberCourse.getStatus() == 'O'}" 
+							    th:each="memberCourse : *{memberCourses}">
 								<td th:text="${memberCourse.getCourseName()}"></td>
 								<td th:text="${memberCourse.getInstructorName()}"></td>
 								<td th:text="${#temporals.format(memberCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
