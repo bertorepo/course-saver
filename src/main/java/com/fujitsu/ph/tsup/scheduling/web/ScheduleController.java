@@ -224,7 +224,6 @@ public class ScheduleController {
             if (ex.getMessage() == "Can't find Venues") {
                 errInitStr+=" Please Create a Venue First.";
             }
-            
             model.addAttribute("error", errInitStr);
             
             return "scheduling/createSched";  

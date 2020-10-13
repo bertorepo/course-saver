@@ -93,7 +93,6 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
         List<DashboardMember> dashboardMember = template.query(sql, namedParameters, new DashboardMemberRowMapper());
         Set<DashboardMember> setDashboardMember = new HashSet<DashboardMember>(dashboardMember);
         
-        
         return setDashboardMember;
     }
     

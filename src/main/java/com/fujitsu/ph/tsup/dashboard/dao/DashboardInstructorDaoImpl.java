@@ -105,5 +105,4 @@ public class DashboardInstructorDaoImpl implements DashboardInstructorDao {
         int result = template.queryForObject(sql, namedParameters, Integer.class);
         return result;
     }
-    
 }
