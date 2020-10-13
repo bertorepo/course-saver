@@ -33,13 +33,13 @@
 								<div class="form-group row">
 									<label class="col-lg-2 col-form-label">Course Name</label>
 										<div class="col-lg-5">
-											<input type="Text" placeholder="Enter Course Name" class="form-control"  id="name" name="name" onkeyup=enableSubmitButton()>
+											<input type="Text" placeholder="Enter Course Name" class="form-control"  id="name" name="name" >
 										</div>
 								</div>
 								<div class="form-group row">
 									<label class="col-lg-2 col-form-label">Course Details</label>
 										<div class="col-lg-5">
-											<textarea rows="10" cols="50" placeholder="Enter Course Details" class="form-control" id="detail" name="detail"></textarea>
+											<textarea rows="10" cols="50" placeholder="Enter Course Details" class="form-control" id="detail" name="detail" onkeyup=enableSubmitButton()></textarea>
 										</div>
 								</div>
 								<div class="float-right">
@@ -106,7 +106,8 @@
 		//disabling and enabling of submit button
 		function enableSubmitButton(){
 			var name = document.getElementById("name");
-			if(name.value ==="" && jQuery.trim(name).length > 0) {
+			var detail = document.getElementById("detail");
+			if((name.value === "" || detail.value ==="")  && (jQuery.trim(name).length > 0 && jQuery.trim(detail).length > 0)) {
 				document.getElementById('submit').disabled = true;
 			} else {
 				document.getElementById('submit').disabled = false;
