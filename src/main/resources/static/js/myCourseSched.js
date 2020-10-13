@@ -185,7 +185,7 @@ function declinedCourseSchedule(courseParticipantId,
 	startDateTime,
 	endDateTime,
 	duration,
-	courseId) {
+	courseId, courseDetails) {
 
 	var startDate = startDateTime.slice(0, 18);
 	var endDate = endDateTime.slice(0, 18);
@@ -206,6 +206,7 @@ function declinedCourseSchedule(courseParticipantId,
 	document.getElementById('participantName').value = "No need to insert this";
 	document.getElementById('registrationDate').value = registrationDate;
 	document.getElementById('courseIdHidden').value = courseId;
+	document.getElementById('courseDescription').value = courseDetails;
 
 	document.getElementById('mainConfirmCourseName').value = courseName + " ? ";
 	$('#declineMemberModal').modal('show');

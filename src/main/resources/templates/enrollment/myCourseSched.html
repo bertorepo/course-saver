@@ -164,7 +164,8 @@ resize: none
  									'${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
  									'${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
  									'${courseEnrollmentForm.duration}',
- 									'${courseSchedules.courseId}')|"
+ 									'${courseSchedules.courseId}',
+ 									'${courseSchedules.courseDetails}')|"
  								class="btn btn-danger">
  								<i class="fa fa-trash-o fa-lg"></i>
  							</button>
@@ -346,6 +347,11 @@ resize: none
 								<div class="col-lg-9">
 									<input type="text" class="form-control border-0 bg-white shadow-none"
 										id="courseSchedVenue" name="venueName" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label">Course Details:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none"
+										id="courseDescription" name="courseDescription" readonly>
 								</div>
 								<label class="col-lg-3 col-form-label hide">Participant Name:</label>
 								<div class="col-lg-9 hide">
