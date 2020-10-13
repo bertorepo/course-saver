@@ -77,7 +77,7 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 "                      WHERE CP.PARTICIPANT_ID = :employeeId AND " +
                 "                      CS.STATUS IN ('D', 'C') AND " +
                 "                      :today > DATE(COALESCE(CSDET.RESCHEDULED_END_DATETIME, "+
-                "                                                 CSDET.SCHEDULED_END_DATETIME))) " +  
+                "                                                CSDET.SCHEDULED_END_DATETIME))) " +  
                 "    GROUP BY" + 
                 "    C.NAME, " + 
                 "    FULL_NAME, " + 
