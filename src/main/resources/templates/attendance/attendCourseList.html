@@ -110,9 +110,9 @@
 						<td th:text="${setCourseScheduleForm.getCourseName()}"></td>
 						<td th:text="${setCourseScheduleForm.getInstructorName()}"></td>
 						<td
-							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledStartDateTime(), 'yyyy-MM-dd HH:mm:ss')}"></td>
+							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledStartDateTime(), 'yyyy-MM-dd (E) HH:mm:ss')}"></td>
 						<td
-							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledEndDateTime(), 'yyyy-MM-dd HH:mm:ss')}"></td>
+							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledEndDateTime(), 'yyyy-MM-dd (E) HH:mm:ss')}"></td>
 						<td th:text="${courseScheduleDetailForm.getDuration()}"></td>
 					</tr>
 				</tbody>
