@@ -39,6 +39,7 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         Long courseScheduleDetailId = resultSet.getLong("COURSE_SCHEDULE_DETAIL_ID");//Added
         Long courseId = resultSet.getLong("COURSE_ID");
         String courseName = resultSet.getString("COURSE_NAME");
+        String courseDetails = resultSet.getString("DETAILS");
         Long instructorId = resultSet.getLong("INSTRUCTOR_ID");
         String instructorLastName = resultSet.getString("INSTRUCTOR_LAST_NAME");
         String instructorFirstName = resultSet.getString("INSTRUCTOR_FIRST_NAME");
@@ -59,7 +60,7 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         
         CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
                 instructorLastName, instructorFirstName, venueId, venueName, minRequired, 
-                maxAllowed, totalParticipants, status).addDetail(courseScheduleDetail).build();
+                maxAllowed, totalParticipants, status).addDetail(courseScheduleDetail).addCourseDetail(courseDetails).build();
        
         return courseSchedule; 
     }

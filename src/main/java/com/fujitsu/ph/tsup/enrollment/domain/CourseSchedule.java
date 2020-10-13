@@ -66,6 +66,8 @@ public class CourseSchedule {
      * Status
      */
     private char status;
+    
+    private String courseDetails;
 
     protected CourseSchedule() {
 
@@ -94,6 +96,7 @@ public class CourseSchedule {
         this.courseScheduleDetail = builder.courseScheduleDetail;
         this.totalParticipants = builder.totalParticipants;
         this.status = builder.status;
+        this.courseDetails = builder.courseDetails;
     }
 
     public CourseSchedule(CourseSchedule courseSchedule) {
@@ -152,6 +155,9 @@ public class CourseSchedule {
         return status;
     }
 
+    public String getCourseDetails() {
+        return courseDetails;
+    }
     /**
      * <pre>
      * The builder class of the course schedule. The builder is a public static
@@ -229,6 +235,8 @@ public class CourseSchedule {
          * Status
          */
         private char status;
+        
+        private String courseDetails;
 
         /**
          * <pre>
@@ -363,6 +371,13 @@ public class CourseSchedule {
 //                  instructorLastName, instructorFirstName, venueId, venueName, minRequired, maxAllowed,
 //                  totalParticipants, status).build();
 
+            return this;
+        }
+        
+        public Builder addCourseDetail(String courseDetails) {
+            validateCourseDetails(courseDetails);
+            this.courseDetails = courseDetails;
+            
             return this;
         }
 
@@ -565,6 +580,12 @@ public class CourseSchedule {
         private void validateCourseScheduleDetail(CourseScheduleDetail courseScheduleDetail) {
             if (courseScheduleDetail.getId() == 0 || courseScheduleDetail == null) {
                 throw new IllegalArgumentException("The schedule should have at least 1 record");
+            }
+        }
+        
+        private void validateCourseDetails(String courseDetails) {
+            if (courseDetails.isEmpty() || courseDetails == null) {
+                throw new IllegalArgumentException("There is no Detail in this Course.");
             }
         }
 

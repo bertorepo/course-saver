@@ -157,6 +157,7 @@ public class EnrollmentController {
         	courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
         	courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
         	courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
+        	courseScheduleForm.setCourseDetails(courseSchedule.getCourseDetails());
 
         	CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
         	CourseScheduleDetailForm courseScheduleDetailForm = new CourseScheduleDetailForm();
@@ -203,6 +204,7 @@ public class EnrollmentController {
 	            courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
 	            courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
 	            courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
+	            courseScheduleForm.setCourseDetails(courseSchedule.getCourseDetails());
 	            
 	            CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
 	            CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
@@ -286,6 +288,7 @@ public class EnrollmentController {
                 courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
                 courseEnrollmentForm.setParticipantId(enrolledCourse.getParticipantId());
                 courseEnrollmentForm.setAttendanceStatus(enrolledCourse.getAttendanceStatus());
+                courseEnrollmentForm.setCourseDetails(enrolledCourse.getCourseDetails());
 
                 CourseScheduleDetail courseSchedDet = enrolledCourse.getCourseScheduleDetail();
                 

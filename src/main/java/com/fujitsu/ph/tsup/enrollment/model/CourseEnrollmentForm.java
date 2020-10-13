@@ -63,7 +63,16 @@ public class CourseEnrollmentForm {
     private ZonedDateTime registrationDate;
     
     private String attendanceStatus;
+    
+    private String courseDetails;
+    
 
+    public String getCourseDetails() {
+        return courseDetails;
+    }
+    public void setCourseDetails(String courseDetails) {
+        this.courseDetails = courseDetails;
+    }
     /** Course Participant ID Getter */
     public Long getId() {
         return id;
@@ -159,5 +168,18 @@ public class CourseEnrollmentForm {
     
     public void setAttendanceStatus(String attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
+    }
+    
+    @Override
+    public String toString() {
+        return "CourseEnrollmentForm [id=" + id + ", courseId=" + courseId
+                + ", courseScheduleId=" + courseScheduleId + ", courseName="
+                + courseName + ", participantId=" + participantId
+                + ", instructorName=" + instructorName + ", venueName="
+                + venueName + ", emailAddress=" + emailAddress
+                + ", courseScheduleDetails=" + courseScheduleDetails
+                + ", registrationDate=" + registrationDate
+                + ", attendanceStatus=" + attendanceStatus + ", courseDetails="
+                + courseDetails + "]";
     }
 }

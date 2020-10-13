@@ -71,7 +71,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         String query = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CS.COURSE_ID AS COURSE_ID, " 
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "C.DETAIL AS DETAILS, " 
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
@@ -134,7 +135,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public CourseSchedule findCourseScheduleById(Long id) {
         String query = "SELECT C.NAME AS COURSE_NAME, " 
-                + "CS.ID AS ID, " 
+                + "CS.ID AS ID, "
+                + "C.DETAIL AS DETAILS, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
                 + "CS.COURSE_ID AS COURSE_ID, " 
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
@@ -456,7 +458,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         String query = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CS.COURSE_ID AS COURSE_ID, " 
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "C.DETAIL AS DETAILS, " 
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
@@ -509,7 +512,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         String sql = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CS.COURSE_ID AS COURSE_ID, " 
+                + "CS.COURSE_ID AS COURSE_ID, "
+                + "C.DETAIL AS DETAILS, " 
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
@@ -576,7 +580,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public Set<CourseSchedule> findAllCourseScheduleByMonth() {
         // TODO Auto-generated method stub
-        String sql = "SELECT C.NAME AS COURSE_NAME, " 
+        String sql = "SELECT C.NAME AS COURSE_NAME, "
+                + "C.DETAIL AS DETAILS, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
                 + "CS.COURSE_ID AS COURSE_ID, " 
@@ -613,7 +618,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     @Override
     public Set<CourseSchedule> findAllCourseScheduleByQuarter() {
         // TODO Auto-generated method stub
-        String sql = "SELECT C.NAME AS COURSE_NAME, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
+        String sql = "SELECT C.NAME AS COURSE_NAME, "
+                + "C.DETAIL AS DETAILS, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "CS.VENUE_ID AS VENUE_ID, " + "V.NAME AS VENUE_NAME, " + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
@@ -731,7 +737,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule) {
         // TODO Auto-generated method stub
 
-        String query = "SELECT C.NAME AS COURSE_NAME, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
+        String query = "SELECT C.NAME AS COURSE_NAME, "
+                + "C.DETAIL AS DETAILS, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "CS.VENUE_ID AS VENUE_ID, " + "V.NAME AS VENUE_NAME, " + "CS.MIN_REQUIRED AS MIN_REQUIRED, "

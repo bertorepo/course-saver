@@ -53,6 +53,25 @@ public class CourseScheduleForm {
 
     /* Total Number of Participants currently enrolled */
     private int totalParticipants;
+    
+    private String courseDetails;
+
+    public CourseScheduleDetailForm getCourseScheduleDetail() {
+        return courseScheduleDetail;
+    }
+
+    public void setCourseScheduleDetail(
+            CourseScheduleDetailForm courseScheduleDetail) {
+        this.courseScheduleDetail = courseScheduleDetail;
+    }
+
+    public String getCourseDetails() {
+        return courseDetails;
+    }
+
+    public void setCourseDetails(String courseDetails) {
+        this.courseDetails = courseDetails;
+    }
 
     /** get Course Schedule id */
     public Long getId() {
@@ -164,12 +183,16 @@ public class CourseScheduleForm {
         this.totalParticipants = totalParticipants;
     }
 
-	@Override
-	public String toString() {
-		return "CourseScheduleForm [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName
-				+ ", instructorId=" + instructorId + ", instructorName=" + instructorName + ", venueId=" + venueId
-				+ ", venueName=" + venueName + ", courseScheduleDetail=" + courseScheduleDetail + ", minRequired="
-				+ minRequired + ", maxAllowed=" + maxAllowed + ", totalParticipants=" + totalParticipants + "]";
-	}
+    @Override
+    public String toString() {
+        return "CourseScheduleForm [id=" + id + ", courseId=" + courseId
+                + ", courseName=" + courseName + ", instructorId="
+                + instructorId + ", instructorName=" + instructorName
+                + ", venueId=" + venueId + ", venueName=" + venueName
+                + ", courseScheduleDetail=" + courseScheduleDetail
+                + ", minRequired=" + minRequired + ", maxAllowed=" + maxAllowed
+                + ", totalParticipants=" + totalParticipants
+                + ", courseDetails=" + courseDetails + "]";
+    }
 
 }
