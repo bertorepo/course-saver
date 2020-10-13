@@ -194,19 +194,42 @@ public class ScheduleController {
         if (model.containsAttribute("scheduleNew")) {
             return "scheduling/createSched";
         }
+        
+        try {
+            Set<CourseForm> courseFormList = scheduleService.findAllCourses();
+            Set<VenueForm> venueFormList = scheduleService.findAllVenues();
+            Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+            
+            CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
 
-        Set<CourseForm> courseFormList = scheduleService.findAllCourses();
-        Set<VenueForm> venueFormList = scheduleService.findAllVenues();
-        Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
+            courseScheduleNewForm.setInstructors(instructorFormList);
+            courseScheduleNewForm.setVenues(venueFormList);
+            courseScheduleNewForm.setCourses(courseFormList);
 
-        CourseScheduleNewForm courseScheduleNewForm = new CourseScheduleNewForm();
-
-        courseScheduleNewForm.setInstructors(instructorFormList);
-        courseScheduleNewForm.setVenues(venueFormList);
-        courseScheduleNewForm.setCourses(courseFormList);
-
-        model.addAttribute("scheduleNew", courseScheduleNewForm);
-
+            model.addAttribute("scheduleNew", courseScheduleNewForm);
+            
+        } catch(IllegalArgumentException ex) {
+            
+            String errInitStr = "You can't schedule a Course Yet.";
+            
+            if(ex.getMessage() == "Can't find Courses") {
+                
+                errInitStr+=" Please Create a Course First."; 
+            } 
+            
+            if (ex.getMessage() == "Can't find Instructors") {
+                errInitStr+=" Please Set an Employee as an Instructor First.";
+            }
+            
+            if (ex.getMessage() == "Can't find Venues") {
+                errInitStr+=" Please Create a Venue First.";
+            }
+            
+            model.addAttribute("error", errInitStr);
+            
+            return "scheduling/createSched";  
+        }
+        
         return "scheduling/createSched";
     }
     /**

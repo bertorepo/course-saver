@@ -73,7 +73,7 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 "                      INNER JOIN COURSE C " + 
                 "                      ON CS.COURSE_ID = C.ID " + 
                 "                      WHERE CP.PARTICIPANT_ID = :employeeId AND " +
-                "                      CS.STATUS = :status)" + 
+                "                      CS.STATUS IN ('D', 'C'))" + 
                 "    GROUP BY" + 
                 "    C.NAME, " + 
                 "    FULL_NAME, " + 
@@ -88,8 +88,7 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 "    LIMIT 5 ";
  
         SqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue("employeeId", employeeId)
-                .addValue("status", "A");
+                .addValue("employeeId", employeeId);
         
         List<DashboardMember> dashboardMember = template.query(sql, namedParameters, new DashboardMemberRowMapper());
         Set<DashboardMember> setDashboardMember = new HashSet<DashboardMember>(dashboardMember);
@@ -111,13 +110,14 @@ public class DashboardMemberDaoImpl implements DashboardMemberDao {
                 "INNER JOIN COURSE_PARTICIPANT ON COURSE_SCHEDULE.ID = COURSE_PARTICIPANT.COURSE_SCHEDULE_ID " + 
                 "INNER JOIN COURSE ON COURSE_SCHEDULE.COURSE_ID = COURSE.ID " + 
                 "INNER JOIN COURSE_SCHEDULE_DETAIL ON COURSE_SCHEDULE.ID = COURSE_SCHEDULE_DETAIL.COURSE_SCHEDULE_ID " + 
-                "WHERE DATE(COURSE_SCHEDULE_DETAIL.SCHEDULED_START_DATETIME) = :startDateTime " + 
+                "WHERE :startDateTime BETWEEN "+
+                " DATE(COALESCE(COURSE_SCHEDULE_DETAIL.RESCHEDULED_START_DATETIME, COURSE_SCHEDULE_DETAIL.SCHEDULED_START_DATETIME)) AND "+ 
+                " DATE(COALESCE(COURSE_SCHEDULE_DETAIL.RESCHEDULED_END_DATETIME, COURSE_SCHEDULE_DETAIL.SCHEDULED_END_DATETIME)) " + 
                 "AND COURSE_PARTICIPANT.PARTICIPANT_ID = :employeeId " + 
-                "AND COURSE_SCHEDULE.STATUS = :status";
+                "AND COURSE_SCHEDULE.STATUS IN ('A', 'O')";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("startDateTime", LocalDate.now())
-                .addValue("employeeId", employeeId)
-                .addValue("status", "A");
+                .addValue("employeeId", employeeId);
 
         int result = template.queryForObject(sql, namedParameters, Integer.class);
         return result;

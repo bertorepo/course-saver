@@ -69,12 +69,11 @@ public class DashboardInstructorDaoImpl implements DashboardInstructorDao {
                 "ON CS.VENUE_ID = V.ID " +
                 "INNER JOIN EMPLOYEE E " +
                 "ON CS.INSTRUCTOR_ID = E.ID " +
-                "WHERE CS.STATUS= :status  " +
+                "WHERE CS.STATUS IN ('A', 'O') " +
                 "AND E.ID = :employeeId " +
                 "LIMIT 5";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue("employeeId", employeeId)
-                .addValue("status", "A");
+                .addValue("employeeId", employeeId);
         
         List<DashboardInstructor> dashboardInstructor = template.query(sql, namedParameters, new DashboardInstructorRowMapper());
         Set<DashboardInstructor> setDashboardInstructor = new HashSet<DashboardInstructor>(dashboardInstructor);
@@ -94,15 +93,14 @@ public class DashboardInstructorDaoImpl implements DashboardInstructorDao {
                 "INNER JOIN EMPLOYEE ON COURSE_SCHEDULE.INSTRUCTOR_ID = EMPLOYEE.ID " + 
                 "INNER JOIN COURSE ON COURSE_SCHEDULE.COURSE_ID = COURSE.ID " + 
                 "INNER JOIN COURSE_SCHEDULE_DETAIL ON COURSE_SCHEDULE.ID = COURSE_SCHEDULE_DETAIL.COURSE_SCHEDULE_ID " + 
-                "AND :startDateTime BETWEEN " + 
+                "WHERE :startDateTime BETWEEN " + 
                 " DATE(COALESCE(COURSE_SCHEDULE_DETAIL.RESCHEDULED_START_DATETIME, COURSE_SCHEDULE_DETAIL.SCHEDULED_START_DATETIME)) AND " +
                 " DATE(COALESCE(COURSE_SCHEDULE_DETAIL.RESCHEDULED_END_DATETIME, COURSE_SCHEDULE_DETAIL.SCHEDULED_END_DATETIME)) "+
                 "AND EMPLOYEE.ID = :employeeId " + 
-                "AND COURSE_SCHEDULE.STATUS = :status";
+                "AND COURSE_SCHEDULE.STATUS IN ('O', 'A')";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("startDateTime", LocalDate.now())
-                .addValue("employeeId", employeeId)
-                .addValue("status", "A");
+                .addValue("employeeId", employeeId);
 
         int result = template.queryForObject(sql, namedParameters, Integer.class);
         return result;

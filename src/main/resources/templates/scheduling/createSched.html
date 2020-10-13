@@ -20,8 +20,13 @@
 
 <body onload="load()">
 	<div th:insert="fragments/general.html :: header" > </div>
-	<div class="container mt-5 div_minheight">
-		<form class="form-horizontal" id="scheduleNew" action="#" th:action="@{/schedules/new}" th:object="${scheduleNew}" method="post">
+	<div class="container mt-5 div_minheight" >
+		<form class="form-horizontal" id="scheduleNew" 
+				action="#" th:action="@{/schedules/new}" 
+				th:object="${scheduleNew}" 
+				th:unless="${error != null && 
+								(#strings.contains(error, 'Please Create') || #strings.contains(error, 'Please Set'))}"
+				method="post">
 		<!--Success Message End-->
 			<h3><i class="fa fa-clock-o"></i> Create Schedule</h3>
 			<hr>
@@ -249,6 +254,12 @@
 							<label class="col-lg-12 col-form-label" th:if="${error}" th:text="${error}"></label>
 						</div>	
 					</div>
+					<div class="modal-footer" th:if="${#strings.contains(error, 'Please Create') ||
+														 #strings.contains(error, 'Please Set') }">
+						<div class="form-group row">
+							<a class="btn btn-danger" th:href="@{/dashboard}" >Okay</a>
+						</div>	
+					</div>
 				</div>
 			</div>
 		</div>
@@ -271,32 +282,35 @@
 			document.getElementById("courseName").value = courseName;
 		}
 		
-		//Setting values on Course Schedule Details
-		var courseScheduleDetails = document.getElementById("courseScheduleDetails");
-		var length = courseScheduleDetails.rows.length;
-		
-		//Disable Remove button if Course Schedule Details is 1
-		if(length <=1){
-			document.getElementById("row1").disabled = true;
-		}
-		
-		for(i=1; i<=length ; i++){
+		if($("#courseScheduleDetails").length > 0){
+			//Setting values on Course Schedule Details
+			var courseScheduleDetails = document.getElementById("courseScheduleDetails");
+			var length = courseScheduleDetails.rows.length;
 			
-			var startDateTime = document.getElementById("startDateTime"+i).value;
-		    var endDateTime = document.getElementById("endDateTime"+i).value;
-		    
-		    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-		    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
-		    
-		    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-		    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-		    
-		    document.getElementById("startDate"+i).value = rowStartDate;
-		    document.getElementById("endDate"+i).value = rowEndDate;
-		    
-		    document.getElementById("startTime"+i).value = rowStartTime;
-		    document.getElementById("endTime"+i).value = rowEndTime;
+			//Disable Remove button if Course Schedule Details is 1
+			if(length <=1){
+				document.getElementById("row1").disabled = true;
+			}
+			
+			for(i=1; i<=length ; i++){
+				
+				var startDateTime = document.getElementById("startDateTime"+i).value;
+			    var endDateTime = document.getElementById("endDateTime"+i).value;
+			    
+			    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+			    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+			    
+			    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+			    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+			    
+			    document.getElementById("startDate"+i).value = rowStartDate;
+			    document.getElementById("endDate"+i).value = rowEndDate;
+			    
+			    document.getElementById("startTime"+i).value = rowStartTime;
+			    document.getElementById("endTime"+i).value = rowEndTime;
+			}
 		}
+		
 		
 		//Success Modal Validation
 		if($("#successModal").length > 0){
@@ -322,6 +336,8 @@
 		    
 		    if(element.includes('conflict')){
 		    	document.getElementById('errorTitle').innerHTML = "Conflict!";
+		    } else if(element.includes("Can't find")){
+		    	documen.getElementById('errorTitle').innerHTML = "Error!"
 		    }
 
 		    console.log(successMessage);
