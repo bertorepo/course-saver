@@ -10,6 +10,8 @@ INSERT INTO tsup.DEPARTMENT(department_name)
 	VALUES ('FDC-Apps Dev Cebu');
 
 --EMPLOYEE
+NSERT INTO tsup.employee( number, last_name, first_name, email_address, username, department_id)
+	VALUES ('19960126', 'Cui', 'Patricia', 'p.cui@fujitsu.com', 'p.cui', 1);
 INSERT INTO tsup.employee( number, last_name, first_name, email_address, username, department_id)
 	VALUES ('12345678', 'Lorenzo', 'Loyce', 'l.lorenzo@fujitsu.com', 'l.lorenzo', 1);
 INSERT INTO tsup.employee( number, last_name, first_name, email_address, username, department_id)
@@ -30,6 +32,7 @@ INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME
 	VALUES ('A19075', 'Ramos', 'Ramon', 'r.ramos@fujitsu.com', 'r.ramos', 1);
 
 --Access Type
+INSERT INTO tsup.EMPLOYEE_AUTH(AUTH_NAME, USERNAME) VALUES ('PMO', 'p.cui');
 INSERT INTO tsup.employee_auth(auth_name, username)
 	VALUES ('PMO', 'l.lorenzo');
 INSERT INTO tsup.employee_auth(auth_name, username)
