@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.role.model;
+package com.fujitsu.ph.tsup.roleType.model;
 
 /**
  * RoleTypeForm class
