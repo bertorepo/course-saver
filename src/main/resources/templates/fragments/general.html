@@ -45,7 +45,6 @@
 					</li>
 					</th:block>
 					<!--Member end-->
-					
 					<!--PMO-->
 					<th:block th:if="${#authorization.expression('hasAuthority(''PMO'')') and not#authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''Instructor'')')}">
 					<li class="nav-item dropdown">
@@ -77,18 +76,8 @@
 							<a class="dropdown-item" th:href="@{/courses/load}">Manage Course</a>
 						</div>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Maintenance<span class="caret"></span></a>
-						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" th:href="@{/courseCategory/create}">Create Course Category</a>
-							<a class="dropdown-item" th:href="@{/courseCategory/manage}">Manage Course Category</a>
-							<a class="dropdown-item" th:href="@{/courses/load}">Create Member Role</a>
-							<a class="dropdown-item" th:href="@{/courses/load}">Manage Member Role</a>
-						</div>
-					</li>
 					</th:block>
 					<!--PMO end-->
-					
 					<!--Instructor-->
 					<th:block th:if="${#authorization.expression('hasAuthority(''Instructor'')') and not#authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''PMO'')')}">
 					<li class="nav-item dropdown">
@@ -107,7 +96,6 @@
 					</li>
 					</th:block>
 					<!--Instructor end-->
-					
 					<!--Member/Instructor-->
 					<th:block th:if="${#authorization.expression('hasAuthority(''Member'')') and #authorization.expression('hasAuthority(''Instructor'')') and not#authorization.expression('hasAuthority(''PMO'')')}">
 					<li class="nav-item dropdown">
@@ -134,7 +122,6 @@
 					</li>
 					</th:block>
 					<!--Member/Instructor end-->
-					
 					<!--Instructor/PMO-->
 					<th:block th:if="${#authorization.expression('hasAuthority(''Instructor'')') and #authorization.expression('hasAuthority(''PMO'')') and not#authorization.expression('hasAuthority(''Member'')')}">
 					<li class="nav-item dropdown">
@@ -169,18 +156,8 @@
 							<a class="dropdown-item" th:href="@{/courses/load}">Manage Course</a>
 						</div>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Maintenance<span class="caret"></span></a>
-						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" th:href="@{/courseCategory/create}">Create Course Category</a>
-							<a class="dropdown-item" th:href="@{/courseCategory/manage}">Manage Course Category</a>
-							<a class="dropdown-item" th:href="@{/courses/load}">Create Member Role</a>
-							<a class="dropdown-item" th:href="@{/courses/load}">Manage Member Role</a>
-						</div>
-					</li>
 					</th:block>
 					<!--Instructor/PMO end-->
-					
 					<!--Member/PMO-->
 					<th:block th:if="${#authorization.expression('hasAuthority(''PMO'')') and #authorization.expression('hasAuthority(''Member'')') and not#authorization.expression('hasAuthority(''Instructor'')')}">
 					<li class="nav-item dropdown">
@@ -216,7 +193,6 @@
 					</li>
 					</th:block>
 					<!--Member/PMO end-->
-					
 					<!--Member/Instructor/PMO-->
 					<th:block th:if="${#authorization.expression('hasAuthority(''Member'')') and #authorization.expression('hasAuthority(''Instructor'')') and #authorization.expression('hasAuthority(''PMO'')')}">
 					<li class="nav-item dropdown">
