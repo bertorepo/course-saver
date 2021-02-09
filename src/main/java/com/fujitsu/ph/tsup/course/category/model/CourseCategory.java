@@ -1,5 +1,7 @@
 package com.fujitsu.ph.tsup.course.category.model;
 
+import org.springframework.util.StringUtils;
+
 /**
  * @author a.batongbaca
  * @version creation: 0.01 Date: 2021-02-08
@@ -171,7 +173,7 @@ public class CourseCategory {
          */
         private void validateCategory(String category) {
 
-            if (category.equals(null) || category.isEmpty()) {
+            if (detail.equals(null) || StringUtils.isEmpty(category)) {
                 throw new IllegalArgumentException("Course category should not be empty");
             }
         }
@@ -195,7 +197,7 @@ public class CourseCategory {
          */
         private void validateDetail(String detail) {
 
-            if (detail.equals(null) || detail.isEmpty()) {
+            if (detail.equals(null) || StringUtils.isEmpty(detail)) {
                 throw new IllegalArgumentException("detail should not be empty");
             }
         }
