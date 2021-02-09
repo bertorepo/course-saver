@@ -173,7 +173,7 @@ public class CourseCategory {
          */
         private void validateCategory(String category) {
 
-            if (detail.equals(null) || StringUtils.isEmpty(category)) {
+            if (category.equals(null) || StringUtils.isEmpty(category)) {
                 throw new IllegalArgumentException("Course category should not be empty");
             }
         }
