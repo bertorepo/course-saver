@@ -74,7 +74,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 			}
 			return dao.findDetailsByUsername(username);
 		} catch (DataAccessException e) {
-			throw new IllegalArgumentException("Can't access employee data.");
+			//throw new IllegalArgumentException("Can't access employee data.");
+			return null;
 		}
 	}
 

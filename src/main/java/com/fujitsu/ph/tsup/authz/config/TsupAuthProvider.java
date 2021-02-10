@@ -51,6 +51,10 @@ public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
 		FpiUser fpiUser = new FpiUser();
 
 		Employee employee = authorizationService.findDetailsByUsername(username);
+		if(employee == null) {
+			fpiUser.setUserName(username);
+			return fpiUser;
+		}
 
 		fpiUser.setId(employee.getId());
 		fpiUser.setEmployeeNumber(employee.getNumber());

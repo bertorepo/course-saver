@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,10 +32,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.GenericFilterBean;
 
+import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.auth.provider.FpiLdapAuthenticationProvider;
+import com.fujitsu.ph.tsup.authz.service.AuthorizationService;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * <pre>
@@ -54,6 +59,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("#{servletContext.contextPath}")
 	private String servletContextPath;
 
+	@Autowired
+	private AuthorizationService authorizationService;
+	
+	private boolean REGISTER;
 	/**
 	 * <pre>
 	 * Base class filter for login page
@@ -69,6 +78,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		@Override
 		public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 				throws IOException, ServletException {
+			
+			if(((HttpServletRequest) request).getRequestURI().equals(servletContextPath + "/register")) {
+				FpiUser user = (FpiUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+				Employee employee = authorizationService.findDetailsByUsername(user.getUserName());
+				if(employee == null) {					
+					REGISTER = true;
+				}else {
+					logger.debug("user is authenticated but trying to access login page, redirecting to /");
+					((HttpServletResponse) response).sendRedirect(servletContextPath + "/dashboard");
+				}
+			}
 
 			logger.debug("Is Authenticated[{}][{}]", SecurityContextHolder.getContext().getAuthentication(),
 					((HttpServletRequest) request).getRequestURI());
@@ -77,10 +98,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
 					&& (((HttpServletRequest) request).getRequestURI().equals(servletContextPath + "/login"))
 					|| ((HttpServletRequest) request).getRequestURI().equals(servletContextPath + "/")) {
+				
+				if(REGISTER == true) {
+					REGISTER = false;
+					SecurityContextHolder.getContext().setAuthentication(null);
+					((HttpServletResponse) response).sendRedirect(servletContextPath + "/login");
+					return;
+				}
 
 				logger.debug("user is authenticated but trying to access login page, redirecting to /");
 				((HttpServletResponse) response).sendRedirect(servletContextPath + "/dashboard");
 			}
+			
+			if (SecurityContextHolder.getContext().getAuthentication() != null
+					&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
+					&& (((HttpServletRequest) request).getRequestURI().equals(servletContextPath + "/dashboard"))) {
+				
+				if(REGISTER == true) {
+					logger.debug("user is in register screen but trying to access dashboard page, redirecting to /register");
+					((HttpServletResponse) response).sendRedirect(servletContextPath + "/register");
+				}
+			}
+			
 			chain.doFilter(request, response);
 		}
 	}
@@ -101,11 +140,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider);
 	}
+	
+	@Bean
+	public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+	    return new TsupAuthenticationSuccessHandler();
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.addFilterBefore(new LoginPageFilter(), UsernamePasswordAuthenticationFilter.class);
-		String[] resourcesList = { "/", "/login", "/css/**", "/images/**", "/js/**" };
+		String[] resourcesList = { "/", "/login", "/css/**", "/images/**", "/js/**"};
 
 		http.csrf()
 			.and()
@@ -116,7 +160,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.formLogin()
 				.loginPage("/login")
-				.defaultSuccessUrl("/dashboard", true)
+				.successHandler(myAuthenticationSuccessHandler())
+				/* .defaultSuccessUrl("/dashboard", true) */
 				.and()
 			.sessionManagement()
 				.invalidSessionUrl("/login")
