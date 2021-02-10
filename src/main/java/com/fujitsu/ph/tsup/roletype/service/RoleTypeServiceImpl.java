@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.fujitsu.ph.tsup.roletype.dao.RoleTypeDao;
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 /**
- * RoleTypeServiceImpl class
+ * RoleTypeServiceImpl  class
  * 
  * @author rl.naval (New Creation by: rl.naval)
  * @version Revision: 0.01 Date: 2021-02-05
