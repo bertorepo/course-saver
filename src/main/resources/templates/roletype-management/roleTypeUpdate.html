@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Update Role</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/scheduling/scheduling.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/popper.min.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+</head>
+
+
+<body>
+	<form action="#" th:action="@{/roletypes/update}" th:object="${roletypes}"
+		method="post">
+		<div class="container mt-5">
+			<h3>
+				<i class="fa fa-calendar-o"></i> Update Role
+			</h3>
+			<hr>
+			<div class="card">
+				<div class="card-body">
+					<p>Please input your desired role type and description.</p>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Role Name</label>
+						<div class="col-lg-5">
+							<input type="Text"
+								class="form-control" id="rolename" name="rolename"
+								th:value="">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Description</label>
+						<div class="col-lg-5">
+							<textarea rows="10" cols="50"
+								class="form-control" id="roledesc" name="roledesc" 
+								th:value="">
+							</textarea>
+						</div>
+					</div>
+					<div class="float-right">
+						<input type="button" class="btn btn-danger" value="Cancel"
+							name="cancel" id="cancel" th:attr=""
+							disabled>
+						<input type="button" class="btn btn-success" value="Submit"
+							name="submit" id="submit" th:attr=""
+							disabled>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</form>
+	<footer th:replace="fragments/general.html :: footer"></footer>
+
+</body>
+</html>
