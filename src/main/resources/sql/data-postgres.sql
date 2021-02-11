@@ -11,23 +11,23 @@ INSERT INTO tsup.DEPARTMENT(department_name)
 
 --EMPLOYEE
 INSERT INTO tsup.employee( number, last_name, first_name, email_address, username, department_id)
-	VALUES ('12345678', 'Lorenzo', 'Loyce', 'l.lorenzo@fujitsu.com', 'l.lorenzo', 1);
+	VALUES ('12345678', 'Lorenzo', 'Loyce', 'l.lorenzo@fujitsu.com', 'l.lorenzo', 1, '2020-08-11');
 INSERT INTO tsup.employee( number, last_name, first_name, email_address, username, department_id)
-	VALUES ('22222222', 'De Leon', 'JC', 'jc.deleon@fujitsu.com', 'jc.deleon', 1);
+	VALUES ('22222222', 'De Leon', 'JC', 'jc.deleon@fujitsu.com', 'jc.deleon', 1, '2020-08-11');
 INSERT INTO tsup.employee(number, last_name, first_name, email_address, username, department_id)
-	VALUES ('33333333', 'De Guzman', 'Genevieve', 'g.deguzman@fujitsu.com', 'g.deguzman', 1);
+	VALUES ('33333333', 'De Guzman', 'Genevieve', 'g.deguzman@fujitsu.com', 'g.deguzman', 1, '2020-08-11');
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A10210', 'Lazo', 'Josephine Noreen', 'j.lazo@fujitsu.com', 'j.lazo', 1);
+	VALUES ('A10210', 'Lazo', 'Josephine Noreen', 'j.lazo@fujitsu.com', 'j.lazo', 1, '2020-08-11');
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A10456', 'Jimenez', 'John Carlo', 'jc.jimenez@fujitsu.com', 'jc.jimenez', 1);
+	VALUES ('A10456', 'Jimenez', 'John Carlo', 'jc.jimenez@fujitsu.com', 'jc.jimenez', 1, '2020-08-11');
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A12435', 'Macabudbud', 'Jay Ian', 'j.macabudbud@fujitsu.com', 'j.macabudbud', 1);
+	VALUES ('A12435', 'Macabudbud', 'Jay Ian', 'j.macabudbud@fujitsu.com', 'j.macabudbud', 1, '2020-08-11');
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A15893', 'Abad', 'Kenneth', 'k.abad@fujitsu.com', 'k.abad', 1);
+	VALUES ('A15893', 'Abad', 'Kenneth', 'k.abad@fujitsu.com', 'k.abad', 1, '2020-08-11');
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A17843', 'Lumontad', 'Mark', 'm.lumontad@fujitsu.com', 'm.lumontad', 1);
+	VALUES ('A17843', 'Lumontad', 'Mark', 'm.lumontad@fujitsu.com', 'm.lumontad', 1, '2020-08-11');
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A19075', 'Ramos', 'Ramon', 'r.ramos@fujitsu.com', 'r.ramos', 1);
+	VALUES ('A19075', 'Ramos', 'Ramon', 'r.ramos@fujitsu.com', 'r.ramos', 1, '2020-08-11');
 
 --Access Type
 INSERT INTO tsup.employee_auth(auth_name, username)
