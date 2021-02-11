@@ -17,17 +17,17 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * @author rl.naval (New Creation by: rl.naval)
  * @version Revision: 0.01 Date: 2021-02-05
  */
-public class RoleTypeRowMapper implements RowMapper<RoleType>{
+public class RoleTypeRowMapper implements RowMapper<RoleType> {
 
-	@Override
-	public RoleType mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Long id = rs.getLong("id");
-		String rolename = rs.getString("role_type");
-		String roledesc = rs.getString("role_desc");
-		
-		RoleType roletype = new RoleType.Builder(id, rolename).roledesc(roledesc).build();
-		
-		return roletype;
-		
-	}		
+    @Override
+    public RoleType mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Long id = rs.getLong("id");
+        String rolename = rs.getString("role_type");
+        String roledesc = rs.getString("role_desc");
+
+        RoleType roletype = new RoleType.Builder(id, rolename).roledesc(roledesc).build();
+
+        return roletype;
+
+    }
 }

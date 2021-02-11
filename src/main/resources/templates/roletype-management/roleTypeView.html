@@ -155,7 +155,7 @@
 								<td th:text="${role.rolename}"></td>
 								<td th:text="${role.roledesc}"></td>
 								<td><a id="updateButton" type="submit"
-									class="btn btn-success" th:href="@{/roletype/update}">Update</a>
+									class="btn btn-success" th:href="@{/roletype/update/{roleId}(roleId=${role.id})}">Update</a>
 									<input type="submit" value="Delete"
 									class="btn btn-danger"
 									th:attr="onclick=|deleteButton('${role.id}','${role.rolename}','${role.roledesc}')|"></input>

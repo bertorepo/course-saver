@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.roletype.dao.RoleTypeDao;
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
+
 /**
- * RoleTypeServiceImpl  class
+ * RoleTypeServiceImpl class
  * 
  * @author rl.naval (New Creation by: rl.naval)
  * @version Revision: 0.01 Date: 2021-02-05
@@ -19,53 +20,51 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
 @Service
 public class RoleTypeServiceImpl implements RoleTypeService {
-	@Autowired
-	RoleTypeDao roleTypeDao;
+    @Autowired
+    RoleTypeDao roleTypeDao;
 
-	@Override
-	public RoleType findRoleById(Long id) {
-		RoleType roleTypeResult = roleTypeDao.findRoleById(id);
-		return roleTypeResult;
-	}
+    @Override
+    public RoleType findRoleById(Long id) {
+        RoleType roleTypeResult = roleTypeDao.findRoleById(id);
+        return roleTypeResult;
+    }
 
-	@Override
-	public Set<RoleType> findRoleTypeByName(String rolename) {
-		
-		Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByName(rolename);
-		
-		try {
-			if(roleFormList ==null || roleFormList.isEmpty()) {
-				return null;
-			} else {
-				return roleFormList;
-			}
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
-		return roleFormList;
-	}
+    @Override
+    public Set<RoleType> findRoleTypeByName(String rolename) {
 
-	@Override
-	public Set<RoleType> loadAllRoleType() {
-		return roleTypeDao.loadAllRoleType();
-	}
+        Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByName(rolename);
 
-	@Override
-	public void deleteRoleTypeById(Long id) {
-		roleTypeDao.deleteRoleTypeById(id);
-	}
+        try {
+            if (roleFormList == null || roleFormList.isEmpty()) {
+                return null;
+            } else {
+                return roleFormList;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return roleFormList;
+    }
 
-	@Override
-	public void createRoleType(RoleType role) {
-		roleTypeDao.createRoleType(role);
-	}
+    @Override
+    public Set<RoleType> loadAllRoleType() {
+        return roleTypeDao.loadAllRoleType();
+    }
 
-	@Override
-	public void updateRoleType(RoleType roleType) {
-		roleTypeDao.updateRoleType(roleType);
-		
-	}
-	
+    @Override
+    public void deleteRoleTypeById(Long id) {
+        roleTypeDao.deleteRoleTypeById(id);
+    }
 
+    @Override
+    public void createRoleType(RoleType role) {
+        roleTypeDao.createRoleType(role);
+    }
+
+    @Override
+    public void updateRoleType(RoleType roleType) {
+        roleTypeDao.updateRoleType(roleType);
+
+    }
 
 }

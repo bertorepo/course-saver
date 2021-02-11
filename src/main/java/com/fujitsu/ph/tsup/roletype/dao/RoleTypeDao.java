@@ -15,22 +15,22 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  */
 
 public interface RoleTypeDao {
-	
-	//Method for finding Role Type by ID
-	RoleType findRoleById(Long id);
-	
-	//Method for searching Role by Name
-	Set<RoleType> findRoleTypeByName(String rolename);
-	
-	//Method for loading all Role Type in Role View
-	Set<RoleType> loadAllRoleType();
-	
-	// Method for deleting Role Type by Id
+
+    // Method for finding Role Type by ID
+    RoleType findRoleById(Long id);
+
+    // Method for searching Role by Name
+    Set<RoleType> findRoleTypeByName(String rolename);
+
+    // Method for loading all Role Type in Role View
+    Set<RoleType> loadAllRoleType();
+
+    // Method for deleting Role Type by Id
     void deleteRoleTypeById(Long id);
-    
-    //Method for creating new Role Type
+
+    // Method for creating new Role Type
     void createRoleType(RoleType role);
-    
-    //Method for updating Role Type
+
+    // Method for updating Role Type
     void updateRoleType(RoleType roleType);
 }
