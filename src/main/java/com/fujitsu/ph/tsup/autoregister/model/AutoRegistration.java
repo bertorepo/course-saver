@@ -234,7 +234,7 @@ public class AutoRegistration {
          */
         private void validateFirstName(String firstName) {
 
-            if (firstName.equals(null) || firstName.isEmpty()) {
+            if (firstName == null || firstName.isEmpty()) {
                 throw new IllegalArgumentException("First Name should not be empty");
             }
 
@@ -246,7 +246,7 @@ public class AutoRegistration {
          */
         private void validateLastName(String lastName) {
 
-            if (lastName.equals(null) || lastName.isEmpty()) {
+            if (lastName == null || lastName.isEmpty()) {
                 throw new IllegalArgumentException("Last Name should not be empty");
             }
 
@@ -258,7 +258,7 @@ public class AutoRegistration {
          */
         private void validateEmailAddress(String emailAddress) {
 
-            if (emailAddress.equals(null) || emailAddress.isEmpty()) {
+            if (emailAddress == null || emailAddress.isEmpty()) {
                 throw new IllegalArgumentException("Email Address should not be empty");
             }
 
@@ -282,7 +282,7 @@ public class AutoRegistration {
          */
         private void validateUserName(String userName) {
 
-            if (userName.equals(null) || userName.isEmpty()) {
+            if (userName == null || userName.isEmpty()) {
                 throw new IllegalArgumentException("User Name should not be empty");
             }
 
@@ -294,7 +294,7 @@ public class AutoRegistration {
          */
         private void validateEmploymentDate(String employmentDate) {
 
-            if (employmentDate.equals(null) || employmentDate.isEmpty()) {
+            if (employmentDate == null || employmentDate.isEmpty()) {
                 throw new IllegalArgumentException("Employment Date should not be empty");
             }
 
