@@ -1,0 +1,253 @@
+<!-- @Author:Batongbacal, Aevan-->
+
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Manage Course Category</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/popper.min.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+</head>
+<body>
+
+	<!--Confirm Update Modal-->
+	<div class="modal fade" id="confirmUpdateModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+		th:object="${updateCourseForm}">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-success">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label">Are you sure you
+							want to update this course?</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" id="confirmUpdateBtn">Confirm
+						Update</button>
+					<input type="button" class="btn btn-primary" data-dismiss="modal"
+						value="Back">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Confirm Update Modal End-->
+
+	<!-- Update modal -->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+		<form id="updateModalFormId" th:action="@{/courseCategory/__${courseIdInput}__/update}"
+			th:object="${update}" method="post">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<h5 class="modal-title">Course Category Information</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<input type="hidden" id="id" name="id"></input>
+							<div class="col-lg-3">
+								<label class="col-form-label">Course Category Name:</label>
+							</div>
+							<div class="col-lg-9">
+								<input type="text" class="form-control" id="category"
+									name="category" onchange="validateIfEmpty()" /> 
+								<span id="categoryErrorMsg"></span>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-lg-3">
+								<label class="col-form-label">Detail:</label>
+							</div>
+							<div class="col-lg-9">
+								<input type="text" class="form-control" id="detail" name="detail" />
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="updateBtn" class="btn btn-danger"
+							data-dismiss="modal" data-toggle="modal"
+							data-target="#confirmUpdateModal">Update</button>
+						<input type="button" class="btn btn-primary" data-dismiss="modal"
+							value="Back">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- </form> -->
+	</div>
+	<!-- Update modal End-->
+
+	<!--Success Modal-->
+	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-success">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${message}"></label>
+					</div>
+				</div>
+				<div class="modal-footer"></div>
+
+			</div>
+		</div>
+	</div>
+	<!--Success Modal End-->
+
+	<!--Error Modal-->
+	<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-danger">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${message}"></label>
+					</div>
+				</div>
+				<div class="modal-footer"></div>
+			</div>
+		</div>
+	</div>
+	<!--Success Modal End-->
+
+	<div th:insert="fragments/general.html :: header"></div>
+	<div class="container mt-5">
+		<h3>
+			<i class="fa fa-calendar-o"></i> Search Course Category Name
+		</h3>
+		<hr>
+		<div class="card">
+			<div class="card-body">
+				<form class="form-horizontal" action="#" th:action="@{/courseCategory/manage}" method="post">
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Search:</label>
+						<div class="col-lg-3">
+							<input type="Text" class="form-control" name="searchCourseCategoryName" id="searchCourseCategoryName">
+						</div>
+					</div>
+					<div class="float-right">
+						<input type="submit" class="btn btn-success" value="Submit">
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3>
+					<i class="fa fa-exclamation-triangle"></i> Manage Course Category
+				</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x: auto; display: block; white-space: nowrap;">
+					<table class="table table-bordered text-center" id="categoryTable">
+						<thead>
+							<tr>
+								<th style="width: 20%;">Course Category Name</th>
+								<th>Detail</th>
+								<th style="width: 20%;">Action</th>
+							</tr>
+						</thead>
+						<tbody th:each="course : *{courseCategoryList}">
+							<tr>
+								<td th:text="${course.category}"
+									th:attr="onclick=|showUpdateModal('${course.id}','${course.category}','${course.detail}')|"></td>
+								<td th:text="${course.detail}"
+									th:attr="onclick=|showUpdateModal('${course.id}','${course.category}','${course.detail}')|">Sample2</td>
+								<td>
+									<input type="submit" value="Delete" class="btn btn-danger"
+									th:attr="onclick=|deleteButton('${course.id}','${course.category}','${course.detail}')|"></input>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="float-right">
+					<a th:href="@{/enrollment/viewCourseEnroll}">View More <i
+						class="fa fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript" th:inline="javascript">
+		function deleteButton(id, category, detail) {
+			document.getElementById("categoryIdInput").value = id;
+			document.getElementById("courseCategoryName").innerHTML = category;
+			document.getElementById("courseCategoryDetail").innerHTML = detail;
+			$('#infoModal').modal('show');
+		}
+		function showUpdateModal(id, category, detail) {
+			document.getElementById("id").value = id;
+			document.getElementById("category").value = category;
+			document.getElementById("detail").value = detail;
+			$('#updateModal').modal('show');
+		}
+		function validateIfEmpty() {
+			var category = document.getElementById("category");
+			if ((category.value === "" || detail.value === "")
+					&& (jQuery.trim(category).length > 0 && jQuery.trim(detail).length > 0)) {
+				document.getElementById("categoryErrorMsg").innerHTML = "*Required";
+				document.getElementById("updateBtn").disabled = true;
+			} else {
+				document.getElementById("categoryErrorMsg").innerHTML = "";
+				document.getElementById("updateBtn").disabled = false;
+			}
+		}
+
+		$(document).ready(function() {
+			if (window.location.href.indexOf('#confirmDeleteModal') != -1) {
+				$('#confirmDeleteModal').modal('show');
+			}
+
+			if (window.location.href.indexOf('#successModal') != -1) {
+				$('#successModal').modal('show');
+			}
+
+			if (window.location.href.indexOf('#errorModal') != -1) {
+				$('#errorModal').modal('show');
+			}
+
+			$('#confirmUpdateBtn').click(function() {
+				$('#updateModalFormId').submit();
+			});
+
+		});
+	</script>
+
+	<footer th:replace="fragments/general.html :: footer"></footer>
+
+</body>
+
+</html>
