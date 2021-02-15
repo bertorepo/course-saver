@@ -70,7 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 * 
 	 * @author WS) J.Macabudbud
 	 * @version 1.0.0
-	 *
+	 * Revision Date : 2021-02-15
+	 * 
 	 */
 	class LoginPageFilter extends GenericFilterBean {
 		private Logger logger = LoggerFactory.getLogger(LoginPageFilter.class);
@@ -79,17 +80,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 				throws IOException, ServletException {
 			
-			if(((HttpServletRequest) request).getRequestURI().equals(servletContextPath + "/register")) {
-				FpiUser user = (FpiUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            /*
+             * Author: k.sala
+             * 
+             * If user authenticated and tries to access register page, will redirect to dashboard
+             * 
+             */
+            if (((HttpServletRequest) request).getRequestURI().equals(servletContextPath + "/register")) {
+                FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal();
 
-				Employee employee = authorizationService.findDetailsByUsername(user.getUserName());
-				if(employee == null) {					
-					REGISTER = true;
-				}else {
-					logger.debug("user is authenticated but trying to access login page, redirecting to /");
-					((HttpServletResponse) response).sendRedirect(servletContextPath + "/dashboard");
-				}
-			}
+                Employee employee = authorizationService.findDetailsByUsername(user.getUserName());
+                if (employee == null) {
+                    REGISTER = true;
+                } else {
+                    logger.debug("user is authenticated but trying to access login page, redirecting to /");
+                    ((HttpServletResponse) response).sendRedirect(servletContextPath + "/dashboard");
+                }
+            }
 
 			logger.debug("Is Authenticated[{}][{}]", SecurityContextHolder.getContext().getAuthentication(),
 					((HttpServletRequest) request).getRequestURI());
@@ -110,15 +118,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				((HttpServletResponse) response).sendRedirect(servletContextPath + "/dashboard");
 			}
 			
-			if (SecurityContextHolder.getContext().getAuthentication() != null
-					&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
-					&& (((HttpServletRequest) request).getRequestURI().equals(servletContextPath + "/dashboard"))) {
-				
-				if(REGISTER == true) {
-					logger.debug("user is in register screen but trying to access dashboard page, redirecting to /register");
-					((HttpServletResponse) response).sendRedirect(servletContextPath + "/register");
-				}
-			}
+            /*
+             * Author: k.sala
+             * 
+             * If user is in Register page and tries to access dashboard page, will redirect to register
+             * 
+             */
+            if (SecurityContextHolder.getContext().getAuthentication() != null
+                    && SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
+                    && (((HttpServletRequest) request).getRequestURI()
+                            .equals(servletContextPath + "/dashboard"))) {
+
+                if (REGISTER == true) {
+                    logger.debug(
+                            "user is in register screen but trying to access dashboard page, redirecting to /register");
+                    ((HttpServletResponse) response).sendRedirect(servletContextPath + "/register");
+                }
+            }
 			
 			chain.doFilter(request, response);
 		}
@@ -141,11 +157,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authenticationProvider);
 	}
 	
-	@Bean
-	public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
-	    return new TsupAuthenticationSuccessHandler();
-	}
+    /**
+     * @author k.sala
+     * @return TsupAuthenticationSuccessHandler()
+     */
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
+        return new TsupAuthenticationSuccessHandler();
+    }
 
+	/**
+	 *@author k.sala
+	 *Revision Date: 2021-02-15
+	 *
+	 * Replace defaultSuccessUrl with successHandler to choose which page to load
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.addFilterBefore(new LoginPageFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -26,57 +26,62 @@ import com.fujitsu.ph.tsup.common.domain.Employee;
  * </pre>
  * 
  * @author WS) J.Macabudbud
- * @version 0.01
+ * @version 0.01 Revision Date: 2021-02-15
  * 
  */
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
-	@Autowired
-	private AuthorizationDao dao;
+    @Autowired
+    private AuthorizationDao dao;
 
-	/**
-	 * <pre>
-	 * Find Employee by Username
-	 * </pre>
-	 * 
-	 * @param username
-	 * @return Set<EmployeeAuth>
-	 * @throws IllegalArgumentException
-	 * 
-	 */
-	@Override
-	public Set<EmployeeAuth> findByUsername(String username) {
-		try {
-			if (username == null || username.isEmpty()) {
-				throw new IllegalArgumentException("Username should not be empty.");
-			}
-			return dao.findByUsername(username);
-		} catch (DataAccessException e) {
-			throw new IllegalArgumentException("Can't access employee auth data.");
-		}
-	}
-	
-	/**
-	 * <pre>
-	 * Find Employee Details by Username
-	 * </pre>
-	 * 
-	 * @param username
-	 * @return Employee
-	 * @throws IllegalArgumentException
-	 * 
-	 */
-	@Override
-	public Employee findDetailsByUsername(String username) {
-		try {
-			if (username == null || username.isEmpty()) {
-				throw new IllegalArgumentException("Username should not be empty.");
-			}
-			return dao.findDetailsByUsername(username);
-		} catch (DataAccessException e) {
-			//throw new IllegalArgumentException("Can't access employee data.");
-			return null;
-		}
-	}
+    /**
+     * <pre>
+     * Find Employee by Username
+     * </pre>
+     * 
+     * @param username
+     * @return Set<EmployeeAuth>
+     * @throws IllegalArgumentException
+     * 
+     */
+    @Override
+    public Set<EmployeeAuth> findByUsername(String username) {
+        try {
+            if (username == null || username.isEmpty()) {
+                throw new IllegalArgumentException("Username should not be empty.");
+            }
+            return dao.findByUsername(username);
+        } catch (DataAccessException e) {
+            throw new IllegalArgumentException("Can't access employee auth data.");
+        }
+    }
+
+    /**
+     * <pre>
+     * Find Employee Details by Username
+     * </pre>
+     * 
+     * @param username
+     * @return Employee
+     * @throws IllegalArgumentException
+     * 
+     */
+    @Override
+    public Employee findDetailsByUsername(String username) {
+        try {
+            if (username == null || username.isEmpty()) {
+                throw new IllegalArgumentException("Username should not be empty.");
+            }
+            return dao.findDetailsByUsername(username);
+        } catch (DataAccessException e) {
+            /*
+             * Author : k.sala
+             * 
+             * return null instead of throwing the exception
+             */
+            // throw new IllegalArgumentException("Can't access employee data.");
+            return null;
+        }
+    }
 
 }
