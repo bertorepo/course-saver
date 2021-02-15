@@ -35,9 +35,9 @@ public class AutoRegistrationServiceImpl implements AutoRegistrationService {
      * @author s.maluya Get all Departments
      */
     @Override
-    public List<AutoRegistrationDepartment> getAllDepartment() {
+    public List<AutoRegistrationDepartment> getAllDepartments() {
 
-        return autoRegistrationDao.getAllDepartment();
+        return autoRegistrationDao.getAllDepartments();
     }
 
 }

@@ -45,7 +45,7 @@ public class AutoRegistrationController {
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         model.addAttribute("username", user.getUserName());
-        model.addAttribute("departmentList", autoRegistrationService.getAllDepartment());
+        model.addAttribute("departmentList", autoRegistrationService.getAllDepartments());
         return "register";
     }
 

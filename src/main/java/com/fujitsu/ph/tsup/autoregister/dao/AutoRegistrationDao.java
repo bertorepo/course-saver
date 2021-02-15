@@ -20,5 +20,5 @@ public interface AutoRegistrationDao {
     void addAutoRegistration(AutoRegistration autoRegistration);
 
     // Method for loading all Departments
-    List<AutoRegistrationDepartment> getAllDepartment();
+    List<AutoRegistrationDepartment> getAllDepartments();
 }

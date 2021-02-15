@@ -108,7 +108,7 @@ public class AutoRegistrationDepartment {
          * @param department
          */
         private void validateDepartment(String department) {
-            if (department.equals(null) || department.isEmpty()) {
+            if (department == null || department.isEmpty()) {
                 throw new IllegalArgumentException("Department should not be empty");
             }
         }

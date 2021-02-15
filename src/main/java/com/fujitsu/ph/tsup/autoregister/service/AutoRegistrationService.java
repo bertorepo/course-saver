@@ -20,6 +20,6 @@ public interface AutoRegistrationService {
     void addAutoRegistration(AutoRegistration autoRegistration);
 
     // Method for loading all Departments
-    List<AutoRegistrationDepartment> getAllDepartment();
+    List<AutoRegistrationDepartment> getAllDepartments();
 
 }

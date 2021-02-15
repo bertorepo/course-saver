@@ -83,7 +83,7 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
      * Method for loading all Departments
      */
     @Override
-    public List<AutoRegistrationDepartment> getAllDepartment() {
+    public List<AutoRegistrationDepartment> getAllDepartments() {
         String query = "SELECT * FROM tsup.department";
         List<AutoRegistrationDepartment> departmentList = template.query(query, new DepartmentRowMapper());
         return departmentList;

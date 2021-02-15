@@ -32,7 +32,7 @@ import com.fujitsu.ph.tsup.common.domain.Employee;
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
-    private AuthorizationDao dao;
+    private AuthorizationDao authorizationDao;
 
     /**
      * <pre>
@@ -50,7 +50,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             if (username == null || username.isEmpty()) {
                 throw new IllegalArgumentException("Username should not be empty.");
             }
-            return dao.findByUsername(username);
+            return authorizationDao.findByUsername(username);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("Can't access employee auth data.");
         }
@@ -72,7 +72,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             if (username == null || username.isEmpty()) {
                 throw new IllegalArgumentException("Username should not be empty.");
             }
-            return dao.findDetailsByUsername(username);
+            return authorizationDao.findDetailsByUsername(username);
         } catch (DataAccessException e) {
             /*
              * Author : k.sala
