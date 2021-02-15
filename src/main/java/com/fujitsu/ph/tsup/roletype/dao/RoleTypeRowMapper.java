@@ -11,12 +11,17 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
-/**
- * RoleTypeRowMapper class
- * 
- * @author rl.naval (New Creation by: rl.naval)
- * @version Revision: 0.01 Date: 2021-02-05
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Role Type Management
+//Class Name   : RoleTypeRowMapper.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
+//==================================================================================================
+
 public class RoleTypeRowMapper implements RowMapper<RoleType> {
 
     @Override

@@ -3,12 +3,16 @@
  */
 package com.fujitsu.ph.tsup.roletype.domain;
 
-/**
- * RoleType class
- * 
- * @author rl.naval (New Creation by: rl.naval)
- * @version Revision: 0.01 Date: 2021-02-05
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Role Type Management
+//Class Name   : RoleType.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
+//==================================================================================================
 
 public class RoleType {
     private Long id;
