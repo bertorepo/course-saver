@@ -29,7 +29,7 @@ public class AutoRegistrationController {
 
     // Auto Registration Service class
     @Autowired
-    AutoRegistrationService autoRegistrationService;
+    private AutoRegistrationService autoRegistrationService;
 
     /**
      * <pre>

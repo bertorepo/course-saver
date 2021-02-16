@@ -22,7 +22,7 @@ import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
 public class AutoRegistrationServiceImpl implements AutoRegistrationService {
 
     @Autowired
-    AutoRegistrationDao autoRegistrationDao;
+    private AutoRegistrationDao autoRegistrationDao;
 
     // Method for adding new member
     @Override
