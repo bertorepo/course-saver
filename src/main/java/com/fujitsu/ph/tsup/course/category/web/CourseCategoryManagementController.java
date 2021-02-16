@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 import com.fujitsu.ph.tsup.course.category.model.CourseCategoryForm;
@@ -41,7 +42,7 @@ public class CourseCategoryManagementController {
     // Validates and saves the data in the database
     @PostMapping("/create")
     public String submitCreateCourseCategoryForm(CourseCategoryForm form, BindingResult bindingResult,
-            Model model) throws Exception {
+            Model model, RedirectAttributes redirectAttributes) throws Exception {
         try {
             Set<CourseCategory> categorySize = courseCategoryManagementService
                     .findCourseCategoryByName(form.getCategory());
