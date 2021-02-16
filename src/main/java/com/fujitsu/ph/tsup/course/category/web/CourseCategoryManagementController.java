@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
+/**
+ *  Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
  */
 package com.fujitsu.ph.tsup.course.category.web;
 
@@ -18,17 +18,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementService;
 
+//=======================================================
+//$Id: PR10$
+//Project Name: Training Sign Up
+//System Name : Course Category Management Process
+//Class Name: CourseCategoryManagementController.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by      | Content
+//--------+------------+-----------------+---------------
+//0.01    | 02/08/2020 | WS) A.Batongbacal   | New Creation
+//0.02    | 02/16/2020 | WS) G.Cabiling      | Update
+//=======================================================
 /**
- * CourseManagementController Class
- * @author g.cabiling (New Creation by: g.cabiling)
- * @version Revision: 0.01 Date: 2021-02-03
+ * <pre>
+ * The controller for Course Category Management
+ * 
+ * <pre>
+ * 
+ * @version 0.02
+ * @author a.batongbaca
+ * @author g.cabiling
  *
  */
 @Controller
 @RequestMapping("/coursesCategory")
 public class CourseCategoryManagementController {
 
-	// Course Category Management Service class
+    // Course Category Management Service class
     @Autowired
     CourseCategoryManagementService courseCategoryManagementService;
 
@@ -48,20 +65,21 @@ public class CourseCategoryManagementController {
     
     @PostMapping("/search")
     public String submitSearchCourseCategoryForm(@RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model) {
-    	
-    	if(searchCourseCategoryName.isEmpty()) {
-        	
-    		return "redirect:/coursesCategory/load";
-    	}
-    	
-    	Set<CourseCategory> courseCategoryByName = courseCategoryManagementService.findCourseCategoryByName(searchCourseCategoryName);
-    	
-    	List<CourseCategory> listOfCourseCategory = courseCategoryByName.stream()
+        
+        if(searchCourseCategoryName.isEmpty()) {
+            
+            return "redirect:/coursesCategory/load";
+        }
+        
+        Set<CourseCategory> courseCategoryByName = courseCategoryManagementService.findCourseCategoryByName(searchCourseCategoryName);
+        
+        List<CourseCategory> listOfCourseCategory = courseCategoryByName.stream()
                 .collect(Collectors.toList());
-    	
-    	model.addAttribute("courseCategoryList", listOfCourseCategory);
-    	
+        
+        model.addAttribute("courseCategoryList", listOfCourseCategory);
+        
 
-    	return "course-management/manageCourseCategory";
+        return "course-management/manageCourseCategory";
     }
 }
+

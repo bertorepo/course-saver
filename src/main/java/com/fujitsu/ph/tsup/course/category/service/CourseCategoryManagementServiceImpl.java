@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
+ *  Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
  */
 package com.fujitsu.ph.tsup.course.category.service;
 
@@ -11,17 +11,35 @@ import org.springframework.stereotype.Service;
 import com.fujitsu.ph.tsup.course.category.dao.CourseCategoryManagementDao;
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 
+//=======================================================
+//$Id: PR10$
+//Project Name: Training Sign Up
+//System Name : Course Category Management Process
+//Class Name: CourseCategoryManagementServiceImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by      | Content
+//--------+------------+-----------------+---------------
+//0.01    | 02/08/2020 | WS) A.Batongbacal   | New Creation
+//0.02    | 02/16/2020 | WS) G.Cabiling      | Update
+//=======================================================
 /**
+ * <pre>
+ * The implementation of course category management service
+ * 
+ * <pre>
+ * 
+ * @version 0.02
  * @author a.batongbaca
- * @version creation: 0.01 Date: 2021-02-08
+ * @author g.cabiling
  *
  */
 @Service
-public class CourseCategoryManagementServiceImpl  implements CourseCategoryManagementService{
+public class CourseCategoryManagementServiceImpl implements CourseCategoryManagementService {
 
     @Autowired
     CourseCategoryManagementDao courseCategoryManagementDao;
-    
+
     @Override
     public Set<CourseCategory> findAllCourseCategory() {
 
@@ -31,28 +49,28 @@ public class CourseCategoryManagementServiceImpl  implements CourseCategoryManag
     @Override
     public Set<CourseCategory> findCourseCategoryByName(String name) {
 
-        Set<CourseCategory> courseCategoryFormList = courseCategoryManagementDao.findCourseCategoryByName(name);
-        
+        Set<CourseCategory> courseCategoryFormList = courseCategoryManagementDao
+                .findCourseCategoryByName(name);
+
         try {
-            
-            if(courseCategoryFormList == null || courseCategoryFormList.isEmpty()) {
-                
-                return courseCategoryManagementDao.findAllCourseCategory();
-                
-            } else {
-                
+
+            if (courseCategoryFormList.isEmpty()) {
+
                 return courseCategoryFormList;
-                
+
+            } else {
+
+                return courseCategoryFormList;
+
             }
-            
-        } catch(Exception ex) {
-            
+
+        } catch (Exception ex) {
+
             ex.printStackTrace();
-            
+
         }
-        
-         return courseCategoryFormList;
-        
-    
+
+        return courseCategoryFormList;
+
     }
 }
