@@ -3,8 +3,6 @@
  */
 package com.fujitsu.ph.tsup.course.category.dao;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,12 +10,28 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
-
+//=======================================================
+//$Id: PR10$
+//Project Name: Training Sign Up
+//System Name : Course Category Management Process
+//Class Name: CourseCategoryManagementDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by      | Content
+//--------+------------+-----------------+---------------
+//0.01    | 02/08/2020 | WS) A.Batongbacal   | New Creation
+//0.02    | 02/15/2020 | WS) A.Batongbacal   | Update
+//=======================================================
 /**
- * @author a.batongbaca
- * @version creation: 0.01 Date: 2021-02-08
- *
- */
+* <pre>
+* The implementation of Course Category Management Dao
+* 
+* <pre>
+* 
+* @version 0.02
+* @author a.batongbaca
+*
+*/
 public class CourseCategoryManagementDaoImpl implements CourseCategoryManagementDao{
 
     // Call NamedParameterJdbcTemplate
