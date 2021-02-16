@@ -30,7 +30,7 @@ public class CourseCategoryManagementController {
 
     // Loads the courseCategoryCreate view
     @GetMapping("/create")
-    public String loadCourseCategory(Model model) {
+    public String showCreateCourseCategoryForm(Model model) {
 
         model.addAttribute("create");
 
