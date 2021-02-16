@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentRowMapperTopLearner;
+import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
 //==================================================================================================
@@ -20,10 +22,19 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
-//1.0.1   | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.02   | 2021/02/16 | WS) s.labador         | Updated
 //==================================================================================================
 
+/**
+ * <pre>
+ * RoleTypeDaoImp class
+ * 
+ * <pre>
+ * 
+ * @version 0.01
+ * @author rl.naval
+ */
 @Repository
 public class RoleTypeDaoImpl implements RoleTypeDao {
 
@@ -31,6 +42,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
     @Autowired
     private NamedParameterJdbcTemplate template;
 
+    /**
+     * Method for finding Role by Id
+     * @param id Role id
+     */
     @Override
     public RoleType findRoleById(Long id) {
         String query = "SELECT id, role_type, role_desc FROM MEMBER_ROLE where ID = " + id;
@@ -38,6 +53,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         return template.queryForObject(query, sqlParameterSource, new RoleTypeRowMapper());
     }
 
+    /**
+     * Method for finding Role by name
+     * @param rolename Role name
+     */
     @Override
     public Set<RoleType> findRoleTypeByName(String rolename) {
         String query = "SELECT * FROM MEMBER_ROLE WHERE LOWER(role_type) LIKE LOWER('%" + rolename + "%')";
@@ -48,6 +67,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         return roles;
     }
 
+    /**
+     * Load all role types
+     * @return roles
+     */
     @Override
     public Set<RoleType> loadAllRoleType() {
         String query = "SELECT * FROM MEMBER_ROLE";
@@ -58,6 +81,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         return roles;
     }
 
+    /**
+     * Method for deleting Role by Id
+     * @param id Role id
+     */
     @Override
     public void deleteRoleTypeById(Long id) {
         String query = "DELETE FROM MEMBER_ROLE WHERE ID = " + id;
@@ -66,6 +93,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
 
     }
 
+    /**
+     * Method for creating role type
+     * @param role Role type
+     */
     @Override
     public void createRoleType(RoleType role) {
         String query = "INSERT INTO MEMBER_ROLE" + "(role_type, role_desc)"
@@ -76,6 +107,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         template.update(query, sqlParameterSource);
     }
 
+    /**
+     * Method for updating role type
+     * @param roletype Role type
+     */
     @Override
     public void updateRoleType(RoleType roleType) {
         String query = "UPDATE MEMBER_ROLE " + "SET role_name = '', role_desc = '' " + "WHERE id = "
@@ -86,6 +121,14 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
 
         template.update(query, sqlParameterSource);
 
+    }
+    
+    public List<RoleType> getRoleTypeByPage(int pageid, int total){
+        String query = "SELECT * FROM MEMBER_ROLE" + (pageid-1)+","+total;
+        List<RoleType> roleList = template.query(query, new RoleTypeRowMapper());
+        
+        return roleList;
+        
     }
 
 }

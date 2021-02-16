@@ -15,9 +15,15 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
 //==================================================================================================
 
+/**
+ * RoleTypeService class
+ * 
+ * @version 0.01
+ * @author rl.naval
+ */
 public interface RoleTypeService {
 
     // Method for finding Role Type by ID
