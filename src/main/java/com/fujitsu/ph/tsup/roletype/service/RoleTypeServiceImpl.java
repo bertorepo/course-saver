@@ -19,8 +19,8 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
-//0.02   | 2021/02/05 | WS) s.labador         | Updated
+//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
+//1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
 //==================================================================================================
 
 /**
@@ -97,6 +97,22 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     public void updateRoleType(RoleType roleType) {
         roleTypeDao.updateRoleType(roleType);
 
+    }
+
+    @Override
+    public Set<RoleType> findRoleTypeByKeyword(String keyword) {
+        Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByKeyword(keyword);
+
+        try {
+            if (roleFormList == null || roleFormList.isEmpty()) {
+                return null;
+            } else {
+                return roleFormList;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return roleFormList;
     }
 
 }

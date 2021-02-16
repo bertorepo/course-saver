@@ -16,8 +16,8 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
-//0.02   | 2021/02/16 | WS) s.labador         | Updated
+//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
+//1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
 //==================================================================================================
 
 /**
@@ -36,6 +36,9 @@ public interface RoleTypeDao {
 
     // Method for searching Role by Name
     Set<RoleType> findRoleTypeByName(String rolename);
+
+    // Method for searching Role by keyword
+    Set<RoleType> findRoleTypeByKeyword(String keyword);
 
     // Method for loading all Role Type in Role View
     Set<RoleType> loadAllRoleType();

@@ -131,4 +131,18 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         
     }
 
+    @Override
+    public Set<RoleType> findRoleTypeByKeyword(String keyword) {
+        String query = "SELECT * FROM MEMBER_ROLE "
+                + "WHERE LOWER(role_type) LIKE LOWER('%" + keyword + "%') "
+                + "OR LOWER(role_desc) LIKE LOWER('%" + keyword + "%')";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("role_type", keyword)
+                .addValue("role_desc", keyword);
+
+        List<RoleType> roleList = template.query(query, sqlParameterSource, new RoleTypeRowMapper());
+        Set<RoleType> roles = new LinkedHashSet<>(roleList);
+        return roles;
+    }
+
 }

@@ -30,8 +30,8 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
-//0.02   | 2021/02/16 | WS) s.labador         | Updated
+//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
+//1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
 //==================================================================================================
 
 /**
@@ -123,14 +123,14 @@ public class RoleTypeController {
      * @return View
      */
     @PostMapping("/search")
-    public String submitSearchRoleTypeForm(@RequestParam(name = "searchRoleName") String searchRoleName,
+    public String submitSearchRoleTypeForm(@RequestParam(name = "searchRole") String searchRole,
             Model model) {
 
-        if (searchRoleName.isEmpty()) {
+        if (searchRole.isEmpty()) {
             return "redirect:/roletype/load";
         }
 
-        Set<RoleType> role = roleTypeService.findRoleTypeByName(searchRoleName);
+        Set<RoleType> role = roleTypeService.findRoleTypeByKeyword(searchRole);
         List<RoleType> listOfRole = role.stream().collect(Collectors.toList());
 
         model.addAttribute("roletypeList", listOfRole);
