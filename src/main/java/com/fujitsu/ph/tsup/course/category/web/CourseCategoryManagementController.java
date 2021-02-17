@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementService;
@@ -64,22 +65,27 @@ public class CourseCategoryManagementController {
     }
     
     @PostMapping("/search")
-    public String submitSearchCourseCategoryForm(@RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model) {
+    public String submitSearchCourseCategoryForm(
+            @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model, RedirectAttributes redirectAttributes) {
         
-        if(searchCourseCategoryName.isEmpty()) {
-            
+        Set<CourseCategory> courseCategory;
+        
+        if (searchCourseCategoryName.isEmpty() || searchCourseCategoryName == null) {
             return "redirect:/coursesCategory/load";
+        } else {
+            courseCategory = courseCategoryManagementService
+                    .findCourseCategoryByName(searchCourseCategoryName);
         }
         
-        Set<CourseCategory> courseCategoryByName = courseCategoryManagementService.findCourseCategoryByName(searchCourseCategoryName);
+        if (courseCategory == null || courseCategory.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "Cannot find category.");
+            return "redirect:/coursesCategory/load#errorModal";
+        } else {
+            List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
+            model.addAttribute("courseCategoryList", listOfCourseCategory);
+            return "course-management/manageCourseCategory";
+        }
         
-        List<CourseCategory> listOfCourseCategory = courseCategoryByName.stream()
-                .collect(Collectors.toList());
-        
-        model.addAttribute("courseCategoryList", listOfCourseCategory);
-        
-
-        return "course-management/manageCourseCategory";
     }
 }
 

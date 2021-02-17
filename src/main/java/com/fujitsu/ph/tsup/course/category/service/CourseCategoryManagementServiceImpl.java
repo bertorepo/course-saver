@@ -56,7 +56,7 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
 
             if (courseCategoryFormList.isEmpty()) {
 
-                return courseCategoryFormList;
+                return this.courseCategoryManagementDao.findCourseCategoryByName(name);
 
             } else {
 
