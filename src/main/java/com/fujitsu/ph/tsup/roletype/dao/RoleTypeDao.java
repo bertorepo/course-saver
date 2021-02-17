@@ -19,6 +19,15 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
 //==================================================================================================
 
+/**
+ * <pre>
+ * RoleTypeDao class
+ * 
+ * <pre>
+ * 
+ * @version 0.01
+ * @author rl.naval
+ */
 public interface RoleTypeDao {
 
     // Method for finding Role Type by ID
@@ -41,4 +50,5 @@ public interface RoleTypeDao {
 
     // Method for updating Role Type
     void updateRoleType(RoleType roleType);
+    
 }

@@ -34,6 +34,15 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
 //==================================================================================================
 
+/**
+ * <pre>
+ * This is the implementation of Role Type Controller.
+ * </pre>
+ * 
+ * @author rl.naval
+ * @version 0.01
+ *
+ */
 @Controller
 @RequestMapping("/roletype")
 public class RoleTypeController {
@@ -41,6 +50,12 @@ public class RoleTypeController {
     @Autowired
     RoleTypeService roleTypeService;
 
+    /**
+     * Load the Role Type on the screen
+     * 
+     * @param model Model
+     * @return View
+     */
     @GetMapping("/load")
     public String manageRoleType(Model model) {
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
@@ -51,6 +66,15 @@ public class RoleTypeController {
         return "roletype-management/roleTypeView";
     }
 
+    /**
+     * Method for getting role type id to delete
+     * 
+     * @param id Role Type id
+     * @param form RoleType Form
+     * @param bindingResult Binding Result
+     * @param model Model
+     * @return View
+     */
     @GetMapping("/{roleId}/delete")
     public String showDeleteRoleTypeForm(@RequestParam(value = "roleIdInput") Long id, RoleTypeForm form,
             BindingResult bindingResult, Model model) {
@@ -71,6 +95,14 @@ public class RoleTypeController {
         return "redirect:/roletype/load?roleId=" + id + "#confirmModal";
     }
 
+    /**
+     * Method for deleting role with the given id
+     * 
+     * @param id role id
+     * @param redirectAttributes RedirectAttributes
+     * @param model Model
+     * @return View
+     */
     @PostMapping("/{roleId}/delete")
     public String submitDeleteRoleTypeform(@PathVariable("roleId") Long id,
             RedirectAttributes redirectAttributes, Model model) {
@@ -83,6 +115,13 @@ public class RoleTypeController {
         return "redirect:/roletype/load#successModal";
     }
 
+    /**
+     * Method for searching role type
+     * 
+     * @param searchRoleName Role name
+     * @param model Model
+     * @return View
+     */
     @PostMapping("/search")
     public String submitSearchRoleTypeForm(@RequestParam(name = "searchRole") String searchRole,
             Model model) {
@@ -99,12 +138,26 @@ public class RoleTypeController {
         return "roletype-management/roleTypeView";
     }
 
+    /**
+     * Create the role type. Method = GET
+     * 
+     * @param model Model
+     * @return roleTypeForm and view
+     */
     @GetMapping("/create")
     public String showCreateRoleTypeForm(Model model) {
         model.addAttribute("create");
         return "roletype-management/roleTypeCreate";
     }
 
+    /**
+     * Create the role type. Method = POST
+     * 
+     * @param form RoleTypeForm
+     * @param bindingResult BindingResult
+     * @param model Model
+     * @return RoleTypeForm and view
+     */
     @PostMapping("/create")
     public String submitCreateRoleTypeForm(RoleTypeForm form, BindingResult bindingResult, Model model) {
 
@@ -119,6 +172,14 @@ public class RoleTypeController {
         return "roletype-management/roleTypeCreate";
     }
 
+    /**
+     * Update the role type. Method = GET
+     * 
+     * @param id roleId
+     * @param form RoleTypeForm
+     * @param model Model
+     * @return RoleTypeForm and view
+     */
     @GetMapping("/update/{roleId}")
     public String showUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
 
@@ -135,6 +196,15 @@ public class RoleTypeController {
         return "roletype-management/roleTypeUpdate";
     }
 
+    /**
+     * Update the role type. Method = POST
+     * 
+     * @param id roleId
+     * @param form RoleTypeForm
+     * @param model Model
+     * @param bindingResult BindingResult
+     * @return RoleTypeForm and view
+     */
     @PostMapping("/update/{roleId}")
     public String submitUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form,
             BindingResult bindingResult, Model model) {
@@ -158,5 +228,7 @@ public class RoleTypeController {
         return "roletype/load";
 
     }
+    
+    
 
 }

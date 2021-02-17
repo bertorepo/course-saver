@@ -11,18 +11,36 @@ package com.fujitsu.ph.tsup.roletype.domain;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.02   | 2021/02/16 | WS) s.labador         | Updated
 //==================================================================================================
 
+/**
+ * <pre>
+ * Role Type class
+ * 
+ * <pre>
+ * 
+ * @version 0.01
+ * @author rl.naval
+ */
 public class RoleType {
+
     private Long id;
     private String rolename;
     private String roledesc;
 
+    /**
+     * Empty Constructor for RoleType class
+     */
     protected RoleType() {
 
     }
 
+    /**
+     * Role type Constructor
+     * @param builder Builder
+     */
     private RoleType(Builder builder) {
         this.id = builder.id;
         this.rolename = builder.rolename;
@@ -53,6 +71,9 @@ public class RoleType {
         this.roledesc = roledesc;
     }
 
+    /**
+     * Builder Class
+     */
     public static class Builder {
         private Long id;
         private String rolename;
@@ -113,6 +134,10 @@ public class RoleType {
             this.roledesc = roledesc;
         }
 
+        /**
+         * Validate role name if null or empty
+         * @param rolename Role Name
+         */
         private void validateRolename(String rolename) {
             if (rolename.equals(null) || rolename.isEmpty()) {
 
@@ -121,6 +146,10 @@ public class RoleType {
             }
         }
 
+        /**
+         * Validate role id if null or empty
+         * @param id Role id
+         */
         private void validateId(Long id) {
 
             if (id == null || id == 0) {
@@ -130,6 +159,10 @@ public class RoleType {
             }
         }
 
+        /**
+         * Validate role description if null or empty
+         * @param roledesc Role description
+         */
         private void validateRoleDesc(String roledesc) {
 
             if (roledesc.equals(null) || roledesc.isEmpty()) {
