@@ -17,6 +17,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //--------+------------+-----------------------+---------------------------------------------------
 //1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
 //1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
+//1.0.2   | 2021/02/17 | WS) c.sinda           | Updated
 //==================================================================================================
 
 /**
@@ -32,6 +33,9 @@ public interface RoleTypeService {
 
     // Method for searching Role by Name
     Set<RoleType> findRoleTypeByName(String rolename);
+    
+    // Method for searching if Role is already existing
+    Set<RoleType> findIfRoleNameExists(String rolename, Long id);
 
     // Method for searching Role by keyword
     Set<RoleType> findRoleTypeByKeyword(String keyword);
@@ -46,5 +50,5 @@ public interface RoleTypeService {
     void createRoleType(RoleType role);
 
     // Method for updating Role Type
-    void updateRoleType(RoleType roleType);
+    void updateRoleType(Long id, RoleType roleType);
 }

@@ -21,6 +21,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //--------+------------+-----------------------+---------------------------------------------------
 //1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
 //1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
+//1.0.2   | 2021/02/17 | WS) j.sayaboc         | Updated
 //==================================================================================================
 
 /**
@@ -73,6 +74,29 @@ public class RoleTypeServiceImpl implements RoleTypeService {
         }
         return roleFormList;
     }
+    /**
+     * Find if Role name is already existing
+     * 
+     * @param rolename Role name
+     * @param id Role id
+     * @return RoleFormList
+     */
+    @Override
+    public Set<RoleType> findIfRoleNameExists(String rolename, Long id) {
+
+        Set<RoleType> roleFormList = roleTypeDao.findIfRoleNameExists(rolename, id);
+
+        try {
+            if (roleFormList == null || roleFormList.isEmpty()) {
+                return null;
+            } else {
+                return roleFormList;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return roleFormList;
+    }
 
     // Load all role type
     @Override
@@ -92,10 +116,15 @@ public class RoleTypeServiceImpl implements RoleTypeService {
         roleTypeDao.createRoleType(role);
     }
 
-    // Update role type
+    /**
+     * Method for updating Role Type
+     * 
+     * @param id Role id
+     * @param roleType RoleType
+     */
     @Override
-    public void updateRoleType(RoleType roleType) {
-        roleTypeDao.updateRoleType(roleType);
+    public void updateRoleType(Long id, RoleType roleType) {
+        roleTypeDao.updateRoleType(id, roleType);
 
     }
 
