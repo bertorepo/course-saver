@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -210,20 +211,19 @@ public class RoleTypeController {
     @PostMapping("/update/{roleId}")
     public String submitUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
 
-        Set<RoleType> roleSize = roleTypeService.findIfRoleNameExists(form.getRolename(), id);
-
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(form.getRolename());
         boolean invalidRoleName = m.find();
+        boolean isRoleExisting = roleTypeService.findIfRoleNameExists(form.getRolename(), id);
 
-        if (!(roleSize == null)) {
-            model.addAttribute("roleNameError", "The role name already exists");
+        if (isRoleExisting) {
+            model.addAttribute("roleNameError", "The Role Name already exists");
 
             if (form.getRoledesc().length() > 120) {
                 model.addAttribute("roleDescError",
                         "Role Description is too long, please shorten the role description");
 
-            } else if (form.getRoledesc() == "") {
+            } else if (StringUtils.isEmpty(form.getRoledesc())) {
                 model.addAttribute("roleDescError", "Please enter a Role Description");
 
             }
@@ -231,18 +231,18 @@ public class RoleTypeController {
             model.addAttribute("updateRoleTypeForm", form);
 
             return "roletype-management/roleTypeUpdate";
-        } else if (roleSize == null) {
-            if (form.getRolename() == "" || form.getRolename().length() > 40 || invalidRoleName
-                    || form.getRoledesc() == "" || form.getRoledesc().length() > 120) {
+        } else {
+            if (StringUtils.isEmpty(form.getRolename()) || form.getRolename().length() > 40 || invalidRoleName
+                    || StringUtils.isEmpty(form.getRoledesc()) || form.getRoledesc().length() > 120) {
                 if (form.getRolename().length() > 40) {
                     model.addAttribute("roleNameError",
                             "Role Name is too long, please shorten the role name");
 
                 } else if (invalidRoleName) {
 
-                    model.addAttribute("roleNameError", "Invalid Role Name");
+                    model.addAttribute("roleNameError", "Please enter a valid Role Name");
 
-                } else if (form.getRolename() == "") {
+                } else if (StringUtils.isEmpty(form.getRolename())) {
 
                     model.addAttribute("roleNameError", "Please enter a Role Name");
 
@@ -252,7 +252,7 @@ public class RoleTypeController {
                     model.addAttribute("roleDescError",
                             "Role Description is too long, please shorten the role description");
 
-                } else if (form.getRoledesc() == "") {
+                } else if (StringUtils.isEmpty(form.getRoledesc())) {
                     model.addAttribute("roleDescError", "Please enter a Role Description");
 
                 }

@@ -79,23 +79,24 @@ public class RoleTypeServiceImpl implements RoleTypeService {
      * 
      * @param rolename Role name
      * @param id Role id
-     * @return RoleFormList
+     * @return isRoleExisting
      */
     @Override
-    public Set<RoleType> findIfRoleNameExists(String rolename, Long id) {
+    public boolean findIfRoleNameExists(String rolename, Long id) {
 
-        Set<RoleType> roleFormList = roleTypeDao.findIfRoleNameExists(rolename, id);
-
+        Set<RoleType> roleList = roleTypeDao.findIfRoleNameExists(rolename, id);
+        boolean isRoleExisting = false;
+        
         try {
-            if (roleFormList == null || roleFormList.isEmpty()) {
-                return null;
+            if (roleList.isEmpty()) {
+                isRoleExisting = false;
             } else {
-                return roleFormList;
+                isRoleExisting = true;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        return roleFormList;
+        return isRoleExisting;
     }
 
     // Load all role type

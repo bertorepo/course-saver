@@ -35,7 +35,7 @@ public interface RoleTypeService {
     Set<RoleType> findRoleTypeByName(String rolename);
     
     // Method for searching if Role is already existing
-    Set<RoleType> findIfRoleNameExists(String rolename, Long id);
+    boolean findIfRoleNameExists(String rolename, Long id);
 
     // Method for searching Role by keyword
     Set<RoleType> findRoleTypeByKeyword(String keyword);
