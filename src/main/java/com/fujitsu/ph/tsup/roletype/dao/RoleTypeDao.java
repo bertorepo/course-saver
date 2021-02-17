@@ -51,5 +51,4 @@ public interface RoleTypeDao {
     // Method for updating Role Type
     void updateRoleType(RoleType roleType);
     
-    List<RoleType> getRoleTypeByPage(int pageid, int total);
 }
