@@ -3,7 +3,6 @@
  */
 package com.fujitsu.ph.tsup.roletype.dao;
 
-import java.util.List;
 import java.util.Set;
 
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
