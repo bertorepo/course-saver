@@ -121,14 +121,6 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         template.update(query, sqlParameterSource);
 
     }
-    
-    public List<RoleType> getRoleTypeByPage(int pageid, int total){
-        String query = "SELECT * FROM MEMBER_ROLE" + (pageid-1)+","+total;
-        List<RoleType> roleList = template.query(query, new RoleTypeRowMapper());
-        
-        return roleList;
-        
-    }
 
     @Override
     public Set<RoleType> findRoleTypeByKeyword(String keyword) {
