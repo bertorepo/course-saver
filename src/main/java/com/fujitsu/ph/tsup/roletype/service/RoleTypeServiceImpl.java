@@ -88,9 +88,7 @@ public class RoleTypeServiceImpl implements RoleTypeService {
         boolean isRoleExisting = false;
         
         try {
-            if (roleList.isEmpty()) {
-                isRoleExisting = false;
-            } else {
+            if (!roleList.isEmpty()) {
                 isRoleExisting = true;
             }
         } catch (Exception e){
