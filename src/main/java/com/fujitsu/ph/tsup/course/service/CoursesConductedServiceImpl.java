@@ -43,19 +43,5 @@ public class CoursesConductedServiceImpl implements CoursesConductedService {
 		}
 	}
 	
-	/**
-	 * <pre>
-	 * Finds all courses conducted based on the given date range Call
-	 * coursesConductedDao.findAllCoursesConducted 
-	 * <pre>
-	 */	
-	@Override
-	public Set<CoursesConducted> findAllCoursesConducted() {
-		
-		try {
-			return coursesConductedDao.findAllCoursesConducted();
-		} catch (DataAccessException ex) {
-			throw new IllegalArgumentException("Can't access courses conducted.");
-		}
-	}
+
 }
