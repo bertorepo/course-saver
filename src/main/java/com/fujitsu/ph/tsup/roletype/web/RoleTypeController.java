@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,31 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fujitsu.ph.tsup.roletype.dao.RoleTypeDaoImpl;
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 import com.fujitsu.ph.tsup.roletype.model.RoleTypeForm;
 import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 
-//==================================================================================================
-//Project Name : Training Sign Up
-//System Name  : Role Type Management
-//Class Name   : RoleTypeController.java
-//
-//<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+---------------------------------------------------
-//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
-//0.02   | 2021/02/16 | WS) s.labador         | Updated
-//==================================================================================================
-
 /**
- * <pre>
- * This is the implementation of Role Type Controller.
- * </pre>
+ * RoleType class
  * 
- * @author rl.naval
- * @version 0.01
- *
+ * @author rl.naval (New Creation by: rl.naval)
+ * @version Revision: 0.01 Date: 2021-02-05
  */
+
 @Controller
 @RequestMapping("/roletype")
 public class RoleTypeController {
@@ -50,31 +38,44 @@ public class RoleTypeController {
     @Autowired
     RoleTypeService roleTypeService;
 
-    /**
-     * Load the Role Type on the screen
-     * 
-     * @param model Model
-     * @return View
-     */
+    // pagination
+
+    @Autowired
+    RoleTypeDaoImpl dao;
+
+    @RequestMapping(value="/roleTypeView/{pageid}")
+    public String edit(@PathVariable int pageid, Model model) {
+        int total = 5;
+        if (pageid == 1) {
+        } else {
+            pageid = (pageid - 1) * total + 1;
+        }
+        System.out.println(pageid);
+        List<RoleType> roletypelist = dao.getEmployeesByPage(pageid, total);
+        model.addAttribute("msg", roletypelist);
+        return "load";
+    }
+
     @GetMapping("/load")
     public String manageRoleType(Model model) {
+
+        /*
+         * int total=6; if(pageid==1){} else{ pageid=(pageid-1)*total+1; } System.out.println(pageid);
+         */
+
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
+
+        if (roletypeList.isEmpty()) {
+            model.addAttribute("nullMessage", "No Role Type Available");
+            return "roletype-management/roleTypeView";
+        }
 
         model.addAttribute("roletypeList", roletypeList);
 
         return "roletype-management/roleTypeView";
     }
 
-    /**
-     * Method for getting role type id to delete
-     * 
-     * @param id Role Type id
-     * @param form RoleType Form
-     * @param bindingResult Binding Result
-     * @param model Model
-     * @return View
-     */
     @GetMapping("/{roleId}/delete")
     public String showDeleteRoleTypeForm(@RequestParam(value = "roleIdInput") Long id, RoleTypeForm form,
             BindingResult bindingResult, Model model) {
@@ -95,14 +96,6 @@ public class RoleTypeController {
         return "redirect:/roletype/load?roleId=" + id + "#confirmModal";
     }
 
-    /**
-     * Method for deleting role with the given id
-     * 
-     * @param id role id
-     * @param redirectAttributes RedirectAttributes
-     * @param model Model
-     * @return View
-     */
     @PostMapping("/{roleId}/delete")
     public String submitDeleteRoleTypeform(@PathVariable("roleId") Long id,
             RedirectAttributes redirectAttributes, Model model) {
@@ -115,13 +108,6 @@ public class RoleTypeController {
         return "redirect:/roletype/load#successModal";
     }
 
-    /**
-     * Method for searching role type
-     * 
-     * @param searchRoleName Role name
-     * @param model Model
-     * @return View
-     */
     @PostMapping("/search")
     public String submitSearchRoleTypeForm(@RequestParam(name = "searchRoleName") String searchRoleName,
             Model model) {
@@ -138,31 +124,17 @@ public class RoleTypeController {
         return "roletype-management/roleTypeView";
     }
 
-    /**
-     * Create the role type. Method = GET
-     * 
-     * @param model Model
-     * @return roleTypeForm and view
-     */
     @GetMapping("/create")
     public String showCreateRoleTypeForm(Model model) {
         model.addAttribute("create");
         return "roletype-management/roleTypeCreate";
     }
 
-    /**
-     * Create the role type. Method = POST
-     * 
-     * @param form RoleTypeForm
-     * @param bindingResult BindingResult
-     * @param model Model
-     * @return RoleTypeForm and view
-     */
     @PostMapping("/create")
     public String submitCreateRoleTypeForm(RoleTypeForm form, BindingResult bindingResult, Model model) {
 
         Set<RoleType> roleSize = roleTypeService.findRoleTypeByName(form.getRolename());
-        if (roleSize == null) {
+        if (roleSize.isEmpty()) {
             RoleType roleDetails = new RoleType.Builder(form.getRolename(), form.getRoledesc()).build();
             roleTypeService.createRoleType(roleDetails);
         } else {
@@ -172,47 +144,20 @@ public class RoleTypeController {
         return "roletype-management/roleTypeCreate";
     }
 
-    /**
-     * Update the role type. Method = GET
-     * 
-     * @param id roleId
-     * @param form RoleTypeForm
-     * @param model Model
-     * @return RoleTypeForm and view
-     */
-    @GetMapping("/update/{roleId}")
-    public String showUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
+    @GetMapping("/update")
+    public String showUpdateRoleTypeForm(Long id, RoleTypeForm form) {
 
-        // Set Value for RoleType Object
-        RoleType role = roleTypeService.findRoleById(id);
+        RoleType roleType = roleTypeService.findRoleById(id);
 
-        // Set Value for RoleTypeForm
-        form.setId(role.getId());
-        form.setRolename(role.getRolename());
-        form.setRoledesc(role.getRoledesc());
+        form.setId(roleType.getId());
+        form.setRolename(roleType.getRolename());
+        form.setRoledesc(roleType.getRoledesc());
 
-        model.addAttribute("updateRoleTypeForm", form);
-
-        return "roletype-management/roleTypeUpdate";
+        return "redirect:/roletypes/load?roleTypeId=" + id + "/update";
     }
 
-    /**
-     * Update the role type. Method = POST
-     * 
-     * @param id roleId
-     * @param form RoleTypeForm
-     * @param model Model
-     * @param bindingResult BindingResult
-     * @return RoleTypeForm and view
-     */
-    @PostMapping("/update/{roleId}")
-    public String submitUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form,
-            BindingResult bindingResult, Model model) {
-
-        if (bindingResult.hasErrors()) {
-            form.setId(id);
-            return "roletype-management/roleTypeUpdate";
-        }
+    @PostMapping("/update")
+    public String submitUpdateRoleTypeForm(RoleTypeForm form, BindingResult bindingResult, Model model) {
 
         Set<RoleType> roletypeSize = roleTypeService.findRoleTypeByName(form.getRolename());
 
@@ -222,13 +167,13 @@ public class RoleTypeController {
             roleTypeService.updateRoleType(roletypeDetails);
 
         } else {
+
             model.addAttribute("successMessage", "The course is already existing.");
+
         }
 
-        return "roletype/load";
+        return "roletypes/load";
 
     }
-    
-    
 
 }
