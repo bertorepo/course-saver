@@ -27,7 +27,7 @@
 
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
-	<form name="roleForm" action="#"
+	<form id="roleForm" name="roleForm" action="#"
 		th:action="@{/roletype/update/{roleId}(roleId=${updateRoleTypeForm.id})}"
 		th:object="${updateRoleTypeForm}" method="post">
 		<div class="container mt-5">
@@ -60,9 +60,8 @@
 
 					</div>
 					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit"
-							th:attr="onclick=|submitModal()|" /> <a class="btn btn-danger"
-							th:href="@{/roletype/load}">Cancel</a>
+						<input type="submit" class="btn btn-success" value="Submit" /> <a
+							class="btn btn-danger" th:href="@{/roletype/load}">Cancel</a>
 
 					</div>
 
@@ -77,10 +76,6 @@
 			<div class="modal-content">
 				<div class="modal-header alert-success">
 					<h5 class="modal-title text-white">Success!</h5>
-					<button type="submit" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
 				</div>
 				<div class="modal-body">
 					<div class="form-group row">
@@ -88,10 +83,8 @@
 							successfully updated this role.</label>
 					</div>
 					<div class="modal-footer">
-						<!-- <button type="submit" name="submit" value="submit"
-								class="btn btn-primary" href="/roletype/load">OK</button> -->
-						<button type="submit" name="submit" value="submit"
-							class="btn btn-primary" href="/roletype/load">OK</button>
+						<a th:href=@{/roletype/load}><button type="submit"
+								name="submit" value="submit" class="btn btn-primary">OK</button></a>
 
 					</div>
 				</div>
@@ -127,12 +120,38 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
 	<script th:inline="javascript">
-		//confirmation
-		function submitModal() {
+	
+		//
+		var $form = $('#roleForm');
+		$form.on('submit', function(e) {
+			//prevent default thymeleaf action 
+			e.preventDefault();
+			$.ajax({
+				url : $form.attr('action'),
+				type : 'post',
+				data : $form.serialize(),
+				success : function(response) {
+					if (response.includes("_error")) {
+						var parser = new DOMParser();
+						var responseHTML = parser.parseFromString(response, 'text/html');
+						//set response roleForm html string value to formElement
+						var formElement = responseHTML.getElementById('roleForm'); 
+						
+						//replace the form elements with formElement
+						$('#roleForm').replaceWith(formElement) ;
+						
+					} else {
+						var modal = $('#successModal');
+						//add class to modal
+						modal.addClass('show');
+						//add css attribute to modal
+						modal.css('display', 'block');
+						modal.css('background', 'rgba(0.1,0,0,0.3)')
+					}
+				}
+			});
+		})
 
-			$('#successModal').modal('show');
-
-		}
 	</script>
 
 </body>

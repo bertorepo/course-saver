@@ -217,12 +217,10 @@ public class RoleTypeController {
         boolean isRoleExisting = roleTypeService.findIfRoleNameExists(form.getRolename(), id);
 
         if (isRoleExisting) {
-            model.addAttribute("roleNameError", "The Role Name already exists");
+            model.addAttribute("roleNameError", "Role Name already exists in the table");
 
             if (form.getRoledesc().length() > 120) {
-                model.addAttribute("roleDescError",
-                        "Role Description is too long, please shorten the role description");
-
+                model.addAttribute("roleDescError", "Role Description is too long");
             } else if (StringUtils.isEmpty(form.getRoledesc())) {
                 model.addAttribute("roleDescError", "Please enter a Role Description");
 
@@ -235,12 +233,12 @@ public class RoleTypeController {
             if (StringUtils.isEmpty(form.getRolename()) || form.getRolename().length() > 40 || invalidRoleName
                     || StringUtils.isEmpty(form.getRoledesc()) || form.getRoledesc().length() > 120) {
                 if (form.getRolename().length() > 40) {
-                    model.addAttribute("roleNameError",
-                            "Role Name is too long, please shorten the role name");
+                    model.addAttribute("roleNameError", "Role Name is too long");
 
                 } else if (invalidRoleName) {
 
-                    model.addAttribute("roleNameError", "Please enter a valid Role Name");
+                    model.addAttribute("roleNameError",
+                            "Role Name is invalid, please omit special characters");
 
                 } else if (StringUtils.isEmpty(form.getRolename())) {
 
@@ -249,8 +247,7 @@ public class RoleTypeController {
                 }
 
                 if (form.getRoledesc().length() > 120) {
-                    model.addAttribute("roleDescError",
-                            "Role Description is too long, please shorten the role description");
+                    model.addAttribute("roleDescError", "Role Description is too long");
 
                 } else if (StringUtils.isEmpty(form.getRoledesc())) {
                     model.addAttribute("roleDescError", "Please enter a Role Description");
