@@ -86,6 +86,7 @@
 						<th class="align-middle hide">Minimum <br> Number of <br> Participants</th>
 						<th class="align-middle hide">Maximum <br> Number of <br> Participants</th>
 						<th class="align-middle">Total <br> Number of <br> Participants</th>
+						<th class="align-middle">Action</th>
 					
 					</tr>
 				</thead>
@@ -354,15 +355,43 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" >
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label" id="successMessage"> <span id="cancelledCourseName"></span></label>
+							<label class="col-lg-12 col-form-label" id="successMessage"> <span id="cancelledCourseName" value=""></span></label>
+							<div class="col-sm"></div>
+							<div class="col-sm"><button type="submit" class="btn btn-success" data-dismiss="modal" name="okaySuccess">Okay</button></div>
+    						<div class="col-sm"></div>
+							
 						</div>	
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Success Modal End-->
+		
+		<!--Email Modal-->
+		<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-success">
+						<h5 class="modal-title">Enrollment Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" >
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" > A calendar invite has been sent to your email!!! <span id="cancelledCourseName"></span></label>
+							<div class="col-sm"></div>
+							<div class="col-sm"><button type="button" class="btn btn-success" data-dismiss="modal">Okay</button></div>
+    						<div class="col-sm"></div>
+							
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Email Modal End-->
 
 		<!--Cancel Below Minimum Modal data-keyboard="false" data-backdrop="static" add this to the div modal-->
 			<div class="modal fade" id="cancelMinimumModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
@@ -971,7 +1000,21 @@
 			|| successMessage == "Successfully cancelled all course schedule below minimum participant."){
 		document.getElementById("successMessage").innerHTML = successMessage;
 		$('#successModal').modal('show');
+		//var emailMessage = /*[[${successMessage}]]*/ 'default';
+		$('button[name="okaySuccess"]').on('click', function() {
+			//document.getElementById("emailMessage").innerHTML = emailMessage;
+			$('#emailModal').modal('show');
+	 	});
 	}
+	
+// 	var emailMessage = /*[[${successMessage}]]*/ 'default';
+// 	if(emailMessage.match("/A calendar invite has been sent to .*/")){
+// 		document.getElementById("emailMessage").innerHTML = emailMessage;
+// 		$('#emailModal').modal('show');
+// 		$('button[name="okaySuccess"]').on('click', function() {
+// 	 		$('#emailModal').modal('show');
+// 	 	});
+// 	}
 	/*]]>*/
 	
 	//No Record Found
@@ -1031,7 +1074,7 @@
 
 		$('#infoModal').modal('show');
 		$('#successModal').modal('show');
-		
+		$('#emailModal').modal('show');
 	}
 	/*]]>*/
 	
