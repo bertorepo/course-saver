@@ -51,41 +51,40 @@ public class CourseCategoryManagementController {
     CourseCategoryManagementService courseCategoryManagementService;
 
     @GetMapping("/load")
-    public String load(Model model) {
+    public String loadCourseCategory(Model model) {
 
         Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
 
-        List<CourseCategory> listOfCourseCategory = courseCategory.stream()
-                .collect(Collectors.toList());
+        List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
 
         model.addAttribute("courseCategoryList", listOfCourseCategory);
 
-        return "course-management/manageCourseCategory";
+        return "course-category-management/manageCourseCategory";
 
     }
-    
+
     @PostMapping("/search")
     public String submitSearchCourseCategoryForm(
-            @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model, RedirectAttributes redirectAttributes) {
-        
+            @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model,
+            RedirectAttributes redirectAttributes) {
+
         Set<CourseCategory> courseCategory;
-        
+
         if (searchCourseCategoryName.isEmpty() || searchCourseCategoryName == null) {
             return "redirect:/coursesCategory/load";
         } else {
             courseCategory = courseCategoryManagementService
                     .findCourseCategoryByName(searchCourseCategoryName);
         }
-        
+
         if (courseCategory == null || courseCategory.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Cannot find category.");
+            redirectAttributes.addFlashAttribute("message", "Category does not exist.");
             return "redirect:/coursesCategory/load#errorModal";
         } else {
             List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
             model.addAttribute("courseCategoryList", listOfCourseCategory);
-            return "course-management/manageCourseCategory";
+            return "course-category-management/manageCourseCategory";
         }
-        
+
     }
 }
-
