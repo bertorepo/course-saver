@@ -33,9 +33,9 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
-//1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
-//1.0.2   | 2021/02/17 | WS) c.sinda           | Updated
+//0.01    | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.02    | 2021/02/15 | WS) rl.naval          | Updated
+//0.03    | 2021/02/17 | WS) c.sinda           | Updated
 //==================================================================================================
 
 /**
@@ -130,14 +130,18 @@ public class RoleTypeController {
     public String submitSearchRoleTypeForm(@RequestParam(name = "searchRole") String searchRole,
             Model model) {
 
-        if (searchRole.isEmpty()) {
+        if (StringUtils.isEmpty(searchRole)) {
             return "redirect:/roletype/load";
         }
 
         Set<RoleType> role = roleTypeService.findRoleTypeByKeyword(searchRole);
+        
         List<RoleType> listOfRole = role.stream().collect(Collectors.toList());
 
         model.addAttribute("roletypeList", listOfRole);
+        if (listOfRole ==  null) {
+            return "redirect:/roletype/load";
+        }
 
         return "roletype-management/roleTypeView";
     }
@@ -216,53 +220,59 @@ public class RoleTypeController {
         boolean invalidRoleName = m.find();
         boolean isRoleExisting = roleTypeService.findIfRoleNameExists(form.getRolename(), id);
 
+        //Check if Role Type is already existing in the table
         if (isRoleExisting) {
+            //Role type is already existing in the table
             model.addAttribute("roleNameError", "The Role Name already exists");
-
+            
+            //Check if the Role Description exceeds 120 characters
             if (form.getRoledesc().length() > 120) {
                 model.addAttribute("roleDescError",
                         "Role Description is too long, please shorten the role description");
-
+            //Check if the Role Description field is empty
             } else if (StringUtils.isEmpty(form.getRoledesc())) {
                 model.addAttribute("roleDescError", "Please enter a Role Description");
-
             }
             form.setId(id);
             model.addAttribute("updateRoleTypeForm", form);
 
             return "roletype-management/roleTypeUpdate";
+        //Else if Role Type is not yet existing in the table
         } else {
             if (StringUtils.isEmpty(form.getRolename()) || form.getRolename().length() > 40 || invalidRoleName
                     || StringUtils.isEmpty(form.getRoledesc()) || form.getRoledesc().length() > 120) {
+
+                //Role Name Validations
+                //Check if Role name is > 40 characters
                 if (form.getRolename().length() > 40) {
                     model.addAttribute("roleNameError",
                             "Role Name is too long, please shorten the role name");
 
+                //Check if Role Type has special characters
                 } else if (invalidRoleName) {
-
                     model.addAttribute("roleNameError", "Please enter a valid Role Name");
 
+                //Check if the Role Name field is empty
                 } else if (StringUtils.isEmpty(form.getRolename())) {
-
                     model.addAttribute("roleNameError", "Please enter a Role Name");
-
                 }
 
+                //Role Description Validation
+                //Check if Role Description is > 120 characters
                 if (form.getRoledesc().length() > 120) {
                     model.addAttribute("roleDescError",
                             "Role Description is too long, please shorten the role description");
 
+                //Check if Role Description field is empty
                 } else if (StringUtils.isEmpty(form.getRoledesc())) {
                     model.addAttribute("roleDescError", "Please enter a Role Description");
-
                 }
 
                 form.setId(id);
                 model.addAttribute("updateRoleTypeForm", form);
-
                 return "roletype-management/roleTypeUpdate";
-            } else {
 
+            } else {
                 RoleType updatedRoleType = new RoleType.Builder(form.getRolename(), form.getRoledesc())
                         .build();
                 roleTypeService.updateRoleType(id, updatedRoleType);
