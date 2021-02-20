@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.fujitsu.ph.tsup.roletype.dao.RoleTypeDao;
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
@@ -19,9 +20,9 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//1.0.0   | 2021/02/05 | WS) rl.naval          | Initial Version
-//1.0.1   | 2021/02/15 | WS) rl.naval          | Updated
-//1.0.2   | 2021/02/17 | WS) j.sayaboc         | Updated
+//0.01    | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.02    | 2021/02/15 | WS) rl.naval          | Updated
+//0.03    | 2021/02/17 | WS) j.sayaboc         | Updated
 //==================================================================================================
 
 /**
@@ -48,6 +49,9 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     @Override
     public RoleType findRoleById(Long id) {
         RoleType roleTypeResult = roleTypeDao.findRoleById(id);
+        if(StringUtils.isEmpty(roleTypeResult)) {
+            throw new IllegalArgumentException("No role types available");
+        }
         return roleTypeResult;
     }
 
@@ -132,8 +136,8 @@ public class RoleTypeServiceImpl implements RoleTypeService {
         Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByKeyword(keyword);
 
         try {
-            if (roleFormList == null || roleFormList.isEmpty()) {
-                return null;
+            if (StringUtils.isEmpty(roleFormList)) {
+                throw new IllegalArgumentException("No Role Types Available.");
             } else {
                 return roleFormList;
             }
