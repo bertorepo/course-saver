@@ -223,13 +223,13 @@ public class RoleTypeController {
         //Check if Role Type is already existing in the table
         if (isRoleExisting) {
             //Role type is already existing in the table
-            model.addAttribute("roleNameError", "The Role Name already exists");
-            
+            model.addAttribute("roleNameError", "Role Name already exists in the table");
+
             //Check if the Role Description exceeds 120 characters
             if (form.getRoledesc().length() > 120) {
-                model.addAttribute("roleDescError",
-                        "Role Description is too long, please shorten the role description");
-            //Check if the Role Description field is empty
+                model.addAttribute("roleDescError", "Role Description is too long");
+
+            //Check if Role Description is Empty
             } else if (StringUtils.isEmpty(form.getRoledesc())) {
                 model.addAttribute("roleDescError", "Please enter a Role Description");
             }
@@ -237,6 +237,7 @@ public class RoleTypeController {
             model.addAttribute("updateRoleTypeForm", form);
 
             return "roletype-management/roleTypeUpdate";
+
         //Else if Role Type is not yet existing in the table
         } else {
             if (StringUtils.isEmpty(form.getRolename()) || form.getRolename().length() > 40 || invalidRoleName
@@ -245,12 +246,12 @@ public class RoleTypeController {
                 //Role Name Validations
                 //Check if Role name is > 40 characters
                 if (form.getRolename().length() > 40) {
-                    model.addAttribute("roleNameError",
-                            "Role Name is too long, please shorten the role name");
+                    model.addAttribute("roleNameError", "Role Name is too long");
 
                 //Check if Role Type has special characters
                 } else if (invalidRoleName) {
-                    model.addAttribute("roleNameError", "Please enter a valid Role Name");
+                    model.addAttribute("roleNameError",
+                            "Role Name is invalid, please omit special characters");
 
                 //Check if the Role Name field is empty
                 } else if (StringUtils.isEmpty(form.getRolename())) {
@@ -260,8 +261,7 @@ public class RoleTypeController {
                 //Role Description Validation
                 //Check if Role Description is > 120 characters
                 if (form.getRoledesc().length() > 120) {
-                    model.addAttribute("roleDescError",
-                            "Role Description is too long, please shorten the role description");
+                    model.addAttribute("roleDescError", "Role Description is too long");
 
                 //Check if Role Description field is empty
                 } else if (StringUtils.isEmpty(form.getRoledesc())) {
