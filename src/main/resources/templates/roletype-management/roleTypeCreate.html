@@ -1,3 +1,4 @@
+
 <!-- @Author:Rondina, Cherry Ann-->
 
 <!DOCTYPE html>
@@ -13,8 +14,10 @@
 <meta name="author" content="" />
 <title>Create Member Role</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/scheduling/scheduling.common.css">
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -24,12 +27,8 @@
 
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
-	<!--Success Message-->
-	<div class="modal fade" th:text="${successMessage}"
-		id="successMessage1" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
-	<!--Success Message End-->
-	<form action="#" th:action="@{/roletype/create}" th:object="${create}" method="post">
+	<form id="roleForm" name="roleForm" action="#" th:action="@{/roletype/create}"
+		th:object="${create}" method="post">
 		<div class="container mt-5">
 			<h3>
 				<i class="fa fa-calendar-o"></i> Create Role
@@ -41,26 +40,24 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Role Name*</label>
 						<div class="col-lg-5">
-							<input type="Text" placeholder="Enter Role Type"
-								class="form-control" id="rolename" name="rolename" value=""
-								maxlength="40" required>
+							<input type="text" id="rolename" name="rolename"
+								class="form-control" placeholder="Enter Role Type"
+								maxlength="40">
 						</div>
+						<span class="text-danger er" id="rolename_error"> </span>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Role Description*</label>
 						<div class="col-lg-5">
-							<textarea rows="10" cols="50"
-								placeholder="Enter Description of Role Type"
-								class="form-control" id="roledesc" name="roledesc" maxlength="120"
-								required onkeyup=enableSubmitButton()></textarea>
+							<textarea name="roledesc" id="roledesc" class="form-control"
+								rows="10" cols="50" placeholder="Enter Description of Role Type"
+								maxlength="120"></textarea>
 						</div>
+						<span class="text-danger er" id="roledesc_error"> </span>
 					</div>
-					<div class="float-right">
-						<input type="button" class="btn btn-success" value="Submit"
-							name="submit" id="submit" th:attr="onclick=|submitModal()|"
-							disabled>
-						<!-- <button type="reset" value="Reset">Cancel</button> -->
-						<input type="submit" value="Cancel" class="btn btn-danger"></input>
+					<div class="form-group float-right">
+						<input type=button class="btn btn-success" value="Submit" th:attr="onclick=|validateForm()|"> <a
+							class="btn btn-danger" th:href="@{/dashboard}">Cancel</a>
 
 					</div>
 
@@ -75,7 +72,7 @@
 				<div class="modal-content">
 					<div class="modal-header alert-success">
 						<h5 class="modal-title text-white">Success!</h5>
-						<button type="submit" class="close" data-dismiss="modal"
+						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -86,8 +83,8 @@
 								successfully created this role.</label>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" name="submit" value="submit"
-								class="btn btn-primary">OK</button>
+							<a th:href=@{/roletype/create}><button type="submit"
+									name="submit_button" class="btn btn-primary">OK</button></a>
 
 						</div>
 					</div>
@@ -95,124 +92,101 @@
 			</div>
 		</div>
 		<!--Success Modal End-->
-
-		<!--Invalid Modal-->
-		<div class="modal fade" id="invalidModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-success">
-						<h5 class="modal-title">Failed to create</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label" id="existingRoleType">
-								The specified role type is already exists. Please change the
-								Role Name.</label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--Invalid Modal End-->
 	</form>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
+
 	<script th:inline="javascript">
-		//confirmation
-		function submitModal(){
-			
-			$('#successModal').modal('show');
-				
+	
+		var roleNameErrorCount = 0;
+		var roleDescErrorCount = 0;
+		var specialChars = /[^a-zA-Z0-9 ]/g;
+		
+		/*<![CDATA[*/
+		var roletypeList = /*[[${roletypeList}]]*/'default';
+		var roleId = /*[[${roleId}]]*/'default';
+		/*]]>*/
+		
+		
+		//returns true if rolename exists in the object
+		function roleNameExist(rolename) {
+		  return roletypeList.some(function(role) {
+		    return role.rolename.toLowerCase() === rolename.toLowerCase();
+		  }); 
 		}
 		
-		//disabling and enabling of submit button
-		 function enableSubmitButton(){
-			var name = document.getElementById("rolename");
-			var detail = document.getElementById("roledesc");
-			if((name.value === "" || detail.value ==="")  && (jQuery.trim(name).length > 0 && jQuery.trim(detail).length > 0)) { 
-				document.getElementById('submit').disabled = true;
-				
-			} else {
-				document.getElementById('submit').disabled = false;
+		/* ========================
+		*  On input Validation 
+		*  ========================
+		*/
+		
+		//rolename validation
+		$("#rolename").on("input",function() {
+			if (roleNameExist(this.value)) {
+				$("#rolename_error").text("Role Name already exists in the table");
+				roleNameErrorCount++;
+			}else if(this.value.match(specialChars)){
+				$("#rolename_error").text("Role Name is invalid, please omit special characters");
+				roleNameErrorCount++;
+			}else if (this.value.length == 40) {
+				$("#rolename_error").text("Role Name is too long");
+				roleNameErrorCount++;
+			}else{
+				$("#rolename_error").text("");
 			}
 			
-			
-		}
+		});
 
-//-----------------------------------------------------------------------------------			
-		//validation for special characters or invalid input
-		//function specialcharacters()
-       //  {
-        //    var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~_";   
-        //    var data = document.getElementById("name").value;
-         //   	for (var i = 0; i < data.length; i++)
-         //    {      
-         //        if (iChars.indexOf(data.charAt(i)) != -1)
-         //       {    
-          //       alert ("Role Name has Special Characters,Please enter a valid Role Name ");
-           //      document.getElementById("name").value = "";
-           //      return false; 
-           //     } 
-           //  }
-        // }
-		
-//---------------------------------------------------------------------------------------
-		//validation for max length
-		
-		//function maxlengthValidation(){
-			//var name = document.getElementById("name");
-			//var detail = document.getElementById("detail");
-			//if((name.value === "" || detail.value ==="")  && (jQuery.trim(name).length > 40 && jQuery.trim(detail).length > 120)) {
-				//(document.getElementById("name").validity.rangeOverflow)  txt = "Role Name is Too Long";
-				//(document.getElementById("detail").validity.rangeOverflow)  txt = "Role Description is Too Long";
-				
-			//}return false ;
-			//}
-			 // return true ;
-			//}
+		//roledesc validation
+		$("#roledesc").on("input",function() {
+			var erMessage = "Role Description is too long";
+			//length check
+			if (this.value.length == 120) {
+				$("#roledesc_error").text(erMessage);
+				roleDescErrorCount++;
+			}else{
+				$("#roledesc_error").text("");
+			}
+		});
+
+		function validateForm(){
+	    	var rolename = $('#rolename').val();
+	    	var roledesc = $('#roledesc').val();
+	    	
+	    	if(rolename == ""||roleNameExist(rolename) || rolename.match(specialChars) || 
+	    			rolename.length == 40 || roledesc.length == 120 || roledesc == ""){
+	    		
+	    		//Empty rolename validation
+	    		if (rolename == "") {
+		    		roleNameErrorCount++;
+		            $("#rolename_error").text("Please enter a Role Name");
+		    	}
+	    		//Empty roledesc validation
+	    		if (roledesc == "") {
+		    		roleDescErrorCount++;
+		    		roleDescError = "Please enter a Role Description"; 
+		    		$("#roledesc_error").text(roleDescError);
+		    	}
+	    		
+	    	}else{
+	    		roleNameErrorCount = 0;
+	    		roleDescErrorCount = 0;
+	    	}
 			
-//-----------------------------------------------------------------------------------
-		//validation for empty text field
-		//function textfieldValidation(){
-			//var name = document.getElementById("name");
-			//var detail = document.getElementById("detail");
-		  //if (detail.value == "" || name.value === "" ) {
-		    //alert( "Please enter a Role Description." );
-		    //detail.focus();
-		    //alert( "Please enter a Role Name." );
-			// name.focus();
-		    //return false ;
-		//}
-		 // return true ;
-		//}
-//-----------------------------------------------------------------------------------		
-		  //if (detail.value == "" || name.value === "" ) {
-		    //alert( "Please enter a Role Description." );
-		    //detail.focus();
-		    //alert( "Please enter a Role Name." );
-			// name.focus();
-		    //return false ;
-		//}
-		 // return true ;
-		//}
-//-----------------------------------------------------------------------------------	
-		//document.getElementById("name") txt = "Please enter a Role Name."; 
-		//document.getElementById("detail") txt = "Please enter a Role Description.";
-		//document.getElementById('submit').disabled = false;
-//-----------------------------------------------------------------------------------			
-		 //(document.getElementById("name").validity.rangeOverflow) 
-		   // txt = "Role Name is Too Long";
-		 
-		 //(document.getElementById("detail").validity.rangeOverflow) 
-		   // txt = "Role Description is Too Long";
-//-----------------------------------------------------------------------------------			
-	
-		
-		</script>
+	    	if (roleDescErrorCount <= 0 && roleNameErrorCount <= 0) {
+				//clear error
+	    		$("#roledesc_error").text("");
+	    		$("#rolename_error").text("");
+	    		
+				//show modal
+	    		$('#successModal').modal('show');
+	    		//put 2 seconds delay
+	    		setTimeout(function(){
+	    			$("#roleForm").submit();
+	     		}, 2000);
+	    		
+	    	}
+		}
+	</script>
 </body>
 </html>
