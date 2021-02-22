@@ -174,7 +174,7 @@
 			</div>
 			<div class="card-body">
 				<div style="overflow-x: auto; display: block; white-space: nowrap;">
-					<table class="table table-bordered text-center" id="categoryTable">
+					<table class="table table-hover table-bordered text-center" id="categoryTable">
 						<thead>
 							<tr>
 								<th style="width: 20%;">Course Category Name</th>
@@ -183,7 +183,7 @@
 							</tr>
 						</thead>
 						<tbody th:each="course : *{courseCategoryList}">
-							<tr>
+							<tr style="cursor: pointer;" title="Update Course Category">
 								<td th:text="${course.category}"
 									th:attr="onclick=|showUpdateModal('${course.id}','${course.category}','${course.detail}')|"></td>
 								<td th:text="${course.detail}"
