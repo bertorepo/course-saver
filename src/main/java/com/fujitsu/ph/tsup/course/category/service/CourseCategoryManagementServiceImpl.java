@@ -16,6 +16,7 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 
 @Service
 public class CourseCategoryManagementServiceImpl implements CourseCategoryManagementService {
+
     // Call CourseCategoryManagementDao
     @Autowired
     CourseCategoryManagementDao courseCategoryManagementDao;
@@ -25,14 +26,13 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
     public Set<CourseCategory> findCourseCategoryByName(String name) {
         try {
             Set<CourseCategory> categoryFormList = courseCategoryManagementDao.findCourseCategoryByName(name);
-
             if (!categoryFormList.isEmpty()) {
-                throw new IllegalArgumentException("Category name is already registered");
+                throw new IllegalArgumentException("The specified course category is already existing. Please change the Course Category Name.");
             } else {
                 return categoryFormList;
             }
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Category name is already registered.");
+            throw new IllegalArgumentException("The specified course category is already existing. Please change the Course Category Name.");
         }
     }
 
@@ -40,11 +40,9 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
     public void createCourseCategory(CourseCategory courseCategory) {
         try {
             courseCategoryManagementDao.createCourseCategory(courseCategory);
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
-
 }
+
