@@ -1,3 +1,13 @@
+//==================================================================================================																																											
+// Project Name : Training Sign Up
+// System Name  : CoursesConductedRowMapper																																								
+// Class Name   : CoursesConductedRowMapper.java 																																											
+//																																											
+// <<Modification History>> 																																											
+// Version | Date       | Updated By            | Content																																											
+//---------+------------+-----------------------+--------------------------------------------------- 																																											
+// 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation																																											
+//==================================================================================================
 package com.fujitsu.ph.tsup.course.dao;
 
 import java.sql.ResultSet;
@@ -9,12 +19,21 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.fujitsu.ph.tsup.course.model.CoursesConducted;
 
+/**
+ * <pre>
+ * The controller for CoursesConductedRowMapper
+ * </pre>
+ * 
+ * @author j.barbadillo
+ * @version 1.0.0
+ */
+
 public class CoursesConductedRowMapper implements RowMapper<CoursesConducted> {
 	
 	 /**
      * <pre>
      * Maps the Rows returned by ResultSet
-     * <pre>
+     * </pre>
      * @param ResultSet rs
      * @param int rowNum
      * @throws SQLException
