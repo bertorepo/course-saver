@@ -5,6 +5,7 @@ package com.fujitsu.ph.tsup.roletype.web;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -154,6 +155,11 @@ public class RoleTypeController {
      */
     @GetMapping("/create")
     public String showCreateRoleTypeForm(Model model) {
+
+        Set<RoleType> roletype = roleTypeService.loadAllRoleType();
+        List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
+
+        model.addAttribute("roletypeList", roletypeList);
         model.addAttribute("create");
         return "roletype-management/roleTypeCreate";
     }
@@ -169,14 +175,18 @@ public class RoleTypeController {
     @PostMapping("/create")
     public String submitCreateRoleTypeForm(RoleTypeForm form, BindingResult bindingResult, Model model) {
 
-        Set<RoleType> roleSize = roleTypeService.findRoleTypeByName(form.getRolename());
+        // assign all roletypes to roletypeList model attribute
+        Set<RoleType> roletype = roleTypeService.loadAllRoleType();
+        List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
+        model.addAttribute("roletypeList", roletypeList);
+
+        Set<RoleType> roleSize = roleTypeService.findRoleTypeByName(form.getRolename().toLowerCase());
         if (roleSize == null) {
             RoleType roleDetails = new RoleType.Builder(form.getRolename(), form.getRoledesc()).build();
             roleTypeService.createRoleType(roleDetails);
         } else {
-            model.addAttribute("successMessage", "The Role Type is already existing");
+            model.addAttribute("create");
         }
-
         return "roletype-management/roleTypeCreate";
     }
 
@@ -190,6 +200,12 @@ public class RoleTypeController {
      */
     @GetMapping("/update/{roleId}")
     public String showUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
+
+        // assign all roletypes to roletypeList model attribute
+        Set<RoleType> roletype = roleTypeService.loadAllRoleType();
+        List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
+        model.addAttribute("roletypeList", roletypeList);
+        model.addAttribute("roleId", id);
 
         // Set Value for RoleType Object
         RoleType role = roleTypeService.findRoleById(id);
@@ -215,70 +231,31 @@ public class RoleTypeController {
     @PostMapping("/update/{roleId}")
     public String submitUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
 
-        Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(form.getRolename());
-        boolean invalidRoleName = m.find();
-        boolean isRoleExisting = roleTypeService.findIfRoleNameExists(form.getRolename(), id);
+        // assign all roletypes to roletypeList model attribute
+        Set<RoleType> roletype = roleTypeService.loadAllRoleType();
+        List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
+        model.addAttribute("roletypeList", roletypeList);
+        model.addAttribute("roleId", id);
 
-        //Check if Role Type is already existing in the table
+        boolean isRoleExisting = roleTypeService.findIfRoleNameExists(form.getRolename().toLowerCase(), id);
+
+        // Check if Role Type is already existing in the table
         if (isRoleExisting) {
-            //Role type is already existing in the table
-            model.addAttribute("roleNameError", "Role Name already exists in the table");
-
-            //Check if the Role Description exceeds 120 characters
-            if (form.getRoledesc().length() > 120) {
-                model.addAttribute("roleDescError", "Role Description is too long");
-
-            //Check if Role Description is Empty
-            } else if (StringUtils.isEmpty(form.getRoledesc())) {
-                model.addAttribute("roleDescError", "Please enter a Role Description");
-            }
             form.setId(id);
             model.addAttribute("updateRoleTypeForm", form);
-
             return "roletype-management/roleTypeUpdate";
-
-        //Else if Role Type is not yet existing in the table
         } else {
-            if (StringUtils.isEmpty(form.getRolename()) || form.getRolename().length() > 40 || invalidRoleName
-                    || StringUtils.isEmpty(form.getRoledesc()) || form.getRoledesc().length() > 120) {
-
-                //Role Name Validations
-                //Check if Role name is > 40 characters
-                if (form.getRolename().length() > 40) {
-                    model.addAttribute("roleNameError", "Role Name is too long");
-
-                //Check if Role Type has special characters
-                } else if (invalidRoleName) {
-                    model.addAttribute("roleNameError",
-                            "Role Name is invalid, please omit special characters");
-
-                //Check if the Role Name field is empty
-                } else if (StringUtils.isEmpty(form.getRolename())) {
-                    model.addAttribute("roleNameError", "Please enter a Role Name");
-                }
-
-                //Role Description Validation
-                //Check if Role Description is > 120 characters
-                if (form.getRoledesc().length() > 120) {
-                    model.addAttribute("roleDescError", "Role Description is too long");
-
-                //Check if Role Description field is empty
-                } else if (StringUtils.isEmpty(form.getRoledesc())) {
-                    model.addAttribute("roleDescError", "Please enter a Role Description");
-                }
-
-                form.setId(id);
-                model.addAttribute("updateRoleTypeForm", form);
-                return "roletype-management/roleTypeUpdate";
-
-            } else {
-                RoleType updatedRoleType = new RoleType.Builder(form.getRolename(), form.getRoledesc())
-                        .build();
-                roleTypeService.updateRoleType(id, updatedRoleType);
+            RoleType updatedRoleType = new RoleType.Builder(form.getRolename(), form.getRoledesc()).build();
+            roleTypeService.updateRoleType(id, updatedRoleType);
+            
+            //set 2 seconds delay
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
         }
+
         return "redirect:/roletype/load";
     }
 
