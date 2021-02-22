@@ -3,7 +3,9 @@
  */
 package com.fujitsu.ph.tsup.course.category.web;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,20 +52,34 @@ public class CourseCategoryManagementController {
     @PostMapping("/{categoryId}/update")
     public String submitUpdateCourseCategory(@RequestParam(value = "id") Long id, CourseCategoryForm form,
             BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-
         if (bindingResult.hasErrors() || form.getCategory().isEmpty() || form.getDetail().isEmpty()) {
-            return "redirect:/courseCategory/load?categoryId=" + id + "#updateModal";
+            redirectAttributes.addFlashAttribute("message", "Unable to update existing course category.");
+            return "redirect:/courseCategory/load#errorModal";
         }
 
         CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
-        Set<CourseCategory> courseCategorySet = courseCategoryManagementService.findCourseCategoryByName(form.getCategory());
         
-        if (courseCategory != null && courseCategorySet.isEmpty()) {
-            CourseCategory courseDetails = new CourseCategory.Builder(form.getId(), form.getCategory(),
-                    form.getDetail()).build();
-            this.courseCategoryManagementService.updateCourseCategory(courseDetails);
-            redirectAttributes.addFlashAttribute("message", "The course category is successfully updated.");
-            return "redirect:/courseCategory/load#successModal";
+        if (courseCategory != null) {
+            if ( courseCategory.getCategory().equals(form.getCategory()) && courseCategory.getDetail().equals(form.getDetail()) ) {
+                redirectAttributes.addFlashAttribute("message", "No change in course category information.");
+                return "redirect:/courseCategory/load#errorModal";
+                
+            } else {
+                Set<CourseCategory> courseCategorySet = courseCategoryManagementService.findCourseCategoryByName(form.getCategory());
+                List<CourseCategory> listOfCourseCategory = courseCategorySet.stream().collect(Collectors.toList());
+                for(CourseCategory category: listOfCourseCategory) {
+                    if (!category.getId().equals(form.getId()) && category.getCategory().equals(form.getCategory()) ) {
+                        redirectAttributes.addFlashAttribute("message", "Unable to update existing course category.");
+                        return "redirect:/courseCategory/load#errorModal";
+                    } 
+                }
+                CourseCategory courseDetails = new CourseCategory.Builder(form.getId(), form.getCategory(),
+                        form.getDetail()).build();
+                this.courseCategoryManagementService.updateCourseCategory(courseDetails);
+                redirectAttributes.addFlashAttribute("message", "You have successfully updated this course category");
+                return "redirect:/courseCategory/load#successModal";
+            }
+        
         } else {
             redirectAttributes.addFlashAttribute("message", "Unable to update existing course category.");
             return "redirect:/courseCategory/load#errorModal";
