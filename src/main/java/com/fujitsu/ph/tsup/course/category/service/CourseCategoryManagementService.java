@@ -14,6 +14,7 @@ public interface CourseCategoryManagementService {
     // A method that checks if the input has a duplicate
     Set<CourseCategory> findCourseCategoryByName(String name);
 
+
     // A method that creates course category
     void createCourseCategory(CourseCategory courseCategory);
 }
