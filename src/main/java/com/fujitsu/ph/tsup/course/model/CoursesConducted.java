@@ -1,6 +1,25 @@
+//==================================================================================================																																											
+// Project Name : Training Sign Up
+// System Name  : CoursesConducted																																								
+// Class Name   : CoursesConducted.java 																																											
+//																																											
+// <<Modification History>> 																																											
+// Version | Date       | Updated By            | Content																																											
+//---------+------------+-----------------------+--------------------------------------------------- 																																											
+// 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation																																											
+//==================================================================================================
 package com.fujitsu.ph.tsup.course.model;
 
 import java.time.ZonedDateTime;
+
+/**
+ * <pre>
+ * The controller for CoursesConducted
+ * </pre>
+ * 
+ * @author j.barbadillo
+ * @version 1.0.0
+ */
 
 public class CoursesConducted {
 
@@ -206,7 +225,7 @@ public class CoursesConducted {
          * <pre>
          * Creates a new instance of Builder for courses conducted. 
          * It validates and sets the argument into the Builder instance variables. 
-         * <pre>
+         * </pre>
          * 
          * @param id
          * @param name
@@ -239,7 +258,7 @@ public class CoursesConducted {
          * <pre>
          * Creates a new instance of Builder for courses conducted. 
          * It validates and sets the argument into the Builder instance variables. 
-         * <pre>
+         * </pre>
          * 
          * @param id
          * @param name
@@ -269,7 +288,7 @@ public class CoursesConducted {
          * <pre>
          * Validate the name based on the condition below. 
          * If it is invalid then throw an IllegalArgumentException with the corresponding message.
-         * <pre>
+         * </pre>
          * 
          * @param name
          */
@@ -283,7 +302,7 @@ public class CoursesConducted {
          * <pre>
          * Validate the id based on the condition below. 
          * If it is invalid then throw an IllegalArgumentException with the corresponding message.
-         * <pre>
+         * </pre>
          * 
          * @param id
          */
@@ -297,7 +316,7 @@ public class CoursesConducted {
          * <pre>
          * Validate the Scheduled Start Date and Time based on the condition below. 
          * If it is invalid then throw an IllegalArgumentException with the corresponding message.
-         * <pre>
+         * </pre>
          * 
          * @param scheduledStartDateTime
          */
@@ -311,7 +330,7 @@ public class CoursesConducted {
          * <pre>
          * Validate the Scheduled End Date and Time based on the condition below. 
          * If it is invalid then throw an IllegalArgumentException with the corresponding message.
-         * <pre>
+         * </pre>
          * 
          * @param scheduledEndDateTime
          * @param scheduledStartDateTime
@@ -331,7 +350,7 @@ public class CoursesConducted {
          * <pre>
          * Validate the Rescheduled Start Date and Time based on the condition below. 
          * If it is invalid then throw an IllegalArgumentException with the corresponding message.
-         * <pre>
+         * </pre>
          * 
          * @param rescheduledStartDateTime
          */
@@ -345,7 +364,7 @@ public class CoursesConducted {
          * <pre>
          * Validate the rescheduled End Date and Time based on the condition below. 
          * If it is invalid then throw an IllegalArgumentException with the corresponding message.
-         * <pre>
+         * </pre>
          * 
          * @param rescheduledEndDateTime
          * @param rescheduledStartDateTime

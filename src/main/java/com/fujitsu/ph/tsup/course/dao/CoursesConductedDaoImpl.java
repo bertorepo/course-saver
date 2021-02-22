@@ -1,3 +1,13 @@
+//==================================================================================================																																											
+// Project Name : Training Sign Up
+// System Name  : CoursesConductedDaoImp																																								
+// Class Name   : CoursesConductedDaoImpl.java 																																											
+//																																											
+// <<Modification History>> 																																											
+// Version | Date       | Updated By            | Content																																											
+//---------+------------+-----------------------+--------------------------------------------------- 																																											
+// 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation																																											
+//==================================================================================================
 package com.fujitsu.ph.tsup.course.dao;
 
 import java.time.ZonedDateTime;
@@ -15,6 +25,15 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.fujitsu.ph.tsup.course.model.CoursesConducted;
+
+/**
+ * <pre>
+ * The controller for the CoursesConductedDaoImpl
+ * </pre>
+ * 
+ * @author j.barbadillo
+ * @version 1.0.0
+ */
 
 @Repository
 public class CoursesConductedDaoImpl implements CoursesConductedDao {
@@ -39,13 +58,15 @@ public class CoursesConductedDaoImpl implements CoursesConductedDao {
 				     + "	CSD.ID AS ID, "
 				     + "    C.NAME AS COURSE_NAME, "
 				     + "    CSD.SCHEDULED_START_DATETIME AS PLAN_DATE, "
-				     + "    COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS ACTUAL_DATE "
+				     + "    COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) "
+				     + "	AS ACTUAL_DATE "
 				     + "FROM TSUP.COURSE_SCHEDULE AS CS	"
 				     + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSD "
 				     + "	ON CS.ID = CSD.COURSE_SCHEDULE_ID "
 				     + "INNER JOIN TSUP.COURSE AS C	"
 				     + "    ON CS.COURSE_ID = C.ID	"
-				     + "WHERE COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) BETWEEN :scheduledStartDateTime "
+				     + "WHERE COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME)"
+				     + "BETWEEN :scheduledStartDateTime "
 				     + "AND :scheduledEndDateTime "
 				     + "AND CS.STATUS = 'D' "
 				     + "ORDER BY ID, SCHEDULED_START_DATETIME; ";
