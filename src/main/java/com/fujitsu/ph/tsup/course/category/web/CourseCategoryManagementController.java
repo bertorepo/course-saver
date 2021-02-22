@@ -43,7 +43,7 @@ import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementServi
  *
  */
 @Controller
-@RequestMapping("/coursesCategory")
+@RequestMapping("/courseCategory")
 public class CourseCategoryManagementController {
 
     // Course Category Management Service class
@@ -64,14 +64,14 @@ public class CourseCategoryManagementController {
     }
 
     @PostMapping("/search")
-    public String submitSearchCourseCategoryForm(
+    public String searchCourseCategory(
             @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model,
             RedirectAttributes redirectAttributes) {
 
         Set<CourseCategory> courseCategory;
 
         if (searchCourseCategoryName.isEmpty() || searchCourseCategoryName == null) {
-            return "redirect:/coursesCategory/load";
+            return "redirect:/courseCategory/load";
         } else {
             courseCategory = courseCategoryManagementService
                     .findCourseCategoryByName(searchCourseCategoryName);
@@ -79,7 +79,7 @@ public class CourseCategoryManagementController {
 
         if (courseCategory == null || courseCategory.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Category does not exist.");
-            return "redirect:/coursesCategory/load#errorModal";
+            return "redirect:/courseCategory/load#errorModal";
         } else {
             List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
             model.addAttribute("courseCategoryList", listOfCourseCategory);
