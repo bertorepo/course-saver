@@ -22,7 +22,7 @@ import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementServi
  */
 
 @Controller
-@RequestMapping("/category")
+@RequestMapping("/courseCategory")
 public class CourseCategoryManagementController {
 
     // Access the CourseCategoryManagementService interface
@@ -32,11 +32,8 @@ public class CourseCategoryManagementController {
     // Loads the courseCategoryCreate view
     @GetMapping("/create")
     public String showCreateCourseCategoryForm(Model model) {
-
         model.addAttribute("create");
-
         return "course-category-management/CreateCourseCategory";
-
     }
 
     // Validates and saves the data in the database
@@ -52,13 +49,12 @@ public class CourseCategoryManagementController {
                 courseCategoryManagementService.createCourseCategory(categoryDetails);
                 model.addAttribute("successMessage", "Registration Complete.");
             } else {
-                model.addAttribute("invalid", "The course is already existing.");
+                model.addAttribute("invalid", "The specified course category is already existing. Please change the Course Category Name.");
             }
-
         } catch (Exception ex) {
             model.addAttribute("invalid", ex.getMessage());
         }
         return "course-category-management/CreateCourseCategory";
-
     }
 }
+
