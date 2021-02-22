@@ -1,3 +1,13 @@
+//==================================================================================================																																											
+// Project Name : Training Sign Up
+// System Name  : CoursesConductedForm																																								
+// Class Name   : CoursesConductedForm.java 																																											
+//																																											
+// <<Modification History>> 																																											
+// Version | Date       | Updated By            | Content																																											
+//---------+------------+-----------------------+--------------------------------------------------- 																																											
+// 1.0.0   | 2021/02/22 | WS)N.DeJesus          | New Creation																																											
+//==================================================================================================																																																																																						
 package com.fujitsu.ph.tsup.course.model;
 
 import java.time.ZonedDateTime;
@@ -5,6 +15,15 @@ import java.time.ZonedDateTime;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+/**
+ * <pre>
+ * The controller for the CoursesConductedForm
+ * </pre>
+ * 
+ * @author n.dejesus
+ * @version 1.0.0
+ */
 
 public class CoursesConductedForm {
 		
