@@ -23,6 +23,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.01    | 2021/02/05 | WS) rl.naval          | Initial Version
 //0.02    | 2021/02/15 | WS) rl.naval          | Updated
 //0.03    | 2021/02/17 | WS) j.sayaboc         | Updated
+//0.04    | 2021/02/18 | WS) i.fajardo         | Updated
 //==================================================================================================
 
 /**
@@ -31,8 +32,10 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.04
  * @author rl.naval
+ * @author j.sayaboc
+ * @author i.fajardo
  */
 @Service
 public class RoleTypeServiceImpl implements RoleTypeService {
