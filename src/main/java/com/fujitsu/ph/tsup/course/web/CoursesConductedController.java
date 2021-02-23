@@ -1,8 +1,6 @@
 package com.fujitsu.ph.tsup.course.web;
 
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fujitsu.ph.tsup.course.model.CourseForm;
 import com.fujitsu.ph.tsup.course.model.CoursesConducted;
 import com.fujitsu.ph.tsup.course.model.CoursesConductedForm;
 import com.fujitsu.ph.tsup.course.model.CoursesConductedListForm;
@@ -35,7 +34,7 @@ import com.fujitsu.ph.tsup.course.service.CoursesConductedService;
  */
 
 @Controller
-@RequestMapping("/report")
+@RequestMapping("/report/")
 public class CoursesConductedController {
 
     /**
@@ -59,55 +58,51 @@ public class CoursesConductedController {
      * @param BindingResult          bindingResult
      * @param Model                  model
      * @return courseConductedListForm and view
-     */
+     */    
+    
     @GetMapping("/course")
-    public String viewCoursesConducted(
-            @Valid @ModelAttribute("coursesConducted") CoursesConductedListForm coursesConductedListForm,
-            BindingResult bindingResult, Model model){
-
+	public String viewCoursesConducted(@Valid @ModelAttribute("coursesConducted") CoursesConductedListForm coursesConductedListForm, BindingResult bindingResult,Model model){
+	    
         logger.debug("CourseConductedListForm: {}", coursesConductedListForm);
         logger.debug("Result: {}", bindingResult);
         
 
         if (bindingResult.hasErrors()) {
-            return "reports/coursesConducted";
+            return "course-management/generateReports";
         }
-
+		
         if (coursesConductedListForm.getScheduledStartDateTime() == null || coursesConductedListForm.getScheduledEndDateTime() == null) {
         	coursesConductedListForm.setScheduledStartDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
         	coursesConductedListForm.setScheduledEndDateTime(ZonedDateTime.now().plusDays(5));
         }
-
-        // if (coursesConductedListForm.getScheduledStartDateTime().isBefore(coursesConductedListForm.getScheduledEndDateTime())) {
-        //     model.addAttribute("coursesConducted", coursesConductedListForm);
-        //     model.addAttribute("error", "To Date should be greater than or equal to From Date");
-        //     return "reports/generateReports";
-        // } 
-
-        Set<CoursesConducted> courseConducted = coursesConductedService.findAllCoursesConducted(
-        		coursesConductedListForm.getScheduledStartDateTime()  , coursesConductedListForm.getScheduledEndDateTime());
+        Set<CoursesConducted> courseConducted = coursesConductedService.findAllCoursesConducted(coursesConductedListForm.getScheduledStartDateTime(), 
+        		coursesConductedListForm.getScheduledEndDateTime());
         
         Set<CoursesConductedForm> coursesConductedFormSet = new HashSet<>();
-
+        
         for(CoursesConducted coursesConducted :  courseConducted) {
-            CoursesConductedForm coursesConductedForm = new CoursesConductedForm();
-            coursesConductedForm.setId(coursesConducted.getId());
-            coursesConductedForm.setCourseName(coursesConducted.getCourseName());
-            coursesConductedForm.setScheduledStartDateTime(coursesConducted.getScheduledStartDateTime());
-            coursesConductedForm.setRescheduledStartDateTime(coursesConducted.getRescheduledStartDateTime());
-            
-            coursesConductedFormSet.add(coursesConductedForm);
-        }
+			 CoursesConductedForm coursesConductedForm = new CoursesConductedForm();
+			 coursesConductedForm.setId(coursesConducted.getId());
+			 coursesConductedForm.setCourseName(coursesConducted.getCourseName());
+			 coursesConductedForm.setScheduledStartDateTime(coursesConducted.getScheduledStartDateTime());
+			 coursesConductedForm.setScheduledEndDateTime(coursesConducted.getRescheduledStartDateTime());
+			 
+			 coursesConductedFormSet.add(coursesConductedForm);
+		 }
         
         coursesConductedListForm.setCoursesConductedSet(coursesConductedFormSet);
-        model.addAttribute("coursesConducted", coursesConductedListForm);
         
-        return "course-management/summaryCourseConducted";
-    }
         
+        model.addAttribute("coursesConductedForm", coursesConductedListForm);
+        model.addAttribute("coursesConducted", coursesConductedFormSet);
+        
+	   return "course-management/generateReports";
+	}
+    
     @GetMapping("/load")
     public String viewSummaryCourseConducted() {
 
-    	return "course-management/testSummaryCourseConducted";
+    	return "course-management/generateReports";
     }
+
 }
