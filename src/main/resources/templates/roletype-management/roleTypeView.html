@@ -152,19 +152,14 @@
 								<td th:text="${role.rolename}"></td>
 								<td th:text="${role.roledesc}"></td>
 								<td><a id="updateButton" type="submit"
-									class="btn btn-success" th:href="@{/roletype/update/{roleId}(roleId=${role.id})}">Update</a>
+									class="btn btn-success"
+									th:href="@{/roletype/update/{roleId}(roleId=${role.id})}">Update</a>
 									<input type="submit" value="Delete" class="btn btn-danger"
 									th:attr="onclick=|deleteButton('${role.id}','${role.rolename}','${role.roledesc}')|"></input>
 								</td>
 							</tr>
 						</tbody>
 					</table>
-					<button class="less">
-						Back <span class="count">0</span>
-					</button>
-					<button class="more">
-						Forwards <span class="count">0</span>
-					</button>
 					<div th:if="${#lists.isEmpty(roletypeList)}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No Role Types Available</strong>
@@ -197,3 +192,4 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 </body>
 </html>
+
