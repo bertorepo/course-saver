@@ -133,11 +133,13 @@
 							<input type="Text" class="form-control" name="searchRoleName"
 								id="searchRoleName">
 						</div>
+						<a class="fa fa-refresh fa-lg col-sm-1 mt-2"
+							style="text-decoration: none; color: black"
+							th:href="@{/roletype/load}"></a>
 					</div>
 					<div class="float-right">
 						<input type="submit" class="btn btn-success" value="Submit">
 					</div>
-
 				</div>
 			</div>
 		</form>
@@ -158,7 +160,8 @@
 							<th>Role Description</th>
 							<th style="width: 20%;">Action</th>
 						</thead>
-						<tbody data-position="0" data-jump="2" th:each="role : *{roletypeList}">
+						<tbody data-position="0" data-jump="2"
+							th:each="role : *{roletypeList}">
 							<tr>
 								<td th:text="${role.rolename}"></td>
 								<td th:text="${role.roledesc}"></td>
@@ -170,31 +173,18 @@
 							</tr>
 						</tbody>
 					</table>
-					<button class="less">Back <span class="count">0</span></button>
-					<button class="more">Forwards <span class="count">0</span></button>
+					<button class="less">
+						Back <span class="count">0</span>
+					</button>
+					<button class="more">
+						Forwards <span class="count">0</span>
+					</button>
 					<div th:if="${#lists.isEmpty(roletypeList)}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong th:text="${nullMessage}"></strong>
 						</div>
 					</div>
 				</div>
-
-				<!-- Script to count number of rows in a table
-	<script>
-		$(document).ready(function(){
-			var page = document.querySelector('#page');
-				
-			var rowCount = $("#example tr").length;
-			if (rowCount > 5 ){
-				document.getElementById("page").style.display='inline';
-			}else {
-				document.getElementById("page").style.display='none';
-			}
-		});
-	</script>
-	 -->
-
-
 
 				<div id=page class="pcenter" style="display: none;">
 					<div class="pagination">
@@ -236,16 +226,6 @@
 
 		});
 	</script>
-
-	<!-- <script type="text/javascript">
-	$(document).ready(function() {
-		$('#example').DataTable( {
-			//responsive: true
-			roletypeList: [6]
-			"pageLength": 6
-			});
-		});
-	</script> -->
 
 	<footer th:replace="fragments/general.html :: footer"></footer>
 

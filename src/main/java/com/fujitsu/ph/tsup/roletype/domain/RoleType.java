@@ -3,6 +3,8 @@
  */
 package com.fujitsu.ph.tsup.roletype.domain;
 
+import org.springframework.util.StringUtils;
+
 //==================================================================================================
 //Project Name : Training Sign Up
 //System Name  : Role Type Management
@@ -11,8 +13,8 @@ package com.fujitsu.ph.tsup.roletype.domain;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
-//0.02   | 2021/02/16 | WS) s.labador         | Updated
+//0.01    | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.02    | 2021/02/16 | WS) s.labador         | Updated
 //==================================================================================================
 
 /**
@@ -21,8 +23,9 @@ package com.fujitsu.ph.tsup.roletype.domain;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author rl.naval
+ * @author s.labador
  */
 public class RoleType {
 
@@ -139,7 +142,7 @@ public class RoleType {
          * @param rolename Role Name
          */
         private void validateRolename(String rolename) {
-            if (rolename.equals(null) || rolename.isEmpty()) {
+            if (StringUtils.isEmpty(rolename)) {
 
                 throw new IllegalArgumentException("Role name should not be empty");
 
@@ -165,7 +168,7 @@ public class RoleType {
          */
         private void validateRoleDesc(String roledesc) {
 
-            if (roledesc.equals(null) || roledesc.isEmpty()) {
+            if (StringUtils.isEmpty(roledesc)) {
 
                 throw new IllegalArgumentException("Role Description should not be empty");
 

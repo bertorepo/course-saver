@@ -1,7 +1,5 @@
 package com.fujitsu.ph.tsup.roletype.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +11,19 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
+
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Role Type Management
+//Class Name   : RoleTypeDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.02    | 2021/02/16 | WS) s.labador         | Updated
+//0.03    | 2021/02/17 | WS) j.sayaboc         | Updated
+//==================================================================================================
 
 /**
  * RoleTypeDaoImpl class
@@ -45,6 +56,28 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         return roles;
     }
 
+    /**
+     * Find if Role name is already existing
+     * 
+     * @param rolename Role name
+     * @param id Role id
+     * @return roles
+     */
+    @Override
+    public Set<RoleType> findIfRoleNameExists(String rolename, Long id) {
+        String query = "SELECT * FROM MEMBER_ROLE WHERE LOWER(role_type) LIKE LOWER('" + rolename
+                + "') AND id NOT IN (" + id + ")";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("role_type", rolename);
+
+        List<RoleType> roleList = template.query(query, sqlParameterSource, new RoleTypeRowMapper());
+        Set<RoleType> roles = new LinkedHashSet<>(roleList);
+        return roles;
+    }
+
+    /**
+     * Load all role types
+     * @return roles
+     */
     @Override
     public Set<RoleType> loadAllRoleType() {
         String query = "SELECT * FROM MEMBER_ROLE";
@@ -73,31 +106,35 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         template.update(query, sqlParameterSource);
     }
 
+    /**
+     * Method for updating Role Type
+     * 
+     * @param id Role id
+     * @param roleType RoleType
+     */
+
     @Override
-    public void updateRoleType(RoleType roleType) {
-        String query = "UPDATE MEMBER_ROLE " + "SET role_name = '', role_desc = '' " + "WHERE id = "
-                + roleType.getId() + ";";
+    public void updateRoleType(Long id, RoleType roleType) {
+        String query = "UPDATE MEMBER_ROLE " + "SET role_type = '" + roleType.getRolename()
+                + "', role_desc = '" + roleType.getRoledesc() + "' " + "WHERE id = " + id + ";";
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("role_name", roleType.getRolename()).addValue("role_desc", roleType.getRoledesc());
+                .addValue("roletype", roleType.getRolename()).addValue("roledesc", roleType.getRoledesc());
 
         template.update(query, sqlParameterSource);
 
     }
 
-    // pagination
-    public List<RoleType> getEmployeesByPage(int pageid, int total) {
-        String query = "Select * from MEMBER_ROLE" + (pageid - 1) + "," + total;
-        System.out.println(pageid);
-        return template.query(query, new RoleTypeRowMapper() {
-            public RoleType mapRow(ResultSet rs, int row) throws SQLException {
-                RoleType e = new RoleType();
-                e.setId(rs.getLong(1));
-                e.setRolename(rs.getString(2));
-                e.setRoledesc(rs.getString(3));
-                return e;
-            }
-        });
+    @Override
+    public Set<RoleType> findRoleTypeByKeyword(String keyword) {
+        String query = "SELECT * FROM MEMBER_ROLE " + "WHERE LOWER(role_type) LIKE LOWER('%" + keyword
+                + "%') " + "OR LOWER(role_desc) LIKE LOWER('%" + keyword + "%')";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("role_type", keyword)
+                .addValue("role_desc", keyword);
+
+        List<RoleType> roleList = template.query(query, sqlParameterSource, new RoleTypeRowMapper());
+        Set<RoleType> roles = new LinkedHashSet<>(roleList);
+        return roles;
     }
 
 }
