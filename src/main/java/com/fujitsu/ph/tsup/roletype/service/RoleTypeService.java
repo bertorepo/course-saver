@@ -15,18 +15,18 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
-//0.02   | 2021/02/15 | WS) rl.naval          | Updated
-//0.03   | 2021/02/17 | WS) c.sinda           | Updated
-//0.04   | 2021/02/23 | WS) s.labador           | Updated
+//0.01    | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.02    | 2021/02/15 | WS) rl.naval          | Updated
+//0.03    | 2021/02/17 | WS) c.sinda           | Updated
+//0.04    | 2021/02/23 | WS) s.labador         | Updated
 //==================================================================================================
 
 /**
  * RoleTypeService class
  * 
- * @author rl.naval (New Creation by: rl.naval)
+ * @version 0.04
+ * @author rl.naval
  * @author s.labador
- * @version Revision: 0.04 Date: 2021-02-23
  */
 
 public interface RoleTypeService {

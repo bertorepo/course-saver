@@ -25,11 +25,13 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.03    | 2021/02/17 | WS) j.sayaboc         | Updated
 //==================================================================================================
 
+
 /**
  * RoleTypeDaoImpl class
  * 
- * @author rl.naval (New Creation by: rl.naval)
- * @version Revision: 0.01 Date: 2021-02-05
+ * @version 0.03 
+ * @author rl.naval
+ * @author s.labador
  */
 
 @Repository
@@ -39,6 +41,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
     @Autowired
     private NamedParameterJdbcTemplate template;
 
+    /**
+     * Method for finding Role by Id
+     * @param id Role id
+     */
     @Override
     public RoleType findRoleById(Long id) {
         String query = "SELECT id, role_type, role_desc FROM MEMBER_ROLE where ID = " + id;
@@ -46,6 +52,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         return template.queryForObject(query, sqlParameterSource, new RoleTypeRowMapper());
     }
 
+    /**
+     * Method for finding Role by name
+     * @param rolename Role name
+     */
     @Override
     public Set<RoleType> findRoleTypeByName(String rolename) {
         String query = "SELECT * FROM MEMBER_ROLE WHERE LOWER(role_type) LIKE LOWER('%" + rolename + "%')";
@@ -88,6 +98,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         return roles;
     }
 
+    /**
+     * Method for deleting Role by Id
+     * @param id Role id
+     */
     @Override
     public void deleteRoleTypeById(Long id) {
         String query = "DELETE FROM MEMBER_ROLE WHERE ID = " + id;
@@ -96,6 +110,10 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
 
     }
 
+    /**
+     * Method for creating role type
+     * @param role Role type
+     */
     @Override
     public void createRoleType(RoleType role) {
         String query = "INSERT INTO MEMBER_ROLE" + "(role_type, role_desc)"
