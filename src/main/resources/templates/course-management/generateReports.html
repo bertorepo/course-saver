@@ -12,31 +12,16 @@
 <title>Generate Reports</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
-<style>
-table {
-	counter-reset: tableCount;   
-	border-collapse: collapse;
-  	width: 100%;  
-}
-.counterCell:before {              
-	content: counter(tableCount); 
-	counter-increment: tableCount; 
-}
-</style>
+
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
 <script th:src="@{/js/lib/summaryCourses.js}"></script>
 </head>
-
 <body onload="load()">
-
 	<div th:insert="fragments/general.html :: header" > </div>
 	<div class="container mt-5 div_minheight" >
-
  		<form class="form-horizontal" action="#" th:action="@{/report/course(courseName=${courseName})}"  th:object="${coursesConductedForm}"  method="GET">
-		<!-- /reportType(reportType=${reportType) -->
-			
 			<h3><i class="fa fa-file-text"></i> Generate Reports</h3>		
 			<hr>
 			<div class="card">
@@ -50,7 +35,6 @@ table {
 							</select>
 						</div>
 					</div>
-
 					<div class="form-group row align-items-center justify-content-center">
                     <label class="col-lg-3 col-form-label">Date Range</label>
                         <label>From</label>
@@ -64,7 +48,6 @@ table {
                            <input type="hidden" th:field="*{scheduledEndDateTime}"/>
                         </div>
                     </div>
-
  					<div class="form-group row align-items-center justify-content-center">
  						<label class="col-lg-2 col-form-label">Course</label>
  						<div>
@@ -79,25 +62,23 @@ table {
  								<!--  <input type="hidden" th:field="*{courses.id}" /> -->
  								</option>	
  							</select>
- 							</div>
+ 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
 						<input type="button" class="btn btn-success" value="View" data-toggle="modal" data-target="#viewSummaryCourses" href=" " style="width:100px">
 						<div class="col-lg-1"></div>
 						<input type="button" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px">
 					</div>
-				</form>
-				
-				<label>Report Display</label>
-					<!-- Display Selected Course on Summary Courses Conducted -->
-
+			</form>
+			<label>Report Display</label>
+				<!-- Display Selected Course on Summary Courses Conducted -->
 					<table id="summaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th style="width:30%">Course Name</th>
-								<th style="width:40%">Planned Date</th>
-								<th style="width:40%">Actual Date</th>
+								<th style="width:35%">Course Name</th>
+								<th style="width:35%">Planned Date</th>
+								<th style="width:35%">Actual Date</th>
 							</tr>
 						</thead>
 						
@@ -113,74 +94,55 @@ table {
 						       </tr>
 						</tbody>
 					</table>
+				<!-- End of Display Selected Course on Summary Courses Conducted -->
 					
-					<!-- End of Display Selected Course on Summary Courses Conducted -->
-                    </div>
-
-		<!--  End of Summary of Courses Conducted -->
-		
-	<!--  View Modal -->
-	<div class="modal fade" id="viewSummaryCourses" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg text-center">
-          <div class="modal-content">
-           	<div class="modal-header">
-             <h5 class="modal-title">Summary Courses Conducted</h5>
-             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                 <span aria-hidden="true">&times;</span>
-             </button>
-             </div>
-             <!--  Modal Body -->
-             <div class="modal-body">
-                <div class="form-group row">
-                	<table id="modalSummaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll; height:600px; white-space: nowrap">
-						<thead>
-							<tr>
-								<th>No.</th>
-								<th style="width:30%">Course Name</th>
-								<th style="width:40%">Planned Date</th>
-								<th style="width:40%">Actual Date</th>
-							</tr>
-						</thead>
-						
- 						<tbody th:each="showModalSummaryCourses, rowStat : ${coursesConducted}">
-							<!-- ${coursesConductedForm.courseName} -->
-							<tr class="content">
-								<td th:text="${rowStat.count}"></td>
-								<td th:text="${coursesConducted[__${rowStat.index}__].courseName}"></td>
-								<td th:text="${#temporals.format(coursesConducted[__${rowStat.index}__].scheduledStartDateTime,
-								'MMM dd, yyyy (E)- HH:mm a')}"/></td>
-								<td th:text="${#temporals.format(coursesConducted[__${rowStat.index}__].scheduledEndDateTime, 
-								'MMM dd, yyyy (E)- HH:mm a')}"/></td>
-						       </tr>
-						</tbody>
-					</table>
-             	</div>
-             </div>
-             <!-- End Modal Body -->
-           </div>
-        </div>
+		<!--  View Modal -->
+		<div class="modal fade" id="viewSummaryCourses" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg text-center">
+	          <div class="modal-content">
+	           	<div class="modal-header">
+	             <h5 class="modal-title">Summary Courses Conducted</h5>
+	             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                 <span aria-hidden="true">&times;</span>
+	             </button>
+	             </div>
+	             <!--  Modal Body -->
+	             <div class="modal-body">
+	                <div class="form-group row">
+	                	<table id="modalSummaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll; height:600px; white-space: nowrap">
+							<thead>
+								<tr>
+									<th>No.</th>
+									<th style="width:35%">Course Name</th>
+									<th style="width:35%">Planned Date</th>
+									<th style="width:35%">Actual Date</th>
+								</tr>
+							</thead>
+	 						<tbody th:each="showModalSummaryCourses, rowStat : ${coursesConducted}">
+								<!-- ${coursesConductedForm.courseName} -->
+								<tr class="content">
+									<td th:text="${rowStat.count}"></td>
+									<td th:text="${coursesConducted[__${rowStat.index}__].courseName}"></td>
+									<td th:text="${#temporals.format(coursesConducted[__${rowStat.index}__].scheduledStartDateTime,
+									'MMM dd, yyyy (E)- HH:mm a')}"/></td>
+									<td th:text="${#temporals.format(coursesConducted[__${rowStat.index}__].scheduledEndDateTime, 
+									'MMM dd, yyyy (E)- HH:mm a')}"/></td>
+							       </tr>
+							</tbody>
+						</table>
+	             	</div>
+	             </div>
+	             <!-- End Modal Body -->
+	           </div>
+	        </div>
+	        </div>
+		</div>
 	</div>
-
-	<!-- End of View Modal -->
-		
+		<!-- End of View Modal -->
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 	<script th:inline ="javascript">
-		var selectedItem = sessionStorage.getItem("SelectedItem");  
-		$('#selectReportType').val(selectedItem);
-		$('#selectReportType').change(function() { 
-				var dropVal = $(this).val();
-				sessionStorage.setItem("SelectedItem", dropVal);
-		});
 		function load() {
-			/*<![CDATA[*/
-				
-			/*]]>*/
-/* 			var totalRowCount = $("#summaryCoursesTable tr").length - 1;
-			alert(totalRowCount); */
-			
-			
-			
 			var fromDateTime = $("#scheduledStartDateTime").val();
 			var toDateTime = $("#scheduledEndDateTime").val();
 			var fromNewDate = fromDateTime.toString().slice(0, 16);
@@ -200,7 +162,10 @@ table {
 				showSummaryCourses.style.display = "none";
 			}
 		}
-		//For HTML with FromDateTime and ToDateTime
+		
+		/**
+		For HTML with FromDateTime and ToDateTime
+		*/
 		$("#startDate").blur(function () {
 			var formDate = document.getElementById("startDate").value;
 			var newDate = new Date(formDate);
@@ -222,27 +187,42 @@ table {
 				$("#scheduledEndDateTime").prop('value', dateConcat);
 			}
 		});
-		//Format Date Inputs
+		
+		/**
+		Formate Date Inputs
+		*/
 		Date.prototype.toISO = function() {
-			 return this.getUTCFullYear() +
-		        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
-		        '-' + String(this.getUTCDate()).padStart(2, "0") +
-		        'T' + String(this.getUTCHours()).padStart(2, "0") +
-		        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
-		        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
-		        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-		        'Z';
+			return this.getUTCFullYear() +
+			'-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+			'-' + String(this.getUTCDate()).padStart(2, "0") +
+			'T' + String(this.getUTCHours()).padStart(2, "0") +
+			':' + String(this.getUTCMinutes()).padStart(2, "0") +
+			':' + String(this.getUTCSeconds()).padStart(2, "0") +
+			'.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+			'Z';
 		};
-
+		
+		/**
+		Filter Duplicate Courses
+		*/
 		var optionValues =[];
-			$('#selectCourse option').each(function(){
-			   if($.inArray(this.value, optionValues) >-1){
-			      $(this).remove()
-			   }else{
-			      optionValues.push(this.value);
-			   }
-			});
-		//For HTML Filtering table
+		$('#selectCourse option').each(function(){
+			  if($.inArray(this.value, optionValues) >-1){
+			     $(this).remove()
+			  }else{
+			     optionValues.push(this.value);
+			  }
+		});
+			
+		/**
+		For Filtering Courses Table
+		*/
+		var selectedItem = sessionStorage.getItem("SelectedItem");  
+		$('#selectReportType').val(selectedItem);
+		$('#selectReportType').change(function() { 
+				var dropVal = $(this).val();
+				sessionStorage.setItem("SelectedItem", dropVal);
+		});
 		function filterText(){  
 			var rex = new RegExp($('#selectCourse').val());
 			
@@ -253,38 +233,37 @@ table {
 				}).show();
 			}
 		}
-		
 		function clearFilter(){
 			$('.selectCourse').val('');
 			$('.content').show();
 		}
-		//Export CSV
-		function downloadCSV(csv, filename) {
-    			var csvFile;
-    			var downloadLink;
-    			csvFile = new Blob([csv], {type: "text/csv;charset=utf-8"});
-    			downloadLink = document.createElement("a");
-    			downloadLink.download = filename;
-    			downloadLink.href = window.URL.createObjectURL(csvFile);
-    			downloadLink.style.display = "none";
-    			document.body.appendChild(downloadLink);
-    			downloadLink.click();
-    
-			}
-			function exportTableToCSV(filename) {
-    			var csv = [];
-    			var rows = document.querySelectorAll("#summaryCoursesTable tr");
-    
-    			for (var i = 0; i < rows.length; i++) {
-        			var row = [], cols = rows[i].querySelectorAll("td, th");
-        
-        		for (var j = 0; j < cols.length; j++) 
-           			row.push(cols[j].innerText);
-        			csv.push(row.join(","));        
-   				}
-   				 downloadCSV(csv.join("\n"), filename);
-			}
 		
+		/**
+		Exporting to CSV File
+		*/
+		function downloadCSV(csv, filename) {
+			var csvFile;
+			var downloadLink;
+			csvFile = new Blob([csv], {type: "text/csv;charset=utf-8"});
+			downloadLink = document.createElement("a");
+			downloadLink.download = filename;
+			downloadLink.href = window.URL.createObjectURL(csvFile);
+			downloadLink.style.display = "none";
+			downloadLink.click();
+		}
+		function exportTableToCSV(filename) {
+			var csv = [];
+			var rows = document.querySelectorAll("#summaryCoursesTable tr");
+			
+			for (var i = 0; i < rows.length; i++) {
+				var row = [], cols = rows[i].querySelectorAll("td, th");
+				
+				for (var j = 0; j < cols.length; j++) 
+					row.push(cols[j].innerText);
+        			csv.push(row.join(","));        
+   			}
+   			downloadCSV(csv.join("\n"), filename);
+		}
 		
 	</script>
 </body>
