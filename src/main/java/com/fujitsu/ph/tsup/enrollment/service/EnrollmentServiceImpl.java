@@ -22,207 +22,305 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
+
+import java.io.IOException;
 import java.time.Period;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+
+import javax.activation.DataHandler;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 /**
-* <pre>
-* JavaBean for EnrollmentServiceImpl
-* <pre>
-* 
-* @version 0.01
-* @author t.oviedo                    
-*/
+ * <pre>
+ * JavaBean for EnrollmentServiceImpl
+ * 
+ * <pre>
+ * 
+ * @version 0.01
+ * @author t.oviedo
+ */
 @Service
 public class EnrollmentServiceImpl implements EnrollmentService {
 
-    @Autowired
-    private EnrollmentDao enrollmentDao;
-    
-    /** Finds the scheduled courses starting from today onwards 
-     * 
-     * @param fromDateTime
-     * @param toDateTime
-     * @author J.Yu
-     * 
-     * */
-    @Override
-    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {  
-        try {
-               Set<CourseSchedule> courseScheduleSet = enrollmentDao
-                       .findAllScheduledCourses(fromDateTime, toDateTime);
-                 if (courseScheduleSet == null || courseScheduleSet.isEmpty()){
-                	 throw new IllegalArgumentException("No Course Schedule Found");
-                  }
-                return courseScheduleSet;
-           } catch(DataAccessException ex) {
-               throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
-           }   
-    }
+	@Autowired
+	private EnrollmentDao enrollmentDao;
 
-    
-    
-    @Override
-	public Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
-        try {
-            Set<CourseSchedule> courseScheduleSet = enrollmentDao
-                    .findAllScheduledCourses(fromDateTime, toDateTime);
-             return courseScheduleSet;
-        } catch(DataAccessException ex) {
-            throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
-        }   
+	@Autowired
+	private JavaMailSender mailSender;
+
+	private String uid = UUID.randomUUID().toString();
+
+	/**
+	 * Finds the scheduled courses starting from today onwards
+	 * 
+	 * @param fromDateTime
+	 * @param toDateTime
+	 * @author J.Yu
+	 * 
+	 */
+	@Override
+	public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
+		try {
+			Set<CourseSchedule> courseScheduleSet = enrollmentDao.findAllScheduledCourses(fromDateTime, toDateTime);
+			if (courseScheduleSet == null || courseScheduleSet.isEmpty()) {
+				throw new IllegalArgumentException("No Course Schedule Found");
+			}
+			return courseScheduleSet;
+		} catch (DataAccessException ex) {
+			throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
+		}
 	}
 
-
+	@Override
+	public Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
+		try {
+			Set<CourseSchedule> courseScheduleSet = enrollmentDao.findAllScheduledCourses(fromDateTime, toDateTime);
+			return courseScheduleSet;
+		} catch (DataAccessException ex) {
+			throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
+		}
+	}
 
 	/** Finds the course schedule by id */
-    @Override
-    public CourseSchedule findCourseScheduleById(Long id) {
-    	return enrollmentDao.findCourseScheduleById(id);
+	@Override
+	public CourseSchedule findCourseScheduleById(Long id) {
+		return enrollmentDao.findCourseScheduleById(id);
 //         try {
 //                
 //            } catch(DataAccessException ex) {
 //                throw new IllegalArgumentException("Can't Access Id.");
 //            }
-        
-    }
-    
-    /** enroll using the courseParticipant */
-    @Override
-    public void enroll(CourseParticipant courseParticipant) {
-    	  System.out.println("MY COURSE ID 2: " +courseParticipant.getCourseScheduleId());
-          System.out.println("FPI USER ID 2: "+courseParticipant.getParticipantId());
-         
-//        try {
-            CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
-            
-            if (courseRecord == null){
-            	 throw new IllegalArgumentException("This course schedule id " +courseParticipant
-                         .getCourseScheduleId()+ " is not existing");
-            }
 
-            CourseParticipant participantRecord = enrollmentDao
-                    .findCourseParticipantByCourseScheduleIdAndParticipantId
-                    (courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
+	}
+
+	/** enroll using the courseParticipant */
+	@Override
+	public void enroll(CourseParticipant courseParticipant) {
+		System.out.println("MY COURSE ID 2: " + courseParticipant.getCourseScheduleId());
+		System.out.println("FPI USER ID 2: " + courseParticipant.getParticipantId());
+
+//        try {
+		CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
+
+		if (courseRecord == null) {
+			throw new IllegalArgumentException(
+					"This course schedule id " + courseParticipant.getCourseScheduleId() + " is not existing");
+		}
+
+		CourseParticipant participantRecord = enrollmentDao.findCourseParticipantByCourseScheduleIdAndParticipantId(
+				courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
 //            System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
-            if(participantRecord != null){
-                throw new IllegalArgumentException("You are already enrolled in this course.");
-            }
-            
-            enrollmentDao.saveCourseParticipant(courseParticipant);
+		if (participantRecord != null) {
+//            	sendSimpleMail();
+			throw new IllegalArgumentException("You are already enrolled in this course.");
+		}
+
+		enrollmentDao.saveCourseParticipant(courseParticipant);
 //        } catch (DataAccessException e) {
 //            throw new IllegalArgumentException("Can't Access Course Participant");
 //        }
-    }
+	}
 
-    /** 
-     * 
-     * Call enrollmentDao.findAllEnrolledCoursesByParticipantId using ID
-     * Finds All Enrolled Courses by Participant ID
-     * 
-     * @author m.lumontad
-     * 
-     *  */
-    @Override
-    public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, 
-            ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
-        
-          try {
-              Set<CourseParticipant> courseParticipant = enrollmentDao.findAllEnrolledCoursesByParticipantId
-                      (participantId, fromDateTime, toDateTime);              
-              if (courseParticipant == null || courseParticipant.isEmpty()) {
-                  throw new IllegalArgumentException("No Course Schedule Found");
-              }
-                return courseParticipant;
-            } catch(DataAccessException ex) {
-                ex.printStackTrace();
-                throw new IllegalArgumentException("Can't Access Id");
-            }
-        } 
-    
-    /** 
-     * 
-     * Call enrollmentDao.findCourseParticipantById using the given id 
-     * Finds course participant by id
-     * 
-     * @author k.freo
-     * 
-     *  
-     *  */
-    @Override
-    public CourseParticipant findCourseParticipantById(Long id) {
-        try {
-             CourseParticipant courseParticipant = enrollmentDao.findCourseParticipantById(id); 
-                             if(courseParticipant == null ) {
-                                 throw new IllegalArgumentException("Participant not Found");
-                             } 
-                                 return courseParticipant;   
-                         } catch (DataAccessException ex) {
-                             throw new IllegalArgumentException(" Participant not Found ");  
-             }
-    }
-    
-    /**
-     *  Decline the course which the participant was previously enrolled
-     *  Call enrollmentDao.deleteCourseParticipantById using the given courseParticipant.id
-     *  Call enrollmentDao.saveCourseNonParticipant using the given dbCourseParticipant
-     * 
-     *  @author k.freo
-     *  
-     **/
-    @Override
-    public void declineCourse(CourseParticipant courseParticipant) {
+	/** Sends calendar invite to the successfully enrolled participant */
+	public void sendCalendarInvite(CourseParticipant courseParticipant) {
 
-       
-        CourseParticipant findCourseParticipant = enrollmentDao.findCourseParticipantById(courseParticipant.getId());
-             
-        CourseParticipant dbCourseParticipant = 
-                 new CourseParticipant
-                           .Builder(findCourseParticipant.getId())
-                           .decline(courseParticipant.getReason())
-                           .addDetail(findCourseParticipant.getCourseScheduleDetail()).build();
-             
-         enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
-         enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
-      
-    } 
-    
-    @Override
-    public void cancel(Long id) {
+		CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
 
-           try {
-                CourseSchedule courseSchedule = enrollmentDao.findCourseScheduleById(id);
-                
-                if(courseSchedule.getId() == null) {
-                    throw new IllegalArgumentException("This course{"+id+"} is not existing");
-                }
-                CourseSchedule courseScheduleInstance = new CourseSchedule.Builder(id).cancel().build();    
-                enrollmentDao.changeCourseScheduleStatus(courseScheduleInstance);
-                
-            } catch(DataAccessException ex) {
-                throw new IllegalArgumentException(" Can't cancel Course.");
-            }
-        }
+		try {
 
+			String email = courseParticipant.getEmail();
 
+			MimeMessage mimeMessage = mailSender.createMimeMessage();
+			mimeMessage.addHeaderLine("Content-Type:method=REQUEST");
+			mimeMessage.addHeaderLine("Content-Type:charset=UTF-8");
+			mimeMessage.addHeaderLine("Content-Type:component=VEVENT");
+
+			mimeMessage.setFrom(new InternetAddress("e.ceniza@fujitsu.com"));
+			mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+			mimeMessage.setSubject("Enrollment Confirmation - " + courseRecord.getCourseName());
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
+			DateTimeFormatter zoneFormatter = DateTimeFormatter.ofPattern("zzzz");
+
+			StringBuilder builder = new StringBuilder();
+			builder.append("BEGIN:VCALENDAR");
+			builder.append("\nMETHOD:REQUEST");
+			builder.append("\nPROID:Microsoft Exchange Server 2016");
+			builder.append("\nVERSION:2.0");
+			builder.append("\nBEGIN:VTIMEZONE");
+			builder.append("\nTZID:"
+					+ zoneFormatter.format(courseRecord.getCourseScheduleDetail().getScheduledStartDateTime()));
+			builder.append("\nEND:VTIMEZONE");
+			builder.append("\nBEGIN:VEVENT");
+			builder.append("\nATTENDEE;ROLE=REQ-PARTICIPANT" + ";RSVP=TRUE:MAILTO:" + email);
+			builder.append(
+					"\nORGANIZER;CN=:" + courseRecord.getInstructorFirstName() + courseRecord.getInstructorLastName());
+			builder.append("\nDESCRIPTION;=LANGUAGE=en-US:" + "You have successfully enrolled to a course.");
+			builder.append("\nUID:" + uid);
+			builder.append("\nSUMMARY:" + courseRecord.getCourseName());
+			builder.append("\nDTSTART:"
+					+ formatter.format(courseRecord.getCourseScheduleDetail().getScheduledStartDateTime()));
+			builder.append(
+					"\nDTEND:" + formatter.format(courseRecord.getCourseScheduleDetail().getScheduledEndDateTime()));
+			builder.append("\nCLASS:PUBLIC");
+			builder.append("\nPRIORITY:5");
+			builder.append("\nTRANSP:OPAQUE");
+			builder.append("\nSTATUS:CONFIRMED");
+			builder.append("\nSEQUENCE:$sequenceNumber");
+			builder.append("\nLOCATION:" + courseRecord.getVenueName());
+			builder.append("\nBEGIN:VALARM");
+			builder.append("\nDESCRIPTION:REMINDER");
+			builder.append("\nTRIGGER;RELATED=START:-PT15M");
+			builder.append("\nACTION:DISPLAY");
+			builder.append("\nEND:VALARM");
+			builder.append("\nEND:VEVENT");
+			builder.append("\nEND:VCALENDAR");
+
+			MimeBodyPart messageBodyPart = new MimeBodyPart();
+
+			messageBodyPart.setHeader("Content-Class", "urn:content-classes:calendarmessage");
+			messageBodyPart.setHeader("Content-ID", "calendar_message");
+			messageBodyPart.setDataHandler(new DataHandler(
+					new ByteArrayDataSource(builder.toString(), "text/calendar;method=REQUEST;name=\"invite.ics\"")));
+
+			MimeMultipart multipart = new MimeMultipart();
+
+			multipart.addBodyPart(messageBodyPart);
+
+//			StringBuilder messageBuilder = new StringBuilder();
+//			messageBuilder.append("Dear " + courseParticipant.getParticipantName() + ",<br><br>");
+//			messageBuilder.append("You have successfully enrolled to" + courseRecord.getCourseName() + ". Please see details below:<br><br>");
+//			messageBuilder.append("<br>Start Date:" + courseRecord.getCourseScheduleDetail().getScheduledStartDateTime());
+//			messageBuilder.append("<br>End Date:" + courseRecord.getCourseScheduleDetail().getScheduledEndDateTime());
+//			messageBuilder.append("<br>Venue:" + courseRecord.getVenueName());
+//			
+//			MimeBodyPart msgBodyPart =new MimeBodyPart();
+//			msgBodyPart.setDataHandler(new DataHandler(messageBuilder.toString(), "text/html"));
+//			multipart.addBodyPart(msgBodyPart);
+
+			mimeMessage.setContent(multipart);
+			System.out.println(builder.toString());
+			mailSender.send(mimeMessage);
+			System.out.println("CALENDAR SENT");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * 
+	 * Call enrollmentDao.findAllEnrolledCoursesByParticipantId using ID Finds All
+	 * Enrolled Courses by Participant ID
+	 * 
+	 * @author m.lumontad
+	 * 
+	 */
+	@Override
+	public Set<CourseParticipant> findAllEnrolledCoursesByParticipantId(Long participantId, ZonedDateTime fromDateTime,
+			ZonedDateTime toDateTime) {
+
+		try {
+			Set<CourseParticipant> courseParticipant = enrollmentDao
+					.findAllEnrolledCoursesByParticipantId(participantId, fromDateTime, toDateTime);
+			if (courseParticipant == null || courseParticipant.isEmpty()) {
+				throw new IllegalArgumentException("No Course Schedule Found");
+			}
+			return courseParticipant;
+		} catch (DataAccessException ex) {
+			ex.printStackTrace();
+			throw new IllegalArgumentException("Can't Access Id");
+		}
+	}
+
+	/**
+	 * 
+	 * Call enrollmentDao.findCourseParticipantById using the given id Finds course
+	 * participant by id
+	 * 
+	 * @author k.freo
+	 * 
+	 * 
+	 */
+	@Override
+	public CourseParticipant findCourseParticipantById(Long id) {
+		try {
+			CourseParticipant courseParticipant = enrollmentDao.findCourseParticipantById(id);
+			if (courseParticipant == null) {
+				throw new IllegalArgumentException("Participant not Found");
+			}
+			return courseParticipant;
+		} catch (DataAccessException ex) {
+			throw new IllegalArgumentException(" Participant not Found ");
+		}
+	}
+
+	/**
+	 * Decline the course which the participant was previously enrolled Call
+	 * enrollmentDao.deleteCourseParticipantById using the given
+	 * courseParticipant.id Call enrollmentDao.saveCourseNonParticipant using the
+	 * given dbCourseParticipant
+	 * 
+	 * @author k.freo
+	 * 
+	 **/
+	@Override
+	public void declineCourse(CourseParticipant courseParticipant) {
+
+		CourseParticipant findCourseParticipant = enrollmentDao.findCourseParticipantById(courseParticipant.getId());
+
+		CourseParticipant dbCourseParticipant = new CourseParticipant.Builder(findCourseParticipant.getId())
+				.decline(courseParticipant.getReason()).addDetail(findCourseParticipant.getCourseScheduleDetail())
+				.build();
+
+		enrollmentDao.saveCourseNonParticipant(dbCourseParticipant);
+		enrollmentDao.deleteCourseParticipantById(courseParticipant.getId());
+
+	}
+
+	@Override
+	public void cancel(Long id) {
+
+		try {
+			CourseSchedule courseSchedule = enrollmentDao.findCourseScheduleById(id);
+
+			if (courseSchedule.getId() == null) {
+				throw new IllegalArgumentException("This course{" + id + "} is not existing");
+			}
+			CourseSchedule courseScheduleInstance = new CourseSchedule.Builder(id).cancel().build();
+			enrollmentDao.changeCourseScheduleStatus(courseScheduleInstance);
+
+		} catch (DataAccessException ex) {
+			throw new IllegalArgumentException(" Can't cancel Course.");
+		}
+	}
 
 	@Override
 	public void cancelCourseSchedules(Set<CourseSchedule> courseScheduleSet) {
 		// TODO Auto-generated method stub
 		try {
 			enrollmentDao.cancelCourseSchedulesById(courseScheduleSet);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException("Cant Cancel Course Schedule Set.");
 		}
 	}
-
-
 
 	@Override
 	public Set<CourseSchedule> findAllActiveCourseSchedule() {
@@ -230,26 +328,22 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		return enrollmentDao.findAllActiveCourseSchedule();
 	}
 
-
-
 	@Override
 	public Set<CourseSchedule> findAllCouresScheduleByMonthOrQuarter(String queryBy) {
 		// TODO Auto-generated method stub
 		Set<CourseSchedule> courseSchedule = new HashSet<CourseSchedule>();
-		if(queryBy.equals("month")) {
+		if (queryBy.equals("month")) {
 			courseSchedule = enrollmentDao.findAllCourseScheduleByMonth();
-		}else if(queryBy.equals("quarter")) {
+		} else if (queryBy.equals("quarter")) {
 			courseSchedule = enrollmentDao.findAllCourseScheduleByQuarter();
 		}
-		
-		//validation
-		if(courseSchedule == null || courseSchedule.isEmpty()) {
+
+		// validation
+		if (courseSchedule == null || courseSchedule.isEmpty()) {
 			throw new IllegalArgumentException("No Course Schedule found!");
 		}
 		return courseSchedule;
 	}
-
-
 
 	@Override
 	public void rescheduleCourseScheduleById(CourseScheduleDetail courseScheduleDetail) {
@@ -257,12 +351,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		System.out.println("SERVICE");
 		try {
 			enrollmentDao.reschedule(courseScheduleDetail);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException("Can not reschedule course schedule" + e.getMessage());
 		}
 	}
-
-
 
 	@Override
 	public Set<CourseSchedule> findAllCourseScheduleBelowMinimumParticipants() {
@@ -270,12 +362,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		try {
 			Set<CourseSchedule> courseScheduleSet = enrollmentDao.findAllCourseScheduleBelowMinimumParticipants();
 			return courseScheduleSet;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException("Cant get CourseSchedules below minimum" + e.getMessage());
 		}
 	}
-
-
 
 	@Override
 	public Set<CourseParticipant> findAllParticipantByCourseScheduleId(Long courseScheduleId) {
@@ -283,48 +373,43 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>();
 		try {
 			courseParticipantSet = enrollmentDao.findAllParticipantByCourseScheduleId(courseScheduleId);
-			if(courseParticipantSet == null || courseParticipantSet.isEmpty()) {
+			if (courseParticipantSet == null || courseParticipantSet.isEmpty()) {
 				throw new IllegalArgumentException("No Course Participant Found.");
 			}
 			return courseParticipantSet;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException("Can not find Course Participant in this Course Schedule");
 		}
 	}
-
-
 
 	@Override
 	public Set<CourseParticipant> findAllMemberNotEnrolledByCourseScheduleId(CourseParticipant courseParticipant) {
 		// TODO Auto-generated method stub
 		try {
-			if(courseParticipant == null) {
+			if (courseParticipant == null) {
 				throw new IllegalArgumentException("Course Participant Null");
 			}
 			return enrollmentDao.findAllMemberNotEnrolledByCourseScheduleId(courseParticipant);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException(e.getMessage());
 		}
 	}
-
-
 
 	@Override
 	public Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(SearchForm searchForm) {
 		// TODO Auto-generated method stub
 		try {
 			System.out.println("1");
-			Set<CourseParticipant> courseParticipantSet = enrollmentDao.findMemberNotEnrolledByCourseScheduleId(searchForm);
-			if(courseParticipantSet == null || courseParticipantSet.isEmpty()) {
+			Set<CourseParticipant> courseParticipantSet = enrollmentDao
+					.findMemberNotEnrolledByCourseScheduleId(searchForm);
+			if (courseParticipantSet == null || courseParticipantSet.isEmpty()) {
 				throw new IllegalArgumentException("No Participants Found");
 			}
 			return courseParticipantSet;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException("Can not find Course Participants");
 		}
 	}
-
-
 
 	@Override
 	public Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule) {
@@ -332,56 +417,52 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		return enrollmentDao.findCourseScheduleByCourseId(courseSchedule);
 	}
 
-
-
 	@Override
 	public void updateSchedule(CourseParticipant courseParticipant) {
 
-			CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
-			if (courseRecord == null){
-          	 throw new IllegalArgumentException("This course schedule id " +courseParticipant
-                       .getCourseScheduleId()+ " is not existing");
-			}
+		CourseSchedule courseRecord = enrollmentDao.findCourseScheduleById(courseParticipant.getCourseScheduleId());
+		if (courseRecord == null) {
+			throw new IllegalArgumentException(
+					"This course schedule id " + courseParticipant.getCourseScheduleId() + " is not existing");
+		}
 
-	        CourseParticipant participantRecord = enrollmentDao
-	                .findCourseParticipantByCourseScheduleIdAndParticipantId
-	                (courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
+		CourseParticipant participantRecord = enrollmentDao.findCourseParticipantByCourseScheduleIdAndParticipantId(
+				courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
 
-	//        System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
-	        if(participantRecord != null){ 
-	        	throw new IllegalArgumentException("You are already enrolled to this course.");
-	       
-	           
-	        }else if(participantRecord == null) {
-	        	enrollmentDao.updateCourseParticipant(courseParticipant);
-	        }
-	        
+		// System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
+		if (participantRecord != null) {
+			throw new IllegalArgumentException("You are already enrolled to this course.");
+
+		} else if (participantRecord == null) {
+			enrollmentDao.updateCourseParticipant(courseParticipant);
+		}
+
 	}
-	
-	@Override
-    public List<TopLearnerForm> findTopLearner(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {      
-        try {
-            if (Period.between(fromDateTime.toLocalDate(), toDateTime.toLocalDate()).getMonths() >= 4) {
-                return enrollmentDao.findTopLearnerByQuarter();
-            } else {
-                return enrollmentDao.findTopLearnerByMonth();
-            }            
-        } catch (DataAccessException ex) {
-            throw new IllegalArgumentException("No Top Learners");
-        }
 
-    }
-    
-    /** Finds the participant of course by Id */
+	@Override
+	public List<TopLearnerForm> findTopLearner(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
+		try {
+			if (Period.between(fromDateTime.toLocalDate(), toDateTime.toLocalDate()).getMonths() >= 4) {
+				return enrollmentDao.findTopLearnerByQuarter();
+			} else {
+				return enrollmentDao.findTopLearnerByMonth();
+			}
+		} catch (DataAccessException ex) {
+			throw new IllegalArgumentException("No Top Learners");
+		}
+
+	}
+
+	/** Finds the participant of course by Id */
 //    @Override
 //    public List<Participant> findEnrolledMembersById(Long id) {
 //         return enrollmentDao.viewEnrolledMembers(id);
 //    }
-    
-    /** Add the participant of course by Id */
+
+	/** Add the participant of course by Id */
 //    @Override
 //    public Integer addEnrolledMembersById(Participant participant) {
 //         return enrollmentDao.addEnrolledMembersById(participant);
 //    }
-    
+
 }
