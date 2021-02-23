@@ -18,7 +18,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
 //0.02   | 2021/02/15 | WS) rl.naval          | Updated
 //0.03   | 2021/02/17 | WS) c.sinda           | Updated
-//0.04   | 2021/02/23 | WS) s.labador           | Updated
+//0.04   | 2021/02/23 | WS) s.labador         | Updated
 //==================================================================================================
 
 /**
