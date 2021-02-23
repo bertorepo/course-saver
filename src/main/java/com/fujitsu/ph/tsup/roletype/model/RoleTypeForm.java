@@ -21,8 +21,9 @@ package com.fujitsu.ph.tsup.roletype.model;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author rl.naval
+ * @author s.labador
  */
 public class RoleTypeForm {
     private Long id;

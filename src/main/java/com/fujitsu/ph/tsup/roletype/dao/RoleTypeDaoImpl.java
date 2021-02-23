@@ -25,15 +25,15 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.03    | 2021/02/17 | WS) j.sayaboc         | Updated
 //==================================================================================================
 
+
 /**
- * <pre>
- * RoleTypeDaoImp class
+ * RoleTypeDaoImpl class
  * 
- * <pre>
- * 
- * @version 0.01
+ * @version 0.03 
  * @author rl.naval
+ * @author s.labador
  */
+
 @Repository
 public class RoleTypeDaoImpl implements RoleTypeDao {
 
@@ -130,6 +130,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      * @param id Role id
      * @param roleType RoleType
      */
+
     @Override
     public void updateRoleType(Long id, RoleType roleType) {
         String query = "UPDATE MEMBER_ROLE " + "SET role_type = '" + roleType.getRolename()
