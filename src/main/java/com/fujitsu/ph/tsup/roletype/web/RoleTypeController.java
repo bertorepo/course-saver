@@ -47,7 +47,7 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
  * 
  * @author rl.naval
  * @author c.rondina
- * @version 0.01
+ * @version 0.04
  *
  */
 @Controller
