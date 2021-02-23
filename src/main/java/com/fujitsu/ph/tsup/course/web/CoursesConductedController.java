@@ -22,7 +22,6 @@ import com.fujitsu.ph.tsup.course.model.CoursesConductedForm;
 import com.fujitsu.ph.tsup.course.model.CoursesConductedListForm;
 import com.fujitsu.ph.tsup.course.service.CoursesConductedService;
 
-
 /**
  * <pre>
  * The controller for the courses conducted
