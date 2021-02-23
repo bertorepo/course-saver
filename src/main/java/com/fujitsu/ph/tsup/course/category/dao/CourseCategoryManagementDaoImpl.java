@@ -46,7 +46,7 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
     @Override
     public Set<CourseCategory> findAllCourseCategory() {
 
-        String query = "SELECT * FROM COURSE_CATEGORY";
+        String query = "SELECT * FROM COURSE_CATEGORY ORDER BY category";
 
         List<CourseCategory> courseCategoryList = template.query(query, new CourseCategoryRowMapper());
         Set<CourseCategory> courseCategory = new LinkedHashSet<>(courseCategoryList);
