@@ -55,11 +55,10 @@
  								 data-live-search="true" onchange='filterText()' style="width:500px; display:inline-block" th:field="*{courseName}" id="selectCourse" name="selectCourse" >
  								<option value=""></option>
  								<option th:each="courseSelect : *{coursesConductedSet}" 
- 								th:attr="data-token=|${courseSelect.courseName}|"
- 								th:text="${courseSelect.courseName}" 
- 								th:value="${courseSelect.courseName}" 
- 								th:selected="${courseSelect.courseName eq lastSelected}">
- 								<!--  <input type="hidden" th:field="*{courses.id}" /> -->
+ 								    th:attr="data-token=|${courseSelect.courseName}|"
+ 								    th:text="${courseSelect.courseName}" 
+ 								    th:value="${courseSelect.courseName}" 
+ 								    th:selected="${courseSelect.courseName eq lastSelected}">
  								</option>	
  							</select>
  						</div>
@@ -81,9 +80,7 @@
 								<th style="width:35%">Actual Date</th>
 							</tr>
 						</thead>
-						
  						<tbody th:each="showSummaryCourses, rowStat : ${coursesConducted}">
-							<!-- ${coursesConductedForm.courseName} -->
 							<tr class="content">
 								<td th:text="${rowStat.count}"></td>
 								<td th:text="${coursesConducted[__${rowStat.index}__].courseName}"></td>
@@ -127,14 +124,14 @@
 									'MMM dd, yyyy (E)- HH:mm a')}"/></td>
 									<td th:text="${#temporals.format(coursesConducted[__${rowStat.index}__].scheduledEndDateTime, 
 									'MMM dd, yyyy (E)- HH:mm a')}"/></td>
-							       </tr>
+							    </tr>
 							</tbody>
 						</table>
 	             	</div>
 	             </div>
 	             <!-- End Modal Body -->
 	           </div>
-	        </div>
+	         </div>
 	        </div>
 		</div>
 	</div>
