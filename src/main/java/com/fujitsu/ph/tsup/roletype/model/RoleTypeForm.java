@@ -57,7 +57,6 @@ public class RoleTypeForm {
     public String toString() {
 
         return "[ID " + id + " Rolename " + rolename + " Roledesc " + roledesc + "]";
-
     }
 
 }
