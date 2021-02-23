@@ -1,10 +1,8 @@
 <!-- @Author: Naval, Rosalyn-->
-
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -23,7 +21,6 @@
 <script th:src="@{/js/roleType.js}"></script>
 </head>
 <body>
-
 	<!--Confirm Modal-->
 	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -31,7 +28,6 @@
 		<div class="modal-dialog modal-sm text-center">
 			<div class="modal-content">
 				<div class="modal-body">
-
 					<div class="form-group row">
 						<input type="hidden" id="roleId" name="roleId"></input>
 						<p th:text="${param.roleId}" hidden=true></p>
@@ -52,11 +48,9 @@
 		</div>
 	</div>
 	<!--Confirm Modal End-->
-
 	<!-- Info modal -->
 	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
-
 		<form id="infoModalFormId"
 			th:action="@{/roletype/__${roleIdInput}__/delete}" method="get">
 			<div class="modal-dialog modal-lg">
@@ -93,14 +87,12 @@
 		</form>
 	</div>
 	<!-- Info modal End-->
-
 	<!--Success Modal-->
 	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm text-center">
 			<div class="modal-content">
 				<div class="modal-body">
-
 					<div class="form-group row">
 						<input type="hidden" id="roleId" name="roleId"></input>
 						<p th:text="${param.roleId}" hidden=true></p>
@@ -109,16 +101,12 @@
 					</div>
 				</div>
 				<div class="modal-footer"></div>
-
 			</div>
 		</div>
 	</div>
 	<!--Success Modal End-->
-
-
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5">
-
 		<form class="form-horizontal" action="#"
 			th:action="@{/roletype/search}" method="post">
 			<h3>
@@ -143,7 +131,6 @@
 				</div>
 			</div>
 		</form>
-
 		<div class="card mb-5">
 			<div class="card-header">
 				<h3>
@@ -185,7 +172,6 @@
 						</div>
 					</div>
 				</div>
-
 				<div id=page class="pcenter" style="display: none;">
 					<div class="pagination">
 						<a href="#">&laquo;</a> <a href="/roletype/load/1">1</a> <a
@@ -196,39 +182,26 @@
 			</div>
 		</div>
 	</div>
-
 	<script type="text/javascript" th:inline="javascript">
 		function deleteButton(id, roleName, roleDesc) {
-
 			document.getElementById("roleIdInput").value = id;
 			document.getElementById("roleName").innerHTML = roleName;
 			document.getElementById("roleDesc").innerHTML = roleDesc;
-
 			$('#infoModal').modal('show');
-
 		}
 	</script>
-
 	<script>
 		$(document).ready(function() {
-
 			if (window.location.href.indexOf('#confirmModal') != -1) {
 				$('#confirmModal').modal('show');
 			}
-
 		});
-
 		$(document).ready(function() {
-
 			if (window.location.href.indexOf('#successModal') != -1) {
 				$('#successModal').modal('show');
 			}
-
 		});
 	</script>
-
 	<footer th:replace="fragments/general.html :: footer"></footer>
-
 </body>
-
 </html>
