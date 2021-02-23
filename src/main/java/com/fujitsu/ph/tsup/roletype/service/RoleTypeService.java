@@ -24,9 +24,9 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 /**
  * RoleTypeService class
  * 
+ * @version 0.04
  * @author rl.naval
  * @author s.labador
- * @version 0.04 
  */
 
 public interface RoleTypeService {
