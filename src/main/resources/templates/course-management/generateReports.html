@@ -116,7 +116,6 @@
 								</tr>
 							</thead>
 	 						<tbody th:each="showModalSummaryCourses, rowStat : ${coursesConducted}">
-								<!-- ${coursesConductedForm.courseName} -->
 								<tr class="content">
 									<td th:text="${rowStat.count}"></td>
 									<td th:text="${coursesConducted[__${rowStat.index}__].courseName}"></td>
