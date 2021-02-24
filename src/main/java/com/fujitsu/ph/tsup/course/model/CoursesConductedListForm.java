@@ -1,12 +1,28 @@
+//==================================================================================================																																											
+// Project Name : Training Sign Up
+// System Name  : CoursesConductedListForm																																								
+// Class Name   : CoursesConductedListForm.java 																																											
+//																																											
+// <<Modification History>> 																																											
+// Version | Date       | Updated By            | Content																																											
+//---------+------------+-----------------------+--------------------------------------------------- 																																											
+// 1.0.0   | 2021/02/17 | WS)M.Rivera           | New Creation																																											
+//==================================================================================================
 package com.fujitsu.ph.tsup.course.model;
 
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
+/**
+ * <pre>
+ * The Form for courses conducted list
+ * </pre>
+ * 
+ * @author m.rivera
+ * @version 1.0.0
+ */
 
 public class CoursesConductedListForm {
 	
@@ -106,10 +122,11 @@ public class CoursesConductedListForm {
 
 	@Override
 	public String toString() {
-		return "CoursesConductedListForm [id=" + id + ", courseName=" + courseName + ", scheduledStartDateTime="
-				+ scheduledStartDateTime + ", scheduledEndDateTime=" + scheduledEndDateTime
-				+ ", rescheduledStartDateTime=" + rescheduledStartDateTime + ", rescheduledEndDateTime="
-				+ rescheduledEndDateTime + ", coursesConductedSet=" + coursesConductedSet + "]";
+		return "CoursesConductedListForm [id=" + id + ", courseName=" + courseName 
+				+ ", scheduledStartDateTime=" + scheduledStartDateTime + ", scheduledEndDateTime=" 
+				+ scheduledEndDateTime + ", rescheduledStartDateTime=" + rescheduledStartDateTime 
+				+ ", rescheduledEndDateTime=" + rescheduledEndDateTime + ", coursesConductedSet=" 
+				+ coursesConductedSet + "]";
 	}
 	
 	
