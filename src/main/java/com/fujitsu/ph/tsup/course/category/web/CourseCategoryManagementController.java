@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.fujitsu.ph.tsup.course.category.web;
 
 import java.util.List;
@@ -9,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +23,11 @@ import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementServi
 //Class Name: CourseCategoryManagementController.java
 //
 //<<Modification History>>
-//Version | Date       | Updated by      | Content
-//--------+------------+-----------------+---------------
+//Version | Date       | Updated by          | Content
+//--------+------------+---------------------+---------------
 //0.01    | 02/08/2020 | WS) A.Batongbacal   | New Creation
 //0.02    | 02/15/2020 | WS) A.Batongbacal   | Update
+//0.02    | 02/15/2020 | WS) J.Zamora        | Update
 //=======================================================
 /**
 * <pre>
@@ -36,9 +35,9 @@ import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementServi
 * 
 * <pre>
 * 
-* @version 0.02
+* @version 0.03
 * @author a.batongbaca
-* @author g.cabiling
+* @author j.zamora
 *
 */
 @Controller
@@ -85,4 +84,33 @@ public class CourseCategoryManagementController {
             return "redirect:/courseCategory/load#errorModal";
         }
     }
+
+    // Loads the courseCategoryCreate view
+    @GetMapping("/create")
+    public String showCreateCourseCategoryForm(Model model) {
+        model.addAttribute("create");
+        return "course-category-management/CreateCourseCategory";
+    }
+
+    // Validates and saves the data in the database
+    @PostMapping("/create")
+    public String submitCreateCourseCategoryForm(CourseCategoryForm form, BindingResult bindingResult,
+            Model model, RedirectAttributes redirectAttributes) throws Exception {
+        try {
+            Set<CourseCategory> categorySize = courseCategoryManagementService
+                    .findCourseCategoryByName(form.getCategory());
+            if (categorySize.isEmpty()) {
+                CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
+                        form.getDetail()).build();
+                courseCategoryManagementService.createCourseCategory(categoryDetails);
+                model.addAttribute("successMessage", "Registration Complete.");
+            } else {
+                model.addAttribute("invalid", "The specified course category is already existing. Please change the Course Category Name.");
+            }
+        } catch (Exception ex) {
+            model.addAttribute("invalid", ex.getMessage());
+        }
+        return "course-category-management/CreateCourseCategory";
+    }
 }
+
