@@ -57,7 +57,7 @@
 			th:object="${update}" method="post">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
-					<div class="modal-header alert-success">
+					<div class="modal-header alert-info">
 						<h5 class="modal-title">Course Category Information</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -221,18 +221,16 @@
 		function validateIfEmpty() {
 			var category = document.getElementById("category");
 			var detail = document.getElementById("detail");
+			document.getElementById("updateBtn").disabled = true;				
 			if (category.value === "" && detail.value != ""){
 				document.getElementById("categoryErrorMsg").innerHTML = "*Required";
 				document.getElementById("detailErrorMsg").innerHTML = "";
-				document.getElementById("updateBtn").disabled = true;				
 			}else if (category.value != "" && detail.value === ""){
 				document.getElementById("categoryErrorMsg").innerHTML = "";
 				document.getElementById("detailErrorMsg").innerHTML = "*Required";
-				document.getElementById("updateBtn").disabled = true;				
 			}else if (category.value === "" && detail.value === "") {
 				document.getElementById("categoryErrorMsg").innerHTML = "*Required";
 				document.getElementById("detailErrorMsg").innerHTML = "*Required";
-				document.getElementById("updateBtn").disabled = true;
 			} else {
 				document.getElementById("categoryErrorMsg").innerHTML = "";
 				document.getElementById("detailErrorMsg").innerHTML = "";
