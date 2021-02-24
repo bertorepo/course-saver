@@ -55,21 +55,24 @@
  								 data-live-search="true" onchange='filterText()' style="width:500px; display:inline-block" th:field="*{courseName}" id="selectCourse" name="selectCourse" >
  								<option value=""></option>
  								<option th:each="courseSelect : *{coursesConductedSet}" 
- 								    th:attr="data-token=|${courseSelect.courseName}|"
- 								    th:text="${courseSelect.courseName}" 
- 								    th:value="${courseSelect.courseName}" 
- 								    th:selected="${courseSelect.courseName eq lastSelected}">
+ 								th:attr="data-token=|${courseSelect.courseName}|"
+ 								th:text="${courseSelect.courseName}" 
+ 								th:value="${courseSelect.courseName}" 
+ 								th:selected="${courseSelect.courseName eq lastSelected}">
  								</option>	
  							</select>
  						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
-						<input type="button" class="btn btn-success" value="View" data-toggle="modal" data-target="#viewSummaryCourses" href=" " style="width:100px">
+						<!-- <input type="button" class="btn btn-success" value="View" data-toggle="modal" data-target="#viewSummaryCourses" href=" " style="width:100px"> -->
+						<input type="button" class="btn btn-success" value="View" onclick="viewButtonClick()" style="width:100px">
 						<div class="col-lg-1"></div>
 						<input type="button" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px">
 					</div>
 			</form>
 			<label>Report Display</label>
+					<div id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
+					</div>
 				<!-- Display Selected Course on Summary Courses Conducted -->
 					<table id="summaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
 						<thead>
@@ -80,6 +83,7 @@
 								<th style="width:35%">Actual Date</th>
 							</tr>
 						</thead>
+						
  						<tbody th:each="showSummaryCourses, rowStat : ${coursesConducted}">
 							<tr class="content">
 								<td th:text="${rowStat.count}"></td>
@@ -123,14 +127,14 @@
 									'MMM dd, yyyy (E)- HH:mm a')}"/></td>
 									<td th:text="${#temporals.format(coursesConducted[__${rowStat.index}__].scheduledEndDateTime, 
 									'MMM dd, yyyy (E)- HH:mm a')}"/></td>
-							    </tr>
+							       </tr>
 							</tbody>
 						</table>
 	             	</div>
 	             </div>
 	             <!-- End Modal Body -->
 	           </div>
-	         </div>
+	        </div>
 	        </div>
 		</div>
 	</div>
@@ -138,24 +142,30 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 	<script th:inline ="javascript">
+		var fromDateTime = $("#scheduledStartDateTime").val();
+		var toDateTime = $("#scheduledEndDateTime").val();
+		
 		function load() {
-			var fromDateTime = $("#scheduledStartDateTime").val();
-			var toDateTime = $("#scheduledEndDateTime").val();
+
 			var fromNewDate = fromDateTime.toString().slice(0, 16);
 			var toNewDate = toDateTime.toString().slice(0, 16);
 			
 			document.getElementById("startDate").value = fromNewDate;
 			document.getElementById("endDate").value = toNewDate;
+			
 			document.getElementById('selectCourse').options[0].selected = 'selected';
 			
 			var selectReportType = document.getElementById("selectReportType").value;
 			var showSummaryCourses = document.getElementById("summaryCoursesTable");
+			var reportDisplayTable = document.getElementById("reportTable");
 			
 			if(selectReportType == "1"){
 				showSummaryCourses.style.display = "block";
+				reportDisplayTable.style.display = "none";
 			}
 			else{
 				showSummaryCourses.style.display = "none";
+				reportDisplayTable.style.display = "block";
 			}
 		}
 		
@@ -235,17 +245,54 @@
 		}
 		
 		/**
+		Display Modal
+		*/
+		function viewButtonClick(){
+			
+			if(fromDateTime > toDateTime){
+				alert("Invalid Date. Please select correct date.");
+			}
+			else if($('#selectReportType').val() == 0){
+				alert("Please select report type.");
+			}
+			else if(fromDateTime == null){
+				alert("Please select start date.");
+			}
+			else if(toDateTime == null){
+				alert("Please select end date.");
+			}
+			else{
+				$('#viewSummaryCourses').modal();
+			}
+		}
+		
+		/**
 		Exporting to CSV File
 		*/
 		function downloadCSV(csv, filename) {
-			var csvFile;
-			var downloadLink;
-			csvFile = new Blob([csv], {type: "text/csv;charset=utf-8"});
-			downloadLink = document.createElement("a");
-			downloadLink.download = filename;
-			downloadLink.href = window.URL.createObjectURL(csvFile);
-			downloadLink.style.display = "none";
-			downloadLink.click();
+			if(fromDateTime > toDateTime){
+				alert("Invalid Date. Please select correct date.");
+			}
+			else if($('#selectReportType').val() == 0){
+				alert("Please select report type.");
+			}
+			else if(fromDateTime == null){
+				alert("Please select start date.");
+			}
+			else if(toDateTime == null){
+				alert("Please select end date.");
+			}
+			else{
+				var csvFile;
+				var downloadLink;
+				alert("Report exported successfully");
+				csvFile = new Blob([csv], {type: "text/csv;charset=utf-8"});
+				downloadLink = document.createElement("a");
+				downloadLink.download = filename;
+				downloadLink.href = window.URL.createObjectURL(csvFile);
+				downloadLink.style.display = "none";
+				downloadLink.click();
+			}
 		}
 		function exportTableToCSV(filename) {
 			var csv = [];
