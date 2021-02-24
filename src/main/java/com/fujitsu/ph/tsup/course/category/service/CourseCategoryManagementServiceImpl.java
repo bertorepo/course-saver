@@ -49,25 +49,15 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
     @Override
     public Set<CourseCategory> findCourseCategoryByName(String name) {
 
-        Set<CourseCategory> courseCategoryFormList = courseCategoryManagementDao
-                .findCourseCategoryByName(name);
+        Set<CourseCategory> courseCategoryFormList = null;
 
         try {
 
-            if (courseCategoryFormList.isEmpty()) {
-
-                return null;
-
-            } else {
-
-                return courseCategoryFormList;
-
-            }
+            courseCategoryFormList = courseCategoryManagementDao.findCourseCategoryByName(name);
 
         } catch (Exception ex) {
 
             ex.printStackTrace();
-
         }
 
         return courseCategoryFormList;
