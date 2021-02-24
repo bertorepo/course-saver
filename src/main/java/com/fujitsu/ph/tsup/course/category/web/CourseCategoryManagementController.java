@@ -43,43 +43,47 @@ public class CourseCategoryManagementController {
      * @return View
      */
     @GetMapping("/{courseCategoryId}/delete")
-    public String showDeleteCourseForm(@RequestParam(value = "courseCategoryIdInput") Long id,
-            CourseCategoryForm form, BindingResult bindingResult, Model model) { 
+    public String showDeleteCourseCategoryForm(@RequestParam(value = "courseCategoryIdInput") Long id,
+            CourseCategoryForm form, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmModal";
+            return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmDeleteModal";
 
         }
 
-        // set value for CourseCategory object
+        // set value for Course Category object
         CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
 
-        // set value for CourseCategoryForm object
+        // set value for Course Category Form object
         form.setId(courseCategory.getId());
         form.setCategory(courseCategory.getCategory());
         form.setDetail(courseCategory.getDetail());
 
         model.addAttribute("deleteCourseCategoryForm", form);
 
-        return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmModal";
+        return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmDeleteModal";
     }
 
     /**
-     * Method for deleting course category with the given id
+     * Method for deleting course with the given id
      * 
-     * @param id Course Category id
+     * @param id Course id
      * @param redirectAttributes RedirectAttributes
      * @param model Model
      * @return View
      */
     @PostMapping("/{courseCategoryId}/delete")
-    public String submitDeleteCourseForm(@PathVariable("courseCategoryId") Long id,
+    public String submitDeleteCourseCategoryForm(@PathVariable("courseCategoryId") Long id,
             RedirectAttributes redirectAttributes, Model model) {
 
-        // Call deleteCourseCategoryById() method.
+        // Call deleteCourseById() method.
         courseCategoryManagementService.deleteCourseCategoryById(id);
+
+        redirectAttributes.addFlashAttribute("message",
+                "You have successfully deleted this course category.");
 
         return "redirect:/courseCategory/load#successModal";
     }
+
 }
