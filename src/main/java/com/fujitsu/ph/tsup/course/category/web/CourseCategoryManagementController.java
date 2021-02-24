@@ -66,9 +66,9 @@ public class CourseCategoryManagementController {
     }
 
     /**
-     * Method for deleting course with the given id
+     * Method for deleting course Category with the given id
      * 
-     * @param id Course id
+     * @param id Course Category id
      * @param redirectAttributes RedirectAttributes
      * @param model Model
      * @return View
