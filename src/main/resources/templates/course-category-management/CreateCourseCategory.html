@@ -33,7 +33,7 @@
             <div class="card">
                 <div class="card-body">
                     <form action="#" th:action="@{/courseCategory/create}" th:object="${create}" method="post">
-                        <p>Please input your desired course category name and detail</p>
+                        <span  style="margin-left:185px; color:red; visibility:hidden;" id="required">*Required field</span>
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Course Category
                                 Name</label>
@@ -42,6 +42,7 @@
                                     class="form-control" id="category" name="category" onkeyup=enableSubmitButton()>
                             </div>
                         </div>
+                        <span style="margin-left:185px; color:red; visibility:hidden;" id="required2">*Required field</span>
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Course Category Details</label>
                             <div class="col-lg-5">
@@ -51,13 +52,10 @@
                             </div>
                         </div>
                         <div class="float-right">
-                            <button type="submit" id="hideSubmit"
-                                class="btn btn-success" style="display:none;">Submit</button>
+                            <button type="submit" id="submit"
+                                class="btn btn-success" disabled>Submit</button>
                         </div>
                     </form>
-                    <div class="float-right">
-                        <button onclick="btnSubmit()" id="submit" class="btn btn-success" disabled>Submit</button>
-                    </div>
                 </div>
             </div>
     </div>
@@ -96,7 +94,7 @@
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm text-center">
                 <div class="modal-content">
-                    <div class="modal-header alert-success">
+                    <div class="modal-header alert-danger">
                         <h5 class="modal-title">Failed to create</h5>
                         <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close">
@@ -137,28 +135,29 @@
         var category = document.getElementById("category");
         var detail = document.getElementById("detail");
         function enableSubmitButton(){
-            if(category.value.length > 0 && detail.value.length > 0) {
+            var cat = myTrim(category.value);
+            var det = myTrim(detail.value);
+            if(cat.length > 0 && det.length > 0) {
                 document.getElementById('submit').disabled = false;
             } else {
                 document.getElementById('submit').disabled = true;
+            }
+            if (cat.length == 0){
+                document.getElementById('required').style.visibility = 'visible';
+            } else{
+                document.getElementById('required').style.visibility = 'hidden';
+                
+            }
+            if (det.length == 0){
+                document.getElementById('required2').style.visibility = 'visible';
+            } else{
+                document.getElementById('required2').style.visibility = 'hidden';
             }
         }
         function myTrim(stringToTrim){
             return stringToTrim.replace(/^\s+|\s+$/gm,'');
         }
-        function btnSubmit(){
-            var cat = myTrim(category.value);
-            var det = myTrim(detail.value);
-            if(cat === "" || det === ""){
-                $('#invalidModal').modal('show');
-            }
-            else{
-                var btnSub = document.getElementById("hideSubmit");
-                btnSub.style.display = "block";
-                btnSub.click();
-                btnSub.style.display = "none";
-            }
-        }
     </script>
 </body>
+<footer th:replace="fragments/general.html :: footer"></footer>
 </html>
