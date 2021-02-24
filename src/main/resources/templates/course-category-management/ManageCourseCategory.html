@@ -58,7 +58,8 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-danger" href="#confirmDeleteModal">Delete</button>
+						<button type="submit" class="btn btn-danger"
+							href="#confirmDeleteModal">Delete</button>
 						<input type="button" class="btn btn-primary" data-dismiss="modal"
 							value="Back">
 					</div>
@@ -69,8 +70,8 @@
 	<!-- Delete - Info modal End-->
 
 	<!--Delete - Confirm Modal-->
-	<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true"
+	<div class="modal fade" id="confirmDeleteModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
 		th:object="${deleteCourseCategoryForm}">
 		<div class="modal-dialog modal-sm text-center">
 			<div class="modal-content">
@@ -203,7 +204,7 @@
 			$('#infoModal').modal('show');
 
 		}
-		
+
 		function refreshCourseCategory() {
 			window.location.href = '/courseCategory/load';
 		}
@@ -225,7 +226,7 @@
 			}
 
 		});
-		
+
 		$(document).ready(function() {
 			$('#confirmDeleteModal').on('hidden.bs.modal', function(e) {
 				refreshCourseCategory();
