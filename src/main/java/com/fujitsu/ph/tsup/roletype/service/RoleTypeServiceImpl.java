@@ -25,6 +25,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.05    | 2021/02/22 | WS) s.sayaboc         | Updated
 //0.06    | 2021/02/23 | WS) s.labador         | Updated
 //0.07    | 2021/02/24 | WS) p.cui             | Updated
+//0.08    | 2021/02/26 | WS) c.sinda           | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -32,12 +33,13 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * 
  * <pre>
  * 
- * @version 0.07
+ * @version 0.08
  * @author rl.naval
  * @author j.sayaboc
  * @author i.fajardo
  * @author s.labador
  * @author p.cui
+ * @author c.sinda
  */
 @Service
 public class RoleTypeServiceImpl implements RoleTypeService {
@@ -71,8 +73,8 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     public Set<RoleType> findRoleTypeByName(String rolename) {
         Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByName(rolename);
         try {
-            if (StringUtils.isEmpty(roleFormList)) {
-                throw new IllegalArgumentException("No Role Types Available.");
+            if (roleFormList == null || roleFormList.isEmpty()) {
+                return null;
             } else {
                 return roleFormList;
             }
@@ -93,7 +95,6 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     public boolean findIfRoleNameExists(String rolename, Long id) {
         Set<RoleType> roleList = roleTypeDao.findIfRoleNameExists(rolename, id);
         boolean isRoleExisting = false;
-
         try {
             if (!roleList.isEmpty()) {
                 isRoleExisting = true;

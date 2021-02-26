@@ -28,6 +28,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * 
  * @version 0.06
  * @author rl.naval
+ * @author c.sinda
  * @author s.labador
  * @author j.sayaboc
  * @author p.cui

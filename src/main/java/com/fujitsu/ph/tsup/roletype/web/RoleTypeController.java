@@ -36,13 +36,14 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //0.04    | 2021/02/18 | WS) c.rondina         | Updated
 //0.05    | 2021/02/21 | WS) j.sayaboc         | Updated
 //0.06    | 2021/02/24 | WS) p.cui             | Updated
+//0.07    | 2021/02/26 | WS) c.sinda           | Updated
 //==================================================================================================
 /**
  * <pre>
  * This is the implementation of Role Type Controller.
  * </pre>
  * 
- * @version 0.06
+ * @version 0.07
  * @author rl.naval
  * @author c.sinda
  * @author c.rondina
@@ -204,13 +205,16 @@ public class RoleTypeController {
      */
     @GetMapping("/update/{roleId}")
     public String showUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
+        
         // assign all roletypes to roletypeList model attribute
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
         model.addAttribute("roletypeList", roletypeList);
         model.addAttribute("roleId", id);
+        
         // Set Value for RoleType Object
         RoleType role = roleTypeService.findRoleById(id);
+        
         // Set Value for RoleTypeForm
         form.setId(role.getId());
         form.setRolename(role.getRolename());
@@ -229,12 +233,14 @@ public class RoleTypeController {
      */
     @PostMapping("/update/{roleId}")
     public String submitUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
+        
         // assign all roletypes to roletypeList model attribute
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
         model.addAttribute("roletypeList", roletypeList);
         model.addAttribute("roleId", id);
         boolean isRoleExisting = roleTypeService.findIfRoleNameExists(form.getRolename().toLowerCase(), id);
+        
         // Check if Role Type is already existing in the table
         if (isRoleExisting) {
             form.setId(id);
