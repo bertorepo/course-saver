@@ -41,9 +41,10 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
  * This is the implementation of Role Type Controller.
  * </pre>
  * 
- * @version 0.04
+ * @version 0.05
  * @author rl.naval
  * @author c.sinda
+ * @author c.rondina
  * @author p.cui
  * 
  *
