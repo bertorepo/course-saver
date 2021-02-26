@@ -126,7 +126,7 @@
                             </div>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" id="category" name="category" onkeyup="validateIfEmpty()" />
-                                <span id="categoryErrorMsg"></span>
+                                <span id="categoryErrorMsg" style="color:red;"></span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -135,13 +135,13 @@
                             </div>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" id="detail" name="detail" onkeyup="validateIfEmpty()" />
-                                <span id="detailErrorMsg"></span>
+                                <span id="detailErrorMsg" style="color:red;"></span>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="updateBtn" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#confirmUpdateModal">Update Category</button>
-                        <input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+                        <input type="button" class="btn btn-primary" data-dismiss="modal" value="Back" onclick="refreshCourseCategory()">
                     </div>
                 </div>
             </div>
@@ -252,7 +252,7 @@
 
     <script type="text/javascript" th:inline="javascript">
         function deleteButton(id, category, detail) {
-            document.getElementById("categoryIdInput").value = id;
+            document.getElementById("courseCategoryIdInput").value = id;
             document.getElementById("courseCategoryName").innerHTML = category;
             document.getElementById("courseCategoryDetail").innerHTML = detail;
             $('#infoModal').modal('show');
