@@ -25,17 +25,19 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.03    | 2021/02/17 | WS) j.sayaboc         | Updated
 //0.04    | 2021/02/22 | WS) j.sayaboc         | Updated
 //0.05    | 2021/02/24 | WS) p.cui             | Updated
+//0.06    | 2021/02/26 | WS) c.sinda           | Updated
 //==================================================================================================
 
 
 /**
  * RoleTypeDaoImpl class
  * 
- * @version 0.05 
+ * @version 0.06
  * @author rl.naval
  * @author s.labador
  * @author p.cui
  * @author j.sayaboc
+ * @author c.sinda
  */
 
 @Repository
