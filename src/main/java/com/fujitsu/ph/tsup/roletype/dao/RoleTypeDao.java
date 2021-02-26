@@ -19,14 +19,16 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.02    | 2021/02/15 | WS) rl.naval          | Updated
 //0.03    | 2021/02/17 | WS) c.sinda           | Updated
 //0.04    | 2021/02/23 | WS) s.labador         | Updated
+//0.05    | 2021/02/24 | WS) p.cui             | Updated
 //==================================================================================================
 
 /**
  * RoleTypeDao class
  * 
- * @version 0.04
+ * @version 0.05
  * @author rl.naval
  * @author s.labador
+ * @author p.cui
  */
 
 public interface RoleTypeDao {
@@ -45,6 +47,9 @@ public interface RoleTypeDao {
 
     // Method for loading all Role Type in Role View
     Set<RoleType> loadAllRoleType();
+
+    //Method for loading all Role Type in Role View with pagination
+    Set<RoleType> loadAllRoleType(int total, int page);
 
     // Method for deleting Role Type by Id
     void deleteRoleTypeById(Long id);

@@ -1,4 +1,5 @@
 <!-- @Author: Naval, Rosalyn-->
+<!-- @Author: Cui, Patricia-->
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -11,14 +12,11 @@
 <meta name="author" content="" />
 <title>Manage Member Role</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/css/app/font-awesome.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/css/app/scheduling/scheduling.common.css">
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
-<script th:src="@{/js/roleType.js}"></script>
 </head>
 <body>
 	<!--Confirm Modal-->
@@ -123,7 +121,7 @@
 						</div>
 						<a class="fa fa-refresh fa-lg col-sm-1 mt-2"
 							style="text-decoration: none; color: black"
-							th:href="@{/roletype/load}"></a>
+							th:href="@{/roletype/load/1}"></a>
 					</div>
 					<div class="float-right">
 						<input type="submit" class="btn btn-success" value="Submit">
@@ -163,6 +161,15 @@
 					<div th:if="${#lists.isEmpty(roletypeList)}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No Role Types Available</strong>
+						</div>
+					</div>
+				</div>
+				<div th:if="${totalPage &gt; 1}">
+					<div class="pcenter">
+						<div class="pagination">
+							<th:block th:each="i: ${#numbers.sequence(1, totalPage)}">
+								<a th:href="@{'/roletype/load/' + ${i}}" th:text="${i}"></a>
+							</th:block>
 						</div>
 					</div>
 				</div>
