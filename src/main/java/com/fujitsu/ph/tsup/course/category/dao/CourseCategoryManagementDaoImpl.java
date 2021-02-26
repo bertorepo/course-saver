@@ -26,7 +26,8 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 //--------+------------+---------------------+---------------
 //0.01    | 02/08/2020 | WS) A.Batongbacal   | New Creation
 //0.02    | 02/15/2020 | WS) A.Batongbacal   | Update
-//0.02    | 02/24/2020 | WS) R.Rivero        | Update
+//0.03    | 02/24/2020 | WS) R.Rivero        | Update
+//0.04    | 02/24/2020 | WS) J.ira           | Update
 //=======================================================
 /**
 * <pre>
@@ -34,9 +35,10 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 * 
 * <pre>
 * 
-* @version 0.03
+* @version 0.04
 * @author a.batongbaca
 * @author r.rivero
+* @author j.lira
 *
 */
 public class CourseCategoryManagementDaoImpl implements CourseCategoryManagementDao{
@@ -87,5 +89,31 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
         } catch (DuplicateKeyException ex) {
             throw new DuplicateKeyException(ex.getMessage());
         }
+    }
+
+    /**
+     * Method for finding Course by Id
+     */
+    @Override
+    public CourseCategory findCourseCategoryById(Long id) {
+
+        String query = "SELECT * FROM COURSE_CATEGORY WHERE ID =" + id;
+
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+
+        return template.queryForObject(query, sqlParameterSource,
+                new CourseCategoryRowMapper());
+    }
+    
+    @Override
+    public Set<CourseCategory> findAllCourseCategory() {
+
+        String query = "SELECT * FROM COURSE_CATEGORY ORDER BY category";
+
+        List<CourseCategory> courseCategoryList = template.query(query, new CourseCategoryRowMapper());
+        Set<CourseCategory> courseCategory = new LinkedHashSet<>(courseCategoryList);
+
+        return courseCategory;
     }
 }

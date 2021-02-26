@@ -17,7 +17,8 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 //--------+------------+---------------------+---------------
 //0.01    | 02/08/2020 | WS) A.Batongbacal   | New Creation
 //0.02    | 02/15/2020 | WS) A.Batongbacal   | Update
-//0.02    | 02/24/2020 | WS) R.Rivero        | Update
+//0.03    | 02/24/2020 | WS) R.Rivero        | Update
+//0.04    | 02/24/2020 | WS) J.Lira          | Update
 //=======================================================
 /**
 * <pre>
@@ -25,9 +26,10 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 * 
 * <pre>
 * 
-* @version 0.03
+* @version 0.04
 * @author a.batongbacal
 * @author r.rivero
+* @author j.lira
 *
 */
 public interface CourseCategoryManagementDao {
@@ -39,5 +41,11 @@ public interface CourseCategoryManagementDao {
 
     // Method for creating course categories
     void createCourseCategory(CourseCategory courseCategory);
+
+    // Method for finding Course Category by Id
+    CourseCategory findCourseCategoryById(Long id);
+ 
+    // Method for loading all course category in Course Category View
+    Set<CourseCategory> findAllCourseCategory();
 
 }

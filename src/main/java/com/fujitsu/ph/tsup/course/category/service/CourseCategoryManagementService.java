@@ -1,3 +1,6 @@
+/**
+ * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
+ */
 package com.fujitsu.ph.tsup.course.category.service;
 
 import java.util.Set;
@@ -14,7 +17,8 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 //--------+------------+---------------------+---------------
 //0.01    | 02/08/2020 | WS) A.Batongbacal   | New Creation
 //0.02    | 02/15/2020 | WS) A.Batongbacal   | Update
-//0.02    | 02/15/2020 | WS) J.Zamora        | Update
+//0.03    | 02/15/2020 | WS) J.Zamora        | Update
+//0.04    | 02/15/2020 | WS) G.Cabiling      | Update
 //=======================================================
 /**
 * <pre>
@@ -22,9 +26,10 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 * 
 * <pre>
 * 
-* @version 0.03
+* @version 0.04
 * @author a.batongbaca
 * @author j.zamora
+* @author g.cabiling
 *
 */
 public interface CourseCategoryManagementService {
@@ -34,8 +39,9 @@ public interface CourseCategoryManagementService {
     // A method that checks if the input has a duplicate
     Set<CourseCategory> findCourseCategoryByName(String name);
 
-
     // A method that creates course category
-    void createCourseCategory(CourseCategory courseCategory);
+    void createCourseCategory(CourseCategory courseCategory);    
+
+    Set<CourseCategory> findAllCourseCategory();
 
 }
