@@ -11,15 +11,8 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/24/2020 | WS) T.Oviedo          | New Creation
 //0.02    | 08/24/2020 | WS) J.Yu              | Update
+//0.03    | 02/23/2021 | WS) E.Ceniza          | Update
 //==================================================================================================
-/**
-* <pre>
-* JavaBean for EnrollmentService
-* <pre>
-* 
-* @version 0.01
-* @author t.oviedo                    
-*/
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
@@ -30,6 +23,14 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
+/**
+* <pre>
+* JavaBean for EnrollmentService
+* <pre>
+* 
+* @version 0.01
+* @author t.oviedo                    
+*/
 public interface EnrollmentService {
 
 	/** Sends calendar invite to the successfully enrolled participant */

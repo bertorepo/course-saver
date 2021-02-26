@@ -33,7 +33,6 @@ import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
-//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollCancelForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrolledListForm;
@@ -64,6 +63,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.01    | 07/30/2020 | WS) M.Lumontad  | Updated
 //0.01    | 08/05/2020 | WS) J.Yu        | Updated
 //0.02    | 09/15/2020 | WS) J.Yu        | Updated
+//0.03    | 02/23/2021 | WS) E.Ceniza    | Update
 //=======================================================
 
 /**
