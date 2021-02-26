@@ -50,6 +50,7 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
     }
 
     // Creates course category
+    @Override
     public void createCourseCategory(CourseCategory courseCategory) {
         try {
             courseCategoryManagementDao.createCourseCategory(courseCategory);
@@ -75,6 +76,7 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
         return courseCategoryFormList;
     }
 
+    @Override
     public void deleteCourseCategoryById(Long id) {
         courseCategoryManagementDao.deleteCourseCategoryById(id);
     }
