@@ -1,4 +1,8 @@
 <!-- @Author:Batongbacal, Aevan-->
+<!-- @Author:Lira, Juan Paolo-->
+<!-- @Author:Cabiling, Glenda-->
+<!-- @Author:De Guia, Zedriz-->
+<!-- @Author:Piloto, Rosalinda-->
 
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
@@ -19,6 +23,63 @@
 </head>
 
 <body>
+
+    <!-- Delete - Info modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <form id="infoModalFormId" th:action="@{/courseCategory/__${courseCategoryIdInput}__/delete}" method="get">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header alert-light">
+                        <h5 class="modal-title">Course Category Information</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <input type="hidden" id="courseCategoryIdInput" name="courseCategoryIdInput"></input> <label class="col-lg-3 col-form-label">Course Category Name:</label>
+                            <div class="col-lg-9">
+                                <label class="col-lg-3 col-form-label" id="courseCategoryName" name="courseCategoryName"></label>
+                            </div>
+                            <label class="col-lg-3 col-form-label">Detail:</label>
+                            <div class="col-lg-9">
+                                <label class="col-lg-3 col-form-label" id="courseCategoryDetail" name="courseDetail"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger" href="#confirmDeleteModal">Delete</button>
+                        <input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Delete - Info modal End-->
+
+    <!--Delete - Confirm Modal-->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" th:object="${deleteCourseCategoryForm}">
+        <div class="modal-dialog modal-sm text-center">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <input type="hidden" id="courseCategoryId" name="courseCategoryId"></input>
+                        <p th:text="${param.courseCategoryId}" hidden></p>
+                        <label class="col-lg-12 col-form-label">Are you sure you
+							want to delete the selected course category? </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form class="form-horizontal" th:action="@{/courseCategory/__${param.courseCategoryId}__/delete}" method="post">
+                        <button type="submit" class="btn btn-danger">Confirm
+							Deletion</button>
+                    </form>
+                    <input type="button" class="btn btn-primary" onclick="refreshCourseCategory()" data-dismiss="modal" value="Back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Delete - Confirm Modal End-->
 
     <!--Confirm Update Modal-->
     <div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" th:object="${updateCourseForm}">
@@ -73,7 +134,8 @@
                                 <label class="col-form-label">Detail:</label>
                             </div>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control" id="detail" name="detail" />
+                                <input type="text" class="form-control" id="detail" name="detail" onkeyup="validateIfEmpty()" />
+                                <span id="detailErrorMsg"></span>
                             </div>
                         </div>
                     </div>
@@ -105,7 +167,6 @@
                 <div class="modal-footer">
                     <input type="button" class="btn btn-primary" data-dismiss="modal" value="Okay" onclick="refreshCourseCategory()">
                 </div>
-
             </div>
         </div>
     </div>
@@ -187,7 +248,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <script type="text/javascript" th:inline="javascript">
@@ -246,6 +306,13 @@
                 $('#updateModalFormId').submit();
             });
 
+            $('#confirmDeleteModal').on('hidden.bs.modal', function(e) {
+                refreshCourseCategory();
+            });
+
+            $('#successModal').on('hidden.bs.modal', function(e) {
+                refreshCourseCategory();
+            });
         });
     </script>
 

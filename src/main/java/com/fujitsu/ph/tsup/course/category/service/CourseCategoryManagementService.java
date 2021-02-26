@@ -19,6 +19,7 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 //0.02    | 02/15/2020 | WS) A.Batongbacal   | Update
 //0.03    | 02/15/2020 | WS) J.Zamora        | Update
 //0.04    | 02/15/2020 | WS) G.Cabiling      | Update
+//0.05    | 02/24/2020 | WS) Z.DeGuia        | Update
 //=======================================================
 /**
 * <pre>
@@ -26,10 +27,11 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 * 
 * <pre>
 * 
-* @version 0.04
+* @version 0.05
 * @author a.batongbaca
 * @author j.zamora
 * @author g.cabiling
+* @author z.deguia
 *
 */
 public interface CourseCategoryManagementService {
@@ -43,5 +45,9 @@ public interface CourseCategoryManagementService {
     void createCourseCategory(CourseCategory courseCategory);    
 
     Set<CourseCategory> findAllCourseCategory();
+    
+    void deleteCourseCategoryById(Long id);
+
+    CourseCategory findCourseCategoryById(Long id);
 
 }
