@@ -34,19 +34,20 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //0.02    | 2021/02/15 | WS) rl.naval          | Updated
 //0.03    | 2021/02/17 | WS) c.sinda           | Updated
 //0.04    | 2021/02/18 | WS) c.rondina         | Updated
-//0.05    | 2021/02/24 | WS) p.cui             | Updated
+//0.05    | 2021/02/21 | WS) j.sayaboc         | Updated
+//0.06    | 2021/02/24 | WS) p.cui             | Updated
 //==================================================================================================
 /**
  * <pre>
  * This is the implementation of Role Type Controller.
  * </pre>
  * 
- * @version 0.05
+ * @version 0.06
  * @author rl.naval
  * @author c.sinda
  * @author c.rondina
  * @author p.cui
- * 
+ * @author j.sayaboc
  *
  */
 @Controller
