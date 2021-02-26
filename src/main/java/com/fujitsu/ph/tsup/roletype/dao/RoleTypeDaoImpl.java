@@ -23,15 +23,17 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.01    | 2021/02/05 | WS) rl.naval          | Initial Version
 //0.02    | 2021/02/16 | WS) s.labador         | Updated
 //0.03    | 2021/02/17 | WS) j.sayaboc         | Updated
+//0.04    | 2021/02/24 | WS) p.cui             | Updated
 //==================================================================================================
 
 
 /**
  * RoleTypeDaoImpl class
  * 
- * @version 0.03 
+ * @version 0.04 
  * @author rl.naval
  * @author s.labador
+ * @author p.cui
  */
 
 @Repository
@@ -95,6 +97,22 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         List<RoleType> roleList = template.query(query, new RoleTypeRowMapper());
         Set<RoleType> roles = new LinkedHashSet<>(roleList);
 
+        return roles;
+    }
+
+    /**
+     * Load all role types with pagination
+     * @param pageSize
+     * @param page
+     * @return roles
+     */
+    @Override
+    public Set<RoleType> loadAllRoleType(int pageSize, int page) {
+        String query = "SELECT * FROM MEMBER_ROLE LIMIT "+ pageSize+" OFFSET "+ ((pageSize*page)-pageSize);
+        
+        List<RoleType> roleList = template.query(query, new RoleTypeRowMapper());
+        Set<RoleType> roles = new LinkedHashSet<>(roleList);
+        
         return roles;
     }
 

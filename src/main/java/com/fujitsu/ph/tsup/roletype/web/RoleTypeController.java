@@ -6,8 +6,6 @@ package com.fujitsu.ph.tsup.roletype.web;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,16 +34,18 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //0.02    | 2021/02/15 | WS) rl.naval          | Updated
 //0.03    | 2021/02/17 | WS) c.sinda           | Updated
 //0.04    | 2021/02/18 | WS) c.rondina         | Updated
+//0.05    | 2021/02/24 | WS) p.cui             | Updated
 //==================================================================================================
 /**
  * <pre>
  * This is the implementation of Role Type Controller.
  * </pre>
  * 
- * @version 0.04
+ * @version 0.05
  * @author rl.naval
  * @author c.sinda
  * @author c.rondina
+ * @author p.cui
  * 
  *
  */
@@ -61,11 +61,30 @@ public class RoleTypeController {
      * @param model Model
      * @return View
      */
-    @GetMapping("/load")
-    public String manageRoleType(Model model) {
-        Set<RoleType> roletype = roleTypeService.loadAllRoleType();
+    @GetMapping("/load/{page}")
+    public String manageRoleType(@PathVariable("page") int page, Model model) {
+        int pageSize = 6;
+        int totalRoleTypes = 0;
+        int totalPage = 0;
+
+        Set<RoleType> allRoleTypes = roleTypeService.loadAllRoleType();
+        totalRoleTypes = allRoleTypes.size();
+
+        Set<RoleType> roletype = roleTypeService.loadAllRoleType(pageSize, page);
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
+
+        if ((totalRoleTypes % pageSize) != 0) {
+            totalPage = (int) (totalRoleTypes / pageSize) + 1;
+        } else {
+            totalPage = (int) (totalRoleTypes / pageSize);
+        }
+
+        System.out.println("totalRoleTypes" + totalRoleTypes);
+        System.out.println("totalPage" + totalPage);
+
+        model.addAttribute("totalPage", totalPage);
         model.addAttribute("roletypeList", roletypeList);
+
         return "roletype-management/roleTypeView";
     }
 
@@ -82,7 +101,7 @@ public class RoleTypeController {
     public String showDeleteRoleTypeForm(@RequestParam(value = "roleIdInput") Long id, RoleTypeForm form,
             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/roletype/load?roleId=" + id + "#confirmModal";
+            return "redirect:/roletype/load/1?roleId=" + id + "#confirmModal";
         }
         // Set Value for RoleType Object
         RoleType role = roleTypeService.findRoleById(id);
@@ -91,7 +110,7 @@ public class RoleTypeController {
         form.setRolename(role.getRolename());
         form.setRoledesc(role.getRoledesc());
         model.addAttribute("deleteRoleTypeForm", form);
-        return "redirect:/roletype/load?roleId=" + id + "#confirmModal";
+        return "redirect:/roletype/load/1?roleId=" + id + "#confirmModal";
     }
 
     /**
@@ -109,7 +128,7 @@ public class RoleTypeController {
         roleTypeService.deleteRoleTypeById(id);
         redirectAttributes.addFlashAttribute("deleteSuccessMessage",
                 "You have successfully deleted this role type");
-        return "redirect:/roletype/load#successModal";
+        return "redirect:/roletype/load/1#successModal";
     }
 
     /**
@@ -123,14 +142,14 @@ public class RoleTypeController {
     public String submitSearchRoleTypeForm(@RequestParam(name = "searchRole") String searchRole,
             Model model) {
         if (StringUtils.isEmpty(searchRole)) {
-            return "redirect:/roletype/load";
+            return "redirect:/roletype/load/1";
         }
         Set<RoleType> role = roleTypeService.findRoleTypeByKeyword(searchRole);
 
         List<RoleType> listOfRole = role.stream().collect(Collectors.toList());
         model.addAttribute("roletypeList", listOfRole);
         if (listOfRole == null) {
-            return "redirect:/roletype/load";
+            return "redirect:/roletype/load/1";
         }
         return "roletype-management/roleTypeView";
     }
@@ -231,6 +250,6 @@ public class RoleTypeController {
                 e.printStackTrace();
             }
         }
-        return "redirect:/roletype/load";
+        return "redirect:/roletype/load/1";
     }
 }

@@ -23,6 +23,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.03    | 2021/02/17 | WS) j.sayaboc         | Updated
 //0.04    | 2021/02/18 | WS) i.fajardo         | Updated
 //0.05    | 2021/02/23 | WS) s.labador         | Updated
+//0.06    | 2021/02/24 | WS) p.cui             | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -30,11 +31,12 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * 
  * <pre>
  * 
- * @version 0.05
+ * @version 0.06
  * @author rl.naval
  * @author j.sayaboc
  * @author i.fajardo
  * @author s.labador
+ * @author p.cui
  */
 @Service
 public class RoleTypeServiceImpl implements RoleTypeService {
@@ -109,6 +111,16 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     @Override
     public Set<RoleType> loadAllRoleType() {
         return roleTypeDao.loadAllRoleType();
+    }
+
+    /**
+     * Loads all role types with pagination
+     * 
+     * @return roleTypeDao.loadAllRoleType
+     */
+    @Override
+    public Set<RoleType> loadAllRoleType(int pageSize, int page) {
+        return roleTypeDao.loadAllRoleType(pageSize,page);
     }
 
     // Delete role type by id
