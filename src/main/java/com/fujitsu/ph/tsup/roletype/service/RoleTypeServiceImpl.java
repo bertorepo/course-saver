@@ -73,7 +73,7 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     public Set<RoleType> findRoleTypeByName(String rolename) {
         Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByName(rolename);
         try {
-            if (roleFormList.isEmpty()) {
+            if (roleFormList == null || roleFormList.isEmpty()) {
                 return null;
             } else {
                 return roleFormList;
