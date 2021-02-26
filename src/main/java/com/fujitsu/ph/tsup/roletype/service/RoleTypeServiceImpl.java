@@ -71,8 +71,8 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     public Set<RoleType> findRoleTypeByName(String rolename) {
         Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByName(rolename);
         try {
-            if (roleFormList == null || roleFormList.isEmpty()) {
-                return null;
+            if (StringUtils.isEmpty(roleFormList)) {
+                throw new IllegalArgumentException("No Role Types Available.");
             } else {
                 return roleFormList;
             }
