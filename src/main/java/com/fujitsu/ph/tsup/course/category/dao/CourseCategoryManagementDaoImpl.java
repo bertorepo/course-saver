@@ -120,6 +120,5 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
         String query = "DELETE FROM COURSE_CATEGORY WHERE ID =" + id;
         SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
         template.update(query, namedParameters);
-        return courseCategory;
     }
 }
