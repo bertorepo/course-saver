@@ -21,6 +21,8 @@
 	href="/css/app/font-awesome.min.css">
 <link rel="stylesheet" type="text/css"
 	href="/css/app/scheduling/scheduling.common.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/course-category-view-page.css">
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -245,15 +247,15 @@
 			<div class="card-body">
 				<form class="form-horizontal" action="#"
 					th:action="@{/courseCategory/search}" method="post">
-					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">Search:</label>
-						<div class="col-lg-3">
+					<div class="form-group row justify-content-center">
+						<label class="col-lg-1 col-form-label">Search:</label>
+						<div class="col-lg-8">
 							<input type="Text" class="form-control"
 								name="searchCourseCategoryName" id="searchCourseCategoryName">
 						</div>
-					</div>
-					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
+						<div class="float-right">
+							<input type="submit" class="btn btn-success" value="Submit">
+						</div>
 					</div>
 				</form>
 			</div>
@@ -261,7 +263,7 @@
 		<div class="card mb-5">
 			<div class="card-header">
 				<h3>
-					<i class="fa fa-exclamation-triangle"></i> Manage Course Category
+					<i class="fa fa-cogs"></i> Manage Course Category
 				</h3>
 			</div>
 			<div class="card-body">
@@ -294,87 +296,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="float-right">
-					<a th:href="@{/enrollment/viewCourseEnroll}">View More <i
-						class="fa fa-arrow-circle-right"></i></a>
+				<div class="card-footer" style="text-align: center !important;">
+					<div id="pagination"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<script type="text/javascript" th:inline="javascript">
-        function deleteButton(id, category, detail) {
-            document.getElementById("courseCategoryIdInput").value = id;
-            document.getElementById("courseCategoryName").innerHTML = category;
-            document.getElementById("courseCategoryDetail").innerHTML = detail;
-            $('#infoModal').modal('show');
-        }
-
-        function showUpdateModal(id, category, detail) {
-            document.getElementById("id").value = id;
-            document.getElementById("category").value = category;
-            document.getElementById("detail").value = detail;
-            $('#updateModal').modal('show');
-        }
-
-        function validateIfEmpty() {
-            var category = document.getElementById("category");
-            var detail = document.getElementById("detail");
-            document.getElementById("updateBtn").disabled = true;
-            if (category.value === "" && detail.value != "") {
-                document.getElementById("categoryErrorMsg").innerHTML = "*Required";
-                document.getElementById("detailErrorMsg").innerHTML = "";
-            } else if (category.value != "" && detail.value === "") {
-                document.getElementById("categoryErrorMsg").innerHTML = "";
-                document.getElementById("detailErrorMsg").innerHTML = "*Required";
-            } else if (category.value === "" && detail.value === "") {
-                document.getElementById("categoryErrorMsg").innerHTML = "*Required";
-                document.getElementById("detailErrorMsg").innerHTML = "*Required";
-            } else {
-                document.getElementById("categoryErrorMsg").innerHTML = "";
-                document.getElementById("detailErrorMsg").innerHTML = "";
-                document.getElementById("updateBtn").disabled = false;
-            }
-        }
-
-        function refreshCourseCategory() {
-            window.location.href = '/courseCategory/load';
-        }
-
-        $(document).ready(function() {
-            if (window.location.href.indexOf('#confirmDeleteModal') != -1) {
-                $('#confirmDeleteModal').modal('show');
-            }
-
-            if (window.location.href.indexOf('#successModal') != -1) {
-                $('#successModal').modal('show');
-            }
-
-            if (window.location.href.indexOf('#errorModal') != -1) {
-                $('#errorModal').modal('show');
-            }
-
-            $('#confirmUpdateBtn').click(function() {
-                $('#updateModalFormId').submit();
-            });
-
-            $('#confirmDeleteModal').on('hidden.bs.modal', function(e) {
-                refreshCourseCategory();
-            });
-
-            $('#successModal').on('hidden.bs.modal', function(e) {
-                refreshCourseCategory();
-            });
-
-            $('#confirmUpdateModal').on('hidden.bs.modal', function(e) {
-                refreshCourseCategory();
-            });
-
-            $('#errorModal').on('hidden.bs.modal', function(e) {
-                refreshCourseCategory();
-            });
-        });
-    </script>
+	<script type="text/javascript" src="/js/lib/viewCourseCategory.js"></script>
 
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
