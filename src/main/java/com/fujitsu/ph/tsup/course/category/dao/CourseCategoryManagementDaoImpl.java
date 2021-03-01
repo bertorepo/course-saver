@@ -66,14 +66,14 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
 
     // Method for searching course categories by category
     @Override
-    public Set<CourseCategory> findCourseCategoryByName(String name) {
+    public Set<CourseCategory> findCourseCategoryByName(String category) {
 
-        String query = "SELECT * FROM COURSE_CATEGORY WHERE LOWER(category) LIKE LOWER('" + name + "')";
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("category", name);
-        List<CourseCategory> categoryList = template.query(query, sqlParameterSource,
+        String query = "SELECT * FROM COURSE_CATEGORY  WHERE LOWER(category) LIKE LOWER('%" + category + "%')";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("category", category);
+        List<CourseCategory> courseCategoryList = template.query(query, sqlParameterSource,
                 new CourseCategoryRowMapper());
-        Set<CourseCategory> categories = new LinkedHashSet<>(categoryList);
-        return categories;
+        Set<CourseCategory> courseCategory = new LinkedHashSet<>(courseCategoryList);
+        return courseCategory;
     }
 
     // Method for creating course categories
