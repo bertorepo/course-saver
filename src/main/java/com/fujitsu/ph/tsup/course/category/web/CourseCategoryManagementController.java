@@ -109,24 +109,15 @@ public class CourseCategoryManagementController {
             CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
                     form.getDetail()).build();
             List<CourseCategory> listOfCourseCategory = categorySize.stream().collect(Collectors.toList());
-            if (listOfCourseCategory.isEmpty()) {
-                courseCategoryManagementService.createCourseCategory(categoryDetails);
-                model.addAttribute("successMessage", "Registration Complete.");
-                return "course-category-management/CreateCourseCategory";
-            } else {
-                for(CourseCategory category: listOfCourseCategory) {
-                    if(!category.getCategory().equals(form.getCategory())) {
-                        courseCategoryManagementService.createCourseCategory(categoryDetails);
-                        model.addAttribute("successMessage", "Registration Complete.");
-                        break;
-                    }
-                    else if(category.getCategory().equals(form.getCategory())){
-                        model.addAttribute("invalid", "The specified course category is already existing. Please change the Course Category Name.");
-                        break;
-                    }
+            for (CourseCategory category : listOfCourseCategory) {
+                if (category.getCategory().equals(form.getCategory())) {
+                    model.addAttribute("invalid", "The specified course category is already existing. Please change the Course Category Name.");
+                    return "course-category-management/CreateCourseCategory";
                 }
-                return "course-category-management/CreateCourseCategory";
             }
+            courseCategoryManagementService.createCourseCategory(categoryDetails);
+            model.addAttribute("successMessage", "Registration Complete.");
+            return "course-category-management/CreateCourseCategory";
         } catch (Exception ex) {
             model.addAttribute("invalid", ex.getMessage());
             return "course-category-management/CreateCourseCategory";
