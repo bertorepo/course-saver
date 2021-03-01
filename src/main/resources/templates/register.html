@@ -16,17 +16,17 @@
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
 	
-    <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+	<script th:src="@{/js/app/jquery-ui.js}"></script>
+	<link rel="stylesheet" type="text/css" href="/css/app/jquery-ui.css">
 </head>
 
 <body>
-<script type="text/javascript">
-$(function() {
-   $( "#employmentDate" ).datepicker({  dateFormat: "yy-mm-dd", maxDate: new Date()}).datepicker("setDate", new Date());
- });
-
- </script>
+	<script type="text/javascript">
+		$(function() {
+		   $( "#employmentDate" ).datepicker({  dateFormat: "yy-mm-dd", maxDate: new Date()}).datepicker("setDate", new Date());
+		 });
+ 	</script>
+ 	
 	<div th:replace="fragments/general :: header2"> </div>
 	
 	<main role="main" class="container">
