@@ -5,252 +5,297 @@
 <!-- @Author:Piloto, Rosalinda-->
 
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Manage Course Category</title>
-    <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
-    <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
-    <script th:src="@{/js/app/popper.min.js}"></script>
-    <script th:src="@{/js/app/bootstrap.min.js}"></script>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Manage Course Category</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/scheduling/scheduling.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/popper.min.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
 </head>
 
 <body>
 
-    <!-- Delete - Info modal -->
-    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <form id="infoModalFormId" th:action="@{/courseCategory/__${courseCategoryIdInput}__/delete}" method="get">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header alert-light">
-                        <h5 class="modal-title">Course Category Information</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	<!-- Delete - Info modal -->
+	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form id="infoModalFormId"
+			th:action="@{/courseCategory/__${courseCategoryIdInput}__/delete}"
+			method="get">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header alert-info">
+						<h5 class="modal-title">Course Category Information</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group row">
-                            <input type="hidden" id="courseCategoryIdInput" name="courseCategoryIdInput"></input> <label class="col-lg-3 col-form-label">Course Category Name:</label>
-                            <div class="col-lg-9">
-                                <label class="col-lg-3 col-form-label" id="courseCategoryName" name="courseCategoryName"></label>
-                            </div>
-                            <label class="col-lg-3 col-form-label">Detail:</label>
-                            <div class="col-lg-9">
-                                <label class="col-lg-3 col-form-label" id="courseCategoryDetail" name="courseDetail"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger" href="#confirmDeleteModal">Delete</button>
-                        <input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <!-- Delete - Info modal End-->
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<input type="hidden" id="courseCategoryIdInput"
+								name="courseCategoryIdInput"></input> <label
+								class="col-lg-3 col-form-label">Course Category Name:</label>
+							<div class="col-lg-9">
+								<label class="col-lg-3 col-form-label" id="courseCategoryName"
+									name="courseCategoryName"></label>
+							</div>
+							<label class="col-lg-3 col-form-label">Detail:</label>
+							<div class="col-lg-9">
+								<label class="col-lg-3 col-form-label" id="courseCategoryDetail"
+									name="courseDetail"></label>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger"
+							href="#confirmDeleteModal">Delete</button>
+						<input type="button" class="btn btn-primary" data-dismiss="modal"
+							value="Back">
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- Delete - Info modal End-->
 
-    <!--Delete - Confirm Modal-->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" th:object="${deleteCourseCategoryForm}">
-        <div class="modal-dialog modal-sm text-center">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <input type="hidden" id="courseCategoryId" name="courseCategoryId"></input>
-                        <p th:text="${param.courseCategoryId}" hidden></p>
-                        <label class="col-lg-12 col-form-label">Are you sure you
+	<!--Delete - Confirm Modal-->
+	<div class="modal fade" id="confirmDeleteModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+		th:object="${deleteCourseCategoryForm}">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="form-group row">
+						<input type="hidden" id="courseCategoryId" name="courseCategoryId"></input>
+						<p th:text="${param.courseCategoryId}" hidden></p>
+						<label class="col-lg-12 col-form-label">Are you sure you
 							want to delete the selected course category? </label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <form class="form-horizontal" th:action="@{/courseCategory/__${param.courseCategoryId}__/delete}" method="post">
-                        <button type="submit" class="btn btn-danger">Confirm
+					</div>
+				</div>
+				<div class="modal-footer">
+					<form class="form-horizontal"
+						th:action="@{/courseCategory/__${param.courseCategoryId}__/delete}"
+						method="post">
+						<button type="submit" class="btn btn-danger">Confirm
 							Deletion</button>
-                    </form>
-                    <input type="button" class="btn btn-primary" onclick="refreshCourseCategory()" data-dismiss="modal" value="Back">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Delete - Confirm Modal End-->
+					</form>
+					<input type="button" class="btn btn-primary"
+						onclick="refreshCourseCategory()" data-dismiss="modal"
+						value="Back">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Delete - Confirm Modal End-->
 
-    <!--Confirm Update Modal-->
-    <div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" th:object="${updateCourseForm}">
-        <div class="modal-dialog modal-sm text-center">
-            <div class="modal-content">
-                <div class="modal-header alert-success">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	<!--Confirm Update Modal-->
+	<div class="modal fade" id="confirmUpdateModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+		th:object="${updateCourseForm}">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-success">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label class="col-lg-12 col-form-label">Are you sure you
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label">Are you sure you
 							want to update the selected course category?</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="confirmUpdateBtn">Confirm
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" id="confirmUpdateBtn">Confirm
 						Update</button>
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Confirm Update Modal End-->
+					<input type="button" class="btn btn-primary" data-dismiss="modal"
+						value="Back">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Confirm Update Modal End-->
 
-    <!-- Update modal -->
-    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- Update modal -->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-        <form id="updateModalFormId" th:action="@{/courseCategory/__${courseIdInput}__/update}" th:object="${update}" method="post">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header alert-info">
-                        <h5 class="modal-title">Course Category Information</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<form id="updateModalFormId"
+			th:action="@{/courseCategory/__${courseIdInput}__/update}"
+			th:object="${update}" method="post">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header alert-info">
+						<h5 class="modal-title">Course Category Information</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group row">
-                            <input type="hidden" id="id" name="id"></input>
-                            <div class="col-lg-3">
-                                <label class="col-form-label">Course Category Name:</label>
-                            </div>
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control" id="category" name="category" onkeyup="validateIfEmpty()" />
-                                <span id="categoryErrorMsg" style="color:red;"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-3">
-                                <label class="col-form-label">Detail:</label>
-                            </div>
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control" id="detail" name="detail" onkeyup="validateIfEmpty()" />
-                                <span id="detailErrorMsg" style="color:red;"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="updateBtn" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#confirmUpdateModal">Update Category</button>
-                        <input type="button" class="btn btn-primary" data-dismiss="modal" value="Back" onclick="refreshCourseCategory()">
-                    </div>
-                </div>
-            </div>
-        </form>
-        <!-- </form> -->
-    </div>
-    <!-- Update modal End-->
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<input type="hidden" id="id" name="id"></input>
+							<div class="col-lg-3">
+								<label class="col-form-label">Course Category Name:</label>
+							</div>
+							<div class="col-lg-9">
+								<input type="text" class="form-control" id="category"
+									name="category" onkeyup="validateIfEmpty()" /> <span
+									id="categoryErrorMsg" style="color: red;"></span>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-lg-3">
+								<label class="col-form-label">Detail:</label>
+							</div>
+							<div class="col-lg-9">
+								<input type="text" class="form-control" id="detail"
+									name="detail" onkeyup="validateIfEmpty()" /> <span
+									id="detailErrorMsg" style="color: red;"></span>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="updateBtn" class="btn btn-danger"
+							data-dismiss="modal" data-toggle="modal"
+							data-target="#confirmUpdateModal">Update Category</button>
+						<input type="button" class="btn btn-primary" data-dismiss="modal"
+							value="Back" onclick="refreshCourseCategory()">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- </form> -->
+	</div>
+	<!-- Update modal End-->
 
-    <!--Success Modal-->
-    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm text-center">
-            <div class="modal-content">
-                <div class="modal-header alert-success">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	<!--Success Modal-->
+	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-success">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label class="col-lg-12 col-form-label" th:text="${message}"></label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="Okay" onclick="refreshCourseCategory()">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Success Modal End-->
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${message}"></label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-primary" data-dismiss="modal"
+						value="Okay" onclick="refreshCourseCategory()">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Success Modal End-->
 
-    <!--Error Modal-->
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm text-center">
-            <div class="modal-content">
-                <div class="modal-header alert-danger">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	<!--Error Modal-->
+	<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-danger">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label class="col-lg-12 col-form-label" th:text="${message}"></label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="Okay" onclick="refreshCourseCategory()">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Error Modal End-->
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${message}"></label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-primary" data-dismiss="modal"
+						value="Okay" onclick="refreshCourseCategory()">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Error Modal End-->
 
-    <div th:insert="fragments/general.html :: header"></div>
-    <div class="container mt-5">
-        <h3>
-            <i class="fa fa-calendar-o"></i> Search Course Category Name
-        </h3>
-        <hr>
-        <div class="card">
-            <div class="card-body">
-                <form class="form-horizontal" action="#" th:action="@{/courseCategory/search}" method="post">
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label">Search:</label>
-                        <div class="col-lg-3">
-                            <input type="Text" class="form-control" name="searchCourseCategoryName" id="searchCourseCategoryName">
-                        </div>
-                    </div>
-                    <div class="float-right">
-                        <input type="submit" class="btn btn-success" value="Submit">
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="card mb-5">
-            <div class="card-header">
-                <h3>
-                    <i class="fa fa-exclamation-triangle"></i> Manage Course Category
-                </h3>
-            </div>
-            <div class="card-body">
-                <div style="overflow-x: auto; display: block; white-space: nowrap;">
-                    <table class="table table-hover table-bordered text-center" id="categoryTable">
-                        <thead>
-                            <tr>
-                                <th style="width: 20%;">Course Category Name</th>
-                                <th>Detail</th>
-                                <th style="width: 20%;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody th:each="courseCategory : *{courseCategoryList}">
-                            <tr style="cursor: pointer;" title="Update Course Category">
-                                <td th:text="${courseCategory.category}" th:attr="onclick=|showUpdateModal('${courseCategory.id}','${courseCategory.category}','${courseCategory.detail}')|"></td>
-                                <td th:text="${courseCategory.detail}" th:attr="onclick=|showUpdateModal('${courseCategory.id}','${courseCategory.category}','${courseCategory.detail}')|">Sample2</td>
-                                <td>
-                                    <input type="submit" value="Delete" class="btn btn-danger" th:attr="onclick=|deleteButton('${courseCategory.id}','${courseCategory.category}','${courseCategory.detail}')|"></input>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="float-right">
-                    <a th:href="@{/enrollment/viewCourseEnroll}">View More <i
+	<div th:insert="fragments/general.html :: header"></div>
+	<div class="container mt-5">
+		<h3>
+			<i class="fa fa-calendar-o"></i> Search Course Category Name
+		</h3>
+		<hr>
+		<div class="card">
+			<div class="card-body">
+				<form class="form-horizontal" action="#"
+					th:action="@{/courseCategory/search}" method="post">
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Search:</label>
+						<div class="col-lg-3">
+							<input type="Text" class="form-control"
+								name="searchCourseCategoryName" id="searchCourseCategoryName">
+						</div>
+					</div>
+					<div class="float-right">
+						<input type="submit" class="btn btn-success" value="Submit">
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3>
+					<i class="fa fa-exclamation-triangle"></i> Manage Course Category
+				</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x: auto; display: block; white-space: nowrap;">
+					<table class="table table-hover table-bordered text-center"
+						id="categoryTable">
+						<thead>
+							<tr>
+								<th style="width: 20%;">Course Category Name</th>
+								<th>Detail</th>
+								<th style="width: 20%;">Action</th>
+							</tr>
+						</thead>
+						<tbody th:each="courseCategory : *{courseCategoryList}">
+							<tr style="cursor: pointer;" title="Update Course Category">
+								<td th:text="${courseCategory.category}"
+									th:attr="onclick=|showUpdateModal('${courseCategory.id}','${courseCategory.category}','${courseCategory.detail}')|"></td>
+								<td th:text="${courseCategory.detail}"
+									th:attr="onclick=|showUpdateModal('${courseCategory.id}','${courseCategory.category}','${courseCategory.detail}')|">Sample2</td>
+								<td><input type="submit" value="Delete"
+									class="btn btn-danger"
+									th:attr="onclick=|deleteButton('${courseCategory.id}','${courseCategory.category}','${courseCategory.detail}')|"></input>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="float-right">
+					<a th:href="@{/enrollment/viewCourseEnroll}">View More <i
 						class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <script type="text/javascript" th:inline="javascript">
+	<script type="text/javascript" th:inline="javascript">
         function deleteButton(id, category, detail) {
             document.getElementById("courseCategoryIdInput").value = id;
             document.getElementById("courseCategoryName").innerHTML = category;
@@ -316,7 +361,7 @@
         });
     </script>
 
-    <footer th:replace="fragments/general.html :: footer"></footer>
+	<footer th:replace="fragments/general.html :: footer"></footer>
 
 </body>
 
