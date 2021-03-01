@@ -54,8 +54,8 @@
 							</div>
 							<label class="col-lg-3 col-form-label">Detail:</label>
 							<div class="col-lg-9">
-								<label class="col-lg-3 col-form-label" id="courseCategoryDetail"
-									name="courseDetail"></label>
+								<label class="col-lg-12 col-form-label"
+									id="courseCategoryDetail" name="courseDetail"></label>
 							</div>
 						</div>
 					</div>
@@ -163,15 +163,18 @@
 								<label class="col-form-label">Detail:</label>
 							</div>
 							<div class="col-lg-9">
-								<textarea rows="10" cols="50" maxlength="200" class="form-control" id="detail" name="detail" onkeyup="validateIfEmpty()" ></textarea><span
-									id="detailErrorMsg" style="color: red;"></span>
+								<textarea rows="10" cols="50" maxlength="200"
+									class="form-control" id="detail" name="detail"
+									onkeyup="validateIfEmpty()"></textarea>
+								<span id="detailErrorMsg" style="color: red;"></span>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" id="updateBtn" class="btn btn-danger"
 							data-dismiss="modal" data-toggle="modal"
-							data-target="#confirmUpdateModal" disabled>Update Category</button>
+							data-target="#confirmUpdateModal" disabled>Update
+							Category</button>
 						<input type="button" class="btn btn-primary" data-dismiss="modal"
 							value="Back" onclick="refreshCourseCategory()">
 					</div>
@@ -285,6 +288,11 @@
 							</tr>
 						</tbody>
 					</table>
+					<div th:if="${#lists.isEmpty(courseCategoryList)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+							<strong>No Course Category Available</strong>
+						</div>
+					</div>
 				</div>
 				<div class="float-right">
 					<a th:href="@{/enrollment/viewCourseEnroll}">View More <i
