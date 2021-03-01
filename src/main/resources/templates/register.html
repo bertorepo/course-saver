@@ -15,9 +15,18 @@
 	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
+	
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
 </head>
 
 <body>
+<script type="text/javascript">
+$(function() {
+   $( "#employmentDate" ).datepicker({  dateFormat: "yy-mm-dd", maxDate: new Date()}).datepicker("setDate", new Date());
+ });
+
+ </script>
 	<div th:replace="fragments/general :: header2"> </div>
 	
 	<main role="main" class="container">
@@ -72,7 +81,7 @@
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Employment Date</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<input type="date" class="form-control" id="employmentDate" name="employmentDate" required>
+								<input type="text" class="form-control" id="employmentDate" name="employmentDate" style="background:#FFFFFF" readonly>
 							</div>
 						</div>
 						<div class="form-group text-center" style="padding-top:5%">					

@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
@@ -23,6 +24,7 @@ import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
  * @version 0.01
  */
 @Repository
+@CrossOrigin(origins = "*")
 public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
 
     // Call NamedParameterJdbcTemplate
@@ -72,7 +74,7 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
      */
     private Date parseEmploymentDate(String value) {
         try {
-            Date date = new SimpleDateFormat("yyyy-mm-dd").parse(value);
+            Date date = new SimpleDateFormat("yy-M-dd").parse(value);
             return date;
         } catch (Exception e) {
             throw new IllegalArgumentException("Unable to parse date.");
