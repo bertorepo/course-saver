@@ -163,8 +163,7 @@
 								<label class="col-form-label">Detail:</label>
 							</div>
 							<div class="col-lg-9">
-								<input type="text" class="form-control" id="detail"
-									name="detail" onkeyup="validateIfEmpty()" /> <span
+								<textarea rows="10" cols="50" maxlength="200" class="form-control" id="detail" name="detail" onkeyup="validateIfEmpty()" ></textarea><span
 									id="detailErrorMsg" style="color: red;"></span>
 							</div>
 						</div>
@@ -172,7 +171,7 @@
 					<div class="modal-footer">
 						<button type="button" id="updateBtn" class="btn btn-danger"
 							data-dismiss="modal" data-toggle="modal"
-							data-target="#confirmUpdateModal">Update Category</button>
+							data-target="#confirmUpdateModal" disabled>Update Category</button>
 						<input type="button" class="btn btn-primary" data-dismiss="modal"
 							value="Back" onclick="refreshCourseCategory()">
 					</div>
@@ -356,6 +355,14 @@
             });
 
             $('#successModal').on('hidden.bs.modal', function(e) {
+                refreshCourseCategory();
+            });
+
+            $('#confirmUpdateModal').on('hidden.bs.modal', function(e) {
+                refreshCourseCategory();
+            });
+
+            $('#errorModal').on('hidden.bs.modal', function(e) {
                 refreshCourseCategory();
             });
         });
