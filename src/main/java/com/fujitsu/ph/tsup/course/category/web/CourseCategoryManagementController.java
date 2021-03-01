@@ -106,18 +106,31 @@ public class CourseCategoryManagementController {
         try {
             Set<CourseCategory> categorySize = courseCategoryManagementService
                     .findCourseCategoryByName(form.getCategory());
-            if (categorySize.isEmpty()) {
-                CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
-                        form.getDetail()).build();
+            CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
+                    form.getDetail()).build();
+            List<CourseCategory> listOfCourseCategory = categorySize.stream().collect(Collectors.toList());
+            if (listOfCourseCategory.isEmpty()) {
                 courseCategoryManagementService.createCourseCategory(categoryDetails);
                 model.addAttribute("successMessage", "Registration Complete.");
+                return "course-category-management/CreateCourseCategory";
             } else {
-                model.addAttribute("invalid", "The specified course category is already existing. Please change the Course Category Name.");
+                for(CourseCategory category: listOfCourseCategory) {
+                    if(!category.getCategory().equals(form.getCategory())) {
+                        courseCategoryManagementService.createCourseCategory(categoryDetails);
+                        model.addAttribute("successMessage", "Registration Complete.");
+                        break;
+                    }
+                    else if(category.getCategory().equals(form.getCategory())){
+                        model.addAttribute("invalid", "The specified course category is already existing. Please change the Course Category Name.");
+                        break;
+                    }
+                }
+                return "course-category-management/CreateCourseCategory";
             }
         } catch (Exception ex) {
             model.addAttribute("invalid", ex.getMessage());
+            return "course-category-management/CreateCourseCategory";
         }
-        return "course-category-management/CreateCourseCategory";
     }
     
     @GetMapping("/load")
