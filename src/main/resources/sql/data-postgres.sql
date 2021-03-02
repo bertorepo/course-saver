@@ -142,3 +142,55 @@ INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, st
 	VALUES (2, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
 INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, status, log_in_datetime, log_out_datetime, email)
 	VALUES (3, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
+	
+--Course Category
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft Web Applications','Detail for Microsoft Web Applications');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Web Development Technologies','Detail for Web Development Technologies');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('IBM Websphere','Detail for IBM Websphere');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Java 2 Programming','Detail for Java 2 Programming');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Java EE7','Detail for Java EE7');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft .NET Software Development Tools','Detail for Microsoft .NET Software Development Tools');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Generic Languages','Detail for Generic Languages');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Programming Best Practices','Detail for Programming Best Practices');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Software Design','Detail for Software Design');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Software Development Principles','Detail for Software Development Principles');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Software Testing','Detail for Software Testing');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft Windows Store Apps','Detail for Microsoft Windows Store Apps');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft C#','Detail for Microsoft C#');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Eclipse','Detail for Eclipse');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft LINQ','Detail for Microsoft LINQ');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft Enterprise Library','Detail for Microsoft Enterprise Library');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft ORM','Detail for Microsoft ORM');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Algorithms','Detail for Algorithms');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Mobile Application Development','Detail for Mobile Application Development');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Windows Embedded','Detail for Windows Embedded');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Configuration Management','Detail for Configuration Management');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Defensive Programming','Detail for Defensive Programming');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Apache','Detail for Apache');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Go','Detail for Go');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Software Requirements','Detail for Software Requirements');
