@@ -67,8 +67,7 @@ var rowsTotal = $('#categoryTable tbody tr').length;
 var numPages = rowsTotal / rowsShown;
 var firstPage = 0;
 var lastPage = Math.floor(numPages);
-var prevPage = 0;
-var nextPage = 1;
+var currPageShown = 0;
 $('#pagination').append('<a href="#" rel="<<" > << </a> ');
 $('#pagination').append('<a href="#" rel="<" > < </a> ');
 for (i = 0; i < numPages; i++) {
@@ -85,44 +84,40 @@ $('#pagination a').bind(
 		'click',
 		function() {
 			$('#pagination a').removeClass('active');
-			$(this).addClass('active');
 			var currPage = $(this).attr('rel');
+			var parent = document.getElementById("pagination").children;
 			if (currPage == '<<') {
-				var startItem = firstPage * rowsShown;
+				parent[firstPage + 2].className = 'active';
+				currPageShown = firstPage;
+				var startItem = currPageShown * rowsShown;
 				var endItem = startItem + rowsShown;
-				prevPage = firstPage;
-				nextPage = firstPage + 1;
 			} else if (currPage == '>>') {
-				var startItem = lastPage * rowsShown;
+				parent[lastPage + 2].className = 'active';
+				currPageShown = lastPage;
+				var startItem = currPageShown * rowsShown;
 				var endItem = startItem + rowsShown;
-				prevPage = lastPage - 1;
-				nextPage = lastPage;
 			} else if (currPage == '<') {
-				var startItem = prevPage * rowsShown;
-				var endItem = startItem + rowsShown;
-				if (prevPage == firstPage) {
-					prevPage = firstPage;
-					nextPage = firstPage + 1;
-
+				if (currPageShown == firstPage) {
+					currPageShown = firstPage;
 				} else {
-					prevPage = prevPage - 1;
-					nextPage = prevPage + 1;
+					currPageShown = currPageShown - 1;
 				}
+				var startItem = currPageShown * rowsShown;
+				var endItem = startItem + rowsShown;
+				parent[currPageShown + 2].className = 'active';
 			} else if (currPage == '>') {
-				var startItem = nextPage * rowsShown;
-				var endItem = startItem + rowsShown;
-				if (nextPage == lastPage) {
-					prevPage = lastPage - 1;
-					nextPage = lastPage;
-
+				if (currPageShown == lastPage) {
+					currPageShown = lastPage;
 				} else {
-					prevPage = nextPage - 1;
-					nextPage = nextPage + 1;
+					currPageShown = currPageShown + 1;
 				}
+				var startItem = currPageShown * rowsShown;
+				var endItem = startItem + rowsShown;
+				parent[currPageShown + 2].className = 'active';
 			} else {
-				prevPage = currPage - 1;
-				nextPage = currPage + 1;
-				var startItem = currPage * rowsShown;
+				$(this).addClass('active'); 
+				currPageShown = parseInt(currPage);
+				var startItem = currPageShown * rowsShown;
 				var endItem = startItem + rowsShown;
 			}
 			$('#categoryTable tbody tr').css('opacity', '0.0').hide().slice(
