@@ -60,6 +60,14 @@ $(document).ready(function() {
 	$('#successModal').on('hidden.bs.modal', function(e) {
 		refreshCourseCategory();
 	});
+
+	$('#confirmUpdateModal').on('hidden.bs.modal', function(e) {
+		refreshCourseCategory();
+	});
+
+	$('#errorModal').on('hidden.bs.modal', function(e) {
+		refreshCourseCategory();
+	});
 });
 
 var rowsShown = 8;
@@ -92,8 +100,12 @@ $('#pagination a').bind(
 				var startItem = currPageShown * rowsShown;
 				var endItem = startItem + rowsShown;
 			} else if (currPage == '>>') {
-				parent[lastPage + 2].className = 'active';
-				currPageShown = lastPage;
+				if ((rowsTotal % rowsShown) == 0) {
+					currPageShown = lastPage - 1;					
+				} else {
+					currPageShown = lastPage;
+				}
+				parent[currPageShown + 2].className = 'active';
 				var startItem = currPageShown * rowsShown;
 				var endItem = startItem + rowsShown;
 			} else if (currPage == '<') {
