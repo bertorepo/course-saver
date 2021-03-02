@@ -356,11 +356,14 @@
 						</button>
 					</div>
 					<div class="modal-body" >
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label" id="successMessage"> <span id="cancelledCourseName" value=""></span></label>
-							<div class="col-sm"></div>
-							<div class="col-sm"><button type="submit" class="btn btn-success" data-dismiss="modal" name="okaySuccess">Okay</button></div>
-    						<div class="col-sm"></div>
+						<div class="form-group">
+							<label class="col-lg-12 col-form-label" id="successMessage"> <span id="successCourseName"></span></label>
+							<label class="font-weight-bold" id="successCourseName"></label>
+							<div class="row">
+								<div class="col-sm"></div>
+								<div class="col-sm"><button type="submit" class="btn btn-success" data-dismiss="modal" name="okaySuccess" onclick="inviteSent">Okay</button></div>
+    							<div class="col-sm"></div>
+							</div>
 							
 						</div>	
 					</div>
@@ -380,11 +383,14 @@
 						</button>
 					</div>
 					<div class="modal-body" >
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label" > A calendar invite has been sent to your email!!! <span id="cancelledCourseName"></span></label>
-							<div class="col-sm"></div>
-							<div class="col-sm"><button type="button" class="btn btn-success" data-dismiss="modal">Okay</button></div>
-    						<div class="col-sm"></div>
+						<div class="form-group">
+							<label class="col-lg-12 col-form-label" id="emailMessage"> <span id="participantEmail"></span></label>
+							<label class="font-weight-bold" id="participantEmail"></label>
+							<div class="row">
+								<div class="col-sm"></div>
+								<div class="col-sm "><button type="button" class="btn btn-success" data-dismiss="modal">Okay</button></div>
+    							<div class="col-sm"></div>
+							</div>				
 							
 						</div>	
 					</div>
@@ -730,7 +736,7 @@
 								<input type="hidden" id="courseScheduleDateHidden" name="">
 								<input type="hidden" id="courseScheduleTimeHidden" name="">
 								<input type="hidden" id="courseScheduleDescriptionHidden" name="">
-								<button type="submit" name="submit" value="submit" class="btn btn-success">Yes</button>
+								<button type="submit" name="submit" value="submit" class="btn btn-success" id="confirmRegistration">Yes</button>
 							</form>
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
 						</div>
@@ -983,38 +989,40 @@
 		var courseScheduleTimeHidden = document.getElementById('courseScheduleTimeHidden');
 		courseScheduleTimeHidden.value = courseTime;
 		
-// 		var courseDescription = document.getElementById('Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World').value;
-// 		var courseScheduleDescriptionHidden = document.getElementById('courseScheduleDescriptionHidden');
-// 		courseScheduleDescriptionHidden.value = courseDescription;
-		
-		$('#confirmRegisterModal').modal('show');
-		
+		$('#confirmRegisterModal').modal('show');		
 	}
 	//SHOW REGISTRATION CONFIRMATION POP UP
 		
 	//Successfuly canceled a Course Schedule
 	/*<![CDATA[*/
+	var courseEnrollmentForm = /*[[${courseEnrollmentForm}]]*/ 'default';
+	var courseParticipant = /*[[${courseParticipant}]]*/ 'default';
 	var successMessage = /*[[${successMessage}]]*/ 'default';
+	var emailMessage = /*[[${emailMessage}]]*/ 'default';
 	if(successMessage == "Successfully Canceled the Course Schedule" 
 			|| successMessage == "Successfully Enrolled a Course!!!"
 			|| successMessage == "Successfully cancelled all course schedule below minimum participant."){
 		document.getElementById("successMessage").innerHTML = successMessage;
+		
+		var courseName = courseEnrollmentForm.courseName;
+		var successCourseNameInput = document.getElementById('successCourseName');
+		successCourseNameInput.innerHTML = courseName;
+		
 		$('#successModal').modal('show');
-		//var emailMessage = /*[[${successMessage}]]*/ 'default';
-		$('button[name="okaySuccess"]').on('click', function() {
-			//document.getElementById("emailMessage").innerHTML = emailMessage;
-			$('#emailModal').modal('show');
-	 	});
-	}
+		
+		if(emailMessage == "A calendar invite has been sent to your email:"){
+			document.getElementById("emailMessage").innerHTML = emailMessage;
+			
+			var emailAddress = courseParticipant.email;
+			var emailAddressInput = document.getElementById('participantEmail');
+			emailAddressInput.innerHTML = emailAddress;
+			
+			$('button[name="okaySuccess"]').on('click', function() {
+				$('#emailModal').modal('show');
+		 	});
+		}
+ 	}
 	
-// 	var emailMessage = /*[[${successMessage}]]*/ 'default';
-// 	if(emailMessage.match("/A calendar invite has been sent to .*/")){
-// 		document.getElementById("emailMessage").innerHTML = emailMessage;
-// 		$('#emailModal').modal('show');
-// 		$('button[name="okaySuccess"]').on('click', function() {
-// 	 		$('#emailModal').modal('show');
-// 	 	});
-// 	}
 	/*]]>*/
 	
 	//No Record Found
@@ -1055,14 +1063,10 @@
 	//SUCCESS ENROLL SHOW INFO MODAL
 	/*<![CDATA[*/
 	var successMsg = /*[[${successMsg}]]*/ 'default';
-
-	var courseEnrollmentForm = /*[[${courseEnrollmentForm}]]*/ 'default';
 	if(successMsg == "Successfully Enrolled a Course!!!"){
-
 		var courseId = courseEnrollmentForm.courseScheduleId;
 		var courseName = courseEnrollmentForm.courseName;
 		var instructorName = courseEnrollmentForm.instructorName;
-// 		alert("Course ID: " + courseId + " Course Name: " + courseName + " Instructor Name:" + instructorName);
 		document.getElementById("successMessage").innerHTML = successMsg;
 		var courseIdInput = document.getElementById('infoId');
 		var courseNameInput = document.getElementById('infoCourseName');
@@ -1071,7 +1075,7 @@
 		courseIdInput.value = courseId;
 		courseNameInput.value = courseName;
 		courseInstructorNameInput.value = instructorName;
-
+		
 		$('#infoModal').modal('show');
 		$('#successModal').modal('show');
 		$('#emailModal').modal('show');
@@ -1110,10 +1114,6 @@
 		document.getElementById("message").innerHTML = errorMessageReschedule;
 		$('#errorModal').modal('show');
 	}
-	
-	
-	
-	
 </script>
 </body>
 </html>
