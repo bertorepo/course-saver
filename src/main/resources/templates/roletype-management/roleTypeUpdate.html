@@ -111,22 +111,22 @@
 		*  ========================
 		*/
 		$("#rolename").on("input",function() {
-			//duplicate rolename check
+			<!--duplicate rolename check-->
 			if (roleNameExist(this.value, roleId)) {
 				$("#rolename_error").text("Role Name already exists in the table");
 				roleNameErrorCount++;
 			}
-			//invalid rolename check
+			<!--invalid rolename check-->
 			else if(this.value.match(specialChars)){
 				$("#rolename_error").text("Role Name is invalid, please omit special characters");
 				roleNameErrorCount++;
 			}
-			//rolename length check
+			<!--rolename length check-->
 			else if (this.value.length == 40) {
 				$("#rolename_error").text("Role Name is too long");
 				roleNameErrorCount++;
 			}
-			//empty check
+			<!--rolename empty check-->
 			else if(this.value == ""){
 				$("#rolename_error").text("Please enter a Role Name");
 				roleNameErrorCount++;
@@ -135,7 +135,7 @@
 				roleNameErrorCount = 0;
 			} 
 			
-			//enable/disable submit button
+			<!--enable/disable submit button-->
 			if(roleNameErrorCount == 0 && roleDescErrorCount == 0){
 				
 				$('#submit_btn').removeAttr('disabled');
@@ -156,12 +156,12 @@
 		$("#roledesc").on("input",function() {
 			var erMessage = "Role Description is too long";
 			
-			//roledesc length check
+			<!--roledesc length check-->
 			if (this.value.length == 120) {
 				$("#roledesc_error").text(erMessage);
 				roleDescErrorCount++;
 			}
-			//roledesc empty check
+			<!--roledesc empty check-->
 			else if(this.value == ""){
 				$("#roledesc_error").text("Please enter a Role Description");
 				roleDescErrorCount++;
@@ -170,7 +170,7 @@
 				roleDescErrorCount = 0;
 			} 
 			
-			//enable/disable submit button
+			<!--enable/disable submit button-->
 			if(roleNameErrorCount == 0 && roleDescErrorCount == 0){
 				$('#submit_btn').removeAttr('disabled');
 			}else{
@@ -188,7 +188,7 @@
 	    	}
 		}
 		
-		//function for duplicate checking
+		<!--function for duplicate checking-->
 		function roleNameExist(rolename, id) {
 		  return roletypeList.some(function(role) {
 		    return role.rolename.toLowerCase() === rolename.toLowerCase() && role.id != id;
