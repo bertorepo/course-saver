@@ -75,7 +75,7 @@ public class CourseCategoryManagementController {
                 Set<CourseCategory> courseCategorySet = courseCategoryManagementService.findCourseCategoryByName(form.getCategory());
                 List<CourseCategory> listOfCourseCategory = courseCategorySet.stream().collect(Collectors.toList());
                 for(CourseCategory category: listOfCourseCategory) {
-                    if (!category.getId().equals(form.getId()) && category.getCategory().equals(form.getCategory()) ) {
+                    if (!category.getId().equals(form.getId()) && category.getCategory().toLowerCase().equals(form.getCategory().toLowerCase()) ) {
                         redirectAttributes.addFlashAttribute("message", "Unable to update existing course category.");
                         return "redirect:/courseCategory/load#errorModal";
                     } 
