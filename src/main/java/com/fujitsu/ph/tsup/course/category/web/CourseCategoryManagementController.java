@@ -110,7 +110,7 @@ public class CourseCategoryManagementController {
                     form.getDetail()).build();
             List<CourseCategory> listOfCourseCategory = categorySize.stream().collect(Collectors.toList());
             for (CourseCategory category : listOfCourseCategory) {
-                if (category.getCategory().equals(form.getCategory())) {
+                if (category.getCategory().toLowerCase().equals(form.getCategory().toLowerCase())) {
                     model.addAttribute("invalid", "The specified course category is already existing. Please change the Course Category Name.");
                     return "course-category-management/CreateCourseCategory";
                 }
