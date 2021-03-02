@@ -134,6 +134,18 @@ CREATE SEQUENCE tsup."DEPARTMENT_ID_seq"
 ALTER SEQUENCE tsup."DEPARTMENT_ID_seq"
     OWNER TO postgres;
     
+-- DROP SEQUENCE tsup."COURSE_CATEGORY_ID_seq";
+
+CREATE SEQUENCE tsup."COURSE_CATEGORY_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1; 
+
+ALTER SEQUENCE tsup."COURSE_CATEGORY_ID_seq"
+    OWNER TO postgres;
+    
 CREATE TABLE tsup.DEPARTMENT
 (
     id bigint NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
@@ -349,4 +361,24 @@ WITH (
 TABLESPACE pg_default;
 
 ALTER TABLE tsup.COURSE_ATTENDANCE
+    OWNER to postgres;
+    
+-- Table: tsup.COURSE_CATEGORY
+
+--DROP TABLE tsup.COURSE_CATEGORY;
+
+CREATE TABLE tsup.COURSE_CATEGORY
+(
+    ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_CATEGORY_ID_seq"'::regclass),
+    CATEGORY character varying(100) COLLATE pg_catalog."default",
+    DETAIL character varying(200) COLLATE pg_catalog."default",
+    CONSTRAINT "COURSE_CATEGORY_pkey" PRIMARY KEY (ID),
+    CONSTRAINT "COURSE_CATEGORY_unique" UNIQUE (CATEGORY)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE tsup.COURSE_CATEGORY
     OWNER to postgres;
