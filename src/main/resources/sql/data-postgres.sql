@@ -142,3 +142,13 @@ INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, st
 	VALUES (2, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
 INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, status, log_in_datetime, log_out_datetime, email)
 	VALUES (3, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
+	
+--Role Type
+INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
+	VALUES ('PM', 'Project Manager');
+INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
+	VALUES ('BSE', 'Bridge Software Engineer');
+INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
+	VALUES ('TL', 'Team Lead');
+INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
+	VALUES ('Dev', 'Developer');
