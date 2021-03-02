@@ -57,7 +57,7 @@
 
 					</div>
 					<div class="float-right">
-						<input type="button" class="btn btn-success" value="Submit" th:attr="onclick=|validateForm()|"/> <a
+						<input id="submit_btn" type="button" class="btn btn-success" value="Submit" th:attr="onclick=|validateForm()|" disabled/> <a
 							class="btn btn-danger" th:href="@{/roletype/load/1}">Cancel</a>
 
 					</div>
@@ -97,7 +97,6 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
 	<script th:inline="javascript">
-	
 		var roleNameErrorCount = 0;
 		var roleDescErrorCount = 0;
 		var specialChars = /[^a-zA-Z0-9 ]/g;
@@ -107,93 +106,93 @@
 		var roleId = /*[[${roleId}]]*/'default';
 		/*]]>*/
 		
-		<!--function for duplicate checking -->
-		function roleNameExist(rolename, id) {
-		  return roletypeList.some(function(role) {
-		    return role.rolename.toLowerCase() === rolename.toLowerCase() && role.id != id;
-		  }); 
-		}
-		
 		/* ========================
-		*  On input Validation 
+		*  ROLE NAME VALIDATIONS
 		*  ========================
 		*/
-		
-		<!-- ROLE NAME VALIDATIONS -->
 		$("#rolename").on("input",function() {
-			<!-- duplicate rolename check-->
-			if (roleNameExist(this.value)) {
+			<!--duplicate rolename check-->
+			if (roleNameExist(this.value, roleId)) {
 				$("#rolename_error").text("Role Name already exists in the table");
 				roleNameErrorCount++;
 			}
-			<!-- invalid rolename check-->
+			<!--invalid rolename check-->
 			else if(this.value.match(specialChars)){
 				$("#rolename_error").text("Role Name is invalid, please omit special characters");
 				roleNameErrorCount++;
 			}
-			<!-- rolename length check-->
+			<!--rolename length check-->
 			else if (this.value.length == 40) {
 				$("#rolename_error").text("Role Name is too long");
 				roleNameErrorCount++;
+			}
+			<!--rolename empty check-->
+			else if(this.value == ""){
+				$("#rolename_error").text("Please enter a Role Name");
+				roleNameErrorCount++;
 			}else{
 				$("#rolename_error").text("");
-			}
+				roleNameErrorCount = 0;
+			} 
 			
+			<!--enable/disable submit button-->
+			if(roleNameErrorCount == 0 && roleDescErrorCount == 0){
+				
+				$('#submit_btn').removeAttr('disabled');
+				
+			}else{
+				
+				$('#submit_btn').removeAttr('disabled');
+				$('#submit_btn').attr('disabled', true);
+				
+			}
 		});
-	
-		<!-- ROLE DESCRIPTION VALIDATIONS -->
+		
+		
+		/* ============================
+		*  ROLE DESCRIPTION VALIDATIONS
+		*  ============================
+		*/
 		$("#roledesc").on("input",function() {
 			var erMessage = "Role Description is too long";
 			
-			<!-- roledesc length check-->
+			<!--roledesc length check-->
 			if (this.value.length == 120) {
 				$("#roledesc_error").text(erMessage);
 				roleDescErrorCount++;
+			}
+			<!--roledesc empty check-->
+			else if(this.value == ""){
+				$("#roledesc_error").text("Please enter a Role Description");
+				roleDescErrorCount++;
 			}else{
 				$("#roledesc_error").text("");
+				roleDescErrorCount = 0;
+			} 
+			
+			<!--enable/disable submit button-->
+			if(roleNameErrorCount == 0 && roleDescErrorCount == 0){
+				$('#submit_btn').removeAttr('disabled');
+			}else{
+				$('#submit_btn').removeAttr('disabled');
+				$('#submit_btn').attr('disabled', true);
+				
 			}
 		});
 	
-		/* ========================
-		*  On click Validation 
-		*  ========================
-		*/
-		function validateForm(){
-	    	var rolename = $('#rolename').val();
-	    	var roledesc = $('#roledesc').val();
-	    	
-	    	if(rolename == ""||roleNameExist(rolename,roleId) || rolename.match(specialChars) || 
-	    			rolename.length == 40 || roledesc.length == 120 || roledesc == ""){
-	    		
-	    		<!-- rolename empty check-->
-	    		if (rolename == "") {
-		    		roleNameErrorCount++;
-		            $("#rolename_error").text("Please enter a Role Name");
-		    	}
-	    		
-	    		<!-- roledesc empty check-->
-	    		if (roledesc == "") {
-		    		roleDescErrorCount++;
-		    		roleDescError = "Please enter a Role Description"; 
-		    		$("#roledesc_error").text(roleDescError);
-		    	}
-	    		
-	    	}else{
-	    		roleNameErrorCount = 0;
-	    		roleDescErrorCount = 0;
-	    	}
-	    				
+		
+		function validateForm(){		
 	    	if (roleDescErrorCount <= 0 && roleNameErrorCount <= 0) {
-	    		<!-- remove error in each field-->
-	    		$("#roledesc_error").text("");
-	    		$("#rolename_error").text("");
-	    		
-	    		<!-- show modal-->
 	    		$('#successModal').modal('show');
-				
-	    		<!-- submit form-->
 	    		$("#roleForm").submit();
 	    	}
+		}
+		
+		<!--function for duplicate checking-->
+		function roleNameExist(rolename, id) {
+		  return roletypeList.some(function(role) {
+		    return role.rolename.toLowerCase() === rolename.toLowerCase() && role.id != id;
+		  }); 
 		}
 	</script>
 </body>
