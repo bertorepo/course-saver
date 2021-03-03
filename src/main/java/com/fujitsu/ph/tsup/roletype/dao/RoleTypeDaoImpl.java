@@ -95,7 +95,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public Set<RoleType> loadAllRoleType() {
-        String query = "SELECT * FROM MEMBER_ROLE";
+        String query = "SELECT id, role_type, role_desc, deleted_at  FROM MEMBER_ROLE  WHERE deleted_at IS NULL";
 
         List<RoleType> roleList = template.query(query, new RoleTypeRowMapper());
         Set<RoleType> roles = new LinkedHashSet<>(roleList);
@@ -111,7 +111,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public Set<RoleType> loadAllRoleType(int pageSize, int page) {
-        String query = "SELECT * FROM MEMBER_ROLE LIMIT "+ pageSize+" OFFSET "+ ((pageSize*page)-pageSize);
+        String query = "SELECT id, role_type, role_desc, deleted_at  FROM MEMBER_ROLE WHERE deleted_at IS NULL  LIMIT "+ pageSize+" OFFSET "+ ((pageSize*page)-pageSize);
         
         List<RoleType> roleList = template.query(query, new RoleTypeRowMapper());
         Set<RoleType> roles = new LinkedHashSet<>(roleList);
@@ -125,7 +125,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public void deleteRoleTypeById(Long id) {
-        String query = "DELETE FROM MEMBER_ROLE WHERE ID = " + id;
+        String query = "UPDATE MEMBER_ROLE SET deleted_at = now() WHERE ID = " + id;
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("id", id);
         template.update(query, sqlParameterSource);
 
