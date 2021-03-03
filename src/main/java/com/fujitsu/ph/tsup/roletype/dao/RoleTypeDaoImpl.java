@@ -26,18 +26,20 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.04    | 2021/02/22 | WS) j.sayaboc         | Updated
 //0.05    | 2021/02/24 | WS) p.cui             | Updated
 //0.06    | 2021/02/26 | WS) c.sinda           | Updated
+//0.07    | 2021/03/03 | WS) m.baton		   | Updated
 //==================================================================================================
 
 
 /**
  * RoleTypeDaoImpl class
  * 
- * @version 0.06
+ * @version 0.07
  * @author rl.naval
  * @author s.labador
  * @author p.cui
  * @author j.sayaboc
  * @author c.sinda
+ * @author m.baton
  */
 
 @Repository
@@ -95,7 +97,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public Set<RoleType> loadAllRoleType() {
-        String query = "SELECT * FROM MEMBER_ROLE";
+        String query = "SELECT id, role_type, role_desc, deleted_at  FROM MEMBER_ROLE  WHERE deleted_at IS NULL";
 
         List<RoleType> roleList = template.query(query, new RoleTypeRowMapper());
         Set<RoleType> roles = new LinkedHashSet<>(roleList);
@@ -111,7 +113,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public Set<RoleType> loadAllRoleType(int pageSize, int page) {
-        String query = "SELECT * FROM MEMBER_ROLE LIMIT "+ pageSize+" OFFSET "+ ((pageSize*page)-pageSize);
+        String query = "SELECT id, role_type, role_desc, deleted_at  FROM MEMBER_ROLE WHERE deleted_at IS NULL  LIMIT "+ pageSize+" OFFSET "+ ((pageSize*page)-pageSize);
         
         List<RoleType> roleList = template.query(query, new RoleTypeRowMapper());
         Set<RoleType> roles = new LinkedHashSet<>(roleList);
@@ -125,7 +127,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public void deleteRoleTypeById(Long id) {
-        String query = "DELETE FROM MEMBER_ROLE WHERE ID = " + id;
+        String query = "UPDATE MEMBER_ROLE SET deleted_at = now() WHERE ID = " + id;
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("id", id);
         template.update(query, sqlParameterSource);
 
