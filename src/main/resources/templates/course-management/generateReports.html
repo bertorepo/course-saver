@@ -92,10 +92,11 @@
 							<tr class="content">
 								<td th:text="${rowStat.count}"></td>
 								<td th:text="${coursesConducted[__${rowStat.index}__].courseName}"></td>
-								<td th:utext="${#calendars.format(coursesConducted[__${rowStat.index}__].scheduledStartDateTime,
-								'MMM dd, yyyy (E)- HH:mm a')}"/></td>
+ 								<td th:utext="${#calendars.format(coursesConducted[__${rowStat.index}__].scheduledStartDateTime,
+								'MMM dd, yyyy (E)- H:MM a')}"/></td>
 								<td th:utext="${#calendars.format(coursesConducted[__${rowStat.index}__].scheduledEndDateTime, 
-								'MMM dd, yyyy (E)- HH:mm a')}"/></td> 
+								'MMM dd, yyyy (E)- H:MM a')}"/></td> 
+
 							 </tr>
 						</tbody>
 					</table>
@@ -106,24 +107,17 @@
 	</div>
 
 	<footer th:replace="fragments/general.html :: footer"></footer>
-	
+		<script th:src="@{/js/lib/scheduling/scheduling-common.js}"></script>
 	<script th:inline ="javascript">
 		var fromDateTime = $("#scheduledStartDateTime").val();
 		var toDateTime = $("#scheduledEndDateTime").val();
 		
 		function load() {
-			var toAppend = ":00.000+08:00[Asia/Singapore]";
  			var fromNewDate = fromDateTime.slice(0, 16);
-
- 			
 			var toNewDate = toDateTime.slice(0, 16);
 			
-			var finalFromDateTime = fromNewDate+toAppend;
-			var finalToDateTime = toNewDate+toAppend;
-			
-			
-			document.getElementById("startDate").value = finalFromDateTime;
-			document.getElementById("endDate").value = finalToDateTime;
+			document.getElementById("startDate").value = fromNewDate;				
+			document.getElementById("endDate").value = toNewDate;
 			
 			document.getElementById('selectCourse').options[0].selected = 'selected';
 			
@@ -279,7 +273,6 @@
    			}
    			downloadCSV(csv.join("\n"), filename);
 		}
-		
 	</script>
 </body>
 </html>
