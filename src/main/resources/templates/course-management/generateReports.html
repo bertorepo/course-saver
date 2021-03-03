@@ -73,7 +73,6 @@
 						<span style="width:100px"></span>
 						<input type="button" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px">
 					</div>
-						
 			<label>Report Display</label>
 					<div id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
 					</div>
@@ -93,9 +92,9 @@
 								<td th:text="${rowStat.count}"></td>
 								<td th:text="${coursesConducted[__${rowStat.index}__].courseName}"></td>
  								<td th:utext="${#calendars.format(coursesConducted[__${rowStat.index}__].scheduledStartDateTime,
-								'MMM dd, yyyy (E)- H:MM a')}"/></td>
+								'MMMM dd, yyyy (E)')}"/></td>
 								<td th:utext="${#calendars.format(coursesConducted[__${rowStat.index}__].scheduledEndDateTime, 
-								'MMM dd, yyyy (E)- H:MM a')}"/></td> 
+								'MMMM dd, yyyy (E)')}"/></td> 
 
 							 </tr>
 						</tbody>
@@ -215,7 +214,7 @@
 		*/
 		function viewButtonClick(){
 			
-			if(fromDateTime > toDateTime){
+			if( $("#scheduledStartDateTime").val() >  $("#scheduledEndDateTime").val()){
 				alert("Invalid Date. Please select correct date.");
 			}
 			else if($('#selectReportType').val() == 0){
