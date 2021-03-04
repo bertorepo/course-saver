@@ -62,19 +62,14 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
 
     @Override
     public Set<CourseCategory> findAllCourseCategory() {
+
         return courseCategoryManagementDao.findAllCourseCategory();
     }
 
     @Override
     public Set<CourseCategory> findCourseCategoryByName(String name) {
 
-        Set<CourseCategory> courseCategoryFormList = null;
-        try {
-            courseCategoryFormList = courseCategoryManagementDao.findCourseCategoryByName(name);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("The specified course category is already existing. Please change the Course Category Name.");
-        }
-        return courseCategoryFormList;
+        return courseCategoryManagementDao.findCourseCategoryByName(name);
     }
 
     @Override

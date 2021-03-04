@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -144,6 +145,12 @@ public class CourseCategoryManagementController {
         }
     }
 
+    /**
+     * Method for load all course categories
+     * 
+     * @param model Model
+     * @return View
+     */
     @GetMapping("/load")
     public String loadCourseCategory(Model model) {
 
@@ -153,28 +160,26 @@ public class CourseCategoryManagementController {
         return "course-category-management/manageCourseCategory";
     }
 
+    /**
+     * Method for searching course category
+     * 
+     * @param searchCourseCategoryName
+     * @param model Model
+     * @return View
+     */
     @PostMapping("/search")
     public String searchCourseCategory(
-            @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model) {
 
-        Set<CourseCategory> courseCategory;
-
-        if (searchCourseCategoryName.isEmpty() || searchCourseCategoryName == null) {
+        if (StringUtils.isEmpty(searchCourseCategoryName)) {
             return "redirect:/courseCategory/load";
-        } else {
-            courseCategory = courseCategoryManagementService
-                    .findCourseCategoryByName(searchCourseCategoryName);
         }
+        Set<CourseCategory> courseCategory = courseCategoryManagementService
+                .findCourseCategoryByName(searchCourseCategoryName);
 
-        if (courseCategory == null || courseCategory.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Category does not exist.");
-            return "redirect:/courseCategory/load#errorModal";
-        } else {
-            List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
-            model.addAttribute("courseCategoryList", listOfCourseCategory);
-            return "course-category-management/manageCourseCategory";
-        }
+        List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
+        model.addAttribute("courseCategoryList", listOfCourseCategory);
+        return "course-category-management/manageCourseCategory";
     }
 
     /**
