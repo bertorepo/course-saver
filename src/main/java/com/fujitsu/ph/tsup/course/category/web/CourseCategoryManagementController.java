@@ -57,8 +57,17 @@ public class CourseCategoryManagementController {
 
     // Course Category Management Service class
     @Autowired
-    CourseCategoryManagementService courseCategoryManagementService;
+    private CourseCategoryManagementService courseCategoryManagementService;
 
+    /*
+     * Method for Updating Course Category Validates and save course category
+     * 
+     * @param id Course Category Id
+     * @param form Course Category Form
+     * @param bindingResult Binding Result
+     * @param redirectAttributes RedirectAttributes
+     * @return View
+     */
     @PostMapping("/{categoryId}/update")
     public String submitUpdateCourseCategory(@RequestParam(value = "id") Long id, CourseCategoryForm form,
             BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -69,35 +78,38 @@ public class CourseCategoryManagementController {
 
         CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
 
-        if (courseCategory != null) {
-            if (courseCategory.getCategory().equals(form.getCategory())
-                    && courseCategory.getDetail().equals(form.getDetail())) {
-                redirectAttributes.addFlashAttribute("message", "No change in course category information.");
-                return "redirect:/courseCategory/load#errorModal";
-            } else {
-                Set<CourseCategory> courseCategorySet = courseCategoryManagementService
-                        .findCourseCategoryByName(form.getCategory());
-                List<CourseCategory> listOfCourseCategory = courseCategorySet.stream()
-                        .collect(Collectors.toList());
-                for (CourseCategory category : listOfCourseCategory) {
-                    if (!category.getId().equals(form.getId()) && category.getCategory().toLowerCase()
-                            .equals(form.getCategory().toLowerCase())) {
-                        redirectAttributes.addFlashAttribute("message",
-                                "Unable to update existing course category.");
-                        return "redirect:/courseCategory/load#errorModal";
-                    }
-                }
-                CourseCategory courseDetails = new CourseCategory.Builder(form.getId(), form.getCategory(),
-                        form.getDetail()).build();
-                this.courseCategoryManagementService.updateCourseCategory(courseDetails);
-                redirectAttributes.addFlashAttribute("message",
-                        "You have successfully updated this course category");
-                return "redirect:/courseCategory/load#successModal";
-            }
-        } else {
+        if (courseCategory == null) {
             redirectAttributes.addFlashAttribute("message", "Unable to update existing course category.");
             return "redirect:/courseCategory/load#errorModal";
         }
+
+        if (courseCategory.getCategory().equals(form.getCategory())
+                && courseCategory.getDetail().equals(form.getDetail())) {
+            redirectAttributes.addFlashAttribute("message", "No change in course category information.");
+            return "redirect:/courseCategory/load#errorModal";
+        }
+
+        Set<CourseCategory> courseCategorySet = courseCategoryManagementService
+                .findCourseCategoryByName(form.getCategory());
+
+        if (!courseCategorySet.isEmpty()) {
+            List<CourseCategory> listOfCourseCategory = courseCategorySet.stream()
+                    .collect(Collectors.toList());
+            for (CourseCategory category : listOfCourseCategory) {
+                if (!category.getId().equals(form.getId())
+                        && category.getCategory().toLowerCase().equals(form.getCategory().toLowerCase())) {
+                    redirectAttributes.addFlashAttribute("message",
+                            "Unable to update existing course category.");
+                    return "redirect:/courseCategory/load#errorModal";
+                }
+            }
+        }
+
+        CourseCategory courseDetails = new CourseCategory.Builder(form.getId(), form.getCategory(),
+                form.getDetail()).build();
+        this.courseCategoryManagementService.updateCourseCategory(courseDetails);
+        redirectAttributes.addFlashAttribute("message", "You have successfully updated this course category");
+        return "redirect:/courseCategory/load#successModal";
     }
 
     // Loads the courseCategoryCreate view
