@@ -107,6 +107,7 @@
 		var toDateTime = $("#scheduledEndDateTime").val();
 		
 		function load() {
+		    sessionStorage.clear();
  			var fromNewDate = fromDateTime.slice(0, 16);
 			var toNewDate = toDateTime.slice(0, 16);
 			
