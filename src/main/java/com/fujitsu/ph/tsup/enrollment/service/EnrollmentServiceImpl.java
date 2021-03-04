@@ -95,9 +95,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
 		DateTimeFormatter zonedtf = DateTimeFormatter.ofPattern("zzzz");
 		StringBuilder ical = new StringBuilder();
-		int hour = (int)courseScheduleDetail.getDuration(), minute = (int)((courseScheduleDetail.getDuration() - hour) * 60);
+		int hour = courseScheduleDetail.getScheduledEndDateTime().getHour() - courseScheduleDetail.getScheduledStartDateTime().getHour();
+		int minute = courseScheduleDetail.getScheduledEndDateTime().getMinute() - courseScheduleDetail.getScheduledStartDateTime().getMinute();
 		String zone = zonedtf.format(courseScheduleDetail.getScheduledStartDateTime());
-
+		
 		try {
 			// iCalendar Specs https://tools.ietf.org/html/rfc554
 			// iCalendar iTiP https://tools.ietf.org/html/rfc5546
