@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 import com.fujitsu.ph.tsup.course.category.model.CourseCategoryForm;
 import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementService;
+
 //=======================================================
 //$Id: PR10$
 //Project Name: Training Sign Up
@@ -37,18 +39,18 @@ import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementServi
 //0.05    | 02/24/2020 | WS) Z.DeGuia        | Update
 //=======================================================
 /**
-* <pre>
-* The controller for Course Category Management
-* 
-* <pre>
-* 
-* @version 0.05
-* @author a.batongbaca
-* @author j.zamora
-* @author g.cabiling
-* @author z.deguia
-*
-*/
+ * <pre>
+ * The controller for Course Category Management
+ * 
+ * <pre>
+ * 
+ * @version 0.05
+ * @author a.batongbaca
+ * @author j.zamora
+ * @author g.cabiling
+ * @author z.deguia
+ *
+ */
 @Controller
 @RequestMapping("/courseCategory")
 public class CourseCategoryManagementController {
@@ -66,26 +68,32 @@ public class CourseCategoryManagementController {
         }
 
         CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
-        
+
         if (courseCategory != null) {
-            if ( courseCategory.getCategory().equals(form.getCategory()) && courseCategory.getDetail().equals(form.getDetail()) ) {
+            if (courseCategory.getCategory().equals(form.getCategory())
+                    && courseCategory.getDetail().equals(form.getDetail())) {
                 redirectAttributes.addFlashAttribute("message", "No change in course category information.");
-                return "redirect:/courseCategory/load#errorModal";                
+                return "redirect:/courseCategory/load#errorModal";
             } else {
-                Set<CourseCategory> courseCategorySet = courseCategoryManagementService.findCourseCategoryByName(form.getCategory());
-                List<CourseCategory> listOfCourseCategory = courseCategorySet.stream().collect(Collectors.toList());
-                for(CourseCategory category: listOfCourseCategory) {
-                    if (!category.getId().equals(form.getId()) && category.getCategory().toLowerCase().equals(form.getCategory().toLowerCase()) ) {
-                        redirectAttributes.addFlashAttribute("message", "Unable to update existing course category.");
+                Set<CourseCategory> courseCategorySet = courseCategoryManagementService
+                        .findCourseCategoryByName(form.getCategory());
+                List<CourseCategory> listOfCourseCategory = courseCategorySet.stream()
+                        .collect(Collectors.toList());
+                for (CourseCategory category : listOfCourseCategory) {
+                    if (!category.getId().equals(form.getId()) && category.getCategory().toLowerCase()
+                            .equals(form.getCategory().toLowerCase())) {
+                        redirectAttributes.addFlashAttribute("message",
+                                "Unable to update existing course category.");
                         return "redirect:/courseCategory/load#errorModal";
-                    } 
+                    }
                 }
                 CourseCategory courseDetails = new CourseCategory.Builder(form.getId(), form.getCategory(),
                         form.getDetail()).build();
                 this.courseCategoryManagementService.updateCourseCategory(courseDetails);
-                redirectAttributes.addFlashAttribute("message", "You have successfully updated this course category");
+                redirectAttributes.addFlashAttribute("message",
+                        "You have successfully updated this course category");
                 return "redirect:/courseCategory/load#successModal";
-            }        
+            }
         } else {
             redirectAttributes.addFlashAttribute("message", "Unable to update existing course category.");
             return "redirect:/courseCategory/load#errorModal";
@@ -106,12 +114,13 @@ public class CourseCategoryManagementController {
         try {
             Set<CourseCategory> categorySize = courseCategoryManagementService
                     .findCourseCategoryByName(form.getCategory());
-            CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
-                    form.getDetail()).build();
+            CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(), form.getDetail())
+                    .build();
             List<CourseCategory> listOfCourseCategory = categorySize.stream().collect(Collectors.toList());
             for (CourseCategory category : listOfCourseCategory) {
                 if (category.getCategory().toLowerCase().equals(form.getCategory().toLowerCase())) {
-                    model.addAttribute("invalid", "The specified course category is already existing. Please change the Course Category Name.");
+                    model.addAttribute("invalid",
+                            "The specified course category is already existing. Please change the Course Category Name.");
                     return "course-category-management/CreateCourseCategory";
                 }
             }
@@ -123,7 +132,13 @@ public class CourseCategoryManagementController {
             return "course-category-management/CreateCourseCategory";
         }
     }
-    
+
+    /**
+     * Method for load all course categories
+     * 
+     * @param model Model
+     * @return View
+     */
     @GetMapping("/load")
     public String loadCourseCategory(Model model) {
 
@@ -133,29 +148,28 @@ public class CourseCategoryManagementController {
         return "course-category-management/manageCourseCategory";
     }
 
+    /**
+     * Method for searching course category
+     * 
+     * @param searchCourseCategoryName
+     * @param model Model
+     * @return View
+     */
     @PostMapping("/search")
     public String searchCourseCategory(
-            @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model) {
 
-        Set<CourseCategory> courseCategory;
-
-        if (searchCourseCategoryName.isEmpty() || searchCourseCategoryName == null) {
+        if (StringUtils.isEmpty(searchCourseCategoryName)) {
             return "redirect:/courseCategory/load";
-        } else {
-            courseCategory = courseCategoryManagementService
-                    .findCourseCategoryByName(searchCourseCategoryName);
         }
+        Set<CourseCategory> courseCategory = courseCategoryManagementService
+                .findCourseCategoryByName(searchCourseCategoryName);
 
-        if (courseCategory == null || courseCategory.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Category does not exist.");
-            return "redirect:/courseCategory/load#errorModal";
-        } else {
-            List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
-            model.addAttribute("courseCategoryList", listOfCourseCategory);
-            return "course-category-management/manageCourseCategory";
-        }
+        List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
+        model.addAttribute("courseCategoryList", listOfCourseCategory);
+        return "course-category-management/manageCourseCategory";
     }
+
     /**
      * Method for getting course category id to delete
      * 
@@ -200,4 +214,3 @@ public class CourseCategoryManagementController {
         return "redirect:/courseCategory/load#successModal";
     }
 }
-
