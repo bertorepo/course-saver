@@ -13,27 +13,43 @@ function showUpdateModal(id, category, detail) {
 }
 
 function validateIfEmpty() {
+	var id = document.getElementById("id");
 	var category = document.getElementById("category");
 	var detail = document.getElementById("detail");
 	document.getElementById("updateBtn").disabled = true;
-	if (category.value === "" && detail.value != "") {
+	document.getElementById("categoryErrorMsg").innerHTML = "";
+	document.getElementById("detailErrorMsg").innerHTML = "";
+	//validate empty
+	if (category.value == "" && detail.value != "") {
 		document.getElementById("categoryErrorMsg").innerHTML = "*Required";
-		document.getElementById("detailErrorMsg").innerHTML = "";
-	} else if (category.value != "" && detail.value === "") {
-		document.getElementById("categoryErrorMsg").innerHTML = "";
+	} else if (category.value != "" && detail.value == "") {
 		document.getElementById("detailErrorMsg").innerHTML = "*Required";
-	} else if (category.value === "" && detail.value === "") {
+	} else if (category.value == "" && detail.value == "") {
 		document.getElementById("categoryErrorMsg").innerHTML = "*Required";
 		document.getElementById("detailErrorMsg").innerHTML = "*Required";
 	} else {
-		document.getElementById("categoryErrorMsg").innerHTML = "";
-		document.getElementById("detailErrorMsg").innerHTML = "";
-		document.getElementById("updateBtn").disabled = false;
+		//validate duplicate
+		if (checkingForDuplicate(category.value, id.value)) {
+			document.getElementById("categoryErrorMsg").innerHTML = "*Unable to update existing course category";
+		}
+		//validation for special character
+		var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+		if (format.test(category.value)) {
+			document.getElementById("categoryErrorMsg").innerHTML = "*Category Name is invalid. Please remove invalid characters. ";
+		} else {
+			document.getElementById("updateBtn").disabled = false;
+		}
 	}
 }
 
 function refreshCourseCategory() {
 	window.location.href = '/courseCategory/load';
+}
+
+function checkingForDuplicate(categoryName, id) {
+	return courseCategoryList.some(function(category) {
+		return category.category.toLowerCase() === categoryName.toLowerCase() && category.id != id;
+	})
 }
 
 $(document).ready(function() {
@@ -51,22 +67,6 @@ $(document).ready(function() {
 
 	$('#confirmUpdateBtn').click(function() {
 		$('#updateModalFormId').submit();
-	});
-
-	$('#confirmDeleteModal').on('hidden.bs.modal', function(e) {
-		refreshCourseCategory();
-	});
-
-	$('#successModal').on('hidden.bs.modal', function(e) {
-		refreshCourseCategory();
-	});
-
-	$('#confirmUpdateModal').on('hidden.bs.modal', function(e) {
-		refreshCourseCategory();
-	});
-
-	$('#errorModal').on('hidden.bs.modal', function(e) {
-		refreshCourseCategory();
 	});
 });
 
@@ -101,7 +101,7 @@ $('#pagination a').bind(
 				var endItem = startItem + rowsShown;
 			} else if (currPage == '>>') {
 				if ((rowsTotal % rowsShown) == 0) {
-					currPageShown = lastPage - 1;					
+					currPageShown = lastPage - 1;
 				} else {
 					currPageShown = lastPage;
 				}
@@ -127,7 +127,7 @@ $('#pagination a').bind(
 				var endItem = startItem + rowsShown;
 				parent[currPageShown + 2].className = 'active';
 			} else {
-				$(this).addClass('active'); 
+				$(this).addClass('active');
 				currPageShown = parseInt(currPage);
 				var startItem = currPageShown * rowsShown;
 				var endItem = startItem + rowsShown;

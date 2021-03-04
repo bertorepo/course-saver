@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.course.category.dao.CourseCategoryManagementDao;
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
+
 //=======================================================
 //$Id: PR10$
 //Project Name: Training Sign Up
@@ -26,27 +27,27 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 //0.05    | 02/24/2020 | WS) Z.DeGuia        | Update
 //=======================================================
 /**
-* <pre>
-* The implementation of course category management service
-* 
-* <pre>
-* 
-* @version 0.05
-* @author a.batongbaca
-* @author j.zamora
-* @author g.cabiling
-* @author z.deguia
-*
-*/
+ * <pre>
+ * The implementation of course category management service
+ * 
+ * <pre>
+ * 
+ * @version 0.05
+ * @author a.batongbaca
+ * @author j.zamora
+ * @author g.cabiling
+ * @author z.deguia
+ *
+ */
 @Service
-public class CourseCategoryManagementServiceImpl implements CourseCategoryManagementService{
+public class CourseCategoryManagementServiceImpl implements CourseCategoryManagementService {
 
     @Autowired
-    CourseCategoryManagementDao courseCategoryManagementDao;
+    private CourseCategoryManagementDao courseCategoryManagementDao;
 
     @Override
     public void updateCourseCategory(CourseCategory courseCategory) {
-        this.courseCategoryManagementDao.updateCourseCategory(courseCategory);        
+        this.courseCategoryManagementDao.updateCourseCategory(courseCategory);
     }
 
     // Creates course category
@@ -87,4 +88,3 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
         return courseCategoryResult;
     }
 }
-
