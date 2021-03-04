@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	
@@ -12,11 +11,9 @@
 <title>Generate Reports</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
-
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
-
 </head>
 <body onload="load()">
 	<div th:insert="fragments/general.html :: header" > </div>
@@ -42,12 +39,12 @@
                 <div class="col-lg-1"></div>
                         <label class="col-form-label">From</label>
 	                        <div class="col-lg-2">
-	                           <input class="form-control" type="datetime-local" id="startDate" name="startDate" required/>
+	                           <input class="form-control" type="date" id="startDate" name="startDate" style="font-size:14px;" required/>
 	                           <input type="hidden" th:field="*{scheduledStartDateTime}"/>
 	                        </div>
 	                        <label class="col-form-label">To</label>
 	                        <div class="col-lg-2">
-	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" required/>
+	                            <input class="form-control" type="date" id="endDate" name="endDate" style="font-size:14px;" required/>
 	                           <input type="hidden" th:field="*{scheduledEndDateTime}"/>
 	                       </div>
                  </div> 
@@ -95,7 +92,6 @@
 								'MMMM dd, yyyy (E)')}"/></td>
 								<td th:utext="${#calendars.format(coursesConducted[__${rowStat.index}__].scheduledEndDateTime, 
 								'MMMM dd, yyyy (E)')}"/></td> 
-
 							 </tr>
 						</tbody>
 					</table>
@@ -104,7 +100,6 @@
 		</div>	
 		</form>
 	</div>
-
 	<footer th:replace="fragments/general.html :: footer"></footer>
 		<script th:src="@{/js/lib/scheduling/scheduling-common.js}"></script>
 	<script th:inline ="javascript">
@@ -147,7 +142,6 @@
 				$("#scheduledStartDateTime").prop('value', dateConcat);
 			}
 		}); 
-
 		$("#endDate").blur(function () {
 			var formDate = document.getElementById("endDate").value;
 			var newDate = new Date(formDate);
