@@ -13,8 +13,8 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.01    | 07/08/2020 | WS) K.Freo            | Update
 //0.01    | 07/08/2020 | WS) M.lumontad        | Update
 //0.02    | 09/07/2020 | WS) J.Yu              | Update
-//0.03    | 02/23/2021 | WS) E.Ceniza          | Update
-//0.03    | 02/26/2021 | WS) K.Sanchez         | Update
+//0.03    | 03/02/2021 | WS) E.Ceniza          | Update
+//0.03    | 03/04/2021 | WS) K.Sanchez         | Update
 //==================================================================================================
 
 import com.fujitsu.ph.auth.model.FpiUser;
@@ -95,7 +95,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
 		DateTimeFormatter zonedtf = DateTimeFormatter.ofPattern("zzzz");
 		StringBuilder ical = new StringBuilder();
-		String[] duration = String.valueOf(courseScheduleDetail.getDuration()).split("\\.");
+		int hour = (int)courseScheduleDetail.getDuration(), minute = (int)((courseScheduleDetail.getDuration() - hour) * 60);
 		String zone = zonedtf.format(courseScheduleDetail.getScheduledStartDateTime());
 
 		try {
@@ -130,7 +130,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 					.append(timeFormatter.format(courseScheduleDetail.getScheduledEndDateTime()))
 					.append("</td></tr><tr><td width=120><b>Venue:</b></td><td>").append(courseSchedule.getVenueName())
 					.append("</td></tr></table></body></html>");
-			ical.append("\nDURATION:PT").append(duration[0]).append("H").append(duration[1]).append("M0S");
+			ical.append("\nDURATION:PT").append(hour).append("H").append(minute).append("M0S");
 			ical.append("\nLOCATION:").append(courseSchedule.getVenueName());
 			ical.append("\nPRIORITY:5");
 			if (!courseScheduleDetail.getScheduledStartDateTime().toLocalDate()
@@ -166,11 +166,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 			javaMailSender.send(message);
 			System.out.println("Sent email...");
 		} catch (MessagingException e) {
-			e.printStackTrace();
 			throw new RuntimeException("Can't send email...");
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Something wen't wrong...");
+			throw new RuntimeException("Something went wrong...");
 		}
 	}
 
