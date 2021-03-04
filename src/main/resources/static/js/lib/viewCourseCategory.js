@@ -28,13 +28,10 @@ function validateIfEmpty() {
 		document.getElementById("categoryErrorMsg").innerHTML = "*Required";
 		document.getElementById("detailErrorMsg").innerHTML = "*Required";
 	} else {
-		//validate duplicate
-		if (checkingForDuplicate(category.value, id.value)) {
-			document.getElementById("categoryErrorMsg").innerHTML = "*Unable to update existing course category";
-		}
-		//validation for special character
 		var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-		if (format.test(category.value)) {
+		if (checkingForDuplicate(category.value, id.value)) { //validate duplicate
+			document.getElementById("categoryErrorMsg").innerHTML = "*Unable to update existing course category";
+		} else if (format.test(category.value)) { //validation for special character
 			document.getElementById("categoryErrorMsg").innerHTML = "*Category Name is invalid. Please remove invalid characters. ";
 		} else {
 			document.getElementById("updateBtn").disabled = false;
