@@ -69,9 +69,7 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
     // Method for searching course categories by category
     @Override
     public Set<CourseCategory> findCourseCategoryByName(String category) {
-
-        String query = "SELECT * FROM COURSE_CATEGORY  WHERE LOWER(category) LIKE LOWER('%" + category
-                + "%')";
+        String query = "SELECT * FROM COURSE_CATEGORY  WHERE LOWER(category) LIKE LOWER('%" + category + "%')";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("category", category);
         List<CourseCategory> courseCategoryList = template.query(query, sqlParameterSource,
                 new CourseCategoryRowMapper());
@@ -82,20 +80,16 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
     // Method for creating course categories
     @Override
     public void createCourseCategory(CourseCategory courseCategory) {
-        try {
-            System.out.println("DAOIMPL");
-            String query = "INSERT INTO course_category" + "(category, detail)"
-                    + " VALUES(:category, :detail)";
-            SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                    .addValue("category", courseCategory.getCategory())
-                    .addValue("detail", courseCategory.getDetail());
+                   
+        String query = "INSERT INTO course_category" + "(category, detail)"
+                + " VALUES(:category, :detail)";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("category", courseCategory.getCategory())
+                .addValue("detail", courseCategory.getDetail());
 
-            template.update(query, sqlParameterSource);
-        } catch (DuplicateKeyException ex) {
-            throw new DuplicateKeyException(ex.getMessage());
-        }
-    }
-
+        template.update(query, sqlParameterSource);
+     }
+    
     @Override
     public Set<CourseCategory> findAllCourseCategory() {
 

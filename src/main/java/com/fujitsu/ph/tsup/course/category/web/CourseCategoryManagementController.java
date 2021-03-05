@@ -115,7 +115,9 @@ public class CourseCategoryManagementController {
     // Loads the courseCategoryCreate view
     @GetMapping("/create")
     public String showCreateCourseCategoryForm(Model model) {
-        model.addAttribute("create");
+        Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
+        List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
+        model.addAttribute("categoryList", listOfCourseCategory);
         return "course-category-management/CreateCourseCategory";
     }
 
@@ -123,26 +125,11 @@ public class CourseCategoryManagementController {
     @PostMapping("/create")
     public String submitCreateCourseCategoryForm(CourseCategoryForm form, BindingResult bindingResult,
             Model model, RedirectAttributes redirectAttributes) throws Exception {
-        try {
-            Set<CourseCategory> categorySize = courseCategoryManagementService
-                    .findCourseCategoryByName(form.getCategory());
-            CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(), form.getDetail())
-                    .build();
-            List<CourseCategory> listOfCourseCategory = categorySize.stream().collect(Collectors.toList());
-            for (CourseCategory category : listOfCourseCategory) {
-                if (category.getCategory().toLowerCase().equals(form.getCategory().toLowerCase())) {
-                    model.addAttribute("invalid",
-                            "The specified course category is already existing. Please change the Course Category Name.");
-                    return "course-category-management/CreateCourseCategory";
-                }
-            }
+            CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
+                    form.getDetail()).build();
             courseCategoryManagementService.createCourseCategory(categoryDetails);
             model.addAttribute("successMessage", "Registration Complete.");
             return "course-category-management/CreateCourseCategory";
-        } catch (Exception ex) {
-            model.addAttribute("invalid", ex.getMessage());
-            return "course-category-management/CreateCourseCategory";
-        }
     }
 
     /**

@@ -19,7 +19,7 @@
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
 </head>
 <body>
-    <div th:insert="fragments/general.html :: header"></div>
+     <div th:insert="fragments/general.html :: header"></div> 
     <!--Success Message-->
     <div class="modal fade" th:text="${successMessage}"
         id="successMessage1" tabindex="-1" role="dialog"
@@ -87,72 +87,62 @@
         </div>
     </form>
     <!--Success Modal End-->
-
-    <!--Invalid Modal-->
-    <form action="#" th:action="@{/courseCategory/create}" th:object="${create}" method="get">
-        <div class="modal fade" id="invalidModal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm text-center">
-                <div class="modal-content">
-                    <div class="modal-header alert-danger">
-                        <h5 class="modal-title">Failed to create</h5>
-                        <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group row">
-                            <label class="col-lg-12 col-form-label" id="existingCourse">Please input something else other 
-                            than a blank space</label>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary"> OK</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    <!--Invalid Modal End-->
+  
 
     <script th:inline="javascript">
-        //confirmation
+       
+       /*<![CDATA[*/
+        var courseCategoryList = /*[[${categoryList}]]*/ 'default';
+        /*]]>*/
+        
         /*<![CDATA[*/
         var successMessage = /*[[${successMessage}]]*/ 'default';
         if(successMessage == "Registration Complete."){
             $('#successModal').modal('show');
         }
         /*]]>*/
-        /*<![CDATA[*/
-        var invalid = /*[[${invalid}]]*/ 'default';
-        if (invalid == "The specified course category is already existing. Please change the Course Category Name."){
-            document.getElementById("existingCourse").innerHTML = invalid;
-            $('#invalidModal').modal('show');
-        }
-        /*]]>*/
+       
         //disabling and enabling of submit button
         var category = document.getElementById("category");
         var detail = document.getElementById("detail");
         function enableSubmitButton(){
-            var cat = myTrim(category.value);
-            var det = myTrim(detail.value);
-            if(cat.length > 0 && det.length > 0) {
-                document.getElementById('submit').disabled = false;
+            var trimCategory = myTrim(category.value);
+            var trimDetail = myTrim(detail.value);
+            if(trimCategory.length > 0 && trimDetail.length > 0) {
+                if(checkingForDuplicate(category.value)){
+                    document.getElementById('submit').disabled = true;
+                    
+                } else if (!checkingForDuplicate(category.value)){
+                    document.getElementById('submit').disabled = false;
+                   
+                }
             } else {
                 document.getElementById('submit').disabled = true;
             }
-            if (cat.length == 0){
+            if (trimCategory.length == 0){
+                document.getElementById('required').innerHTML = "*Required field";
                 document.getElementById('required').style.visibility = 'visible';
-            } else{
-                document.getElementById('required').style.visibility = 'hidden';
+            } else {
+            	 if(checkingForDuplicate(category.value)){
+                  
+                     document.getElementById('required').innerHTML = "*Course Category Name already used";
+                     document.getElementById('required').style.visibility = 'visible';
+                 } else if (!checkingForDuplicate(category.value)){
                 
+                     document.getElementById('required').style.visibility = 'hidden';
+                 }
             }
-            if (det.length == 0){
+            if (trimDetail.length == 0){
                 document.getElementById('required2').style.visibility = 'visible';
             } else{
                 document.getElementById('required2').style.visibility = 'hidden';
             }
+        }
+        
+        function checkingForDuplicate(categoryName){
+            return courseCategoryList.some(function(categ) {
+                return categ.category.toLowerCase() === categoryName.toLowerCase();
+            })
         }
         function myTrim(stringToTrim){
             return stringToTrim.replace(/^\s+|\s+$/gm,'');
