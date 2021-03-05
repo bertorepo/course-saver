@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
+
 //=======================================================
 //$Id: PR10$
 //Project Name: Training Sign Up
@@ -32,37 +33,38 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 //0.05    | 02/24/2020 | WS) R.Piloto        | Update
 //=======================================================
 /**
-* <pre>
-* The implementation of Course Category Management Dao
-* 
-* <pre>
-* 
-* @version 0.05
-* @author a.batongbacal
-* @author r.rivero
-* @author j.lira
-* @author r.piloto
-*
-*/
+ * <pre>
+ * The implementation of Course Category Management Dao
+ * 
+ * <pre>
+ * 
+ * @version 0.05
+ * @author a.batongbacal
+ * @author r.rivero
+ * @author j.lira
+ * @author r.piloto
+ *
+ */
 @Repository
-public class CourseCategoryManagementDaoImpl implements CourseCategoryManagementDao{
+public class CourseCategoryManagementDaoImpl implements CourseCategoryManagementDao {
 
     // Call NamedParameterJdbcTemplate
     @Autowired
     private NamedParameterJdbcTemplate template;
 
     @Override
-    public void updateCourseCategory(CourseCategory courseCategory) {       
-        try {
-            String query = "UPDATE COURSE_CATEGORY SET category=:category, detail=:detail WHERE ID =:id";
-            SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                    .addValue("id", courseCategory.getId()).addValue("category", courseCategory.getCategory())
-                    .addValue("detail", courseCategory.getDetail());
-            template.update(query, sqlParameterSource);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+    public void updateCourseCategory(CourseCategory courseCategory) {
+        String query = "UPDATE COURSE_CATEGORY SET category=:category, detail=:detail WHERE ID =:id";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("id", courseCategory.getId()).addValue("category", courseCategory.getCategory())
+                .addValue("detail", courseCategory.getDetail());
+        int result = template.update(query, sqlParameterSource);
+        if (result > 0) {
+            System.out.println("Successfully updated course category ID: " + courseCategory.getId());
+        } else {
+            System.out.println("Unable to update course category");
         }
-    }    
+    }
 
     // Method for searching course categories by category
     @Override

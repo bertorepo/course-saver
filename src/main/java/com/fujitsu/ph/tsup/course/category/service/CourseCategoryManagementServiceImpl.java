@@ -43,7 +43,7 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 public class CourseCategoryManagementServiceImpl implements CourseCategoryManagementService {
 
     @Autowired
-    CourseCategoryManagementDao courseCategoryManagementDao;
+    private CourseCategoryManagementDao courseCategoryManagementDao;
 
     @Override
     public void updateCourseCategory(CourseCategory courseCategory) {
