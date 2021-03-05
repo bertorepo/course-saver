@@ -16,7 +16,7 @@ function validateIfEmpty() {
 	var id = document.getElementById("id");
 	var category = document.getElementById("category");
 	var detail = document.getElementById("detail");
-	var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+	var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 	document.getElementById("updateBtn").disabled = true;
 	document.getElementById("categoryErrorMsg").innerHTML = "";
 	document.getElementById("detailErrorMsg").innerHTML = "";
