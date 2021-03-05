@@ -15,6 +15,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.02    | 09/07/2020 | WS) J.Yu              | Update
 //0.03    | 03/02/2021 | WS) E.Ceniza          | Update
 //0.03    | 03/04/2021 | WS) K.Sanchez         | Update
+//0.03    | 03/05/2021 | WS) E.Ceniza          | Update
 //==================================================================================================
 
 import com.fujitsu.ph.auth.model.FpiUser;
@@ -26,6 +27,7 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 
+import java.io.IOException;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -48,6 +50,7 @@ import javax.mail.util.ByteArrayDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -167,9 +170,14 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 			javaMailSender.send(message);
 			System.out.println("Sent email...");
 		} catch (MessagingException e) {
-			throw new RuntimeException("Can't send email...");
-		} catch (Exception e) {
-			throw new RuntimeException("Something went wrong...");
+			throw new IllegalArgumentException(e.getMessage() + ": Invalid config for mail properties.", e);
+		} catch (MailAuthenticationException e) {
+			throw new RuntimeException(
+					e.getMessage() + ": Can't communicate with the mail server as of now. Try again later.", e);
+		} catch (IOException e) {
+			throw new RuntimeException(
+					"This should never happen, ByteArraySource will always have correct and non empty values for the data and type arguments.",
+					e);
 		}
 	}
 
