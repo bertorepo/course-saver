@@ -30,7 +30,7 @@ function validateIfEmpty() {
 	} 
 	// validate duplicate
 	if (checkingForDuplicate(category.value, id.value)) { 
-		document.getElementById("categoryErrorMsg").innerHTML = "*Unable to update existing course category";
+		document.getElementById("categoryErrorMsg").innerHTML = "*Course Category Name already exist";
 	} else if (format.test(category.value)) { // validation for special character
 		document.getElementById("categoryErrorMsg").innerHTML = "*Category Name is invalid. Please remove invalid characters. ";
 	} else if (checkingForNoChange(category.value, id.value, detail.value)) { // validate no change
