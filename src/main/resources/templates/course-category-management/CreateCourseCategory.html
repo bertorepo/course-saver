@@ -108,6 +108,9 @@
         function enableSubmitButton(){
             var trimCategory = myTrim(category.value);
             var trimDetail = myTrim(detail.value);
+            var regex = /[^a-z0-9 ]/gi;
+            category.value = category.value.replace(regex,"");
+            detail.value = detail.value.replace(regex,"");
             if(trimCategory.length > 0 && trimDetail.length > 0) {
                 if(checkingForDuplicate(category.value)){
                     document.getElementById('submit').disabled = true;
@@ -123,11 +126,10 @@
                 document.getElementById('required').innerHTML = "*Required field";
                 document.getElementById('required').style.visibility = 'visible';
             } else {
-            	 if(checkingForDuplicate(category.value)){
-                  
-                     document.getElementById('required').innerHTML = "*Course Category Name already used";
+                if(checkingForDuplicate(category.value)){
+                     document.getElementById('required').innerHTML = "*Course Category Name already exist";
                      document.getElementById('required').style.visibility = 'visible';
-                 } else if (!checkingForDuplicate(category.value)){
+                } else if (!checkingForDuplicate(category.value)){
                 
                      document.getElementById('required').style.visibility = 'hidden';
                  }
