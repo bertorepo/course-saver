@@ -55,40 +55,46 @@
 		   }).datepicker("setDate", new Date());
 		 });
  	</script>
+ 	
+ 	<!--Start Update to disable submit button-->
  	<script type="text/javascript">
- 	$(function(){
- 		 function submitState(el) {
-
- 		    var $form = $(el),
- 		        $requiredInputs = $form.find('input:required'),
- 		        $submit = $form.find('input[type="submit"]');
-
- 		    $submit.attr('disabled', 'disabled');
-
- 		    $requiredInputs.keyup(function () {
-
- 		      $form.data('empty', 'false');
-
- 		      $requiredInputs.each(function() {
- 		        if ($(this).val() === '') {
- 		          $form.data('empty', 'true');
- 		        }
- 		      });
-
- 		     
- 		      if ($form.data('empty') === 'true') {
- 		        $submit.attr('disabled', 'disabled').attr('title', 'Fill in all required fields');
- 		      } else {
- 		        $submit.removeAttr('disabled').attr('title', 'Click to submit');
- 		      }
- 		    });
- 		  }
-
- 		  // apply to each form element individually
- 		  submitState('#sign_up_user');
- 		  submitState('#login_user');
- 		});
-    </script>
+	 	$(function(){
+	 		 function submitState(el) {
+	
+	 		    var $form = $(el),
+		        $requiredInputs = $form.find('input:required'),
+		        $requiredSelect = $form.find('select:required'),
+		        $submit = $form.find('input[type="submit"]');
+		    
+		    	$submit.attr('disabled', 'disabled');
+	
+	 		    $requiredInputs.keyup(function () {
+		 		      $form.data('empty', 'false');
+		 		      
+		 		      $requiredInputs.each(function() {
+		 		        if ($(this).val() === '') {
+		 		          $form.data('empty', 'true');
+		 		        }
+		 		      });
+		 		      
+		 		      if ($form.data('empty') === 'true') {
+		 		        $submit.attr('disabled', 'disabled').attr('title', 'Fill in all required fields');
+		 		      } else {
+		 		    	 $requiredSelect.change(function() {
+			 		        if ($(this).val() === '') {
+			 		          $form.data('empty', 'true');
+			 		        }else {
+			 		        	$submit.removeAttr('disabled').attr('title', 'Click to submit');
+			 		        }
+			 		      });
+		 		      }
+		 		    });
+	 		  }
+	 		 
+	 		  submitState('#sign_up_user');
+	 		});
+	 </script>
+    <!--End Update to disable submit button-->
  	
 	<div th:replace="fragments/general :: header2"> </div>
 	
