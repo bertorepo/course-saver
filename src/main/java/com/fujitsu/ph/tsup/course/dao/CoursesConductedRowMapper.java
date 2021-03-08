@@ -8,6 +8,7 @@
 //---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
 // 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation             
 // 1.0.1   | 2021/03/08 | WS)R.Molina           | Updated
+// 1.0.1   | 2021/03/08 | WS)J.Barbadillo       | Updated
 //==================================================================================================
 package com.fujitsu.ph.tsup.course.dao;
 
@@ -55,7 +56,7 @@ public class CoursesConductedRowMapper implements RowMapper<CoursesConducted> {
           ZonedDateTime scheduledEndDateTime = 
 	                ZonedDateTime.ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
 	                        ZoneId.systemDefault());
-        ZonedDateTime rescheduledEndDateTime = 
+          ZonedDateTime rescheduledEndDateTime = 
               ZonedDateTime.ofInstant(rs.getTimestamp("RESCHEDULED_END_DATETIME").toInstant(),
                       ZoneId.systemDefault());
 
