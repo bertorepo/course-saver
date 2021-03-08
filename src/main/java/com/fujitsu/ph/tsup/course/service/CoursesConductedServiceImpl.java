@@ -53,11 +53,8 @@ public class CoursesConductedServiceImpl implements CoursesConductedService {
 	public Set<CoursesConducted> findAllCoursesConducted(ZonedDateTime selectedStartDateTime,
 			ZonedDateTime selectedEndDateTime) {
 																								
-		try {
 			return coursesConductedDao.findAllCoursesConducted(selectedStartDateTime, selectedEndDateTime);
-		} catch (DataAccessException ex) {
-			throw new IllegalArgumentException("Can't access selectedStartDateTime and selectedEndDateTime.");
-		}
+
 	}
 	
 

@@ -57,9 +57,12 @@ public class CoursesConductedDaoImpl implements CoursesConductedDao {
 		String query = "SELECT "
 				     + "	CSD.ID AS ID, "
 				     + "    C.NAME AS COURSE_NAME, "
-				     + "    CSD.SCHEDULED_START_DATETIME AS PLAN_DATE, "
+				     + "    CSD.SCHEDULED_START_DATETIME AS SCHEDULED_START_DATETIME, "
 				     + "    COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) "
-				     + "	AS ACTUAL_DATE "
+				     + "	AS RESCHEDULED_START_DATETIME, "
+				     + "    CSD.SCHEDULED_END_DATETIME AS SCHEDULED_END_DATETIME,  "
+				     + "    COALESCE(CSD.RESCHEDULED_END_DATETIME, CSD.SCHEDULED_END_DATETIME) "
+				     + "	AS RESCHEDULED_END_DATETIME "
 				     + "FROM TSUP.COURSE_SCHEDULE AS CS	"
 				     + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSD "
 				     + "	ON CS.ID = CSD.COURSE_SCHEDULE_ID "
@@ -69,7 +72,7 @@ public class CoursesConductedDaoImpl implements CoursesConductedDao {
 				     + "BETWEEN :scheduledStartDateTime "
 				     + "AND :scheduledEndDateTime "
 				     + "AND CS.STATUS = 'D' "
-				     + "ORDER BY ID, SCHEDULED_START_DATETIME; ";
+				     + "ORDER BY COURSE_NAME ASC, SCHEDULED_START_DATETIME ASC;";
 		
 		SqlParameterSource conductedCourseParameters = new MapSqlParameterSource()
 				.addValue("scheduledStartDateTime", selectedStartDateTime.toOffsetDateTime())

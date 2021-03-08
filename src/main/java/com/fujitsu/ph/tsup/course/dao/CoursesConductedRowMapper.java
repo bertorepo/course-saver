@@ -46,14 +46,21 @@ public class CoursesConductedRowMapper implements RowMapper<CoursesConducted> {
 		  String name = rs.getString("COURSE_NAME");
 		  
 		  ZonedDateTime scheduledStartDateTime = 
-	                ZonedDateTime.ofInstant(rs.getTimestamp("PLAN_DATE").toInstant(),
+	                ZonedDateTime.ofInstant(rs.getTimestamp("SCHEDULED_START_DATETIME").toInstant(),
 	                        ZoneId.systemDefault());
           ZonedDateTime rescheduledStartDateTime = 
-                ZonedDateTime.ofInstant(rs.getTimestamp("ACTUAL_DATE").toInstant(),
+                ZonedDateTime.ofInstant(rs.getTimestamp("RESCHEDULED_START_DATETIME").toInstant(),
                         ZoneId.systemDefault());
+          
+          ZonedDateTime scheduledEndDateTime = 
+	                ZonedDateTime.ofInstant(rs.getTimestamp("SCHEDULED_END_DATETIME").toInstant(),
+	                        ZoneId.systemDefault());
+        ZonedDateTime rescheduledEndDateTime = 
+              ZonedDateTime.ofInstant(rs.getTimestamp("RESCHEDULED_END_DATETIME").toInstant(),
+                      ZoneId.systemDefault());
 
 	      CoursesConducted conductedCourse = new CoursesConducted.Builder(id, name, scheduledStartDateTime,
-	    		rescheduledStartDateTime).build();
+	    		rescheduledStartDateTime,scheduledEndDateTime, rescheduledEndDateTime).build();
 	  
 	    return conductedCourse ; 
 	 }
