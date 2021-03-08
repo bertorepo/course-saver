@@ -70,7 +70,7 @@ public class TsupAuthenticationSuccessHandler implements AuthenticationSuccessHa
 
         Employee employee = authorizationService.findDetailsByUsername(user.getUserName());
         if (employee == null) {
-            return "/register";
+            return "/register/#registerModal";
         } else {
             return "/dashboard";
         }

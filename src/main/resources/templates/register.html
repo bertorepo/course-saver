@@ -130,6 +130,29 @@
 						</div>
 						<!--Success Modal End-->
 						
+						<!--Registration Modal-->
+						<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-md text-center modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header alert-primary">
+										<h5 class="modal-title text-white">LDAP Authentication Success!</h5>
+										<a th:href="@{/register}" class="close" aria-label="Close">
+											<span aria-hidden="true" class="text-white">&times;</span>
+										</a>
+									</div>
+									<div class="modal-body">
+										<div class="form-group row">
+											<label class="col-md-12 col-form-label">LDAP Authentication is successful, but need to register in TS-UP database!</label>
+										</div>	
+										<div class="modal-footer d-flex justify-content-center">
+												<a th:href="@{/register}" class="btn btn-primary">OK</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--Registration Modal End-->
+						
 					</form>
 				</div>
 			</div>
@@ -141,6 +164,9 @@
 
 			if (window.location.href.indexOf('#successModal') != -1) {
 				$('#successModal').modal('show');
+			}
+			if (window.location.href.indexOf('#registerModal') != -1) {
+				$('#registerModal').modal('show');
 			}
 
 		});
