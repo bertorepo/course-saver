@@ -135,7 +135,7 @@ public class CoursesConducted {
      * 
      * @return scheduledEndDateTime
      */
-	public ZonedDateTime scheduledEndDateTime() {
+	public ZonedDateTime getScheduledEndDateTime() {
 		return scheduledEndDateTime;
 	}
 		
@@ -264,19 +264,23 @@ public class CoursesConducted {
          * @param name
          * @param scheduledStartDateTime
          * @param rescheduledStartDateTime
+         * @param scheduledEndDateTime
          */
 		public Builder(Long id, String name, ZonedDateTime scheduledStartDateTime, 
-	             ZonedDateTime rescheduledStartDateTime) {
+	             ZonedDateTime rescheduledStartDateTime, ZonedDateTime scheduledEndDateTime) {
 			 
 			 validateId(id);
 			 validateName(name);
 			 validateScheduledStartDateTime(scheduledStartDateTime);
 			 validateRescheduledStartDateTime(rescheduledStartDateTime);
+			 validateScheduledEndDateTime(scheduledEndDateTime, scheduledStartDateTime);
 			 
 	         this.id = id;
 	         this.name = name;
 	         this.scheduledStartDateTime = scheduledStartDateTime;
 	         this.rescheduledStartDateTime = rescheduledStartDateTime;
+	         this.scheduledEndDateTime = scheduledEndDateTime;
+	         
 	       
 	    }
 		
