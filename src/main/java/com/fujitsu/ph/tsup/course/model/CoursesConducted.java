@@ -6,7 +6,8 @@
 // <<Modification History>> 																																											
 // Version | Date       | Updated By            | Content																																											
 //---------+------------+-----------------------+--------------------------------------------------- 																																											
-// 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation																																											
+// 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation		
+// 1.0.1   | 2021/03/08 | WS)J.Barbadillo       | Updated
 //==================================================================================================
 package com.fujitsu.ph.tsup.course.model;
 
