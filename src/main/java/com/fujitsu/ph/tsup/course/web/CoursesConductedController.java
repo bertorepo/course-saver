@@ -102,11 +102,14 @@ public class CoursesConductedController {
       
       for(CoursesConducted coursesConducted : courseConducted) 
       { 
-          CoursesConductedForm coursesConductedForm = new
-          CoursesConductedForm(); coursesConductedForm.setId(coursesConducted.getId());
+          CoursesConductedForm coursesConductedForm = new CoursesConductedForm();
+          
+          coursesConductedForm.setId(coursesConducted.getId());
           coursesConductedForm.setCourseName(coursesConducted.getCourseName());
           coursesConductedForm.setScheduledStartDateTime(coursesConducted.getScheduledStartDateTime());
-          coursesConductedForm.setScheduledEndDateTime(coursesConducted.getRescheduledStartDateTime());
+          coursesConductedForm.setScheduledEndDateTime(coursesConducted.getScheduledStartDateTime());
+          coursesConductedForm.setRescheduledStartDateTime(coursesConducted.getRescheduledStartDateTime());
+          coursesConductedForm.setRescheduledEndDateTime(coursesConducted.getRescheduledEndDateTime());
       
           coursesConductedFormSet.add(coursesConductedForm); 
       }
