@@ -1,12 +1,13 @@
-//==================================================================================================																																											
+//==================================================================================================                                                                                                                                                                            
 // Project Name : Training Sign Up
-// System Name  : CoursesConductedRowMapper																																								
-// Class Name   : CoursesConductedRowMapper.java 																																											
-//																																											
-// <<Modification History>> 																																											
-// Version | Date       | Updated By            | Content																																											
-//---------+------------+-----------------------+--------------------------------------------------- 																																											
-// 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation																																											
+// System Name  : CoursesConductedRowMapper                                                                                                                                                             
+// Class Name   : CoursesConductedRowMapper.java                                                                                                                                                                            
+//                                                                                                                                                                          
+// <<Modification History>>                                                                                                                                                                             
+// Version | Date       | Updated By            | Content                                                                                                                                                                           
+//---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
+// 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation             
+// 1.0.1   | 2021/03/08 | WS)R.Molina           | Updated
 //==================================================================================================
 package com.fujitsu.ph.tsup.course.dao;
 
@@ -29,15 +30,15 @@ import com.fujitsu.ph.tsup.course.model.CoursesConducted;
  */
 
 public class CoursesConductedRowMapper implements RowMapper<CoursesConducted> {
-	
-	 /**
-     * <pre>
-     * Maps the Rows returned by ResultSet
-     * </pre>
-     * @param ResultSet rs
-     * @param int rowNum
-     * @throws SQLException
-     */
+    
+    /**
+    * <pre>
+    * Maps the Rows returned by ResultSet
+    * </pre>
+    * @param ResultSet rs
+    * @param int rowNum
+    * @throws SQLException
+    */
 	@Override 
 	  public CoursesConducted mapRow(ResultSet rs, int rowNum) throws SQLException {
 	  
@@ -46,15 +47,14 @@ public class CoursesConductedRowMapper implements RowMapper<CoursesConducted> {
 		  
 		  ZonedDateTime scheduledStartDateTime = 
 	                ZonedDateTime.ofInstant(rs.getTimestamp("PLAN_DATE").toInstant(),
-	                        ZoneId.of("UTC"));
+	                        ZoneId.systemDefault());
           ZonedDateTime rescheduledStartDateTime = 
                 ZonedDateTime.ofInstant(rs.getTimestamp("ACTUAL_DATE").toInstant(),
-                        ZoneId.of("UTC"));
+                        ZoneId.systemDefault());
 
 	      CoursesConducted conductedCourse = new CoursesConducted.Builder(id, name, scheduledStartDateTime,
 	    		rescheduledStartDateTime).build();
 	  
 	    return conductedCourse ; 
 	 }
-
 }
