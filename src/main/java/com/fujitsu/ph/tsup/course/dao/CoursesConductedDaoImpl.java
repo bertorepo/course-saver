@@ -69,7 +69,7 @@ public class CoursesConductedDaoImpl implements CoursesConductedDao {
 				     + "BETWEEN :scheduledStartDateTime "
 				     + "AND :scheduledEndDateTime "
 				     + "AND CS.STATUS = 'D' "
-				     + "ORDER BY ID, SCHEDULED_START_DATETIME; ";
+				     + "ORDER BY COURSE_NAME ASC, SCHEDULED_START_DATETIME ASC;";
 		
 		SqlParameterSource conductedCourseParameters = new MapSqlParameterSource()
 				.addValue("scheduledStartDateTime", selectedStartDateTime.toOffsetDateTime())
