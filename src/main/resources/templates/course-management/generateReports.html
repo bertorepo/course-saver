@@ -72,11 +72,16 @@
  						<span style="width:50px"></span>
 
  						<div class="col-lg-5">
-						    <input class="form-control" id="inputCourse" type="text" style="width:525px;" disabled>
+							<input list="course" class="form-control" id="inputCourse" type="text" style="width:525px;" autocomplete="off" disabled>
+								<datalist id="course">
+								  <option th:each="courseSelect : *{coursesConductedSet}" 
+ 								th:text="${courseSelect.courseName}" 
+ 								th:value="${courseSelect.courseName}" 
+ 								th:selected="${courseSelect.courseName eq lastSelected}"></option>
+								</datalist>
 						    </div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
-					<span th:if="${#httpServletRequest.requestURI == '/report/course/0/'}"></span>
 						<input type="button" id="viewButton" class="btn btn-success" value="View" onclick="viewButtonClick()" style="width:100px" >
 						<span style="width:100px"></span>
 						<input type="button" id="exportButton" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px" disabled>
@@ -94,7 +99,7 @@
 							<strong>No Result</strong> 
 						</div>
 				</div>
-				<!-- Display Selected Course on Summary Courses Conducted -->
+				<!-- Display Summary Courses Conducted -->
 					<table id="summaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
 						<thead>
 							<tr>
@@ -108,19 +113,48 @@
 							<tr class="content">
 								<td th:text="${rowStat.count}"></td>
 								<td th:text="${showSummaryCourses.courseName}"></td>
- 								<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
-								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + PlannedEnd "></td>
-								<td th:utext="${{#calendars.format(showSummaryCourses.scheduledEndDateTime, 
-								 'MMM dd, yyyy (E) - hh:mm a')}} + '&lt;br /&gt; <hr>' + ActualEnd "></td>
+								<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
+								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + ${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
+								 'MMM dd, yyyy (E) - hh:mm a')}"></td>
+								<td th:utext="${#calendars.format(showSummaryCourses.scheduledEndDateTime,
+								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + ${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
+								 'MMM dd, yyyy (E) - hh:mm a')} "></td>
 							 </tr>
 						</tbody>
 					</table>
-
-					<!-- End of Display Selected Course on Summary Courses Conducted -->
+					<!-- End of Display Summary Courses Conducted -->
 			</div>
 			
 		</div>	
 		</form>
+		<!-- Export Summary Courses Conducted  -->
+		<table id="exportSummaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th style="width:35%">Course Name</th>
+					<th style="width:35%">Planned Start Date</th>
+					<th style="width:35%">Planned End Date</th>
+					<th style="width:35%">Actual Start Date</th>
+					<th style="width:35%">Actual End Date</th>
+				</tr>
+			</thead>
+			<tbody id="tBodyExportSummary" th:each="showSummaryCourses, rowStat: ${coursesConducted}">
+				<tr class="content">
+					<td th:text="${rowStat.count}"></td>
+					<td th:text="${showSummaryCourses.courseName}"></td>
+					<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
+					'MMM dd, yyyy (E) - hh:mm a')}"></td>
+					<td th:text=" ${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
+					'MMM dd, yyyy (E) - hh:mm a')}"></td>
+					<td th:utext="${#calendars.format(showSummaryCourses.scheduledEndDateTime,
+					'MMM dd, yyyy (E) - hh:mm a')}"></td>
+					<td th:utext="${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
+					'MMM dd, yyyy (E) - hh:mm a')}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- End of Export Summary Courses Conducted -->
 		<!-- Error Modal-->
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
@@ -155,23 +189,11 @@
 		var toDateTime = $("#scheduledEndDateTime").val();
 		var rowCount = $('#summaryCoursesTable tr').length - 1;
 		
-
-/* 		function changeUrl() {
-		    var id = document.getElementById("selectReportType").value;
-		    if (id != "") {
-		        var callUrl = '/report/course/' + id + '/';
-		        document.location.href = callUrl;
-		    }
-		}
-		 */
-		
 		function load() {
-			//alert(window.location.href);
 			
 			console.log("ROW COUNT: " + rowCount);
 			if($("#selectReportType").val() == 0 || $("#selectReportType").val() == null){
 				$("#exportButton").attr('disabled','disabled');
-				//$("#viewButton").attr('disabled','disabled');
 			}
 			else if(rowCount <= 0)
 			{
@@ -270,7 +292,17 @@
 			$('.content').show();
 		}
 
-		
+		/**
+		Filter Duplicate Courses
+		*/
+		var optionValues =[];
+		$('#course option').each(function(){
+			  if($.inArray(this.value, optionValues) >-1){
+			     $(this).remove()
+			  }else{
+			     optionValues.push(this.value);
+			  }
+		});
 		
 	</script>
 </body>
