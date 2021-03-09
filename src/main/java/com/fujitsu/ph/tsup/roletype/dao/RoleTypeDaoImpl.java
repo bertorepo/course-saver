@@ -84,7 +84,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
     @Override
     public Set<RoleType> findIfRoleNameExists(String rolename, Long id) {
         String query = "SELECT * FROM MEMBER_ROLE WHERE LOWER(role_type) LIKE LOWER('" + rolename
-                + "') AND id NOT IN (" + id + ")";
+                + "') AND id NOT IN (" + id + ") AND deleted_at IS NULL";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("role_type", rolename);
         List<RoleType> roleList = template.query(query, sqlParameterSource, new RoleTypeRowMapper());
         Set<RoleType> roles = new LinkedHashSet<>(roleList);
