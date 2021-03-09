@@ -107,7 +107,7 @@ public class CoursesConductedController {
           coursesConductedForm.setId(coursesConducted.getId());
           coursesConductedForm.setCourseName(coursesConducted.getCourseName());
           coursesConductedForm.setScheduledStartDateTime(coursesConducted.getScheduledStartDateTime());
-          coursesConductedForm.setScheduledEndDateTime(coursesConducted.getScheduledStartDateTime());
+          coursesConductedForm.setScheduledEndDateTime(coursesConducted.getScheduledEndDateTime());
           coursesConductedForm.setRescheduledStartDateTime(coursesConducted.getRescheduledStartDateTime());
           coursesConductedForm.setRescheduledEndDateTime(coursesConducted.getRescheduledEndDateTime());
       
