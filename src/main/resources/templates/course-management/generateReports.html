@@ -31,6 +31,7 @@
 </style>
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
+<script th:src="@{/js/app/moment.min.js}"></script>
 <script th:src="@{/js/lib/summaryCourses.js}"></script>
 </head>
 <body onload="load()">
@@ -46,7 +47,7 @@
 					<span style="width:50px"></span>
 						<div class="col-lg-5">
 							<select id="selectReportType" name="selectReportType" class="form-control" required
-							onchange="validateDropDown(this)" style="width:525px; text-align-last:center;">
+							onchange="load()" style="width:525px; text-align-last:center;">
 								<option th:value="0"> </option>
 								<option th:value="1">Summary of Course Conducted</option>
 							</select>
@@ -82,7 +83,7 @@
 						    </div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
-						<input type="button" id="viewButton" class="btn btn-success" value="View" onclick="viewButtonClick()" style="width:100px" >
+						<input type="button" id="viewButton" class="btn btn-success" value="View" onclick="viewButtonClick()" style="width:100px" disabled>
 						<span style="width:100px"></span>
 						<input type="button" id="exportButton" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px" disabled>
 					</div>
@@ -175,7 +176,6 @@
 		</div>
 	<!-- Error Modal End -->
 	</div>
-
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
 	<script th:inline ="javascript">
@@ -194,6 +194,7 @@
 			console.log("ROW COUNT: " + rowCount);
 			if($("#selectReportType").val() == 0 || $("#selectReportType").val() == null){
 				$("#exportButton").attr('disabled','disabled');
+				$("#viewButton").attr('disabled','disabled');
 			}
 			else if(rowCount <= 0)
 			{
@@ -208,11 +209,12 @@
 			
  			var fromNewDate = fromDateTime.slice(0, 16);
 			var toNewDate = toDateTime.slice(0, 16);
-			
+		  
 			document.getElementById("startDate").value = fromNewDate;				
 			document.getElementById("endDate").value = toNewDate;
 			
 			document.getElementById('inputCourse').value;
+
 			
 			var selectReportType = document.getElementById("selectReportType").value;
 			var showSummaryCourses = document.getElementById("summaryCoursesTable");
@@ -227,6 +229,15 @@
 				reportDisplayTable.style.display = "block";
 			}
 		}		
+		const m = moment();
+		 startDate = document.getElementById("startDate");
+		 startDate.max = m.format("YYYY-MM-DDTHH:mm"); 
+		 
+		 endDate = document.getElementById("endDate");
+		 endDate.min = m.format("YYYY-MM-DDTHH:mm"); 
+		 
+		 
+		 console.log(m.format("YYYY-MM-DDTHH:mm"));
 		/**
 		Format Date Inputs
 		*/
