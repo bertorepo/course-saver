@@ -81,7 +81,7 @@
 		 		      if ($form.data('empty') === 'true') {
 		 		        $submit.attr('disabled', 'disabled').attr('title', 'Fill in all required fields');
 		 		      } else {
-		 		    	 $requiredSelect.each(function() {
+		 		    	 $requiredSelect.change(function() {
 			 		        if ($(this).val() === '') {
 			 		          $form.data('empty', 'true');
 			 		        }else {
