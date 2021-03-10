@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * AutoRegistrationDao class
@@ -21,4 +22,7 @@ public interface AutoRegistrationDao {
 
     // Method for loading all Departments
     List<AutoRegistrationDepartment> getAllDepartments();
+    
+    // Method for fetching Employee Details with the given Employee Number
+    Employee findDetailsByEmployeeNumber(String employeeNumber);
 }

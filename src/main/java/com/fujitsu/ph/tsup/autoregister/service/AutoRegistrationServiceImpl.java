@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.fujitsu.ph.tsup.autoregister.dao.AutoRegistrationDao;
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * AutoRegistrationServiceImpl class
@@ -50,6 +51,18 @@ public class AutoRegistrationServiceImpl implements AutoRegistrationService {
             return autoRegistrationDao.getAllDepartments();
         } catch (DataAccessException e) {
         	throw new IllegalArgumentException("Can't access department data.");
+        }
+    }
+
+    @Override
+    public Employee findDetailsByEmployeeNumber(String employeeNumber) {
+        try {
+            if (employeeNumber == null || employeeNumber.isEmpty()) {
+                throw new IllegalArgumentException("Employee Number should not be empty.");
+            }
+            return autoRegistrationDao.findDetailsByEmployeeNumber(employeeNumber);
+        } catch (DataAccessException e) {
+            return null;
         }
     }
 

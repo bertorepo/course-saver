@@ -14,8 +14,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import com.fujitsu.ph.tsup.authz.dao.EmployeeDetailsRowMapper;
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * AutoRegistrationDaoImpl class
@@ -90,6 +92,14 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
         String query = "SELECT * FROM tsup.department";
         List<AutoRegistrationDepartment> departmentList = template.query(query, new DepartmentRowMapper());
         return departmentList;
+    }
+
+    @Override
+    public Employee findDetailsByEmployeeNumber(String employeeNumber) {
+        String query = "SELECT ID, NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME "
+                + "FROM EMPLOYEE WHERE NUMBER = :employeeNumber";
+        SqlParameterSource employeeNumberParameters = new MapSqlParameterSource().addValue("employeeNumber", employeeNumber);
+        return template.queryForObject(query, employeeNumberParameters, new EmployeeDetailsRowMapper());
     }
 
 }

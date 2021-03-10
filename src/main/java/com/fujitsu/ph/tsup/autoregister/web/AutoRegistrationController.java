@@ -9,13 +9,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
 import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationForm;
 import com.fujitsu.ph.tsup.autoregister.service.AutoRegistrationService;
+import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
  * AutoRegistrationController Class
@@ -48,6 +51,17 @@ public class AutoRegistrationController {
         model.addAttribute("departmentList", autoRegistrationService.getAllDepartments());
         return "register";
     }
+    
+    @PostMapping("/validateId/{employeeNumber}")
+    @ResponseBody
+    public int validateEmployeeNumber(@PathVariable("employeeNumber") String employeeNumber) {
+        Employee employee = autoRegistrationService.findDetailsByEmployeeNumber(employeeNumber);
+        if (employee == null) {
+            return 0;
+        } else {
+            return 1;
+        }
+  }
 
     /**
      * <pre>

@@ -61,15 +61,15 @@
      $(document).ready(function () {
          $('input[type="submit"]').attr('disabled', true);
         
-        
-         $('input[type="text"], input[type="number"], select').on('change', function () {
-             var id_value = $("#id").val();
+         $('input[type="text"], input[type="number"], select').on('change keyup paste', function () {
+             var id_value = $("#employeeNumber").val();
              var firstName_value = $("#firstName").val();
              var lastName_value = $("#lastName").val();
              var userName_value = $("#userName").val();
              var dept_value = $("#departmentid").val();
             
              if ((id_value != '') &&
+            		 $('#idErrorMessage').is(":hidden") &&
                      (firstName_value != '') &&
                      (lastName_value != '') &&
                      (userName_value != '') &&
@@ -79,6 +79,24 @@
                  $('input[type="submit"]').attr('disabled', true);
              }
          });
+         
+         $('#employeeNumber').on('change', function () {
+				$.ajax({
+					type: 'POST',
+					url: '/register/validateId/' + $('#employeeNumber').val(),
+					dataType:"json",
+					contentType: 'application/json',
+					success: function(response) {
+						if (response == 0) {
+							$('#idErrorMessage').hide();
+						} else {
+							$('#idErrorMessage').show();
+							$('#idErrorMessage').text("A user with the given ID already exists.")
+						}
+					}
+				});
+				
+			});
      });
      </script>
     <!--End Update to disable submit button-->
@@ -90,7 +108,7 @@
 			<div class="card mb-5 border-0">
 				<div class="card-body p-0 row">
 					<form id="sign_up_user" class="form-horizontal col-lg-12" th:action="@{/register/createNewMember}" method="post">
-						<h4 class="text-center font-weight-bold">User does not exist</h4>
+						<h4 class="text-center font-weight-bold">Register New User</h4>
 						<hr class="row">
 						<div class="form-group row">
 							<label class="font-italic">Please fill out the form to register</label>
@@ -107,6 +125,7 @@
 								    pattern="/^-?\d+\.?\d*$/" 
 								    oninput="this.value = this.value.replace(/[^a-z0-9\s]/gi, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" 
 								    onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" autofocus required>
+								<p id="idErrorMessage" style="color: red; display: none; background-color:#ffe0e0; margin:0; padding: 5px;"></p>
 							</div>
 						</div>
 						<div class="form-group row">
