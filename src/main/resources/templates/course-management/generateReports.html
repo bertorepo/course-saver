@@ -210,35 +210,14 @@
 				$("#viewButton").removeAttr('disabled');
 				$("#inputCourse").removeAttr('disabled');
 			}
-			
-			/*<![CDATA[*/
-		    var a = /*[[${coursesConductedForm}]]*/ 'default';
-/* 			var finalfromDateTime = a.scheduledStartDateTime.slice(0,16);
-			
-			var inputFromDateTime = document.getElementById('startDate');
-			
-			inputFromDateTime.value = finalfromDateTime;
-			
-			document.getElementById('startDate').value = finalfromDateTime;
-			
-			console.log(finalfromDateTime); */
-		/*]]>*/
-			
-			
-			
-			/*<![CDATA[*/
-			var b = /*[[${coursesConductedForm}]]*/ 'default';	
-			
-				
- 			/* var fromNewDate = fromDateTime.slice(0, 16); */
- 			var fromNewDate = a.scheduledStartDateTime.slice(0,16);
+
+ 			var fromNewDate = fromDateTime.slice(0, 16);
 			var toNewDate = toDateTime.slice(0, 16);
 		  	
 			document.getElementById("startDate").value = fromNewDate;				
 			document.getElementById("endDate").value = toNewDate;
 			
 			document.getElementById('inputCourse').value;
-			/*]]>*/
 			
 			var selectReportType = document.getElementById("selectReportType").value;
 			var showSummaryCourses = document.getElementById("summaryCoursesTable");
