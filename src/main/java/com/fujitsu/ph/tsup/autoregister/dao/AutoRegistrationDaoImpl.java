@@ -39,10 +39,11 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
 
         String query = "INSERT INTO employee"
                 + " (number, last_name, first_name, email_address, username, department_id, employment_date)"
-                + " VALUES(:id, :lastName, :firstName, :emailAddress, :userName, :departmentid, :employmentDate)";
+                + " VALUES(:employeeNumber, :lastName, :firstName, :emailAddress, :userName, :departmentid, :employmentDate)";
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", autoRegistration.getId()).addValue("lastName", autoRegistration.getLastName())
+                .addValue("employeeNumber", autoRegistration.getEmployeeNumber())
+                .addValue("lastName", autoRegistration.getLastName())
                 .addValue("firstName", autoRegistration.getFirstName())
                 .addValue("emailAddress", autoRegistration.getEmailAddress())
                 .addValue("userName", autoRegistration.getUserName())

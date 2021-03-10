@@ -10,7 +10,7 @@ package com.fujitsu.ph.tsup.autoregister.model;
  * @version 0.01
  */
 public class AutoRegistrationForm {
-    private Long id;
+    private Long employeeNumber;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -19,21 +19,21 @@ public class AutoRegistrationForm {
     private String employmentDate;
 
     /**
-     * Getter method for AutoRegistration Id
+     * Getter method for AutoRegistration Employee Number
      * 
-     * @return AutoRegistration id
+     * @return AutoRegistration employeeNumber
      */
-    public Long getId() {
-        return id;
+    public Long getEmployeeNumber() {
+        return employeeNumber;
     }
 
     /**
-     * Setter method for AutoRegistration Id
+     * Setter method for AutoRegistration Employee Number
      * 
-     * @param AutoRegistration id
+     * @param AutoRegistration employeeNumber
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setEmployeeNumber(Long employeeNumber) {
+        this.employeeNumber = employeeNumber;
     }
 
     /**
@@ -146,7 +146,7 @@ public class AutoRegistrationForm {
 
     @Override
     public String toString() {
-        return "AutoRegistration [ID + " + id + "FirstName " + firstName + " LastName " + lastName
+        return "AutoRegistration [ID + " + employeeNumber + "FirstName " + firstName + " LastName " + lastName
                 + " EmailAddress " + emailAddress + " DepartmentID " + departmentid + " UserName " + userName
                 + " EmploymentDate " + employmentDate;
     }

@@ -63,7 +63,7 @@ public class AutoRegistrationController {
     public String submitCreateAutoRegistationForm(AutoRegistrationForm form, BindingResult result) {
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        AutoRegistration autoRegistrationDetails = new AutoRegistration.Builder(form.getId(),
+        AutoRegistration autoRegistrationDetails = new AutoRegistration.Builder(form.getEmployeeNumber(),
                 form.getFirstName(), form.getLastName(), form.getEmailAddress(), form.getDepartmentid(),
                 user.getUserName(), form.getEmploymentDate()).build();
         autoRegistrationService.addAutoRegistration(autoRegistrationDetails);

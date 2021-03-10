@@ -10,7 +10,7 @@ package com.fujitsu.ph.tsup.autoregister.model;
  * @version 0.01
  */
 public class AutoRegistration {
-    private Long id;
+    private Long employeeNumber;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -24,7 +24,7 @@ public class AutoRegistration {
      */
     private AutoRegistration(Builder builder) {
 
-        this.id = builder.id;
+        this.employeeNumber = builder.employeeNumber;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.emailAddress = builder.emailAddress;
@@ -34,21 +34,21 @@ public class AutoRegistration {
     }
 
     /**
-     * Getter method for AutoRegistration Id
+     * Getter method for AutoRegistration Employee Number
      * 
-     * @return AutoRegistration id
+     * @return AutoRegistration employeeNumber
      */
-    public Long getId() {
-        return id;
+    public Long getEmployeeNumber() {
+        return employeeNumber;
     }
 
     /**
-     * Setter method for AutoRegistration Id
+     * Setter method for AutoRegistration Employee Number
      * 
-     * @param AutoRegistration id
+     * @param AutoRegistration employeeNumber
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setEmployeeNumber(Long employeeNumber) {
+        this.employeeNumber = employeeNumber;
     }
 
     /**
@@ -161,7 +161,7 @@ public class AutoRegistration {
 
     @Override
     public String toString() {
-        return "AutoRegistration [ID=" + id + ", FirstName=" + firstName + ", LastName=" + lastName
+        return "AutoRegistration [ID=" + employeeNumber + ", FirstName=" + firstName + ", LastName=" + lastName
                 + ", EmailAddress=" + emailAddress + ", DepartmentID=" + departmentid + ", UserName="
                 + userName + ", EmploymentDate=" + employmentDate;
     }
@@ -172,7 +172,7 @@ public class AutoRegistration {
      *
      */
     public static class Builder {
-        private Long id;
+        private Long employeeNumber;
         private String firstName;
         private String lastName;
         private String emailAddress;
@@ -182,7 +182,7 @@ public class AutoRegistration {
 
         /**
          * Builder Constructor
-         * @param id
+         * @param employeeNumber
          * @param firstName
          * @param lastName
          * @param emailAddress
@@ -190,9 +190,9 @@ public class AutoRegistration {
          * @param userName
          * @param employmentDate
          */
-        public Builder(Long id, String firstName, String lastName, String emailAddress, Long departmentid,
+        public Builder(Long employeeNumber, String firstName, String lastName, String emailAddress, Long departmentid,
                 String userName, String employmentDate) {
-            validateID(id);
+            validateEmployeeNumber(employeeNumber);
             validateFirstName(firstName);
             validateLastName(lastName);
             validateEmailAddress(emailAddress);
@@ -200,7 +200,7 @@ public class AutoRegistration {
             validateUserName(userName);
             validateEmploymentDate(employmentDate);
 
-            this.id = id;
+            this.employeeNumber = employeeNumber;
             this.firstName = firstName;
             this.lastName = lastName;
             this.emailAddress = emailAddress;
@@ -217,12 +217,12 @@ public class AutoRegistration {
         }
 
         /**
-         * Validate AutoRegistration id if null or empty
-         * @param id
+         * Validate AutoRegistration employeeNumber if null or empty
+         * @param employeeNumber
          */
-        private void validateID(Long id) {
+        private void validateEmployeeNumber(Long employeeNumber) {
 
-            if (id == null || id == 0) {
+            if (employeeNumber == null || employeeNumber == 0) {
                 throw new IllegalArgumentException("ID should not be empty");
             }
 
