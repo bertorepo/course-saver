@@ -15,8 +15,8 @@
 	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
-	
 	<script th:src="@{/js/app/jquery-ui.js}"></script>
+	
 	<link rel="stylesheet" type="text/css" href="/css/app/jquery-ui.css">
 	<style type="text/css">   
 	    /* Chrome, Safari, Edge, Opera */
@@ -40,6 +40,11 @@
 		input[type="submit"]:disabled {
 		  background: #555;
 		  cursor: not-allowed;
+		}
+	</style>
+	<style> 
+		#inputemptyerror {
+			display: none;
 		}
 	</style>
 </head>
@@ -100,25 +105,26 @@
 							<div class="col-sm-8 pl-0 pr-0">
 								<input 
 									type="number" 
-								    class="form-control" 
-								    id="employeeNumber" 
-								    name="employeeNumber" 
+								    class="form-control border border-danger" 
+								    id="id" 
+								    name="id" 
 								    placeholder="Type a number"
 								    pattern="/^-?\d+\.?\d*$/" 
 								    oninput="this.value = this.value.replace(/[^a-z0-9\s]/gi, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" 
 								    onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" autofocus required>
 							</div>
+							
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">First Name</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<input type="text" class="form-control" id="firstName" name="firstName" th:maxlength="50" required>
+								<input type="text" class="form-control border border-danger" id="firstName" name="firstName" th:maxlength="50" required onKeyUp="lettersOnly(this)">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Last Name</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<input type="text" class="form-control" id="lastName" name="lastName" th:maxlength="50" required>
+								<input type="text" class="form-control border border-danger" id="lastName" name="lastName" th:maxlength="50" required onKeyUp="lettersOnly(this)">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -136,7 +142,7 @@
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Department</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<select class="form-control" id="departmentid" name="departmentid" required>
+								<select class="form-control border border-danger" id="departmentid" name="departmentid" required>
 									<option disabled selected></option>
 									<option th:each="department : ${departmentList}" th:value="${department.id}" th:text="${department.department}"></option>
 								</select>
@@ -147,6 +153,9 @@
 							<div class="col-sm-8 pl-0 pr-0">
 								<input type="text" class="form-control" id="employmentDate" name="employmentDate" style="background:#FFFFFF" readonly>
 							</div>
+						</div>
+						<div class="form-group row d-flex align-items-center align-self-center justify-content-center" id="warning_message">
+							<label display="none" id="inputemptyerror">Input fields highlighted with a red border cannot be blank</label>
 						</div>
 						<div class="form-group text-center" style="padding-top:5%">					
 							<input type="submit" class="btn btn-primary w-25" value="Register">
@@ -204,6 +213,59 @@
 			</div>
 		</div>
 	</main>
+	<!-- JavaScript for Showing Error Message within the Form -->
+	<script type="text/javascript">
+		function lettersOnly(input){
+			var regex = /[^a-z]/gi;
+			input.value = input.value.replace(regex, '');
+		}
+		$(document).ready(function(){		
+			$('#sign_up_user input[type="text"]').blur(function(){
+		        if(!$(this).val()){
+		            $(this).addClass("border border-danger");
+		        }else{
+		        	$(this).removeClass("border border-danger");
+			    }
+		        if(!$('#firstName').val() || !$('#lastName').val()){
+		        	$("#inputemptyerror").show();
+		        }else{
+		        	$("#inputemptyerror").hide();
+		        }
+		    });
+			$('#sign_up_user input[type="number"]').blur(function(){
+		        if(!$(this).val()){
+		            $(this).addClass("border border-danger");
+		        }else{
+		        $(this).removeClass("border border-danger");
+			    }
+		        if(!$('#id').val()){
+		        	$("#inputemptyerror").show();
+		        }else{
+		        	$("#inputemptyerror").hide();
+		        }
+		    });
+			$('#sign_up_user input[type="email"]').blur(function(){
+		        if(!$(this).val()){
+		            $(this).addClass("border border-danger");
+		        }else{
+		        $(this).removeClass("border border-danger");
+			    }
+		    });
+			$('#sign_up_user select').blur(function(){
+		        if(!$(this).val()){
+		            $(this).addClass("border border-danger");
+		        }else{
+		        $(this).removeClass("border border-danger");
+			    }
+		        if(!$('#departmentid').val()){
+		        	$("#inputemptyerror").show();
+		        }else{
+		        	$("#inputemptyerror").hide();
+		        }
+		    });
+		});
+	</script>
+    <!-- End of JavaScript for Showing Error Message within the Form -->
 	
 	<script>
 		$(document).ready(function() {
@@ -216,6 +278,8 @@
 			}
 
 		});
+		
+		
 	</script>
 	
 	<footer th:replace="fragments/general :: footer"></footer>
