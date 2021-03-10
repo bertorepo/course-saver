@@ -44,7 +44,7 @@
 			<div class="card-body">
 				<div class="form-group row align-items-center justify-content-center">
 					<label class="col-lg-2 col-form-label" style="font-weight: bold;">Report Type</label>
-					<span style="width:50px"></span>
+					<span style="width:70px"></span>
 						<div class="col-lg-5">
 							<select id="selectReportType" name="selectReportType" class="form-control" required
 							onchange="load()" style="width:525px; text-align-last:center;">
@@ -54,23 +54,23 @@
 						</div>
 				</div>	     		
  				<div class="form-group row align-items-center justify-content-center">
- 				<span style="width:50px"></span>
+ 				<span style="width:35px"></span>
                 <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
                         <label class="col-form-label" style="font-weight: bold;">From</label>
-								<span style="width:15px"></span>
-	                           <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:200px; font-size:14px;" required/>
+								<span style="width:10px"></span>
+	                           <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" required/>
 	                           <input type="hidden" th:field="*{scheduledStartDateTime}"/>
-								<span style="width:15px"></span>
+								<span style="width:10px"></span>
 	                        <label class="col-form-label" style="font-weight: bold;">To</label>
 	                        <div class="col-lg-2">
-	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:200px; font-size:14px;" required/>
+	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" required/>
 	                           <input type="hidden" th:field="*{scheduledEndDateTime}"/>
 	                       </div>
                  </div> 
                  
                  <div class="form-group row align-items-center justify-content-center">
  						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
- 						<span style="width:50px"></span>
+ 						<span style="width:75px"></span>
 
  						<div class="col-lg-5">
 							<input list="course" class="form-control" id="inputCourse" type="text" style="width:525px;" autocomplete="off" disabled>
@@ -89,8 +89,9 @@
 					</div>
 			<label>Report Display</label>
 					<div id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
+					
 					</div>
-					<div th:if="${#lists.isEmpty(coursesConducted)}">
+					<div th:if="${#lists.isEmpty(coursesConducted)}" id="listEmptyMessage" style="display:none;">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong th:text="${nullMessage}"></strong> 
 						</div>
@@ -127,6 +128,7 @@
 			</div>
 			
 		</div>	
+
 		</form>
 		<!-- Export Summary Courses Conducted  -->
 		<table id="exportSummaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
@@ -176,6 +178,8 @@
 		</div>
 	<!-- Error Modal End -->
 	</div>
+	<input type="datetime-local" class="form-control" id="fdt">
+	<input type="hidden" class="form-control" name="fdt" id="inputFdt">
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
 	<script th:inline ="javascript">
@@ -207,14 +211,34 @@
 				$("#inputCourse").removeAttr('disabled');
 			}
 			
- 			var fromNewDate = fromDateTime.slice(0, 16);
+			/*<![CDATA[*/
+		    var a = /*[[${coursesConductedForm}]]*/ 'default';
+/* 			var finalfromDateTime = a.scheduledStartDateTime.slice(0,16);
+			
+			var inputFromDateTime = document.getElementById('startDate');
+			
+			inputFromDateTime.value = finalfromDateTime;
+			
+			document.getElementById('startDate').value = finalfromDateTime;
+			
+			console.log(finalfromDateTime); */
+		/*]]>*/
+			
+			
+			
+			/*<![CDATA[*/
+			var b = /*[[${coursesConductedForm}]]*/ 'default';	
+			
+				
+ 			/* var fromNewDate = fromDateTime.slice(0, 16); */
+ 			var fromNewDate = a.scheduledStartDateTime.slice(0,16);
 			var toNewDate = toDateTime.slice(0, 16);
-		  
+		  	
 			document.getElementById("startDate").value = fromNewDate;				
 			document.getElementById("endDate").value = toNewDate;
 			
 			document.getElementById('inputCourse').value;
-
+			/*]]>*/
 			
 			var selectReportType = document.getElementById("selectReportType").value;
 			var showSummaryCourses = document.getElementById("summaryCoursesTable");
@@ -223,10 +247,12 @@
 			if(selectReportType == "1"){
 				showSummaryCourses.style.display = "block";
 				reportDisplayTable.style.display = "none";
+				listEmptyMessage.style.display = "block";
 			}
 			else{
 				showSummaryCourses.style.display = "none";
 				reportDisplayTable.style.display = "block";
+				listEmptyMessage.style.display = "none";
 			}
 		}		
 		const m = moment();
