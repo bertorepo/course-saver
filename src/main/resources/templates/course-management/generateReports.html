@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	
@@ -17,17 +16,14 @@
         border-collapse: collapse;
         width: 100%;  
       }
-
       td,
       th {
         border: 1px solid #dddddd;
         padding: 8px;
       }
-
       tr:nth-child(even) {
         background-color: #dddddd;
       }
-
 </style>
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -71,7 +67,6 @@
                  <div class="form-group row align-items-center justify-content-center">
  						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
  						<span style="width:75px"></span>
-
  						<div class="col-lg-5">
 							<input list="course" class="form-control" id="inputCourse" type="text" style="width:525px;" autocomplete="off" disabled>
 								<datalist id="course">
@@ -102,25 +97,47 @@
 						</div>
 				</div>
 				<!-- Display Summary Courses Conducted -->
-					<table id="summaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
+					<table id="summaryCoursesTable" class="table-bordered table-responsive text-center sticky-table width_max table-condensed" style="overflow-y:scroll;display:none; width:100%; height:400px;">
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th style="width:35%">Course Name</th>
-								<th style="width:35%">Planned Start Date<br><hr>Planned End Date</th>
-								<th style="width:35%">Actual Start Date<br><hr>Actual End Date</th>
+								<th style="width:33%">Course Name</th>
+								<th style="width:33%">Planned Date</th>
+								<th style="width:33%">Actual Date</th>
 							</tr>
 						</thead>
 						<tbody id="tBodySummary" th:each="showSummaryCourses, rowStat: ${coursesConducted}">
 							<tr class="content">
-								<td th:text="${rowStat.count}"></td>
-								<td th:text="${showSummaryCourses.courseName}"></td>
-								<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
-								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + ${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
-								 'MMM dd, yyyy (E) - hh:mm a')}"></td>
-								<td th:utext="${#calendars.format(showSummaryCourses.scheduledEndDateTime,
-								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + ${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
-								 'MMM dd, yyyy (E) - hh:mm a')} "></td>
+								<td class="align-middle" th:text="${rowStat.count}"></td>
+								<td class="align-middle" th:text="${showSummaryCourses.courseName}"></td>	
+								<td>
+								 	<table class="table-borderless text-left table-condensed">
+								 	<tr class="bg-white">
+								 		<td>Start: </td>
+								 		<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
+										'MMM dd, yyyy (E) - hh:mm a')}"></td>
+								 	</tr>
+								 	<tr class="bg-white">
+								 		<td>End: </td>
+								 		<td th:utext="${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
+										 'MMM dd, yyyy (E) - hh:mm a')}"></td>
+								 	</tr>	
+								 	</table>
+								 </td>
+								 <td>
+								 	<table class="table-borderless text-left table-condensed" >
+								 	<tr class="bg-white">
+								 		<td>Start: </td>
+								 		<td th:utext="${#calendars.format(showSummaryCourses.scheduledEndDateTime,
+										'MMM dd, yyyy (E) - hh:mm a')}"></td>
+								 	</tr>
+								 	<tr class="bg-white">
+								 		<td>End: </td>
+								 		<td th:utext="${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
+								 		'MMM dd, yyyy (E) - hh:mm a')}"></td>
+								 	</tr>	
+								 	</table>
+								 </td>
 							 </tr>
 						</tbody>
 					</table>
@@ -128,7 +145,6 @@
 			</div>
 			
 		</div>	
-
 		</form>
 		<!-- Export Summary Courses Conducted  -->
 		<table id="exportSummaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
@@ -179,7 +195,6 @@
 	<!-- Error Modal End -->
 	</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
-
 	<script th:inline ="javascript">
 	/*<![CDATA[*/
 	    var message = /*[[${coursesConductedListForm}]]*/ 'default';
@@ -208,7 +223,6 @@
 				$("#viewButton").removeAttr('disabled');
 				$("#inputCourse").removeAttr('disabled');
 			}
-
  			var fromNewDate = fromDateTime.slice(0, 16);
 			var toNewDate = toDateTime.slice(0, 16);
 		  	
@@ -254,7 +268,6 @@
 			'.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
 			'Z';
 		};
-
 		/**
 		For HTML with FromDateTime and ToDateTime
 		*/
@@ -268,7 +281,6 @@
 				$("#scheduledStartDateTime").prop('value', dateConcat);
 			}
 		}); 
-
 		$("#endDate").blur(function () {
 			var formDate = document.getElementById("endDate").value;
 			var newDate = new Date(formDate);
@@ -290,7 +302,6 @@
 				var dropVal = $(this).val();
 				sessionStorage.setItem("SelectedItem", dropVal);
 		});
-
 		function filterText(){  
 			var rex = new RegExp($('#selectCourse').val());
 			
@@ -305,7 +316,6 @@
 			$('.selectCourse').val('');
 			$('.content').show();
 		}
-
 		/**
 		Filter Duplicate Courses
 		*/
