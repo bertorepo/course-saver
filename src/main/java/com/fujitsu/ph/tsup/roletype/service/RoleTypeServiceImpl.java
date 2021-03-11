@@ -44,7 +44,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 @Service
 public class RoleTypeServiceImpl implements RoleTypeService {
     @Autowired
-    RoleTypeDao roleTypeDao;
+    private RoleTypeDao roleTypeDao;
 
     /**
      * Finds Role Type by id
