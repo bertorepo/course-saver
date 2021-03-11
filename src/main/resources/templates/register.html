@@ -124,21 +124,37 @@
 								    placeholder="Type a number"
 								    pattern="/^-?\d+\.?\d*$/" 
 								    oninput="this.value = this.value.replace(/[^a-z0-9\s]/gi, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" 
-								    onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" autofocus required>
+								    onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;"
+								    onBlur="errorTestId()"
+								    autofocus required>
 								<p id="idErrorMessage" style="color: red; display: none; background-color:#ffe0e0; margin:0; padding: 5px;"></p>
+							</div>
+						</div>
+						<div class="form-group row d-flex justify-content-center" id="erroridnorow">
+							<div>
+								<label id="erroremptyid" class="d-none">Enter your ID Number</label>
+							</div>
+							<div>
+								<label id="errolackingid" class="d-none">Your ID Number must be at least 8 digits</label>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">First Name</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<input type="text" class="form-control" id="firstName" name="firstName" th:maxlength="50" required>
+								<input type="text" class="form-control" id="firstName" name="firstName" th:maxlength="50" onBlur="errorTestFirstName()" onInput="lettersOnly(this)" required>
 							</div>
+						</div>
+						<div class="form-group row d-flex justify-content-center">
+							<label id="erroremptyfirstname" class="d-none">Enter your first name, this field cannot be blank</label>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Last Name</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<input type="text" class="form-control" id="lastName" name="lastName" th:maxlength="50" required>
+								<input type="text" class="form-control" id="lastName" name="lastName" th:maxlength="50" onBlur="errorTestLastName()" onInput="lettersOnly(this)" required>
 							</div>
+						</div>
+						<div class="form-group row d-flex justify-content-center">
+							<label id="erroremptylastname" class="d-none">Enter your last name, this field cannot be blank</label>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Username</label>
@@ -155,11 +171,14 @@
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Department</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<select class="form-control" id="departmentid" name="departmentid" required>
+								<select class="form-control" id="departmentid" name="departmentid" onBlur="errorTestDepartment()" required>
 									<option disabled selected></option>
 									<option th:each="department : ${departmentList}" th:value="${department.id}" th:text="${department.department}"></option>
 								</select>
 							</div>
+						</div>
+						<div class="form-group row d-flex justify-content-center">
+							<label id="erroremptydept" class="d-none">Please select your department</label>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Employment Date</label>
@@ -223,7 +242,90 @@
 			</div>
 		</div>
 	</main>
+	<!-- 
+	Registration Form Error Messaging
+	 -->
+	<script>
+		//This function supresses any entered characters that are not letters 
+		function lettersOnly(input){
+			var regex = /[^a-z]/gi;
+			input.value = input.value.replace(regex,'');
+		}
+		function errorTestLastName(){
+			var lastnameval = $('#lastName').val();
+			var isEmptyFlag = false;
+			if(lastnameval.length < 1){
+				$('#erroremptylastname').removeClass('d-none');
+				$('#erroremptylastname').addClass('d-inline-block');
+				$('#erroremptylastname').show();
+				isEmptyFlag = true;
+			}else{
+				$('#erroremptylastname').removeClass('d-inline-block');
+				$('#erroremptylastname').hide();
+				isEmptyflag = false;
+			}
+		}
+		function errorTestId(){
+			var idval = $('#employeeNumber').val();
+			var isEmptyFlag = false;
+			var isLacking = false;
+			if(idval.length < 1){
+				$('#erroremptyid').removeClass('d-none');
+				$('#erroremptyid').addClass('d-inline-block');
+				$('#erroremptyid').show();
+				isEmptyFlag = true;
+			}else{
+				$('#erroremptyid').removeClass('d-inline-block');
+				$('#erroremptyid').hide();
+				isEmptyflag = false;
+			}
+			if(idval.length < 8){
+				$('#errolackingid').removeClass('d-none');
+				$('#errolackingid').addClass('d-inline-block');
+				$('#errolackingid').show();
+				isLacking = true;
+			}else{
+				$('#errolackingid').removeClass('d-inline-block');
+				$('#errolackingid').hide();
+				isLacking = false;
+			}
+			if(isLacking === false && isEmptyFlag === false){
+				$('#erroridnorow').hide();
+			}
+		}
+		function errorTestFirstName(){
+			var firstnameval = $('#firstName').val();
+			var isEmptyFlag = false;
+			if(firstnameval.length < 1){
+				$('#erroremptyfirstname').removeClass('d-none');
+				$('#erroremptyfirstname').addClass('d-inline-block');
+				$('#erroremptyfirstname').show();
+				isEmptyFlag = true;
+			}else{
+				$('#erroremptyfirstname').removeClass('d-inline-block');
+				$('#erroremptyfirstname').hide();
+				isEmptyflag = false;
+			}
+		}
+		function errorTestDepartment(){
+			var deptval = $('#departmentid').val();
+			var isEmptyFlag = false;
+			if(deptval === null){
+				$('#erroremptydept').removeClass('d-none');
+				$('#erroremptydept').addClass('d-inline-block');
+				$('#erroremptydept').show();
+				isEmptyFlag = true;
+			}else{
+				$('#erroremptydept').removeClass('d-inline-block');
+				$('#erroremptydept').hide();
+				isEmptyflag = false;
+			}
+		}
+		$(document).ready(function(){
 	
+		});
+	</script> 
+		<!-- End of Registration Form Error Messaging-->
 	<script>
 		$(document).ready(function() {
 
