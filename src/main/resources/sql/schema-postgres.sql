@@ -363,6 +363,7 @@ CREATE TABLE tsup.MEMBER_ROLE
     id bigint NOT NULL DEFAULT nextval('tsup."MEMBER_ROLEID_seq"'::regclass),
     role_type character varying(40),
     role_desc character varying(120),
+    deleted_at timestamp,
     PRIMARY KEY (id)
 )
 WITH (
