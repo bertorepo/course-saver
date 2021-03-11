@@ -27,6 +27,8 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.05    | 2021/02/24 | WS) p.cui             | Updated
 //0.06    | 2021/02/26 | WS) c.sinda           | Updated
 //0.07    | 2021/03/03 | WS) m.baton		   | Updated
+//0.08    | 2021/03/09 | WS) j.sayaboc         | Updated
+//0.09    | 2021/03/11 | WS) p.cui             | Updated
 //==================================================================================================
 
 
@@ -163,10 +165,34 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
         template.update(query, sqlParameterSource);
     }
 
+    /**
+     * Method for searching Role Type
+     * 
+     * @param keyword search keyword
+     */
     @Override
     public Set<RoleType> findRoleTypeByKeyword(String keyword) {
         String query = "SELECT * FROM MEMBER_ROLE " + "WHERE LOWER(role_type) LIKE LOWER('%" + keyword
                 + "%') " + "OR LOWER(role_desc) LIKE LOWER('%" + keyword + "%')";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("role_type", keyword)
+                .addValue("role_desc", keyword);
+
+        List<RoleType> roleList = template.query(query, sqlParameterSource, new RoleTypeRowMapper());
+        Set<RoleType> roles = new LinkedHashSet<>(roleList);
+        return roles;
+    }
+    
+    /**
+     * Method for searching Role Type
+     * 
+     * @param keyword search keyword
+     * @param pageSize
+     * @param page
+     */
+    @Override
+    public Set<RoleType> findRoleTypeByKeyword(String keyword, int pageSize, int page) {
+        String query = "SELECT * FROM MEMBER_ROLE " + "WHERE LOWER(role_type) LIKE LOWER('%" + keyword
+                + "%') " + "OR LOWER(role_desc) LIKE LOWER('%" + keyword + "%') LIMIT "+ pageSize+" OFFSET "+ ((pageSize*page)-pageSize);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("role_type", keyword)
                 .addValue("role_desc", keyword);
 
