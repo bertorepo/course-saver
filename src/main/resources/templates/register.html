@@ -41,6 +41,16 @@
 		  background: #555;
 		  cursor: not-allowed;
 		}
+		.pointer {
+			cursor: pointer; color:green;
+		}
+		.errorLabel{
+			color: red; 
+			display: none;
+			background-color:#ffe0e0; 
+			margin:0;
+			padding: 5px;
+		}
 	</style>
 </head>
 
@@ -61,26 +71,27 @@
      $(document).ready(function () {
          $('input[type="submit"]').attr('disabled', true);
         
-         $('input[type="text"], input[type="number"], select').on('change keyup paste', function () {
-             var id_value = $("#employeeNumber").val();
-             var firstName_value = $("#firstName").val();
-             var lastName_value = $("#lastName").val();
-             var userName_value = $("#userName").val();
-             var dept_value = $("#departmentid").val();
+         $("#clickhere").click(function(){
+	   		  var x = Math.floor((Math.random() * 9999999999) + 1);
+	   	      document.getElementById("employeeNumber").value = x;
+	   	  });
+        
+        $('input[type="text"], input[type="number"], select, #clickhere').on('keyup change click', function () {
+       	 	var id_value = $("#employeeNumber").val();
+            var firstName_value = $("#firstName").val();
+            var lastName_value = $("#lastName").val();
+            var userName_value = $("#userName").val();
+            var dept_value = $("#departmentid").val();
             
-             if ((id_value != '') &&
-            		 $('#idErrorMessage').is(":hidden") &&
-                     (firstName_value != '') &&
-                     (lastName_value != '') &&
-                     (userName_value != '') &&
-                     (dept_value != null)) {
-                 $('input[type="submit"]').attr('disabled', false);
-             } else {
-                 $('input[type="submit"]').attr('disabled', true);
-             }
-         });
-         
-         $('#employeeNumber').on('change', function () {
+			if((id_value.length > 0) && (id_value.length < 8)){
+				$('#idErrorMessage').text("Your ID Number must be at least 8 digits")
+				$('#idErrorMessage').show();		
+				$('input[type="submit"]').attr('disabled', true);
+			} else if (id_value.length < 1){
+				$('#idErrorMessage').text("Enter your ID Number")
+				$('#idErrorMessage').show();
+				$('input[type="submit"]').attr('disabled', true);
+			} else {				
 				$.ajax({
 					type: 'POST',
 					url: '/register/validateId/' + $('#employeeNumber').val(),
@@ -89,15 +100,27 @@
 					success: function(response) {
 						if (response == 0) {
 							$('#idErrorMessage').hide();
+							if ((id_value != '') &&
+							 (firstName_value != '') &&
+		                     (lastName_value != '') &&
+		                     (userName_value != '') && 
+		  	        		 (dept_value != null)) {
+				                 $('input[type="submit"]').attr('disabled', false);
+				             } else {
+				            	 $('input[type="submit"]').attr('disabled', true);
+				             }
 						} else {
-							$('#idErrorMessage').show();
 							$('#idErrorMessage').text("A user with the given ID already exists.")
+							$('#idErrorMessage').show();
+							$('input[type="submit"]').attr('disabled', true);
 						}
 					}
 				});
-				
-			});
-     });
+			}
+            
+            
+        });
+    });
      </script>
     <!--End Update to disable submit button-->
  	
@@ -125,36 +148,24 @@
 								    pattern="/^-?\d+\.?\d*$/" 
 								    oninput="this.value = this.value.replace(/[^a-z0-9\s]/gi, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" 
 								    onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;"
-								    onBlur="errorTestId()"
 								    autofocus required>
-								<p id="idErrorMessage" style="color: red; display: none; background-color:#ffe0e0; margin:0; padding: 5px;"></p>
-							</div>
-						</div>
-						<div class="form-group row d-flex justify-content-center" id="erroridnorow">
-							<div>
-								<label id="erroremptyid" class="d-none">Enter your ID Number</label>
-							</div>
-							<div>
-								<label id="errolackingid" class="d-none">Your ID Number must be at least 8 digits</label>
+								<p id="idErrorMessage" class="errorLabel"></p>
+								<i  onclick="myFunction()" id="clickhere" class="pointer">[ Click Here ]</i> - for the employee with no ID#
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">First Name</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<input type="text" class="form-control" id="firstName" name="firstName" th:maxlength="50" onBlur="errorTestFirstName()" onInput="lettersOnly(this)" required>
+								<input type="text" class="form-control" id="firstName" name="firstName" th:maxlength="50" onBlur="inputValidation('FirstNameErrorMessage', this)" onInput="lettersOnly(this)" required>
+								<p id="FirstNameErrorMessage" class="errorLabel"></p>
 							</div>
-						</div>
-						<div class="form-group row d-flex justify-content-center">
-							<label id="erroremptyfirstname" class="d-none">Enter your first name, this field cannot be blank</label>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Last Name</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<input type="text" class="form-control" id="lastName" name="lastName" th:maxlength="50" onBlur="errorTestLastName()" onInput="lettersOnly(this)" required>
+								<input type="text" class="form-control" id="lastName" name="lastName" th:maxlength="50" onBlur="inputValidation('LastNameErrorMessage', this)" onInput="lettersOnly(this)" required>
+								<p id="LastNameErrorMessage" class="errorLabel"></p>
 							</div>
-						</div>
-						<div class="form-group row d-flex justify-content-center">
-							<label id="erroremptylastname" class="d-none">Enter your last name, this field cannot be blank</label>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Username</label>
@@ -171,14 +182,12 @@
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Department</label>
 							<div class="col-sm-8 pl-0 pr-0">
-								<select class="form-control" id="departmentid" name="departmentid" onBlur="errorTestDepartment()" required>
+								<select class="form-control" id="departmentid" name="departmentid" onBlur="inputValidation('DepartmentErrorMessage', this)" required>
 									<option disabled selected></option>
 									<option th:each="department : ${departmentList}" th:value="${department.id}" th:text="${department.department}"></option>
 								</select>
+								<p id="DepartmentErrorMessage" class="errorLabel"></p>
 							</div>
-						</div>
-						<div class="form-group row d-flex justify-content-center">
-							<label id="erroremptydept" class="d-none">Please select your department</label>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-4 control-label col-form-label pl-0">Employment Date</label>
@@ -251,79 +260,16 @@
 			var regex = /[^a-z]/gi;
 			input.value = input.value.replace(regex,'');
 		}
-		function errorTestLastName(){
-			var lastnameval = $('#lastName').val();
-			var isEmptyFlag = false;
-			if(lastnameval.length < 1){
-				$('#erroremptylastname').removeClass('d-none');
-				$('#erroremptylastname').addClass('d-inline-block');
-				$('#erroremptylastname').show();
-				isEmptyFlag = true;
-			}else{
-				$('#erroremptylastname').removeClass('d-inline-block');
-				$('#erroremptylastname').hide();
-				isEmptyflag = false;
+
+		function inputValidation(errorId, input) {
+			var input_val = input.value;
+			if((input_val.length < 1) || (input_val.length == null)) {
+				$("#"+errorId).text("This field is required.");
+				$("#"+errorId).show();
+			} else {
+				$("#"+errorId).hide();
 			}
 		}
-		function errorTestId(){
-			var idval = $('#employeeNumber').val();
-			var isEmptyFlag = false;
-			var isLacking = false;
-			if(idval.length < 1){
-				$('#erroremptyid').removeClass('d-none');
-				$('#erroremptyid').addClass('d-inline-block');
-				$('#erroremptyid').show();
-				isEmptyFlag = true;
-			}else{
-				$('#erroremptyid').removeClass('d-inline-block');
-				$('#erroremptyid').hide();
-				isEmptyflag = false;
-			}
-			if(idval.length < 8){
-				$('#errolackingid').removeClass('d-none');
-				$('#errolackingid').addClass('d-inline-block');
-				$('#errolackingid').show();
-				isLacking = true;
-			}else{
-				$('#errolackingid').removeClass('d-inline-block');
-				$('#errolackingid').hide();
-				isLacking = false;
-			}
-			if(isLacking === false && isEmptyFlag === false){
-				$('#erroridnorow').hide();
-			}
-		}
-		function errorTestFirstName(){
-			var firstnameval = $('#firstName').val();
-			var isEmptyFlag = false;
-			if(firstnameval.length < 1){
-				$('#erroremptyfirstname').removeClass('d-none');
-				$('#erroremptyfirstname').addClass('d-inline-block');
-				$('#erroremptyfirstname').show();
-				isEmptyFlag = true;
-			}else{
-				$('#erroremptyfirstname').removeClass('d-inline-block');
-				$('#erroremptyfirstname').hide();
-				isEmptyflag = false;
-			}
-		}
-		function errorTestDepartment(){
-			var deptval = $('#departmentid').val();
-			var isEmptyFlag = false;
-			if(deptval === null){
-				$('#erroremptydept').removeClass('d-none');
-				$('#erroremptydept').addClass('d-inline-block');
-				$('#erroremptydept').show();
-				isEmptyFlag = true;
-			}else{
-				$('#erroremptydept').removeClass('d-inline-block');
-				$('#erroremptydept').hide();
-				isEmptyflag = false;
-			}
-		}
-		$(document).ready(function(){
-	
-		});
 	</script> 
 		<!-- End of Registration Form Error Messaging-->
 	<script>
