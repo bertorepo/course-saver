@@ -62,14 +62,16 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
      * Method for adding new Member to employee_auth table
      */
     private void addEmployeeAuth(String username) {
-
-        String query = "INSERT INTO employee_auth" + " (auth_name, username)"
-                + " VALUES(:authName, :userName)";
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("authName", "Member")
-                .addValue("userName", username);
-
-        template.update(query, sqlParameterSource);
-
+    	try {
+	        String query = "INSERT INTO employee_auth" + " (auth_name, username)"
+	                + " VALUES(:authName, :userName)";
+	        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("authName", "Member")
+	                .addValue("userName", username);
+	
+	        template.update(query, sqlParameterSource);
+    	}catch(Exception a) {
+        	throw new IllegalArgumentException("Error Employee Authentication");
+        }
     }
 
     /*

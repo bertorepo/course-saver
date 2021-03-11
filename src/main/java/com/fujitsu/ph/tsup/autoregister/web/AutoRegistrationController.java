@@ -75,14 +75,18 @@ public class AutoRegistrationController {
      */
     @PostMapping("/createNewMember")
     public String submitCreateAutoRegistationForm(AutoRegistrationForm form, BindingResult result) {
-        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        AutoRegistration autoRegistrationDetails = new AutoRegistration.Builder(form.getEmployeeNumber(),
-                form.getFirstName(), form.getLastName(), form.getEmailAddress(), form.getDepartmentid(),
-                user.getUserName(), form.getEmploymentDate()).build();
-        autoRegistrationService.addAutoRegistration(autoRegistrationDetails);
-
-        return "redirect:/register/#successModal";
+    	try {
+	    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	
+	        AutoRegistration autoRegistrationDetails = new AutoRegistration.Builder(form.getEmployeeNumber(),
+	                form.getFirstName(), form.getLastName(), form.getEmailAddress(), form.getDepartmentid(),
+	                user.getUserName(), form.getEmploymentDate()).build();
+	        autoRegistrationService.addAutoRegistration(autoRegistrationDetails);
+	
+	        return "redirect:/register/#successModal";
+    	}catch(Exception a) {
+    		throw new IllegalArgumentException("Error Employee Registration");
+    	}
     }
 
 }
