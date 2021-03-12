@@ -57,7 +57,7 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 @RequestMapping("/roletype")
 public class RoleTypeController {
     @Autowired
-    RoleTypeService roleTypeService;
+    private RoleTypeService roleTypeService;
 
     /**
      * Load the Role Type on the screen
