@@ -29,6 +29,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.07    | 2021/03/03 | WS) m.baton		   | Updated
 //0.08    | 2021/03/09 | WS) j.sayaboc         | Updated
 //0.09    | 2021/03/11 | WS) p.cui             | Updated
+//0.10    | 2021/03/12 | WS) i.fajardo         | Updated
 //==================================================================================================
 
 
@@ -42,6 +43,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * @author j.sayaboc
  * @author c.sinda
  * @author m.baton
+ * @author i.fajardo
  */
 
 @Repository
