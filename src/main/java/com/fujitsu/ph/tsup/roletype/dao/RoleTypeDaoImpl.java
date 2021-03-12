@@ -68,7 +68,7 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public Set<RoleType> findRoleTypeByName(String rolename) {
-        String query = "SELECT * FROM MEMBER_ROLE WHERE LOWER(role_type) LIKE LOWER('%" + rolename + "%')";
+        String query = "SELECT * FROM MEMBER_ROLE WHERE LOWER(role_type) LIKE LOWER('%" + rolename + "%') AND deleted_at IS NULL";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("role_type", rolename);
 
         List<RoleType> roleList = template.query(query, sqlParameterSource, new RoleTypeRowMapper());
