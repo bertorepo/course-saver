@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.autoregister.web;
+package com.fujitsu.ph.tsup.authz.autoregister.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fujitsu.ph.auth.model.FpiUser;
-import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
-import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationForm;
-import com.fujitsu.ph.tsup.autoregister.service.AutoRegistrationService;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistration;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistrationForm;
+import com.fujitsu.ph.tsup.authz.autoregister.service.AutoRegistrationService;
 import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.autoregister.dao;
+package com.fujitsu.ph.tsup.authz.autoregister.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.fujitsu.ph.tsup.authz.dao.EmployeeDetailsRowMapper;
-import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
-import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistration;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistrationDepartment;
 import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**

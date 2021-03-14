@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.autoregister.service;
+package com.fujitsu.ph.tsup.authz.autoregister.dao;
 
 import java.util.List;
 
-import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
-import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistration;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistrationDepartment;
 import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**
- * AutoRegistrationService class
+ * AutoRegistrationDao class
  * 
  * @author k.sala (New Creation by: k.sala)
  * @version 0.01
  */
-public interface AutoRegistrationService {
+public interface AutoRegistrationDao {
 
     // Method for adding new member
     void addAutoRegistration(AutoRegistration autoRegistration);
@@ -25,5 +25,4 @@ public interface AutoRegistrationService {
     
     // Method for fetching Employee Details with the given Employee Number
     Employee findDetailsByEmployeeNumber(String employeeNumber);
-
 }

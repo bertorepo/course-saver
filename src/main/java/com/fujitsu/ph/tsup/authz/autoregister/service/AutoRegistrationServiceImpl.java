@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.autoregister.service;
+package com.fujitsu.ph.tsup.authz.autoregister.service;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.fujitsu.ph.tsup.autoregister.dao.AutoRegistrationDao;
-import com.fujitsu.ph.tsup.autoregister.model.AutoRegistration;
-import com.fujitsu.ph.tsup.autoregister.model.AutoRegistrationDepartment;
+import com.fujitsu.ph.tsup.authz.autoregister.dao.AutoRegistrationDao;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistration;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistrationDepartment;
 import com.fujitsu.ph.tsup.common.domain.Employee;
 
 /**

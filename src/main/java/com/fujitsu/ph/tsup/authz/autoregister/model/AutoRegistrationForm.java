@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.autoregister.model;
+package com.fujitsu.ph.tsup.authz.autoregister.model;
 
 /**
  * AutoRegistrationForm class
