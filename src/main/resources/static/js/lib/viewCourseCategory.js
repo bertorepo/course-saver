@@ -16,23 +16,27 @@ function validateIfEmpty() {
 	var id = document.getElementById("id");
 	var category = document.getElementById("category");
 	var detail = document.getElementById("detail");
-	var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+	var format = /[`!@#$%^&*()+\=\[\]{};\\|<>\/?~]/;
 	document.getElementById("updateBtn").disabled = true;
 	document.getElementById("categoryErrorMsg").innerHTML = "";
 	document.getElementById("detailErrorMsg").innerHTML = "";
 	// validate empty category
 	if (category.value == "" ) {
 		document.getElementById("categoryErrorMsg").innerHTML = "*Required";
+		document.getElementById("updateBtn").disabled = true;
 	} 
 	// validate empty detail
 	if (detail.value == "") {
 		document.getElementById("detailErrorMsg").innerHTML = "*Required";
+		document.getElementById("updateBtn").disabled = true;
 	} 
 	// validate duplicate
 	if (checkingForDuplicate(category.value, id.value)) { 
 		document.getElementById("categoryErrorMsg").innerHTML = "*Course Category Name already exist";
+		document.getElementById("updateBtn").disabled = true;
 	} else if (format.test(category.value)) { // validation for special character
 		document.getElementById("categoryErrorMsg").innerHTML = "*Category Name is invalid. Please remove invalid characters. ";
+		document.getElementById("updateBtn").disabled = true;
 	} else if (checkingForNoChange(category.value, id.value, detail.value)) { // validate no change
 		document.getElementById("updateBtn").disabled = true;
 	} else {
