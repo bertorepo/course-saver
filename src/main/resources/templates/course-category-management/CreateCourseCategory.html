@@ -61,7 +61,6 @@
     </div>
 
     <!--Success Modal-->
-    <form action="#" th:action="@{/courseCategory/create}" th:object="${create}" method="get">
         <div class="modal fade" id="successModal" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm text-center">
@@ -79,16 +78,38 @@
                                 successfully created this course category.</label>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-primary"> OK</button>
+                            <button class="btn btn-primary" id="closeModal"> OK</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
     <!--Success Modal End-->
-  
-
+	
+	<!--Invalid Modal-->
+    <div class="modal fade" id="invalidModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm text-center">
+            <div class="modal-content">
+                <div class="modal-header alert-danger">
+                    <h5 class="modal-title text-white">Invalid Input!</h5>
+                    <button type="submit" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span> 
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-lg-12 col-form-label">Course Category Name already existing</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="closeModalInvalid"> OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Invalid Modal End-->
     <script th:inline="javascript">
        
        /*<![CDATA[*/
@@ -101,7 +122,23 @@
             $('#successModal').modal('show');
         }
         /*]]>*/
-       
+        /*<![CDATA[*/
+        var invalidMessage = /*[[${invalidMessage}]]*/ 'default';
+        if(invalidMessage == "The specified name is already existing"){
+            $('#invalidModal').modal('show');
+        }
+        /*]]>*/
+        $(function() {
+            $("#closeModal").click(function() {
+                $("#successModal").modal('hide');
+              
+            });
+        }); 
+        $(function() {
+            $("#closeModalInvalid").click(function() {
+                $("#invalidModal").modal('hide');
+            });
+        });
         //disabling and enabling of submit button
         var category = document.getElementById("category");
         var detail = document.getElementById("detail");
