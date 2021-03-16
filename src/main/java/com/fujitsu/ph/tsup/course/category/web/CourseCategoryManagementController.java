@@ -125,14 +125,18 @@ public class CourseCategoryManagementController {
     @PostMapping("/create")
     public String submitCreateCourseCategoryForm(CourseCategoryForm form, BindingResult bindingResult,
             Model model, RedirectAttributes redirectAttributes) throws Exception {
-        CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
+    	CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
                 form.getDetail()).build();
-        try {
-            courseCategoryManagementService.createCourseCategory(categoryDetails);
-            model.addAttribute("successMessage", "Registration Complete.");
-        }catch(Exception ex) {
-            model.addAttribute("invalidMessage", "The specified name is already existing");
+        Set<CourseCategory> categorySize = courseCategoryManagementService.findCourseCategoryByName(form.getCategory());
+        List<CourseCategory> listOfCourseCat = categorySize.stream().collect(Collectors.toList());
+        for(CourseCategory cat: listOfCourseCat){
+            if(cat.getCategory().equals(form.getCategory())){
+                model.addAttribute("invalidMessage", "The specified name is already existing");
+                return "course-category-management/CreateCourseCategory";
+            }
         }
+        courseCategoryManagementService.createCourseCategory(categoryDetails);
+        model.addAttribute("successMessage", "Registration Complete.");
         Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
         List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
         model.addAttribute("categoryList", listOfCourseCategory);
