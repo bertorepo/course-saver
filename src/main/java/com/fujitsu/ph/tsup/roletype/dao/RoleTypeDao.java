@@ -27,7 +27,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 /**
  * RoleTypeDao class
  * 
- * @version 0.06
+ * @version 0.07
  * @author rl.naval
  * @author c.sinda
  * @author s.labador

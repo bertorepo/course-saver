@@ -29,7 +29,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author rl.naval
  */
 public class RoleTypeRowMapper implements RowMapper<RoleType> {
