@@ -97,47 +97,25 @@
 						</div>
 				</div>
 				<!-- Display Summary Courses Conducted -->
-					<table id="summaryCoursesTable" class="table-bordered table-responsive text-center sticky-table width_max table-condensed" style="overflow-y:scroll;display:none; width:100%; height:400px;">
+					<table id="summaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th style="width:33%">Course Name</th>
-								<th style="width:33%">Planned Date</th>
-								<th style="width:33%">Actual Date</th>
+								<th style="width:35%">Course Name</th>
+								<th style="width:35%">Planned Start Date<br><hr>Planned End Date</th>
+								<th style="width:35%">Actual Start Date<br><hr>Actual End Date</th>
 							</tr>
 						</thead>
 						<tbody id="tBodySummary" th:each="showSummaryCourses, rowStat: ${coursesConducted}">
 							<tr class="content">
-								<td class="align-middle" th:text="${rowStat.count}"></td>
-								<td class="align-middle" th:text="${showSummaryCourses.courseName}"></td>	
-								<td>
-								 	<table class="table-borderless text-left table-condensed">
-								 	<tr class="bg-white">
-								 		<td>Start: </td>
-								 		<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
-										'MMM dd, yyyy (E) - hh:mm a')}"></td>
-								 	</tr>
-								 	<tr class="bg-white">
-								 		<td>End: </td>
-								 		<td th:utext="${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
-										 'MMM dd, yyyy (E) - hh:mm a')}"></td>
-								 	</tr>	
-								 	</table>
-								 </td>
-								 <td>
-								 	<table class="table-borderless text-left table-condensed" >
-								 	<tr class="bg-white">
-								 		<td>Start: </td>
-								 		<td th:utext="${#calendars.format(showSummaryCourses.scheduledEndDateTime,
-										'MMM dd, yyyy (E) - hh:mm a')}"></td>
-								 	</tr>
-								 	<tr class="bg-white">
-								 		<td>End: </td>
-								 		<td th:utext="${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
-								 		'MMM dd, yyyy (E) - hh:mm a')}"></td>
-								 	</tr>	
-								 	</table>
-								 </td>
+								<td th:text="${rowStat.count}"></td>
+								<td th:text="${showSummaryCourses.courseName}"></td>
+								<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
+								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + ${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
+								 'MMM dd, yyyy (E) - hh:mm a')}"></td>
+								<td th:utext="${#calendars.format(showSummaryCourses.scheduledEndDateTime,
+								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + ${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
+								 'MMM dd, yyyy (E) - hh:mm a')} "></td>
 							 </tr>
 						</tbody>
 					</table>
