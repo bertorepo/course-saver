@@ -17,7 +17,7 @@ function validateIfEmpty() {
 	var category = document.getElementById("category");
 	var detail = document.getElementById("detail");
 	var format = /[`!@#$%^&*()+\=\[\]{};\\|<>\/?~]/;
-	document.getElementById("updateBtn").disabled = true;
+	document.getElementById("updateBtn").disabled = false;
 	document.getElementById("categoryErrorMsg").innerHTML = "";
 	document.getElementById("detailErrorMsg").innerHTML = "";
 	// validate empty category
@@ -34,14 +34,16 @@ function validateIfEmpty() {
 	if (checkingForDuplicate(category.value, id.value)) { 
 		document.getElementById("categoryErrorMsg").innerHTML = "*Course Category Name already exist";
 		document.getElementById("updateBtn").disabled = true;
-	} else if (format.test(category.value)) { // validation for special character
+	} 
+	// validation for special character 
+	if (format.test(category.value)) { 
 		document.getElementById("categoryErrorMsg").innerHTML = "*Category Name is invalid. Please remove invalid characters. ";
 		document.getElementById("updateBtn").disabled = true;
-	} else if (checkingForNoChange(category.value, id.value, detail.value)) { // validate no change
+	} 
+	// validate no change
+	if (checkingForNoChange(category.value, id.value, detail.value)) { 
 		document.getElementById("updateBtn").disabled = true;
-	} else {
-		document.getElementById("updateBtn").disabled = false;
-	}
+	} 
 }
 
 function refreshCourseCategory() {
