@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -187,19 +188,27 @@ public class CourseCategoryManagementController {
      */
     @GetMapping("/{courseCategoryId}/delete")
     public String showDeleteCourseCategoryForm(@RequestParam(value = "courseCategoryIdInput") Long id,
-            CourseCategoryForm form, BindingResult bindingResult, Model model) {
+            CourseCategoryForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            Model model) {
 
         if (bindingResult.hasErrors()) {
             return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmDeleteModal";
         }
-        // set value for Course Category object
-        CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
-        // set value for Course Category Form object
-        form.setId(courseCategory.getId());
-        form.setCategory(courseCategory.getCategory());
-        form.setDetail(courseCategory.getDetail());
-        model.addAttribute("deleteCourseCategoryForm", form);
-        return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmDeleteModal";
+
+        try {
+            CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
+            form.setId(courseCategory.getId());
+            form.setCategory(courseCategory.getCategory());
+            form.setDetail(courseCategory.getDetail());
+            model.addAttribute("deleteCourseCategoryForm", form);
+            return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmDeleteModal";
+
+        } catch (EmptyResultDataAccessException ex) {
+            redirectAttributes.addFlashAttribute("message",
+                    "Unable to delete. Course Category has already been deleted/not existing.");
+            return "redirect:/courseCategory/load#errorModal";
+        }
+
     }
 
     /**
@@ -212,11 +221,18 @@ public class CourseCategoryManagementController {
      */
     @PostMapping("/{courseCategoryId}/delete")
     public String submitDeleteCourseCategoryForm(@PathVariable("courseCategoryId") Long id,
-            RedirectAttributes redirectAttributes, Model model) {
-        // Call deleteCourseById() method.
-        courseCategoryManagementService.deleteCourseCategoryById(id);
-        redirectAttributes.addFlashAttribute("message",
-                "You have successfully deleted this course category.");
-        return "redirect:/courseCategory/load#successModal";
+            CourseCategoryForm form, RedirectAttributes redirectAttributes, Model model) {
+
+        try {
+            courseCategoryManagementService.findCourseCategoryById(id);
+            courseCategoryManagementService.deleteCourseCategoryById(id);
+            redirectAttributes.addFlashAttribute("message",
+                    "You have successfully deleted this course category.");
+            return "redirect:/courseCategory/load#successModal";
+        } catch (EmptyResultDataAccessException ex) {
+            redirectAttributes.addFlashAttribute("message",
+                    "Unable to delete. Course Category has already been deleted/not existing.");
+            return "redirect:/courseCategory/load#errorModal";
+        }
     }
 }
