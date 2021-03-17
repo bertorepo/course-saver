@@ -59,7 +59,7 @@
 					<div class="form-group float-right">
 						<input id="submit_btn" type=button class="btn btn-success"
 							value="Submit" th:attr="onclick=|validateForm()|" disabled> <a
-							class="btn btn-danger" th:href="@{/dashboard}">Cancel</a>
+							class="btn btn-danger" th:href="@{/roletype/load/1}">Cancel</a>
 
 					</div>
 
@@ -143,8 +143,6 @@
 				$('#submit_btn').removeAttr('disabled');
 				$('#submit_btn').attr('disabled', true);
 			}
-			console.log("roleNameErrorCount: "+ roleNameErrorCount);
-			console.log("roleDescErrorCount: "+ roleDescErrorCount);
 			});
 
 		<!--roledesc validation-->
@@ -173,8 +171,6 @@
 				$('#submit_btn').attr('disabled', true);
 
 			}
-			console.log("roleNameErrorCount: " + roleNameErrorCount);
-			console.log("roleDescErrorCount: " + roleDescErrorCount);
 		});
 
 		function validateForm() {
