@@ -26,6 +26,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.06    | 2021/02/23 | WS) s.labador         | Updated
 //0.07    | 2021/02/24 | WS) p.cui             | Updated
 //0.08    | 2021/02/26 | WS) c.sinda           | Updated
+//0.09    | 2021/03/11 | WS) p.cui             | Updated
 //==================================================================================================
 /**
  * <pre>
@@ -33,7 +34,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * 
  * <pre>
  * 
- * @version 0.08
+ * @version 0.09
  * @author rl.naval
  * @author j.sayaboc
  * @author i.fajardo
@@ -44,7 +45,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 @Service
 public class RoleTypeServiceImpl implements RoleTypeService {
     @Autowired
-    RoleTypeDao roleTypeDao;
+    private RoleTypeDao roleTypeDao;
 
     /**
      * Finds Role Type by id
@@ -148,9 +149,36 @@ public class RoleTypeServiceImpl implements RoleTypeService {
         roleTypeDao.updateRoleType(id, roleType);
     }
 
+    /**
+     * Method for searching Role Type
+     * 
+     * @param keyword search keyword
+     */
     @Override
     public Set<RoleType> findRoleTypeByKeyword(String keyword) {
         Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByKeyword(keyword);
+        try {
+            if (StringUtils.isEmpty(roleFormList)) {
+                throw new IllegalArgumentException("No Role Types Available.");
+            } else {
+                return roleFormList;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return roleFormList;
+    }
+    
+    /**
+     * Method for searching Role Type
+     * 
+     * @param keyword search keyword
+     * @param pageSize
+     * @param page
+     */
+    @Override
+    public Set<RoleType> findRoleTypeByKeyword(String keyword, int pageSize, int page) {
+        Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByKeyword(keyword, pageSize, page);
         try {
             if (StringUtils.isEmpty(roleFormList)) {
                 throw new IllegalArgumentException("No Role Types Available.");

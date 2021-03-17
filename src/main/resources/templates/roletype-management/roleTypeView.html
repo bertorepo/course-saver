@@ -107,7 +107,7 @@
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5">
 		<form class="form-horizontal" action="#"
-			th:action="@{/roletype/search}" method="post">
+			th:action="@{/roletype/search/1}" method="get">
 			<h3>
 				<i class="fa fa-calendar-o"></i> Search Role Types
 			</h3>
@@ -117,7 +117,7 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Search:</label>
 						<div class="col-lg-3">
-							<input type="Text" class="form-control" name="searchRole"
+							<input type="Text" class="form-control" th:name="searchRole"
 								id="searchRole">
 						</div>
 						<a class="fa fa-refresh fa-lg col-sm-1 mt-2"
@@ -174,29 +174,18 @@
 						</div>
 					</div>
 				</div>
+				<div th:if="${searchtotalPage &gt; 1}">
+					<div class="pcenter">
+						<div class="pagination">
+							<th:block th:each="i: ${#numbers.sequence(1, searchtotalPage)}">
+								<a th:href="@{'/roletype/search/' + ${i}(searchRole=${SEARCH_ROLE})}" th:text="${i}"></a>
+							</th:block>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" th:inline="javascript">
-		function deleteButton(id, roleName, roleDesc) {
-			document.getElementById("roleIdInput").value = id;
-			document.getElementById("roleName").innerHTML = roleName;
-			document.getElementById("roleDesc").innerHTML = roleDesc;
-			$('#infoModal').modal('show');
-		}
-	</script>
-	<script>
-		$(document).ready(function() {
-			if (window.location.href.indexOf('#confirmModal') != -1) {
-				$('#confirmModal').modal('show');
-			}
-		});
-		$(document).ready(function() {
-			if (window.location.href.indexOf('#successModal') != -1) {
-				$('#successModal').modal('show');
-			}
-		});
-	</script>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 </body>
 </html>

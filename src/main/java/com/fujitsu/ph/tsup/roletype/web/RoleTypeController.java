@@ -37,13 +37,15 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //0.05    | 2021/02/21 | WS) j.sayaboc         | Updated
 //0.06    | 2021/02/24 | WS) p.cui             | Updated
 //0.07    | 2021/02/26 | WS) c.sinda           | Updated
+//0.08    | 2021/03/11 | WS) p.cui             | Updated
+//0.09    | 2021/03/11 | WS) j.sayaboc         | Updated
 //==================================================================================================
 /**
  * <pre>
  * This is the implementation of Role Type Controller.
  * </pre>
  * 
- * @version 0.07
+ * @version 0.09
  * @author rl.naval
  * @author c.sinda
  * @author c.rondina
@@ -55,7 +57,7 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 @RequestMapping("/roletype")
 public class RoleTypeController {
     @Autowired
-    RoleTypeService roleTypeService;
+    private RoleTypeService roleTypeService;
 
     /**
      * Load the Role Type on the screen
@@ -80,10 +82,6 @@ public class RoleTypeController {
         } else {
             totalPage = (int) (totalRoleTypes / pageSize);
         }
-
-        System.out.println("totalRoleTypes" + totalRoleTypes);
-        System.out.println("totalPage" + totalPage);
-
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("roletypeList", roletypeList);
 
@@ -136,20 +134,36 @@ public class RoleTypeController {
     /**
      * Method for searching role type
      * 
+     * @param page
      * @param searchRoleName Role name
      * @param model Model
      * @return View
      */
-    @PostMapping("/search")
-    public String submitSearchRoleTypeForm(@RequestParam(name = "searchRole") String searchRole,
+    @GetMapping("/search/{page}")
+    public String submitSearchRoleTypeForm(@PathVariable("page") int page, @RequestParam(name = "searchRole") String searchRole,
             Model model) {
+        int pageSize = 6;
+        int searchtotalRoleTypes = 0;
+        int searchtotalPage = 0;
+        
         if (StringUtils.isEmpty(searchRole)) {
             return "redirect:/roletype/load/1";
         }
-        Set<RoleType> role = roleTypeService.findRoleTypeByKeyword(searchRole);
-
+        Set<RoleType> allRoleTypes = roleTypeService.findRoleTypeByKeyword(searchRole);
+        Set<RoleType> role = roleTypeService.findRoleTypeByKeyword(searchRole,pageSize,page);
         List<RoleType> listOfRole = role.stream().collect(Collectors.toList());
+        searchtotalRoleTypes = allRoleTypes.size();
+                
+        if ((searchtotalRoleTypes % pageSize) != 0) {
+            searchtotalPage = (int) (searchtotalRoleTypes / pageSize) + 1;
+        } else {
+            searchtotalPage = (int) (searchtotalRoleTypes / pageSize);
+        }
+
+        model.addAttribute("searchtotalPage", searchtotalPage);
         model.addAttribute("roletypeList", listOfRole);
+        model.addAttribute("SEARCH_ROLE", searchRole);
+        
         if (listOfRole == null) {
             return "redirect:/roletype/load/1";
         }

@@ -21,12 +21,13 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.04    | 2021/02/22 | WS) j.sayaboc         | Updated
 //0.05    | 2021/02/23 | WS) s.labador         | Updated
 //0.06    | 2021/02/24 | WS) p.cui             | Updated
+//0.07    | 2021/03/11 | WS) p.cui             | Updated
 //==================================================================================================
 
 /**
  * RoleTypeService class
  * 
- * @version 0.06
+ * @version 0.07
  * @author rl.naval
  * @author c.sinda
  * @author s.labador
@@ -47,6 +48,9 @@ public interface RoleTypeService {
 
     // Method for searching Role by keyword
     Set<RoleType> findRoleTypeByKeyword(String keyword);
+    
+    // Method for searching Role by keyword with pagination
+    Set<RoleType> findRoleTypeByKeyword(String keyword, int pageSize, int page);
 
     // Method for loading all Role Type in Role View
     Set<RoleType> loadAllRoleType();

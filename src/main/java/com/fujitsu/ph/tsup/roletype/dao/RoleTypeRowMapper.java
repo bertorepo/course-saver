@@ -19,8 +19,8 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01   | 2021/02/05 | WS) rl.naval          | Initial Version
-//0.02   | 2021/02/16 | WS) s.labador         | Updated
+//0.01    | 2021/02/05 | WS) rl.naval          | Initial Version
+//0.02    | 2021/02/16 | WS) s.labador         | Updated
 //==================================================================================================
 
 /**
@@ -29,7 +29,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
  * 
  * <pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author rl.naval
  */
 public class RoleTypeRowMapper implements RowMapper<RoleType> {
