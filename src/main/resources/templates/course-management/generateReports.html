@@ -24,6 +24,9 @@
       tr:nth-child(even) {
         background-color: #dddddd;
       }
+      hr {
+		margin: 5px; 
+      }
 </style>
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -97,24 +100,24 @@
 						</div>
 				</div>
 				<!-- Display Summary Courses Conducted -->
-					<table id="summaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
+					<table id="summaryCoursesTable" class="table-bordered table-responsive text-center sticky-table width_max table-condensed" style="overflow-y:scroll;display:none; width:100%; height:400px;">
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th style="width:35%">Course Name</th>
-								<th style="width:35%">Planned Start Date<br><hr>Planned End Date</th>
-								<th style="width:35%">Actual Start Date<br><hr>Actual End Date</th>
+								<th style="width:33%">Course Name</th>
+								<th style="width:33%">Planned Date</th>
+								<th style="width:33%">Actual Date</th>
 							</tr>
 						</thead>
 						<tbody id="tBodySummary" th:each="showSummaryCourses, rowStat: ${coursesConducted}">
 							<tr class="content">
 								<td th:text="${rowStat.count}"></td>
 								<td th:text="${showSummaryCourses.courseName}"></td>
-								<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
-								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + ${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
+								<td style="text-align: left" th:utext="'Start: &emsp;&emsp;' + ${#calendars.format(showSummaryCourses.scheduledStartDateTime,
+								'MMM dd, yyyy (E) - hh:mm a')} + '<hr>' + 'End: &emsp;&emsp;&ensp;' + ${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
 								 'MMM dd, yyyy (E) - hh:mm a')}"></td>
-								<td th:utext="${#calendars.format(showSummaryCourses.scheduledEndDateTime,
-								'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + ${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
+								<td style="text-align: left" th:utext="'Start: &emsp;&emsp;' + ${#calendars.format(showSummaryCourses.scheduledEndDateTime,
+								'MMM dd, yyyy (E) - hh:mm a')} + '<hr>' + 'End: &emsp;&emsp;&ensp;' + ${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
 								 'MMM dd, yyyy (E) - hh:mm a')} "></td>
 							 </tr>
 						</tbody>
@@ -190,6 +193,8 @@
 			if($("#selectReportType").val() == 0 || $("#selectReportType").val() == null){
 				$("#exportButton").attr('disabled','disabled');
 				$("#viewButton").attr('disabled','disabled');
+				$("#inputCourse").attr('disabled','disabled');
+				document.getElementById('inputCourse').value = "";
 			}
 			else if(rowCount <= 0)
 			{
