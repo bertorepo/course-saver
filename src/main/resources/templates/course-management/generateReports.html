@@ -47,7 +47,8 @@
 						<div class="col-lg-5">
 							<select id="selectReportType" name="selectReportType" class="form-control" required
 							onchange="load()" style="width:525px; text-align-last:center;">
-								<option th:value="0"> </option>
+								<option value="" disabled selected hidden>Please Select Report Type</option>
+								<option th:value="0" disabled hidden></option>
 								<option th:value="1">Summary of Course Conducted</option>
 							</select>
 						</div>
@@ -189,6 +190,7 @@
 		
 		function load() {
 			
+			
 			console.log("ROW COUNT: " + rowCount);
 			if($("#selectReportType").val() == 0 || $("#selectReportType").val() == null){
 				$("#exportButton").attr('disabled','disabled');
@@ -228,7 +230,8 @@
 				reportDisplayTable.style.display = "block";
 				listEmptyMessage.style.display = "none";
 			}
-		}		
+		}
+		
 		const m = moment();
 		 startDate = document.getElementById("startDate");
 		 startDate.max = m.format("YYYY-MM-DDTHH:mm"); 
