@@ -32,6 +32,7 @@
 
 	<!-- Delete - Info modal -->
 	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<form id="infoModalFormId"
 			th:action="@{/courseCategory/__${courseCategoryIdInput}__/delete}"
@@ -75,10 +76,17 @@
 
 	<!--Delete - Confirm Modal-->
 	<div class="modal fade" id="confirmDeleteModal" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+		role="dialog" data-backdrop="static" data-keyboard="false"
+		aria-labelledby="exampleModalLabel" aria-hidden="true"
 		th:object="${deleteCourseCategoryForm}">
 		<div class="modal-dialog modal-sm text-center">
 			<div class="modal-content">
+				<div class="modal-header alert-warning">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
 				<div class="modal-body">
 					<div class="form-group row">
 						<input type="hidden" id="courseCategoryId" name="courseCategoryId"></input>
@@ -158,8 +166,8 @@
 							</div>
 							<div class="col-lg-9">
 								<input type="text" class="form-control" id="category"
-									maxlength="100" name="category" onkeyup="validateIfEmpty()" /> 
-									<span id="categoryErrorMsg" style="color: red;"></span>
+									maxlength="100" name="category" onkeyup="validateIfEmpty()" />
+								<span id="categoryErrorMsg" style="color: red;"></span>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -255,10 +263,11 @@
 						<label class="col-lg-1 col-form-label">Search:</label>
 						<div class="col-lg-8">
 							<input type="Text" class="form-control"
-								name="searchCourseCategoryName" id="searchCourseCategoryName" maxlength="100">
+								name="searchCourseCategoryName" id="searchCourseCategoryName"
+								maxlength="100" tabindex="1">
 						</div>
 						<div class="float-right">
-							<input type="submit" class="btn btn-success" value="Submit">
+							<input type="submit" class="btn btn-success" tabindex="2" value="Submit">
 						</div>
 					</div>
 				</form>
@@ -298,7 +307,7 @@
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No Course Category Available</strong>
 						</div>
-						<div class="card-footer" style="display:none">
+						<div class="card-footer" style="display: none">
 							<div id="pagination"></div>
 						</div>
 					</div>
@@ -315,7 +324,7 @@
 	<script type="text/javascript" src="/js/lib/viewCourseCategory.js"></script>
 
 	<script th:inline="javascript">
-	var courseCategoryList = /*[[${courseCategoryList}]]*/'default';
+		var courseCategoryList = /*[[${courseCategoryList}]]*/'default';
 	</script>
 
 	<footer th:replace="fragments/general.html :: footer"></footer>
