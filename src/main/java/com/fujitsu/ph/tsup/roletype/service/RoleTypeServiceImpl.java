@@ -6,7 +6,7 @@ package com.fujitsu.ph.tsup.roletype.service;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 import com.fujitsu.ph.tsup.roletype.dao.RoleTypeDao;
 import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
@@ -27,14 +27,14 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.07    | 2021/02/24 | WS) p.cui             | Updated
 //0.08    | 2021/02/26 | WS) c.sinda           | Updated
 //0.09    | 2021/03/11 | WS) p.cui             | Updated
+//0.10    | 2021/03/18 | WS) rl.naval          | Updated
 //==================================================================================================
 /**
  * <pre>
  * JavaBean for RoleTypeServiceImpl
- * 
  * <pre>
  * 
- * @version 0.09
+ * @version 0.10
  * @author rl.naval
  * @author j.sayaboc
  * @author i.fajardo
@@ -57,9 +57,6 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     @Override
     public RoleType findRoleById(Long id) {
         RoleType roleTypeResult = roleTypeDao.findRoleById(id);
-        if (StringUtils.isEmpty(roleTypeResult)) {
-            throw new IllegalArgumentException("No role types available");
-        }
         return roleTypeResult;
     }
 
@@ -74,7 +71,7 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     public Set<RoleType> findRoleTypeByName(String rolename) {
         Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByName(rolename);
         try {
-            if (roleFormList == null || roleFormList.isEmpty()) {
+            if (CollectionUtils.isEmpty(roleFormList)) {
                 return null;
             } else {
                 return roleFormList;
@@ -83,6 +80,7 @@ public class RoleTypeServiceImpl implements RoleTypeService {
             ex.printStackTrace();
         }
         return roleFormList;
+
     }
 
     /**
@@ -157,16 +155,8 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     @Override
     public Set<RoleType> findRoleTypeByKeyword(String keyword) {
         Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByKeyword(keyword);
-        try {
-            if (StringUtils.isEmpty(roleFormList)) {
-                throw new IllegalArgumentException("No Role Types Available.");
-            } else {
-                return roleFormList;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         return roleFormList;
+
     }
     
     /**
@@ -179,15 +169,6 @@ public class RoleTypeServiceImpl implements RoleTypeService {
     @Override
     public Set<RoleType> findRoleTypeByKeyword(String keyword, int pageSize, int page) {
         Set<RoleType> roleFormList = roleTypeDao.findRoleTypeByKeyword(keyword, pageSize, page);
-        try {
-            if (StringUtils.isEmpty(roleFormList)) {
-                throw new IllegalArgumentException("No Role Types Available.");
-            } else {
-                return roleFormList;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         return roleFormList;
     }
 }

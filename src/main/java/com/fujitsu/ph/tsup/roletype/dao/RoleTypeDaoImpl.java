@@ -30,13 +30,14 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.08    | 2021/03/09 | WS) j.sayaboc         | Updated
 //0.09    | 2021/03/11 | WS) p.cui             | Updated
 //0.10    | 2021/03/12 | WS) i.fajardo         | Updated
+//0.11    | 2021/03/18 | WS) rl.naval          | Updated
 //==================================================================================================
 
 
 /**
  * RoleTypeDaoImpl class
  * 
- * @version 0.10
+ * @version 0.11
  * @author rl.naval
  * @author s.labador
  * @author p.cui
@@ -174,8 +175,8 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public Set<RoleType> findRoleTypeByKeyword(String keyword) {
-        String query = "SELECT * FROM MEMBER_ROLE " + "WHERE LOWER(role_type) LIKE LOWER('%" + keyword
-                + "%') " + "OR LOWER(role_desc) LIKE LOWER('%" + keyword + "%')";
+        String query = "SELECT * FROM MEMBER_ROLE " + "WHERE (LOWER(role_type) LIKE LOWER('%" + keyword
+                + "%') " + "OR LOWER(role_desc) LIKE LOWER('%" + keyword + "%')) AND deleted_at IS NULL";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("role_type", keyword)
                 .addValue("role_desc", keyword);
 
@@ -193,8 +194,9 @@ public class RoleTypeDaoImpl implements RoleTypeDao {
      */
     @Override
     public Set<RoleType> findRoleTypeByKeyword(String keyword, int pageSize, int page) {
-        String query = "SELECT * FROM MEMBER_ROLE " + "WHERE LOWER(role_type) LIKE LOWER('%" + keyword
-                + "%') " + "OR LOWER(role_desc) LIKE LOWER('%" + keyword + "%') LIMIT "+ pageSize+" OFFSET "+ ((pageSize*page)-pageSize);
+        String query = "SELECT * FROM MEMBER_ROLE " + "WHERE (LOWER(role_type) LIKE LOWER('%" + keyword
+                + "%') " + "OR LOWER(role_desc) LIKE LOWER('%" + keyword + "%')) AND deleted_at IS NULL"
+                + " LIMIT "+ pageSize+" OFFSET "+ ((pageSize*page)-pageSize);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("role_type", keyword)
                 .addValue("role_desc", keyword);
 
