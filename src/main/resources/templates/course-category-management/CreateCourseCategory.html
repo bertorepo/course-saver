@@ -53,7 +53,7 @@
                         </div>
                         <div class="float-right">
                             <button type="submit" id="submit"
-                                class="btn btn-success" disabled tabindex="3">Submit</button>
+                                class="btn btn-success" disabled tabindex="3" onclick="btnsubmit()">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -111,7 +111,8 @@
     </div>
     <!--Invalid Modal End-->
     <script th:inline="javascript">
-       
+	    var category = document.getElementById("category");
+	    var detail = document.getElementById("detail");
        /*<![CDATA[*/
         var courseCategoryList = /*[[${categoryList}]]*/ 'default';
         /*]]>*/
@@ -125,23 +126,30 @@
         /*<![CDATA[*/
         var invalidMessage = /*[[${invalidMessage}]]*/ 'default';
         if(invalidMessage == "The specified name is already existing"){
-            $('#invalidModal').modal('show');
+        	$('#invalidModal').modal('show');            
         }
         /*]]>*/
+        function btnsubmit(){
+        	localStorage.setItem("category", category.value);
+            localStorage.setItem("detail", detail.value);
+        }
         $(function() {
             $("#closeModal").click(function() {
                 $("#successModal").modal('hide');
-              
             });
         }); 
         $(function() {
             $("#closeModalInvalid").click(function() {
-                $("#invalidModal").modal('hide');
-            });
+            	$("#invalidModal").modal('hide');
+                document.getElementById('required').innerHTML = "*Course Category Name already exist";
+                document.getElementById('required').style.visibility = 'visible';
+            });            
         });
         //disabling and enabling of submit button
-        var category = document.getElementById("category");
-        var detail = document.getElementById("detail");
+        document.getElementById("category").value = localStorage.getItem("category");
+        document.getElementById("detail").value = localStorage.getItem("detail");
+        localStorage.setItem("category", "");
+        localStorage.setItem("detail", "");
         function enableSubmitButton(){
             var trimCategory = myTrim(category.value);
             var trimDetail = myTrim(detail.value);
