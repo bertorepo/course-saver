@@ -10,16 +10,13 @@
 // 1.0.1   | 2021/03/08 | WS)R.Molina           | Updated
 //==================================================================================================
 package com.fujitsu.ph.tsup.course.web;
-
 import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +26,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.fujitsu.ph.tsup.course.model.CoursesConducted;
 import com.fujitsu.ph.tsup.course.model.CoursesConductedForm;
 import com.fujitsu.ph.tsup.course.model.CoursesConductedListForm;
 import com.fujitsu.ph.tsup.course.service.CoursesConductedService;
-
-
 /**
  * <pre>
  * The controller for the courses conducted
@@ -45,17 +39,14 @@ import com.fujitsu.ph.tsup.course.service.CoursesConductedService;
  * @version 0.01
  * @author m.rivera
  */
-
 @Controller
 @RequestMapping("/report/")
 public class CoursesConductedController {
-
     /**
      * Courses Conducted Service 
      */
     @Autowired
     private CoursesConductedService coursesConductedService;
-
     /**
      * Logger Factory
      */
@@ -88,8 +79,8 @@ public class CoursesConductedController {
       if (coursesConductedListForm.getScheduledStartDateTime() == null ||
       coursesConductedListForm.getScheduledEndDateTime() == null) { 
           model.addAttribute("nullMessage","No Course Schedule Found");
-          coursesConductedListForm.setScheduledStartDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
-          coursesConductedListForm.setScheduledEndDateTime(ZonedDateTime.now().plusDays(5)); 
+          coursesConductedListForm.setScheduledStartDateTime(ZonedDateTime.now().minusDays(5).withHour(0).withMinute(0));
+          coursesConductedListForm.setScheduledEndDateTime(ZonedDateTime.now()); 
       }
       
       System.out.println(reportTypeId);
@@ -127,11 +118,8 @@ public class CoursesConductedController {
       
           return "course-management/generateReports"; 
       }
-
     @GetMapping("/load")
     public String viewSummaryCourseConducted() {
-
     	return "course-management/generateReports";
     }
-
 }
