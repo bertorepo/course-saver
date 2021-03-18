@@ -39,21 +39,21 @@
                                 Name</label>
                             <div class="col-lg-5">
                                 <input type="Text" placeholder="Enter Course Category Name"
-                                    class="form-control" id="category" name="category" onkeyup=enableSubmitButton() maxlength="100">
+                                    class="form-control" id="category" name="category" onkeyup=enableSubmitButton() maxlength="100" tabindex="1">
                             </div>
                         </div>
                         <span style="margin-left:185px; color:red; visibility:hidden;" id="required2">*Required field</span>
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Course Category Details</label>
                             <div class="col-lg-5">
-                                <textarea rows="10" cols="50" maxlength="200" placeholder="Enter Course Category Details"
+                                <textarea rows="10" cols="50" maxlength="200" tabindex="2" placeholder="Enter Course Category Details"
                                     class="form-control" id="detail" name="detail"
                                     onkeyup=enableSubmitButton()></textarea>
                             </div>
                         </div>
                         <div class="float-right">
                             <button type="submit" id="submit"
-                                class="btn btn-success" disabled>Submit</button>
+                                class="btn btn-success" disabled tabindex="3">Submit</button>
                         </div>
                     </form>
                 </div>
