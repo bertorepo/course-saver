@@ -86,6 +86,7 @@ public class CourseCategoryManagementController {
 
         if (courseCategory.getCategory().equals(form.getCategory())
                 && courseCategory.getDetail().equals(form.getDetail())) {
+            redirectAttributes.addFlashAttribute("localStorage", form);
             redirectAttributes.addFlashAttribute("message", "No change in course category information.");
             return "redirect:/courseCategory/load#errorModal";
         }
@@ -101,6 +102,7 @@ public class CourseCategoryManagementController {
                         && category.getCategory().toLowerCase().equals(form.getCategory().toLowerCase())) {
                     redirectAttributes.addFlashAttribute("message",
                             "Unable to update existing course category.");
+                    redirectAttributes.addFlashAttribute("localStorage", form);
                     return "redirect:/courseCategory/load#errorModal";
                 }
             }
@@ -158,6 +160,7 @@ public class CourseCategoryManagementController {
 
         Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
         List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
+        model.addAttribute("localStorage", model.getAttribute("localStorage"));
         model.addAttribute("courseCategoryList", listOfCourseCategory);
         return "course-category-management/manageCourseCategory";
     }

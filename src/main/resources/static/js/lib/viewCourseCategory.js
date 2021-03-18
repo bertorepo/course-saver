@@ -6,10 +6,22 @@ function deleteButton(id, category, detail) {
 }
 
 function showUpdateModal(id, category, detail) {
-	document.getElementById("id").value = id;
-	document.getElementById("category").value = category;
-	document.getElementById("detail").value = detail;
+	document.getElementById("categoryErrorMsg").innerHTML = "";
+	document.getElementById("detailErrorMsg").innerHTML = "";
+	
+	if (id == localStorage.getItem("id")){
+		document.getElementById("id").value = localStorage.getItem("id");
+		document.getElementById("category").value = localStorage.getItem("category");
+		document.getElementById("detail").value = localStorage.getItem("detail");
+		
+	} else {
+		document.getElementById("id").value = id;
+		document.getElementById("category").value = category;
+		document.getElementById("detail").value = detail;
+	}
+	
 	$('#updateModal').modal('show');
+	validateIfEmpty();
 }
 
 function validateIfEmpty() {
@@ -34,11 +46,17 @@ function validateIfEmpty() {
 	if (checkingForDuplicate(category.value, id.value)) { 
 		document.getElementById("categoryErrorMsg").innerHTML = "*Course Category Name already exist";
 		document.getElementById("updateBtn").disabled = true;
+		localStorage.setItem("id", id.value);
+		localStorage.setItem("category", category.value);
+		localStorage.setItem("detail", detail.value);
 	} 
 	// validation for special character 
 	if (format.test(category.value)) { 
 		document.getElementById("categoryErrorMsg").innerHTML = "*Category Name is invalid. Please remove invalid characters. ";
 		document.getElementById("updateBtn").disabled = true;
+		localStorage.setItem("id", id.value);
+		localStorage.setItem("category", category.value);
+		localStorage.setItem("detail", detail.value);
 	} 
 	// validate no change
 	if (checkingForNoChange(category.value, id.value, detail.value)) { 
@@ -66,12 +84,21 @@ function checkingForNoChange(categoryName, id, detail) {
 }
 
 $(document).ready(function() {
+	
+	if (localStorageList != null) {
+		for (const [key, value] of Object.entries(localStorageList)) {
+			console.log(key, value);
+			localStorage.setItem(key, value);
+		}
+	}
+	
 	if (window.location.href.indexOf('#confirmDeleteModal') != -1) {
 		$('#confirmDeleteModal').modal('show');
 	}
 
 	if (window.location.href.indexOf('#successModal') != -1) {
 		$('#successModal').modal('show');
+		localStorage.clear();
 	}
 
 	if (window.location.href.indexOf('#errorModal') != -1) {
