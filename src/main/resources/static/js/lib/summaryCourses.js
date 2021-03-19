@@ -13,7 +13,19 @@ $("#inputCourse").keyup(function() {
     var value = $(this).val().toLowerCase();
     var isMatch = false;
     
-
+        $("#tBodyExportSummary tr").filter(function(i) {
+        var content = $(this).find("td:eq(1)").text().toLowerCase();
+		$(this).toggle($(this).find("td:eq(1)").text().toLowerCase().indexOf(value) > -1)
+        if(content.toLowerCase().indexOf(value) == -1) {
+           $(this).hide();           
+		
+        } else {
+            isMatch = true;
+            $(this).show();
+			 
+        }
+    });
+    
     $("#tBodySummary tr").filter(function(i) {
         var content = $(this).find("td:eq(1)").text().toLowerCase();
 		$(this).toggle($(this).find("td:eq(1)").text().toLowerCase().indexOf(value) > -1)
@@ -33,49 +45,6 @@ $("#inputCourse").keyup(function() {
 });
 //
 //
-		/**
-		Exporting to CSV File
-		*/
-		function downloadCSV(csv, filename) {
-			if(fromDateTime > toDateTime){
-				alert("Invalid Date. Please select correct date.");
-			}
-			else if($('#selectReportType').val() == 0){
-				alert("Please select report type.");
-			}
-			else if(fromDateTime == null){
-				alert("Please select start date.");
-			}
-			else if(toDateTime == null){
-				alert("Please select end date.");
-			}
-			else{
-				var csvFile;
-				var downloadLink;
-				alert("Report exported successfully");
-				csvFile = new Blob([csv], {type: "text/csv;charset=utf-8"});
-				downloadLink = document.createElement("a");
-				downloadLink.download = filename;
-				downloadLink.href = window.URL.createObjectURL(csvFile);
-				downloadLink.style.display = "none";
-				downloadLink.click();
-			}
-		}
-		function exportTableToCSV(filename) {
-			var csv = [];
-			var rows = document.querySelectorAll("#summaryCoursesTable tr");
-			
-			for (var i = 0; i < rows.length; i++) {
-				var row = [], cols = rows[i].querySelectorAll("td, th");
-				
-				for (var j = 0; j < cols.length; j++) 
-					row.push(cols[j].innerText);
-        			csv.push(row.join(","));        
-   			}
-   			downloadCSV(csv.join("\n"), filename);
-		}
-
-
 
 		/**
 		For Filtering Courses Table
@@ -146,17 +115,23 @@ $("#inputCourse").keyup(function() {
 		}
 		function exportTableToCSV(filename) {
 			var csv = [];
+			
 			var rows = document.querySelectorAll("#exportSummaryCoursesTable tr");
 			
-			for (var i = 0; i < rows.length; i++) {
-				var row = [], cols = rows[i].querySelectorAll("td, th");
-				
-				for (var j = 0; j < cols.length; j++) 
-					row.push(cols[j].innerText);
-        			csv.push(row.join(","));        
-   			}
+    	for (var i = 0; i < rows.length; i++) {
+        // Don't add the row to the csv if it's hidden due to filtering.
+        if (rows[i].style.display === "none") continue;
+        
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+
+        csv.push(row.join(","));        
+    }	
    			downloadCSV(csv.join("\n"), filename);
-		}
+   				
+	}
 
 		/**
 		Filter Duplicate Courses
@@ -170,9 +145,6 @@ $("#inputCourse").keyup(function() {
 			  }
 		});
 			*/	
-			
-			
-			
 		/**
 		Display Modal
 		*/
