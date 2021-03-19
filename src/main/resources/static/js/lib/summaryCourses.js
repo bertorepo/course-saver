@@ -3,6 +3,9 @@
 
 
 
+
+
+
 //VALIDATION IF NO RESULT FOUND IN COURSE INPUT		
 var $block = $('.no-results');
 			
@@ -30,67 +33,6 @@ $("#inputCourse").keyup(function() {
 });
 //
 //
-
-		var fromDateTime = $("#scheduledStartDateTime").val();
-		var toDateTime = $("#scheduledEndDateTime").val();
-
-		
-		function load() {
-			
-			if($("#selectReportType").val() == 0 || $("#selectReportType").val() == null){
-				$("#exportButton").attr('disabled','disabled');
-			}
-			else{
-				$("#exportButton").removeAttr('disabled'); 
-			}
-			
-			
- 			var fromNewDate = fromDateTime.slice(0, 16);
-			var toNewDate = toDateTime.slice(0, 16);
-			
-			document.getElementById("startDate").value = fromNewDate;				
-			document.getElementById("endDate").value = toNewDate;
-			
-			document.getElementById('inputCourse').value;
-			
-
-			var selectReportType = document.getElementById("selectReportType").value;
-			var showSummaryCourses = document.getElementById("summaryCoursesTable");
-			var reportDisplayTable = document.getElementById("reportTable");
-			
-			if(selectReportType == "1"){
-				showSummaryCourses.style.display = "block";
-				reportDisplayTable.style.display = "none";
-			}
-			else{
-				showSummaryCourses.style.display = "none";
-				reportDisplayTable.style.display = "block";
-			}
-		}
-
-		/**
-		Display Modal
-		*/
-
-
-		function viewButtonClick(){
-			
-			if( $("#scheduledStartDateTime").val() >  $("#scheduledEndDateTime").val()){
-				alert("Invalid Date. Please select correct date.");
-			}
-			else if($('#selectReportType').val() == 0){
-				alert("Please select report type.");
-			}
-			else if(fromDateTime == null){
-				alert("Please select start date.");
-			}
-			else if(toDateTime == null){
-				alert("Please select end date.");
-			}
-			else{
-				document.getElementById("coursesConductedForm").submit();
-			}
-		}
 		/**
 		Exporting to CSV File
 		*/
@@ -241,7 +183,7 @@ $("#inputCourse").keyup(function() {
 		
 		function viewButtonClick(){
 			
-			if( $("#scheduledStartDateTime").val() >  $("#scheduledEndDateTime").val()){
+			if( $("#startDate").val() >=  $("#endDate").val()){
 				document.getElementById("message").innerHTML = dateErrorMessage;
 				$('#errorModal').modal('show');
 			}
@@ -260,5 +202,5 @@ $("#inputCourse").keyup(function() {
 			else{
 				document.getElementById("coursesConductedForm").submit();
 			}
-		}			
+		}	
 		
