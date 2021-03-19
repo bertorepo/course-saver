@@ -109,13 +109,13 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("id", id);
         List<CourseCategory> courseCategoryList = template.query(query, sqlParameterSource,
                 new CourseCategoryRowMapper());
-        
-        if(courseCategoryList != null && (!courseCategoryList.isEmpty())) {
-            return template.queryForObject(query, sqlParameterSource, new CourseCategoryRowMapper());
+
+        if (!courseCategoryList.isEmpty()) {
+            return courseCategoryList.get(0);
         } else {
             return null;
         }
-
+        
     }
 
     /**
