@@ -83,8 +83,8 @@ public class CourseCategoryManagementController {
             return "redirect:/courseCategory/load#errorModal";
         }
 
-        if (courseCategory.getCategory().equals(form.getCategory())
-                && courseCategory.getDetail().equals(form.getDetail())) {
+        if (courseCategory.getCategory().toLowerCase().equals(form.getCategory().toLowerCase())
+                && courseCategory.getDetail().toLowerCase().equals(form.getDetail().toLowerCase())) {
             redirectAttributes.addFlashAttribute("localStorage", form);
             redirectAttributes.addFlashAttribute("message", "No change in course category information.");
             return "redirect:/courseCategory/load#errorModal";
