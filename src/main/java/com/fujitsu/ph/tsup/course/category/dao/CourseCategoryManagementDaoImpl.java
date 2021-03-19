@@ -105,9 +105,17 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
     @Override
     public CourseCategory findCourseCategoryById(Long id) {
 
-        String query = "SELECT id,category,detail FROM COURSE_CATEGORY WHERE ID =" + id;
+        String query = "SELECT * FROM COURSE_CATEGORY WHERE ID =" + id;
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("id", id);
-        return template.queryForObject(query, sqlParameterSource, new CourseCategoryRowMapper());
+        List<CourseCategory> courseCategoryList = template.query(query, sqlParameterSource,
+                new CourseCategoryRowMapper());
+        
+        if(courseCategoryList != null && (!courseCategoryList.isEmpty())) {
+            return template.queryForObject(query, sqlParameterSource, new CourseCategoryRowMapper());
+        } else {
+            return null;
+        }
+
     }
 
     /**
