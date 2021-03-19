@@ -83,15 +83,15 @@
             var userName_value = $("#userName").val();
             var dept_value = $("#departmentid").val();
             
-			if((id_value.length > 0) && (id_value.length < 8)){
+			if((id_value.length > 0) && (id_value.length < 8)) {
 				$('#idErrorMessage').text("Your ID Number must be at least 8 digits")
 				$('#idErrorMessage').show();		
 				$('input[type="submit"]').attr('disabled', true);
-			} else if (id_value.length < 1){
-				$('#idErrorMessage').text("Enter your ID Number")
+			} else if (id_value.length < 1) {
+				$('#idErrorMessage').text("This field is required.")
 				$('#idErrorMessage').show();
 				$('input[type="submit"]').attr('disabled', true);
-			} else {				
+			} else {
 				$.ajax({
 					type: 'POST',
 					url: '/register/validateId/' + $('#employeeNumber').val(),
@@ -101,9 +101,8 @@
 						if (response == 0) {
 							$('#idErrorMessage').hide();
 							if ((id_value != '') &&
-							 (firstName_value != '') &&
-		                     (lastName_value != '') &&
-		                     (userName_value != '') && 
+							 (firstName_value.trim() != '') &&
+		                     (lastName_value.trim() != '') &&
 		  	        		 (dept_value != null)) {
 				                 $('input[type="submit"]').attr('disabled', false);
 				             } else {
@@ -117,8 +116,12 @@
 					}
 				});
 			}
-            
-            
+        });
+        
+        $('form').submit(function(){
+        	$(this).find('input:text').each(function(){
+        		$(this).val($.trim($(this).val()));
+        	});
         });
     });
      </script>
@@ -257,13 +260,14 @@
 	<script>
 		//This function supresses any entered characters that are not letters 
 		function lettersOnly(input){
-			var regex = /[^a-z]/gi;
+			var regex = /[^a-z\s]/gi;
 			input.value = input.value.replace(regex,'');
 		}
 
 		function inputValidation(errorId, input) {
-			var input_val = input.value;
-			if((input_val.length < 1) || (input_val.length == null)) {
+			var input_val = input.value.trim();
+			if((input_val.length < 1)) {
+				console.log(input_val.length);
 				$("#"+errorId).text("This field is required.");
 				$("#"+errorId).show();
 			} else {
