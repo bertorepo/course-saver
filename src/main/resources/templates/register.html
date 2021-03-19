@@ -267,7 +267,6 @@
 		function inputValidation(errorId, input) {
 			var input_val = input.value.trim();
 			if((input_val.length < 1)) {
-				console.log(input_val.length);
 				$("#"+errorId).text("This field is required.");
 				$("#"+errorId).show();
 			} else {
