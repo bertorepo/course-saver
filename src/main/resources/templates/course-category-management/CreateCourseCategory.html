@@ -153,7 +153,7 @@
         function enableSubmitButton(){
             var trimCategory = myTrim(category.value);
             var trimDetail = myTrim(detail.value);
-            var regex = /[^a-z0-9 ]/gi;
+            var regex = /[^a-z0-9 ,.()"'&-_!:;]/gi;
             category.value = category.value.replace(regex,"");
             detail.value = detail.value.replace(regex,"");
             if(trimCategory.length > 0 && trimDetail.length > 0) {
