@@ -28,7 +28,7 @@ function validateIfEmpty() {
 	var id = document.getElementById("id");
 	var category = document.getElementById("category");
 	var detail = document.getElementById("detail");
-	var format = /[`!@#$%^&*()+\=\[\]{};\\|<>\/?~]/;
+	var format = /[*:?"\\|<>\/]/;
 	document.getElementById("updateBtn").disabled = false;
 	document.getElementById("categoryErrorMsg").innerHTML = "";
 	document.getElementById("detailErrorMsg").innerHTML = "";
@@ -61,6 +61,7 @@ function validateIfEmpty() {
 	// validate no change
 	if (checkingForNoChange(category.value, id.value, detail.value)) { 
 		document.getElementById("updateBtn").disabled = true;
+		localStorage.clear();
 	} 
 }
 
