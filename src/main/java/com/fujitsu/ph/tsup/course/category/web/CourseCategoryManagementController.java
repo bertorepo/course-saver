@@ -128,15 +128,17 @@ public class CourseCategoryManagementController {
     @PostMapping("/create")
     public String submitCreateCourseCategoryForm(CourseCategoryForm form, BindingResult bindingResult,
             Model model, RedirectAttributes redirectAttributes) throws Exception {
-    	CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(),
-                form.getDetail()).build();
-        Set<CourseCategory> categorySize = courseCategoryManagementService.findCourseCategoryByName(form.getCategory());
+        CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(), form.getDetail())
+                .build();
+        Set<CourseCategory> categorySize = courseCategoryManagementService
+                .findCourseCategoryByName(form.getCategory());
         List<CourseCategory> listOfCourseCat = categorySize.stream().collect(Collectors.toList());
-        for(CourseCategory cat: listOfCourseCat){
-            if(cat.getCategory().equals(form.getCategory())){
+        for (CourseCategory cat : listOfCourseCat) {
+            if (cat.getCategory().equals(form.getCategory())) {
                 model.addAttribute("invalidMessage", "The specified name is already existing");
                 Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
-                List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
+                List<CourseCategory> listOfCourseCategory = courseCategory.stream()
+                        .collect(Collectors.toList());
                 model.addAttribute("categoryList", listOfCourseCategory);
                 return "course-category-management/CreateCourseCategory";
             }
@@ -205,15 +207,16 @@ public class CourseCategoryManagementController {
             return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmDeleteModal";
         }
 
-        try {
-            CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
+        CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
+
+        if (courseCategory != null) {
             form.setId(courseCategory.getId());
             form.setCategory(courseCategory.getCategory());
             form.setDetail(courseCategory.getDetail());
             model.addAttribute("deleteCourseCategoryForm", form);
             return "redirect:/courseCategory/load?courseCategoryId=" + id + "#confirmDeleteModal";
 
-        } catch (EmptyResultDataAccessException ex) {
+        } else {
             redirectAttributes.addFlashAttribute("message",
                     "Unable to delete. Course Category has already been deleted/not existing.");
             return "redirect:/courseCategory/load#errorModal";
@@ -233,13 +236,14 @@ public class CourseCategoryManagementController {
     public String submitDeleteCourseCategoryForm(@PathVariable("courseCategoryId") Long id,
             CourseCategoryForm form, RedirectAttributes redirectAttributes, Model model) {
 
-        try {
-            courseCategoryManagementService.findCourseCategoryById(id);
+        CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
+
+        if (courseCategory != null) {
             courseCategoryManagementService.deleteCourseCategoryById(id);
             redirectAttributes.addFlashAttribute("message",
                     "You have successfully deleted this course category.");
             return "redirect:/courseCategory/load#successModal";
-        } catch (EmptyResultDataAccessException ex) {
+        } else {
             redirectAttributes.addFlashAttribute("message",
                     "Unable to delete. Course Category has already been deleted/not existing.");
             return "redirect:/courseCategory/load#errorModal";
