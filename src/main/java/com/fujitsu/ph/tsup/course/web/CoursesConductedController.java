@@ -116,10 +116,10 @@ public class CoursesConductedController {
           model.addAttribute("coursesConducted", listOfCoursesConductedFormSet);
           model.addAttribute("nullMessage", "No Summary Courses Conducted Found");
       
-          return "course-management/generateReports"; 
+          return "reports/summaryCourses"; 
       }
     @GetMapping("/load")
     public String viewSummaryCourseConducted() {
-    	return "course-management/generateReports";
+    	return "reports/generateReport";
     }
 }
