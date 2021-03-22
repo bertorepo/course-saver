@@ -1,4 +1,3 @@
-
  $( document ).ready(function() {
 
 
@@ -148,7 +147,7 @@ $("#inputCourse").keyup(function() {
 		/**
 		Display Modal
 		*/
-		var dateErrorMessage = "To Date should be greater than or equal to From Date";
+		var dateErrorMessage = "To Date should be greater than to From Date";
 		var reportTypeErrorMessage = "Please select report type."
 		var selectStartDateErrorMessage = "Please select start date."
 		var selectEndDateErrorMessage = "Please select end date."
