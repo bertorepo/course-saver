@@ -73,7 +73,7 @@ public class CoursesConductedController {
       
       if (bindingResult.hasErrors()) 
       { 
-          return "course-management/generateReports"; 
+          return "reports/generateReport"; 
       }
       
       if (coursesConductedListForm.getScheduledStartDateTime() == null ||
