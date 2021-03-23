@@ -42,7 +42,7 @@
 						<div class="col-lg-5">
 							<input type="text" name="rolename" id="rolename"
 								class="form-control" placeholder="Enter Role Type"
-								th:value="*{rolename}" maxlength="40"/>
+								th:value="*{rolename}" maxlength="40" autofocus />
 						</div>
 						<span class="text-danger er" id="rolename_error"> </span>
 					</div>
@@ -57,7 +57,8 @@
 
 					</div>
 					<div class="float-right">
-						<input id="submit_btn" type="button" class="btn btn-success" value="Submit" th:attr="onclick=|validateForm()|" disabled/> <a
+						<input id="submit_btn" type="button" class="btn btn-success"
+							value="Submit" th:attr="onclick=|validateForm()|" disabled /> <a
 							class="btn btn-danger" th:href="@{/roletype/load/1}">Cancel</a>
 
 					</div>
@@ -93,7 +94,7 @@
 		</div>
 	</div>
 	<!--Success Modal End-->
-	
+
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
 	<script th:inline="javascript">
@@ -195,6 +196,19 @@
 		    return role.rolename.toLowerCase() === rolename.toLowerCase() && role.id != id;
 		  }); 
 		}
+		
+		<!--autofocus, place cursor at the end of the input text-->
+		$(function() {
+			$("[autofocus]").on("focus", function() {
+			    if (this.setSelectionRange) {
+			      var len = this.value.length * 2;
+			      this.setSelectionRange(len, len);
+			    } else {
+			      this.value = this.value;
+			    }
+			    this.scrollTop = 999999;
+			}).focus();
+		});
 	</script>
 </body>
 </html>
