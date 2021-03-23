@@ -81,9 +81,13 @@ public class AutoRegistrationController {
 	        AutoRegistration autoRegistrationDetails = new AutoRegistration.Builder(form.getEmployeeNumber(),
 	                form.getFirstName(), form.getLastName(), form.getEmailAddress(), form.getDepartmentid(),
 	                user.getUserName(), form.getEmploymentDate()).build();
-	        autoRegistrationService.addAutoRegistration(autoRegistrationDetails);
-	
-	        return "redirect:/register/#successModal";
+	        int rowsAffected = autoRegistrationService.addAutoRegistration(autoRegistrationDetails);
+	        
+	        if(rowsAffected == 0) {
+	            return "redirect:/register/#errorModal";           
+	        } else {	            
+	            return "redirect:/register/#successModal";
+	        }
     	}catch(Exception a) {
     		throw new IllegalArgumentException("Error Employee Registration");
     	}

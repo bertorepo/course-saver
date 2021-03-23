@@ -18,7 +18,7 @@ import com.fujitsu.ph.tsup.common.domain.Employee;
 public interface AutoRegistrationService {
 
     // Method for adding new member
-    void addAutoRegistration(AutoRegistration autoRegistration);
+    int addAutoRegistration(AutoRegistration autoRegistration);
 
     // Method for loading all Departments
     List<AutoRegistrationDepartment> getAllDepartments();

@@ -28,12 +28,12 @@ public class AutoRegistrationServiceImpl implements AutoRegistrationService {
 
     // Method for adding new member
     @Override
-    public void addAutoRegistration(AutoRegistration autoRegistration) {
+    public int addAutoRegistration(AutoRegistration autoRegistration) {
     	try {
             if (autoRegistration == null) {
                 throw new IllegalArgumentException("Please check data should not be empty.");
             }
-            autoRegistrationDao.addAutoRegistration(autoRegistration);
+            return autoRegistrationDao.addAutoRegistration(autoRegistration);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("Can't access employee data.");
         }

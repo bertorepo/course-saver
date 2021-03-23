@@ -37,7 +37,7 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
      * Method for adding new Member to employee table
      */
     @Override
-    public void addAutoRegistration(AutoRegistration autoRegistration) {
+    public int addAutoRegistration(AutoRegistration autoRegistration) {
 
         String query = "INSERT INTO employee"
                 + " (number, last_name, first_name, email_address, username, department_id, employment_date)"
@@ -52,23 +52,29 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
                 .addValue("departmentid", autoRegistration.getDepartmentid())
                 .addValue("employmentDate", parseEmploymentDate(autoRegistration.getEmploymentDate()));
 
-        template.update(query, sqlParameterSource);
-
+        int rowsAffectedEmployee = template.update(query, sqlParameterSource);
+        
         // add employee auth
-        addEmployeeAuth(autoRegistration.getUserName());
+        int rowsAffectedAuth = addEmployeeAuth(autoRegistration.getUserName());
+        
+        if(rowsAffectedEmployee == 0 || rowsAffectedAuth == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     /*
      * Method for adding new Member to employee_auth table
      */
-    private void addEmployeeAuth(String username) {
+    private int addEmployeeAuth(String username) {
     	try {
 	        String query = "INSERT INTO employee_auth" + " (auth_name, username)"
 	                + " VALUES(:authName, :userName)";
 	        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("authName", "Member")
 	                .addValue("userName", username);
 	
-	        template.update(query, sqlParameterSource);
+	        return template.update(query, sqlParameterSource);
     	}catch(Exception a) {
         	throw new IllegalArgumentException("Error Employee Authentication");
         }

@@ -226,6 +226,30 @@
 						</div>
 						<!--Success Modal End-->
 						
+						<!--Error Modal-->
+						<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm text-center modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header alert-danger">
+										<h5 class="modal-title text-white">Error!</h5>
+										<a th:href="@{/login}" class="close" aria-label="Close">
+											<span aria-hidden="true" class="text-white">&times;</span>
+										</a>
+									</div>
+									<div class="modal-body">
+										<div class="form-group row">
+											<label class="col-lg-12 col-form-label">Register unsuccessful!</label>
+											<label class="col-lg-12 h6">Please contact your System Admin.</label>
+										</div>	
+										<div class="modal-footer d-flex justify-content-center">
+												<a th:href="@{/login}" class="btn btn-primary">OK</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--Error Modal End-->
+						
 						<!--Registration Modal-->
 						<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog modal-md text-center modal-dialog-centered">
@@ -283,6 +307,9 @@
 			}
 			if (window.location.href.indexOf('#registerModal') != -1) {
 				$('#registerModal').modal('show');
+			}
+			if (window.location.href.indexOf('#errorModal') != -1) {
+				$('#errorModal').modal('show');
 			}
 
 		});
