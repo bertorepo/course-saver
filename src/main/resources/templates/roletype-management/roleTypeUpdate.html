@@ -111,23 +111,25 @@
 		*  ========================
 		*/
 		$("#rolename").on("input",function() {
+			var roleName = this.value.trim();
+			
 			<!--duplicate rolename check-->
-			if (roleNameExist(this.value, roleId)) {
+			if (roleNameExist(roleName, roleId)) {
 				$("#rolename_error").text("Role Name already exists in the table");
 				roleNameErrorCount++;
 			}
 			<!--invalid rolename check-->
-			else if(this.value.match(specialChars)){
+			else if(roleName.match(specialChars)){
 				$("#rolename_error").text("Role Name is invalid, please omit special characters");
 				roleNameErrorCount++;
 			}
 			<!--rolename length check-->
-			else if (this.value.length == 40) {
+			else if (roleName.length == 40) {
 				$("#rolename_error").text("Role Name is too long");
 				roleNameErrorCount++;
 			}
 			<!--rolename empty check-->
-			else if(this.value == ""){
+			else if(roleName == ""){
 				$("#rolename_error").text("Please enter a Role Name");
 				roleNameErrorCount++;
 			}else{
