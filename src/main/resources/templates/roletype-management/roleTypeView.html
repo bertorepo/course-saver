@@ -186,7 +186,7 @@
 								<a th:href="@{'/roletype/search/' + ${i}(searchRole=${SEARCH_ROLE})}" th:text="${i}" 
 								th:class="${i==searchcurrentPage} ? active"></a>
 							</th:block>
-							<a th:href="@{'/roletype/load/' + ${searchcurrentPage+1}}" th:if="${currentPage &lt; searchtotalPage}">&raquo;</a>
+							<a th:href="@{'/roletype/load/' + ${searchcurrentPage+1}}" th:if="${searchcurrentPage &lt; searchtotalPage}">&raquo;</a>
 						</div>
 					</div>
 				</div>
