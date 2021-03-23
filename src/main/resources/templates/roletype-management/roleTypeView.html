@@ -170,18 +170,23 @@
 				<div th:if="${totalPage &gt; 1}">
 					<div class="pcenter">
 						<div class="pagination">
+							<a th:href="@{'/roletype/load/' + ${currentPage-1}}" th:if="${currentPage &gt; 1}">&laquo;</a>
 							<th:block th:each="i: ${#numbers.sequence(1, totalPage)}">
-								<a th:href="@{'/roletype/load/' + ${i}}" th:text="${i}"></a>
+								<a th:href="@{'/roletype/load/' + ${i}}" th:text="${i}" th:class="${i==currentPage} ? active"></a>
 							</th:block>
+							<a th:href="@{'/roletype/load/' + ${currentPage+1}}" th:if="${currentPage &lt; totalPage}">&raquo;</a>
 						</div>
 					</div>
 				</div>
 				<div th:if="${searchtotalPage &gt; 1}">
 					<div class="pcenter">
 						<div class="pagination">
+							<a th:href="@{'/roletype/load/' + ${searchcurrentPage-1}}" th:if="${searchcurrentPage &gt; 1}">&laquo;</a>
 							<th:block th:each="i: ${#numbers.sequence(1, searchtotalPage)}">
-								<a th:href="@{'/roletype/search/' + ${i}(searchRole=${SEARCH_ROLE})}" th:text="${i}"></a>
+								<a th:href="@{'/roletype/search/' + ${i}(searchRole=${SEARCH_ROLE})}" th:text="${i}" 
+								th:class="${i==searchcurrentPage} ? active"></a>
 							</th:block>
+							<a th:href="@{'/roletype/load/' + ${searchcurrentPage+1}}" th:if="${currentPage &lt; searchtotalPage}">&raquo;</a>
 						</div>
 					</div>
 				</div>

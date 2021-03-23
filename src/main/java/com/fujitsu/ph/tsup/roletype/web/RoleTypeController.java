@@ -85,6 +85,7 @@ public class RoleTypeController {
         }
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("roletypeList", roletypeList);
+        model.addAttribute("currentPage", page);
 
         return "roletype-management/roleTypeView";
     }
@@ -165,6 +166,7 @@ public class RoleTypeController {
         model.addAttribute("searchtotalPage", searchtotalPage);
         model.addAttribute("roletypeList", listOfRole);
         model.addAttribute("SEARCH_ROLE", searchRole);
+        model.addAttribute("searchcurrentPage", page);
         
         return "roletype-management/roleTypeView";
     }
