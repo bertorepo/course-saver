@@ -1,6 +1,7 @@
 <!-- @Author: Naval, Rosalyn-->
 <!-- @Author: Cui, Patricia-->
 <!-- @Author: Labador, Sweet Ophaline-->
+<!-- @Author: Baton, Maria Chelsea-->
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -42,8 +43,7 @@
 						<button type="submit" class="btn btn-danger">Confirm
 							Deletion</button>
 					</form>
-					<input type="button" class="btn btn-primary" data-dismiss="modal"
-						value="Back">
+					<a	class="btn btn-primary" th:href="@{/roletype/load/1}">Back</a>
 				</div>
 			</div>
 		</div>
@@ -101,7 +101,9 @@
 							th:text="${deleteSuccessMessage}"></label>
 					</div>
 				</div>
-				<div class="modal-footer"></div>
+				<div class="modal-footer">
+				<a th:href=@{/roletype/load/1}><button type="submit"
+								name="submit_button" value="submit" class="btn btn-primary">OK</button></a></div>
 			</div>
 		</div>
 	</div>
