@@ -112,8 +112,9 @@
 		*  ========================
 		*/
 		$("#rolename").on("input",function() {
+			
 			<!--duplicate rolename check-->
-			if (roleNameExist(this.value, roleId)) {
+			if (roleNameExist(this.value.trim(), roleId)) {
 				$("#rolename_error").text("Role Name already exists in the table");
 				roleNameErrorCount++;
 			}

@@ -115,7 +115,7 @@
 
 		 <!-- rolename validation-->
 		$("#rolename").on("input", function() {
-			if (roleNameExist(this.value)) {
+			if (roleNameExist(this.value.trim())) {
 				$("#rolename_error").text("Role Name already exists in the table");
 				roleNameErrorCount++;
 			} else if (this.value.match(specialChars)) {

@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,13 +38,14 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //0.07    | 2021/02/26 | WS) c.sinda           | Updated
 //0.08    | 2021/03/11 | WS) p.cui             | Updated
 //0.09    | 2021/03/11 | WS) j.sayaboc         | Updated
+//0.10    | 2021/03/18 | WS) rl.naval          | Updated
 //==================================================================================================
 /**
  * <pre>
  * This is the implementation of Role Type Controller.
  * </pre>
  * 
- * @version 0.09
+ * @version 0.10
  * @author rl.naval
  * @author c.sinda
  * @author c.rondina
@@ -77,6 +77,7 @@ public class RoleTypeController {
         Set<RoleType> roletype = roleTypeService.loadAllRoleType(pageSize, page);
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
 
+        //Compute number of pages for pagination
         if ((totalRoleTypes % pageSize) != 0) {
             totalPage = (int) (totalRoleTypes / pageSize) + 1;
         } else {
@@ -103,8 +104,10 @@ public class RoleTypeController {
         if (bindingResult.hasErrors()) {
             return "redirect:/roletype/load/1?roleId=" + id + "#confirmModal";
         }
+
         // Set Value for RoleType Object
         RoleType role = roleTypeService.findRoleById(id);
+
         // Set Value for RoleTypeForm
         form.setId(role.getId());
         form.setRolename(role.getRolename());
@@ -124,6 +127,7 @@ public class RoleTypeController {
     @PostMapping("/{roleId}/delete")
     public String submitDeleteRoleTypeform(@PathVariable("roleId") Long id,
             RedirectAttributes redirectAttributes, Model model) {
+
         // Call deleteRoleTypeById() method
         roleTypeService.deleteRoleTypeById(id);
         redirectAttributes.addFlashAttribute("deleteSuccessMessage",
@@ -145,15 +149,13 @@ public class RoleTypeController {
         int pageSize = 6;
         int searchtotalRoleTypes = 0;
         int searchtotalPage = 0;
-        
-        if (StringUtils.isEmpty(searchRole)) {
-            return "redirect:/roletype/load/1";
-        }
+
         Set<RoleType> allRoleTypes = roleTypeService.findRoleTypeByKeyword(searchRole);
         Set<RoleType> role = roleTypeService.findRoleTypeByKeyword(searchRole,pageSize,page);
         List<RoleType> listOfRole = role.stream().collect(Collectors.toList());
         searchtotalRoleTypes = allRoleTypes.size();
-                
+
+        //Compute number of pages for pagination
         if ((searchtotalRoleTypes % pageSize) != 0) {
             searchtotalPage = (int) (searchtotalRoleTypes / pageSize) + 1;
         } else {
@@ -164,9 +166,6 @@ public class RoleTypeController {
         model.addAttribute("roletypeList", listOfRole);
         model.addAttribute("SEARCH_ROLE", searchRole);
         
-        if (listOfRole == null) {
-            return "redirect:/roletype/load/1";
-        }
         return "roletype-management/roleTypeView";
     }
 
@@ -195,17 +194,20 @@ public class RoleTypeController {
      */
     @PostMapping("/create")
     public String submitCreateRoleTypeForm(RoleTypeForm form, BindingResult bindingResult, Model model) {
+
         // assign all roletypes to roletypeList model attribute
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
         model.addAttribute("roletypeList", roletypeList);
         Set<RoleType> roleSize = roleTypeService.findRoleTypeByName(form.getRolename().toLowerCase());
+
         if (roleSize == null) {
             RoleType roleDetails = new RoleType.Builder(form.getRolename(), form.getRoledesc()).build();
             roleTypeService.createRoleType(roleDetails);
         } else {
             model.addAttribute("create");
         }
+
         return "roletype-management/roleTypeCreate";
     }
 
@@ -234,6 +236,7 @@ public class RoleTypeController {
         form.setRolename(role.getRolename());
         form.setRoledesc(role.getRoledesc());
         model.addAttribute("updateRoleTypeForm", form);
+
         return "roletype-management/roleTypeUpdate";
     }
 
@@ -247,14 +250,14 @@ public class RoleTypeController {
      */
     @PostMapping("/update/{roleId}")
     public String submitUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
-        
+
         // assign all roletypes to roletypeList model attribute
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
         model.addAttribute("roletypeList", roletypeList);
         model.addAttribute("roleId", id);
         boolean isRoleExisting = roleTypeService.findIfRoleNameExists(form.getRolename().toLowerCase(), id);
-        
+
         // Check if Role Type is already existing in the table
         if (isRoleExisting) {
             form.setId(id);
