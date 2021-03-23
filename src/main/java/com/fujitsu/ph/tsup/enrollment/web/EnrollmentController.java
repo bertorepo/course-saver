@@ -64,7 +64,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.01    | 08/05/2020 | WS) J.Yu        | Updated
 //0.02    | 09/15/2020 | WS) J.Yu        | Updated
 //0.03    | 02/23/2021 | WS) E.Ceniza    | Update
-//0.03    | 03/02/2021 | WS) C.Macatangay| Update
+//0.03    | 03/23/2021 | WS) C.Macatangay| Update
 //=======================================================
 
 /**
@@ -475,9 +475,9 @@ public class EnrollmentController {
 					ZonedDateTime.now()).addDetail(courseScheduleDetail).build();
 
 			enrollmentService.enroll(courseParticipant);
-			enrollmentService.sendCalendarInvite(courseParticipant);
 			System.out.println("ADDING FLASH ATTRIBUTE");
 			redirectAttributes.addFlashAttribute("successMessage", "Successfully Enrolled a Course!!!");
+			enrollmentService.sendCalendarInvite(courseParticipant);
 			redirectAttributes.addFlashAttribute("emailMessage", "A calendar invite has been sent to your email:");
 			redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
 			redirectAttributes.addFlashAttribute("courseParticipant", courseParticipant);

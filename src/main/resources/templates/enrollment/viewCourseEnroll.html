@@ -1037,7 +1037,17 @@
 	//DUPLICATE ENROLL
 	/*<![CDATA[*/
 	var duplicateMessage = /*[[${duplicateMessage}]]*/ 'default';
-	if(duplicateMessage == "You are already enrolled in this course."){
+	if(duplicateMessage == "You are already enrolled in this course."| 
+// 		alert(duplicateMessage);
+		document.getElementById("message").innerHTML = duplicateMessage;
+		$('#errorModal').modal('show');
+	}
+	
+	//DUPLICATE ENROLL
+	/*<![CDATA[*/
+	var duplicateMessage = /*[[${duplicateMessage}]]*/ 'default';
+	if(duplicateMessage == "You are already enrolled in this course."
+			|| duplicateMessage == "Can't communicate with the mail server as of now. Try again later."){
 // 		alert(duplicateMessage);
 		document.getElementById("message").innerHTML = duplicateMessage;
 		$('#errorModal').modal('show');

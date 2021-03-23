@@ -13,9 +13,9 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.01    | 07/08/2020 | WS) K.Freo            | Update
 //0.01    | 07/08/2020 | WS) M.lumontad        | Update
 //0.02    | 09/07/2020 | WS) J.Yu              | Update
-//0.03    | 03/02/2021 | WS) E.Ceniza          | Update
-//0.03    | 03/04/2021 | WS) K.Sanchez         | Update
 //0.03    | 03/05/2021 | WS) E.Ceniza          | Update
+//0.03    | 03/04/2021 | WS) K.Sanchez         | Update
+//0.03    | 03/23/2021 | WS) C.Macatangay      | Update
 //==================================================================================================
 
 import com.fujitsu.ph.auth.model.FpiUser;
@@ -172,8 +172,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		} catch (MessagingException e) {
 			throw new IllegalArgumentException(e.getMessage() + ": Invalid config for mail properties.", e);
 		} catch (MailAuthenticationException e) {
-			throw new RuntimeException(
-					e.getMessage() + ": Can't communicate with the mail server as of now. Try again later.", e);
+			throw new RuntimeException("Can't communicate with the mail server as of now. Try again later.", e);
 		} catch (IOException e) {
 			throw new RuntimeException(
 					"This should never happen, ByteArraySource will always have correct and non empty values for the data and type arguments.",
