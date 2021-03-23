@@ -112,9 +112,11 @@
 		*  ========================
 		*/
 		$("#rolename").on("input",function() {
+			<!--removed all multi spaces and assign to a var-->
+			var rName = this.value.replace(/ +(?= )/g,'');
 			
 			<!--duplicate rolename check-->
-			if (roleNameExist(this.value.trim(), roleId)) {
+			if (roleNameExist(rName.trim(), roleId)) {
 				$("#rolename_error").text("Role Name already exists in the table");
 				roleNameErrorCount++;
 			}
