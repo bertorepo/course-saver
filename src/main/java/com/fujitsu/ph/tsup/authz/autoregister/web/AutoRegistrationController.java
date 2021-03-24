@@ -4,6 +4,7 @@
 package com.fujitsu.ph.tsup.authz.autoregister.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -88,7 +89,8 @@ public class AutoRegistrationController {
 	        } else {	            
 	            return "redirect:/register/#successModal";
 	        }
-    	}catch(Exception a) {
+    	}catch(DataAccessException e) {
+    		e.printStackTrace();
     		throw new IllegalArgumentException("Error Employee Registration");
     	}
     }

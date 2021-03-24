@@ -35,6 +35,7 @@ public class AutoRegistrationServiceImpl implements AutoRegistrationService {
             }
             return autoRegistrationDao.addAutoRegistration(autoRegistration);
         } catch (DataAccessException e) {
+        	e.printStackTrace();
             throw new IllegalArgumentException("Can't access employee data.");
         }
     }
@@ -50,6 +51,7 @@ public class AutoRegistrationServiceImpl implements AutoRegistrationService {
             }
             return autoRegistrationDao.getAllDepartments();
         } catch (DataAccessException e) {
+        	e.printStackTrace();
         	throw new IllegalArgumentException("Can't access department data.");
         }
     }
