@@ -50,21 +50,22 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //Class Name: EnrollmentController.java
 //
 //<<Modification History>>
-//Version | Date       | Updated by      | Content
-//--------+------------+-----------------+---------------
-//0.01    | 06/25/2020 | WS) K.Freo      | New Creation
-//0.01    | 06/29/2020 | WS) M.Lumontad  | Updated
-//0.01    | 06/29/2020 | WS) M.Rivera    | Updated
-//0.01    | 06/29/2020 | WS) G.Cabiling  | Updated
-//0.01    | 06/30/2020 | WS) K.Freo      | Updated
-//0.01    | 06/30/2020 | WS) M.Lumontad  | Updated
-//0.01    | 07/01/2020 | WS) G.Cabiling  | Updated
-//0.01    | 07/01/2020 | WS) T.Oviedo    | Updated
-//0.01    | 07/30/2020 | WS) M.Lumontad  | Updated
-//0.01    | 08/05/2020 | WS) J.Yu        | Updated
-//0.02    | 09/15/2020 | WS) J.Yu        | Updated
-//0.03    | 02/23/2021 | WS) E.Ceniza    | Update
-//0.03    | 03/23/2021 | WS) C.Macatangay| Update
+//Version | Date       | Updated by       | Content
+//--------+------------+------------------+---------------
+//0.01    | 06/25/2020 | WS) K.Freo       | New Creation
+//0.01    | 06/29/2020 | WS) M.Lumontad   | Updated
+//0.01    | 06/29/2020 | WS) M.Rivera     | Updated
+//0.01    | 06/29/2020 | WS) G.Cabiling   | Updated
+//0.01    | 06/30/2020 | WS) K.Freo       | Updated
+//0.01    | 06/30/2020 | WS) M.Lumontad   | Updated
+//0.01    | 07/01/2020 | WS) G.Cabiling   | Updated
+//0.01    | 07/01/2020 | WS) T.Oviedo     | Updated
+//0.01    | 07/30/2020 | WS) M.Lumontad   | Updated
+//0.01    | 08/05/2020 | WS) J.Yu         | Updated
+//0.02    | 09/15/2020 | WS) J.Yu         | Updated
+//0.03    | 02/23/2021 | WS) E.Ceniza     | Update
+//0.03    | 03/24/2021 | WS) K.Sanchez    | Update
+//0.03    | 03/23/2021 | WS) C.Macatangay | Update
 //=======================================================
 
 /**
@@ -466,23 +467,22 @@ public class EnrollmentController {
 		System.out.println("TRY ENROLL");
 		try {
 			FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+			
 			CourseScheduleDetailForm courseScheduleDetailForm = courseEnrollmentForm.getCourseScheduleDetails();
 			CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(
 					courseScheduleDetailForm.getId()).build();
 			CourseParticipant courseParticipant = new CourseParticipant.Builder(
 					courseEnrollmentForm.getCourseScheduleId(), user.getId(), user.getUserName() + "@fujitsu.com",
 					ZonedDateTime.now()).addDetail(courseScheduleDetail).build();
-
+			
 			enrollmentService.enroll(courseParticipant);
+			enrollmentService.sendCalendarInvite(courseParticipant);
 			System.out.println("ADDING FLASH ATTRIBUTE");
 			redirectAttributes.addFlashAttribute("successMessage", "Successfully Enrolled a Course!!!");
-			enrollmentService.sendCalendarInvite(courseParticipant);
 			redirectAttributes.addFlashAttribute("emailMessage", "A calendar invite has been sent to your email:");
 			redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
 			redirectAttributes.addFlashAttribute("courseParticipant", courseParticipant);
 			System.out.println("ADDING FLASH ATTRIBUTE");
-
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("duplicateMessage", e.getMessage());
 		}
