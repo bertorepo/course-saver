@@ -46,7 +46,7 @@ public interface CourseCategoryManagementService {
 
     Set<CourseCategory> findAllCourseCategory();
     
-    void deleteCourseCategoryById(Long id);
+    boolean deleteCourseCategoryById(Long id);
 
     CourseCategory findCourseCategoryById(Long id);
 
