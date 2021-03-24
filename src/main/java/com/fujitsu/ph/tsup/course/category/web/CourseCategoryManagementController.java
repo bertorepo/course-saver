@@ -235,10 +235,7 @@ public class CourseCategoryManagementController {
     public String submitDeleteCourseCategoryForm(@PathVariable("courseCategoryId") Long id,
             CourseCategoryForm form, RedirectAttributes redirectAttributes, Model model) {
 
-        CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
-
-        if (courseCategory != null) {
-            courseCategoryManagementService.deleteCourseCategoryById(id);
+        if (courseCategoryManagementService.deleteCourseCategoryById(id)) {
             redirectAttributes.addFlashAttribute("message",
                     "You have successfully deleted this course category.");
             return "redirect:/courseCategory/load#successModal";
