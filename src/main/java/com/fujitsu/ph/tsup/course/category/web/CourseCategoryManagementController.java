@@ -59,6 +59,13 @@ public class CourseCategoryManagementController {
     @Autowired
     private CourseCategoryManagementService courseCategoryManagementService;
 
+    private static String MSG_EXISTING = "Course Category Name already exist";
+    private static String MSG_SPECIAL_CHARACTER = "Category Name is invalid. Please remove invalid characters.";
+    private static String MSG_NO_CHANGE = "No change in course category information.";
+    private static String MSG_NOT_EXISTING = "Unable to update existing course category";
+    private static String MSG_UPDATE_SUCCESSFUL = "You have successfully updated this course category";
+    private static String MSG_CREATE_SUCCESSFUL = "Registration Complete.";
+    
     /*
      * Method for Updating Course Category Validates and save course category
      * 
@@ -76,42 +83,30 @@ public class CourseCategoryManagementController {
             return "redirect:/courseCategory/load#errorModal";
         }
 
-        CourseCategory courseCategory = courseCategoryManagementService.findCourseCategoryById(id);
-
-        if (courseCategory == null) {
-            redirectAttributes.addFlashAttribute("message", "Unable to update existing course category.");
-            return "redirect:/courseCategory/load#errorModal";
-        }
-
-        if (courseCategory.getCategory().toLowerCase().equals(form.getCategory().toLowerCase())
-                && courseCategory.getDetail().toLowerCase().equals(form.getDetail().toLowerCase())) {
-            redirectAttributes.addFlashAttribute("localStorage", form);
-            redirectAttributes.addFlashAttribute("message", "No change in course category information.");
-            return "redirect:/courseCategory/load#errorModal";
-        }
-
-        Set<CourseCategory> courseCategorySet = courseCategoryManagementService
-                .findCourseCategoryByName(form.getCategory());
-
-        if (!courseCategorySet.isEmpty()) {
-            List<CourseCategory> listOfCourseCategory = courseCategorySet.stream()
-                    .collect(Collectors.toList());
-            for (CourseCategory category : listOfCourseCategory) {
-                if (!category.getId().equals(form.getId())
-                        && category.getCategory().toLowerCase().equals(form.getCategory().toLowerCase())) {
-                    redirectAttributes.addFlashAttribute("message",
-                            "Unable to update existing course category.");
-                    redirectAttributes.addFlashAttribute("localStorage", form);
-                    return "redirect:/courseCategory/load#errorModal";
-                }
-            }
-        }
-
         CourseCategory courseDetails = new CourseCategory.Builder(form.getId(), form.getCategory(),
                 form.getDetail()).build();
-        this.courseCategoryManagementService.updateCourseCategory(courseDetails);
-        redirectAttributes.addFlashAttribute("message", "You have successfully updated this course category");
-        return "redirect:/courseCategory/load#successModal";
+        
+        String returnMsg = this.courseCategoryManagementService.updateCourseCategory(courseDetails);
+        String message = MSG_UPDATE_SUCCESSFUL;
+        String url = "redirect:/courseCategory/load";
+        
+        if (returnMsg == "SUCCESSFUL") {
+            url = url + "#successModal";
+        } else {
+            redirectAttributes.addFlashAttribute("localStorage", form);
+            url = url + "#errorModal";
+            if(returnMsg == "EXISTING") {
+                message = MSG_EXISTING;
+            } else if (returnMsg == "SPECIAL") {
+                message = MSG_SPECIAL_CHARACTER;
+            } else if (returnMsg == "NO_CHANGE") {
+                message = MSG_NO_CHANGE;
+            } else {
+                message = MSG_NOT_EXISTING;
+            }
+        }
+        redirectAttributes.addFlashAttribute("message", message);
+        return url;
     }
 
     // Loads the courseCategoryCreate view

@@ -36,7 +36,7 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 */
 public interface CourseCategoryManagementService {
 
-    void updateCourseCategory(CourseCategory courseCategory);
+    String updateCourseCategory(CourseCategory courseCategory);
 
     // A method that checks if the input has a duplicate
     Set<CourseCategory> findCourseCategoryByName(String name);
