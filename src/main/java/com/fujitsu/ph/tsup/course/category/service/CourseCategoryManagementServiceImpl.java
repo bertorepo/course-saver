@@ -69,8 +69,14 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
     }
 
     @Override
-    public void deleteCourseCategoryById(Long id) {
-        courseCategoryManagementDao.deleteCourseCategoryById(id);
+    public boolean deleteCourseCategoryById(Long id) {
+        CourseCategory courseCategoryResult = courseCategoryManagementDao.findCourseCategoryById(id);
+        if (courseCategoryResult != null) {
+            courseCategoryManagementDao.deleteCourseCategoryById(id);
+            return true;
+        } else {
+            return false;
+        }        
     }
 
     @Override
