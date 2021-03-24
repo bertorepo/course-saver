@@ -130,7 +130,7 @@
 			}
 			
 		<!--empty check-->
-			else if (this.value == "") {
+			else if (this.value.trim() == "") {
 				$("#rolename_error").text("Please enter a Role Name");
 				roleNameErrorCount++;
 			} else {
@@ -158,7 +158,7 @@
 				
 			}
 			<!--roledesc empty check-->
-			else if (this.value == "") {
+			else if (this.value.trim() == "") {
 				$("#roledesc_error").text("Please enter a Role Description");
 				roleDescErrorCount++;
 			} else {
