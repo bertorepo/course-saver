@@ -197,6 +197,9 @@ public class RoleTypeController {
     @PostMapping("/create")
     public String submitCreateRoleTypeForm(RoleTypeForm form, BindingResult bindingResult, Model model) {
 
+        //remove irregular spaces
+        String rName = form.getRolename().replaceAll("\\s+", " ");
+        
         // assign all roletypes to roletypeList model attribute
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
@@ -204,7 +207,7 @@ public class RoleTypeController {
         Set<RoleType> roleSize = roleTypeService.findRoleTypeByName(form.getRolename().toLowerCase());
 
         if (roleSize == null) {
-            RoleType roleDetails = new RoleType.Builder(form.getRolename(), form.getRoledesc()).build();
+            RoleType roleDetails = new RoleType.Builder(rName.trim(), form.getRoledesc()).build();
             roleTypeService.createRoleType(roleDetails);
         } else {
             model.addAttribute("create");
@@ -253,6 +256,9 @@ public class RoleTypeController {
     @PostMapping("/update/{roleId}")
     public String submitUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
 
+      //remove irregular spaces
+        String rName = form.getRolename().replaceAll("\\s+", " ");
+        
         // assign all roletypes to roletypeList model attribute
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
@@ -266,7 +272,7 @@ public class RoleTypeController {
             model.addAttribute("updateRoleTypeForm", form);
             return "roletype-management/roleTypeUpdate";
         } else {
-            RoleType updatedRoleType = new RoleType.Builder(form.getRolename(), form.getRoledesc()).build();
+            RoleType updatedRoleType = new RoleType.Builder(rName.trim(), form.getRoledesc()).build();
             roleTypeService.updateRoleType(id, updatedRoleType);
 
             // set 2 seconds delay
