@@ -129,7 +129,7 @@
             $('#invalidModal').modal('show');
         }
         else if(message == "SPECIAL") {
-            document.getElementById("invalidMsg").innerHTML = "Category Name is invalid. Please remove invalid characters."
+            document.getElementById("invalidMsg").innerHTML = "Input is invalid. Please remove invalid characters."
             $('#invalidModal').modal('show');
         }
         /*]]>*/
@@ -154,7 +154,7 @@
         document.getElementById("detail").value = localStorage.getItem("detail");
         localStorage.setItem("category", "");
         localStorage.setItem("detail", "");
-        var format = /[*:?\"\|<>\/]/;
+        var format = /[*/\"\'\\:<>?|]/;
         function enableSubmitButton(){
             var trimCategory = myTrim(category.value);
             var trimDetail = myTrim(detail.value);
@@ -168,6 +168,15 @@
                     else if(!format.test(category.value)){
                         document.getElementById('submit').disabled = false;
                     }
+                }
+                if(format.test(detail.value)){
+                    document.getElementById('required2').innerHTML = "*Category Name is invalid. Please remove invalid characters.";
+                    document.getElementById('required2').style.visibility = 'visible';
+                    document.getElementById('submit').disabled = true;
+                }
+                else if(!format.test(detail.value)){
+                    document.getElementById('required2').style.visibility = 'hidden';
+                    document.getElementById('submit').disabled = false;
                 }
             } else {
                 document.getElementById('submit').disabled = true;
@@ -190,9 +199,15 @@
                  }
             }
             if (trimDetail.length == 0){
+                document.getElementById('required2').innerHTML = "*Required field.";
                 document.getElementById('required2').style.visibility = 'visible';
-            } else{
-                document.getElementById('required2').style.visibility = 'hidden';
+            } else if (trimDetail.length > 0){
+                if(format.test(detail.value)){
+                    document.getElementById('required2').innerHTML = "*Category Detail is invalid. Please remove invalid characters.";
+                    document.getElementById('required2').style.visibility = 'visible';
+                } else {
+                    document.getElementById('required2').style.visibility = 'hidden';
+                }
             }
         }
         function checkingForDuplicate(categoryName){
