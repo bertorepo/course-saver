@@ -83,16 +83,20 @@
             var userName_value = $("#userName").val();
             var dept_value = $("#departmentid").val();
             
-			if((id_value.length > 0) && (id_value.length < 8)) {
-				$('#idErrorMessage').text("Your ID Number must be at least 8 digits")
-				$('#idErrorMessage').show();		
-				$('input[type="submit"]').attr('disabled', true);
-			} else if (id_value.length < 1) {
-				$('#idErrorMessage').text("This field is required.")
-				$('#idErrorMessage').show();
-				$('input[type="submit"]').attr('disabled', true);
-			} else {
-				$.ajax({
+            if(id_value.match(/[a-z]/i)){
+                $('#idErrorMessage').text("Letter is not allowed!")
+                $('#idErrorMessage').show();
+                $('input[type="submit"]').attr('disabled', true);
+            } else if (id_value.length < 1){
+                $('#idErrorMessage').text("Enter your ID Number")
+                $('#idErrorMessage').show();
+                $('input[type="submit"]').attr('disabled', true);
+            } else if ((id_value.length > 0) && (id_value.length < 8)){
+                $('#idErrorMessage').text("Your ID Number must be at least 8 digits")
+                $('#idErrorMessage').show();
+                $('input[type="submit"]').attr('disabled', true);
+            } else {               
+                $.ajax({
 					type: 'POST',
 					url: '/register/validateId/' + $('#employeeNumber').val(),
 					dataType:"json",
@@ -143,12 +147,11 @@
 							<label class="col-sm-4 control-label col-form-label pl-0">ID Number</label>
 							<div class="col-sm-8 pl-0 pr-0">
 								<input 
-									type="number" 
+									type="text" 
 								    class="form-control" 
 								    id="employeeNumber" 
 								    name="employeeNumber" 
 								    placeholder="Type a number"
-								    pattern="/^-?\d+\.?\d*$/" 
 								    oninput="this.value = this.value.replace(/[^a-z0-9\s]/gi, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" 
 								    onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;"
 								    autofocus required>
