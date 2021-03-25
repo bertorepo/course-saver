@@ -42,7 +42,7 @@ public interface CourseCategoryManagementService {
     Set<CourseCategory> findCourseCategoryByName(String name);
 
     // A method that creates course category
-    void createCourseCategory(CourseCategory courseCategory);    
+    String createCourseCategory(CourseCategory courseCategory);    
 
     Set<CourseCategory> findAllCourseCategory();
     
