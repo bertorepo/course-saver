@@ -158,50 +158,40 @@
         function enableSubmitButton(){
             var trimCategory = myTrim(category.value);
             var trimDetail = myTrim(detail.value);
-            //Enables submit button
-            if(trimCategory.length > 0 && trimDetail.length > 0) {
-                if(checkingForDuplicate(category.value)){
-                    document.getElementById('submit').disabled = true;
-                } else if (!checkingForDuplicate(category.value)){
-                    if((format.test(category.value)) || (format.test(detail.value))){
-                        document.getElementById('submit').disabled = true;
-                    }
-                    else if(!format.test(category.value) || (format.test(detail.value))){
-                        document.getElementById('submit').disabled = false;
-                    }
-                }
-            } else {
-                document.getElementById('submit').disabled = true;
-            }
+
+            document.getElementById('required').style.visibility = 'hidden';
+            document.getElementById('required2').style.visibility = 'hidden';
+            document.getElementById('submit').disabled = false;
+            
             //Enables Error messages for category
             if (trimCategory.length == 0){
                 document.getElementById('required').innerHTML = "*Required field";
                 document.getElementById('required').style.visibility = 'visible';
-            } else {
-                if(checkingForDuplicate(category.value)){
-                     document.getElementById('required').innerHTML = "*Course Category Name already exist";
-                     document.getElementById('required').style.visibility = 'visible';
-                } else if (!checkingForDuplicate(category.value)){
-                    if(format.test(category.value)){
-                        document.getElementById('required').innerHTML = "*Category Name is invalid. Please remove invalid characters.";
-                        document.getElementById('required').style.visibility = 'visible';
-                    }
-                    else if(!format.test(category.value)){
-                        document.getElementById('required').style.visibility = 'hidden';
-                    }
-                 }
-            }
+                document.getElementById('submit').disabled = true;
+            } 
             //Enables error message for details
             if (trimDetail.length == 0){
                 document.getElementById('required2').innerHTML = "*Required field.";
                 document.getElementById('required2').style.visibility = 'visible';
-            } else if (trimDetail.length > 0){
-                if(format.test(detail.value)){
-                    document.getElementById('required2').innerHTML = "*Category Detail is invalid. Please remove invalid characters.";
-                    document.getElementById('required2').style.visibility = 'visible';
-                } else {
-                    document.getElementById('required2').style.visibility = 'hidden';
-                }
+                document.getElementById('submit').disabled = true;
+            } 
+            
+            if(checkingForDuplicate(category.value)){
+                document.getElementById('required').innerHTML = "*Course Category Name already exist";
+                document.getElementById('required').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            }
+            
+            if(format.test(category.value)){
+            	document.getElementById('required').innerHTML = "*Category Name is invalid. Please remove invalid characters.";
+                document.getElementById('required').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            }
+            
+            if(format.test(detail.value)){
+            	document.getElementById('required2').innerHTML = "*Detail is invalid. Please remove invalid characters.";
+                document.getElementById('required2').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
             }
         }
         function checkingForDuplicate(categoryName){
