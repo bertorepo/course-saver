@@ -158,29 +158,22 @@
         function enableSubmitButton(){
             var trimCategory = myTrim(category.value);
             var trimDetail = myTrim(detail.value);
+            //Enables submit button
             if(trimCategory.length > 0 && trimDetail.length > 0) {
                 if(checkingForDuplicate(category.value)){
                     document.getElementById('submit').disabled = true;
                 } else if (!checkingForDuplicate(category.value)){
-                    if(format.test(category.value)){
+                    if((format.test(category.value)) || (format.test(detail.value))){
                         document.getElementById('submit').disabled = true;
                     }
-                    else if(!format.test(category.value)){
+                    else if(!format.test(category.value) || (format.test(detail.value))){
                         document.getElementById('submit').disabled = false;
                     }
-                }
-                if(format.test(detail.value)){
-                    document.getElementById('required2').innerHTML = "*Category Name is invalid. Please remove invalid characters.";
-                    document.getElementById('required2').style.visibility = 'visible';
-                    document.getElementById('submit').disabled = true;
-                }
-                else if(!format.test(detail.value)){
-                    document.getElementById('required2').style.visibility = 'hidden';
-                    document.getElementById('submit').disabled = false;
                 }
             } else {
                 document.getElementById('submit').disabled = true;
             }
+            //Enables Error messages for category
             if (trimCategory.length == 0){
                 document.getElementById('required').innerHTML = "*Required field";
                 document.getElementById('required').style.visibility = 'visible';
@@ -198,6 +191,7 @@
                     }
                  }
             }
+            //Enables error message for details
             if (trimDetail.length == 0){
                 document.getElementById('required2').innerHTML = "*Required field.";
                 document.getElementById('required2').style.visibility = 'visible';
