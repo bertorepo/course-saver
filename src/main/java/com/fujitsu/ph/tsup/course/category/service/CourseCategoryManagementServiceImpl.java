@@ -91,8 +91,22 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
 
     // Creates course category
     @Override
-    public void createCourseCategory(CourseCategory courseCategory) {
-        courseCategoryManagementDao.createCourseCategory(courseCategory);
+    public String createCourseCategory(CourseCategory courseCategory) {
+        if(checkForSpecialCharacter(courseCategory.getCategory().toLowerCase())) {
+            return SPECIAL;
+        }
+        CourseCategory categoryDetails = new CourseCategory.Builder(courseCategory.getCategory(), courseCategory.getDetail())
+                .build();
+        Set<CourseCategory> categorySize = courseCategoryManagementDao
+                .findCourseCategoryByName(courseCategory.getCategory());
+        List<CourseCategory> listOfCourseCat = categorySize.stream().collect(Collectors.toList());
+        for (CourseCategory cat : listOfCourseCat) {
+            if (cat.getCategory().toLowerCase().equals(courseCategory.getCategory().toLowerCase())) {
+                return EXISTING;
+            }
+        }
+        courseCategoryManagementDao.createCourseCategory(categoryDetails);
+        return SUCCESSFUL;
     }
 
     @Override
