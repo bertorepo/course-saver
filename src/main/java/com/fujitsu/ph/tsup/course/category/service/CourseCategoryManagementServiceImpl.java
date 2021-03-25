@@ -95,6 +95,9 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
         if(checkForSpecialCharacter(courseCategory.getCategory().toLowerCase())) {
             return SPECIAL;
         }
+        if(checkForSpecialCharacter(courseCategory.getDetail().toLowerCase())) {
+            return SPECIAL;
+        }
         CourseCategory categoryDetails = new CourseCategory.Builder(courseCategory.getCategory(), courseCategory.getDetail())
                 .build();
         Set<CourseCategory> categorySize = courseCategoryManagementDao
