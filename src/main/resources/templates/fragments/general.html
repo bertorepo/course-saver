@@ -77,9 +77,18 @@
 						</div>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Reports<span class="caret"></span></a>
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Reports<span class="caret"></span></a>
 						<div class="dropdown-menu" aria-labelledby="themes">
-							<a class="dropdown-item" th:href="@{/report/load}">Generate Reports</a>
+								<a class="dropdown-item" th:href="@{/report/load}">Generate Reports</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Maintenance<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/courseCategory/create}">Create Course Category</a>
+							<a class="dropdown-item" th:href="@{/courseCategory/load}">Manage Course Category</a>
+							<a class="dropdown-item" th:href="@{/roletype/create}">Create Member Role</a>
+							<a class="dropdown-item" th:href="@{/roletype/load/1}">Manage Member Role</a>
 						</div>
 					</li>
 					</th:block>
@@ -160,6 +169,15 @@
 						<div class="dropdown-menu" aria-labelledby="themes">
 							<a class="dropdown-item" th:href="@{/courses/create}">Create Course</a>
 							<a class="dropdown-item" th:href="@{/courses/load}">Manage Course</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Maintenance<span class="caret"></span></a>
+						<div class="dropdown-menu" aria-labelledby="themes">
+							<a class="dropdown-item" th:href="@{/courseCategory/create}">Create Course Category</a>
+							<a class="dropdown-item" th:href="@{/courseCategory/load}">Manage Course Category</a>
+							<a class="dropdown-item" th:href="@{/roletype/create}">Create Member Role</a>
+							<a class="dropdown-item" th:href="@{/roletype/load/1}">Manage Member Role</a>
 						</div>
 					</li>
 					</th:block>
