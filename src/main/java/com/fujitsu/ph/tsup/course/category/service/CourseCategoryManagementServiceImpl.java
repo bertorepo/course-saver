@@ -67,7 +67,7 @@ public class CourseCategoryManagementServiceImpl implements CourseCategoryManage
                         .equals(courseCategory.getDetail().trim().toLowerCase())) {
             return NO_CHANGE;
         }        
-        if(checkForSpecialCharacter(courseCategory.getCategory().toLowerCase())) {
+        if(checkForSpecialCharacter(courseCategory.getCategory().toLowerCase()) || checkForSpecialCharacter(courseCategory.getDetail().toLowerCase())) {
             return SPECIAL;
         }
 

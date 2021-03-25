@@ -58,6 +58,14 @@ function validateIfEmpty() {
 		localStorage.setItem("category", category.value);
 		localStorage.setItem("detail", detail.value);
 	} 
+	// validation for special character 
+	if (format.test(detail.value)) { 
+		document.getElementById("detailErrorMsg").innerHTML = "*Detail is invalid. Please remove invalid characters. ";
+		document.getElementById("updateBtn").disabled = true;
+		localStorage.setItem("id", id.value);
+		localStorage.setItem("category", category.value);
+		localStorage.setItem("detail", detail.value);
+	} 
 	// validate no change
 	if (checkingForNoChange(category.value, id.value, detail.value)) { 
 		document.getElementById("updateBtn").disabled = true;
