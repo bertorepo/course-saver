@@ -100,7 +100,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label class="col-lg-12 col-form-label">Course Category Name already existing</label>
+                        <label class="col-lg-12 col-form-label" id="invalidMsg">Course Category Name already exist.</label>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" id="closeModalInvalid"> OK</button>
@@ -118,19 +118,23 @@
         /*]]>*/
         
         /*<![CDATA[*/
-        var successMessage = /*[[${successMessage}]]*/ 'default';
-        if(successMessage == "Registration Complete."){
+        var message = /*[[${message}]]*/ 'default';
+        if(message == "SUCCESSFUL"){
             $('#successModal').modal('show');
+            localStorage.setItem("category", "");
+            localStorage.setItem("detail", "");
         }
-        /*]]>*/
-        /*<![CDATA[*/
-        var invalidMessage = /*[[${invalidMessage}]]*/ 'default';
-        if(invalidMessage == "The specified name is already existing"){
-        	$('#invalidModal').modal('show');            
+        else if(message == "EXISTING") {
+            document.getElementById("invalidMsg").innerHTML = "Course Category Name already exist."
+            $('#invalidModal').modal('show');
+        }
+        else if(message == "SPECIAL") {
+            document.getElementById("invalidMsg").innerHTML = "Category Name is invalid. Please remove invalid characters."
+            $('#invalidModal').modal('show');
         }
         /*]]>*/
         function btnsubmit(){
-        	localStorage.setItem("category", category.value);
+            localStorage.setItem("category", category.value);
             localStorage.setItem("detail", detail.value);
         }
         $(function() {
@@ -140,29 +144,30 @@
         }); 
         $(function() {
             $("#closeModalInvalid").click(function() {
-            	$("#invalidModal").modal('hide');
+                $("#invalidModal").modal('hide');
                 document.getElementById('required').innerHTML = "*Course Category Name already exist";
                 document.getElementById('required').style.visibility = 'visible';
-            });            
+            });
         });
         //disabling and enabling of submit button
         document.getElementById("category").value = localStorage.getItem("category");
         document.getElementById("detail").value = localStorage.getItem("detail");
         localStorage.setItem("category", "");
         localStorage.setItem("detail", "");
+        var format = /[*:?\"\|<>\/]/;
         function enableSubmitButton(){
             var trimCategory = myTrim(category.value);
             var trimDetail = myTrim(detail.value);
-            var regex = /[^a-z0-9 ,.()"'&-_!;]/gi;
-            category.value = category.value.replace(regex,"");
-            detail.value = detail.value.replace(regex,"");
             if(trimCategory.length > 0 && trimDetail.length > 0) {
                 if(checkingForDuplicate(category.value)){
                     document.getElementById('submit').disabled = true;
-                    
                 } else if (!checkingForDuplicate(category.value)){
-                    document.getElementById('submit').disabled = false;
-                   
+                    if(format.test(category.value)){
+                        document.getElementById('submit').disabled = true;
+                    }
+                    else if(!format.test(category.value)){
+                        document.getElementById('submit').disabled = false;
+                    }
                 }
             } else {
                 document.getElementById('submit').disabled = true;
@@ -175,8 +180,13 @@
                      document.getElementById('required').innerHTML = "*Course Category Name already exist";
                      document.getElementById('required').style.visibility = 'visible';
                 } else if (!checkingForDuplicate(category.value)){
-                
-                     document.getElementById('required').style.visibility = 'hidden';
+                    if(format.test(category.value)){
+                        document.getElementById('required').innerHTML = "*Category Name is invalid. Please remove invalid characters.";
+                        document.getElementById('required').style.visibility = 'visible';
+                    }
+                    else if(!format.test(category.value)){
+                        document.getElementById('required').style.visibility = 'hidden';
+                    }
                  }
             }
             if (trimDetail.length == 0){
@@ -185,7 +195,6 @@
                 document.getElementById('required2').style.visibility = 'hidden';
             }
         }
-        
         function checkingForDuplicate(categoryName){
             return courseCategoryList.some(function(categ) {
                 return categ.category.toLowerCase() === categoryName.toLowerCase();
