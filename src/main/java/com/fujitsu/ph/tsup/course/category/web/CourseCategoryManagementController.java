@@ -158,9 +158,6 @@ public class CourseCategoryManagementController {
     public String searchCourseCategory(
             @RequestParam(name = "searchCourseCategoryName") String searchCourseCategoryName, Model model) {
 
-        if (StringUtils.isEmpty(searchCourseCategoryName)) {
-            return "redirect:/courseCategory/load";
-        }
         Set<CourseCategory> courseCategory = courseCategoryManagementService
                 .findCourseCategoryByName(searchCourseCategoryName);
 
