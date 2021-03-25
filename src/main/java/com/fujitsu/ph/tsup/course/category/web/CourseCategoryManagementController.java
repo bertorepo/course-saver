@@ -64,7 +64,6 @@ public class CourseCategoryManagementController {
     private static String MSG_NO_CHANGE = "No change in course category information.";
     private static String MSG_NOT_EXISTING = "Unable to update existing course category";
     private static String MSG_UPDATE_SUCCESSFUL = "You have successfully updated this course category";
-    private static String MSG_CREATE_SUCCESSFUL = "Registration Complete.";
     
     /*
      * Method for Updating Course Category Validates and save course category
