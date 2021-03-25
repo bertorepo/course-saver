@@ -59,7 +59,7 @@ public class CourseCategoryManagementController {
     @Autowired
     private CourseCategoryManagementService courseCategoryManagementService;
 
-    private static String MSG_EXISTING = "Course Category Name already exist";
+    private static String MSG_EXISTING = "Course Category Name already exist.";
     private static String MSG_SPECIAL_CHARACTER = "Category Name is invalid. Please remove invalid characters.";
     private static String MSG_NO_CHANGE = "No change in course category information.";
     private static String MSG_NOT_EXISTING = "Unable to update existing course category";
@@ -124,23 +124,10 @@ public class CourseCategoryManagementController {
             Model model, RedirectAttributes redirectAttributes) throws Exception {
         CourseCategory categoryDetails = new CourseCategory.Builder(form.getCategory(), form.getDetail())
                 .build();
-        Set<CourseCategory> categorySize = courseCategoryManagementService
-                .findCourseCategoryByName(form.getCategory());
-        List<CourseCategory> listOfCourseCat = categorySize.stream().collect(Collectors.toList());
-        for (CourseCategory cat : listOfCourseCat) {
-            if (cat.getCategory().equals(form.getCategory())) {
-                model.addAttribute("invalidMessage", "The specified name is already existing");
-                Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
-                List<CourseCategory> listOfCourseCategory = courseCategory.stream()
-                        .collect(Collectors.toList());
-                model.addAttribute("categoryList", listOfCourseCategory);
-                return "course-category-management/CreateCourseCategory";
-            }
-        }
-        courseCategoryManagementService.createCourseCategory(categoryDetails);
-        model.addAttribute("successMessage", "Registration Complete.");
+        model.addAttribute("message", courseCategoryManagementService.createCourseCategory(categoryDetails));
         Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
-        List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
+        List<CourseCategory> listOfCourseCategory = courseCategory.stream()
+                .collect(Collectors.toList());
         model.addAttribute("categoryList", listOfCourseCategory);
         return "course-category-management/CreateCourseCategory";
     }
