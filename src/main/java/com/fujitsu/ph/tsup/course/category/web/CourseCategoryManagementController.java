@@ -60,7 +60,7 @@ public class CourseCategoryManagementController {
     private CourseCategoryManagementService courseCategoryManagementService;
 
     private static String MSG_EXISTING = "Course Category Name already exist.";
-    private static String MSG_SPECIAL_CHARACTER = "Category Name is invalid. Please remove invalid characters.";
+    private static String MSG_SPECIAL_CHARACTER = "Category Name or Detail is invalid. Please remove invalid characters.";
     private static String MSG_NO_CHANGE = "No change in course category information.";
     private static String MSG_NOT_EXISTING = "Unable to update existing course category";
     private static String MSG_UPDATE_SUCCESSFUL = "You have successfully updated this course category";
