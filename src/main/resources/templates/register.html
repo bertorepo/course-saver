@@ -84,7 +84,7 @@
             var dept_value = $("#departmentid").val();
             
             if(id_value.match(/[a-z]/i)){
-                $('#idErrorMessage').text("Letter is not allowed!")
+                $('#idErrorMessage').text("Please input numbers only")
                 $('#idErrorMessage').show();
                 $('input[type="submit"]').attr('disabled', true);
             } else if (id_value.length < 1){
