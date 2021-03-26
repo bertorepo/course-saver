@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Page of Generate Reports" />
+<meta name="author" content=" " />
+<title>Generate Reports</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<style>
+      table {
+        border-collapse: collapse;
+        width: 100%;  
+      }
+      td,
+      th {
+        border: 1px solid #dddddd;
+        padding: 8px;
+      }
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      hr {
+		margin: 5px; 
+      }
+</style>
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+<script th:src="@{/js/app/moment.min.js}"></script>
+<script th:src="@{/js/lib/summaryCourses.js}"></script>
+</head>
+<body onload="load()">
+	<div th:insert="fragments/general.html :: header" > </div>
+	<div class="container mt-5 div_minheight">
+		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
+		<hr>
+		<form id="coursesConductedForm" class="form-horizontal" action="#" th:action="@{/report/course}"  th:object="${coursesConductedForm}"  method="GET">
+		<div class="card">
+			<div class="card-body">
+				<div class="form-group row align-items-center justify-content-center">
+					<label class="col-lg-2 col-form-label" style="font-weight: bold;">Report Type</label>
+					<span style="width:70px"></span>
+						<div class="col-lg-5">
+							<select id="selectReportType" name="selectReportType" class="form-control" required
+							onchange="load()" style="width:525px; text-align-last:center;">
+								<option value="" disabled selected hidden>Please Select Report Type</option>
+								<option th:value="0" disabled hidden></option>
+								<option th:value="1" selected>Summary of Course Conducted</option>
+
+							</select>
+						</div>
+				</div>	     		
+ 				<div class="form-group row align-items-center justify-content-center">
+ 				<span style="width:31px"></span>
+                <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+                        <label class="col-form-label" style="font-weight: bold;">From</label>
+								<span style="width:8px"></span>
+	                           <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+	                           <input type="hidden" th:field="*{scheduledStartDateTime}"/>
+								<span style="width:8px"></span>
+	                        <label class="col-form-label" style="font-weight: bold;">To</label>
+	                        <div class="col-lg-2">
+	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+	                           <input type="hidden" th:field="*{scheduledEndDateTime}"/>
+	                       </div>
+                 </div> 
+                 
+                 <div class="form-group row align-items-center justify-content-center">
+ 						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
+ 						<span style="width:75px"></span>
+ 						<div class="col-lg-5">
+							<input list="course" class="form-control" id="inputCourse" type="text" style="width:525px;" autocomplete="off" disabled>
+								<datalist id="course">
+								  <option th:each="courseSelect : *{coursesConductedSet}" 
+ 								th:text="${courseSelect.courseName}" 
+ 								th:value="${courseSelect.courseName}" 
+ 								th:selected="${courseSelect.courseName eq lastSelected}"></option>
+								</datalist>
+						    </div>
+					</div>
+					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
+						<input type="button" id="viewButton" class="btn btn-success" value="View" onclick="viewButtonClick()" style="width:100px" disabled>
+						<span style="width:100px"></span>
+						<input type="button" id="exportButton" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px" disabled>
+					</div>
+			<label>Report Display</label>
+					<div id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
+					
+					</div>
+					<div th:if="${#lists.isEmpty(coursesConducted)}" id="listEmptyMessage" style="display:none;">
+						<div class="alert alert-dismissible alert-danger text-center">
+							<strong th:text="${nullMessage}"></strong> 
+						</div>
+					</div>
+					<div class="no-results" style="display:none;">
+						<div class="alert alert-dismissible alert-danger text-center">
+							<strong>No Result</strong> 
+						</div>
+				</div>
+				<!-- Display Summary Courses Conducted -->
+					<table id="summaryCoursesTable" class="table-bordered table-responsive text-center sticky-table width_max table-condensed" style="overflow-y:scroll;display:none; width:100%; height:400px;">
+						<thead>
+							<tr>
+								<th>No.</th>
+								<th style="width:33%">Course Name</th>
+								<th style="width:33%">Planned Date</th>
+								<th style="width:33%">Actual Date</th>
+							</tr>
+						</thead>
+						<tbody id="tBodySummary" th:each="showSummaryCourses, rowStat: ${coursesConducted}">
+							<tr class="content">
+								<td th:text="${rowStat.count}"></td>
+								<td th:text="${showSummaryCourses.courseName}"></td>
+								<td style="text-align: left" th:utext="'Start: &emsp;&emsp;' + ${#calendars.format(showSummaryCourses.scheduledStartDateTime,
+								'MMM dd, yyyy (E) - hh:mm a')} + '<hr>' + 'End: &emsp;&emsp;&ensp;' + ${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
+								 'MMM dd, yyyy (E) - hh:mm a')}"></td>
+								<td style="text-align: left" th:utext="'Start: &emsp;&emsp;' + ${#calendars.format(showSummaryCourses.scheduledEndDateTime,
+								'MMM dd, yyyy (E) - hh:mm a')} + '<hr>' + 'End: &emsp;&emsp;&ensp;' + ${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
+								 'MMM dd, yyyy (E) - hh:mm a')} "></td>
+							 </tr>
+						</tbody>
+					</table>
+					<!-- End of Display Summary Courses Conducted -->
+			</div>
+		</div>	
+		</form>
+		<!-- Export Summary Courses Conducted  -->
+		<table id="exportSummaryCoursesTable" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th style="width:35%">Course Name</th>
+					<th style="width:35%">Planned Start Date</th>
+					<th style="width:35%">Planned End Date</th>
+					<th style="width:35%">Actual Start Date</th>
+					<th style="width:35%">Actual End Date</th>
+				</tr>
+			</thead>
+			<tbody id="tBodyExportSummary" th:each="showSummaryCourses, rowStat: ${coursesConducted}">
+				<tr class="content">
+					<td th:text="${rowStat.count}"></td>
+					<td th:text="${showSummaryCourses.courseName}"></td>
+					<td th:utext="${#calendars.format(showSummaryCourses.scheduledStartDateTime,
+					'MM/dd/yyyy (E) - hh:mm a')}"></td>
+					<td th:text=" ${#calendars.format(showSummaryCourses.rescheduledStartDateTime, 
+					'MM/dd/yyyy (E) - hh:mm a')}"></td>
+					<td th:utext="${#calendars.format(showSummaryCourses.scheduledEndDateTime,
+					'MM/dd/yyyy (E) - hh:mm a')}"></td>
+					<td th:utext="${#calendars.format(showSummaryCourses.rescheduledEndDateTime, 
+					'MM/dd/yyyy (E) - hh:mm a')}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- End of Export Summary Courses Conducted -->
+		<!-- Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" id="message"></label>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- Error Modal End -->
+	</div>
+	<footer th:replace="fragments/general.html :: footer"></footer>
+	<script th:inline ="javascript">
+	/*<![CDATA[*/
+	    var message = /*[[${coursesConductedListForm}]]*/ 'default';
+	    var message2 = /*[[${coursesConductedForm.coursesConductedSet}]]*/ 'default';
+	    console.log(message);
+		console.log(message2);
+	/*]]>*/
+		var fromDateTime = $("#scheduledStartDateTime").val();
+		var toDateTime = $("#scheduledEndDateTime").val();
+		var rowCount = $('#summaryCoursesTable tr').length - 1;
+		
+		function load() {
+			
+			console.log("ROW COUNT: " + rowCount);
+			if($("#selectReportType").val() == 0 || $("#selectReportType").val() == null){
+				$("#exportButton").attr('disabled','disabled');
+				$("#viewButton").attr('disabled','disabled');
+				$("#inputCourse").attr('disabled','disabled');
+			}
+			else if(rowCount <= 0)
+			{
+				$("#inputCourse").attr('disabled','disabled');
+				$("#viewButton").removeAttr('disabled');
+			}
+			else{
+				$("#exportButton").removeAttr('disabled'); 
+				$("#viewButton").removeAttr('disabled');
+				$("#inputCourse").removeAttr('disabled');
+			}
+ 			var fromNewDate = fromDateTime.slice(0, 16);
+			var toNewDate = toDateTime.slice(0, 16);
+		  	
+			document.getElementById("startDate").value = fromNewDate;				
+			document.getElementById("endDate").value = toNewDate;
+			
+			document.getElementById('inputCourse').value;
+			
+			var selectReportType = document.getElementById("selectReportType").value;
+			var showSummaryCourses = document.getElementById("summaryCoursesTable");
+			var reportDisplayTable = document.getElementById("reportTable");
+			var showMembersCompleted = document.getElementById("summaryMembersTable");
+			
+			if(selectReportType == 1){
+
+				showSummaryCourses.style.display = "block";
+				reportDisplayTable.style.display = "none";
+				listEmptyMessage.style.display = "block";
+			}
+			else if(selectReportType == 2){				
+				window.location.href = "/report/members/";
+			}
+			else{
+				window.location.href = "/report/load/";
+			}
+		}
+		
+		const m = moment();
+		 //startDate = document.getElementById("startDate");
+		 startDate.max = m.format("YYYY-MM-DDTHH:mm"); 
+		 startDate.min = m.format("2017-01-01T00:00");
+		 
+		 //endDate = document.getElementById("endDate");
+		 endDate.max = m.format("YYYY-MM-DDTHH:mm"); 
+		 endDate.min = m.format("2017-01-01T00:00");
+		 
+		 console.log(m.format("YYYY-MM-DDTHH:mm"));
+		/**
+		Format Date Inputs
+		*/
+		Date.prototype.toISO = function() {
+			return this.getUTCFullYear() +
+			'-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+			'-' + String(this.getUTCDate()).padStart(2, "0") +
+			'T' + String(this.getUTCHours()).padStart(2, "0") +
+			':' + String(this.getUTCMinutes()).padStart(2, "0") +
+			':' + String(this.getUTCSeconds()).padStart(2, "0") +
+			'.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+			'Z';
+		};
+		/**
+		For HTML with FromDateTime and ToDateTime
+		*/
+		$("#startDate").blur(function () {
+			var formDate = document.getElementById("startDate").value;
+			var newDate = new Date(formDate);
+			var dateConcat = newDate.toISO().toString();
+			if (formDate == "") {
+				$("#scheduledStartDateTime").prop('value', null);
+			} else {
+				$("#scheduledStartDateTime").prop('value', dateConcat);
+			}
+		}); 
+		$("#endDate").blur(function () {
+			var formDate = document.getElementById("endDate").value;
+			var newDate = new Date(formDate);
+			var dateConcat = newDate.toISO().toString(); 
+			if (formDate == "") {
+				$("#scheduledEndDateTime").prop('value', null);
+			} else {
+				$("#scheduledEndDateTime").prop('value', dateConcat);
+			}
+		});
+			
+		/**
+		For Filtering Courses Table
+		*/
+		function filterText(){  
+			var rex = new RegExp($('#selectCourse').val());
+			
+			if(rex =="/all/"){clearFilter()}else{
+				$('.content').hide();
+				$('.content').filter(function() {
+				return rex.test($(this).text());
+				}).show();
+			}
+		}
+		function clearFilter(){
+			$('.selectCourse').val('');
+			$('.content').show();
+		}
+		/**
+		Filter Duplicate Courses
+		*/
+		var optionValues =[];
+		$('#course option').each(function(){
+			  if($.inArray(this.value, optionValues) >-1){
+			     $(this).remove()
+			  }else{
+			     optionValues.push(this.value);
+			  }
+		});
+		
+	</script>
+</body>
+</html>
