@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+#pagination a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  align: center;
+}
+
+#pagination a.active {
+    background-color:#00cc99;
+  	color: white;
+	border-top-left-radius: 5px;
+  	border-bottom-left-radius: 5px;
+  	border-top-right-radius: 5px;
+  	border-bottom-right-radius: 5px;
+}
+
+#pagination a:hover:not(.active) {
+	background-color: #ddd;
+	border-top-left-radius: 5px;
+  	border-bottom-left-radius: 5px;
+  	border-top-right-radius: 5px;
+  	border-bottom-right-radius: 5px;
+ }
