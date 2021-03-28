@@ -192,6 +192,7 @@ CREATE TABLE tsup.EMPLOYEE
     email_address character varying(50) COLLATE pg_catalog."default" NOT NULL,
     username character varying(50) COLLATE pg_catalog."default" NOT NULL,
     department_id bigint NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
+    employment_date date NOT NULL,
     CONSTRAINT "EMPLOYEE_pkey" PRIMARY KEY (id),
     CONSTRAINT "EMAIL_ADDRESS_unique" UNIQUE (email_address),
     CONSTRAINT "NUMBER_unique" UNIQUE ("number"),
