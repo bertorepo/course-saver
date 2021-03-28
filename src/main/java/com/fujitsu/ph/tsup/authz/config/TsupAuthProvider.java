@@ -31,48 +31,58 @@ import com.fujitsu.ph.tsup.common.domain.Employee;
  * </pre>
  * 
  * @version 0.01
- * @author WS) J.Macabudbud
+ * @author WS) J.Macabudbud Revision Date: 2021-02-15
  */
 @Component
 public class TsupAuthProvider extends FpiLdapAuthenticationProvider {
-	private Logger logger = LoggerFactory.getLogger(TsupAuthProvider.class);
+    private Logger logger = LoggerFactory.getLogger(TsupAuthProvider.class);
 
-	@Autowired
-	private AuthorizationService authorizationService;
+    @Autowired
+    private AuthorizationService authorizationService;
 
-	@Override
-	/**
-	 * Setting the user details in FpiUser
-	 * 
-	 * @param username
-	 * @return FpiUser details
-	 */
-	protected FpiUser getUser(String username) {
-		FpiUser fpiUser = new FpiUser();
+    @Override
+    /**
+     * Setting the user details in FpiUser
+     * 
+     * @param username
+     * @return FpiUser details
+     */
+    protected FpiUser getUser(String username) {
+        FpiUser fpiUser = new FpiUser();
 
-		Employee employee = authorizationService.findDetailsByUsername(username);
+        /*
+         * Author : k.sala
+         * 
+         * if findDetailsByUsername returns null, this method will return and only sets value to username
+         * 
+         */
+        Employee employee = authorizationService.findDetailsByUsername(username);
+        if (employee == null) {
+            fpiUser.setUserName(username);
+            return fpiUser;
+        }
 
-		fpiUser.setId(employee.getId());
-		fpiUser.setEmployeeNumber(employee.getNumber());
-		fpiUser.setFirstName(employee.getFirstName());
-		fpiUser.setLastName(employee.getLastName());
-		fpiUser.setUserName(username);
+        fpiUser.setId(employee.getId());
+        fpiUser.setEmployeeNumber(employee.getNumber());
+        fpiUser.setFirstName(employee.getFirstName());
+        fpiUser.setLastName(employee.getLastName());
+        fpiUser.setUserName(username);
 
-		Set<EmployeeAuth> roles = authorizationService.findByUsername(username);
-		List<String> rolesList = new ArrayList<>();
+        Set<EmployeeAuth> roles = authorizationService.findByUsername(username);
+        List<String> rolesList = new ArrayList<>();
 
-		for (EmployeeAuth role : roles) {
-			Set<String> itr = role.getAuthzSet();
-			for (String i : itr) {
-				rolesList.add(i);
-			}
-		}
-		
-		fpiUser.setRoles(rolesList);
-		
-		logger.debug("User:{}", fpiUser);
+        for (EmployeeAuth role : roles) {
+            Set<String> itr = role.getAuthzSet();
+            for (String i : itr) {
+                rolesList.add(i);
+            }
+        }
 
-		return fpiUser;
-	}
+        fpiUser.setRoles(rolesList);
+
+        logger.debug("User:{}", fpiUser);
+
+        return fpiUser;
+    }
 
 }

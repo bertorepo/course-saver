@@ -205,4 +205,3 @@ INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
 	VALUES ('TL', 'Team Lead');
 INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
 	VALUES ('Dev', 'Developer');
-
