@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Create Course Category</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+    href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+    href="/css/app/scheduling/scheduling.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/popper.min.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+</head>
+<body>
+     <div th:insert="fragments/general.html :: header"></div> 
+    <!--Success Message-->
+    <div class="modal fade" th:text="${successMessage}"
+        id="successMessage1" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+    <!--Success Message End-->
+    <div class="container mt-5">
+            <h3>
+                <i class="fa fa-calendar-o"></i> Create Course Category
+            </h3>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <form action="#" th:action="@{/courseCategory/create}" th:object="${create}" method="post">
+                        <span  style="margin-left:185px; color:red; visibility:hidden;" id="required">*Required field</span>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Course Category
+                                Name</label>
+                            <div class="col-lg-5">
+                                <input type="Text" placeholder="Enter Course Category Name"
+                                    class="form-control" id="category" name="category" onkeyup=enableSubmitButton() maxlength="100" tabindex="1">
+                            </div>
+                        </div>
+                        <span style="margin-left:185px; color:red; visibility:hidden;" id="required2">*Required field</span>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">Course Category Details</label>
+                            <div class="col-lg-5">
+                                <textarea rows="10" cols="50" maxlength="200" tabindex="2" placeholder="Enter Course Category Details"
+                                    class="form-control" id="detail" name="detail"
+                                    onkeyup=enableSubmitButton()></textarea>
+                            </div>
+                        </div>
+                        <div class="float-right">
+                            <button type="submit" id="submit"
+                                class="btn btn-success" disabled tabindex="3" onclick="btnsubmit()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+
+    <!--Success Modal-->
+        <div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm text-center">
+                <div class="modal-content">
+                    <div class="modal-header alert-success">
+                        <h5 class="modal-title text-white">Success!</h5>
+                        <button type="submit" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-lg-12 col-form-label">You have
+                                successfully created this course category.</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="closeModal"> OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--Success Modal End-->
+	
+	<!--Invalid Modal-->
+    <div class="modal fade" id="invalidModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm text-center">
+            <div class="modal-content">
+                <div class="modal-header alert-danger">
+                    <h5 class="modal-title text-white">Invalid Input!</h5>
+                    <button type="submit" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span> 
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-lg-12 col-form-label" id="invalidMsg">Course Category Name already exist.</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="closeModalInvalid"> OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Invalid Modal End-->
+    <script th:inline="javascript">
+	    var category = document.getElementById("category");
+	    var detail = document.getElementById("detail");
+       /*<![CDATA[*/
+        var courseCategoryList = /*[[${categoryList}]]*/ 'default';
+        /*]]>*/
+        
+        /*<![CDATA[*/
+        var message = /*[[${message}]]*/ 'default';
+        if(message == "SUCCESSFUL"){
+            $('#successModal').modal('show');
+            localStorage.setItem("category", "");
+            localStorage.setItem("detail", "");
+        }
+        else if(message == "EXISTING") {
+            document.getElementById("invalidMsg").innerHTML = "Course Category Name already exist."
+            $('#invalidModal').modal('show');
+        }
+        else if(message == "SPECIAL") {
+            document.getElementById("invalidMsg").innerHTML = "Input is invalid. Please remove invalid characters."
+            $('#invalidModal').modal('show');
+        }
+        /*]]>*/
+        function btnsubmit(){
+            localStorage.setItem("category", category.value);
+            localStorage.setItem("detail", detail.value);
+        }
+        $(function() {
+            $("#closeModal").click(function() {
+                $("#successModal").modal('hide');
+            });
+        }); 
+        $(function() {
+            $("#closeModalInvalid").click(function() {
+                $("#invalidModal").modal('hide');
+                document.getElementById('required').innerHTML = "*Course Category Name already exist";
+                document.getElementById('required').style.visibility = 'visible';
+            });
+        });
+        //disabling and enabling of submit button
+        document.getElementById("category").value = localStorage.getItem("category");
+        document.getElementById("detail").value = localStorage.getItem("detail");
+        localStorage.setItem("category", "");
+        localStorage.setItem("detail", "");
+        var format = /[*/\"\'\\:<>?|]/;
+        function enableSubmitButton(){
+            var trimCategory = myTrim(category.value);
+            var trimDetail = myTrim(detail.value);
+
+            document.getElementById('required').style.visibility = 'hidden';
+            document.getElementById('required2').style.visibility = 'hidden';
+            document.getElementById('submit').disabled = false;
+            
+            //Enables Error messages for category
+            if (trimCategory.length == 0){
+                document.getElementById('required').innerHTML = "*Required field";
+                document.getElementById('required').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            } 
+            //Enables error message for details
+            if (trimDetail.length == 0){
+                document.getElementById('required2').innerHTML = "*Required field.";
+                document.getElementById('required2').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            } 
+            
+            if(checkingForDuplicate(category.value)){
+                document.getElementById('required').innerHTML = "*Course Category Name already exist";
+                document.getElementById('required').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            }
+            
+            if(format.test(category.value)){
+            	document.getElementById('required').innerHTML = "*Category Name is invalid. Please remove invalid characters.";
+                document.getElementById('required').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            }
+            
+            if(format.test(detail.value)){
+            	document.getElementById('required2').innerHTML = "*Detail is invalid. Please remove invalid characters.";
+                document.getElementById('required2').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            }
+        }
+        function checkingForDuplicate(categoryName){
+            return courseCategoryList.some(function(categ) {
+                return categ.category.toLowerCase() === categoryName.toLowerCase();
+            })
+        }
+        function myTrim(stringToTrim){
+            return stringToTrim.replace(/^\s+|\s+$/gm,'');
+        }
+    </script>
+</body>
+<footer th:replace="fragments/general.html :: footer"></footer>
+</html>

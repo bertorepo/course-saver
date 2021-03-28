@@ -11,23 +11,23 @@ INSERT INTO tsup.DEPARTMENT(department_name)
 
 --EMPLOYEE
 INSERT INTO tsup.employee( number, last_name, first_name, email_address, username, department_id)
-	VALUES ('12345678', 'Lorenzo', 'Loyce', 'l.lorenzo@fujitsu.com', 'l.lorenzo', 1, '2020-08-11');
+	VALUES ('12345678', 'Lorenzo', 'Loyce', 'l.lorenzo@fujitsu.com', 'l.lorenzo', 1);
 INSERT INTO tsup.employee( number, last_name, first_name, email_address, username, department_id)
-	VALUES ('22222222', 'De Leon', 'JC', 'jc.deleon@fujitsu.com', 'jc.deleon', 1, '2020-08-11');
+	VALUES ('22222222', 'De Leon', 'JC', 'jc.deleon@fujitsu.com', 'jc.deleon', 1);
 INSERT INTO tsup.employee(number, last_name, first_name, email_address, username, department_id)
-	VALUES ('33333333', 'De Guzman', 'Genevieve', 'g.deguzman@fujitsu.com', 'g.deguzman', 1, '2020-08-11');
+	VALUES ('33333333', 'De Guzman', 'Genevieve', 'g.deguzman@fujitsu.com', 'g.deguzman', 1);
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A10210', 'Lazo', 'Josephine Noreen', 'j.lazo@fujitsu.com', 'j.lazo', 1, '2020-08-11');
+	VALUES ('A10210', 'Lazo', 'Josephine Noreen', 'j.lazo@fujitsu.com', 'j.lazo', 1);
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A10456', 'Jimenez', 'John Carlo', 'jc.jimenez@fujitsu.com', 'jc.jimenez', 1, '2020-08-11');
+	VALUES ('A10456', 'Jimenez', 'John Carlo', 'jc.jimenez@fujitsu.com', 'jc.jimenez', 1);
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A12435', 'Macabudbud', 'Jay Ian', 'j.macabudbud@fujitsu.com', 'j.macabudbud', 1, '2020-08-11');
+	VALUES ('A12435', 'Macabudbud', 'Jay Ian', 'j.macabudbud@fujitsu.com', 'j.macabudbud', 1);
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A15893', 'Abad', 'Kenneth', 'k.abad@fujitsu.com', 'k.abad', 1, '2020-08-11');
+	VALUES ('A15893', 'Abad', 'Kenneth', 'k.abad@fujitsu.com', 'k.abad', 1);
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A17843', 'Lumontad', 'Mark', 'm.lumontad@fujitsu.com', 'm.lumontad', 1, '2020-08-11');
+	VALUES ('A17843', 'Lumontad', 'Mark', 'm.lumontad@fujitsu.com', 'm.lumontad', 1);
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, DEPARTMENT_ID) 
-	VALUES ('A19075', 'Ramos', 'Ramon', 'r.ramos@fujitsu.com', 'r.ramos', 1, '2020-08-11');
+	VALUES ('A19075', 'Ramos', 'Ramon', 'r.ramos@fujitsu.com', 'r.ramos', 1);
 
 --Access Type
 INSERT INTO tsup.employee_auth(auth_name, username)
@@ -142,3 +142,66 @@ INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, st
 	VALUES (2, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
 INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, status, log_in_datetime, log_out_datetime, email)
 	VALUES (3, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
+	
+
+--Course Category
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft Web Applications','Detail for Microsoft Web Applications');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Web Development Technologies','Detail for Web Development Technologies');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('IBM Websphere','Detail for IBM Websphere');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Java 2 Programming','Detail for Java 2 Programming');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Java EE7','Detail for Java EE7');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft .NET Software Development Tools','Detail for Microsoft .NET Software Development Tools');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Generic Languages','Detail for Generic Languages');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Programming Best Practices','Detail for Programming Best Practices');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Software Design','Detail for Software Design');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Software Development Principles','Detail for Software Development Principles');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Software Testing','Detail for Software Testing');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft Windows Store Apps','Detail for Microsoft Windows Store Apps');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft C#','Detail for Microsoft C#');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Eclipse','Detail for Eclipse');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft LINQ','Detail for Microsoft LINQ');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft Enterprise Library','Detail for Microsoft Enterprise Library');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Microsoft ORM','Detail for Microsoft ORM');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Algorithms','Detail for Algorithms');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Mobile Application Development','Detail for Mobile Application Development');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Windows Embedded','Detail for Windows Embedded');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Configuration Management','Detail for Configuration Management');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Defensive Programming','Detail for Defensive Programming');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Apache','Detail for Apache');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Go','Detail for Go');
+INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
+	VALUES('Software Requirements','Detail for Software Requirements');
+
+--Role Type
+INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
+	VALUES ('PM', 'Project Manager');
+INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
+	VALUES ('BSE', 'Bridge Software Engineer');
+INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
+	VALUES ('TL', 'Team Lead');
+INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
+	VALUES ('Dev', 'Developer');
