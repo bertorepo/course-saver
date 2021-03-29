@@ -163,7 +163,7 @@ public class CourseCategoryManagementController {
 
         List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
         model.addAttribute("courseCategoryList", listOfCourseCategory);
-        return "course-category-management/manageCourseCategory";
+        return "course-category-management/ManageCourseCategory";
     }
 
     /**
