@@ -77,6 +77,8 @@ public class CourseManagementController {
         form.setId(course.getId());
         form.setName(course.getName());
         form.setDetail(course.getDetail());
+        form.setIsMandatory(course.getIsMandatory());
+        form.setDeadline(course.getDeadline());
 
         model.addAttribute("deleteCourseForm", form);
 
@@ -155,7 +157,7 @@ public class CourseManagementController {
 		
     		Set<Course> courseSize = courseManagementService.findCoursesByName(form.getName());
     		if(courseSize == null) {
-    			Course courseDetails = new Course.Builder(form.getName(),form.getDetail()).build();
+    			Course courseDetails = new Course.Builder(form.getName(),form.getDetail(),form.getIsMandatory(),form.getDeadline()).build();
     			courseManagementService.createCourse(courseDetails);
     		} else {
     			model.addAttribute("successMessage", "The course is already existing.");

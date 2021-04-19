@@ -14,6 +14,8 @@ public class CourseForm {
     private Long id;
     private String name;
     private String detail;
+    private String isMandatory = "No";
+    private String deadline;
 
     /**
      * Getter method for Course Id
@@ -81,10 +83,46 @@ public class CourseForm {
 
     }
 
+    /**
+     * Getter Method for Course is Mandatory
+     * 
+     * @return Course is Mandatory
+     */
+    public String getIsMandatory() {
+		return isMandatory;
+	}
+    
+    /**
+     * Setter Method for Course is Mandatory
+     * 
+     * @param isMandatory Course is Mandatory
+     */
+	public void setIsMandatory(String isMandatory) {
+		this.isMandatory = isMandatory;
+	}
+
+	/**
+     * Getter Method for Course Deadline
+     * 
+     * @return Course Deadline
+     */
+	public String getDeadline() {
+		return deadline;
+	}
+
+	/**
+     * Setter Method for Course Deadline
+     * 
+     * @param deadline Course Deadline
+     */
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
+	}
+
+
     @Override
-    public String toString() {
-
-        return "[ID " + id + " Name " + name + " Detail " + detail + "]";
-
-    }
+	public String toString() {
+		return "Course [id=" + id + ", name=" + name + ", detail=" + detail + ", isMandatory=" + isMandatory
+				+ ", deadline=" + deadline + "]";
+	}
 }

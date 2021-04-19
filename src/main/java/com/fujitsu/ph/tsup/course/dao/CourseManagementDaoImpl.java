@@ -34,7 +34,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     @Override
     public Course findCourseById(Long id) {
 
-        String query = "SELECT id,name,detail FROM COURSE WHERE ID =" + id;
+        String query = "SELECT id,name,detail,mandatory,deadline FROM COURSE WHERE ID =" + id;
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
@@ -85,12 +85,14 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     public void createCourse(Course course) {
     	
     	String query = "INSERT INTO course"
-    			+ " (name, detail)"
-    			+ " VALUES(:name, :detail)";
+    			+ " (name, detail,mandatory,deadline)"
+    			+ " VALUES(:name, :detail, :mandatory, :deadline)";
     	
     	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
     			.addValue("name", course.getName())
-    			.addValue("detail", course.getDetail());
+    			.addValue("detail", course.getDetail())
+    			.addValue("mandatory", course.getIsMandatory())
+    			.addValue("deadline", course.getDeadline());
     	
     	template.update(query, sqlParameterSource);
     	

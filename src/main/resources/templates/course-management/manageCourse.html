@@ -1,17 +1,16 @@
 <!-- @Author:Lepiten, Cyril-->
 
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="" />
-<meta name="author" content="" />
-<title>Delete Course</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Delete Course</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
@@ -19,12 +18,12 @@
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
 </head>
+
 <body>
 
 	<!--Confirm Modal-->
-	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true"
-		th:object="${deleteCourseForm}">
+	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" th:object="${deleteCourseForm}">
 		<div class="modal-dialog modal-sm text-center">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -37,71 +36,63 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<form class="form-horizontal"
-						th:action="@{/courses/__${param.courseId}__/delete}" method="post">
+					<form class="form-horizontal" th:action="@{/courses/__${param.courseId}__/delete}" method="post">
 						<button type="submit" class="btn btn-danger">Confirm
 							Deletion</button>
 					</form>
-					<input type="button" class="btn btn-primary" data-dismiss="modal"
-						value="Back">
+					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
 				</div>
 
 			</div>
 		</div>
 	</div>
 	<!--Confirm Modal End-->
-	
+
 	<!-- Info modal -->
-								<div class="modal fade" id="infoModal" tabindex="-1"
-									role="dialog" aria-labelledby="exampleModalLabel"
-									aria-hidden="true">
+	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
 
-									<form id="infoModalFormId"
-										th:action="@{/courses/__${courseIdInput}__/delete}" method="get">
-										<div class="modal-dialog modal-lg">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title">Course Information</h5>
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-												<div class="modal-body">
+		<form id="infoModalFormId" th:action="@{/courses/__${courseIdInput}__/delete}" method="get">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Course Information</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
 
-													<div class="form-group row">
-														<input type="hidden" id="courseIdInput" name="courseIdInput"></input>
-														<label class="col-lg-3 col-form-label">Course
-															Name:</label>
+						<div class="form-group row">
+							<input type="hidden" id="courseIdInput" name="courseIdInput"></input>
+							<label class="col-lg-3 col-form-label">Course
+								Name:</label>
 
-														<div class="col-lg-9">
-															<label class="col-lg-3 col-form-label" id="courseName"
-																name="courseName"></label>
-														</div>
-														<label class="col-lg-3 col-form-label">Detail:</label>
-														<div class="col-lg-9">
-															<label class="col-lg-3 col-form-label" id="courseDetail"
-																name="courseDetail">Hello world</label>
-														</div>
-													</div>
-												</div>
-												<div class="modal-footer">
-													<button type="submit" class="btn btn-danger"
-														href="#confirmModal">Delete</button>
-													<input type="button" class="btn btn-primary"
-														data-dismiss="modal" value="Back">
-												</div>
-											</div>
-										</div>
-									</form>
-									<!-- </form> -->
-								</div>
+							<div class="col-lg-9">
+								<label class="col-lg-3 col-form-label" id="courseName" name="courseName"></label>
+							</div>
+							<label class="col-lg-3 col-form-label">Detail:</label>
+							<div class="col-lg-9">
+								<label class="col-lg-3 col-form-label" id="courseDetail" name="courseDetail">Hello
+									world</label>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger" href="#confirmModal">Delete</button>
+						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- </form> -->
+	</div>
 
-								<!-- Info modal End-->
+	<!-- Info modal End-->
 
 	<!--Succes Modal-->
-	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
 		<div class="modal-dialog modal-sm text-center">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -109,8 +100,7 @@
 					<div class="form-group row">
 						<input type="hidden" id="courseId" name="courseId"></input>
 						<p th:text="${param.courseId}" hidden></p>
-						<label class="col-lg-12 col-form-label"
-							th:text="${deleteSuccessMessage}"></label>
+						<label class="col-lg-12 col-form-label" th:text="${deleteSuccessMessage}"></label>
 					</div>
 				</div>
 				<div class="modal-footer"></div>
@@ -160,28 +150,30 @@
 						<thead>
 							<th style="width: 20%;">Course Name</th>
 							<th>Detail</th>
-							<th style="width: 20%;">Action</th>
+							<th style="width: 10%;">Mandatory</th>
+							<th style="width: 15%;">Deadline</th>
+							<th style="width: 15%;">Action</th>
 						</thead>
 						<tbody th:each="course : *{courseList}">
 							<tr>
 								<td th:text="${course.name}"></td>
 								<td th:text="${course.detail}">Sample2</td>
-								<td><input type="submit" value="Delete"
-									class="btn btn-danger"
-									th:attr="onclick=|deleteButton('${course.id}','${course.name}','${course.detail}')|"></input>
+								<td th:text="${course.isMandatory}">Yes/No</td>
+								<td th:text="${course.deadline}">Sample2</td>
+								<td><input type="submit" value="Delete" class="btn btn-danger"
+										th:attr="onclick=|deleteButton('${course.id}','${course.name}','${course.detail}','${course.isMandatory}','${course.deadline}')|"></input>
 
 								</td>
 
 							</tr>
-							
+
 						</tbody>
 
 					</table>
 
 				</div>
 				<div class="float-right">
-					<a th:href="@{/enrollment/viewCourseEnroll}">View More <i
-						class="fa fa-arrow-circle-right"></i></a>
+					<a th:href="@{/enrollment/viewCourseEnroll}">View More <i class="fa fa-arrow-circle-right"></i></a>
 				</div>
 			</div>
 		</div>
@@ -203,7 +195,7 @@
 	</script>
 
 	<script>
-		$(document).ready(function() {
+		$(document).ready(function () {
 
 			if (window.location.href.indexOf('#confirmModal') != -1) {
 				$('#confirmModal').modal('show');
@@ -211,7 +203,7 @@
 
 		});
 
-		$(document).ready(function() {
+		$(document).ready(function () {
 
 			if (window.location.href.indexOf('#successModal') != -1) {
 				$('#successModal').modal('show');

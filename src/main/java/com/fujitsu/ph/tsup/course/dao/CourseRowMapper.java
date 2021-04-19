@@ -24,8 +24,10 @@ public class CourseRowMapper implements RowMapper<Course> {
         Long id = rs.getLong("id");
         String name = rs.getString("name");
         String detail = rs.getString("detail");
+        String isMandatory = rs.getString("mandatory");
+        String deadline = rs.getString("deadline");
 
-        Course course = new Course.Builder(id, name).detail(detail).build();
+        Course course = new Course.Builder(id, name).detail(detail).mandatory(isMandatory, deadline).build();
 
         return course;
     }
