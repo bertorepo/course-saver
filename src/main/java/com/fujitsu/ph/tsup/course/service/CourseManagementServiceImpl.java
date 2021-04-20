@@ -10,13 +10,19 @@ import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
 import com.fujitsu.ph.tsup.course.model.Course;
+import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
-/**
- * CourseManagementServiceImpl Class
- * 
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : CourseManagementServiceImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
+//0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//==================================================================================================
 @Service
 public class CourseManagementServiceImpl implements CourseManagementService {
 
@@ -81,5 +87,15 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     	//call the dao method
     	courseManagementDao.createCourse(course);
     	
+    }
+    
+    /**
+     * Loads all course
+     * 
+     * @return courseManagementDao.loadAllCourse
+     */
+    @Override
+    public Set<Course> loadAllCourse() {
+        return courseManagementDao.loadAllCourse();
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.course.model.CourseForm;
 import com.fujitsu.ph.tsup.course.service.CourseManagementService;
+import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
 
 /**
@@ -125,6 +126,7 @@ public class CourseManagementController {
     
     /**
      * Author: WS)C.Arias
+     * Updated: WS)I.Fajardo
      * <pre>
      * Create the course. Method = GET
      * 
@@ -133,7 +135,9 @@ public class CourseManagementController {
      */
     @GetMapping("/create")
     public String showCreateCourseForm(Model model) {
-    	
+    	Set<Course> course = courseManagementService.loadAllCourse();
+    	List<Course> courseList = course.stream().collect(Collectors.toList());
+    	model.addAttribute("courseList", courseList);
     	model.addAttribute("create");
     	
     	return "course-management/courseCreate";
@@ -142,6 +146,7 @@ public class CourseManagementController {
     
     /**
      * Author: WS)C.Arias
+ 	 * Updated: WS)I.Fajardo
      * <pre>
      * Create the course. Method = POST
      * 
@@ -152,12 +157,18 @@ public class CourseManagementController {
      * @return course Form and view
      */
     @PostMapping("/create")
-    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult,
-    		Model model) {
-		
-    		Set<Course> courseSize = courseManagementService.findCoursesByName(form.getName());
+    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult, Model model) {
+			
+	    	//remove irregular spaces
+	        String cName = form.getName().replaceAll("\\s+", " ");
+	        
+	        Set<Course> course = courseManagementService.loadAllCourse();
+	        List<Course> courseList = course.stream().collect(Collectors.toList());
+	        model.addAttribute("courseList", courseList);
+	        Set<Course> courseSize = courseManagementService.findCoursesByName(form.getName().toLowerCase());
+	        
     		if(courseSize == null) {
-    			Course courseDetails = new Course.Builder(form.getName(),form.getDetail(),form.getIsMandatory(),form.getDeadline()).build();
+    			Course courseDetails = new Course.Builder(cName.trim(),form.getDetail(),form.getIsMandatory(),form.getDeadline()).build();
     			courseManagementService.createCourse(courseDetails);
     		} else {
     			model.addAttribute("successMessage", "The course is already existing.");
