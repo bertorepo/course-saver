@@ -468,3 +468,79 @@ $BODY$
   ROWS 1000;
 ALTER FUNCTION tsup.get_total_jdu_dev_finished(boolean, integer, integer)
   OWNER TO postgres;
+
+  
+-- Function: tsup.summary_gst_dev()
+
+-- DROP FUNCTION tsup.summary_gst_dev();
+
+CREATE OR REPLACE FUNCTION tsup.summary_gst_dev()
+  RETURNS TABLE(totalnojdudev integer, totalnojdudevlastweek integer, totalnoorigmem integer, totalnonewmem integer, totalnojdudevfin integer, totalnojdudevlastwkfin integer, percentagefintoday integer, percentagefinlastwk integer) AS
+$BODY$
+DECLARE
+	totalDev integer = 0;
+	totalDevLastWk integer = 0;
+	totalOrig integer = 0;
+	totalNew integer = 0;
+	totalFin integer = 0;
+	totalFinLastWk integer = 0;
+	percentage integer = 0;
+	percentageLastWk integer = 0;
+	cat_id integer = 0;
+	dept_id integer = 0;
+	
+BEGIN  	
+	cat_id = (SELECT id FROM tsup.COURSE_CATEGORY WHERE category = 'G3CC Standardization Training');
+	dept_id = (SELECT id FROM tsup.DEPARTMENT WHERE department_name = 'FDC-G3CC');
+	
+	totalDev = (
+			SELECT COUNT(*) 
+			FROM tsup.EMPLOYEE 
+			WHERE DEPARTMENT_ID = dept_id
+		   );
+	totalDevLastWk = (
+				SELECT COUNT(*) 
+				FROM tsup.EMPLOYEE 
+				WHERE DEPARTMENT_ID = dept_id
+			 ); -- Add filter if classification is already available for new and original members
+	totalOrig = (
+			SELECT COUNT(*) 
+			FROM tsup.EMPLOYEE 
+			WHERE DEPARTMENT_ID = dept_id
+		    ); -- Add filter if classification is already available for new and original members
+	totalNew = (
+			SELECT COUNT(*) 
+			FROM tsup.EMPLOYEE 
+			WHERE DEPARTMENT_ID = dept_id
+		   ); -- Add filter if classification is already available for new and original members
+	totalFin = (
+			SELECT COUNT(*) 
+			FROM tsup.get_total_JDU_Dev_Finished(true, cat_id, dept_id) 
+			WHERE noofcourse = (SELECT COUNT(*) FROM tsup.COURSE WHERE course_category_id = cat_id)
+		   );
+	totalFinLastWk = (
+				SELECT COUNT(*) 
+				FROM tsup.get_total_JDU_Dev_Finished(false, cat_id, dept_id) 
+				WHERE noofcourse = (SELECT COUNT(*) FROM tsup.COURSE WHERE course_category_id = cat_id)
+			 );
+	percentage := (totalFin * 100) / totalDev;
+	percentageLastWk := (totalFinLastWk * 100) / totalDev;
+	
+	RETURN QUERY SELECT 
+		COALESCE(totalDev,0),
+		COALESCE(totalDevLastWk,0),
+		COALESCE(totalOrig,0),
+		COALESCE(totalNew,0),
+		COALESCE(totalFin,0),
+		COALESCE(totalFinLastWk,0),
+		COALESCE(percentage,0),
+		COALESCE(percentageLastWk,0);
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION tsup.summary_gst_dev()
+  OWNER TO postgres;
+
+
