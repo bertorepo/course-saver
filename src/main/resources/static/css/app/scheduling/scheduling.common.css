@@ -92,3 +92,27 @@ div.text-danger{
 	font-size: 12px;
 	text-align: left;
 }
+input[type=checkbox] {
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	-o-appearance:none;
+	outline: none;
+	content: none;	
+	margin-top: 6px;
+}
+
+input[type=checkbox]:before {
+	font-family: "FontAwesome";
+    content: "\f00c";
+    font-size: 15px;
+    color: transparent !important;
+    width: 18px;
+    height: 20px;
+    border: 1px solid #b8b8b8;
+    border-radius: 0.22rem;
+}
+
+input[type=checkbox]:checked:before {
+
+	color: #7b8a8b !important;
+}
