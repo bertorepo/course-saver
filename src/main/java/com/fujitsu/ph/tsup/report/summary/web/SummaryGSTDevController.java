@@ -1,7 +1,7 @@
 //==================================================================================================                                                                                                                                                                            
 // Project Name : Training Sign Up
-// System Name  : SummaryGSTDevForm
-// Class Name   : SummaryGSTDevForm.java                                                                                                                                                                             
+// System Name  : SummaryGSTDevController
+// Class Name   : SummaryGSTDevController.java                                                                                                                                                                             
 //                                                                                                                                                                          
 // <<Modification History>>                                                                                                                                                                             
 // Version | Date       | Updated By            | Content                                                                                                                                                                           
