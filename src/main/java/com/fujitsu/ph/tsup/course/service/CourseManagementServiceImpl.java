@@ -80,6 +80,27 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     }
     
     /**
+     * Author: WS)I.Fajardo
+     * Find if Course name already exists
+     * @param name Course name
+     * @param id Course id
+     * @return isCourseExists
+     */
+    @Override
+    public boolean findIfCourseNameExists(String name, Long id) {
+        Set<Course> courseList = courseManagementDao.findIfCourseNameExists(name, id);
+        boolean isCourseExists = false;
+        try {
+            if (!courseList.isEmpty()) {
+            	isCourseExists = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isCourseExists;
+    }
+    
+    /**
      * Author: WS)C.Arias
      * Creates course.
      */

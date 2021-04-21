@@ -32,7 +32,10 @@ public interface CourseManagementService {
     
     void createCourse(Course course);
     
-    //Method for loading all Course in Course View
+    // Method for loading all Course in Course View
     Set<Course> loadAllCourse();
+    
+    // Method for searching if Role is already existing
+    boolean findIfCourseNameExists(String name, Long id);
 
 }
