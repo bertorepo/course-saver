@@ -3,12 +3,18 @@
  */
 package com.fujitsu.ph.tsup.course.model;
 
-/**
- * CourseForm class
- * 
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : Course.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version
+//0.02    | 2021/04/19 | WS) st.diaz           | Updated
+//==================================================================================================
+
 public class Course {
 
     private Long id;

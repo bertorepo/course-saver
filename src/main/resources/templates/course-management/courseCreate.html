@@ -1,3 +1,16 @@
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Course Management -->
+<!-- Name         : courseCreate.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | 2021/04/19 | WS) st.diaz           | Updated -->
+<!-- 0.02    | 2021/04/19 | WS) c.macatangay      | Updated -->
+<!-- 0.03    | 2021/04/20 | WS) i.fajardo         | Updated -->
+<!-- ================================================================================================== -->
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -144,7 +157,7 @@
 				courseNameErrorCount = 0;
 			}
 			
-			checkForm()
+			checkForm();
 		});
 		
 		//course detail validation
@@ -181,12 +194,10 @@
 				
 		}
 		
-// 		disabling and enabling of submit button
+ 		//disabling and enabling of submit button
 		 function enableSubmitButton(){
 			var mandatory = document.getElementById("isMandatory");
 			var deadlineSel = document.getElementById("deadlineSel");
-			var option = document.getElementsByTagName("option");
-			var submit = document.getElementById('submit');
 			
 			if(mandatory.checked === true && deadlineSel.value === "-"){
 				mandatoryErrorCount++;
@@ -207,7 +218,7 @@
 			}
 		}
 		
-		<!--enable/disable submit button-->
+		//enable/disable submit button
 		function checkForm(){
 			if (courseNameErrorCount == 0 && courseDetailErrorCount == 0 && mandatoryErrorCount == 0) {
 				$('#submit_btn').removeAttr('disabled');

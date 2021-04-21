@@ -1,4 +1,15 @@
-<!-- @Author:Lepiten, Cyril-->
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Course Management -->
+<!-- Name         : manageCourse.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version -->
+<!-- 0.02    | 2021/04/19 | WS) st.diaz           | Updated -->
+<!-- 0.02    | 2021/04/21 | WS) i.fajardo         | Updated -->
+<!-- ================================================================================================== -->
 
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
@@ -37,8 +48,7 @@
 				</div>
 				<div class="modal-footer">
 					<form class="form-horizontal" th:action="@{/courses/__${param.courseId}__/delete}" method="post">
-						<button type="submit" class="btn btn-danger">Confirm
-							Deletion</button>
+						<button type="submit" class="btn btn-danger">Confirm Deletion</button>							
 					</form>
 					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
 				</div>
@@ -65,16 +75,13 @@
 
 						<div class="form-group row">
 							<input type="hidden" id="courseIdInput" name="courseIdInput"></input>
-							<label class="col-lg-3 col-form-label">Course
-								Name:</label>
-
+							<label class="col-lg-3 col-form-label">Course Name:</label>				
 							<div class="col-lg-9">
 								<label class="col-lg-3 col-form-label" id="courseName" name="courseName"></label>
 							</div>
 							<label class="col-lg-3 col-form-label">Detail:</label>
 							<div class="col-lg-9">
-								<label class="col-lg-3 col-form-label" id="courseDetail" name="courseDetail">Hello
-									world</label>
+								<label class="col-lg-3 col-form-label" id="courseDetail" name="courseDetail"></label>		
 							</div>
 						</div>
 					</div>
@@ -96,15 +103,16 @@
 		<div class="modal-dialog modal-sm text-center">
 			<div class="modal-content">
 				<div class="modal-body">
-
 					<div class="form-group row">
 						<input type="hidden" id="courseId" name="courseId"></input>
 						<p th:text="${param.courseId}" hidden></p>
 						<label class="col-lg-12 col-form-label" th:text="${deleteSuccessMessage}"></label>
 					</div>
 				</div>
-				<div class="modal-footer"></div>
-
+				<div class="modal-footer">
+					<a th:href=@{/courses/load}><button type="submit"
+							name="submit_button" value="submit" class="btn btn-primary">OK</button></a>
+				</div>
 			</div>
 		</div>
 	</div>

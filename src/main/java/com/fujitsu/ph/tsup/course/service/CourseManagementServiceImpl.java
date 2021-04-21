@@ -23,6 +23,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
 //==================================================================================================
+
 @Service
 public class CourseManagementServiceImpl implements CourseManagementService {
 
@@ -91,6 +92,7 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     
     /**
      * Loads all course
+     * Author: WS)I.Fajardo
      * 
      * @return courseManagementDao.loadAllCourse
      */

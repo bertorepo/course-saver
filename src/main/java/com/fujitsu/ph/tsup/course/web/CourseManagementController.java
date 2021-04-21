@@ -21,15 +21,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.course.model.CourseForm;
 import com.fujitsu.ph.tsup.course.service.CourseManagementService;
-import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : CourseManagementController.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
+//0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//==================================================================================================
 
-/**
- * CourseManagementController Class
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- *
- */
 @Controller
 @RequestMapping("/courses")
 public class CourseManagementController {
