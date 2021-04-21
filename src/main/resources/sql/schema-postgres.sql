@@ -414,3 +414,57 @@ TABLESPACE pg_default;
 
 ALTER TABLE tsup.COURSE_ATTENDANCE
     OWNER to postgres;
+
+-- Function: tsup.get_total_jdu_dev_finished(boolean, integer, integer)
+
+-- DROP FUNCTION tsup.get_total_jdu_dev_finished(boolean, integer, integer);
+
+CREATE OR REPLACE FUNCTION tsup.get_total_jdu_dev_finished(IN today boolean, IN categoryid integer, IN departmentid integer)
+  RETURNS TABLE(employee_id integer, noofcourse integer) AS
+$BODY$
+DECLARE
+	count integer = 0;
+	x integer = 0;
+	r1 record;
+BEGIN  	
+	CREATE TEMP TABLE temp_table(id int, no int);
+	FOR r1 IN (SELECT id FROM tsup.EMPLOYEE WHERE DEPARTMENT_ID = departmentId ORDER BY id ASC)
+	LOOP
+		-- can do some processing here 1st loop
+		RAISE NOTICE 'Employee ID: %',r1.id;
+		IF today then
+			SELECT COUNT(DISTINCT course_id) into x 
+			FROM tsup.course_schedule CS 
+			LEFT Join tsup.course_schedule_detail CSD 
+			ON CS.id=CSD.course_schedule_id 
+			LEFT Join tsup.course_attendance CA 
+			ON CSD.id = CA.course_schedule_detail_id 
+			WHERE CS.status = 'D' 
+			AND CS.course_id IN (SELECT id FROM tsup.COURSE WHERE COURSE_CATEGORY_ID = categoryId ORDER BY id ASC) 
+			AND CA.participant_id = r1.id;
+		ELSE
+			SELECT COUNT(DISTINCT course_id) into x 
+			FROM tsup.course_schedule CS 
+			LEFT Join tsup.course_schedule_detail CSD 
+			ON CS.id=CSD.course_schedule_id 
+			LEFT Join tsup.course_attendance CA 
+			ON CSD.id = CA.course_schedule_detail_id 
+			WHERE CS.status = 'D' 
+			AND CS.course_id IN (SELECT id FROM tsup.COURSE WHERE COURSE_CATEGORY_ID = categoryId ORDER BY id ASC) 
+			AND CA.participant_id = r1.id 
+			AND DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);
+		END IF;
+		RAISE NOTICE 'Count: %',x;
+		INSERT INTO temp_table VALUES (r1.id, x::INTEGER);
+		RAISE NOTICE '---------------------------------------------------------';
+		--RETURN NEXT r1; -- return current row of SELECT of 1st loop
+	END LOOP;
+	RETURN QUERY SELECT * FROM temp_table;
+	DROP TABLE temp_table;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION tsup.get_total_jdu_dev_finished(boolean, integer, integer)
+  OWNER TO postgres;
