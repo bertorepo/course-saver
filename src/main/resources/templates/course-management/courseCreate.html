@@ -37,8 +37,10 @@
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
 	<!--Success Message-->
-	<div class="modal fade" th:text="${successMessage}" id="successMessage1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+	<div class="modal fade" th:text="${successMessage}" id="successMessage1" tabindex="-1" role="dialog"
+		 aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 	<!--Success Message End-->
+	
 	<form action="#" th:action="@{/courses/create}" th:object="${create}" method="post">
 		<div class="container mt-5">
 			<h3>
@@ -51,27 +53,32 @@
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5">
-							<input type="text" placeholder="Enter Course Name" class="form-control" id="name" name="name">
+							<input type="text" placeholder="Enter Course Name" class="form-control"
+								id="name" name="name">
 						</div>
 						<span class="text-danger er" id="coursename_error"> </span>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Details</label>
 						<div class="col-lg-5">
-							<textarea rows="10" cols="50" placeholder="Enter Course Details" class="form-control" id="detail" name="detail"></textarea>
+							<textarea rows="10" cols="50" placeholder="Enter Course Details" 
+								class="form-control" id="detail" name="detail"></textarea>
 						</div>
-						<span class="text-danger er" id="detail_error"> </span>
+						<span class="text-danger er" id="detail_error"></span>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Mandatory</label>
 						<div class="col-lg-5">
-							<input class="form-check-input" type="checkbox" value="Yes" name="isMandatory" id="isMandatory" onclick="showDeadline()" onchange="enableSubmitButton(this)" style="margin: 0px;">
+							<input class="form-check-input" type="checkbox" value="Yes" name="isMandatory" 
+								id="isMandatory" onclick="showDeadline()"
+								onchange="enableSubmitButton(this)" style="margin: 0px;">
 						</div>
 					</div>
 					<div class="form-group row" id="deadline" style="display: none">
 						<label class="col-lg-2 col-form-label">Deadline</label>
 						<div class="col-lg-5">
-							<select class="form-control form-select" aria-label="Default select example" id="deadlineSel" name= "deadline" onclick="enableSubmitButton(this)">
+							<select class="form-control form-select" aria-label="Default select example" 
+								id="deadlineSel" name= "deadline" onclick="enableSubmitButton(this)">
 								<option selected>-</option>
 								<option th:value="Immediate" th:text="Immediate"></option>
 								<option th:value="Monthly" th:text="Monthly"></option>
@@ -120,25 +127,25 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
 	<script th:inline="javascript">
-	
-	var courseNameErrorCount = 1;
-	var courseDetailErrorCount = 1;
-	var mandatoryErrorCount = 0;
-	var deadlineSel = document.getElementById("deadlineSel");
-	var mandatory = document.getElementById("isMandatory");
-	
-	/*<![CDATA[*/
-	var courseList = /*[[${courseList}]]*/'default';
-	/*]]>*/
-	
-	<!--returns true if name exists in the object-->
+		
+		var courseNameErrorCount = 1;
+		var courseDetailErrorCount = 1;
+		var mandatoryErrorCount = 0;
+		var deadlineSel = document.getElementById("deadlineSel");
+		var mandatory = document.getElementById("isMandatory");
+		
+		/*<![CDATA[*/
+		var courseList = /*[[${courseList}]]*/'default';
+		/*]]>*/
+		
+		// returns true if name exists in the object
 		function courseNameExist(name) {
 			return courseList.some(function(course) {
 				return course.name.toLowerCase() === name.toLowerCase();
 			});
 		}
-		
-		//course name validation
+			
+		// course name validation
 		$("#name").on("input", function(){
 			<!--removed all multi spaces and assign to a var-->
 			var cName = this.value.replace(/ +(?= )/g,'');
@@ -159,10 +166,9 @@
 			
 			checkForm();
 		});
-		
-		//course detail validation
+			
+		// course detail validation
 		$("#detail").on("input", function(){
-
 			<!--empty check-->
 			if (this.value.trim() == "") {
 				$("#detail_error").text("Please enter a Course Detail");
@@ -174,15 +180,14 @@
 			
 			checkForm();
 		});
-		
-		//confirmation
+			
+		// confirmation
 		function validateForm(){
-
 			if (courseDetailErrorCount <= 0 && courseNameErrorCount <= 0) {
 				<!--clear error-->
 				$("#detail_error").text("");
 				$("#coursename_error").text("");
-
+	
 				<!--show modal-->
 				$('#successModal').modal('show');
 				
@@ -190,11 +195,10 @@
 				setTimeout(function() {
 					$("#roleForm").submit();
 				}, 2000);
-			}
-				
+			}		
 		}
-		
- 		//disabling and enabling of submit button
+			
+		// disabling and enabling of submit button
 		 function enableSubmitButton(){
 			var mandatory = document.getElementById("isMandatory");
 			var deadlineSel = document.getElementById("deadlineSel");
@@ -208,6 +212,7 @@
 			checkForm();
 		}
 		
+		// show deadline if course is mandatory
 		 function showDeadline(){
 			var mandatory = document.getElementById("isMandatory");
 			var deadline = document.getElementById("deadline");
@@ -217,19 +222,18 @@
 				deadline.style.display = "none";
 			}
 		}
-		
-		//enable/disable submit button
+			
+		// enable/disable submit button
 		function checkForm(){
 			if (courseNameErrorCount == 0 && courseDetailErrorCount == 0 && mandatoryErrorCount == 0) {
 				$('#submit_btn').removeAttr('disabled');
 			} else {
-
+	
 				$('#submit_btn').removeAttr('disabled');
 				$('#submit_btn').attr('disabled', true);
 			}
-		}
-		
-		
-		</script>
+		}	
+			
+	</script>
 </body>
 </html>

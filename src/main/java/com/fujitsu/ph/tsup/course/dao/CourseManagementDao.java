@@ -37,7 +37,7 @@ public interface CourseManagementDao {
     // Method for searching if Course already exists
     Set<Course> findIfCourseNameExists(String name, Long id);
     
-    //Method for creating courses
+    // Method for creating courses
     void createCourse(Course course);
     
 	// Method for loading all Course in Course View
