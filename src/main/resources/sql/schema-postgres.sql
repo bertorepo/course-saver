@@ -178,6 +178,53 @@ TABLESPACE pg_default;
 ALTER TABLE tsup.EMPLOYEE_AUTH
     OWNER to postgres;
     
+-- Table: tsup.COURSE_CATEGORY
+
+--DROP TABLE tsup.COURSE_CATEGORY;
+
+CREATE TABLE tsup.COURSE_CATEGORY
+(
+    ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_CATEGORY_ID_seq"'::regclass),
+    CATEGORY character varying(100) COLLATE pg_catalog."default",
+    DETAIL character varying(200) COLLATE pg_catalog."default",
+    CONSTRAINT "COURSE_CATEGORY_pkey" PRIMARY KEY (ID),
+    CONSTRAINT "COURSE_CATEGORY_unique" UNIQUE (CATEGORY)
+)
+WITH (
+    OIDS = FALSE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE tsup.COURSE_CATEGORY
+    OWNER to postgres;
+
+CREATE SEQUENCE tsup."MEMBER_ROLEID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE tsup.MEMBER_ROLE
+(
+    id bigint NOT NULL DEFAULT nextval('tsup."MEMBER_ROLEID_seq"'::regclass),
+    role_type character varying(40),
+    role_desc character varying(120),
+    deleted_at timestamp,
+    PRIMARY KEY (id)
+
+)
+WITH (
+    OIDS = FALSE
+)
+
+
+TABLESPACE pg_default;
+
+ALTER TABLE tsup.MEMBER_ROLE
+    OWNER to postgres;    
+    
         
 -- Table: tsup.EMPLOYEE
 
@@ -192,12 +239,14 @@ CREATE TABLE tsup.EMPLOYEE
     email_address character varying(50) COLLATE pg_catalog."default" NOT NULL,
     username character varying(50) COLLATE pg_catalog."default" NOT NULL,
     department_id bigint NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
+    member_role_id bigint NOT NULL DEFAULT nextval('tsup."MEMBER_ROLEID_seq"'::regclass),
     employment_date date NOT NULL,
     CONSTRAINT "EMPLOYEE_pkey" PRIMARY KEY (id),
     CONSTRAINT "EMAIL_ADDRESS_unique" UNIQUE (email_address),
     CONSTRAINT "NUMBER_unique" UNIQUE ("number"),
     CONSTRAINT "USER_NAME_unique" UNIQUE (username),
-    CONSTRAINT "DEPARTMENT_ID_fkey" FOREIGN KEY (department_id) REFERENCES tsup.department (id) MATCH SIMPLE 
+    CONSTRAINT "DEPARTMENT_ID_fkey" FOREIGN KEY (department_id) REFERENCES tsup.department (id) MATCH SIMPLE, 
+    CONSTRAINT "MEMBER_ROLE_ID_fkey" FOREIGN KEY (member_role_id) REFERENCES tsup.member_role (id) MATCH SIMPLE 
 )
 WITH (
     OIDS = FALSE
@@ -216,8 +265,10 @@ CREATE TABLE tsup.COURSE
     ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_ID_seq"'::regclass),
     NAME character varying(100) COLLATE pg_catalog."default",
     DETAIL character varying(200) COLLATE pg_catalog."default",
+    course_category_id bigint NOT NULL DEFAULT nextval('tsup."COURSE_CATEGORY_ID_seq"'::regclass),
     CONSTRAINT "COURSE_pkey" PRIMARY KEY (ID),
-    CONSTRAINT "COURSE_NAME_unique" UNIQUE (NAME)
+    CONSTRAINT "COURSE_NAME_unique" UNIQUE (NAME),
+    CONSTRAINT "COURSE_CATEGORY_ID_fkey" FOREIGN KEY (course_category_id) REFERENCES tsup.COURSE_CATEGORY (id) MATCH SIMPLE
 )
 WITH (
     OIDS = FALSE
@@ -363,52 +414,133 @@ TABLESPACE pg_default;
 
 ALTER TABLE tsup.COURSE_ATTENDANCE
     OWNER to postgres;
-<<<<<<< src/main/resources/sql/schema-postgres.sql
-    
--- Table: tsup.COURSE_CATEGORY
 
---DROP TABLE tsup.COURSE_CATEGORY;
+-- Function: tsup.get_total_jdu_dev_finished(boolean, integer, integer)
 
-CREATE TABLE tsup.COURSE_CATEGORY
-(
-    ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_CATEGORY_ID_seq"'::regclass),
-    CATEGORY character varying(100) COLLATE pg_catalog."default",
-    DETAIL character varying(200) COLLATE pg_catalog."default",
-    CONSTRAINT "COURSE_CATEGORY_pkey" PRIMARY KEY (ID),
-    CONSTRAINT "COURSE_CATEGORY_unique" UNIQUE (CATEGORY)
-)
-WITH (
-    OIDS = FALSE
-)
+-- DROP FUNCTION tsup.get_total_jdu_dev_finished(boolean, integer, integer);
 
-TABLESPACE pg_default;
+CREATE OR REPLACE FUNCTION tsup.get_total_jdu_dev_finished(IN today boolean, IN categoryid integer, IN departmentid integer)
+  RETURNS TABLE(employee_id integer, noofcourse integer) AS
+$BODY$
+DECLARE
+	count integer = 0;
+	x integer = 0;
+	r1 record;
+BEGIN  	
+	CREATE TEMP TABLE temp_table(id int, no int);
+	FOR r1 IN (SELECT id FROM tsup.EMPLOYEE WHERE DEPARTMENT_ID = departmentId ORDER BY id ASC)
+	LOOP
+		-- can do some processing here 1st loop
+		RAISE NOTICE 'Employee ID: %',r1.id;
+		IF today then
+			SELECT COUNT(DISTINCT course_id) into x 
+			FROM tsup.course_schedule CS 
+			LEFT Join tsup.course_schedule_detail CSD 
+			ON CS.id=CSD.course_schedule_id 
+			LEFT Join tsup.course_attendance CA 
+			ON CSD.id = CA.course_schedule_detail_id 
+			WHERE CS.status = 'D' 
+			AND CS.course_id IN (SELECT id FROM tsup.COURSE WHERE COURSE_CATEGORY_ID = categoryId ORDER BY id ASC) 
+			AND CA.participant_id = r1.id;
+		ELSE
+			SELECT COUNT(DISTINCT course_id) into x 
+			FROM tsup.course_schedule CS 
+			LEFT Join tsup.course_schedule_detail CSD 
+			ON CS.id=CSD.course_schedule_id 
+			LEFT Join tsup.course_attendance CA 
+			ON CSD.id = CA.course_schedule_detail_id 
+			WHERE CS.status = 'D' 
+			AND CS.course_id IN (SELECT id FROM tsup.COURSE WHERE COURSE_CATEGORY_ID = categoryId ORDER BY id ASC) 
+			AND CA.participant_id = r1.id 
+			AND DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);
+		END IF;
+		RAISE NOTICE 'Count: %',x;
+		INSERT INTO temp_table VALUES (r1.id, x::INTEGER);
+		RAISE NOTICE '---------------------------------------------------------';
+		--RETURN NEXT r1; -- return current row of SELECT of 1st loop
+	END LOOP;
+	RETURN QUERY SELECT * FROM temp_table;
+	DROP TABLE temp_table;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION tsup.get_total_jdu_dev_finished(boolean, integer, integer)
+  OWNER TO postgres;
 
-ALTER TABLE tsup.COURSE_CATEGORY
-    OWNER to postgres;
+  
+-- Function: tsup.summary_gst_dev()
 
-CREATE SEQUENCE tsup."MEMBER_ROLEID_seq"
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
+-- DROP FUNCTION tsup.summary_gst_dev();
 
-CREATE TABLE tsup.MEMBER_ROLE
-(
-    id bigint NOT NULL DEFAULT nextval('tsup."MEMBER_ROLEID_seq"'::regclass),
-    role_type character varying(40),
-    role_desc character varying(120),
-    deleted_at timestamp,
-    PRIMARY KEY (id)
+CREATE OR REPLACE FUNCTION tsup.summary_gst_dev()
+  RETURNS TABLE(totalnojdudev integer, totalnojdudevlastweek integer, totalnoorigmem integer, totalnonewmem integer, totalnojdudevfin integer, totalnojdudevlastwkfin integer, percentagefintoday integer, percentagefinlastwk integer) AS
+$BODY$
+DECLARE
+	totalDev integer = 0;
+	totalDevLastWk integer = 0;
+	totalOrig integer = 0;
+	totalNew integer = 0;
+	totalFin integer = 0;
+	totalFinLastWk integer = 0;
+	percentage integer = 0;
+	percentageLastWk integer = 0;
+	cat_id integer = 0;
+	dept_id integer = 0;
+	
+BEGIN  	
+	cat_id = (SELECT id FROM tsup.COURSE_CATEGORY WHERE category = 'G3CC Standardization Training');
+	dept_id = (SELECT id FROM tsup.DEPARTMENT WHERE department_name = 'FDC-G3CC');
+	
+	totalDev = (
+			SELECT COUNT(*) 
+			FROM tsup.EMPLOYEE 
+			WHERE DEPARTMENT_ID = dept_id
+		   );
+	totalDevLastWk = (
+				SELECT COUNT(*) 
+				FROM tsup.EMPLOYEE 
+				WHERE DEPARTMENT_ID = dept_id
+			 ); -- Add filter if classification is already available for new and original members
+	totalOrig = (
+			SELECT COUNT(*) 
+			FROM tsup.EMPLOYEE 
+			WHERE DEPARTMENT_ID = dept_id
+		    ); -- Add filter if classification is already available for new and original members
+	totalNew = (
+			SELECT COUNT(*) 
+			FROM tsup.EMPLOYEE 
+			WHERE DEPARTMENT_ID = dept_id
+		   ); -- Add filter if classification is already available for new and original members
+	totalFin = (
+			SELECT COUNT(*) 
+			FROM tsup.get_total_JDU_Dev_Finished(true, cat_id, dept_id) 
+			WHERE noofcourse = (SELECT COUNT(*) FROM tsup.COURSE WHERE course_category_id = cat_id)
+		   );
+	totalFinLastWk = (
+				SELECT COUNT(*) 
+				FROM tsup.get_total_JDU_Dev_Finished(false, cat_id, dept_id) 
+				WHERE noofcourse = (SELECT COUNT(*) FROM tsup.COURSE WHERE course_category_id = cat_id)
+			 );
+	percentage := (totalFin * 100) / totalDev;
+	percentageLastWk := (totalFinLastWk * 100) / totalDev;
+	
+	RETURN QUERY SELECT 
+		COALESCE(totalDev,0),
+		COALESCE(totalDevLastWk,0),
+		COALESCE(totalOrig,0),
+		COALESCE(totalNew,0),
+		COALESCE(totalFin,0),
+		COALESCE(totalFinLastWk,0),
+		COALESCE(percentage,0),
+		COALESCE(percentageLastWk,0);
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION tsup.summary_gst_dev()
+  OWNER TO postgres;
 
-)
-WITH (
-    OIDS = FALSE
-)
-
-
-TABLESPACE pg_default;
-
-ALTER TABLE tsup.MEMBER_ROLE
-    OWNER to postgres;    
 
