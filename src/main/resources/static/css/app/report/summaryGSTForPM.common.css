@@ -1,0 +1,27 @@
+table {
+	border-collapse: collapse;
+    width: 100%;  
+}
+td,
+th {
+     border: 1px solid white;
+     padding: 8px;
+   }
+
+hr {
+	margin: 5px; 
+ }
+
+.percenttable{
+	height:130%;
+	text-align:center;
+	bgcolor:white
+} 
+ 
+.centertd{
+    text-align:center;
+}
+
+.percenttd{
+	height:20%;
+}
