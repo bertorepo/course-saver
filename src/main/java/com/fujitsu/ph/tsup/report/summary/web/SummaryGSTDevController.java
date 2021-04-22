@@ -11,8 +11,10 @@
 package com.fujitsu.ph.tsup.report.summary.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
 import com.fujitsu.ph.tsup.report.summary.service.SummaryGSTDevService;
@@ -25,7 +27,8 @@ import com.fujitsu.ph.tsup.report.summary.service.SummaryGSTDevService;
  * @author g.cabiling
  * @version 1.0.0
  */
-
+@Controller
+@RequestMapping("/report/summary")
 public class SummaryGSTDevController {
 
     @Autowired
@@ -38,7 +41,7 @@ public class SummaryGSTDevController {
      * 
      */
 
-    @GetMapping("/load")
+    @GetMapping("/standardization/dev")
     public String loadSummary(Model model) {
 
         SummaryGSTDevForm summaryGSTDev = summaryGSTDevService.getSummary();
