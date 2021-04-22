@@ -11,6 +11,8 @@
 package com.fujitsu.ph.tsup.report.summary.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.fujitsu.ph.tsup.report.summary.dao.SummaryGSTDevDao;
 import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
 /**
@@ -22,6 +24,7 @@ import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
  * @author n.dejesus
  *
  */
+@Service
 public class SummaryGSTDevServiceImpl implements SummaryGSTDevService {
 
      //Report Summary G3CC Standardization Dev Dao
