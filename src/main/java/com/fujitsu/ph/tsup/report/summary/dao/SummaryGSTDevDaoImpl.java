@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.fujitsu.ph.tsup.course.category.dao.CourseCategoryRowMapper;
-import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
 
 
@@ -25,7 +23,11 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
 		
 		List<SummaryGSTDevForm> summary = template.query(query, new SummaryGSTDevFormRowMapper());
 		
-		return summary.get(0);
+		if (!summary.isEmpty()) {
+            return summary.get(0);
+        } else {
+            return null;
+        }
 	}
 	
 	
