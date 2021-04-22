@@ -24,6 +24,7 @@ import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 
@@ -502,5 +503,12 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     // public Integer addEnrolledMembersById(Participant participant) {
     // return enrollmentDao.addEnrolledMembersById(participant);
     // }
+    
+    public void uploadCertificate(Certificate certificate) {
+    	
+    	//call the dao method
+    	enrollmentDao.uploadCertificate(certificate);
+    	
+    }
 
 }
