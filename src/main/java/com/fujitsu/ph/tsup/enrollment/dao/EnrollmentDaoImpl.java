@@ -8,6 +8,7 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -797,5 +798,20 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("id", courseParticipant.getId())
                 .addValue("participantId", courseParticipant.getParticipantId());
         template.update(updateAttendance, updateCourseAttendanceParameters);
+    }
+
+    @Override
+    public void uploadCertificate(Certificate certificate) {
+    	
+    	String query = "INSERT INTO CERTIFICATE_UPLOAD"
+    			+ " (employee_id, course_id, certificate)"
+    			+ " VALUES(:employee_id, :course_id, :certificate)";
+    	
+    	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+    			.addValue("certificate", certificate.getCertificate())
+    			.addValue("employee_id", certificate.getUser())
+    			.addValue("course_id", certificate.getCourseId());
+    	template.update(query, sqlParameterSource);
+    	
     }
 }

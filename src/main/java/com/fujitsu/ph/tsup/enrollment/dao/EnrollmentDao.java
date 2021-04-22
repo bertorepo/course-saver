@@ -18,7 +18,7 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
-
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -186,5 +186,7 @@ public interface EnrollmentDao {
 	 * <pre>
 	 */
 //	Integer addEnrolledMembersById(Participant participant);
+    
+    void uploadCertificate(Certificate certificate);
    
 }
