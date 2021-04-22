@@ -33,6 +33,8 @@ import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.CertificateForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollCancelForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrolledListForm;
@@ -905,4 +907,28 @@ public class EnrollmentController {
 ////		return "redirect:/schedule";
 //		return "redirect:/enrollment/viewCourseEnroll";
 //	}
+	 @GetMapping("/{courseId1}/upload")
+	    public String getCourseId(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
+	    		Model model) {
+	    	
+	    		form.setCourseId(id);
+	    		System.out.println(">>>>>>>>>>>>>>> : " + id);
+	    		model.addAttribute("uploadCertificate", form);
+	    		
+	    		return "redirect:/enrollment/mySchedules";
+	        	
+	    }
+	    
+	    @PostMapping("/{courseId1}/upload")
+	    public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
+	    		Model model, RedirectAttributes redirectattribute) {
+	    	
+	    	System.out.println(">>> : " + id);
+	    		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    		Certificate certDetails = new Certificate.Builder(id, form.getCertificate(),user.getId()).build();
+	    		enrollmentService.uploadCertificate(certDetails);
+	    		redirectattribute.addFlashAttribute("successUploadMessage", 1);
+	    		return "redirect:/enrollment/mySchedules";
+	        
+	    }
 }
