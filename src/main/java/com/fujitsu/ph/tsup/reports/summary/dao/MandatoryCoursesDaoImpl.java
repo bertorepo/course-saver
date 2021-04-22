@@ -25,6 +25,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import com.fujitsu.ph.tsup.course.dao.CoursesConductedRowMapper;
 
 import com.fujitsu.ph.tsup.reports.summary.model.*;
 
@@ -52,12 +53,12 @@ public class MandatoryCoursesDaoImpl {
     private NamedParameterJdbcTemplate template;
 
 	//NEED TO ADJUST
-	/*public Set<MandatoryCourses> findMandatoryCourses(ZonedDateTime selectedStartDateTime,
+	public Set<MandatoryCourses> findMandatoryCourses(ZonedDateTime selectedStartDateTime,
 			ZonedDateTime selectedEndDateTime) {
 			
 		String query = "SELECT "
-					+ "	    C.ID, "
-					+ "		C.NAME " 																							
+					+ "	    C.ID AS ID, "
+					+ "		C.NAME AS COURSE_NAME" 																							
 					+ "FROM TSUP.COURSE_SCHEDULE AS CSCHED "																							
 					+ "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSD "																							
 					+ "		ON CSCHED.ID = CSD.COURSE_SCHEDULE_ID "																				
@@ -73,11 +74,18 @@ public class MandatoryCoursesDaoImpl {
 		SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
 				.addValue("scheduledStartDateTime", selectedStartDateTime.toOffsetDateTime())
                 .addValue("scheduledEndDateTime", selectedEndDateTime.toOffsetDateTime());
+		
+		List<MandatoryCourses> conductedCourseList = template.query(query, mandatoryCoursesParameters,
+				new  MandatoryCoursesRowMapper());
+			Set<MandatoryCourses> mandatoryCourses = new HashSet<>(conductedCourseList);
 
+		    logger.debug("Result: {}", conductedCourseList);
+			
+			return mandatoryCourses;
 		   
 		return null;
 		
-	}*/
+	}
 	
 	// IF DEPARTMENT ID IS 2 WHICH IS G3CC
 	// NEED TO ADJUST
@@ -100,7 +108,7 @@ public class MandatoryCoursesDaoImpl {
 			ZonedDateTime selectedEndDateTime) {
 			
 		String query =  "SELECT "																					
-					+ "		COUNT(CA.ID) "																				
+					+ "		COUNT(CA.ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING "																				
 					+ "FROM TSUP.COURSE_SCHEDULE AS CSCHED "																					
 			        + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "																					
 				    + "		ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "																				
@@ -112,13 +120,12 @@ public class MandatoryCoursesDaoImpl {
 			        + "BETWEEN :scheduledStartDateTime "
 					+ "AND :scheduledEndDateTime "																					
 					+ "AND C.MANDATORY = 'YES';";					
-																		
-
 		
 		SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
 				.addValue("scheduledStartDateTime", selectedStartDateTime.toOffsetDateTime())
                 .addValue("scheduledEndDateTime", selectedEndDateTime.toOffsetDateTime());
-
+		
+		
 		 return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
 	}
 	
@@ -127,7 +134,7 @@ public class MandatoryCoursesDaoImpl {
 			ZonedDateTime selectedEndDateTime) {
 			
 		String query =  "SELECT "																					
-					+ "		COUNT(CA.ID) "																				
+					+ "		COUNT(CA.ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING_LASTWEEK  "																				
 					+ "FROM TSUP.COURSE_SCHEDULE AS CSCHED "																					
 			        + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "																					
 				    + "		ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "																				
