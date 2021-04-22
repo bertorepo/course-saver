@@ -17,6 +17,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import java.time.ZonedDateTime;
@@ -140,4 +141,8 @@ public interface EnrollmentService {
 	List<TopLearnerForm> findTopLearner(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
 
 	void updateSchedule(CourseParticipant courseParticipant);
+	
+	/* Upload Certificate */
+	void uploadCertificate(Certificate certificate);
+	
 }
