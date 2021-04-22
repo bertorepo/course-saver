@@ -507,8 +507,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public void uploadCertificate(Certificate certificate) {
     	
     	//call the dao method
-    	enrollmentDao.uploadCertificate(certificate);
-    	
+    	enrollmentDao.uploadCertificate(certificate);	
     }
 
 }
