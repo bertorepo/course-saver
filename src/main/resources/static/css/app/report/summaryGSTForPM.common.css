@@ -12,16 +12,29 @@ hr {
 	margin: 5px; 
  }
 
-.percenttable{
+.summaryTable{
 	height:130%;
-	text-align:center;
-	bgcolor:white
-} 
+}
+ 
+.titletd{
+	width:70%;
+}
  
 .centertd{
     text-align:center;
 }
 
+.percenttable{
+	height:130%;
+	text-align:center;
+	bgcolor:white
+} 
+
 .percenttd{
 	height:20%;
+}
+
+.percenttext{
+	font-size: 200%;
+	line-height: 2.4;
 }

@@ -9,3 +9,4 @@ import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTForm;
 public class SummaryGSTPMController {
 
 }
+

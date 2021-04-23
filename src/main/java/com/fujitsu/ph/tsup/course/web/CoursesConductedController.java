@@ -116,7 +116,7 @@ public class CoursesConductedController {
           model.addAttribute("coursesConducted", listOfCoursesConductedFormSet);
           model.addAttribute("nullMessage", "No Summary Courses Conducted Found");
       
-          return "reports/summaryCourses"; 
+          return "reports/summaryGSTForPM"; 
       }
     @GetMapping("/load")
     public String viewSummaryCourseConducted() {

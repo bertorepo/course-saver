@@ -38,6 +38,7 @@
 								<option value="" disabled selected hidden>Please Select Report Type</option>
 								<option th:value="0" disabled hidden></option>
 								<option th:value="1">Summary of Course Conducted</option>
+								<option th:value="3">Summary of G3CC Training for PM</option>
 							</select>
 						</div>
 				</div>	     		
@@ -87,6 +88,9 @@
 		}
 		else if(selectedReportType == 2){
 			window.location.href = "/report/members/";
+		}
+		else if(selectedReportType == 3){
+			window.location.href = "/report/course/";
 		}
 		else{
 			
