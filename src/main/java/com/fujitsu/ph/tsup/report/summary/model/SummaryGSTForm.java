@@ -2,6 +2,11 @@
  * Copyright (C) 2021 FUJITSU LIMITED All rights reserved.
  */
 package com.fujitsu.ph.tsup.report.summary.model;
+
+import java.time.ZonedDateTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * @author D.Escala
  * @version Creation: 0.01 Date: 2021-04-21
@@ -17,6 +22,14 @@ private long TotalNoJDUPMFinValue;
 private long TotalNoJDUPMLastWkFinValue;							
 private long PercentageFinTodayValue;							
 private long PercentageFinLastWkValue;
+@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+private ZonedDateTime scheduledStartDateTime;
+
+/**
+ *	Scheduled End Date and Time
+ */
+@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+private ZonedDateTime scheduledEndDateTime;
 
 /**
  * @return TotalNoJDUPMValue
@@ -30,6 +43,22 @@ public long getTotalNoJDUPMValue() {
  */
 public void setTotalNoJDUPMValue(long totalNoJDUPMValue) {
 	TotalNoJDUPMValue = totalNoJDUPMValue;
+}
+
+public ZonedDateTime getScheduledStartDateTime() {
+	return scheduledStartDateTime;
+}
+
+public void setScheduledStartDateTime(ZonedDateTime scheduledStartDateTime) {
+	this.scheduledStartDateTime = scheduledStartDateTime;
+}
+
+public ZonedDateTime getScheduledEndDateTime() {
+	return scheduledEndDateTime;
+}
+
+public void setScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
+	this.scheduledEndDateTime = scheduledEndDateTime;
 }
 
 /**
