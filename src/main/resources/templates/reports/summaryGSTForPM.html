@@ -23,7 +23,7 @@
 	<div class="container mt-5 div_minheight">
 		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
 		<hr>
-		<form id="summaryGstForPMForm" class="form-horizontal" action="#" th:action="@{/report/summary/gst/pm}"  th:object="${summaryGstForPMForm}"  method="GET">
+		<form id="summaryGstForPMForm" class="form-horizontal" action="#" th:action="@{/report/summarygstpm}"  th:object="${summaryGst}"  method="GET">
 		<div class="card">
 			<div class="card-body">
 				<div class="form-group row align-items-center justify-content-center">
@@ -74,7 +74,7 @@
 								<table class="summaryTable">
 									<tr>
 										<td class="table-success titletd">Total Number of JDU PM</td>
-										<td class=centertd th:text="${TotalNoJDUPM}"></td>
+										<td class=centertd th:text="*{TotalNoJDUPMValue}"></td>
 									</tr>
 									<tr>
 										<td class="table-success">Total Number of JDU PM Last Week</td>
@@ -90,11 +90,11 @@
 									</tr>
 									<tr>
 										<td class="table-success"> Total Number of JDU PM Who Finished the Training</td>
-										<td class=centertd th:text="${TotalNoJDUPMFinished}"></td>
+										<td class=centertd th:text="*{TotalNoJDUPMFinValue}"></td>
 									</tr>
 									<tr>
 										<td class="table-success">Total Number of JDU PM Last Week Who Finished the Training</td>
-										<td class=centertd th:text="${TotalNoJDUPMFinishedLastWeek}"></td>
+										<td class=centertd th:text="*{TotalNoJDUPMLastWkFinValue}"></td>
 									</tr>
 								</table>
 							</div>
@@ -104,13 +104,13 @@
 										<td class="table-success percenttd">Percentage Finished As of Today (Total PM and also Total Courses)</td>
 									</tr>
 									<tr>
-										<td class="percenttext" th:text="${PercentFinishedToday + '%'}"><h3></h3></td>
+										<td class="percenttext" th:text="*{PercentageFinTodayValue} + '%'"><h3></h3></td>
 									</tr>
 									<tr>
 										<td class="table-success percenttd"> Percentage Finished as of Last Week (Total PM and Also Total Courses)</td>
 									</tr>
 									<tr>
-										<td class="percenttext" th:text="${PercentFinishedLastWeek + '%'}"></td>
+										<td class="percenttext" th:text="*{PercentageFinLastWkValue }+ '%'"></td>
 									</tr>
 								</table>
 							</div>
@@ -137,20 +137,41 @@
 					<th>Percentage Finished As Of Last Week (Total PM and Also Total Courses)</th>
 				</tr>
 			</thead>
-			<tbody id="tBodyExportSummary" th:each="summary : ${summaryDev}">
+			<tbody id="tBodyExportSummary" th:each="summary : ${summaryGST}">
 				<tr class="content">
-					<td th:text="${summary.totalNoJDUPM}"></td>
+					<td th:text="${summary.TotalNoJDUPMValue}"></td>
 					<td>NA</td>
 					<td>NA</td>
 					<td>NA</td>
-					<td th:utext="${summary.totalNoJDUPMFinished}"></td>
-					<td th:utext="${summary.totalNoJDUPMFinishedLastWeek}"></td>
-					<td th:text="${PercentageFinished + '%'}"></td>
-					<td th:text="${PercentageFinishedLastWeek + '%'}"></td>
+					<td th:utext="${summary.TotalNoJDUPMFinValue}"></td>
+					<td th:utext="${summary.TotalNoJDUPMLastWkFinValue}"></td>
+					<td th:text="${percentageFinTodayValue} + '%'"></td>
+					<td th:text="${percentageFinLastWkValue} + '%'"></td>
 				</tr>
 			</tbody>
 		</table>
 	<!-- End of Export Summary of G3CC Standardization Training -->	
+	<!-- Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" id="message"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Error Modal End -->
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 </body>

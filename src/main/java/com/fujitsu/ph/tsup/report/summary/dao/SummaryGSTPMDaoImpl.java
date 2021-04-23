@@ -34,7 +34,7 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 
 	@Override
 	public int getCatId() {
-		String query = "SELECT id FROM tsup.COURSE_CATEGORY WHERE category = :category AND status = 'D'";
+		String query = "SELECT id FROM tsup.COURSE_CATEGORY WHERE category = :category";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("category", "G3CC Standardization Training");
 		return template.queryForObject(query,sqlParameterSource,Integer.class);
 	}
