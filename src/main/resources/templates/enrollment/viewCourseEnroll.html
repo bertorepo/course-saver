@@ -70,14 +70,19 @@
 					<col style="width:20%"/>
 					<col style="width:30%"/>
 					<col style="width:10%"/>
+					<col style="width:10%"/>
+					<col style="width:10%"/>
 					<col style="width:20%"/>
 					<col style="width:15%"/>
+					<col style="width:20%"/>
 				</colgroup>
 				<thead>
 					<tr>
 						<th class="align-middle hide">Course ID</th>
 						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
+						<th class="align-middle">Mandatory</th>
+						<th class="align-middle">Deadline</th>
 						<th class="align-middle">Start Date/Time<br><hr> End Date/Time</th>
 						<th class="align-middle hide">Start Date Time</th>
 						<th class="align-middle hide">End Date Time</th>
@@ -101,6 +106,8 @@
 						<td class="hide" th:text="${courseScheduleId}"/>
 						<td class="align-middle" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td class="align-middle" th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
+						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
+						<td class="align-middle" th:text="${courseSchedule.deadline}"/> 
 						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')} + '&lt;br /&gt; <hr>' + 
 						${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
 						
@@ -115,18 +122,21 @@
 						<td class="hide" th:text="${courseSchedule.courseDetails}"></td>
 						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
 
-						<td class="sticky" sec:authorize="hasAuthority('Member')">
-							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
+						<td sec:authorize="hasAuthority('Member')">
+							<button th:disabled="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
+									${courseSchedule.mandatory == 'false'}"
 									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
 									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
 									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}', 
 									'${courseSchedule.courseDetails}')|" 
 									type="button" class="btn btn-success">Register</button>
 									
-							<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
+<!-- 							<button th:disabled="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
+							${courseSchedule.mandatory == 'false'}"
 							type="button" class="btn btn-success" 
-							title="Participants in this schedule is already full" disabled>Register</button>
+							title="Participants in this schedule is already full" disabled>Register</button> -->
 						</td>
+						
 					</tr>
 				</tbody>
 			</table>
