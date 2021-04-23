@@ -157,6 +157,8 @@ public class EnrollmentController {
 			courseScheduleForm.setInstructorId(courseSchedule.getInstructorId());
 			courseScheduleForm.setInstructorName(
 					courseSchedule.getInstructorLastName() + " " + courseSchedule.getInstructorFirstName());
+			courseScheduleForm.setMandatory(courseSchedule.getMandatory());
+			courseScheduleForm.setDeadline(courseSchedule.getDeadline());
 			courseScheduleForm.setVenueId(courseSchedule.getVenueId());
 			courseScheduleForm.setVenueName(courseSchedule.getVenueName());
 			courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
@@ -187,7 +189,8 @@ public class EnrollmentController {
 //        	System.out.println("(COURSE ACTIVE)Min Participants: " + courseScheduleForm.getMinRequired());
 //        	System.out.println("(COURSE ACTIVE)Max Participants: " + courseScheduleForm.getMaxAllowed());
 //        	System.out.println("(COURSE ACTIVE)Total Participants: " + courseScheduleForm.getTotalParticipants());
-
+			System.out.println("(COURSE ACTIVE)Mandatory: " + courseScheduleForm.getMandatory());
+			System.out.println("(COURSE ACTIVE)Deadline: " + courseScheduleForm.getDeadline());
 		}
 		model.addAttribute("activeCourseSchedule", courseScheduleSetForm);
 
@@ -204,6 +207,8 @@ public class EnrollmentController {
 				courseScheduleForm.setCourseName(courseSchedule.getCourseName());
 				courseScheduleForm.setInstructorName(
 						courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
+	            courseScheduleForm.setMandatory(courseSchedule.getMandatory());
+	            courseScheduleForm.setDeadline(courseSchedule.getDeadline());
 				courseScheduleForm.setVenueName(courseSchedule.getVenueName());
 				courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
 				courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
