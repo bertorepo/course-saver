@@ -181,16 +181,16 @@ hr {
 					</tr>
 				</thead>
 				<tbody id="tBodyExportSummary"
-					th:each="summary : ${summaryDev}">
+					th:each="summary : ${summaryGSTDev}">
 					<tr class="content">
-						<td th:text="${summary.totalNoJDUDev}"></td>
-						<td th:utext="${summary.totalNoJDUDevLastWeek}"></td>
-						<td th:text=" ${summary.totalNoOrigMem}"></td>
-						<td th:utext="${summary.totalNoNewMem}"></td>
-						<td th:utext="${summary.totalNoJDUDevFin}"></td>
-						<td th:utext="${summary.totalNoJDUDevLastWkFin}"></td>
-						<td th:text="${PercentageFinTodayValue + '%'}"></td>
-						<td th:text="${PercentageFinLastWkValue + '%'}"></td>
+						<td th:text="${summary.TotalNoJDUDevValue}"></td>
+						<td th:text="${summary.TotalNoJDUDevLastWeekValue}"></td>
+						<td th:text=" ${summary.TotalNoOrigMemValue}"></td>
+						<td th:text="${summary.TotalNoNewMemValue}"></td>
+						<td th:text="${summary.TotalNoJDUDevFinValue}"></td>
+						<td th:text="${summary.TotalNoJDUDevLastWkFinValue}"></td>
+						<td th:text="${summary.PercentageFinTodayValue + '%'}"></td>
+						<td th:text="${summary.PercentageFinLastWkValue + '%'}"></td>
 					</tr>
 				</tbody>
 			</table>
