@@ -17,6 +17,7 @@ import com.fujitsu.ph.tsup.report.summary.service.SummaryGSTPMService;
 @Controller
 @RequestMapping("/report/")
 public class SummaryGSTPMController {
+
 	
 	@Autowired
 	private SummaryGSTPMService summaryGSTPMService ;
@@ -40,13 +41,6 @@ public class SummaryGSTPMController {
      
          return "reports/summarygstpm"; 
      }
-   @GetMapping("/load")
-   public String viewG3CCSummaryForPM() {
-   	return "reports/generateReport";
-   }
- 
-    
 	
 }
     
-	 
