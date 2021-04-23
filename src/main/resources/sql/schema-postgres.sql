@@ -419,9 +419,10 @@ ALTER TABLE tsup.COURSE_ATTENDANCE
 
 -- DROP FUNCTION tsup.get_total_jdu_dev_finished(boolean, integer, integer);
 
-CREATE OR REPLACE FUNCTION tsup.get_total_jdu_dev_finished(IN today boolean, IN categoryid integer, IN departmentid integer)
-  RETURNS TABLE(employee_id integer, noofcourse integer) AS
-$BODY$
+CREATE OR REPLACE FUNCTION tsup.get_total_jdu_dev_finished(today boolean, categoryid integer, departmentid integer)
+  RETURNS TABLE(employee_id integer, noofcourse integer)
+    LANGUAGE plpgsql
+    AS '
 DECLARE
 	count integer = 0;
 	x integer = 0;
@@ -431,7 +432,7 @@ BEGIN
 	FOR r1 IN (SELECT id FROM tsup.EMPLOYEE WHERE DEPARTMENT_ID = departmentId ORDER BY id ASC)
 	LOOP
 		-- can do some processing here 1st loop
-		RAISE NOTICE 'Employee ID: %',r1.id;
+		RAISE NOTICE ''Employee ID: %'',r1.id;
 		IF today then
 			SELECT COUNT(DISTINCT course_id) into x 
 			FROM tsup.course_schedule CS 
@@ -439,7 +440,7 @@ BEGIN
 			ON CS.id=CSD.course_schedule_id 
 			LEFT Join tsup.course_attendance CA 
 			ON CSD.id = CA.course_schedule_detail_id 
-			WHERE CS.status = 'D' 
+			WHERE CS.status = ''D'' 
 			AND CS.course_id IN (SELECT id FROM tsup.COURSE WHERE COURSE_CATEGORY_ID = categoryId ORDER BY id ASC) 
 			AND CA.participant_id = r1.id;
 		ELSE
@@ -449,34 +450,32 @@ BEGIN
 			ON CS.id=CSD.course_schedule_id 
 			LEFT Join tsup.course_attendance CA 
 			ON CSD.id = CA.course_schedule_detail_id 
-			WHERE CS.status = 'D' 
+			WHERE CS.status = ''D'' 
 			AND CS.course_id IN (SELECT id FROM tsup.COURSE WHERE COURSE_CATEGORY_ID = categoryId ORDER BY id ASC) 
 			AND CA.participant_id = r1.id 
-			AND DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);
+			AND DATE_PART(''week'',CA.log_out_datetime) < DATE_PART(''week'',CURRENT_DATE);
 		END IF;
-		RAISE NOTICE 'Count: %',x;
+		RAISE NOTICE ''Count: %'',x;
 		INSERT INTO temp_table VALUES (r1.id, x::INTEGER);
-		RAISE NOTICE '---------------------------------------------------------';
+		RAISE NOTICE ''---------------------------------------------------------'';
 		--RETURN NEXT r1; -- return current row of SELECT of 1st loop
 	END LOOP;
 	RETURN QUERY SELECT * FROM temp_table;
 	DROP TABLE temp_table;
 END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100
-  ROWS 1000;
-ALTER FUNCTION tsup.get_total_jdu_dev_finished(boolean, integer, integer)
-  OWNER TO postgres;
+';
 
+
+ALTER FUNCTION tsup.get_total_jdu_dev_finished(today boolean, categoryid integer, departmentid integer) OWNER TO postgres;
   
 -- Function: tsup.summary_gst_dev()
 
 -- DROP FUNCTION tsup.summary_gst_dev();
 
 CREATE OR REPLACE FUNCTION tsup.summary_gst_dev()
-  RETURNS TABLE(totalnojdudev integer, totalnojdudevlastweek integer, totalnoorigmem integer, totalnonewmem integer, totalnojdudevfin integer, totalnojdudevlastwkfin integer, percentagefintoday integer, percentagefinlastwk integer) AS
-$BODY$
+  RETURNS TABLE(totalnojdudev integer, totalnojdudevlastweek integer, totalnoorigmem integer, totalnonewmem integer, totalnojdudevfin integer, totalnojdudevlastwkfin integer, percentagefintoday integer, percentagefinlastwk integer)
+    LANGUAGE plpgsql
+    AS '
 DECLARE
 	totalDev integer = 0;
 	totalDevLastWk integer = 0;
@@ -490,8 +489,8 @@ DECLARE
 	dept_id integer = 0;
 	
 BEGIN  	
-	cat_id = (SELECT id FROM tsup.COURSE_CATEGORY WHERE category = 'G3CC Standardization Training');
-	dept_id = (SELECT id FROM tsup.DEPARTMENT WHERE department_name = 'FDC-G3CC');
+	cat_id = (SELECT id FROM tsup.COURSE_CATEGORY WHERE category = ''G3CC Standardization Training'');
+	dept_id = (SELECT id FROM tsup.DEPARTMENT WHERE department_name = ''FDC-G3CC'');
 	
 	totalDev = (
 			SELECT COUNT(*) 
@@ -536,11 +535,7 @@ BEGIN
 		COALESCE(percentage,0),
 		COALESCE(percentageLastWk,0);
 END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100
-  ROWS 1000;
-ALTER FUNCTION tsup.summary_gst_dev()
-  OWNER TO postgres;
+';
 
 
+ALTER FUNCTION tsup.summary_gst_dev() OWNER TO postgres;
