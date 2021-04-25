@@ -73,6 +73,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "C.DETAIL AS DETAILS, " 
+                + "C.MANDATORY AS MANDATORY, "
+                + "C.DEADLINE AS DEADLINE, "
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
