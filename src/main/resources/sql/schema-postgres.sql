@@ -428,7 +428,7 @@ TABLESPACE pg_default;
 ALTER TABLE tsup.MEMBER_ROLE
     OWNER to postgres;    
 
-CREATE TABLE tsup.CERTIFICATE_UPLOAD
+CREATE TABLE tsup.CERTIFICATE_UPLOAD 
 (
     ID bigint NOT NULL DEFAULT nextval('tsup."CERTIFICATE_ID_seq"'::regclass),
 	EMPLOYEE_ID bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
