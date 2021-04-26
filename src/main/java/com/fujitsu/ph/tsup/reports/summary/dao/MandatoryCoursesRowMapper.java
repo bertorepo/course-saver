@@ -12,12 +12,10 @@ package com.fujitsu.ph.tsup.reports.summary.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.fujitsu.ph.tsup.course.model.CoursesConducted;
+import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
 
 /**
  * <pre>
@@ -37,7 +35,7 @@ public class MandatoryCoursesRowMapper implements RowMapper<MandatoryCourses>{
 	    * @param int rowNum
 	    * @throws SQLException
 	    */
-		public MandatoryCoursesRowMapper mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public MandatoryCourses mapRow(ResultSet rs, int rowNum) throws SQLException {
 		  
 			  Long id = rs.getLong("ID");
 			  String name = rs.getString("COURSE_NAME");
