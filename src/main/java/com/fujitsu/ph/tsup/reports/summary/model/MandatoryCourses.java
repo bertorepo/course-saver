@@ -13,12 +13,12 @@ package com.fujitsu.ph.tsup.reports.summary.model;
 public class MandatoryCourses {
 
     /**
-     * Total Number of JDU Members
+     * Course ID
      */
     private Long id;
 
     /**
-     * Total Number of JDU Members Who Finished the training
+     * Course name
      */
     private String name;
 
