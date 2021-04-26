@@ -19,14 +19,13 @@
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
 <script th:src="@{/js/app/moment.min.js}"></script>
-<script th:src="@{/js/lib/summaryCourses.js}"></script>
 </head>
 <body>
 	<div th:insert="fragments/general.html :: header" > </div>
 	<div class="container mt-5 div_minheight">
 		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
 		<hr>
-		<form id="generateReport" class="form-horizontal" action="#" method="GET">
+		<form action="#" th:action="@{/mandatoryCourses/load}" th:object="${view}" method="GET">
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row align-items-center justify-content-center">
@@ -47,25 +46,25 @@
 						<label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
 						<label class="col-form-label" style="font-weight: bold;">From</label>
 						<span style="width:8px"></span>
-						<input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" disabled/>
+						<input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
 						<span style="width:8px"></span>
 						<label class="col-form-label" style="font-weight: bold;">To</label>
 						<div class="col-lg-2">
-							<input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" disabled/>
+							<input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
 						</div>
 					</div> 
 					<div class="form-group row align-items-center justify-content-center">
  						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
  						<span style="width:75px"></span>
  						<div class="col-lg-5">
-							<input list="course" class="form-control" id="inputCourse" type="text" style="width:525px;" autocomplete="off" disabled>
+							<input list="course" class="form-control" id="inputCourse" type="text" style="width:525px;" autocomplete="off">
 							<datalist id="course">
 							<option></option>
 							</datalist>
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
-						<input type="button" id="viewButton" class="btn btn-success" value="View" onclick="viewButtonClick()" style="width:100px" disabled>
+						<input type="button" id="viewButton" class="btn btn-success" value="View" onclick="btnView()" style="width:100px">
 						<span style="width:100px"></span>
 						<input type="button" id="exportButton" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px" disabled>
 					</div>
@@ -77,21 +76,94 @@
 			</div>
 		</form>
 	</div>
+		<!--Invalid Modal-->
+    <div class="modal fade" id="invalidModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm text-center">
+            <div class="modal-content">
+                <div class="modal-header alert-danger">
+                    <h5 class="modal-title text-white">Invalid Input!</h5>
+                    <button type="submit" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span> 
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-lg-12 col-form-label" id="invalidMsg"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="btnOk()"> OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Invalid Modal End-->
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script>
-	function selectReport(){
-		var selectedReportType = document.getElementById("selectReportType").value;
+		//-Retrieving data from controller
+		/*<![CDATA[*/
+		var getTotalNumberOfJduMembers = /*[[${getTotalNumberOfJduMembers}]]*/ 'default';
+		/*]]>*/
+		/*<![CDATA[*/
+		var getTotalNumberOfCompletion = /*[[${getTotalNumberOfCompletion}]]*/ 'default';
+		/*]]>*/
+		/*<![CDATA[*/
+		var getTotalNumberOfCompletionLastWeek = /*[[${getTotalNumberOfCompletionLastWeek}]]*/ 'default';
+		/*]]>*/
+		/*<![CDATA[*/
+		var getPercentageCompletion = /*[[${getPercentageCompletion}]]*/ 'default';
+		/*]]>*/
+		/*<![CDATA[*/
+		var getPercentageCompletionLastWeek = /*[[${getPercentageCompletionLastWeek}]]*/ 'default';
+		/*]]>*/
+		//-----------------------
 		
-		if(selectedReportType == 1){
-			window.location.href = "/report/course/";
+		//-Setting time
+		var time = new Date();
+		var day = new Date();
+		time.setHours(time.getHours()+(time.getTimezoneOffset()/-60));
+		day.setDate(day.getDate()-5);
+		day.setHours(day.getHours()+(day.getTimezoneOffset()/-60));
+		$("#endDate").val(time.toJSON().slice(0,19))
+		$("#startDate").val(day.toJSON().slice(0,19));
+		//-----------------------
+		
+		//-Checking of date range
+		function btnView(){
+			var start = document.getElementById("startDate").value;
+			var end = document.getElementById("endDate").value;
+			if(start>end){
+				document.getElementById("invalidMsg").innerHTML = "Date Range Invalid."
+				$('#invalidModal').modal('show');
+			}
 		}
-		else if(selectedReportType == 2){
-			window.location.href = "/mandatoryCourses/load/";
+		
+		//-----------------------
+		
+		//-Ok button for invalid modal
+		function btnOk(){
+			$('#invalidModal').modal('hide');
 		}
-		else{
+		//-----------------------
+		
+		//-Function for Report Type
+		function selectReport(){
+			var selectedReportType = document.getElementById("selectReportType").value;
 			
+			if(selectedReportType == 1){
+				window.location.href = "/report/course/";
+			}
+			else if(selectedReportType == 2){
+				window.location.href = "/mandatoryCourses/load/";
+			}
+			else{
+				
+			}
 		}
-	}
+		//-----------------------
+		
 	</script>
 </body>
 </html>
