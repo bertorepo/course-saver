@@ -804,13 +804,14 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public void uploadCertificate(Certificate certificate) {
     	
     	String query = "INSERT INTO CERTIFICATE_UPLOAD"
-    			+ " (employee_id, course_id, certificate)"
-    			+ " VALUES(:employee_id, :course_id, :certificate)";
+    			+ " (employee_id, course_id, certificate, certificateFile)"
+    			+ " VALUES(:employee_id, :course_id, :certificate, :certificateFile)";
     	
     	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
     			.addValue("certificate", certificate.getCertificate())
     			.addValue("employee_id", certificate.getUser())
-    			.addValue("course_id", certificate.getCourseId());
+    			.addValue("course_id", certificate.getCourseId())
+    			.addValue("certificateFile", certificate.getCertificateFile());
     	template.update(query, sqlParameterSource);
     	
     }
