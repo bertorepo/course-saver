@@ -5,7 +5,16 @@ public class CertificateForm {
 	private String certificate;
 	private Long id;
 	private Long courseId;
+	private byte certificateFile;
 	
+	public byte getCertificateFile() {
+		return certificateFile;
+	}
+
+	public void setCertificateFile(byte certificateFile) {
+		this.certificateFile = certificateFile;
+	}
+
 	public String getCertificate() {
 		
 		return certificate;

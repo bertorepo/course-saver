@@ -6,7 +6,16 @@ public class Certificate {
 	private Long id;
 	private Long courseId;
 	private Long userId;
+	private byte certificateFile;
 	
+	public byte getCertificateFile() {
+		return certificateFile;
+	}
+
+	public void setCertificateFile(byte certificateFile) {
+		this.certificateFile = certificateFile;
+	}
+
 	private Certificate(Builder builder) {
 
         this.id = builder.id;
@@ -74,31 +83,32 @@ public class Certificate {
 		private Long id;
 		private String certificate;
 		private Long userId;
-
+		private byte certificateFile;
 		/** Builder Constructor
          * @param certificate
          */
-        public Builder(Long courseId, String certificate, Long userId) {
+        public Builder(Long courseId, String certificate, Long userId, byte certificateFile) {
 
         	validateUserId(userId);
             validateCertificate(certificate);
             this.certificate = certificate;
             this.userId = userId;
             this.courseId = courseId;
-
+            this.setCertificateFile(certificateFile);
         }
 
         /** Builder Constructor
          * @param id
          * @param certificate
          */
-        public Builder(Long id, String certificate) {
+        public Builder(Long id, String certificate, byte certificateFile) {
 
             validateId(id);
             validateCertificate(certificate);
 
             this.id = id;
             this.certificate = certificate;
+            this.setCertificateFile(certificateFile);
 
         }
         
@@ -146,6 +156,14 @@ public class Certificate {
 
             }
         }
+
+		public byte getCertificateFile() {
+			return certificateFile;
+		}
+
+		public void setCertificateFile(byte certificateFile) {
+			this.certificateFile = certificateFile;
+		}
 
 
     }

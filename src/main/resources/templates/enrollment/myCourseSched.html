@@ -17,7 +17,8 @@
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
 	<script th:src="@{/js/app/moment.min.js}"></script>
-
+	<script src="https://unpkg.com/pdfobject@2.2.5/pdfobject.min.js"
+	></script>
 	<style>
 		.sticky {
 			position: -webkit-sticky;
@@ -42,6 +43,23 @@
 
 		textarea {
 			resize: none
+		}
+		
+		.pdfobject-container {
+			max-width: 100%;
+			width: 600px;
+			height: 600px;
+			border: 10px solid rgba(0, 0, 0, .2);
+			margin: 0;
+		}
+
+		#my-pdf {
+			margin: auto;
+			padding: 10px;
+		}
+
+		#pdf-preview-container {
+			margin-bottom: 1rem;
 		}
 	</style>
 
@@ -121,7 +139,8 @@
 					<th:block th:each="courseSchedules : *{courseSchedules}">
 						<tr th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
 
-							<td class="align-middle" th:text="${courseSchedules.courseName}"></td>
+							<td class="align-middle" th:attr="onclick=|previewCertificate('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}')|"
+							th:text="${courseSchedules.courseName}"></td>
 							<td class="align-middle" th:text="${courseSchedules.instructorName}"></td>
 							<td class="align-middle" th:text="${courseSchedules.venueName}"></td>
 
@@ -172,8 +191,10 @@
 									<i class="fa fa-edit"></i>
 								</button>
 								<!-- Upload Certificate Modal -->
-								<button type="button" class="btn btn-info" data-toggle="modal"
-									data-target="#uploadModal"><i class="fa fa-upload"></i></button>
+								<button type="button" class="btn btn-info" aria-label="Settings" data-toggle="modal"
+									data-target="#uploadModal"
+									th:attr="onclick=|getCourseId('${courseSchedules.courseId}')|"title="Upload Certificate" >
+									<i class="fa fa-upload"></i></button>
 
 								<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
 							</td>
@@ -189,11 +210,10 @@
 			</div>
 			<!-- Table Data End -->
 
-			<!--Upload Certificate Modal-->
+			<!-- Upload Certificate Start -->
 			<div id="uploadModal" class="modal fade" role="dialog">
 				<div class="modal-dialog modal-dialog-centered ">
 
-					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="modal-header text-left">
 							<i class="fa fa-upload fa-2x upload"></i>&nbsp;
@@ -202,24 +222,83 @@
 								<span aria-hidden="true">&times;</span>
 						</div>
 						<div class="modal-body">
-							<!-- Form -->
-							<form>
-								<div class="custom-file mb-3">
-									<input accept=".pdf" type="file" class="custom-file-input" id="customFile">
-									<label class="custom-file-label" for="customFile">Choose file</label>
+							<form class="form-horizontal" th:action="@{/enrollment/__${courseId1}__/upload}"
+								method="post">
+								<input type="hidden" name="courseId1" id="courseId1"></input>
+								<div class="modal-body" style="text-align: center" aria-hidden="true">
+									<input type="file" id="certificate" name="certificate" accept=".pdf"
+										class="form-control-file border"></input>
 								</div>
-							</form>
-							<button type="button" class="btn btn-danger float-right" data-dismiss="modal"
-								style="margin: 5px;">Cancel</button>
-							<button type="button" class="btn btn-info float-right" data-dismiss="modal" id='btn_upload'
-								style="margin: 5px;">Upload</button>
+								<button type="button" class="btn btn-danger float-right" data-dismiss="modal"
+									style="margin: 5px;">Cancel</button>
+								<input type="submit" id="btn_upload" class="btn btn-info float-right" value="Upload"
+									data-target="#successCertificateModal" style="margin: 5px;"
+									disabled>
 							</form>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!--Upload Certificate Modal End-->
+			<!-- Upload Certificate End -->
+			<!--  Successful modal upload -->
+			<div class="modal fade" id="successCertificateModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<h5 class="col-lg-20 col-form-label" align="center"
+							id="successMessage">You have successfully uploaded a certificate.</h5>
+						<div class="modal-body" align="center">
+							<button type="button" class="btn btn-primary btn-success"data-dismiss="modal">Okay</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--  Successful modal upload end -->
+			
+			<!-- Preview Certificate -->
+			<div id="certificatePreview" class="modal fade" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+						<div class="modal-header text-left">
+							<h5 class="modal-title"><i class="far fa-file-pdf"></i> Certificate Preview
+							</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+						</div>
+						<div class="modal-body">
+							<h6 style="font-weight: bold;">Course Detail</h6>
+							<div class="form-group row">
+								<input type="hidden" name="courseId" id="courseIdHidden">
+								<input type="hidden" name="id" id="courseParticipantIdHidden">
+								<input type="hidden" name="courseScheduleId" id="courseScheduleIdHidden">
+								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none"
+										name="courseName" id="courseName" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label">Date Taken:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none" name="" id="dateTaken"
+										readonly>
+								</div>
+							</div>
+							<h6 style="font-weight: bold;">Certificate</h6>
+							<div id="pdf-preview-container">
+								<div id="my-pdf"></div>
+							</div>
+						</div>
 
+					</div>
+				</div>
+			</div>
+			
+			
 			<!-- Error Modal -->
 			<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 				aria-hidden="true">
@@ -303,7 +382,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label ">Are you sure you want to change course schedule?
+							<label class="col-lg-12 col-form-label ">Are you sure you want to change course
+								schedule?
 							</label>
 						</div>
 						<div class="modal-footer">
@@ -450,7 +530,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<h5 class="col-lg-20 col-form-label" align="center" id="successMessage"></h5>
+					<h5 class="col-lg-20 col-form-label" align="center" id="successMessage">Success</h5>
 
 					<div class="modal-body" align="center">
 						<button type="button" class="btn btn-primary btn-success" data-dismiss="modal">Okay</button>
@@ -559,8 +639,33 @@
 			$('#errorModal').modal('show');
 		}
 		/*]]>*/
-
-
+		
+		/*<![CDATA[*/
+		var successUploadMessage = /*[[${successUploadMessage}]]*/'default';
+		if (successUploadMessage == 1) {
+			$('#successCertificateModal').modal('show');
+		}
+		/*]]>*/
+		
+		function getCourseId(courseId) {
+			document.getElementById('courseId1').value = courseId;
+			$('#uploadmodal').modal('show');
+		}
+		$("#certificate").change(function () {
+			var val = $(this).val();
+			if (val != 0) {
+				$("#btn_upload").removeAttr("disabled");
+			}
+		});
+		function previewCertificate(courseName, dateTaken) {
+			document.getElementById('courseName').value = courseName;
+			document.getElementById('dateTaken').value = dateTaken;
+			$('#certificatePreview').modal('show');
+		}
+			
+	</script>
+	<script>
+		PDFObject.embed("./", "#my-pdf");
 	</script>
 </body>
 
