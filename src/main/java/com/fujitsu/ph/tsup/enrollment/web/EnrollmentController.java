@@ -925,7 +925,7 @@ public class EnrollmentController {
 	    	
 	    	System.out.println(">>> : " + id);
 	    		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    		Certificate certDetails = new Certificate.Builder(id, form.getCertificate(),user.getId()).build();
+	    		Certificate certDetails = new Certificate.Builder(id, form.getCertificate(),user.getId(), form.getCertificateFile() ).build();
 	    		enrollmentService.uploadCertificate(certDetails);
 	    		redirectattribute.addFlashAttribute("successUploadMessage", 1);
 	    		return "redirect:/enrollment/mySchedules";
