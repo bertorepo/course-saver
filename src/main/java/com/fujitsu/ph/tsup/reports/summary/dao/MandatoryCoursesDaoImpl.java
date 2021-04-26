@@ -83,7 +83,6 @@ public class MandatoryCoursesDaoImpl {
 			
 			return mandatoryCourses;
 		   
-		return null;
 		
 	}
 	
@@ -95,10 +94,10 @@ public class MandatoryCoursesDaoImpl {
 		String query = "SELECT "
 					+ "	  COUNT(*) AS TOTAL_NUMBER_OF_JDU "  																							
 					+ "FROM TSUP.EMPLOYEE AS E "																							
-					+ "WHERE  E.DEPARTMENT_ID = :id;";	
+					+ "WHERE  E.DEPARTMENT_NAME = :DEPARTMENT_NAME;";	
 		
 		 SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
-                 .addValue(":id", 2);
+                 .addValue(":DEPARTMENT_NAME", "FDC-G3CC");
 		 return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
 		 
 	}
@@ -115,11 +114,11 @@ public class MandatoryCoursesDaoImpl {
 			        + "INNER JOIN TSUP.COURSE_ATTENDANCE AS CA "																					
 			        + "		ON CA.ID = CSCHEDDET.ID "																				
 			        + "INNER JOIN tsup.COURSE AS C "																				
-			        + "		ON CSCHED.COURSE_ID = C.ID "																				
-			        + "WHERE CA.LOG_OUT_DATETIME "
-			        + "BETWEEN :scheduledStartDateTime "
-					+ "AND :scheduledEndDateTime "																					
-					+ "AND C.MANDATORY = 'YES';";					
+			        + "		ON CSCHED.COURSE_ID = C.ID "
+			        + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "																			
+			        + "		ON CUPLOAD.COURSE_ID = C.ID "
+			        + "WHERE CUPLOAD.CERTIFICATE IS NOT NULL "
+			        + "AND C.MANDATORY = 'YES';";					
 		
 		SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
 				.addValue("scheduledStartDateTime", selectedStartDateTime.toOffsetDateTime())
@@ -142,9 +141,10 @@ public class MandatoryCoursesDaoImpl {
 			        + "		ON CA.ID = CSCHEDDET.ID "																				
 			        + "INNER JOIN tsup.COURSE AS C "																				
 			        + "		ON CSCHED.COURSE_ID = C.ID "																				
-			        + "WHERE C.MANDATORY = 'YES' AND "																					 
-			        + "		((CA.LOG_OUT_DATETIME >= date_trunc('week', CURRENT_TIMESTAMP - interval '1 week' ) "																					
-			        + "			AND CA.LOG_OUT_DATETIME < date_trunc('week', CURRENT_TIMESTAMP)));";																				
+			        + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "																			
+			        + "		ON CUPLOAD.COURSE_ID = C.ID "	
+			        + "WHERE CUPLOAD.UPDATE_DATE NULL AND "
+			        + "DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);";																				
 			        																						
 
 		SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
