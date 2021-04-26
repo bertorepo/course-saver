@@ -6,6 +6,7 @@ package com.fujitsu.ph.tsup.reports.summary.service;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
+import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
 
 /**
@@ -23,23 +24,23 @@ public interface MandatoryCoursesService {
 	 * @param selectedEndDateTime
 	 * @return Set of MandatoryCoursesForm
 	 */
-	// public Set<MandatoryCoursesForm> getMandatoryCourses(ZonedDateTime
-	// selectedStartDateTime, ZonedDateTime selectedEndDateTime);
+	public Set<MandatoryCourses> getMandatoryCourses(ZonedDateTime
+			selectedStartDateTime, ZonedDateTime selectedEndDateTime);
 
 	/**
 	 * Acquires the total number of JDU members.
 	 * 
 	 * @return int
 	 */
-	public int getTotalNumberOfJduMembers();
+	public long getTotalNumberOfJduMembers();
 
 	/**
 	 * Acquires the total number of completion for the specified course.
 	 * 
-	 * @param courseName
+	 * @param MandatoryCourse
 	 * @return int
 	 */
-	public int getTotalNumberOfCompletion(String courseName);
+	public long getTotalNumberOfCompletion(MandatoryCourses mandatoryCourse);
 
 	/**
 	 * Acquires the total number of completion for the specified course within last
@@ -48,7 +49,7 @@ public interface MandatoryCoursesService {
 	 * @param courseName
 	 * @return int
 	 */
-	public int getTotalNumberOfCompletionLastWeek(String courseName);
+	public long getTotalNumberOfCompletionLastWeek(MandatoryCourses mandatoryCourse);
 
 	/**
 	 * Calculates the percentage completion per course
