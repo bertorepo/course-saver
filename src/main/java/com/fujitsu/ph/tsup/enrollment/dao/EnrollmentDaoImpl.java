@@ -731,7 +731,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         List<CourseParticipant> courseEnrolledList = template.query(sql, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
         Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
-        return courseEnrolled;
+        return courseEnrolled; 
     }
 
     @Override
