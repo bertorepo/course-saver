@@ -812,7 +812,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     			.addValue("employee_id", certificate.getUser())
     			.addValue("course_id", certificate.getCourseId())
     			.addValue("certificateFile", certificate.getCertificateFile());
-    	template.update(query, sqlParameterSource);
+    	template.update(query, sqlParameterSource); 
     	
     }
 }
