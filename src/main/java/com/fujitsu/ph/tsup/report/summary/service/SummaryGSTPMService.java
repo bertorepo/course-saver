@@ -6,9 +6,9 @@ import java.time.ZonedDateTime;
 public interface SummaryGSTPMService {
 	
 	
-	public long percentageFinishedToday();
+	public double percentageFinishedToday();
 	
-	public long percentageFinishedLastWeek(ZonedDateTime StartDateTime, 
+	public double percentageFinishedLastWeek(ZonedDateTime StartDateTime, 
 			ZonedDateTime EndDateTime );
 
 	public long countTotalNumberOfJDUPM();
