@@ -1,18 +1,36 @@
 package com.fujitsu.ph.tsup.enrollment.model;
 
+import java.io.ByteArrayOutputStream;
+import java.time.ZonedDateTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class Certificate {
 	
 	private String certificate;
 	private Long id;
 	private Long courseId;
 	private Long userId;
-	private byte certificateFile;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private ZonedDateTime uploadDate;
 	
-	public byte getCertificateFile() {
+	public ZonedDateTime getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(ZonedDateTime uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	private byte[] certificateFile = byteArrayOutputStream.toByteArray();
+	
+	
+	public byte[] getCertificateFile() {
 		return certificateFile;
 	}
 
-	public void setCertificateFile(byte certificateFile) {
+	public void setCertificateFile(byte[] certificateFile) {
 		this.certificateFile = certificateFile;
 	}
 
@@ -22,6 +40,7 @@ public class Certificate {
         this.certificate = builder.certificate;
         this.courseId = builder.courseId;
         this.userId = builder.userId;
+        this.uploadDate = builder.uploadDate;
     }
 	
 	public String getCertificate() {
@@ -79,36 +98,32 @@ public class Certificate {
     public static class Builder {
 
 
-        private Long courseId;
+        public ZonedDateTime uploadDate;
+		private Long courseId;
 		private Long id;
 		private String certificate;
 		private Long userId;
-		private byte certificateFile;
 		/** Builder Constructor
          * @param certificate
+		 * @param uploadDate 
          */
-        public Builder(Long courseId, String certificate, Long userId, byte certificateFile) {
+        public Builder(Long courseId, String certificate, Long userId, ZonedDateTime uploadDate, byte[] certificateFile) {
 
         	validateUserId(userId);
             validateCertificate(certificate);
             this.certificate = certificate;
             this.userId = userId;
             this.courseId = courseId;
-            this.setCertificateFile(certificateFile);
+            this.uploadDate = uploadDate;
+            
         }
 
-        /** Builder Constructor
-         * @param id
-         * @param certificate
-         */
-        public Builder(Long id, String certificate, byte certificateFile) {
+        public Builder(Long id, String certificate, byte[] certificateFile) {
 
             validateId(id);
             validateCertificate(certificate);
-
             this.id = id;
             this.certificate = certificate;
-            this.setCertificateFile(certificateFile);
 
         }
         
@@ -156,16 +171,7 @@ public class Certificate {
 
             }
         }
-
-		public byte getCertificateFile() {
-			return certificateFile;
-		}
-
-		public void setCertificateFile(byte certificateFile) {
-			this.certificateFile = certificateFile;
-		}
-
-
+       
     }
 	
 	
