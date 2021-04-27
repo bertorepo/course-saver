@@ -1,4 +1,4 @@
---DROP DATABASE tsup;
+﻿--DROP DATABASE tsup;
 
 /*CREATE DATABASE tsup
     WITH 
@@ -435,25 +435,27 @@ BEGIN
 		RAISE NOTICE ''Employee ID: %'',r1.id;
 		IF today then
 			SELECT COUNT(DISTINCT course_id) into x 
-			FROM tsup.course_schedule CS 
+			FROM  tsup.course_attendance CA 
 			LEFT Join tsup.course_schedule_detail CSD 
-			ON CS.id=CSD.course_schedule_id 
-			LEFT Join tsup.course_attendance CA 
 			ON CSD.id = CA.course_schedule_detail_id 
+			LEFT Join tsup.course_schedule CS
+			ON CS.id=CSD.course_schedule_id 
 			WHERE CS.status = ''D'' 
+			AND CA.status = ''P''
 			AND CS.course_id IN (SELECT id FROM tsup.COURSE WHERE COURSE_CATEGORY_ID = categoryId ORDER BY id ASC) 
 			AND CA.participant_id = r1.id;
 		ELSE
 			SELECT COUNT(DISTINCT course_id) into x 
-			FROM tsup.course_schedule CS 
+			FROM  tsup.course_attendance CA 
 			LEFT Join tsup.course_schedule_detail CSD 
-			ON CS.id=CSD.course_schedule_id 
-			LEFT Join tsup.course_attendance CA 
 			ON CSD.id = CA.course_schedule_detail_id 
+			LEFT Join tsup.course_schedule CS
+			ON CS.id=CSD.course_schedule_id 
 			WHERE CS.status = ''D'' 
+			AND CA.status = ''P''
 			AND CS.course_id IN (SELECT id FROM tsup.COURSE WHERE COURSE_CATEGORY_ID = categoryId ORDER BY id ASC) 
 			AND CA.participant_id = r1.id 
-			AND DATE_PART(''week'',CA.log_out_datetime) < DATE_PART(''week'',CURRENT_DATE);
+			AND CA.log_out_datetime <= NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER;
 		END IF;
 		RAISE NOTICE ''Count: %'',x;
 		INSERT INTO temp_table VALUES (r1.id, x::INTEGER);
