@@ -428,12 +428,13 @@ TABLESPACE pg_default;
 ALTER TABLE tsup.MEMBER_ROLE
     OWNER to postgres;    
 
-CREATE TABLE tsup.CERTIFICATE_UPLOAD 
+CREATE TABLE tsup.CERTIFICATE_UPLOAD
 (
     ID bigint NOT NULL DEFAULT nextval('tsup."CERTIFICATE_ID_seq"'::regclass),
 	EMPLOYEE_ID bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
 	COURSE_ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_ID_seq"'::regclass),
 	CERTIFICATE character varying(200) COLLATE pg_catalog."default",
+	UPLOAD_DATE timestamp with time zone NOT NULL,
 	certificateFile bytea,
     CONSTRAINT "CERTIFICATE_pkey" PRIMARY KEY (ID),
 	CONSTRAINT "COURSE_ID_fkey" FOREIGN KEY (COURSE_ID) REFERENCES tsup.COURSE(ID) MATCH SIMPLE ON DELETE CASCADE,
