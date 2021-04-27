@@ -1,17 +1,35 @@
 package com.fujitsu.ph.tsup.enrollment.model;
 
+import java.time.ZonedDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Lob;
+
 public class CertificateForm {
 	
 	private String certificate;
 	private Long id;
 	private Long courseId;
-	private byte certificateFile;
+	private ZonedDateTime uploadDate;
 	
-	public byte getCertificateFile() {
+	public ZonedDateTime getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(ZonedDateTime uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	@Lob
+	@Column(name = "certificateFile")
+	private byte[] certificateFile;
+	
+	public byte[] getCertificateFile() {
+	
 		return certificateFile;
 	}
 
-	public void setCertificateFile(byte certificateFile) {
+	public void setCertificateFile(byte[] certificateFile) {
 		this.certificateFile = certificateFile;
 	}
 
