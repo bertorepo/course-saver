@@ -914,18 +914,19 @@ public class EnrollmentController {
 	    		form.setCourseId(id);
 	    		System.out.println(">>>>>>>>>>>>>>> : " + id);
 	    		model.addAttribute("uploadCertificate", form);
-	    		
+
 	    		return "redirect:/enrollment/mySchedules";
 	        	
 	    }
 	    
 	    @PostMapping("/{courseId1}/upload")
+	    
 	    public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
 	    		Model model, RedirectAttributes redirectattribute) {
-	    	
+	    
 	    	System.out.println(">>> : " + id);
 	    		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    		Certificate certDetails = new Certificate.Builder(id, form.getCertificate(),user.getId(), form.getCertificateFile() ).build();
+	    		Certificate certDetails = new Certificate.Builder(id, form.getCertificate(),user.getId(), ZonedDateTime.now(), form.getCertificateFile()).build();
 	    		enrollmentService.uploadCertificate(certDetails);
 	    		redirectattribute.addFlashAttribute("successUploadMessage", 1);
 	    		return "redirect:/enrollment/mySchedules";
