@@ -9,6 +9,7 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -731,7 +732,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         List<CourseParticipant> courseEnrolledList = template.query(sql, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
         Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
-        return courseEnrolled; 
+        return courseEnrolled;
     }
 
     @Override
@@ -804,15 +805,35 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public void uploadCertificate(Certificate certificate) {
     	
     	String query = "INSERT INTO CERTIFICATE_UPLOAD"
-    			+ " (employee_id, course_id, certificate, certificateFile)"
-    			+ " VALUES(:employee_id, :course_id, :certificate, :certificateFile)";
+    			+ " (employee_id, course_id, certificate, upload_date, certificateFile)"
+    			+ " VALUES(:employee_id, :course_id, :certificate, :upload_date, :certificateFile)";
     	
+    	
+
+ 
+//    	java.sql.Date sqlDate = (Date) Date.from(java.time.ZonedDateTime.now().toInstant());
+//		try
+//        {
+//			sqlDate = (Date) Date.from(certificate.getUploadDate().toInstant());
+//        }
+//        catch(NullPointerException e)
+//        {
+//            System.out.print("NullPointerException Caught");
+//        }
+
     	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+    			
+    			
     			.addValue("certificate", certificate.getCertificate())
     			.addValue("employee_id", certificate.getUser())
     			.addValue("course_id", certificate.getCourseId())
+    			.addValue("upload_date", certificate.getUploadDate()
+    				.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
     			.addValue("certificateFile", certificate.getCertificateFile());
-    	template.update(query, sqlParameterSource); 
+    			
+
+    					
+    	template.update(query, sqlParameterSource);
     	
     }
 }
