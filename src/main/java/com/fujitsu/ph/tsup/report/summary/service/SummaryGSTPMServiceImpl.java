@@ -16,22 +16,25 @@ public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
 
 	@Autowired
 	private SummaryGSTPMDao summaryGSTPMDao;
-
+	
 	@Override
-	public long percentageFinishedToday() {
+	public double percentageFinishedToday() {
 		
-		return (countTotalNoJDUPMF()/countTotalNumberOfJDUPM())*100;
+		double countTotalNumberOfJDUPM3= countTotalNoJDUPMF()/countTotalNumberOfJDUPM()*100; 
+		return countTotalNumberOfJDUPM3;
 	}
 
 	@Override
-	public long percentageFinishedLastWeek(ZonedDateTime StartDateTime, 
+	public double percentageFinishedLastWeek(ZonedDateTime StartDateTime, 
 			ZonedDateTime EndDateTime ) {
 		
-		return (countTotalNoJDUPMLastWkF(StartDateTime, EndDateTime)/countTotalNumberOfJDUPM())*100;
+		double countTotalNumberOfJDUPM2= countTotalNoJDUPMLastWkF(StartDateTime, EndDateTime)/countTotalNumberOfJDUPM()*100;
+		return countTotalNumberOfJDUPM2; 
 	}
 
 	@Override
 	public long countTotalNumberOfJDUPM() {
+		
 		int deptId= summaryGSTPMDao.getDeptId();
 		return summaryGSTPMDao.countTotalNumberOfJDUPM(deptId);
 		
@@ -56,22 +59,22 @@ public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
 
 	@Override
 	public long countTotalNoJDUPMF() {
+		
 		int catId= summaryGSTPMDao.getCatId();
 		List<Integer> gstCourse= summaryGSTPMDao.gstCourses(catId);
-		int deptId= summaryGSTPMDao.getDeptId();
-		List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
+	    List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
+	    int deptId= summaryGSTPMDao.getDeptId();
 		return summaryGSTPMDao.countTotalNumberJDUPMFinished(gstCourse, deptId, roleId);
 	}
 
 	@Override
 	public long countTotalNoJDUPMLastWkF(ZonedDateTime StartDateTime, 
 			ZonedDateTime EndDateTime ) {
-		
-		
+
 		int catId= summaryGSTPMDao.getCatId();
 		List<Integer> gstCourses= summaryGSTPMDao.gstCourses(catId);
-		int deptId= summaryGSTPMDao.getDeptId();
-		List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
+	    List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
+	    int deptId= summaryGSTPMDao.getDeptId();
 		return summaryGSTPMDao.countTotalNumberJDUPMFinishedLW(StartDateTime, EndDateTime, gstCourses, deptId, roleId);
 	}
 

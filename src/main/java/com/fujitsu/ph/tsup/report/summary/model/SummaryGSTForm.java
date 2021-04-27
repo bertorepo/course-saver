@@ -20,8 +20,8 @@ private long TotalNoOrigMemValue;
 private long TotalNoNewMemValue;							
 private long TotalNoJDUPMFinValue;							
 private long TotalNoJDUPMLastWkFinValue;							
-private long PercentageFinTodayValue;							
-private long PercentageFinLastWkValue;
+private double PercentageFinTodayValue;							
+private double PercentageFinLastWkValue;
 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 private ZonedDateTime scheduledStartDateTime;
 
@@ -133,28 +133,28 @@ public void setTotalNoJDUPMLastWkFinValue(long totalNoJDUPMLastWkFinValue) {
 /**
  * @return PercentageFinTodayValue
  */
-public long getPercentageFinTodayValue() {
+public double getPercentageFinTodayValue() {
 	return PercentageFinTodayValue;
 }
 
 /**
  * @param percentageFinTodayValue the Percentage of JDU PM finish as of Today Value to set
  */
-public void setPercentageFinTodayValue(long percentageFinTodayValue) {
+public void setPercentageFinTodayValue(double percentageFinTodayValue) {
 	PercentageFinTodayValue = percentageFinTodayValue;
 }
 
 /**
  * @return PercentageFinLastWkValue
  */
-public long getPercentageFinLastWkValue() {
+public double getPercentageFinLastWkValue() {
 	return PercentageFinLastWkValue;
 }
 
 /**
  * @param percentageFinLastWkValue the Percentage of JDU PM finish Last Week Value to set
  */
-public void setPercentageFinLastWkValue(long percentageFinLastWkValue) {
+public void setPercentageFinLastWkValue(double percentageFinLastWkValue) {
 	PercentageFinLastWkValue = percentageFinLastWkValue;
 }							
 
