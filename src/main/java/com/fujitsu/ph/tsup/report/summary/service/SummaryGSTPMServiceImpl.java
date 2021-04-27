@@ -59,7 +59,7 @@ public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
 		int catId= summaryGSTPMDao.getCatId();
 		List<Integer> gstCourse= summaryGSTPMDao.gstCourses(catId);
 		int deptId= summaryGSTPMDao.getDeptId();
-		int roleId= summaryGSTPMDao.getEmployeeRoleId();
+		List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
 		return summaryGSTPMDao.countTotalNumberJDUPMFinished(gstCourse, deptId, roleId);
 	}
 
@@ -71,7 +71,7 @@ public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
 		int catId= summaryGSTPMDao.getCatId();
 		List<Integer> gstCourses= summaryGSTPMDao.gstCourses(catId);
 		int deptId= summaryGSTPMDao.getDeptId();
-		int roleId= summaryGSTPMDao.getEmployeeRoleId();
+		List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
 		return summaryGSTPMDao.countTotalNumberJDUPMFinishedLW(StartDateTime, EndDateTime, gstCourses, deptId, roleId);
 	}
 

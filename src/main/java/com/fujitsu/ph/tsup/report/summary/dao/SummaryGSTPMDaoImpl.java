@@ -24,12 +24,12 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 	}
 	
 	@Override
-	public int getEmployeeRoleId() {
-		String query = "SELECT id FROM tsup.MEMBER_ROLE WHERE role_name =:rolePM or role_name = :roleTL";
+	public List<Integer> getEmployeeRoleId() {
+		String query = "SELECT id FROM tsup.MEMBER_ROLE WHERE role_type =:rolePM or role_type = :roleTL";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
 												.addValue("rolePM", "PM")
 												.addValue("roleTL", "TL");
-		return template.queryForObject(query,sqlParameterSource,Integer.class);
+		return template.queryForList(query,sqlParameterSource,Integer.class);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 
 	@Override
 	public List<Integer> gstCourses(int catId) {
-		String query = "SELECT id FROM tsup.COURSE WHERE category_id = :category_id";
+		String query = "SELECT id FROM tsup.COURSE WHERE course_category_id = :category_id";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("category_id", catId);
 		List<Integer> CourseList = template.queryForList(query, sqlParameterSource,Integer.class);
 		return CourseList;
@@ -55,45 +55,46 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 	}
 
 	@Override
-	public int countTotalNumberJDUPMFinished(List<Integer> gstCourses,int deptId, int roleID) {
+	public int countTotalNumberJDUPMFinished(List<Integer> gstCourses,int deptId, List<Integer> roleID) {
 		String query = "SELECT Count (e.id)" 
-						+"From tsup.employee as e"
-						+"inner join tsup.course_attendance as ca"
-						+"on e.id = ca.participant_id"
-						+"inner join tsup.course_schedule_detail as csd"
-						+"on ca.course_schedule_detail_id = csd.id"
-						+"inner join tsup.course_schedule as cs"
-						+"on csd.course_schedule_id = cs.id"
-						+"inner join tsup.course as c"
-						+"on cs.course_id = c.id"
-						+"where c.id in (:courses)"
-						+"and e.department_id = :deptId"
-						+"and e.role_id = :roleID"
-						+"and cs.status ='D';";
+						+" From tsup.employee as e"
+						+" inner join tsup.course_attendance as ca"
+						+" on e.id = ca.participant_id"
+						+" inner join tsup.course_schedule_detail as csd"
+						+" on ca.course_schedule_detail_id = csd.id"
+						+" inner join tsup.course_schedule as cs"
+						+" on csd.course_schedule_id = cs.id"
+						+" inner join tsup.course as c"
+						+" on cs.course_id = c.id"
+						+" where c.id in (:courses)"
+						+" and e.department_id = :deptId"
+						+" and e.member_role_id in (:roleId)"
+						+" and cs.status ='D';";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
 													.addValue("deptId", deptId)
-													.addValue("courses", gstCourses);
+													.addValue("courses", gstCourses)
+													.addValue("roleId", roleID);
 		return template.queryForObject(query,sqlParameterSource,Integer.class);
 	}
 
 	@Override
-	public int countTotalNumberJDUPMFinishedLW(ZonedDateTime startDate, ZonedDateTime EndDate,List<Integer> gstCourses,int deptId,int roleId) {
+	public int countTotalNumberJDUPMFinishedLW(ZonedDateTime startDate, ZonedDateTime EndDate,List<Integer> gstCourses,int deptId,List<Integer> roleId) {
 		String query = "SELECT Count (e.id)" 
-				+"From tsup.employee as e"
-				+"inner join tsup.course_attendance as ca"
-				+"on e.id = ca.participant_id"
-				+"inner join tsup.course_schedule_detail as csd"
-				+"on ca.course_schedule_detail_id = csd.id"
-				+"inner join tsup.course_schedule as cs"
-				+"on csd.course_schedule_id = cs.id"
-				+"inner join tsup.course as c"
-				+"on cs.course_id = c.id"
-				+"where c.id in (:courses)"
-				+"and e.department_id = :deptId"
-				+"and e.role_id = :roleID"
-				+"and cs.status ='D'"
-				+ "((ca.log_out_dateTime >= date_trunc('week', CURRENT_TIMESTAMP - interval '1 week')"																					
-				+ "and ca.log_out_dateTime < date_trunc('week', CURRENT_TIMESTAMP)));";
+				+" From tsup.employee as e"
+				+" inner join tsup.course_attendance as ca"
+				+" on e.id = ca.participant_id"
+				+" inner join tsup.course_schedule_detail as csd"
+				+" on ca.course_schedule_detail_id = csd.id"
+				+" inner join tsup.course_schedule as cs"
+				+" on csd.course_schedule_id = cs.id"
+				+" inner join tsup.course as c"
+				+" on cs.course_id = c.id"
+				+" where c.id in (:courses)"
+				+" and e.department_id = :deptId"
+				+" and e.member_role_id in (:roleId)"
+				+" and cs.status ='D'"
+				+" and ((ca.log_out_dateTime >= date_trunc('week', CURRENT_TIMESTAMP - interval '1 week')"																					
+				+" and ca.log_out_dateTime < date_trunc('week', CURRENT_TIMESTAMP)));";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
 													.addValue("deptId", deptId)
 													.addValue("courses", gstCourses)
