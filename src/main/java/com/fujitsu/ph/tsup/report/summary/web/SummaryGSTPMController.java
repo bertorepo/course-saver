@@ -39,7 +39,7 @@ public class SummaryGSTPMController {
 	     model.addAttribute("summaryGST", summaryGSTForm);
          model.addAttribute("nullMessage", "No Summary Report Found");
      
-         return "reports/summarygstpm"; 
+         return "reports/SummaryGSTForPM"; 
      }
 	
 }

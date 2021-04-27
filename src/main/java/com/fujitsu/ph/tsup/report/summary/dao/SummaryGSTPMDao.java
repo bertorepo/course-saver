@@ -12,7 +12,7 @@ public interface SummaryGSTPMDao {
 	public int getCatId();
 	
 	//get Employee Role ID
-	public int getEmployeeRoleId();
+	public List<Integer> getEmployeeRoleId();
 	
 	//get List of ID of courses under GST
 	public List<Integer> gstCourses(int catId);
@@ -21,10 +21,10 @@ public interface SummaryGSTPMDao {
 	public int countTotalNumberOfJDUPM(int deptId);
 	
 	//get Total count of JDU PM Finished
-	public int countTotalNumberJDUPMFinished(List<Integer> gstCourses, int deptId,int roleId);
+	public int countTotalNumberJDUPMFinished(List<Integer> gstCourses, int deptId,List<Integer> roleId);
 	
 	//get Total count of JDU PM Finished Last Week
-	public int countTotalNumberJDUPMFinishedLW(ZonedDateTime startDate, ZonedDateTime EndDate, List<Integer> gstCourses,int deptId,int roleId);
+	public int countTotalNumberJDUPMFinishedLW(ZonedDateTime startDate, ZonedDateTime EndDate, List<Integer> gstCourses,int deptId,List<Integer> roleId);
 
 	
 	
