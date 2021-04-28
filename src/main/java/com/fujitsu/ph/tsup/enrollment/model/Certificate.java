@@ -11,9 +11,42 @@ public class Certificate {
 	private Long id;
 	private Long courseId;
 	private Long userId;
+	
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private ZonedDateTime uploadDate;
 	
+	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	private byte[] certificateFile = byteArrayOutputStream.toByteArray();
+	
+	private String fileDownloadUri;
+	private String fileType;
+	private Long size;
+	
+	
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+	public String getFileDownloadUri() {
+		return fileDownloadUri;
+	}
+
+	public void setFileDownloadUri(String fileDownloadUri) {
+		this.fileDownloadUri = fileDownloadUri;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+
 	public ZonedDateTime getUploadDate() {
 		return uploadDate;
 	}
@@ -21,10 +54,6 @@ public class Certificate {
 	public void setUploadDate(ZonedDateTime uploadDate) {
 		this.uploadDate = uploadDate;
 	}
-
-	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-	private byte[] certificateFile = byteArrayOutputStream.toByteArray();
-	
 	
 	public byte[] getCertificateFile() {
 		return certificateFile;
@@ -103,11 +132,13 @@ public class Certificate {
 		private Long id;
 		private String certificate;
 		private Long userId;
+		
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		/** Builder Constructor
          * @param certificate
 		 * @param uploadDate 
          */
-        public Builder(Long courseId, String certificate, Long userId, ZonedDateTime uploadDate, byte[] certificateFile) {
+        public Builder(Long courseId, String certificate, Long userId, ZonedDateTime uploadDate) {
 
         	validateUserId(userId);
             validateCertificate(certificate);
@@ -124,6 +155,11 @@ public class Certificate {
             validateCertificate(certificate);
             this.id = id;
             this.certificate = certificate;
+
+        }
+        
+        public Builder(String certificate, String fileDownloadUri, String fileType, Long size) {
+        	this.certificate = certificate;
 
         }
         
