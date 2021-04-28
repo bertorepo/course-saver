@@ -3,6 +3,9 @@
  */
 package com.fujitsu.ph.tsup.reports.summary.model;
 
+import java.util.Set;
+
+
 /**
  * MandatoryCoursesListForm class
  * 
@@ -26,6 +29,11 @@ public class MandatoryCoursesForm {
      * Total Number of JDU Members Last Week Who Finished the training
      */
     private Long totalNoOfJDUMemFinLastWk;
+    
+    /**
+     * List of Mandatory Courses
+     */
+    private Set<MandatoryCourses> mandatoryCourses;
     
     
     public Long getTotalNoOfJDUMem() {
@@ -51,12 +59,20 @@ public class MandatoryCoursesForm {
     public void setTotalNoOfJDUMemFinLastWk(Long totalNoOfJDUMemFinLastWk) {
         this.totalNoOfJDUMemFinLastWk = totalNoOfJDUMemFinLastWk;
     }
+    
+    public Set<MandatoryCourses> getMandatoryCourses() {
+        return mandatoryCourses;
+    }
+
+    public void setMandatoryCourses(Set<MandatoryCourses> mandatoryCourses) {
+        this.mandatoryCourses = mandatoryCourses;
+    }
 
     @Override
     public String toString() {
-        return "MandatoryCoursesListForm [totalNoOfJDUMem=" + totalNoOfJDUMem + ", totalNoOfJDUMemFin="
-                + totalNoOfJDUMemFin + ", totalNoOfJDUMemFinLastWk=" + totalNoOfJDUMemFinLastWk + "]";
-    }
-    
+        return "MandatoryCoursesForm [totalNoOfJDUMem=" + totalNoOfJDUMem + ", totalNoOfJDUMemFin="
+                + totalNoOfJDUMemFin + ", totalNoOfJDUMemFinLastWk=" + totalNoOfJDUMemFinLastWk
+                + ", mandatoryCourses=" + mandatoryCourses + "]";
+    }    
     
 }
