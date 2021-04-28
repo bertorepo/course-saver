@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
@@ -42,6 +45,7 @@ import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
+import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
@@ -907,30 +911,37 @@ public class EnrollmentController {
 ////		return "redirect:/schedule";
 //		return "redirect:/enrollment/viewCourseEnroll";
 //	}
-	 @GetMapping("/{courseId1}/upload")
-	    public String getCourseId(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
-	    		Model model) {
-	    	
-	    		form.setCourseId(id);
-	    		System.out.println(">>>>>>>>>>>>>>> : " + id);
-	    		model.addAttribute("uploadCertificate", form);
+	@GetMapping("/{courseId1}/upload")
+    public String getCourseId(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
+    		Model model) {
+    	
+    		form.setCourseId(id);
+    		System.out.println(">>>>>>>>>>>>>>> : " + id);
+    		model.addAttribute("uploadCertificate", form);
 
-	    		return "redirect:/enrollment/mySchedules";
-	        	
-	    }
+    		return "redirect:/enrollment/mySchedules";
+        	
+    }
+    
+    @PostMapping("/{courseId1}/upload") 
+    public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
+    		Model model, RedirectAttributes redirectattribute, @RequestParam("file")MultipartFile file) {
+    
+    	String fileName = enrollmentService.storeFile(file,id);
+    	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+//    	 return new Certificate.Builder(fileName, fileDownloadUri,
+//                 file.getContentType(), file.getSize()); 	
+    		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        	String origFile = file.getOriginalFilename()+ user.getId() +id;
+    		Certificate certDetails = new Certificate.Builder(id, file.getOriginalFilename(), user.getId(), ZonedDateTime.now()).build();
+    		enrollmentService.uploadCertificate(certDetails);
+    		redirectattribute.addFlashAttribute("successUploadMessage", 1);
+    		return "redirect:/enrollment/mySchedules";
+        
+    }
 	    
-	    @PostMapping("/{courseId1}/upload")
-	    
-	    public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
-	    		Model model, RedirectAttributes redirectattribute) {
-	    
-	    	System.out.println(">>> : " + id);
-	    		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    		Certificate certDetails = new Certificate.Builder(id, form.getCertificate(),user.getId(), ZonedDateTime.now(), form.getCertificateFile()).build();
-	    		enrollmentService.uploadCertificate(certDetails);
-	    		redirectattribute.addFlashAttribute("successUploadMessage", 1);
-	    		return "redirect:/enrollment/mySchedules";
-	        
-	    }
 	    
 }
