@@ -25,7 +25,7 @@
 	<div class="container mt-5 div_minheight">
 		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
 		<hr>
-		<form action="#" th:action="@{/mandatoryCourses/load}" th:object="${view}" method="GET">
+		<form action="#" th:action="@{/mandatoryCourses/view}" th:object="${load}" method="post">
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row align-items-center justify-content-center">
@@ -46,11 +46,11 @@
 						<label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
 						<label class="col-form-label" style="font-weight: bold;">From</label>
 						<span style="width:8px"></span>
-						<input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+						<input class="form-control" type="datetime-local" id="startDateTime" name="startDateTime" style="width:220px; font-size:14px;" onkeydown="return false" disabled/>
 						<span style="width:8px"></span>
 						<label class="col-form-label" style="font-weight: bold;">To</label>
 						<div class="col-lg-2">
-							<input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+							<input class="form-control" type="datetime-local" id="endDateTime" name="endDateTime" style="width:220px; font-size:14px;" onkeydown="return false" disabled/>
 						</div>
 					</div> 
 					<div class="form-group row align-items-center justify-content-center">
@@ -64,9 +64,9 @@
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
-						<input type="button" id="viewButton" class="btn btn-success" value="View" onclick="btnView()" style="width:100px">
+						<input type="submit" id="viewButton" class="btn btn-success" value="View" onclick="btnView()" style="width:100px">
 						<span style="width:100px"></span>
-						<input type="button" id="exportButton" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px" disabled>
+						<input type="button" id="exportButton" class="btn btn-success" value="Export" style="width:100px" disabled>
 					</div>
 					<label>Report Display</label>
 					<div id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
@@ -126,8 +126,8 @@
 		time.setHours(time.getHours()+(time.getTimezoneOffset()/-60));
 		day.setDate(day.getDate()-5);
 		day.setHours(day.getHours()+(day.getTimezoneOffset()/-60));
-		$("#endDate").val(time.toJSON().slice(0,19))
-		$("#startDate").val(day.toJSON().slice(0,19));
+		$("#endDateTime").val(time.toJSON().slice(0,19))
+		$("#startDateTime").val(day.toJSON().slice(0,19));
 		//-----------------------
 		
 		//-Checking of date range
