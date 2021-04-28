@@ -25,10 +25,16 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -50,11 +56,15 @@ import javax.mail.util.ByteArrayDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <pre>
@@ -76,6 +86,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Value("${sender.email}")
     private String senderEmail;
+    
+    private final Path fileStorageLocation;
 
     /**
      * 
@@ -508,5 +520,51 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     	//call the dao method
     	enrollmentDao.uploadCertificate(certificate);	
     }
+    
+    @Autowired
+    public EnrollmentServiceImpl(FileStorageProperties fileStorageProperties) {
+		this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
+				.toAbsolutePath().normalize();
+		
+		try {
+			Files.createDirectories(this.fileStorageLocation);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Could not create the directory where the uploaded files will be stored.");
+		}
+	}
+    
+    public String storeFile(MultipartFile file, Long id) {
+        // Normalize file name
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        fileName =user.getId() +"_"+ id +"_"+ fileName ;
+        try {
+            // Check if the file's name contains invalid characters
+            if(fileName.contains("..")) {
+                throw new IllegalArgumentException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
 
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            return fileName;
+        } catch (IOException ex) {
+            throw new IllegalArgumentException("Could not store file " + fileName + ". Please try again!", ex);
+        }
+    }
+
+    public Resource loadFileAsResource(String fileName) {
+        try {
+            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                throw new IllegalArgumentException("File not found " + fileName);
+            }
+        } catch (MalformedURLException ex) {
+            throw new IllegalArgumentException("File not found " + fileName, ex);
+        }
+    }
 }
