@@ -7,11 +7,29 @@ import java.time.ZonedDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Summary of JDU Standardization Training for PM
+//Class Name   : SummaryGSTForm.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2021/04/20 | WS) d.escala          | Initial Version
+//0.02    | 2021/04/21 | WS) d.escala          | Updated
+//0.03    | 2021/04/23 | WS) m.padaca          | Updated
+//0.04    | 2021/04/27 | WS) m.padaca          | Updated
+//==================================================================================================
 /**
- * @author D.Escala
- * @version Creation: 0.01 Date: 2021-04-21
- *
- */
+* <pre>
+* The controller for the SummaryGSTForm
+* <pre>
+* 
+* @version 0.04
+* @author m.padaca
+* @author d.escala
+*/
+
 public class SummaryGSTForm {
 	
 private long TotalNoJDUPMValue;						

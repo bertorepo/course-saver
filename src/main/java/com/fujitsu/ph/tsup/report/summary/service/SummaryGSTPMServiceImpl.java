@@ -1,3 +1,4 @@
+//Copyright (C) 2021 FUJITSU LIMITED All rights reserved.
 package com.fujitsu.ph.tsup.report.summary.service;
 
 import java.time.ZonedDateTime;
@@ -10,7 +11,28 @@ import org.springframework.stereotype.Service;
 import com.fujitsu.ph.tsup.report.summary.dao.SummaryGSTPMDao;
 import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTForm;
 
-
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Summary of JDU Standardization Training for PM
+//Class Name   : SummaryGSTPMServiceImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2021/04/20 | WS) d.escala          | Initial Version
+//0.02    | 2021/04/23 | WS) m.padaca          | Updated
+//0.03    | 2021/04/27 | WS) m.padaca          | Updated
+//0.04    | 2021/04/28 | WS) d.escala          | Updated
+//==================================================================================================
+/**
+* <pre>
+* The controller for the SummaryGSTPMServiceImpl
+* <pre>
+* 
+* @version 0.04
+* @author m.padaca
+* @author d.escala
+*/
 
 @Service
 public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
