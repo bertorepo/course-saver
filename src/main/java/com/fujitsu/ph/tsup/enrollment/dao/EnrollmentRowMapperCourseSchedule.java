@@ -40,8 +40,8 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         Long courseId = resultSet.getLong("COURSE_ID");
         String courseName = resultSet.getString("COURSE_NAME");
         String courseDetails = resultSet.getString("DETAILS");
-        String deadline = resultSet.getString("DEADLINE");
-        String mandatory = resultSet.getString("MANDATORY");
+        String mandatory = resultSet.getString("MANDATORY"); // added
+        String deadline = resultSet.getString("DEADLINE"); // added
         Long instructorId = resultSet.getLong("INSTRUCTOR_ID");
         String instructorLastName = resultSet.getString("INSTRUCTOR_LAST_NAME");
         String instructorFirstName = resultSet.getString("INSTRUCTOR_FIRST_NAME");
@@ -61,7 +61,7 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
                 new CourseScheduleDetail.Builder(courseScheduleDetailId, id, scheduledStartDateTime, scheduledEndDateTime,duration).build();
         
         CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
-                instructorLastName, instructorFirstName,deadline, mandatory, venueId, venueName, minRequired, 
+                instructorLastName, instructorFirstName, mandatory, deadline, venueId, venueName, minRequired, // added
                 maxAllowed, totalParticipants, status).addDetail(courseScheduleDetail).addCourseDetail(courseDetails).build();
        
         return courseSchedule; 
