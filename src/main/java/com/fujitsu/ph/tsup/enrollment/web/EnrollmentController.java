@@ -926,8 +926,9 @@ public class EnrollmentController {
     @PostMapping("/{courseId1}/upload") 
     public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
     		Model model, RedirectAttributes redirectattribute, @RequestParam("file")MultipartFile file) {
-    
-    	String fileName = enrollmentService.storeFile(file,id);
+    	FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
+    	fileStorageProperties.setUploadDir("/Users/a.senamin/tsup/certificate");
+		String fileName = enrollmentService.storeFile(file,id,fileStorageProperties);
     	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)
@@ -935,7 +936,6 @@ public class EnrollmentController {
 //    	 return new Certificate.Builder(fileName, fileDownloadUri,
 //                 file.getContentType(), file.getSize()); 	
     		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        	String origFile = file.getOriginalFilename()+ user.getId() +id;
     		Certificate certDetails = new Certificate.Builder(id, file.getOriginalFilename(), user.getId(), ZonedDateTime.now()).build();
     		enrollmentService.uploadCertificate(certDetails);
     		redirectattribute.addFlashAttribute("successUploadMessage", 1);

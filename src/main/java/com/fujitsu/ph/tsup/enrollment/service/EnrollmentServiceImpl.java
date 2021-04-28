@@ -87,8 +87,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Value("${sender.email}")
     private String senderEmail;
     
-    private final Path fileStorageLocation;
-
     /**
      * 
      * Sends calendar invite to the successfully enrolled participant
@@ -521,20 +519,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     	enrollmentDao.uploadCertificate(certificate);	
     }
     
-    @Autowired
-    public EnrollmentServiceImpl(FileStorageProperties fileStorageProperties) {
-		this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-				.toAbsolutePath().normalize();
-		
-		try {
-			Files.createDirectories(this.fileStorageLocation);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Could not create the directory where the uploaded files will be stored.");
-		}
-	}
-    
-    public String storeFile(MultipartFile file, Long id) {
+    public String storeFile(MultipartFile file, Long id, FileStorageProperties fileStorageProperties) {
         // Normalize file name
+    	Path fileStorageLocation =  Paths.get(fileStorageProperties.getUploadDir())
+				.toAbsolutePath().normalize();
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         fileName =user.getId() +"_"+ id +"_"+ fileName ;
@@ -545,7 +533,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             }
 
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Path targetLocation = fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;
@@ -554,9 +542,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
     }
 
-    public Resource loadFileAsResource(String fileName) {
+    public Resource loadFileAsResource(String fileName,FileStorageProperties fileStorageProperties) {
         try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Path filePath = Paths.get(fileStorageProperties.getUploadDir())
+    				.toAbsolutePath().normalize().resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if(resource.exists()) {
                 return resource;

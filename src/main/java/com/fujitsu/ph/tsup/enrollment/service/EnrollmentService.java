@@ -149,8 +149,8 @@ public interface EnrollmentService {
 	/* Upload Certificate */
 	void uploadCertificate(Certificate certificate);
 	
-	public String storeFile(MultipartFile file,Long id);
+	public String storeFile(MultipartFile file,Long id,FileStorageProperties fileStorageProperties);
 	
-	public Resource loadFileAsResource(String fileName);
+	public Resource loadFileAsResource(String fileName,FileStorageProperties fileStorageProperties);
 	
 }
