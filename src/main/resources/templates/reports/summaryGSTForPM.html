@@ -18,7 +18,7 @@
 <script th:src="@{/js/app/moment.min.js}"></script>
 <script th:src="@{/js/lib/summaryReport.js}"></script>
 </head>
-<body>
+<body onload="load()">
 	<div th:insert="fragments/general.html :: header" > </div>
 	<div class="container mt-5 div_minheight">
 		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
@@ -35,8 +35,8 @@
 								<option value="" disabled selected hidden>Please Select Report Type</option>
 								<option th:value="0" disabled hidden></option>
 								<option th:value="1">Summary of Course Conducted</option>
-								<option th:value="2">Summary of G3CC Standardization Training for Dev</option>
-								<option th:value="3" selected>Summary of G3CC Standardization Training for PM</option>
+								<option th:value="2">Summary of JDU Standardization Training for Dev</option>
+								<option th:value="3" selected>Summary of JDU Standardization Training for PM</option>
 							</select>
 						</div>
 				</div>	     		
@@ -125,7 +125,7 @@
 		</form>
 	
 
-	<!-- Export Summary of G3CC Standardization Training  -->
+	<!-- Export Summary of JDU Standardization Training  -->
 		<table id="exportSummaryTable"
 				class="table table-bordered table-responsive text-center sticky-table width_max"
 				style="display: none; width: 100%; height: 400px;">
@@ -154,7 +154,7 @@
 				</tr>
 			</tbody>
 		</table>
-	<!-- End of Export Summary of G3CC Standardization Training -->	
+	<!-- End of Export Summary of  JDU Standardization Training -->	
 	<!-- Error Modal-->
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -178,5 +178,6 @@
 		<!-- Error Modal End -->
 	</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
+	<script>
 </body>
 </html>

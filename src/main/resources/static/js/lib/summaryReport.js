@@ -1,7 +1,63 @@
 function load() {
+	var selectedReportType = document.getElementById("selectReportType").value;	
 	$("#viewButton").removeAttr('disabled');
+	
+	if(selectedReportType == 2){	
 	document.getElementById("reportTable").style.display = "block";
-	document.getElementById("summaryMainDiv").style.display = "none";	
+	document.getElementById("summaryMainDiv").style.display = "none";
+	} else if(selectedReportType == 3){
+		var fromDateTime = $("#scheduledStartDateTime").val();
+		var toDateTime = $("#scheduledEndDateTime").val();
+		var fromNewDate = fromDateTime.slice(0, 16);
+		var toNewDate = toDateTime.slice(0, 16);
+		var selectedReportType = document.getElementById("selectReportType").value;
+		 	
+		document.getElementById("startDate").value = fromNewDate;				
+		document.getElementById("endDate").value = toNewDate;
+		
+		const m = moment();
+		startDate.max = m.format("YYYY-MM-DDTHH:mm"); 
+		startDate.min = m.format("2017-01-01T00:00");
+			 
+		endDate.max = m.format("YYYY-MM-DDTHH:mm"); 
+		endDate.min = m.format("2017-01-01T00:00");	
+		
+		/**
+		Format Date Inputs
+		*/
+		
+		Date.prototype.toISO = function() {
+		return this.getUTCFullYear() +
+			'-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
+			'-' + String(this.getUTCDate()).padStart(2, "0") +
+			'T' + String(this.getUTCHours()).padStart(2, "0") +
+			':' + String(this.getUTCMinutes()).padStart(2, "0") +
+			':' + String(this.getUTCSeconds()).padStart(2, "0") +
+			'.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+			'Z';
+		};	
+		$("#startDate").blur(function () {
+			var formDate = document.getElementById("startDate").value;
+			var newDate = new Date(formDate);
+			var dateConcat = newDate.toISO().toString();
+			if (formDate == "") {
+				$("#scheduledStartDateTime").prop('value', null);
+			} else {
+				$("#scheduledStartDateTime").prop('value', dateConcat);
+			}
+		}); 
+		$("#endDate").blur(function () {
+			var formDate = document.getElementById("endDate").value;
+			var newDate = new Date(formDate);
+			var dateConcat = newDate.toISO().toString(); 
+			if (formDate == "") {
+				$("#scheduledEndDateTime").prop('value', null);
+			} else {
+				$("#scheduledEndDateTime").prop('value', dateConcat);
+			}
+		});
+	}else{
+	}
 }
 
 function selectReport(){
@@ -31,8 +87,7 @@ function viewButton() {
 		document.getElementById("reportTable").style.display = "none";
 		document.getElementById("summaryMainDiv").style.display = "block";
 	} else if(selectedReportType == 3){
-		document.getElementById("reportTable").style.display = "none";
-		document.getElementById("summaryPM").style.display = "block";
+		window.location.href = "/report/summarygstpm/";
 	} else{		
 	
 	}
@@ -51,9 +106,9 @@ function fileNameCreator(){
 	var strFileName = "Summary of "; 
 	var dt = new Date();
 	if (selectedReportType == 2){
-		strFileName += "G3CC Standardization Training for Dev - ";
+		strFileName += "JDU Standardization Training for Dev - ";
 	} else if (selectedReportType == 3){
-		strFileName += "G3CC Standardization Training for PM - ";
+		strFileName += "JDU Standardization Training for PM - ";
 	} else if (selectedReportType == 4){
 		strFileName += "Mandatory Courses - ";
 	}
