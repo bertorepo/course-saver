@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-	
+
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,68 +11,70 @@
 <meta name="author" content=" " />
 <title>Generate Reports</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/font-awesome.min.css">
 <style>
-      hr {
-		margin: 5px; 
-      }
+hr {
+	margin: 5px;
+}
 </style>
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
 <script th:src="@{/js/app/moment.min.js}"></script>
 </head>
 <body onload="load()">
-	<div th:insert="fragments/general.html :: header" > </div>
+	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5 div_minheight">
-		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
+		<h3>
+			<i class="fa fa-file-text"></i> Generate Reports
+		</h3>
 		<hr>
-		<form id="mandatoryCourses" class="form-horizontal" action="#" th:action="@{/mandatoryCourses/load}"  th:object="${mandatoryCourses}"  method="GET">
-		
-		<!-- <form action="#" th:action="@{/mandatoryCourses/load}" th:object="${view}" method="GET"> -->
+		<form id="mandatoryCourses" class="form-horizontal" action="#"
+			th:action="@{/mandatoryCourses/view}" th:object="${mandatoryCourses}"
+			method="GET">
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row align-items-center justify-content-center">
-						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Report Type</label>
-						<span style="width:70px"></span>
+						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Report
+							Type</label> <span style="width: 70px"></span>
 						<div class="col-lg-5">
-							<select id="selectReportType" name="selectReportType" class="form-control" required
-							onchange="selectReport()" style="width:525px; text-align-last:center;">
-								<option value="" disabled hidden>Please Select Report Type</option>
+							<select id="selectReportType" name="selectReportType"
+								class="form-control" required onchange="selectReport()"
+								style="width: 525px; text-align-last: center;">
+								<option value="" disabled hidden>Please Select Report
+									Type</option>
 								<option th:value="0" disabled hidden></option>
 								<option th:value="1">Summary of Course Conducted</option>
-								<option th:value="2" selected>Mandatory Courses Conducted</option>
+								<option th:value="2" selected>Mandatory Courses
+									Conducted</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
-						
-						<span style="width: 31px"></span>
-						
-						<label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label> 
-						
-						<label class="col-form-label" style="font-weight: bold;">From</label> 
-						<span style="width: 8px"></span> 
-						<input class="form-control" type="datetime-local" id="startDate"
-							name="startDate" style="width: 220px; font-size: 14px;"
-							onkeydown="return false" required /> 
-							<input type="hidden"
-							th:field="*{startDateTime}" />
+
+						<span style="width: 31px"></span> <label
+							class="col-lg-3 col-form-label" style="font-weight: bold;">Date
+							Range</label> <label class="col-form-label" style="font-weight: bold;">From</label>
+						<span style="width: 8px"></span> <input class="form-control"
+							type="datetime-local" id="startDate" name="startDate"
+							style="width: 220px; font-size: 14px;" onkeydown="return false"
+							required /> <input type="hidden" th:field="*{startDateTime}" />
 
 						<!-- INPUT -->
 
 						<!-- INPUT -->
 
-						<span style="width: 8px"></span> <label class="col-form-label" style="font-weight: bold;">To</label>
-						
+						<span style="width: 8px"></span> <label class="col-form-label"
+							style="font-weight: bold;">To</label>
+
 						<div class="col-lg-2">
-						
+
 							<input class="form-control" type="datetime-local" id="endDate"
-									name="endDate" style="width: 220px; font-size: 14px;"
-									onkeydown="return false" required />
-									
-							<input type="hidden" th:field="*{endDateTime}" />
+								name="endDate" style="width: 220px; font-size: 14px;"
+								onkeydown="return false" required /> <input type="hidden"
+								th:field="*{endDateTime}" />
 						</div>
-						
+
 					</div>
 
 					<!-- *************************** COURSE *************************** -->
@@ -108,45 +111,144 @@
 						</div>
 					</div> -->
 					<!-- *************************** COURSE *************************** -->
-					
-					
-					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
-						<input type="submit" id="viewButton" class="btn btn-success" value="View" onclick="btnView()" style="width:100px">
-						<span style="width:100px"></span>
-						<input type="button" id="exportButton" onclick="exportTableToCSV('Summary of Course Conducted.csv')" class="btn btn-success" value="Export" style="width:100px" disabled>
+
+
+					<div
+						class="form-group row align-items-center justify-content-center"
+						style="margin-left: 20%">
+						<input type="submit" id="viewButton" class="btn btn-success"
+							value="View" onclick="btnView()" style="width: 100px"> <span
+							style="width: 100px"></span> <input type="button"
+							id="exportButton"
+							onclick="exportTableToCSV('Summary of Course Conducted.csv')"
+							class="btn btn-success" value="Export" style="width: 100px"
+							disabled>
 					</div>
 					<label>Report Display</label>
-					<div id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
-					
+					<div id="reportTable"
+						style="border-style: groove; width: 100%; height: 100%; display: block;">
+						<div class="card">
+							<div class="row" style="margin: 5px;" >
+								<div class="col-sm-4" style="border-style:solid; padding:10px 0px 10px 0px; 
+								text-align:center; background-color: #6ad4bf;border-width:2px">
+									Total Number of JDU Devs
+								</div>
+								<div class="col-sm-1" style="border-style:solid; border-width:2px; 
+								padding:10px 0px 10px 0px; background-color: #D3D3D3; margin-left:1px;
+								text-align:center;" id="totalNumberOfJDUDevs">
+									0
+								</div>
+								<div class="col-sm-6"style="border-style:solid; padding:10px 0px 10px 0px;
+								background-color: #6ad4bf;border-width:2px; margin-left:46%; text-align:center;
+								position:absolute;">
+									Percentage Finished As of Today (Total Members and also Total Courses)
+								</div>
+							</div>
+
+							<div class="row" style="margin: 5px;">
+								<div class="col-sm-4" style="border-style:solid; padding:10px 0px 10px 0px; 
+								text-align:center; background-color: #6ad4bf;border-width:2px">
+									Total Number of JDU Members Last Week
+								</div>
+								<div class="col-sm-1" style="border-style:solid; border-width:2px; 
+								padding:10px 0px 10px 0px; background-color: #D3D3D3; margin-left:1px;
+								text-align:center;" id="totalNumberOfJDUDevsLW">
+									0
+								</div>
+								<div class="col-sm-6 ghost-col"style="border-style:solid; padding:20px 0px 20px 0px;
+								background-color: #D3D3D3;border-width:2px; margin-left:46%; text-align:center;
+								position:absolute; font-size:270%;" id="percentageFinishedToday">
+									0
+								</div>
+							</div>
+
+							<div class="row" style="margin: 5px;">
+								<div class="col-sm-4" style="border-style:solid; padding:10px 0px 10px 0px; 
+								text-align:center; background-color: #6ad4bf;border-width:2px">
+									Total Number of Existing Members
+								</div>
+								<div class="col-sm-1" style="border-style:solid; border-width:2px; 
+								padding:10px 0px 10px 0px; background-color: #D3D3D3; margin-left:1px;
+								text-align:center;" id="totalNumberOfExistingMembers">
+									0
+								</div>
+							</div>
+
+							<div class="row" style="margin: 5px;">
+								<div class="col-sm-4" style="border-style:solid; padding:10px 0px 10px 0px; 
+								text-align:center; background-color: #6ad4bf;border-width:2px">
+									Total Number of New Members
+								</div>
+								<div class="col-sm-1" style="border-style:solid; border-width:2px; 
+								padding:10px 0px 10px 0px; background-color: #D3D3D3; margin-left:1px;
+								text-align:center;" id="totalNumberOfNewMembers">
+									0
+								</div>
+								<div class="col-sm-6"style="border-style:solid; padding:10px 0px 10px 0px;
+								background-color: #6ad4bf;border-width:2px; margin-left:46%; text-align:center;
+								position:absolute;">
+									Percentage Finished As of Last Week (Total Members and also Total Courses)
+								</div>
+							</div>
+
+							<div class="row" style="margin: 5px;">
+								<div class="col-sm-4" style="border-style:solid; padding:10px 0px 10px 0px; 
+								text-align:center; background-color: #6ad4bf;border-width:2px">
+									Total Number of JDU Devs Who Finished the training
+								</div>
+								<div class="col-sm-1" style="border-style:solid; border-width:2px; 
+								padding:10px 0px 10px 0px; background-color: #D3D3D3; margin-left:1px;
+								text-align:center;" id="totalNumberOfJDUDevsFinished">
+									0
+								</div>
+								<div class="col-sm-6 ghost-col"style="border-style:solid; padding:20px 0px 20px 0px;
+								background-color: #D3D3D3;border-width:2px; margin-left:46%; text-align:center;
+								position:absolute; font-size:270%;" id="percentageFinishedToday">
+									0
+								</div>
+							</div>
+
+							<div class="row" style="margin: 5px;">
+								<div class="col-sm-4" style="border-style:solid; padding:10px 0px 10px 0px; 
+								text-align:center; background-color: #6ad4bf;border-width:2px">
+									Total Number of JDU Devs Last Week Who Finished the training
+								</div>
+								<div class="col-sm-1" style="border-style:solid; border-width:2px; 
+								padding:20px 0px 10px 0px; background-color: #D3D3D3; margin-left:1px;
+								text-align:center;" id="totalNumberOfJDUDevsFinishedLW">
+									0
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
-		<!--Invalid Modal-->
-    <div class="modal fade" id="invalidModal" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm text-center">
-            <div class="modal-content">
-                <div class="modal-header alert-danger">
-                    <h5 class="modal-title text-white">Invalid Input!</h5>
-                    <button type="submit" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span> 
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label class="col-lg-12 col-form-label" id="invalidMsg"></label>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" onclick="btnOk()"> OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Invalid Modal End-->
+	<!--Invalid Modal-->
+	<div class="modal fade" id="invalidModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-danger">
+					<h5 class="modal-title text-white">Invalid Input!</h5>
+					<button type="submit" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" id="invalidMsg"></label>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" onclick="btnOk()">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Invalid Modal End-->
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script>
 		//-Retrieving data from controller
@@ -264,17 +366,10 @@
 				$("#endDateTime").prop('value', dateConcat);
 			}
 		});
-
-		//-Setting time
-		/* var time = new Date();
-		var day = new Date();
-		time.setHours(time.getHours()+(time.getTimezoneOffset()/-60));
-		day.setDate(day.getDate()-5);
-		day.setHours(day.getHours()+(day.getTimezoneOffset()/-60));
-		$("#endDateTime").val(time.toJSON().slice(0,19))
-		$("#startDateTime").val(day.toJSON().slice(0,19)); */
 		//-----------------------
-		//-Checking of date range
+		/**
+		Checking of date range
+		*/
 		function btnView() {
 			var start = document.getElementById("startDateTime").value;
 			var end = document.getElementById("endDateTime").value;
@@ -283,16 +378,19 @@
 				$('#invalidModal').modal('show');
 			}
 		}
-
 		//-----------------------
 
-		//-Ok button for invalid modal
+		/**
+		Ok button for invalid modal
+		*/
 		function btnOk() {
 			$('#invalidModal').modal('hide');
 		}
 		//-----------------------
 
-		//-Function for Report Type
+		/**
+		Function for Report Type
+		*/
 		function selectReport() {
 			var selectedReportType = document
 					.getElementById("selectReportType").value;
