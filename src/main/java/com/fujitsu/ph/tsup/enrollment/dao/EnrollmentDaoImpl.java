@@ -73,8 +73,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "C.DETAIL AS DETAILS, " 
-                + "C.MANDATORY AS MANDATORY, "
-                + "C.DEADLINE AS DEADLINE, "
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
@@ -144,6 +144,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "CS.VENUE_ID AS VENUE_ID, " 
                 + "V.NAME AS VENUE_NAME, " 
                 + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
@@ -251,6 +253,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CSCHED.ID AS COURSE_SCHEDULE_ID, "
                 + "C.NAME AS COURSE_NAME, "
                 + "C.DETAIL AS DETAILS, " 
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, " 
                 + "V.NAME AS VENUE_NAME, "
@@ -330,6 +334,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.ID AS COURSE_ID, "
                 + "C.NAME AS COURSE_NAME, " 
                 + "C.DETAIL AS DETAILS, " 
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, " 
                 + "V.NAME AS VENUE_NAME, "
@@ -465,6 +471,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "CS.VENUE_ID AS VENUE_ID, " 
                 + "V.NAME AS VENUE_NAME, " 
                 + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
@@ -519,6 +527,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "CS.VENUE_ID AS VENUE_ID, " 
                 + "V.NAME AS VENUE_NAME, " 
                 + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
@@ -590,6 +600,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "CS.VENUE_ID AS VENUE_ID, " 
                 + "V.NAME AS VENUE_NAME, " 
                 + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
@@ -624,6 +636,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.DETAIL AS DETAILS, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "CS.VENUE_ID AS VENUE_ID, " + "V.NAME AS VENUE_NAME, " + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
                 + "CS.MAX_ALLOWED AS MAX_ALLOWED, "
                 + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
@@ -646,8 +660,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public void reschedule(CourseScheduleDetail courseScheduleDetail) {
         // TODO Auto-generated method stub
         String query = "UPDATE COURSE_SCHEDULE_DETAIL SET RESCHEDULED_START_DATETIME = :startDateTime, "
-                + "		RESCHEDULED_END_DATETIME = :endDateTime," + "		DURATION = :duration "
-                + "		WHERE ID = :id";
+                + "     RESCHEDULED_END_DATETIME = :endDateTime," + "       DURATION = :duration "
+                + "     WHERE ID = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("startDateTime", courseScheduleDetail.getScheduledStartDateTime().toOffsetDateTime())
                 .addValue("endDateTime", courseScheduleDetail.getScheduledEndDateTime().toOffsetDateTime())
@@ -659,12 +673,12 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public Set<CourseParticipant> findAllParticipantByCourseScheduleId(Long courseParticipant) {
         // TODO Auto-generated method stub
         String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " 
-        		+ "						E.ID as EMP_ID, "
-                + "			E.LAST_NAME AS EMPLOYEE_LAST_NAME, " 
-                + "			E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
-                + "			E.EMAIL_ADDRESS AS EMAIL "
-                + "		FROM COURSE_PARTICIPANT AS CP INNER JOIN EMPLOYEE AS E ON CP.PARTICIPANT_ID = E.ID "
-                + "		WHERE CP.COURSE_SCHEDULE_ID = :courseScheduleId";
+                + "                     E.ID as EMP_ID, "
+                + "         E.LAST_NAME AS EMPLOYEE_LAST_NAME, " 
+                + "         E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
+                + "         E.EMAIL_ADDRESS AS EMAIL "
+                + "     FROM COURSE_PARTICIPANT AS CP INNER JOIN EMPLOYEE AS E ON CP.PARTICIPANT_ID = E.ID "
+                + "     WHERE CP.COURSE_SCHEDULE_ID = :courseScheduleId";
 
         SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource().addValue("courseScheduleId",
                 courseParticipant);
@@ -678,24 +692,24 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 
     @Override
     public Set<CourseParticipant> findAllMemberNotEnrolledByCourseScheduleId(CourseParticipant courseParticipant) {
-    	System.out.println("START OF DAO");
-    	System.out.println("DAO COURSE SCHEDULE ID: " + courseParticipant.getCourseScheduleId());
-    	System.out.println("DAO EMPLOYEE NUMBER: " + courseParticipant.getEmployeeNumber());
+        System.out.println("START OF DAO");
+        System.out.println("DAO COURSE SCHEDULE ID: " + courseParticipant.getCourseScheduleId());
+        System.out.println("DAO EMPLOYEE NUMBER: " + courseParticipant.getEmployeeNumber());
         // TODO Auto-generated method stub
-        String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " + "						"
-        		+ "						E.ID as EMP_ID, "
-                + "						E.LAST_NAME AS EMPLOYEE_LAST_NAME, "
-                + "						E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
-                + "						E.EMAIL_ADDRESS AS EMAIL, "
-                + "						E.DEPARTMENT_ID AS DEPARTMENT " 
-                + "				FROM TSUP.EMPLOYEE E "
-                + "				WHERE DEPARTMENT_ID = (SELECT E.DEPARTMENT_ID FROM tsup.EMPLOYEE E WHERE E.NUMBER = :employeeNumber) " 
-                + "				AND E.NUMBER "
-                + "					NOT IN (SELECT E.NUMBER " 
-                + "							FROM TSUP.EMPLOYEE E "
-                + "							INNER JOIN TSUP.COURSE_PARTICIPANT CP "
-                + "							ON E.ID = CP.PARTICIPANT_ID "
-                + "							WHERE CP.COURSE_SCHEDULE_ID = :courseScheduleId)";
+        String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " + "                       "
+                + "                     E.ID as EMP_ID, "
+                + "                     E.LAST_NAME AS EMPLOYEE_LAST_NAME, "
+                + "                     E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
+                + "                     E.EMAIL_ADDRESS AS EMAIL, "
+                + "                     E.DEPARTMENT_ID AS DEPARTMENT " 
+                + "             FROM TSUP.EMPLOYEE E "
+                + "             WHERE DEPARTMENT_ID = (SELECT E.DEPARTMENT_ID FROM tsup.EMPLOYEE E WHERE E.NUMBER = :employeeNumber) " 
+                + "             AND E.NUMBER "
+                + "                 NOT IN (SELECT E.NUMBER " 
+                + "                         FROM TSUP.EMPLOYEE E "
+                + "                         INNER JOIN TSUP.COURSE_PARTICIPANT CP "
+                + "                         ON E.ID = CP.PARTICIPANT_ID "
+                + "                         WHERE CP.COURSE_SCHEDULE_ID = :courseScheduleId)";
 
         SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
                 .addValue("courseScheduleId", courseParticipant.getCourseScheduleId())
@@ -720,10 +734,10 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "FROM TSUP.EMPLOYEE E "
                 + "WHERE DEPARTMENT_ID = (SELECT E.DEPARTMENT_ID FROM tsup.EMPLOYEE E WHERE E.NUMBER = :employeeNumber) "
                 + "AND LOWER(CONCAT(E.FIRST_NAME, E.LAST_NAME, E.USERNAME)) LIKE :search " + "AND E.NUMBER  "
-                + "NOT IN (SELECT E.NUMBER " + "	FROM TSUP.EMPLOYEE E " + "	INNER JOIN TSUP.COURSE_PARTICIPANT CP "
-                + "	ON E.ID = CP.PARTICIPANT_ID "
-                + "	WHERE E.DEPARTMENT_ID = (SELECT E.DEPARTMENT_ID FROM tsup.EMPLOYEE E WHERE E.NUMBER = :employeeNumber) "
-                + "	AND CP.COURSE_SCHEDULE_ID = :courseScheduleId) " + "";
+                + "NOT IN (SELECT E.NUMBER " + "    FROM TSUP.EMPLOYEE E " + "  INNER JOIN TSUP.COURSE_PARTICIPANT CP "
+                + " ON E.ID = CP.PARTICIPANT_ID "
+                + " WHERE E.DEPARTMENT_ID = (SELECT E.DEPARTMENT_ID FROM tsup.EMPLOYEE E WHERE E.NUMBER = :employeeNumber) "
+                + " AND CP.COURSE_SCHEDULE_ID = :courseScheduleId) " + "";
         System.out.println("search: " + "%" + searchForm.getSearch() + "%");
         SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource()
                 .addValue("employeeNumber", searchForm.getEmployeeNumber())
@@ -743,6 +757,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.DETAIL AS DETAILS, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
+                + "C.MANDATORY AS MANDATORY," // Added
+                + "C.DEADLINE AS DEADLINE," // Added
                 + "CS.VENUE_ID AS VENUE_ID, " + "V.NAME AS VENUE_NAME, " + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
                 + "CS.MAX_ALLOWED AS MAX_ALLOWED, " + "C.DETAIL AS COURSE_DETAIL, "
                 + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
@@ -753,8 +769,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "ON CS.ID = CSD.COURSE_SCHEDULE_ID " + "INNER JOIN COURSE AS C " + "ON CS.COURSE_ID = C.ID "
                 + "INNER JOIN EMPLOYEE AS E " + "ON CS.INSTRUCTOR_ID = E.ID " + "INNER JOIN VENUE AS V "
                 + "ON CS.VENUE_ID = V.ID " + "WHERE CS.STATUS = 'A' "
-                + "	AND (SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM TSUP.COURSE_PARTICIPANT "
-                + "         WHERE COURSE_SCHEDULE_ID = CS.ID) < CS.MAX_ALLOWED " + "	AND CS.COURSE_ID = :courseId"
+                + " AND (SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM TSUP.COURSE_PARTICIPANT "
+                + "         WHERE COURSE_SCHEDULE_ID = CS.ID) < CS.MAX_ALLOWED " + "    AND CS.COURSE_ID = :courseId"
                 + " AND NOT CS.ID = :courseScheduleId";
 
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
@@ -772,8 +788,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public void updateCourseParticipant(CourseParticipant courseParticipant) {
 
         String query = "UPDATE COURSE_PARTICIPANT "
-                + "		SET COURSE_SCHEDULE_ID = :courseScheduleId, REGISTRATION_DATE = now() "
-                + "		WHERE COURSE_SCHEDULE_ID = :id AND PARTICIPANT_ID = :participantId;";
+                + "     SET COURSE_SCHEDULE_ID = :courseScheduleId, REGISTRATION_DATE = now() "
+                + "     WHERE COURSE_SCHEDULE_ID = :id AND PARTICIPANT_ID = :participantId;";
         SqlParameterSource updateCourseParticipantParameters = new MapSqlParameterSource()
                 .addValue("courseScheduleId", courseParticipant.getCourseScheduleId())
                 .addValue("id", courseParticipant.getId())
