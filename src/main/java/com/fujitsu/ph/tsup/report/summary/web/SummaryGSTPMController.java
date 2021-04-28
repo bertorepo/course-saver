@@ -22,7 +22,7 @@ import com.fujitsu.ph.tsup.report.summary.service.SummaryGSTPMService;
 import ch.qos.logback.classic.Logger;
 
 @Controller
-@RequestMapping("/report/")
+@RequestMapping("/report/summary")
 public class SummaryGSTPMController {
 
 	
@@ -34,7 +34,7 @@ public class SummaryGSTPMController {
 	
 	
 	
-	 @GetMapping("/summarygstpm") 
+	 @GetMapping("/standardization/pm") 
      public String viewG3CCSummaryForPM(@Valid @ModelAttribute("summaryGSTForm")
      SummaryGSTForm summaryGSTForm, Long reportTypeId, BindingResult bindingResult,Model model){
 		  
@@ -54,15 +54,7 @@ public class SummaryGSTPMController {
 			          summaryGSTForm.setScheduledEndDateTime(ZonedDateTime.now()); 
 			      }
 		 
-		 
-		 summaryGSTForm.setTotalNoJDUPMValue(summaryGSTPMService.countTotalNumberOfJDUPM());
-		 summaryGSTForm.setTotalNoJDUPMLastWeekValue(summaryGSTPMService.countTotalNoJDUPMLastWeek());
-		 summaryGSTForm.setTotalNoOrigMemValue(summaryGSTPMService.countTotalNoOrigMem());
-		 summaryGSTForm.setTotalNoNewMemValue(summaryGSTPMService.countTotalNoNewMem());
-		 summaryGSTForm.setTotalNoJDUPMFinValue(summaryGSTPMService.countTotalNoJDUPMF());
-		 summaryGSTForm.setTotalNoJDUPMLastWkFinValue(summaryGSTPMService.countTotalNoJDUPMLastWkF(summaryGSTForm.getScheduledStartDateTime(), summaryGSTForm.getScheduledEndDateTime()));
-		 summaryGSTForm.setPercentageFinTodayValue(summaryGSTPMService.percentageFinishedToday());
-		 summaryGSTForm.setPercentageFinLastWkValue(summaryGSTPMService.percentageFinishedLastWeek(summaryGSTForm.getScheduledStartDateTime(), summaryGSTForm.getScheduledEndDateTime()));
+			      summaryGSTForm = summaryGSTPMService.getSummary(summaryGSTForm.getScheduledStartDateTime(),summaryGSTForm.getScheduledEndDateTime(),summaryGSTForm);
     
 	     model.addAttribute("summaryGST", summaryGSTForm);
          model.addAttribute("nullMessage", "No Summary Report Found");

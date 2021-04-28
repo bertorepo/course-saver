@@ -69,7 +69,7 @@ function selectReport(){
 			document.getElementById("reportTable").style.display = "none";
 			document.getElementById("summaryMainDiv").style.display = "block";
 		} else if(selectedReportType == 3){
-			window.location.href = "/report/summarygstpm/";
+			window.location.href = "/report/summary/standardization/pm/";
 		}
 		else{
 			
@@ -87,7 +87,7 @@ function viewButton() {
 		document.getElementById("reportTable").style.display = "none";
 		document.getElementById("summaryMainDiv").style.display = "block";
 	} else if(selectedReportType == 3){
-		window.location.href = "/report/summarygstpm/";
+		window.location.href = "/report/summary/standardization/pm/";
 	} else{		
 	
 	}
