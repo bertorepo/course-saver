@@ -67,11 +67,12 @@
 					</div>
 					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
 						<input type="button" id="viewButton" class="btn btn-success"
-						value="View" onclick="viewButton()" style="width: 100px" disabled />
+						value="View" onclick="viewButtonClick()" style="width: 100px">
 						<span style="width:100px"></span>
 						<input type="button" id="exportButton" onclick="fileNameCreator()" class="btn btn-success" value="Export" style="width:100px">
 					</div>
-					<label>Report Display</label>
+					
+					<label>Report Display Summary</label>
 					<div class="container" id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
 						<div id="summaryPM" class="row" style="margin-top:15px">
 							<div class="col-md-6"> 
@@ -178,6 +179,6 @@
 		<!-- Error Modal End -->
 	</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
-	<script>
+	
 </body>
 </html>
