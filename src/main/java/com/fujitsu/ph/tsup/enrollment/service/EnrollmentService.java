@@ -18,11 +18,15 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
 * <pre>
@@ -144,5 +148,9 @@ public interface EnrollmentService {
 	
 	/* Upload Certificate */
 	void uploadCertificate(Certificate certificate);
+	
+	public String storeFile(MultipartFile file,Long id);
+	
+	public Resource loadFileAsResource(String fileName);
 	
 }
