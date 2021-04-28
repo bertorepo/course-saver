@@ -17,8 +17,6 @@
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
 	<script th:src="@{/js/app/moment.min.js}"></script>
-	<script src="https://unpkg.com/pdfobject@2.2.5/pdfobject.min.js"
-	></script>
 	<style>
 		.sticky {
 			position: -webkit-sticky;
@@ -45,22 +43,6 @@
 			resize: none
 		}
 		
-		.pdfobject-container {
-			max-width: 100%;
-			width: 600px;
-			height: 600px;
-			border: 10px solid rgba(0, 0, 0, .2);
-			margin: 0;
-		}
-
-		#my-pdf {
-			margin: auto;
-			padding: 10px;
-		}
-
-		#pdf-preview-container {
-			margin-bottom: 1rem;
-		}
 	</style>
 
 </head>
@@ -139,7 +121,7 @@
 					<th:block th:each="courseSchedules : *{courseSchedules}">
 						<tr th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
 
-							<td class="align-middle" th:attr="onclick=|previewCertificate('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}')|"
+							<td class="align-middle" th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}')|"
 							th:text="${courseSchedules.courseName}"></td>
 							<td class="align-middle" th:text="${courseSchedules.instructorName}"></td>
 							<td class="align-middle" th:text="${courseSchedules.venueName}"></td>
@@ -222,24 +204,24 @@
 								<span aria-hidden="true">&times;</span>
 						</div>
 						<div class="modal-body">
-							<form class="form-horizontal" th:action="@{/enrollment/__${courseId1}__/upload}"
-								method="post">
+							<form class="form-horizontal" id ="certificateUpload">
 								<input type="hidden" name="courseId1" id="courseId1"></input>
 								<div class="modal-body" style="text-align: center" aria-hidden="true">
-									<input type="file" id="certificate" name="certificate" accept=".pdf"
+									<input type="file" id="certificateFile" name="certificateFile"
 										class="form-control-file border"></input>
 								</div>
 								<button type="button" class="btn btn-danger float-right" data-dismiss="modal"
 									style="margin: 5px;">Cancel</button>
-								<input type="submit" id="btn_upload" class="btn btn-info float-right" value="Upload"
+								<button type="submit" id="btn_upload" class="btn btn-info float-right"
 									data-target="#successCertificateModal" style="margin: 5px;"
-									disabled>
+									disabled> Upload</button>
 							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- Upload Certificate End -->
+			
 			<!--  Successful modal upload -->
 			<div class="modal fade" id="successCertificateModal" tabindex="-1" role="dialog"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -254,19 +236,19 @@
 						<h5 class="col-lg-20 col-form-label" align="center"
 							id="successMessage">You have successfully uploaded a certificate.</h5>
 						<div class="modal-body" align="center">
-							<button type="button" class="btn btn-primary btn-success"data-dismiss="modal">Okay</button>
+							<button id = "okay_btn" type="button" class="btn btn-primary btn-success"data-dismiss="modal">Okay</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!--  Successful modal upload end -->
 			
-			<!-- Preview Certificate -->
-			<div id="certificatePreview" class="modal fade" role="dialog">
+			<!-- Download Certificate -->
+			<div id="certificateDownload" class="modal fade" role="dialog">
 				<div class="modal-dialog modal-dialog-centered modal-lg">
 					<div class="modal-content">
 						<div class="modal-header text-left">
-							<h5 class="modal-title"><i class="far fa-file-pdf"></i> Certificate Preview
+							<h5 class="modal-title"><i class="far fa-file-pdf"></i> Certificate Download
 							</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -276,7 +258,6 @@
 							<div class="form-group row">
 								<input type="hidden" name="courseId" id="courseIdHidden">
 								<input type="hidden" name="id" id="courseParticipantIdHidden">
-								<input type="hidden" name="courseScheduleId" id="courseScheduleIdHidden">
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control border-0 bg-white shadow-none"
@@ -288,10 +269,8 @@
 										readonly>
 								</div>
 							</div>
-							<h6 style="font-weight: bold;">Certificate</h6>
-							<div id="pdf-preview-container">
-								<div id="my-pdf"></div>
-							</div>
+							<h6 style="font-weight: bold;">Certificate Download:</h6>
+							<iframe src="C:\Users\m.salvador\Desktop\2200000_Mel CHristian.pdf" height="100%" width="100%" scrolling="auto">fghg</iframe>
 						</div>
 
 					</div>
@@ -651,21 +630,51 @@
 			document.getElementById('courseId1').value = courseId;
 			$('#uploadmodal').modal('show');
 		}
-		$("#certificate").change(function () {
+		$("#certificateFile").change(function () {
 			var val = $(this).val();
 			if (val != 0) {
 				$("#btn_upload").removeAttr("disabled");
 			}
 		});
-		function previewCertificate(courseName, dateTaken) {
+		function certificateDownload(courseName, dateTaken) {
 			document.getElementById('courseName').value = courseName;
 			document.getElementById('dateTaken').value = dateTaken;
-			$('#certificatePreview').modal('show');
+			$('#certificateDownload').modal('show');
 		}
-			
-	</script>
-	<script>
-		PDFObject.embed("./", "#my-pdf");
+		
+		
+		
+		
+		
+		'use strict';
+		var certificateUpload = document.querySelector('#certificateUpload');
+		var certificateFile = document.querySelector('#certificateFile');
+		function uploadCertificate(certificateFile){
+			var courseId = document.getElementById('courseId1').value;
+			var formData = new FormData();
+		    formData.append("file", certificateFile);
+		    formData.append("courseId1", courseId);
+		   	var xhr = new XMLHttpRequest();
+		   	alert(courseId);
+		    xhr.open("POST", "/enrollment/{courseId1}/upload");
+		    xhr.onload = function() {
+		        if(xhr.status == 200) {
+		        	$('#uploadModal').modal('hide');
+		        	$('#successCertificateModal').modal('show');
+		        }
+		    }
+		    
+		    xhr.send(formData);
+		}    
+		certificateUpload.addEventListener('submit', function(event){
+		    var files = certificateFile.files;
+		    uploadCertificate(files[0]);
+		    event.preventDefault();
+		}, true);
+		
+		$( "#okay_btn" ).click(function() {
+			 window.location.href = "/enrollment/mySchedules";
+			});
 	</script>
 </body>
 
