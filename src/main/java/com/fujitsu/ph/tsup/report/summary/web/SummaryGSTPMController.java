@@ -30,16 +30,16 @@ import ch.qos.logback.classic.Logger;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
-//0.01    | 2021/04/23 | WS) d.escala          | Initial Version
+//0.01    | 2021/04/20 | WS) d.escala          | Initial Version
 //0.02    | 2021/04/23 | WS) m.padaca          | Updated
 //0.03    | 2021/04/27 | WS) m.padaca          | Updated
 //==================================================================================================
 /**
 * <pre>
-* The controller for the summaryGSTPM
+* The controller for summaryGSTPM
 * </pre>
 * 
-* @version 0.3
+* @version 0.03
 * @author m.padaca
 * @author d.escala
 */
