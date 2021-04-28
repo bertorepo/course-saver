@@ -12,6 +12,39 @@ public class CertificateForm {
 	private Long courseId;
 	private ZonedDateTime uploadDate;
 	
+	@Lob
+	@Column(name = "certificateFile")
+	private byte[] certificateFile;
+	
+	private String fileDownloadUri;
+	private String fileType;
+	private long size;
+	
+	
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
+	}
+
+	public String getFileDownloadUri() {
+		return fileDownloadUri;
+	}
+
+	public void setFileDownloadUri(String fileDownloadUri) {
+		this.fileDownloadUri = fileDownloadUri;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+
 	public ZonedDateTime getUploadDate() {
 		return uploadDate;
 	}
@@ -20,10 +53,6 @@ public class CertificateForm {
 		this.uploadDate = uploadDate;
 	}
 
-	@Lob
-	@Column(name = "certificateFile")
-	private byte[] certificateFile;
-	
 	public byte[] getCertificateFile() {
 	
 		return certificateFile;
