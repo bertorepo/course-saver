@@ -160,3 +160,16 @@ function downloadCSV(csv, filename) {
 		downloadLink.click();
 	}
 }
+
+		var dateErrorMessage = "To Date should be greater than to From Date";
+		
+		function viewButtonClick(){
+			
+			if( $("#startDate").val() >=  $("#endDate").val()){
+				document.getElementById("message").innerHTML = dateErrorMessage;
+				$('#errorModal').modal('show');
+			}else{
+				document.getElementById("summaryGstForPMForm").submit();
+			}
+		}	
+		
