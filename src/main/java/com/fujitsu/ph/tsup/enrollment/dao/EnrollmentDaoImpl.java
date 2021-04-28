@@ -805,8 +805,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public void uploadCertificate(Certificate certificate) {
     	
     	String query = "INSERT INTO CERTIFICATE_UPLOAD"
-    			+ " (employee_id, course_id, certificate, upload_date, certificateFile)"
-    			+ " VALUES(:employee_id, :course_id, :certificate, :upload_date, :certificateFile)";
+    			+ " (employee_id, course_id, certificate, upload_date)"
+    			+ " VALUES(:employee_id, :course_id, :certificate, :upload_date)";
     	
     	
 
@@ -828,11 +828,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     			.addValue("employee_id", certificate.getUser())
     			.addValue("course_id", certificate.getCourseId())
     			.addValue("upload_date", certificate.getUploadDate()
-    				.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-    			.addValue("certificateFile", certificate.getCertificateFile());
-    			
-
-    					
+    				.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
+  					
     	template.update(query, sqlParameterSource);
     	
     }
