@@ -5,6 +5,10 @@ package com.fujitsu.ph.tsup.reports.summary.model;
 
 import java.time.ZonedDateTime;
 
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * MandatoryCoursesForm class
  * 
@@ -27,11 +31,15 @@ public class MandatoryCourses {
     /**
      *  Start Date and Time
      */
+    @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime startDateTime;
     
     /**
      *  End Date and Time
      */
+    @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime endDateTime;
    
     /**
