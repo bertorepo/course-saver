@@ -172,8 +172,7 @@
 		
 		var fromDateTime = $("#startDateTime").val();
 		var toDateTime = $("#endDateTime").val();
-		alert(fromDateTime);
-		alert(toDateTime);
+
 		var rowCount = $('#summaryCoursesTable tr').length - 1;
 		
 		function load() {
@@ -198,9 +197,6 @@
 			document.getElementById("startDate").value = fromNewDate;				
 			document.getElementById("endDate").value = toNewDate;
 
-			alert("fromDateTime.slice " + fromNewDate);
-			alert("toDateTime.slice " + toNewDate);
-			
 			document.getElementById('inputCourse').value;
 			
 			var selectReportType = document.getElementById("selectReportType").value;
