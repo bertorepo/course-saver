@@ -1,8 +1,25 @@
 function load() {
 	$("#viewButton").removeAttr('disabled');
 	document.getElementById("reportTable").style.display = "block";
-	document.getElementById("summaryMainDiv").style.display = "none";
+	document.getElementById("summaryMainDiv").style.display = "none";	
 }
+
+function selectReport(){
+		var selectedReportType = document.getElementById("selectReportType").value;
+		
+		if(selectedReportType == 1){
+			window.location.href = "/report/course/";
+		} else if(selectedReportType == 2){
+			document.getElementById("reportTable").style.display = "none";
+			document.getElementById("summaryMainDiv").style.display = "block";
+		} else if(selectedReportType == 3){
+			window.location.href = "/report/summarygstpm/";
+		}
+		else{
+			
+		}
+}
+
 function viewButton() {
 	$("#viewButton").attr('disabled', 'disabled');
 	$("#exportButton").removeAttr('disabled');
@@ -13,6 +30,9 @@ function viewButton() {
 	} else if(selectedReportType == 2){
 		document.getElementById("reportTable").style.display = "none";
 		document.getElementById("summaryMainDiv").style.display = "block";
+	} else if(selectedReportType == 3){
+		document.getElementById("reportTable").style.display = "none";
+		document.getElementById("summaryPM").style.display = "block";
 	} else{		
 	
 	}
@@ -27,7 +47,6 @@ Date.prototype.YYYYMMDDHHMMSS = function () {
 	return yyyy + MM + dd+  hh + mm + ss;
 };
 function fileNameCreator(){
-	alert("test");
 	var selectedReportType = document.getElementById("selectReportType").value;
 	var strFileName = "Summary of "; 
 	var dt = new Date();

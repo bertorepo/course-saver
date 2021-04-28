@@ -16,9 +16,9 @@
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
 <script th:src="@{/js/app/moment.min.js}"></script>
-<script th:src="@{/js/lib/summaryCourses.js}"></script>
+<script th:src="@{/js/lib/summaryReport.js}"></script>
 </head>
-<body onload="load()">
+<body>
 	<div th:insert="fragments/general.html :: header" > </div>
 	<div class="container mt-5 div_minheight">
 		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
@@ -31,11 +31,12 @@
 					<span style="width:70px"></span>
 						<div class="col-lg-5">
 							<select id="selectReportType" name="selectReportType" class="form-control" required
-							onchange="load()" style="width:525px; text-align-last:center;">
+							onchange="selectReport()" style="width:525px; text-align-last:center;">
 								<option value="" disabled selected hidden>Please Select Report Type</option>
 								<option th:value="0" disabled hidden></option>
 								<option th:value="1">Summary of Course Conducted</option>
-								<option th:value="3" selected>Summary of G3CC Training for PM</option>
+								<option th:value="2">Summary of G3CC Standardization Training for Dev</option>
+								<option th:value="3" selected>Summary of G3CC Standardization Training for PM</option>
 							</select>
 						</div>
 				</div>	     		
@@ -65,13 +66,14 @@
 						    </div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
-						<input type="button" id="viewButton" class="btn btn-success" value="View" onclick="viewButtonClick()" style="width:100px" disabled>
+						<input type="button" id="viewButton" class="btn btn-success"
+						value="View" onclick="viewButton()" style="width: 100px" disabled />
 						<span style="width:100px"></span>
 						<input type="button" id="exportButton" onclick="fileNameCreator()" class="btn btn-success" value="Export" style="width:100px">
 					</div>
 					<label>Report Display</label>
 					<div class="container" id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
-						<div id="summaryMainDiv" class="row" style="margin-top:15px">
+						<div id="summaryPM" class="row" style="margin-top:15px">
 							<div class="col-md-6"> 
 								<table class="summaryTable">
 									<tr>
@@ -112,7 +114,7 @@
 										<td class="table-success percenttd"> Percentage Finished as of Last Week (Total PM and Also Total Courses)</td>
 									</tr>
 									<tr>
-										<td class="percenttext" th:text="*{PercentageFinLastWkValue }+ '%'"></td>
+										<td class="percenttext" th:text="*{PercentageFinLastWkValue}+ '%'"></td>
 									</tr>
 								</table>
 							</div>
@@ -121,7 +123,7 @@
 				</div>
 			</div>
 		</form>
-	</div>
+	
 
 	<!-- Export Summary of G3CC Standardization Training  -->
 		<table id="exportSummaryTable"
@@ -174,7 +176,7 @@
 			</div>
 		</div>
 		<!-- Error Modal End -->
-	
+	</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 </body>
 </html>
