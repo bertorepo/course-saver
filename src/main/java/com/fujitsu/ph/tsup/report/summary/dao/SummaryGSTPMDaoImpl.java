@@ -35,7 +35,7 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 	@Override
 	public int getCatId() {
 		String query = "SELECT id FROM tsup.COURSE_CATEGORY WHERE category = :category";
-		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("category", "G3CC Standardization Training");
+		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("category", "JDU Standardization Training");
 		return template.queryForObject(query,sqlParameterSource,Integer.class);
 	}
 
@@ -55,7 +55,7 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 	}
 
 	@Override
-	public int countTotalNumberJDUPMFinished(List<Integer> gstCourses,int deptId, List<Integer> roleID) {
+	public int countTotalNumberJDUPMFinished(List<Integer> gstCourses,int deptId, List<Integer> roleID, ZonedDateTime EndDate) {
 		String query = "SELECT Count (e.id)" 
 						+" From tsup.employee as e"
 						+" inner join tsup.course_attendance as ca"
@@ -69,11 +69,13 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 						+" where c.id in (:courses)"
 						+" and e.department_id = :deptId"
 						+" and e.member_role_id in (:roleId)"
-						+" and cs.status ='D';";
+						+" and cs.status ='D'"
+						+ "and ca.log_out_dateTime < :EndDate;";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
 													.addValue("deptId", deptId)
 													.addValue("courses", gstCourses)
-													.addValue("roleId", roleID);
+													.addValue("roleId", roleID)
+													.addValue("EndDate", EndDate.toOffsetDateTime());
 		return template.queryForObject(query,sqlParameterSource,Integer.class);
 	}
 
@@ -93,12 +95,14 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 				+" and e.department_id = :deptId"
 				+" and e.member_role_id in (:roleId)"
 				+" and cs.status ='D'"
-				+" and ((ca.log_out_dateTime >= date_trunc('week', CURRENT_TIMESTAMP - interval '1 week')"																					
-				+" and ca.log_out_dateTime < date_trunc('week', CURRENT_TIMESTAMP)));";
+				+" and ((ca.log_out_dateTime >= date_trunc('week', :startDate - interval '1 week')"																					
+				+" and ca.log_out_dateTime < date_trunc('week', :EndDate)));";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
 													.addValue("deptId", deptId)
 													.addValue("courses", gstCourses)
-													.addValue("roleId", roleId);
+													.addValue("roleId", roleId)
+													.addValue("EndDate",EndDate.toOffsetDateTime())
+													.addValue("startDate", startDate.toOffsetDateTime());
 		return template.queryForObject(query,sqlParameterSource,Integer.class);
 	}
 

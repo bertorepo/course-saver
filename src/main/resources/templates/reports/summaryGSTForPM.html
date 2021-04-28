@@ -23,7 +23,7 @@
 	<div class="container mt-5 div_minheight">
 		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
 		<hr>
-		<form id="summaryGstForPMForm" class="form-horizontal" action="#" th:action="@{/report/summarygstpm}"  th:object="${summaryGST}"  method="GET">
+		<form id="summaryGstForPMForm" class="form-horizontal" action="#" th:action="@{/report/summary/standardization/pm}"  th:object="${summaryGST}"  method="GET">
 		<div class="card">
 			<div class="card-body">
 				<div class="form-group row align-items-center justify-content-center">
@@ -142,16 +142,16 @@
 					<th>Percentage Finished As Of Last Week (Total PM and Also Total Courses)</th>
 				</tr>
 			</thead>
-			<tbody id="tBodyExportSummary" th:each="summary : ${summaryGST}">
+			<tbody id="tBodyExportSummary" th:object="${summaryGST}">
 				<tr class="content">
-					<td th:text="${summary.TotalNoJDUPMValue}"></td>
+					<td th:text="*{TotalNoJDUPMValue}"></td>
 					<td>NA</td>
 					<td>NA</td>
 					<td>NA</td>
-					<td th:utext="${summary.TotalNoJDUPMFinValue}"></td>
-					<td th:utext="${summary.TotalNoJDUPMLastWkFinValue}"></td>
-					<td th:text="${percentageFinTodayValue} + '%'"></td>
-					<td th:text="${percentageFinLastWkValue} + '%'"></td>
+					<td th:utext="*{TotalNoJDUPMFinValue}"></td>
+					<td th:utext="*{TotalNoJDUPMLastWkFinValue}"></td>
+					<td th:text="*{percentageFinTodayValue} + '%'"></td>
+					<td th:text="*{percentageFinLastWkValue} + '%'"></td>
 				</tr>
 			</tbody>
 		</table>

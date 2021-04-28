@@ -1,32 +1,26 @@
 package com.fujitsu.ph.tsup.report.summary.service;
 
 import java.time.ZonedDateTime;
+import java.util.List;
+
+import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTForm;
 
 
 public interface SummaryGSTPMService {
 	
+	long countTotalNumberOfJDUPM(int deptId);
+
+	long countTotalNoJDUPMLastWeek();
+
+	long countTotalNoOrigMem();
+
+	long countTotalNoNewMem();
+
+	long countTotalNoJDUPMF(List<Integer> gstCourses, int deptId, List<Integer> roleId,ZonedDateTime EndDateTime);
 	
-	public double percentageFinishedToday();
-	
-	public double percentageFinishedLastWeek(ZonedDateTime StartDateTime, 
-			ZonedDateTime EndDateTime );
+	long countTotalNoJDUPMLastWkF(ZonedDateTime StartDateTime, ZonedDateTime EndDateTime, List<Integer> gstCourses,
+			int deptId, List<Integer> roleId);
 
-	public long countTotalNumberOfJDUPM();
-
-	public long countTotalNoJDUPMLastWeek();
-
-	public long countTotalNoOrigMem();
-
-	public long countTotalNoNewMem();
-
-	public long countTotalNoJDUPMF();
-
-	public long countTotalNoJDUPMLastWkF (ZonedDateTime StartDateTime, 
-			ZonedDateTime EndDateTime );
-
-
-	
-	
-	
+	SummaryGSTForm getSummary(ZonedDateTime StartDateTime,ZonedDateTime EndDateTime,SummaryGSTForm summaryGSTForm);
 
 }

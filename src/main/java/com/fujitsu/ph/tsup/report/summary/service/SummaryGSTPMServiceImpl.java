@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.report.summary.dao.SummaryGSTPMDao;
+import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTForm;
 
 
 
@@ -16,26 +17,9 @@ public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
 
 	@Autowired
 	private SummaryGSTPMDao summaryGSTPMDao;
-	
-	@Override
-	public double percentageFinishedToday() {
-		
-		double countTotalNumberOfJDUPM3= countTotalNoJDUPMF()/countTotalNumberOfJDUPM()*100; 
-		return countTotalNumberOfJDUPM3;
-	}
 
 	@Override
-	public double percentageFinishedLastWeek(ZonedDateTime StartDateTime, 
-			ZonedDateTime EndDateTime ) {
-		
-		double countTotalNumberOfJDUPM2= countTotalNoJDUPMLastWkF(StartDateTime, EndDateTime)/countTotalNumberOfJDUPM()*100;
-		return countTotalNumberOfJDUPM2; 
-	}
-
-	@Override
-	public long countTotalNumberOfJDUPM() {
-		
-		int deptId= summaryGSTPMDao.getDeptId();
+	public long countTotalNumberOfJDUPM(int deptId) {
 		return summaryGSTPMDao.countTotalNumberOfJDUPM(deptId);
 		
 	}
@@ -47,35 +31,43 @@ public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
 
 	@Override
 	public long countTotalNoOrigMem() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public long countTotalNoNewMem() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public long countTotalNoJDUPMF() {
-		
-		int catId= summaryGSTPMDao.getCatId();
-		List<Integer> gstCourse= summaryGSTPMDao.gstCourses(catId);
-	    List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
-	    int deptId= summaryGSTPMDao.getDeptId();
-		return summaryGSTPMDao.countTotalNumberJDUPMFinished(gstCourse, deptId, roleId);
+	public long countTotalNoJDUPMF(List<Integer> gstCourses,int deptId,List<Integer> roleId,ZonedDateTime EndDateTime) {
+		return summaryGSTPMDao.countTotalNumberJDUPMFinished(gstCourses, deptId, roleId,EndDateTime);
 	}
 
 	@Override
 	public long countTotalNoJDUPMLastWkF(ZonedDateTime StartDateTime, 
-			ZonedDateTime EndDateTime ) {
+			ZonedDateTime EndDateTime ,List<Integer> gstCourses,int deptId,List<Integer> roleId ) {
+		return summaryGSTPMDao.countTotalNumberJDUPMFinishedLW(StartDateTime, EndDateTime, gstCourses, deptId, roleId);
+	}
 
-		int catId= summaryGSTPMDao.getCatId();
-		List<Integer> gstCourses= summaryGSTPMDao.gstCourses(catId);
+	@Override
+	public SummaryGSTForm getSummary(ZonedDateTime StartDateTime,ZonedDateTime EndDateTime,SummaryGSTForm summaryGSTForm) {
+		
+		double df = Math.pow(10, 2);
+		List<Integer> gstCourses= summaryGSTPMDao.gstCourses(summaryGSTPMDao.getCatId());
 	    List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
 	    int deptId= summaryGSTPMDao.getDeptId();
-		return summaryGSTPMDao.countTotalNumberJDUPMFinishedLW(StartDateTime, EndDateTime, gstCourses, deptId, roleId);
+		
+	    summaryGSTForm.setTotalNoJDUPMValue(countTotalNumberOfJDUPM(deptId));
+	    summaryGSTForm.setTotalNoJDUPMLastWeekValue(countTotalNoJDUPMLastWeek());
+	    summaryGSTForm.setTotalNoOrigMemValue(countTotalNoOrigMem());
+	    summaryGSTForm.setTotalNoNewMemValue(countTotalNoNewMem());
+		summaryGSTForm.setTotalNoJDUPMLastWkFinValue(countTotalNoJDUPMLastWkF(StartDateTime,EndDateTime,gstCourses,deptId,roleId));
+		summaryGSTForm.setTotalNoJDUPMFinValue(countTotalNoJDUPMF(gstCourses,deptId,roleId,EndDateTime));
+		summaryGSTForm.setPercentageFinTodayValue(Math.round((double)countTotalNoJDUPMF(gstCourses,deptId,roleId,EndDateTime)/countTotalNumberOfJDUPM(deptId)*100*df)/df);
+		summaryGSTForm.setPercentageFinLastWkValue(Math.round((double)countTotalNoJDUPMLastWkF(StartDateTime,EndDateTime,gstCourses,deptId,roleId)/countTotalNumberOfJDUPM(deptId)*100*df)/df);
+		
+		return summaryGSTForm;
 	}
 
 
