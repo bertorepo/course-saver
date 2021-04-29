@@ -15,6 +15,7 @@ import java.util.Set;
 
 
 import com.fujitsu.ph.tsup.reports.summary.dao.*;
+import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
 
 /**
 * <pre>
@@ -31,22 +32,16 @@ public interface MandatoryCoursesDao {
 	 * <pre>
      * 	Find the total number of  JDU based on the given date range
      * </pre>
-     * @param selectedStartDateTime
-     * @param selectedEndDateTime 
      */
-	/*Set<MandatoryCourses> findMandatoryCourses(ZonedDateTime selectedStartDateTime,
-			ZonedDateTime selectedEndDateTime);*.
+	Set<MandatoryCourses> findMandatoryCourses();
 	
 	
 	/**
 	 * <pre>
      * 	Count the total number of JDU
      * </pre>
-     * @param selectedStartDateTime
-     * @param selectedEndDateTime 
      */
-	int findTotalNumberOfJdu(ZonedDateTime selectedStartDateTime,
-			ZonedDateTime selectedEndDateTime);
+	int findTotalNumberOfJdu();
 	
 	/**
 	 * <pre>
@@ -66,7 +61,7 @@ public interface MandatoryCoursesDao {
      * @param selectedStartDateTime
      * @param selectedEndDateTime 
      */
-	int findTotalNumberOfJduWhoFinishedTrainingLastWeek(ZonedDateTime selectedStartDateTime,
+	int findTotalNumberOfJduWhoFinishedTrainingLastweek(ZonedDateTime selectedStartDateTime,
 			ZonedDateTime selectedEndDateTime);
 	
 }
