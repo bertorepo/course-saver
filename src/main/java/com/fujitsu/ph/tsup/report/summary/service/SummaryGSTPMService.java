@@ -40,7 +40,7 @@ public interface SummaryGSTPMService {
     
      */
 	
-	long countTotalNumberOfJDUPM(int deptId);
+	long countTotalNumberOfJDUPM(int deptId,List<Integer> roleId);
 
 	long countTotalNoJDUPMLastWeek();
 

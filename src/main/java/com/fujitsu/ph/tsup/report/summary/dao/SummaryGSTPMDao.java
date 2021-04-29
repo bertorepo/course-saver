@@ -41,7 +41,7 @@ public interface SummaryGSTPMDao {
 	public List<Integer> gstCourses(int catId);
 	
 	//get Total count of JDU PM
-	public int countTotalNumberOfJDUPM(int deptId);
+	public int countTotalNumberOfJDUPM(int deptId,List<Integer> roleID);
 	
 	//get Total count of JDU PM Finished
 	public int countTotalNumberJDUPMFinished(List<Integer> gstCourses, int deptId,List<Integer> roleId, ZonedDateTime EndDate);
