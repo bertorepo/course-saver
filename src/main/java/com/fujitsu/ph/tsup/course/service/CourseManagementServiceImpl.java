@@ -6,6 +6,7 @@ package com.fujitsu.ph.tsup.course.service;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
@@ -101,14 +102,16 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     }
     
     /**
-     * Author: WS)C.Arias
+     * Author: WS)I.Fajardo
      * Creates course.
      */
     public void createCourse(Course course) {
     	
-    	//call the dao method
-    	courseManagementDao.createCourse(course);
-    	
+    	try {
+    		courseManagementDao.createCourse(course);
+        } catch (DataAccessException ex) {
+            throw new IllegalArgumentException("Can't create new course");
+        }
     }
     
     /**
