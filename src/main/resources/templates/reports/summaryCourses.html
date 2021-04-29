@@ -50,6 +50,7 @@
 								<option value="" disabled selected hidden>Please Select Report Type</option>
 								<option th:value="0" disabled hidden></option>
 								<option th:value="1" selected>Summary of Course Conducted</option>
+								<option th:value="2">Summary of JDU Standardization Training for Dev</option>
 
 							</select>
 						</div>
@@ -226,7 +227,7 @@
 				listEmptyMessage.style.display = "block";
 			}
 			else if(selectReportType == 2){				
-				window.location.href = "/report/members/";
+				window.location.href = "/report/summary/standardization/dev/";
 			}
 			else{
 				window.location.href = "/report/load/";

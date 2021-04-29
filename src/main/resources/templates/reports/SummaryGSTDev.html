@@ -47,15 +47,13 @@ hr {
 						Type</label> <span style="width: 70px"></span>
 					<div class="col-lg-5">
 						<select id="selectReportType" name="selectReportType"
-							class="form-control" required onchange="load()"
+							class="form-control" required onchange="selectReport()"
 							style="width: 525px; text-align-last: center;">
-							<option value="" disabled selected hidden>Please Select
+							<option value="" disabled hidden>Please Select
 								Report Type</option>
 							<option th:value="0" disabled hidden></option>
 							<option th:value="1">Summary of Course Conducted</option>
-							<option th:value="2" selected>Summary of G3CC
-								Standardization Training for Dev</option>
-
+							<option th:value="2" selected>Summary of JDU Standardization Training for Dev</option>
 						</select>
 					</div>
 				</div>
@@ -118,7 +116,7 @@ hr {
 									<td th:text="${TotalNoJDUDevLastWeekValue}"></td>
 								</tr>
 								<tr>
-									<th>Total Number of Original Members</th>
+									<th>Total Number of Existing Members</th>
 									<td th:text="${TotalNoOrigMemValue}"></td>
 								</tr>
 								<tr>
@@ -130,8 +128,7 @@ hr {
 									<td th:text="${TotalNoJDUDevFinValue}"></td>
 								</tr>
 								<tr>
-									<th>Total Number of JDU Devs Last Week Who Finished the
-										training</th>
+									<th>Total Number of JDU Devs Last Week Who Finished the training</th>
 									<td th:text="${TotalNoJDUDevLastWkFinValue}"></td>
 								</tr>
 							</table>
@@ -140,8 +137,7 @@ hr {
 							<table id="summaryGSTDev2"
 								class="table table-bordered text-center">
 								<tr>
-									<th>Percentage Finished As Of Today (Total Devs and Also
-										Total Courses)</th>
+									<th>Percentage Finished As Of Today (Total Devs and Also Total Courses)</th>
 								</tr>
 								<tr style="font-size: 200%; line-height: 2.4;">
 									<td th:text="${PercentageFinTodayValue + '%'}"></td>
@@ -150,8 +146,7 @@ hr {
 							<table id="summaryGSTDev3"
 								class="table table-bordered text-center">
 								<tr>
-									<th>Percentage Finished As Of Last Week (Total Devs and
-										Also Total Courses)</th>
+									<th>Percentage Finished As Of Last Week (Total Devs and Also Total Courses)</th>
 								</tr>
 								<tr style="font-size: 200%; line-height: 2.4;">
 									<td th:text="${PercentageFinLastWkValue + '%'}"></td>
@@ -172,7 +167,7 @@ hr {
 					<tr>
 						<th>Total Number of JDU Devs</th>
 						<th>Total Number of JDU Devs Last Week</th>
-						<th>Total Number of Original Members</th>
+						<th>Total Number of Existing Members</th>
 						<th>Total Number of New Members</th>
 						<th>Total Number of JDU Devs Who Finished the training</th>
 						<th>Total Number of JDU Devs Last Week Who Finished the training</th>

@@ -4,6 +4,13 @@ function load() {
 	document.getElementById("summaryMainDiv").style.display = "none";
 }
 
+function selectReport(){
+	$("#viewButton").removeAttr('disabled');
+	$("#exportButton").attr('disabled', 'disabled');
+	document.getElementById("reportTable").style.display = "block";
+	document.getElementById("summaryMainDiv").style.display = "none";
+}
+
 function viewButton() {
 	$("#viewButton").attr('disabled', 'disabled');
 	$("#exportButton").removeAttr('disabled');
@@ -34,14 +41,14 @@ function fileNameCreator(){
 	var strFileName = "Summary of "; 
 	var dt = new Date();
 	if (selectedReportType == 2){
-		strFileName += "G3CC Standardization Training for Dev - ";
+		strFileName += "JDU Standardization Training for Dev - ";
 	} else if (selectedReportType == 3){
-		strFileName += "G3CC Standardization Training for PM - ";
+		strFileName += "JDU Standardization Training for PM - ";
 	} else if (selectedReportType == 4){
 		strFileName += "Mandatory Courses - ";
 	}
 	strFileName +=  dt.YYYYMMDDHHMMSS() + ".csv";
-	exportTableToCSV(strFileName)
+	exportTableToCSV(strFileName);
 }
 
 function pad(number, length) {
@@ -72,14 +79,11 @@ function exportTableToCSV(filename) {
 		
 function downloadCSV(csv, filename) {
 	if ($('#selectReportType').val() == 0) {
-		document.getElementById("message").innerHTML = ""// enter
-														// error
-														// message";
+		document.getElementById("message").innerHTML = ""// enter error message";
 		$('#errorModal').modal('show');
 	} else {
 		var csvFile;
 		var downloadLink;
-		alert("Report exported successfully");
 		csvFile = new Blob([ csv ], {
 			type : "text/csv;charset=utf-8"
 		});
@@ -88,5 +92,6 @@ function downloadCSV(csv, filename) {
 		downloadLink.href = window.URL.createObjectURL(csvFile);
 		downloadLink.style.display = "none";
 		downloadLink.click();
+		setTimeout(function(){ alert("Report exported successfully"); }, 3000);
 	}
 }
