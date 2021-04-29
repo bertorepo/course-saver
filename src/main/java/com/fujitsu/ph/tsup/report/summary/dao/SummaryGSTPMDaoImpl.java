@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 //0.02    | 2021/04/23 | WS) d.escala          | Updated
 //0.03    | 2021/04/27 | WS) d.escala          | Updated
 //0.04    | 2021/04/28 | WS) d.escala          | Updated
+//0.05    | 2021/04/29 | WS) r.naval           | Updated
 //==================================================================================================
 /**
 * <pre>
@@ -74,9 +75,9 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 	@Override
 	public int countTotalNumberOfJDUPM(int deptId ,List<Integer> roleID) {
 		String query = "SELECT Count (*) FROM tsup.EMPLOYEE WHERE DEPARTMENT_ID = :deptId"
-						+"and e.member_role_id in (:roleId)";
+						+" and member_role_id in (:roleId)";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("deptId", deptId)
-																			.addValue("roleId", roleID);
+																		   .addValue("roleId", roleID);
 		return template.queryForObject(query,sqlParameterSource,Integer.class);
 	}
 
