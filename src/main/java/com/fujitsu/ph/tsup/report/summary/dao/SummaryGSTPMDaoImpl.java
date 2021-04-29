@@ -72,9 +72,11 @@ public class SummaryGSTPMDaoImpl implements SummaryGSTPMDao{
 	}
 	
 	@Override
-	public int countTotalNumberOfJDUPM(int deptId) {
-		String query = "SELECT Count (*) FROM tsup.EMPLOYEE WHERE DEPARTMENT_ID = :deptId";
-		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("deptId", deptId);
+	public int countTotalNumberOfJDUPM(int deptId ,List<Integer> roleID) {
+		String query = "SELECT Count (*) FROM tsup.EMPLOYEE WHERE DEPARTMENT_ID = :deptId"
+						+"and e.member_role_id in (:roleId)";
+		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("deptId", deptId)
+																			.addValue("roleId", roleID);
 		return template.queryForObject(query,sqlParameterSource,Integer.class);
 	}
 

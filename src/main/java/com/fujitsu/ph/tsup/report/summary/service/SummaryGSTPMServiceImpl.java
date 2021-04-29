@@ -41,8 +41,8 @@ public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
 	private SummaryGSTPMDao summaryGSTPMDao;
 
 	@Override
-	public long countTotalNumberOfJDUPM(int deptId) {
-		return summaryGSTPMDao.countTotalNumberOfJDUPM(deptId);
+	public long countTotalNumberOfJDUPM(int deptId, List<Integer> roleId) {
+		return summaryGSTPMDao.countTotalNumberOfJDUPM(deptId,roleId);
 		
 	}
 
@@ -80,14 +80,14 @@ public class SummaryGSTPMServiceImpl implements SummaryGSTPMService   {
 	    List<Integer> roleId= summaryGSTPMDao.getEmployeeRoleId();
 	    int deptId= summaryGSTPMDao.getDeptId();
 		
-	    summaryGSTForm.setTotalNoJDUPMValue(countTotalNumberOfJDUPM(deptId));
+	    summaryGSTForm.setTotalNoJDUPMValue(countTotalNumberOfJDUPM(deptId,roleId));
 	    summaryGSTForm.setTotalNoJDUPMLastWeekValue(countTotalNoJDUPMLastWeek());
 	    summaryGSTForm.setTotalNoOrigMemValue(countTotalNoOrigMem());
 	    summaryGSTForm.setTotalNoNewMemValue(countTotalNoNewMem());
 		summaryGSTForm.setTotalNoJDUPMLastWkFinValue(countTotalNoJDUPMLastWkF(StartDateTime,EndDateTime,gstCourses,deptId,roleId));
 		summaryGSTForm.setTotalNoJDUPMFinValue(countTotalNoJDUPMF(gstCourses,deptId,roleId,EndDateTime));
-		summaryGSTForm.setPercentageFinTodayValue(Math.round((double)countTotalNoJDUPMF(gstCourses,deptId,roleId,EndDateTime)/countTotalNumberOfJDUPM(deptId)*100*df)/df);
-		summaryGSTForm.setPercentageFinLastWkValue(Math.round((double)countTotalNoJDUPMLastWkF(StartDateTime,EndDateTime,gstCourses,deptId,roleId)/countTotalNumberOfJDUPM(deptId)*100*df)/df);
+		summaryGSTForm.setPercentageFinTodayValue(Math.round((double)countTotalNoJDUPMF(gstCourses,deptId,roleId,EndDateTime)/countTotalNumberOfJDUPM(deptId,roleId)*100*df)/df);
+		summaryGSTForm.setPercentageFinLastWkValue(Math.round((double)countTotalNoJDUPMLastWkF(StartDateTime,EndDateTime,gstCourses,deptId,roleId)/countTotalNumberOfJDUPM(deptId,roleId)*100*df)/df);
 		
 		return summaryGSTForm;
 	}
