@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import com.fujitsu.ph.tsup.reports.summary.dao.MandatoryCoursesDao;
 import com.fujitsu.ph.tsup.reports.summary.dao.MandatoryCoursesDaoImpl;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
@@ -24,9 +23,6 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
 	private MandatoryCoursesDaoImpl mandatoryCourseDao = new MandatoryCoursesDaoImpl();
 	private MandatoryCoursesForm mandatoryCoursesForm= new MandatoryCoursesForm();
-//	private int totalNumberOfJduMembers;
-//	private int totalNumberOfCompletion;
-//	private int totalNumberOfCompletionLastWeek;
 
 	/**
 	 * Finds all mandatory courses based on the given date
@@ -42,8 +38,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 			ZonedDateTime selectedEndDateTime) {
 
 		Set<MandatoryCourses> mandatoryCourses =
-				mandatoryCourseDao.findMandatoryCourses(selectedStartDateTime,
-						selectedEndDateTime);
+				mandatoryCourseDao.findMandatoryCourses();
 
 						if (mandatoryCourses.isEmpty()) {
 							throw new IllegalArgumentException();
@@ -60,9 +55,8 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 	@Override
 	public long getTotalNumberOfJduMembers() {
 
-		mandatoryCoursesForm.setTotalNoOfJDUMem((long) mandatoryCourseDao.findTotalNumberOfJdu(ZonedDateTime.now(), ZonedDateTime.now()));
+		mandatoryCoursesForm.setTotalNoOfJDUMem((long) mandatoryCourseDao.findTotalNumberOfJdu());
 
-		// TO BE CHANGED/CONFIRMED
 		if (mandatoryCoursesForm.getTotalNoOfJDUMem() <= 0) {
 			throw new IllegalArgumentException();
 		} else {
@@ -79,13 +73,12 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 	@Override
 	public long getTotalNumberOfCompletion(MandatoryCourses mandatoryCourse) {
 		
-		String courseName = mandatoryCourse.getName();
+		// String courseName = mandatoryCourse.getName();
 
 		// To add course name on the method call
 		mandatoryCoursesForm.setTotalNoOfJDUMemFin((long) mandatoryCourseDao.findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime.now(),
 				ZonedDateTime.now()));
 
-		// TO BE CHANGED
 		if (mandatoryCoursesForm.getTotalNoOfJDUMemFin() < 0) {
 			throw new IllegalArgumentException();
 		} else {
@@ -106,13 +99,12 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 		ZonedDateTime currentDateAndTime = ZonedDateTime.now();
 		ZonedDateTime startDateAndTime = currentDateAndTime.minusDays(7);
 		
-		String courseName = mandatoryCourse.getName();
+		// String courseName = mandatoryCourse.getName();
 
 		// to add course name on the method call
 		mandatoryCoursesForm.setTotalNoOfJDUMemFinLastWk((long) mandatoryCourseDao
 				.findTotalNumberOfJduWhoFinishedTrainingLastweek(startDateAndTime, currentDateAndTime));
 
-		// TO BE CHANGED/CONFIRMED
 		if (mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk() <= 0) {
 			throw new IllegalArgumentException();
 		} else {
