@@ -6,7 +6,8 @@
 // <<Modification History>>                                                                                                                                                                             
 // Version | Date       | Updated By            | Content                                                                                                                                                                           
 //---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
-// 1.0.0   | 2021/04/20 | WS)G.Cabiling         | New Creation                                                                                                                                                                          
+// 0.0.1   | 2021/04/20 | WS)G.Cabiling         | New Creation
+// 0.0.2   | 2021/04/29 | WS)G.Cabiling         | Update  
 //==================================================================================================    
 package com.fujitsu.ph.tsup.report.summary.model;
 
@@ -15,104 +16,104 @@ package com.fujitsu.ph.tsup.report.summary.model;
  * The model for G3CC standardization training for dev
  * </pre>
  * 
+ * @version 0.0.2
  * @author g.cabiling
- * @version 1.0.0
  */
 
 public class SummaryGSTDevForm {
     /* Total Number of JDU Dev */
-    private Long TotalNoJDUDevValue;
+    private int TotalNoJDUDevValue;
 
     /* Total Number of JDU Dev Last Week */
-    private Long TotalNoJDUDevLastWeekValue;
+    private int TotalNoJDUDevLastWeekValue;
 
     /* Total Number of Original Members */
-    private Long TotalNoOrigMemValue;
+    private int TotalNoExistingMemValue;
 
     /* Total Number of New Members */
-    private Long TotalNoNewMemValue;
+    private int TotalNoNewMemValue;
 
     /* Total Number of JDU Dev who finished the Training */
-    private Long TotalNoJDUDevFinValue;
+    private int TotalNoJDUDevFinValue;
 
     /* Total Number of JDU Devs Last Week Who Finished the training */
-    private Long TotalNoJDUDevLastWkFinValue;
+    private int TotalNoJDUDevLastWkFinValue;
 
     /* Percentage Finished As of Today (Total Devs and also Total Courses */
-    private Long PercentageFinTodayValue;
+    private int PercentageFinTodayValue;
 
     /* Percentage Finished As of Last Week (Total Devs and also Total Courses) */
-    private Long PercentageFinLastWkValue;
+    private int PercentageFinLastWkValue;
 
-    public Long getTotalNoJDUDevValue() {
+    public int getTotalNoJDUDevValue() {
         return TotalNoJDUDevValue;
     }
 
-    public void setTotalNoJDUDevValue(Long totalNoJDUDevValue) {
+    public void setTotalNoJDUDevValue(int totalNoJDUDevValue) {
         this.TotalNoJDUDevValue = totalNoJDUDevValue;
     }
 
-    public Long getTotalNoJDUDevLastWeekValue() {
+    public int getTotalNoJDUDevLastWeekValue() {
         return TotalNoJDUDevLastWeekValue;
     }
 
-    public void setTotalNoJDUDevLastWeekValue(Long totalNoJDUDevLastWeekValue) {
+    public void setTotalNoJDUDevLastWeekValue(int totalNoJDUDevLastWeekValue) {
         this.TotalNoJDUDevLastWeekValue = totalNoJDUDevLastWeekValue;
     }
 
-    public Long getTotalNoOrigMemValue() {
-        return TotalNoOrigMemValue;
+    public int getTotalNoExistingMemValue() {
+        return TotalNoExistingMemValue;
     }
 
-    public void setTotalNoOrigMemValue(Long totalNoOrigMemValue) {
-        this.TotalNoOrigMemValue = totalNoOrigMemValue;
+    public void setTotalNoExistingMemValue(int TotalNoExistingMemValue) {
+        this.TotalNoExistingMemValue = TotalNoExistingMemValue;
     }
 
-    public Long getTotalNoNewMemValue() {
+    public int getTotalNoNewMemValue() {
         return TotalNoNewMemValue;
     }
 
-    public void setTotalNoNewMemValue(Long totalNoNewMemValue) {
+    public void setTotalNoNewMemValue(int totalNoNewMemValue) {
         this.TotalNoNewMemValue = totalNoNewMemValue;
     }
 
-    public Long getTotalNoJDUDevFinValue() {
+    public int getTotalNoJDUDevFinValue() {
         return TotalNoJDUDevFinValue;
     }
 
-    public void setTotalNoJDUDevFinValue(Long totalNoJDUDevFinValue) {
+    public void setTotalNoJDUDevFinValue(int totalNoJDUDevFinValue) {
         this.TotalNoJDUDevFinValue = totalNoJDUDevFinValue;
     }
 
-    public Long getTotalNoJDUDevLastWkFinValue() {
+    public int getTotalNoJDUDevLastWkFinValue() {
         return TotalNoJDUDevLastWkFinValue;
     }
 
-    public void setTotalNoJDUDevLastWkFinValue(Long totalNoJDUDevLastWkFinValue) {
+    public void setTotalNoJDUDevLastWkFinValue(int totalNoJDUDevLastWkFinValue) {
         this.TotalNoJDUDevLastWkFinValue = totalNoJDUDevLastWkFinValue;
     }
 
-    public Long getPercentageFinTodayValue() {
+    public int getPercentageFinTodayValue() {
         return PercentageFinTodayValue;
     }
 
-    public void setPercentageFinTodayValue(Long percentageFinTodayValue) {
+    public void setPercentageFinTodayValue(int percentageFinTodayValue) {
         this.PercentageFinTodayValue = percentageFinTodayValue;
     }
 
-    public Long getPercentageFinLastWkValue() {
+    public int getPercentageFinLastWkValue() {
         return PercentageFinLastWkValue;
     }
 
-    public void setPercentageFinLastWkValue(Long percentageFinLastWkValue) {
+    public void setPercentageFinLastWkValue(int percentageFinLastWkValue) {
         this.PercentageFinLastWkValue = percentageFinLastWkValue;
     }
 
     @Override
     public String toString() {
         return "SummaryGSTDevForm[TotalNoJDUDevValue = " + TotalNoJDUDevValue
-                + ", TotalNoJDUDevLastWeekValue =" + TotalNoJDUDevLastWeekValue + ", TotalNoOrigMemValue ="
-                + TotalNoOrigMemValue + "," + ",TotalNoNewMemValue =" + TotalNoNewMemValue
+                + ", TotalNoJDUDevLastWeekValue =" + TotalNoJDUDevLastWeekValue + ", TotalNoExistingMemValue ="
+                + TotalNoExistingMemValue + "," + ",TotalNoNewMemValue =" + TotalNoNewMemValue
                 + ", TotalNoJDUDevFinValue =" + TotalNoJDUDevFinValue + ". TotalNoJDUDevLastWkFinValue ="
                 + TotalNoJDUDevLastWkFinValue + "," + ", PercentageFinTodayValue =" + PercentageFinTodayValue
                 + ", PercentageFinLastWkValue =" + PercentageFinLastWkValue + " ]";
