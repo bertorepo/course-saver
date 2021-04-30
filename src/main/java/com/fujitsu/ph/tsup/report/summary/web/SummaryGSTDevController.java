@@ -47,7 +47,7 @@ public class SummaryGSTDevController {
         SummaryGSTDevForm summaryGSTDev = summaryGSTDevService.getSummary();
         model.addAttribute("TotalNoJDUDevValue", summaryGSTDev.getTotalNoJDUDevValue());
         model.addAttribute("TotalNoJDUDevLastWeekValue", summaryGSTDev.getTotalNoJDUDevLastWeekValue());
-        model.addAttribute("TotalNoOrigMemValue", summaryGSTDev.getTotalNoOrigMemValue());
+        model.addAttribute("TotalNoExistingMemValue", summaryGSTDev.getTotalNoExistingMemValue());
         model.addAttribute("TotalNoNewMemValue", summaryGSTDev.getTotalNoNewMemValue());
         model.addAttribute("TotalNoJDUDevFinValue", summaryGSTDev.getTotalNoJDUDevFinValue());
         model.addAttribute("TotalNoJDUDevLastWkFinValue", summaryGSTDev.getTotalNoJDUDevLastWkFinValue());
