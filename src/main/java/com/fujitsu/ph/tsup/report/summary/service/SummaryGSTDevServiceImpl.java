@@ -6,7 +6,8 @@
 // <<Modification History>>                                                                                                                                                                             
 // Version | Date       | Updated By            | Content                                                                                                                                                                           
 //---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
-// 0.01   | 2021/04/21 | WS)N.DeJesus       | New Creation             
+// 0.01   | 2021/04/21 | WS)N.DeJesus       | New Creation                                                                                                                                                                                       
+// 0.02   | 2021/04/29 | WS)A.Batongbacal   | Update             
 //==================================================================================================
 package com.fujitsu.ph.tsup.report.summary.service;
 
@@ -25,8 +26,9 @@ import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
  * The implementation of G3CC standardization training for dev service
  * </pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author n.dejesus
+ * @author a.batongbaca
  *
  */
 @Service
