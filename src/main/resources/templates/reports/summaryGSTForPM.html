@@ -181,4 +181,17 @@
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	
 </body>
+<script>
+$("input[type='datetime-local']").change(function(){
+	if( $("#startDate").val() >=  $("#endDate").val()){
+		$("#viewButton").attr('disabled', 'disabled');
+		$("#exportButton").attr('disabled', 'disabled');
+		document.getElementById("message").innerHTML = dateErrorMessage;
+		$('#errorModal').modal('show');
+	}else{
+		$("#viewButton").removeAttr('disabled');
+		$("#exportButton").removeAttr('disabled');
+	}
+});
+</script>
 </html>
