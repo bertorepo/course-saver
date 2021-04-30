@@ -188,5 +188,7 @@ public interface EnrollmentDao {
 //	Integer addEnrolledMembersById(Participant participant);
     
     void uploadCertificate(Certificate certificate);
+
+    public List<String> findCourseScheduleIfMandatory();
    
 }

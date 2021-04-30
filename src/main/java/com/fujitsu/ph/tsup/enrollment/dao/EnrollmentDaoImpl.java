@@ -800,26 +800,26 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("participantId", courseParticipant.getParticipantId());
         template.update(updateAttendance, updateCourseAttendanceParameters);
     }
-
+    @Override
+    public List<String> findCourseScheduleIfMandatory() {
+    	String query = 
+    	 "SELECT name"
+    	+ " from TSUP.COURSE"
+    	+ " WHERE MANDATORY = :isMandatory";
+    	
+    	SqlParameterSource courseMandatoryParameters = new MapSqlParameterSource()
+    			.addValue("isMandatory", "Yes");
+    	List<String> mandatoryCourses = template.queryForList(query, courseMandatoryParameters, String.class);
+        return mandatoryCourses;
+    }
+    
+    
     @Override
     public void uploadCertificate(Certificate certificate) {
     	
     	String query = "INSERT INTO CERTIFICATE_UPLOAD"
     			+ " (employee_id, course_id, certificate, upload_date)"
     			+ " VALUES(:employee_id, :course_id, :certificate, :upload_date)";
-    	
-    	
-
- 
-//    	java.sql.Date sqlDate = (Date) Date.from(java.time.ZonedDateTime.now().toInstant());
-//		try
-//        {
-//			sqlDate = (Date) Date.from(certificate.getUploadDate().toInstant());
-//        }
-//        catch(NullPointerException e)
-//        {
-//            System.out.print("NullPointerException Caught");
-//        }
 
     	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
     			

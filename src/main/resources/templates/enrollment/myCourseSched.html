@@ -121,7 +121,10 @@
 					<th:block th:each="courseSchedules : *{courseSchedules}">
 						<tr th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
 
-							<td class="align-middle" th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}')|"
+							<td class="align-middle" th:if= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
+							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}')|"
+							th:text="${courseSchedules.courseName}"></td>
+							<td class="align-middle" th:unless= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
 							th:text="${courseSchedules.courseName}"></td>
 							<td class="align-middle" th:text="${courseSchedules.instructorName}"></td>
 							<td class="align-middle" th:text="${courseSchedules.venueName}"></td>
@@ -173,10 +176,12 @@
 									<i class="fa fa-edit"></i>
 								</button>
 								<!-- Upload Certificate Modal -->
-								<button type="button" class="btn btn-info" aria-label="Settings" data-toggle="modal"
+								<button th:if= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}" 
+								Type="button" class="btn btn-info" aria-label="Settings" data-toggle="modal"
 									data-target="#uploadModal"
 									th:attr="onclick=|getCourseId('${courseSchedules.courseId}')|"title="Upload Certificate" >
-									<i class="fa fa-upload"></i></button>
+									<i class="fa fa-upload"></i>
+									</button>
 
 								<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
 							</td>
@@ -207,7 +212,7 @@
 							<form class="form-horizontal" id ="certificateUpload">
 								<input type="hidden" name="courseId1" id="courseId1"></input>
 								<div class="modal-body" style="text-align: center" aria-hidden="true">
-									<input type="file" id="certificateFile" name="certificateFile"
+									<input type="file" id="certificateFile" name="certificateFile" accept=".pdf"
 										class="form-control-file border"></input>
 								</div>
 								<button type="button" class="btn btn-danger float-right" data-dismiss="modal"
@@ -270,7 +275,7 @@
 								</div>
 							</div>
 							<h6 style="font-weight: bold;">Certificate Download:</h6>
-							<iframe src="C:\Users\m.salvador\Desktop\2200000_Mel CHristian.pdf" height="100%" width="100%" scrolling="auto">fghg</iframe>
+							
 						</div>
 
 					</div>
@@ -597,8 +602,6 @@
 		}
 		/*]]>*/
 
-
-
 		//Successfuly canceled a Course Schedule
 		/*<![CDATA[*/
 		var courseDeclineSuccess = /*[[${courseDeclineSuccess}]]*/'default';
@@ -642,11 +645,6 @@
 			$('#certificateDownload').modal('show');
 		}
 		
-		
-		
-		
-		
-		'use strict';
 		var certificateUpload = document.querySelector('#certificateUpload');
 		var certificateFile = document.querySelector('#certificateFile');
 		function uploadCertificate(certificateFile){
@@ -655,7 +653,6 @@
 		    formData.append("file", certificateFile);
 		    formData.append("courseId1", courseId);
 		   	var xhr = new XMLHttpRequest();
-		   	alert(courseId);
 		    xhr.open("POST", "/enrollment/{courseId1}/upload");
 		    xhr.onload = function() {
 		        if(xhr.status == 200) {

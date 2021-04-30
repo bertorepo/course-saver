@@ -149,8 +149,10 @@ public interface EnrollmentService {
 	/* Upload Certificate */
 	void uploadCertificate(Certificate certificate);
 	
-	public String storeFile(MultipartFile file,Long id,FileStorageProperties fileStorageProperties);
+	public String storeFile(MultipartFile file,Long id,FileStorageProperties fileStorageProperties,Long userId);
 	
 	public Resource loadFileAsResource(String fileName,FileStorageProperties fileStorageProperties);
+	
+	List<String> findCourseScheduleIfMandatory();
 	
 }

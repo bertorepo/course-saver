@@ -519,15 +519,15 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     	enrollmentDao.uploadCertificate(certificate);	
     }
     
-    public String storeFile(MultipartFile file, Long id, FileStorageProperties fileStorageProperties) {
+    public String storeFile(MultipartFile file, Long id, FileStorageProperties fileStorageProperties,Long userId) {
         // Normalize file name
     	Path fileStorageLocation =  Paths.get(fileStorageProperties.getUploadDir())
 				.toAbsolutePath().normalize();
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        fileName =user.getId() +"_"+ id +"_"+ fileName ;
+        fileName =userId +"_"+ id +"_"+ fileName ;
         try {
             // Check if the file's name contains invalid characters
+        	 Files.createDirectories(fileStorageLocation);
             if(fileName.contains("..")) {
                 throw new IllegalArgumentException("Sorry! Filename contains invalid path sequence " + fileName);
             }
@@ -539,6 +539,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             return fileName;
         } catch (IOException ex) {
             throw new IllegalArgumentException("Could not store file " + fileName + ". Please try again!", ex);
+        }catch (Exception ex){
+            throw new IllegalArgumentException("Could not create the directory where the uploaded files will be stored.", ex);
         }
     }
 
@@ -555,5 +557,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("File not found " + fileName, ex);
         }
+    }
+    
+    public List<String> findCourseScheduleIfMandatory(){
+    	return enrollmentDao.findCourseScheduleIfMandatory();
     }
 }

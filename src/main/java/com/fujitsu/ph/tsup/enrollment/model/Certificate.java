@@ -14,10 +14,7 @@ public class Certificate {
 	
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private ZonedDateTime uploadDate;
-	
-	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-	private byte[] certificateFile = byteArrayOutputStream.toByteArray();
-	
+	private byte[] certificateFile;
 	private String fileDownloadUri;
 	private String fileType;
 	private Long size;

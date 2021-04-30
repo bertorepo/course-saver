@@ -317,14 +317,17 @@ public class EnrollmentController {
 					.sorted((e1, e2) -> e1.getCourseName().compareTo(e2.getCourseName())).collect(Collectors.toList());
 
 			courseEnrolledListForm.setCourseScheduleDetailForm(sortedCourseScheduleForm);
+			
+
 
 		} catch (Exception e) {
 
 			model.addAttribute("errorMessage", e.getMessage());
 
 		}
-
+		List<String> mandatoryCourseList = enrollmentService.findCourseScheduleIfMandatory();
 		model.addAttribute("myCourseSched", courseEnrolledListForm);
+		model.addAttribute("mandatoryCourseList", mandatoryCourseList);
 
 		return "enrollment/myCourseSched";
 	}
@@ -927,15 +930,16 @@ public class EnrollmentController {
     public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
     		Model model, RedirectAttributes redirectattribute, @RequestParam("file")MultipartFile file) {
     	FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
-    	fileStorageProperties.setUploadDir("/Users/a.senamin/tsup/certificate");
-		String fileName = enrollmentService.storeFile(file,id,fileStorageProperties);
+    	fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
+    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String fileName = enrollmentService.storeFile(file,id,fileStorageProperties,user.getId());
     	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
 //    	 return new Certificate.Builder(fileName, fileDownloadUri,
 //                 file.getContentType(), file.getSize()); 	
-    		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    		
     		Certificate certDetails = new Certificate.Builder(id, file.getOriginalFilename(), user.getId(), ZonedDateTime.now()).build();
     		enrollmentService.uploadCertificate(certDetails);
     		redirectattribute.addFlashAttribute("successUploadMessage", 1);
