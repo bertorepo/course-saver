@@ -149,7 +149,6 @@ function downloadCSV(csv, filename) {
 	} else {
 		var csvFile;
 		var downloadLink;
-		alert("Report exported successfully");
 		csvFile = new Blob([ csv ], {
 			type : "text/csv;charset=utf-8"
 		});
@@ -158,6 +157,8 @@ function downloadCSV(csv, filename) {
 		downloadLink.href = window.URL.createObjectURL(csvFile);
 		downloadLink.style.display = "none";
 		downloadLink.click();
+		setTimeout(function(){alert("Report exported successfully");
+		}, 1500);
 	}
 }
 
