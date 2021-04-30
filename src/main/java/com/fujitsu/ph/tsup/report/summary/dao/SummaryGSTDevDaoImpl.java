@@ -42,7 +42,7 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
 
     @Override
     public Set<Long> findAllCoursesByCategoryId() {
-        String query = "SELECT C.id FROM COURSE C LEFT JOIN COURSE_CATEGORY CC ON CC.ID = C.COURSE_CATEGORY_ID WHERE CC.CATEGORY ='JDU Standardization Training'";
+        String query = "SELECT C.id FROM COURSE C LEFT JOIN COURSE_CATEGORY CC ON CC.ID = C.COURSE_CATEGORY_ID WHERE CC.CATEGORY = :category";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("category",
                 "JDU Standardization Training");
         List<Long> coursesList = template.queryForList(query, sqlParameterSource, Long.class);
@@ -52,7 +52,7 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
 
     @Override
     public Set<Long> findAllJDUDev() {
-        String query = "SELECT E.id FROM EMPLOYEE E LEFT JOIN DEPARTMENT D ON E.DEPARTMENT_ID = D.ID WHERE D.DEPARTMENT_NAME = 'FDC-G3CC'";
+        String query = "SELECT E.id FROM EMPLOYEE E LEFT JOIN DEPARTMENT D ON E.DEPARTMENT_ID = D.ID WHERE D.DEPARTMENT_NAME = :dept_name";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("dept_name", "FDC-G3CC");
         List<Long> employeeList = template.queryForList(query, sqlParameterSource, Long.class);
         Set<Long> employee = new LinkedHashSet<>(employeeList);
@@ -79,13 +79,18 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
 
     @Override
     public int findTotalCoursePerEmployee(Set<Long> course_id, Long participant_id) {
-        String query = "SELECT COUNT(DISTINCT course_id) FROM tsup.course_attendance CA"
-                + "LEFT Join tsup.course_schedule_detail CSD ON CSD.id = CA.course_schedule_detail_id"
-                + "LEFT Join tsup.course_schedule CS ON CS.id=CSD.course_schedule_id"
-                + "WHERE CS.status = 'D' AND CA.status = 'P' AND CS.course_id = :course_id"
-                + "AND CA.participant_id = :participant_id";
+        String query = "SELECT COUNT(DISTINCT course_id)" 
+                +" FROM tsup.course_attendance CA" 
+                +" LEFT Join tsup.course_schedule_detail CSD ON" 
+                +" CSD.id = CA.course_schedule_detail_id" 
+                +" LEFT Join tsup.course_schedule CS" 
+                +" ON CS.id=CSD.course_schedule_id"
+                +" WHERE CS.status = 'D'"
+                +" AND CA.status = 'P'"
+                +" AND CS.course_id IN (:courses)"
+                +" AND CA.participant_id = :participant_id";
 
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("course_id", course_id)
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("courses", course_id)
                 .addValue("participant_id", participant_id);
 
         int no_of_course = template.queryForObject(query, sqlParameterSource, Integer.class);
@@ -95,14 +100,20 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
 
     @Override
     public int findTotalCoursePerEmployeeLastWeek(Set<Long> course_id, Long participant_id) {
-        String query = "SELECT COUNT(DISTINCT course_id) FROM tsup.course_attendance CA"
-                + "LEFT Join tsup.course_schedule_detail CSD ON CSD.id = CA.course_schedule_detail_id"
-                + "LEFT Join tsup.course_schedule CS ON CS.id=CSD.course_schedule_id"
-                + "WHERE CS.status = 'D' AND CA.status = 'P' AND CS.course_id = :course_id"
-                + "AND CA.participant_id = :participant_id"
-                + "AND CA.log_out_datetime <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER)";
+        String query = "SELECT COUNT(DISTINCT course_id)"  
+                +" FROM  tsup.course_attendance CA"  
+                +" LEFT Join tsup.course_schedule_detail CSD"  
+                +" ON CSD.id = CA.course_schedule_detail_id" 
+                +" LEFT Join tsup.course_schedule CS" 
+                +" ON CS.id=CSD.course_schedule_id"
+                +" WHERE CS.status = 'D'" 
+                +" AND CA.status = 'P'" 
+                +" AND CS.course_id IN (:courses)" 
+                +" AND CA.participant_id = :participant_id"
+                +" AND CA.log_out_datetime <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER)";
+        
 
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("course_id", course_id)
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("courses", course_id)
                 .addValue("participant_id", participant_id);
 
         int no_of_course = template.queryForObject(query, sqlParameterSource, Integer.class);
