@@ -6,12 +6,13 @@
 // <<Modification History>>                                                                                                                                                                             
 // Version | Date       | Updated By            | Content                                                                                                                                                                           
 //---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
-// 0.01   | 2021/04/21 | WS)R.Rivero            | New Creation             
+// 0.01   | 2021/04/21 | WS)R.Rivero            | New Creation
+// 0.02   | 2021/04/29 | WS)G.Cabiling          | Update 
 //==================================================================================================
 
 package com.fujitsu.ph.tsup.report.summary.dao;
 
-import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
+import java.util.Set;
 
 /**
  * <pre>
@@ -20,11 +21,24 @@ import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
  * 
  * @version 0.01
  * @author r.rivero
+ * @author g.cabiling
  *
  */
 
 public interface SummaryGSTDevDao {
 	
-	SummaryGSTDevForm getSummary();
+    Set<Long> findAllCoursesByCategoryId();
+
+    Set<Long> findAllJDUDev();
+
+    int findAllJDUDevLastWeek();
+
+    int findAllJDUExisitingMembers();
+
+    int findAllJDUNewMembers();
+
+    int findTotalCoursePerEmployee(Set<Long> course_id, Long participant_id);
+
+    int findTotalCoursePerEmployeeLastWeek(Set<Long> course_id, Long participant_id);
 
 }
