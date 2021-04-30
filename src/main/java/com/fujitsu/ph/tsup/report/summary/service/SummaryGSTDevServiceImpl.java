@@ -47,7 +47,7 @@ public class SummaryGSTDevServiceImpl implements SummaryGSTDevService {
 	public SummaryGSTDevForm getSummary() {
 //		return reportSummaryGSTDevDao.getSummary();
 	    Set<Long> employeeList = reportSummaryGSTDevDao.findAllJDUDev();
-        Set<Long> courseList = reportSummaryGSTDevDao.findAllCourseByCategoryId();
+        Set<Long> courseList = reportSummaryGSTDevDao.findAllCoursesByCategoryId();
         HashMap<Integer, Integer> totalCoursePerEmployee = new HashMap<>();
         
         //for JDU Dev who Finished 
@@ -71,7 +71,7 @@ public class SummaryGSTDevServiceImpl implements SummaryGSTDevService {
         SummaryGSTDevForm summary = new SummaryGSTDevForm();
         summary.setTotalNoJDUDevValue(employeeList.size());
         summary.setTotalNoJDUDevLastWeekValue(reportSummaryGSTDevDao.findAllJDUDevLastWeek());
-        summary.setTotalNoOrigMemValue(reportSummaryGSTDevDao.findAllJDUOriginalMembers());
+        summary.setTotalNoExistingMemValue(reportSummaryGSTDevDao.findAllJDUExisitingMembers());
         summary.setTotalNoNewMemValue(reportSummaryGSTDevDao.findAllJDUNewMembers());
         summary.setTotalNoJDUDevFinValue(totalDevFin);
         summary.setTotalNoJDUDevLastWkFinValue(totalDevFinLastWk);
