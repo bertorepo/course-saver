@@ -3,17 +3,25 @@
  */
 package com.fujitsu.ph.tsup.course.model;
 
-/**
- * CourseForm class
- * 
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : Course.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version
+//0.02    | 2021/04/19 | WS) st.diaz           | Updated
+//==================================================================================================
+
 public class Course {
 
     private Long id;
     private String name;
     private String detail;
+    private String isMandatory;
+    private String deadline;
 
     /**
      * Empty Constructor for Course class
@@ -30,9 +38,13 @@ public class Course {
         this.id = builder.id;
         this.name = builder.name;
         this.detail = builder.detail;
+        this.isMandatory = builder.isMandatory;
+        this.deadline = builder.deadline;
     }
 
-    /**
+    
+
+	/**
      * Getter method for Course Id
      * 
      * @return Course Id
@@ -97,13 +109,57 @@ public class Course {
         this.detail = detail;
 
     }
+    
+    /**
+     * Getter Method for Course is Mandatory
+     * 
+     * @return Course is Mandatory
+     */
+    public String getIsMandatory() {
+		return isMandatory;
+		
+	}
+
+    /**
+     * Setter Method for Course is Mandatory
+     * 
+     * @param isMandatory Course is Mandatory
+     */
+	public void setIsMandatory(String isMandatory) {
+		this.isMandatory = isMandatory;
+		
+	}
+
+	/**
+     * Getter Method for Course Deadline
+     * 
+     * @return Course Deadline
+     */
+	public String getDeadline() {
+		return deadline;
+		
+	}
+
+	/**
+     * Setter Method for Course Deadline
+     * 
+     * @param deadline Course Deadline
+     */
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
+		
+	}
+
 
     @Override
-    public String toString() {
-        return "Course [ID + " +id +"Name " + name +" Detail " +detail;
-    }
+	public String toString() {
+		return "Course [id=" + id + ", name=" + name + ", detail=" + detail + ", isMandatory=" + isMandatory
+				+ ", deadline=" + deadline + "]";
+	}
 
-    /** Builder Class
+
+
+	/** Builder Class
      * @author c.lepiten
      *
      */
@@ -112,6 +168,8 @@ public class Course {
         private Long id;
         private String name;
         private String detail;
+        private String isMandatory;
+        private String deadline;
 
         /** Builder Constructor
          * @param name
@@ -141,15 +199,19 @@ public class Course {
         /** Builder Constructor
          * @param name
          * @param detail
+         * @param isMandatory
+         * @param deadline
          */
         
-        public Builder(String name, String detail) {
+        public Builder(String name, String detail, String isMandatory, String deadline) {
         	
         	validateName(name);
         	validateDetail(detail);
         	
         	this.name = name;
         	this.detail = detail;
+        	this.isMandatory = isMandatory;
+        	this.deadline = deadline;
         	
         }
  
@@ -165,7 +227,19 @@ public class Course {
             return this;
 
         }
-
+        
+        /** Builder Constructor
+         * @param isMandatory
+         * @param deadline
+         * @return
+         */
+        public Builder mandatory(String isMandatory, String deadline) {
+        	this.isMandatory = isMandatory;
+        	this.deadline = deadline;
+        	
+        	return this;
+        }
+        
         public Course build() {
 
             return new Course(this);
@@ -213,7 +287,7 @@ public class Course {
             }
 
         }
-
+ 
     }
 
 }
