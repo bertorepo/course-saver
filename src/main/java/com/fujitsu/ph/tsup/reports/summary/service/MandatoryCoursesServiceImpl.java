@@ -6,8 +6,12 @@ package com.fujitsu.ph.tsup.reports.summary.service;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fujitsu.ph.tsup.reports.summary.dao.MandatoryCoursesDao;
 import com.fujitsu.ph.tsup.reports.summary.dao.MandatoryCoursesDaoImpl;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
@@ -21,8 +25,12 @@ import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
 @Service
 public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
-	private MandatoryCoursesDaoImpl mandatoryCourseDao = new MandatoryCoursesDaoImpl();
-	private MandatoryCoursesForm mandatoryCoursesForm= new MandatoryCoursesForm();
+	@Autowired
+	private MandatoryCoursesDao mandatoryCourseDao;
+
+	private long totalNumberOfJduMembers;
+	private long totalNumberOfCompletion;
+	private long totalNumberOfCompletionLastWeek;
 
 	/**
 	 * Finds all mandatory courses based on the given date
@@ -33,19 +41,17 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 	 *
 	 */
 	@Override
-	public Set<MandatoryCourses> getMandatoryCourses(ZonedDateTime
-			selectedStartDateTime,
+	public Set<MandatoryCourses> getMandatoryCourses(ZonedDateTime selectedStartDateTime,
 			ZonedDateTime selectedEndDateTime) {
 
-		Set<MandatoryCourses> mandatoryCourses =
-				mandatoryCourseDao.findMandatoryCourses();
+		Set<MandatoryCourses> mandatoryCourses = mandatoryCourseDao.findMandatoryCourses();
 
-						if (mandatoryCourses.isEmpty()) {
-							throw new IllegalArgumentException();
-						} else {
-							return mandatoryCourses;
-						}
-	 }
+		if (mandatoryCourses.isEmpty()) {
+			throw new IllegalArgumentException();
+		} else {
+			return mandatoryCourses;
+		}
+	}
 
 	/**
 	 * Acquires the total number of JDU members
@@ -54,13 +60,12 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 	 */
 	@Override
 	public long getTotalNumberOfJduMembers() {
+		totalNumberOfJduMembers = mandatoryCourseDao.findTotalNumberOfJdu();
 
-		mandatoryCoursesForm.setTotalNoOfJDUMem((long) mandatoryCourseDao.findTotalNumberOfJdu());
-
-		if (mandatoryCoursesForm.getTotalNoOfJDUMem() <= 0) {
+		if (totalNumberOfJduMembers < 0) {
 			throw new IllegalArgumentException();
 		} else {
-			return mandatoryCoursesForm.getTotalNoOfJDUMem();
+			return totalNumberOfJduMembers;
 		}
 	}
 
@@ -72,17 +77,17 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 	 */
 	@Override
 	public long getTotalNumberOfCompletion(MandatoryCourses mandatoryCourse) {
-		
+
 		// String courseName = mandatoryCourse.getName();
 
 		// To add course name on the method call
-		mandatoryCoursesForm.setTotalNoOfJDUMemFin((long) mandatoryCourseDao.findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime.now(),
-				ZonedDateTime.now()));
+		totalNumberOfCompletion = mandatoryCourseDao.findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime.now(),
+				ZonedDateTime.now());
 
-		if (mandatoryCoursesForm.getTotalNoOfJDUMemFin() < 0) {
+		if (totalNumberOfCompletion < 0) {
 			throw new IllegalArgumentException();
 		} else {
-			return mandatoryCoursesForm.getTotalNoOfJDUMemFin();
+			return totalNumberOfCompletion;
 		}
 	}
 
@@ -98,17 +103,17 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
 		ZonedDateTime currentDateAndTime = ZonedDateTime.now();
 		ZonedDateTime startDateAndTime = currentDateAndTime.minusDays(7);
-		
+
 		// String courseName = mandatoryCourse.getName();
 
 		// to add course name on the method call
-		mandatoryCoursesForm.setTotalNoOfJDUMemFinLastWk((long) mandatoryCourseDao
-				.findTotalNumberOfJduWhoFinishedTrainingLastweek(startDateAndTime, currentDateAndTime));
+		totalNumberOfCompletionLastWeek = mandatoryCourseDao
+				.findTotalNumberOfJduWhoFinishedTrainingLastweek(startDateAndTime, currentDateAndTime);
 
-		if (mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk() <= 0) {
+		if (totalNumberOfCompletionLastWeek < 0) {
 			throw new IllegalArgumentException();
 		} else {
-			return mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk();
+			return totalNumberOfCompletionLastWeek;
 		}
 	}
 
@@ -123,7 +128,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 		long percentageCompletion = 0;
 
 		try {
-			percentageCompletion = (mandatoryCoursesForm.getTotalNoOfJDUMemFin() / mandatoryCoursesForm.getTotalNoOfJDUMem()) * 100;
+			percentageCompletion = (totalNumberOfCompletion / totalNumberOfJduMembers) * 100;
 		} catch (Exception e) {
 			throw new IllegalArgumentException();
 		}
@@ -142,7 +147,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 		long percentageCompletionLastWeek = 0;
 
 		try {
-			percentageCompletionLastWeek = (mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk() / mandatoryCoursesForm.getTotalNoOfJDUMem()) * 100;
+			percentageCompletionLastWeek = (totalNumberOfCompletionLastWeek / totalNumberOfJduMembers) * 100;
 		} catch (Exception e) {
 			throw new IllegalArgumentException();
 		}
