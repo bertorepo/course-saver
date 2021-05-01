@@ -1,5 +1,6 @@
 package com.fujitsu.ph.tsup.enrollment.web;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -11,10 +12,13 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -928,7 +932,7 @@ public class EnrollmentController {
     
     @PostMapping("/{courseId1}/upload") 
     public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
-    		Model model, RedirectAttributes redirectattribute, @RequestParam("file")MultipartFile file) {
+    		Model model, @RequestParam("file")MultipartFile file) {
     	FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
     	fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
     	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -937,15 +941,41 @@ public class EnrollmentController {
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
+    	System.out.println(fileDownloadUri);
 //    	 return new Certificate.Builder(fileName, fileDownloadUri,
 //                 file.getContentType(), file.getSize()); 	
     		
-    		Certificate certDetails = new Certificate.Builder(id, file.getOriginalFilename(), user.getId(), ZonedDateTime.now()).build();
+    		Certificate certDetails = new Certificate.Builder(id, file.getOriginalFilename(), user.getId(), ZonedDateTime.now(), fileDownloadUri).build();
     		enrollmentService.uploadCertificate(certDetails);
-    		redirectattribute.addFlashAttribute("successUploadMessage", 1);
     		return "redirect:/enrollment/mySchedules";
         
     }
+
+    @GetMapping("/downloadFile")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        // Load file as Resource
+    	FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
+       	fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
+        Resource resource = enrollmentService.loadFileAsResource(fileName, fileStorageProperties);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+        	contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            logger.info("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    	}
+    }
 	    
-	    
-}
+

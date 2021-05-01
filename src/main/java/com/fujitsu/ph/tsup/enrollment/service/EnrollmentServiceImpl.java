@@ -524,7 +524,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     	Path fileStorageLocation =  Paths.get(fileStorageProperties.getUploadDir())
 				.toAbsolutePath().normalize();
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        fileName =userId +"_"+ id +"_"+ fileName ;
+        fileName = userId +"_"+ id +"_"+ fileName ;
         try {
             // Check if the file's name contains invalid characters
         	 Files.createDirectories(fileStorageLocation);

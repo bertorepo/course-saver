@@ -1,6 +1,5 @@
 package com.fujitsu.ph.tsup.enrollment.model;
 
-import java.io.ByteArrayOutputStream;
 import java.time.ZonedDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,53 +10,32 @@ public class Certificate {
 	private Long id;
 	private Long courseId;
 	private Long userId;
-	
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private ZonedDateTime uploadDate;
-	private byte[] certificateFile;
 	private String fileDownloadUri;
-	private String fileType;
-	private Long size;
-	
-	
-	public Long getSize() {
-		return size;
-	}
-
-	public void setSize(Long size) {
-		this.size = size;
-	}
 
 	public String getFileDownloadUri() {
+		
 		return fileDownloadUri;
+		
 	}
 
 	public void setFileDownloadUri(String fileDownloadUri) {
+		
 		this.fileDownloadUri = fileDownloadUri;
-	}
-
-	public String getFileType() {
-		return fileType;
-	}
-
-	public void setFileType(String fileType) {
-		this.fileType = fileType;
+		
 	}
 
 	public ZonedDateTime getUploadDate() {
+		
 		return uploadDate;
+		
 	}
 
 	public void setUploadDate(ZonedDateTime uploadDate) {
+		
 		this.uploadDate = uploadDate;
-	}
-	
-	public byte[] getCertificateFile() {
-		return certificateFile;
-	}
-
-	public void setCertificateFile(byte[] certificateFile) {
-		this.certificateFile = certificateFile;
+		
 	}
 
 	private Certificate(Builder builder) {
@@ -67,6 +45,7 @@ public class Certificate {
         this.courseId = builder.courseId;
         this.userId = builder.userId;
         this.uploadDate = builder.uploadDate;
+        this.fileDownloadUri = builder.fileDownloadUri;
     }
 	
 	public String getCertificate() {
@@ -117,10 +96,6 @@ public class Certificate {
 		
 	}
 	
-	/** Builder Class
-     * @author c.arias
-     *
-     */
     public static class Builder {
 
 
@@ -129,13 +104,12 @@ public class Certificate {
 		private Long id;
 		private String certificate;
 		private Long userId;
-		
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		private String fileDownloadUri;
 		/** Builder Constructor
          * @param certificate
 		 * @param uploadDate 
          */
-        public Builder(Long courseId, String certificate, Long userId, ZonedDateTime uploadDate) {
+        public Builder(Long courseId, String certificate, Long userId, ZonedDateTime uploadDate, String fileDownloadUri) {
 
         	validateUserId(userId);
             validateCertificate(certificate);
@@ -143,10 +117,11 @@ public class Certificate {
             this.userId = userId;
             this.courseId = courseId;
             this.uploadDate = uploadDate;
+            this.fileDownloadUri = fileDownloadUri;
             
         }
 
-        public Builder(Long id, String certificate, byte[] certificateFile) {
+        public Builder(Long id, String certificate) {
 
             validateId(id);
             validateCertificate(certificate);
@@ -155,8 +130,9 @@ public class Certificate {
 
         }
         
-        public Builder(String certificate, String fileDownloadUri, String fileType, Long size) {
+        public Builder(String certificate, String fileType, Long size , String fileDownloadUri) {
         	this.certificate = certificate;
+        	this.fileDownloadUri = fileDownloadUri;
 
         }
         
@@ -205,7 +181,6 @@ public class Certificate {
             }
         }
        
-    }
-	
+    }	
 	
 }
