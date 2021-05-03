@@ -236,8 +236,8 @@
 									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
 								</div>
 							</div>	
-							<div class="">
-								<h5 style="color:red">This is a required training</h5>
+							<div class="" id="showRequired">
+								<h5 style="color:red" >This is a required training</h5>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
@@ -281,7 +281,7 @@
 						<th class="align-middle">Minimum <br> Number of <br> Participants</th>
 						<th class="align-middle">Maximum <br> Number of <br> Participants</th>
 						<th class="align-middle">Total <br> Number of <br> Participants</th>
-						<th  class="sticky"></th>
+						<th class="sticky"></th>
 					
 					</tr>
 				</thead>
@@ -290,7 +290,7 @@
 						
 					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
 							th:with="courseScheduleId = ${courseSchedule.id}"
-							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',${courseSchedule.mandatory},
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}', '${courseSchedule.courseDetails}')|">
 									
 						<td th:text="${courseScheduleId}"/>
@@ -365,11 +365,10 @@
 		inpFromDateTime.value = finalFromDateTime;
 		inpToDateTime.value = finalToDateTime;
 	}
-
+	
 	//Information Modal
-	function showInformation(id, courseName, instructorName, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
+	function showInformation(id, courseName, instructorName, mandatory, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
 // 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
-
 		var startDate = scheduleStartDateTime.slice(0,10);
 		var startTime = moment.utc(scheduleStartDateTime, 'YYYY-MM-DD HH:mm').format(
 		'HH:mm A');
@@ -388,6 +387,14 @@
 		var instructorNameInput = document.getElementById('infoInstructorName');
 		instructorNameInput.value = instructorName;
 		
+		
+		if(mandatory == true){
+			$('[id$=showRequired]').show();
+		}
+		else{
+			$('[id$=showRequired]').hide();
+		}
+			
 		var dateInput = document.getElementById('infoDate');
 		dateInput.value = startDate;
 		
