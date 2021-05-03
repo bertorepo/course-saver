@@ -58,6 +58,8 @@ public class MandatoryCoursesController {
      */
     @GetMapping("load")
     public String loadGenerateReport(Model model) {
+        model.addAttribute("getTotalNumberOfJduMembers",
+                mandatoryCoursesService.getTotalNumberOfJduMembers());
 
         return "reports/summaryMandatoryCourses";
     }
@@ -101,15 +103,14 @@ public class MandatoryCoursesController {
     @GetMapping("view")
     public String viewMandatoryCoursesReports(MandatoryCourses form, Model model,
             BindingResult bindingResult) {
-        // MandatoryCourses courseDetails = new MandatoryCourses.Builder(form.getId(),
-        // form.getName()).build();
         model.addAttribute("getTotalNumberOfJduMembers",
                 mandatoryCoursesService.getTotalNumberOfJduMembers());
-        // model.addAttribute("getTotalNumberOfCompletion",
-        // mandatoryCoursesService.getTotalNumberOfCompletion(courseDetails));
-        // model.addAttribute("getTotalNumberOfCompletionLastWeek",
-        // mandatoryCoursesService.getTotalNumberOfCompletionLastWeek(courseDetails));
-        model.addAttribute("getPercentageCompletion", mandatoryCoursesService.getPercentageCompletion());
+        model.addAttribute("getTotalNumberOfCompletion",
+                mandatoryCoursesService.getTotalNumberOfCompletion(form.getName()));
+        model.addAttribute("getTotalNumberOfCompletion",
+                mandatoryCoursesService.getTotalNumberOfCompletionLastWeek(form.getName()));
+        model.addAttribute("getPercentageCompletion",
+                mandatoryCoursesService.getPercentageCompletion());
         model.addAttribute("getPercentageCompletionLastWeek",
                 mandatoryCoursesService.getPercentageCompletionLastWeek());
         return "reports/summaryMandatoryCourses";
