@@ -85,7 +85,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
      * @return long
      */
     @Override
-    public long getTotalNumberOfCompletion(MandatoryCourses mandatoryCourse) {
+    public long getTotalNumberOfCompletion(String mandatoryCourse) {
 
         //String courseName = mandatoryCourse.getName();
 
@@ -108,7 +108,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
      * @return long
      */
     @Override
-    public long getTotalNumberOfCompletionLastWeek(MandatoryCourses mandatoryCourse) {
+    public long getTotalNumberOfCompletionLastWeek(String mandatoryCourse) {
 
         ZonedDateTime currentDateAndTime = ZonedDateTime.now();
         ZonedDateTime startDateAndTime = currentDateAndTime.minusDays(7);
