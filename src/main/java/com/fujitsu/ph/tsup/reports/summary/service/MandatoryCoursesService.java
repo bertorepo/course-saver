@@ -42,7 +42,7 @@ public interface MandatoryCoursesService {
      * @param MandatoryCourse
      * @return int
      */
-    public long getTotalNumberOfCompletion(MandatoryCourses mandatoryCourse);
+    public long getTotalNumberOfCompletion(String mandatoryCourse);
 
     /**
      * Acquires the total number of completion for the specified course within last
@@ -51,7 +51,7 @@ public interface MandatoryCoursesService {
      * @param courseName
      * @return int
      */
-    public long getTotalNumberOfCompletionLastWeek(MandatoryCourses mandatoryCourse);
+    public long getTotalNumberOfCompletionLastWeek(String mandatoryCourse);
 
     /**
      * Calculates the percentage completion per course
