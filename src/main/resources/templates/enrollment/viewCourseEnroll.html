@@ -123,7 +123,7 @@
 						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
 
 						<td sec:authorize="hasAuthority('Member')">
-							<button th:disabled="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
+							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
 									${courseSchedule.mandatory == 'false'}"
 									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
 									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
