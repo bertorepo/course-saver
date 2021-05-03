@@ -1,6 +1,10 @@
 package com.fujitsu.ph.tsup.enrollment.web;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -9,7 +13,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -942,40 +948,36 @@ public class EnrollmentController {
                 .path(fileName)
                 .toUriString();
     	System.out.println(fileDownloadUri);
-//    	 return new Certificate.Builder(fileName, fileDownloadUri,
-//                 file.getContentType(), file.getSize()); 	
     		
     		Certificate certDetails = new Certificate.Builder(id, file.getOriginalFilename(), user.getId(), ZonedDateTime.now(), fileDownloadUri).build();
     		enrollmentService.uploadCertificate(certDetails);
     		return "redirect:/enrollment/mySchedules";
         
     }
-
-    @GetMapping("/downloadFile")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
-        // Load file as Resource
-    	FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
-       	fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
-        Resource resource = enrollmentService.loadFileAsResource(fileName, fileStorageProperties);
-
-        // Try to determine file's content type
-        String contentType = null;
-        try {
-        	contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            logger.info("Could not determine file type.");
-        }
-
-        // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
-    	}
-    }
-	    
-
+}
+//	@GetMapping("/downloadFile")
+//	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+//	    // Load file as Resource
+//		FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
+//	   	fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
+//	    Resource resource = enrollmentService.loadFileAsResource(fileName, fileStorageProperties);
+//	
+//	    // Try to determine file's content type
+//	    String contentType = null;
+//	    try {
+//	    	contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+//	    } catch (IOException ex) {
+//	        logger.info("Could not determine file type.");
+//	    }
+//	
+//	    // Fallback to the default content type if type could not be determined
+//	    if(contentType == null) {
+//	        contentType = "application/octet-stream";
+//	    }
+//	
+//	    return ResponseEntity.ok()
+//	            .contentType(MediaType.parseMediaType(contentType))
+//	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+//	            .body(resource);
+//		}
+//	}

@@ -248,12 +248,12 @@
 			</div>
 			<!--  Successful modal upload end -->
 			
-			<!-- Download Certificate -->
+			<!-- Certificate Details -->
 			<div id="certificateDownload" class="modal fade" role="dialog">
 				<div class="modal-dialog modal-dialog-centered modal-lg">
 					<div class="modal-content">
 						<div class="modal-header text-left">
-							<h5 class="modal-title"><i class="far fa-file-pdf"></i> Certificate Download
+							<h5 class="modal-title"><i class="far fa-file-pdf"></i> Certificate Details
 							</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -274,10 +274,10 @@
 										readonly>
 								</div>
 							</div>
-								<h6 style="font-weight: bold;">Certificate Download:</h6>
-								<p>DownloadUrl : <a th:href="@{/downloadFile}"></a></p>
+							<div class = "downloadFile" id = "DownloadFile">
+								<h6 style="font-weight: bold;">Certificate Uploaded:</h6>							
+							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -642,6 +642,7 @@
 		function certificateDownload(courseName, dateTaken) {
 			document.getElementById('courseName').value = courseName;
 			document.getElementById('dateTaken').value = dateTaken;
+			document.getElementById('certificateFile').value = certificateFile;
 			$('#certificateDownload').modal('show');
 		}
 		
@@ -655,9 +656,10 @@
 		   	var xhr = new XMLHttpRequest();
 		    xhr.open("POST", "/enrollment/{courseId1}/upload");
 		    xhr.onload = function() {
+		    	//var response = JSON.parse(xhr.responseText);
 		        if(xhr.status == 200) {		        	
 		        	$('#uploadModal').modal('hide');
-		        	$('#successCertificateModal').modal('show');
+		        	$('#successCertificateModal').modal('show');		        
 		        }
 		    }
 		    
