@@ -272,6 +272,8 @@
 						<th class="align-middle">Course ID</th>
 						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
+						<th class="align-middle">Mandatory</th>
+						<th class="align-middle">Deadline</th>
 						<th class="align-middle">Start Date Time</th>
 						<th class="align-middle">End Date Time</th>
 						<th class="align-middle">Duration(Hrs)</th>
@@ -293,7 +295,9 @@
 									
 						<td th:text="${courseScheduleId}"/>
 						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
-						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
+						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/>
+						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
+						<td class="align-middle" th:text="${courseSchedule.deadline}"/>  
 						<td th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')}" />
 						<td th:utext="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
 						<td th:text="${courseScheduleDetail.duration}"/>
@@ -310,13 +314,14 @@
 <!-- 						</td> -->
 
 						<td class="sticky" sec:authorize="hasAuthority('PMO')">
-							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
+							<button th:disabled="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
+									${courseSchedule.mandatory == 'false'}"
 									th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
 									type="button" class="btn btn-success" id="enrollMemberButton">Register Member</button>
 									
-							<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
+					<!-- 		<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
 							type="button" class="btn btn-success" 
-							title="Participants in this schedule is already full" disabled>Register</button>
+							title="Participants in this schedule is already full" disabled>Register</button> -->
 						</td>
 					</tr>
 				</tbody>
