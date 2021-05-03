@@ -292,6 +292,7 @@ public class EnrollmentController {
 				courseEnrollmentForm.setCourseScheduleId(enrolledCourse.getCourseScheduleId());
 				courseEnrollmentForm.setCourseName(enrolledCourse.getCourseName());
 				courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
+				
 				courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
 				courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
 				courseEnrollmentForm.setParticipantId(enrolledCourse.getParticipantId());
@@ -564,6 +565,8 @@ public class EnrollmentController {
 				courseScheduleForm.setCourseName(courseSchedule.getCourseName());
 				courseScheduleForm.setInstructorName(
 						courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
+                courseScheduleForm.setMandatory(courseSchedule.getMandatory());
+                courseScheduleForm.setDeadline(courseSchedule.getDeadline());
 				courseScheduleForm.setVenueName(courseSchedule.getVenueName());
 				courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
 				courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
