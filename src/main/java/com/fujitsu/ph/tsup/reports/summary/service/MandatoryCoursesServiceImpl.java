@@ -3,11 +3,11 @@
  */
 package com.fujitsu.ph.tsup.reports.summary.service;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,134 +25,146 @@ import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
 @Service
 public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
-	@Autowired
-	private MandatoryCoursesDao mandatoryCourseDao;
+    @Autowired
+    private MandatoryCoursesDaoImpl mandatoryCoursesDao = new MandatoryCoursesDaoImpl();
+    private MandatoryCourses mandatoryCourses = new MandatoryCourses();
+    private MandatoryCoursesForm mandatoryCoursesForm = new MandatoryCoursesForm();
+    // private int totalNumberOfJduMembers;
+    // private int totalNumberOfCompletion;
+    // private int totalNumberOfCompletionLastWeek;
 
-	private long totalNumberOfJduMembers;
-	private long totalNumberOfCompletion;
-	private long totalNumberOfCompletionLastWeek;
+    /**
+     * Finds all mandatory courses based on the given date
+     * 
+     * @param selectedStartDateTime
+     * @param selectedEndDateTime
+     * @return mandatoryCourses
+     *
+     */
+    @Override
+    public Set<MandatoryCourses> getMandatoryCourses(LocalDateTime selectedStartDateTime,
+            LocalDateTime selectedEndDateTime) {
 
-	/**
-	 * Finds all mandatory courses based on the given date
-	 * 
-	 * @param selectedStartDateTime
-	 * @param selectedEndDateTime
-	 * @return mandatoryCourses
-	 *
-	 */
-	@Override
-	public Set<MandatoryCourses> getMandatoryCourses(ZonedDateTime selectedStartDateTime,
-			ZonedDateTime selectedEndDateTime) {
+        Set<MandatoryCourses> mandatoryCourses = mandatoryCoursesDao
+                .findMandatoryCourses(selectedStartDateTime, selectedEndDateTime);
 
-		Set<MandatoryCourses> mandatoryCourses = mandatoryCourseDao.findMandatoryCourses();
+        if (mandatoryCourses.isEmpty()) {
+            System.out.println("****************** mandatoryCourses.isEmpty() ******************");
+            return null;
+            
 
-		if (mandatoryCourses.isEmpty()) {
-			throw new IllegalArgumentException();
-		} else {
-			return mandatoryCourses;
-		}
-	}
+        } else {
+            return mandatoryCourses;
 
-	/**
-	 * Acquires the total number of JDU members
-	 * 
-	 * @return long
-	 */
-	@Override
-	public long getTotalNumberOfJduMembers() {
-		totalNumberOfJduMembers = mandatoryCourseDao.findTotalNumberOfJdu();
+        }
+    }
 
-		if (totalNumberOfJduMembers < 0) {
-			throw new IllegalArgumentException();
-		} else {
-			return totalNumberOfJduMembers;
-		}
-	}
+    /**
+     * Acquires the total number of JDU members
+     * 
+     * @return long
+     */
+    @Override
+    public long getTotalNumberOfJduMembers() {
 
-	/**
-	 * Acquires the total number of completion for the specified course.
-	 * 
-	 * @param mandatoryCourse
-	 * @return long
-	 */
-	@Override
-	public long getTotalNumberOfCompletion(MandatoryCourses mandatoryCourse) {
+        mandatoryCoursesForm.setTotalNoOfJDUMem(
+                (long) mandatoryCoursesDao.findTotalNumberOfJdu(ZonedDateTime.now(), ZonedDateTime.now()));
 
-		// String courseName = mandatoryCourse.getName();
+        // TO BE CHANGED/CONFIRMED
+        if (mandatoryCoursesForm.getTotalNoOfJDUMem() <= 0) {
+            throw new IllegalArgumentException();
+        } else {
+            return mandatoryCoursesForm.getTotalNoOfJDUMem();
+        }
+    }
 
-		// To add course name on the method call
-		totalNumberOfCompletion = mandatoryCourseDao.findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime.now(),
-				ZonedDateTime.now());
+    /**
+     * Acquires the total number of completion for the specified course.
+     * 
+     * @param mandatoryCourse
+     * @return long
+     */
+    @Override
+    public long getTotalNumberOfCompletion(MandatoryCourses mandatoryCourse) {
 
-		if (totalNumberOfCompletion < 0) {
-			throw new IllegalArgumentException();
-		} else {
-			return totalNumberOfCompletion;
-		}
-	}
+        //String courseName = mandatoryCourse.getName();
 
-	/**
-	 * Acquires the total number of completion for the specified course within last
-	 * week.
-	 * 
-	 * @param mandatoryCourse
-	 * @return long
-	 */
-	@Override
-	public long getTotalNumberOfCompletionLastWeek(MandatoryCourses mandatoryCourse) {
+        // To add course name on the method call
+        mandatoryCoursesForm.setTotalNoOfJDUMemFin((long) mandatoryCoursesDao
+                .findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime.now(), ZonedDateTime.now()));
 
-		ZonedDateTime currentDateAndTime = ZonedDateTime.now();
-		ZonedDateTime startDateAndTime = currentDateAndTime.minusDays(7);
+        // TO BE CHANGED
+        if (mandatoryCoursesForm.getTotalNoOfJDUMemFin() < 0) {
+            throw new IllegalArgumentException();
+        } else {
+            return mandatoryCoursesForm.getTotalNoOfJDUMemFin();
+        }
+    }
 
-		// String courseName = mandatoryCourse.getName();
+    /**
+     * Acquires the total number of completion for the specified course within last week.
+     * 
+     * @param mandatoryCourse
+     * @return long
+     */
+    @Override
+    public long getTotalNumberOfCompletionLastWeek(MandatoryCourses mandatoryCourse) {
 
-		// to add course name on the method call
-		totalNumberOfCompletionLastWeek = mandatoryCourseDao
-				.findTotalNumberOfJduWhoFinishedTrainingLastweek(startDateAndTime, currentDateAndTime);
+        ZonedDateTime currentDateAndTime = ZonedDateTime.now();
+        ZonedDateTime startDateAndTime = currentDateAndTime.minusDays(7);
 
-		if (totalNumberOfCompletionLastWeek < 0) {
-			throw new IllegalArgumentException();
-		} else {
-			return totalNumberOfCompletionLastWeek;
-		}
-	}
+        //String courseName = mandatoryCourse.getName();
 
-	/**
-	 * Calculates the percentage completion per course
-	 * 
-	 * @return int
-	 */
-	@Override
-	public int getPercentageCompletion() {
+        // to add course name on the method call
+        mandatoryCoursesForm.setTotalNoOfJDUMemFinLastWk((long) mandatoryCoursesDao
+                .findTotalNumberOfJduWhoFinishedTrainingLastWeek(startDateAndTime, currentDateAndTime));
 
-		long percentageCompletion = 0;
+        // TO BE CHANGED/CONFIRMED
+        if (mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk() <= 0) {
+            throw new IllegalArgumentException();
+        } else {
+            return mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk();
+        }
+    }
 
-		try {
-			percentageCompletion = (totalNumberOfCompletion / totalNumberOfJduMembers) * 100;
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
-		}
+    /**
+     * Calculates the percentage completion per course
+     * 
+     * @return int
+     */
+    @Override
+    public int getPercentageCompletion() {
 
-		return (int) percentageCompletion;
-	}
+        long percentageCompletion = 0;
 
-	/**
-	 * Calculates the percentage completion per course within last week
-	 * 
-	 * @return int
-	 */
-	@Override
-	public int getPercentageCompletionLastWeek() {
+        try {
+            percentageCompletion = (mandatoryCoursesForm.getTotalNoOfJDUMemFin()
+                    / mandatoryCoursesForm.getTotalNoOfJDUMem()) * 100;
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
+        }
 
-		long percentageCompletionLastWeek = 0;
+        return (int) percentageCompletion;
+    }
 
-		try {
-			percentageCompletionLastWeek = (totalNumberOfCompletionLastWeek / totalNumberOfJduMembers) * 100;
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
-		}
+    /**
+     * Calculates the percentage completion per course within last week
+     * 
+     * @return int
+     */
+    @Override
+    public int getPercentageCompletionLastWeek() {
 
-		return (int) percentageCompletionLastWeek;
-	}
+        long percentageCompletionLastWeek = 0;
+
+        try {
+            percentageCompletionLastWeek = (mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk()
+                    / mandatoryCoursesForm.getTotalNoOfJDUMem()) * 100;
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
+        }
+
+        return (int) percentageCompletionLastWeek;
+    }
 
 }
