@@ -100,13 +100,14 @@
 						
 					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
 							th:with="courseScheduleId = ${courseSchedule.id}"
-							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',${courseSchedule.mandatory},
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}', '${courseSchedule.courseDetails}')|">
 									
 						<td class="hide" th:text="${courseScheduleId}"/>
 						<td class="align-middle" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td class="align-middle" th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
 						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
+						<td class="hide" th:text="${courseSchedule.mandatory}"/>
 						<td class="align-middle" th:text="${courseSchedule.deadline}"/> 
 						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')} + '&lt;br /&gt; <hr>' + 
 						${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
@@ -121,7 +122,7 @@
 						<td class="hide" th:text="${courseSchedule.maxAllowed}"/>
 						<td class="hide" th:text="${courseSchedule.courseDetails}"></td>
 						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
-
+	
 						<td sec:authorize="hasAuthority('Member')">
 							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
 									${courseSchedule.mandatory == 'false'}"
@@ -129,8 +130,7 @@
 									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
 									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}', 
 									'${courseSchedule.courseDetails}')|" 
-									type="button" class="btn btn-success">Register</button>
-									
+									type="button" class="btn btn-success" >Register</button>	
 <!-- 							<button th:disabled="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
 							${courseSchedule.mandatory == 'false'}"
 							type="button" class="btn btn-success" 
@@ -701,9 +701,9 @@
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="courseRegistrationTime" disabled>
 								</div>
-							</div>
-							<div class="">
-								<h5 style="color:red">This is a required training</h5>
+							</div> --
+							<div class="" id="showRequired">
+								<h5 style="color:red" >This is a required training</h5>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
@@ -789,8 +789,8 @@
 									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
 								</div>
 							</div>	
-							<div class="">
-								<h5 style="color:red">This is a required training</h5>
+							<div class="" id="showRequired">
+								<h5 style="color:red" >This is a required training</h5>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
@@ -902,7 +902,7 @@
 // 	<!--Message alert End-->
 
 	//Information Modal
-	function showInformation(id, courseName, instructorName, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
+	function showInformation(id, courseName, instructorName, mandatory, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
 // 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
 
 		var startDate = scheduleStartDateTime.slice(0,10);
@@ -922,6 +922,13 @@
 		
 		var instructorNameInput = document.getElementById('infoInstructorName');
 		instructorNameInput.value = instructorName;
+		
+		if(mandatory == true){
+			$('[id$=showRequired]').show();
+		}
+		else{
+			$('[id$=showRequired]').hide();
+		}
 		
 		var dateInput = document.getElementById('infoDate');
 		dateInput.value = startDate;
