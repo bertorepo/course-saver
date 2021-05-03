@@ -314,7 +314,7 @@
 <!-- 						</td> -->
 
 						<td class="sticky" sec:authorize="hasAuthority('PMO')">
-							<button th:disabled="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
+							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
 									${courseSchedule.mandatory == 'false'}"
 									th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
 									type="button" class="btn btn-success" id="enrollMemberButton">Register Member</button>
