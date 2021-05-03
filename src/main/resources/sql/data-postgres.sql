@@ -62,7 +62,7 @@ INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL)
 INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
 	VALUES('Software Requirements','Detail for Software Requirements');
 INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
-	VALUES('G3CC Standardization Training','Details for G3CC Standardization Training');
+	VALUES('JDU Standardization Training','Details for JDU Standardization Training');
 
 --Role Type
 INSERT INTO tsup.MEMBER_ROLE(role_type, role_desc)
