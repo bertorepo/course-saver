@@ -272,8 +272,14 @@ hr {
 		//16 - 0
 		//11 - 3
 		
+		
+		if (document.getElementById("percentageFinishedToday").innerHTML == 'null%' ||
+				document.getElementById("percentageFinishedLW").innerHTML == 'null%') {
+			document.getElementById("percentageFinishedToday").innerHTML = ''
+				document.getElementById("percentageFinishedLW").innerHTML = ''
+		}
+
 		function load() {
-			
 
 			console.log("ROW COUNT: " + rowCount);
 			if ($("#selectReportType").val() == 0
@@ -289,60 +295,63 @@ hr {
 				//$("#viewButton").removeAttr('disabled');
 				//$("#inputCourse").removeAttr('disabled');
 			}
-			
-			
 
 			var fromNewDate = fromDateTime.slice(0, 16);
 			var toNewDate = toDateTime.slice(0, 16);
-			
+
 			var url = window.location.href;
 			var generateCoursesString = url.search("getMandatoryCourses");
 			var summaryString = url.search("summary");
-			
-			if(generateCoursesString === -1 && summaryString === -1){
+
+			if (generateCoursesString === -1 && summaryString === -1) {
 				//alert(document.getElementById("startDateTime").value);
 				document.getElementById("startDateTime").value = fromNewDate;
 				document.getElementById("endDateTime").value = toNewDate;
-				
+
 				document.getElementById("hStartDateTime").value = fromNewDate;
 				document.getElementById("hEndDateTime").value = toNewDate;
-				
+
 				document.getElementById("dateForm").submit();
-			} else if(summaryString >= 0) {
+			} else if (summaryString >= 0) {
 				var hSearchSdate = url.lastIndexOf("hStartDateTime");
 				var hSearchEdate = url.lastIndexOf("hEndDateTime");
-				var hSearchCourse = url.lastIndexOf("hCourse")+8;
-				
-				var hSDatewColon = url.substring((hSearchSdate + 15), (hSearchSdate + 33));
+				var hSearchCourse = url.lastIndexOf("hCourse") + 8;
+
+				var hSDatewColon = url.substring((hSearchSdate + 15),
+						(hSearchSdate + 33));
 				var hSDate = hSDatewColon.replace("%3A", ":");
-				
-				var hEDatewColon = url.substring((hSearchEdate + 13), (hSearchEdate + 31));
+
+				var hEDatewColon = url.substring((hSearchEdate + 13),
+						(hSearchEdate + 31));
 				var hEDate = hEDatewColon.replace("%3A", ":");
-				
-				var hSearchCoursewColon = url.substring(hSearchCourse, (hSearchCourse+url.length));
+
+				var hSearchCoursewColon = url.substring(hSearchCourse,
+						(hSearchCourse + url.length));
 				var hCourse = hSearchCoursewColon.replaceAll('+', ' ');
-								
+
 				document.getElementById("startDateTime").value = hSDate;
 				document.getElementById("endDateTime").value = hEDate;
-				
+
 				document.getElementById("hStartDateTime").value = hSDate;
 				document.getElementById("hEndDateTime").value = hEDate;
-				
+
 				document.getElementById("inputCourse").value = hCourse;
-				
+
 			} else {
 				var searchSdate = url.lastIndexOf("startDateTime");
 				var searchEdate = url.lastIndexOf("endDateTime");
-				
-				var sDatewColon = url.substring((searchSdate + 14), (searchSdate + 32));
+
+				var sDatewColon = url.substring((searchSdate + 14),
+						(searchSdate + 32));
 				var sDate = sDatewColon.replace("%3A", ":");
-				
-				var eDatewColon = url.substring((searchEdate + 12), (searchEdate + 32));
+
+				var eDatewColon = url.substring((searchEdate + 12),
+						(searchEdate + 32));
 				var eDate = eDatewColon.replace("%3A", ":");
-				
+
 				document.getElementById("startDateTime").value = sDate;
 				document.getElementById("endDateTime").value = eDate;
-				
+
 				document.getElementById("hStartDateTime").value = sDate;
 				document.getElementById("hEndDateTime").value = eDate;
 			}
@@ -356,7 +365,6 @@ hr {
 			var showMembersCompleted = document
 					.getElementById("summaryMembersTable");
 
-			
 			/*if(selectReportType == 1){
 
 				showSummaryCourses.style.display = "block";
@@ -427,7 +435,7 @@ hr {
 			if (start > end) {
 				document.getElementById("invalidMsg").innerHTML = "Date Range Invalid."
 				$('#invalidModal').modal('show');
-			} else{
+			} else {
 				document.getElementById("mandatoryCoursesForm").submit();
 			}
 		}
@@ -456,7 +464,7 @@ hr {
 
 			}
 		}
-		
+
 		function hCourseValue() {
 			var manCourse = document.getElementById("inputCourse").value;
 			document.getElementById("hCourse").value = manCourse;
