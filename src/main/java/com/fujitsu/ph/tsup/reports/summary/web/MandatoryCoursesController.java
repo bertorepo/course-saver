@@ -4,34 +4,18 @@
 package com.fujitsu.ph.tsup.reports.summary.web;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fujitsu.ph.tsup.course.model.Course;
-import com.fujitsu.ph.tsup.course.model.CoursesConducted;
-import com.fujitsu.ph.tsup.course.model.CoursesConductedForm;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
 import com.fujitsu.ph.tsup.reports.summary.service.MandatoryCoursesService;
@@ -69,21 +53,14 @@ public class MandatoryCoursesController {
     @GetMapping("/load/getMandatoryCourses")
     public String generateMandatoryCourses(@RequestParam Map<String, String> dateRange,
             RedirectAttributes redirectAttributes, Model model) {
-        
-        System.out.println("startDateTime: " + dateRange.get("startDateTime"));
-        System.out.println("endDateTime: " + dateRange.get("endDateTime"));
-        
+                
         LocalDateTime start = LocalDateTime.parse(dateRange.get("startDateTime"));
         LocalDateTime end = LocalDateTime.parse(dateRange.get("endDateTime"));
-        System.out.println("start: " + start);
-        System.out.println("end: " + end);
-        
+                
         Set<MandatoryCourses> mandatoryCourses = mandatoryCoursesService
                 .getMandatoryCourses(start, end);
-
-        System.out.println("%%%%mandatoryCourses: " + mandatoryCourses);
-
         model.addAttribute("mandatoryCourses", mandatoryCourses);
+        
         return "reports/summaryMandatoryCourses";
         
         
@@ -98,12 +75,16 @@ public class MandatoryCoursesController {
      * @return string
      */
     @GetMapping("/load/summary")
-    public String viewMandatoryCoursesReports(@RequestParam(value = "hCourse") String course,
-            MandatoryCoursesForm mandatoryCoursesForm, Model model, BindingResult bindingResult) {
+    public String viewMandatoryCoursesReports(@RequestParam Map<String, String> dateRange,
+            @RequestParam(value = "hCourse") String course, MandatoryCoursesForm mandatoryCoursesForm,
+            Model model, BindingResult bindingResult) {
         
-        System.out.println("####COURSE: " + course);
-
-        //model.addAttribute("mandatoryCoursesForm", mandatoryCoursesForm);
+        LocalDateTime start = LocalDateTime.parse(dateRange.get("hStartDateTime"));
+        LocalDateTime end = LocalDateTime.parse(dateRange.get("hEndDateTime"));
+        Set<MandatoryCourses> mandatoryCourses = mandatoryCoursesService
+                .getMandatoryCourses(start, end);
+        model.addAttribute("mandatoryCourses", mandatoryCourses);
+        
         model.addAttribute("totalNumberOfJduMembers",
                 mandatoryCoursesService.getTotalNumberOfJduMembers());
         model.addAttribute("totalNumberOfCompletion",
@@ -114,12 +95,8 @@ public class MandatoryCoursesController {
                 mandatoryCoursesService.getPercentageCompletion());
         model.addAttribute("percentageCompletionLastWeek",
                 mandatoryCoursesService.getPercentageCompletionLastWeek());
+    
         
-        System.out.println("%%%%% CONTROLLER getTotalNoOfJDUMem(): " + mandatoryCoursesService.getTotalNumberOfJduMembers());
-        System.out.println("%%%%% CONTROLLER getTotalNumberOfCompletion(course): " + mandatoryCoursesService.getTotalNumberOfCompletion(course));
-        System.out.println("%%%%% CONTROLLER getTotalNumberOfCompletionLastWeek(course): " + mandatoryCoursesService.getTotalNumberOfCompletionLastWeek(course));
-        System.out.println("%%%%% CONTROLLER getPercentageCompletion(): " + mandatoryCoursesService.getPercentageCompletion());
-        System.out.println("%%%%% CONTROLLER getPercentageCompletionLastWeek(): " + mandatoryCoursesService.getPercentageCompletionLastWeek());
         return "reports/summaryMandatoryCourses";
     }
 
