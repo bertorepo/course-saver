@@ -205,7 +205,7 @@
 						<div class="modal-header text-left">
 							<i class="fa fa-upload fa-2x upload"></i>&nbsp;
 							<h4 class="modal-title w-100">Upload Certificate</h4>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
 								<span aria-hidden="true">&times;</span>
 						</div>
 						<div class="modal-body">
@@ -275,12 +275,11 @@
 										readonly>
 								</div>
 							</div>
-							<div class = "downloadFile" id = "downloadFileContainer">
-									<button id = "download_btn" type="submit" class="btn btn-primary btn-success">Download Certificate</button>
+									<div class = "downloadFile" id = "downloadFileContainer">
+										<button id = "download_btn" type="submit" class="btn btn-primary btn-success">Download Certificate</button>
 							</div>
-							</form>	
-							</div>
-						
+						</form>	
+							</div>					
 						</div>
 					</div>
 				</div>
@@ -351,7 +350,6 @@
 							<input type="button" class="btn btn-secondary" data-dismiss="modal" value="Back">
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -381,7 +379,6 @@
 								<input type="hidden" name="courseScheduleId" id="confirmCourseScheduleId">
 								<button type="submit" name="submit" value="submit" class="btn btn-primary">Yes</button>
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-
 							</form>
 						</div>
 					</div>
@@ -661,7 +658,6 @@
 		   	var xhr = new XMLHttpRequest();
 		    xhr.open("POST", "/enrollment/{courseId1}/upload");
 		    xhr.onload = function() {
-		    	//var response = JSON.parse(xhr.responseText);
 		        if(xhr.status == 200) {		        	
 		        	$('#uploadModal').modal('hide');
 		        	$('#successCertificateModal').modal('show');		        
