@@ -117,11 +117,11 @@ hr {
 						style="margin-left: 20%">
 						<input type="submit" id="viewButton" class="btn btn-success"
 							value="View" onclick="btnView()" style="width: 100px"> <span
-							style="width: 100px"></span> <input type="button"
+							style="width: 100px"></span>
+						<input type="button"
 							id="exportButton"
-							onclick="exportTableToCSV('Summary of Course Conducted.csv')"
-							class="btn btn-success" value="Export" style="width: 100px"
-							disabled>
+							onclick="exportMandatory()"
+							class="btn btn-success" value="Export" style="width: 100px">
 					</div>
 					<label>Report Display</label>
 					<div id="reportTable"
@@ -235,6 +235,34 @@ hr {
 		</div>
 	</div>
 	<!--Invalid Modal End-->
+	<!--exportMandatoryCourses-->
+	<table id="exportMandatoryCourses" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
+		<thead>
+			<tr>
+				<th style="width:35%">Total Number of JDU Members</th>
+				<th style="width:35%">Total Number of JDU Members Last Week</th>
+				<th style="width:35%">Total Number of Original Members</th>
+				<th style="width:35%">Total Number of New Members</th>
+				<th style="width:35%">Total Number of JDU Members Who Finished the Training</th>
+				<th style="width:35%">Total Number of JDU Members Last Week Who Finished the Training</th>
+				<th style="width:35%">Percentage Finished as of Today(Total Members and also Total Courses)</th>
+				<th style="width:35%">Percentage Finished as of Last Week(Total Members and also Total Courses)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="totalJDUMembers">-</td>
+				<td id="totalJDUMembersLW">-</td>
+				<td id="totalOM">-</td>
+				<td id="totalNM">-</td>
+				<td id="totalFinishedJDU">-</td>
+				<td id="totalFinishedJDULW">-</td>
+				<td id="percentFinish">-</td>
+				<td id="percentFinishLW">-</td>
+			</tr>
+		</tbody>
+	</table>
+	<!--exportMandatoryCourses End-->
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
 		//-Retrieving data from controller
@@ -254,6 +282,54 @@ hr {
 		var getPercentageCompletionLastWeek = /*[[${getPercentageCompletionLastWeek}]]*/'default';
 		/*]]>*/
 		//-----------------------
+		
+		//Insert Data into Table
+		function insertIntoExport(){
+			document.getElementById("totalJDUMembers").innerHTML = document.getElementById("totalNumberOfJDUDevs").innerHTML;
+			document.getElementById("totalFinishedJDU").innerHTML = document.getElementById("totalNumberOfJDUDevsFinished").innerHTML;
+			document.getElementById("totalFinishedJDULW").innerHTML = document.getElementById("totalNumberOfJDUDevsFinishedLW").innerHTML;
+			document.getElementById("percentFinish").innerHTML = document.getElementById("percentageFinishedToday").innerHTML;
+			document.getElementById("percentFinishLW").innerHTML = document.getElementById("percentageFinishedLW").innerHTML;
+		}
+		//-----------------------
+		
+		//exportMandatory function
+		function exportMandatory(){
+			insertIntoExport();
+			var table = document.getElementById("exportMandatoryCourses");
+			var rows =[];
+			for(var i=0,row; row = table.rows[i];i++){
+				//rows would be accessed using the "row" variable assigned in the for loop
+				//Get each cell value/column from the row
+				column1 = row.cells[0].innerText;
+				column2 = row.cells[1].innerText;
+				column3 = row.cells[2].innerText;
+				column4 = row.cells[3].innerText;
+				column5 = row.cells[4].innerText;
+				rows.push([
+						column1,
+						column2,
+						column3,
+						column4,
+						column5
+					]);
+			}
+			csvContent = "data:text/csv;charset=utf-8,";
+			rows.forEach(function(rowArray){
+				row = rowArray.join(",");
+				csvContent += row + "\r\n";
+			});
+			
+			var encodedUri = encodeURI(csvContent);
+			var link = document.createElement("a");
+			link.setAttribute("href", encodedUri);
+			link.setAttribute("download", "Sample.csv");
+			document.body.appendChild(link);
+			
+			link.click();
+		}
+		//-----------------------
+		
 		//document.getElementById("#startDateTime").innerHTML = "New text!";
 		var rowCount = $('#summaryCoursesTable tr').length - 1;
 
