@@ -29,8 +29,8 @@ hr {
 			<i class="fa fa-file-text"></i> Generate Reports
 		</h3>
 		<hr>
-		<!-- <form id="dateForm" class="form-horizontal"
-			action="/mandatoryCourses/load/getMandatoryCourses" method="GET"></form> -->
+		<form id="dateForm" class="form-horizontal"
+			action="/mandatoryCourses/load/getMandatoryCourses" method="GET"></form>
 		<form id="mandatoryCoursesForm" class="form-horizontal"
 			action="/mandatoryCourses/load/summary" method="GET">
 
@@ -61,7 +61,7 @@ hr {
 							Range</label> <label class="col-form-label" style="font-weight: bold;">From</label>
 						<span style="width: 8px"></span> <input class="form-control"
 							type="datetime-local" id="startDateTime" name="startDateTime"
-							form="mandatoryCoursesForm" style="width: 220px; font-size: 14px;"
+							form="dateForm" style="width: 220px; font-size: 14px;"
 							onchange="this.form.submit()" required /> <input type="hidden"
 							id="hStartDateTime" name="hStartDateTime"
 							form="mandatoryCoursesForm" /> <span style="width: 8px"></span>
@@ -70,7 +70,7 @@ hr {
 						<div class="col-lg-2">
 
 							<input class="form-control" type="datetime-local"
-								id="endDateTime" name="endDateTime" form="mandatoryCoursesForm"
+								id="endDateTime" name="endDateTime" form="dateForm"
 								style="width: 220px; font-size: 14px;"
 								onchange="this.form.submit()" required /> <input type="hidden"
 								id="hEndDateTime" name="hEndDateTime"
