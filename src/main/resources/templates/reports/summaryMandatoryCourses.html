@@ -95,6 +95,14 @@ hr {
 									th:text="${courseSelect.name}" th:value="${courseSelect.name}"
 									th:selected="${courseSelect.name eq lastSelected}"></option>
 							</datalist>
+
+							<!-- <select>
+								<option value="">--</option>
+								<option th:each="mandatoryCourse : *{mandatoryCourses)}"
+									th:value="${mandatoryCourse.name}" th:text="${mandatoryCourse.name}" disabled></option>
+							</select>  -->
+							
+							
 							
 							<input type="hidden"
 								id="hCourse" name="hCourse" value=""
@@ -250,12 +258,19 @@ hr {
 		var rowCount = $('#summaryCoursesTable tr').length - 1;
 
 		var d = new Date();
+		
+		var d1 = new Date(0, 3, 01, 8, 00, 00, 00);
+		d1.setFullYear(d.getFullYear());
+		
+		var d2 = new Date(0, 2, 31, 31, 59, 59, 0);
+		d2.setFullYear(d.getFullYear()+1);
 
-		//var fromDateTime = $("#startDateTime").val();
-		//var toDateTime = $("#endDateTime").val();
-
-		var fromDateTime = d.toISOString();
-		var toDateTime = d.toISOString();
+		var fromDateTime = d1.toISOString();
+		var toDateTime = d2.toISOString();
+		
+		
+		//16 - 0
+		//11 - 3
 		
 		function load() {
 			
@@ -282,14 +297,39 @@ hr {
 			
 			var url = window.location.href;
 			var generateCoursesString = url.search("getMandatoryCourses");
+			var summaryString = url.search("summary");
 			
-			if(generateCoursesString === -1){
+			if(generateCoursesString === -1 && summaryString === -1){
 				//alert(document.getElementById("startDateTime").value);
 				document.getElementById("startDateTime").value = fromNewDate;
 				document.getElementById("endDateTime").value = toNewDate;
 				
 				document.getElementById("hStartDateTime").value = fromNewDate;
 				document.getElementById("hEndDateTime").value = toNewDate;
+				
+				document.getElementById("dateForm").submit();
+			} else if(summaryString >= 0) {
+				var hSearchSdate = url.lastIndexOf("hStartDateTime");
+				var hSearchEdate = url.lastIndexOf("hEndDateTime");
+				var hSearchCourse = url.lastIndexOf("hCourse")+8;
+				
+				var hSDatewColon = url.substring((hSearchSdate + 15), (hSearchSdate + 33));
+				var hSDate = hSDatewColon.replace("%3A", ":");
+				
+				var hEDatewColon = url.substring((hSearchEdate + 13), (hSearchEdate + 31));
+				var hEDate = hEDatewColon.replace("%3A", ":");
+				
+				var hSearchCoursewColon = url.substring(hSearchCourse, (hSearchCourse+url.length));
+				var hCourse = hSearchCoursewColon.replaceAll('+', ' ');
+								
+				document.getElementById("startDateTime").value = hSDate;
+				document.getElementById("endDateTime").value = hEDate;
+				
+				document.getElementById("hStartDateTime").value = hSDate;
+				document.getElementById("hEndDateTime").value = hEDate;
+				
+				document.getElementById("inputCourse").value = hCourse;
+				
 			} else {
 				var searchSdate = url.lastIndexOf("startDateTime");
 				var searchEdate = url.lastIndexOf("endDateTime");
@@ -316,6 +356,7 @@ hr {
 			var showMembersCompleted = document
 					.getElementById("summaryMembersTable");
 
+			
 			/*if(selectReportType == 1){
 
 				showSummaryCourses.style.display = "block";
