@@ -3,6 +3,7 @@
  */
 package com.fujitsu.ph.tsup.reports.summary.service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
@@ -67,13 +68,20 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
     @Override
     public long getTotalNumberOfJduMembers() {
 
-        mandatoryCoursesForm.setTotalNoOfJDUMem(
-                (long) mandatoryCoursesDao.findTotalNumberOfJdu(ZonedDateTime.now(), ZonedDateTime.now()));
+        mandatoryCoursesForm.setTotalNoOfJDUMem((long) mandatoryCoursesDao.findTotalNumberOfJdu());
 
         // TO BE CHANGED/CONFIRMED
         if (mandatoryCoursesForm.getTotalNoOfJDUMem() <= 0) {
+            // ********* DELETE *********
+            System.out.println("%%%SERVICE getTotalNoOfJDUMem less than or equal to 0:" + mandatoryCoursesForm.getTotalNoOfJDUMem());
+            // ********* DELETE *********
+            
             throw new IllegalArgumentException();
         } else {
+            // ********* DELETE *********
+            System.out.println("%%%SERVICE getTotalNoOfJDUMem more than 0:" + mandatoryCoursesForm.getTotalNoOfJDUMem());
+            // ********* DELETE *********
+            
             return mandatoryCoursesForm.getTotalNoOfJDUMem();
         }
     }
@@ -90,8 +98,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
         //String courseName = mandatoryCourse.getName();
 
         // To add course name on the method call
-        mandatoryCoursesForm.setTotalNoOfJDUMemFin((long) mandatoryCoursesDao
-                .findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime.now(), ZonedDateTime.now()));
+        mandatoryCoursesForm.setTotalNoOfJDUMemFin((long) mandatoryCoursesDao.findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime.now(), ZonedDateTime.now()));
 
         // TO BE CHANGED
         if (mandatoryCoursesForm.getTotalNoOfJDUMemFin() < 0) {
@@ -133,18 +140,23 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
      * @return int
      */
     @Override
-    public int getPercentageCompletion() {
-
-        long percentageCompletion = 0;
-
+    public double getPercentageCompletion() {
+        
+        System.out.println("SERVICE getTotalNoOfJDUMemFin: " + mandatoryCoursesForm.getTotalNoOfJDUMemFin());
+        System.out.println("SERVICE getTotalNoOfJDUMem: " + mandatoryCoursesForm.getTotalNoOfJDUMem());
+        double membersFinished = mandatoryCoursesForm.getTotalNoOfJDUMemFin();
+        double members = mandatoryCoursesForm.getTotalNoOfJDUMem();
+                
+        double percentageCompletion = round(((membersFinished/members)*100), 2);
+        
+        System.out.println("$$$$ SERVICE percentageCompletion: " + percentageCompletion);
         try {
-            percentageCompletion = (mandatoryCoursesForm.getTotalNoOfJDUMemFin()
-                    / mandatoryCoursesForm.getTotalNoOfJDUMem()) * 100;
+            System.out.println("$$$$ SERVICE percentageCompletion: " + percentageCompletion);
+            return percentageCompletion;
+
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
-
-        return (int) percentageCompletion;
     }
 
     /**
@@ -153,18 +165,32 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
      * @return int
      */
     @Override
-    public int getPercentageCompletionLastWeek() {
-
-        long percentageCompletionLastWeek = 0;
-
+    public double getPercentageCompletionLastWeek() {
+        
+        System.out.println("SERVICE getTotalNoOfJDUMemFin: " + mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk());
+        System.out.println("SERVICE getTotalNoOfJDUMem: " + mandatoryCoursesForm.getTotalNoOfJDUMem());
+        double membersFinishedLastWk = mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk();
+        double members = mandatoryCoursesForm.getTotalNoOfJDUMem();
+                
+        double percentageCompletionLastWk = round(((membersFinishedLastWk/members)*100), 2);
+        
+        System.out.println("$$$$ SERVICE percentageCompletionLastWk: " + percentageCompletionLastWk);
         try {
-            percentageCompletionLastWeek = (mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk()
-                    / mandatoryCoursesForm.getTotalNoOfJDUMem()) * 100;
+            System.out.println("$$$$ SERVICE percentageCompletionLastWk: " + percentageCompletionLastWk);
+            return percentageCompletionLastWk;
+
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
+    }
+    
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
 
-        return (int) percentageCompletionLastWeek;
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 
 }
