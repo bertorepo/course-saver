@@ -155,4 +155,5 @@ public interface EnrollmentService {
 	
 	List<String> findCourseScheduleIfMandatory();
 	
+	public String findCertificateName(long userId, long courseId);
 }

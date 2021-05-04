@@ -190,5 +190,7 @@ public interface EnrollmentDao {
     void uploadCertificate(Certificate certificate);
 
     public List<String> findCourseScheduleIfMandatory();
+
+	String findCertificateName(long userId, long courseId);
    
 }

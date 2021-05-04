@@ -122,7 +122,7 @@
 						<tr th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
 
 							<td class="align-middle" th:if= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
-							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}')|"
+							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}','${courseSchedules.courseId}')|"
 							th:text="${courseSchedules.courseName}"></td>
 							<td class="align-middle" th:unless= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
 							th:text="${courseSchedules.courseName}"></td>
@@ -255,13 +255,14 @@
 						<div class="modal-header text-left">
 							<h5 class="modal-title"><i class="far fa-file-pdf"></i> Certificate Details
 							</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
 								<span aria-hidden="true">&times;</span>
 						</div>
 						<div class="modal-body">
+						<form id= "downloadCertificateForm" action="#" th:action = "@{/enrollment/{courseIdHidden}/downloadFile}" method="get">
 							<h6 style="font-weight: bold;">Course Detail</h6>
 							<div class="form-group row">
-								<input type="hidden" name="courseId" id="courseIdHidden">
+								<input type="hidden" name="courseIdHidden" id="courseIdHidden">
 								<input type="hidden" name="id" id="courseParticipantIdHidden">
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
@@ -274,9 +275,12 @@
 										readonly>
 								</div>
 							</div>
-							<div class = "downloadFile" id = "DownloadFile">
-								<h6 style="font-weight: bold;">Certificate Uploaded:</h6>							
+							<div class = "downloadFile" id = "downloadFileContainer">
+									<button id = "download_btn" type="submit" class="btn btn-primary btn-success">Download Certificate</button>
 							</div>
+							</form>	
+							</div>
+						
 						</div>
 					</div>
 				</div>
@@ -639,20 +643,21 @@
 				$("#btn_upload").removeAttr("disabled");
 			}
 		});
-		function certificateDownload(courseName, dateTaken) {
+		function certificateDownload(courseName, dateTaken,courseId) {
 			document.getElementById('courseName').value = courseName;
 			document.getElementById('dateTaken').value = dateTaken;
-			document.getElementById('certificateFile').value = certificateFile;
+			document.getElementById('courseIdHidden').value = courseId;
 			$('#certificateDownload').modal('show');
 		}
-		
 		var certificateUpload = document.querySelector('#certificateUpload');
 		var certificateFile = document.querySelector('#certificateFile');
+
 		function uploadCertificate(certificateFile){
 			var courseId = document.getElementById('courseId1').value;
 			var formData = new FormData();
 		    formData.append("file", certificateFile);
 		    formData.append("courseId1", courseId);
+		    
 		   	var xhr = new XMLHttpRequest();
 		    xhr.open("POST", "/enrollment/{courseId1}/upload");
 		    xhr.onload = function() {

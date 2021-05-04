@@ -31,6 +31,7 @@ import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -545,7 +546,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     public Resource loadFileAsResource(String fileName,FileStorageProperties fileStorageProperties) {
-        try {
+        fileName = fileName.substring(35).replaceAll("%20", " ");
+       
+    	try {
             Path filePath = Paths.get(fileStorageProperties.getUploadDir())
     				.toAbsolutePath().normalize().resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
@@ -562,4 +565,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public List<String> findCourseScheduleIfMandatory(){
     	return enrollmentDao.findCourseScheduleIfMandatory();
     }
+
+	@Override
+	public String findCertificateName(long userId, long courseId) {
+		
+		return enrollmentDao.findCertificateName(userId, courseId);
+	}
 }

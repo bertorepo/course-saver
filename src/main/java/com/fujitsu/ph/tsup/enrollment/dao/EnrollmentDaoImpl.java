@@ -834,4 +834,19 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     	template.update(query, sqlParameterSource);
     	
     }
+	@Override
+	public String findCertificateName(long userId, long courseId) {
+		String query =  
+				"SELECT filedownloaduri from tsup.certificate_upload"
+				+ " where upload_date =(select max(upload_date)"
+				+ " from tsup.certificate_upload"
+				+ " where course_id = :course_id and employee_id = :employee_id)";
+		
+		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+				.addValue("course_id", courseId)
+				.addValue("employee_id", userId);
+		
+		String certificateName = template.queryForObject(query, sqlParameterSource, String.class);
+		return certificateName;
+	}
 }
