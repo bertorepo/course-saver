@@ -52,7 +52,6 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
         if (mandatoryCourses.isEmpty()) {
             System.out.println("****************** mandatoryCourses.isEmpty() ******************");
             return null;
-            
 
         } else {
             return mandatoryCourses;
@@ -95,10 +94,11 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
     @Override
     public long getTotalNumberOfCompletion(String mandatoryCourse) {
 
-        //String courseName = mandatoryCourse.getName();
+        // String courseName = mandatoryCourse.getName();
 
         // To add course name on the method call
-        mandatoryCoursesForm.setTotalNoOfJDUMemFin((long) mandatoryCoursesDao.findTotalNumberOfJduWhoFinishedTraining(mandatoryCourse));
+        mandatoryCoursesForm.setTotalNoOfJDUMemFin(
+                (long) mandatoryCoursesDao.findTotalNumberOfJduWhoFinishedTraining(mandatoryCourse));
 
         // TO BE CHANGED
         if (mandatoryCoursesForm.getTotalNoOfJDUMemFin() < 0) {
