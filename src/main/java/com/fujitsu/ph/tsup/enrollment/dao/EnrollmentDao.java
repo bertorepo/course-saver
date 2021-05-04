@@ -9,8 +9,9 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //<<Modification History>>
 //Version | Date       | Updated By | Content
 //--------+------------+-----------------------+------
-//0.01    | 06/24/2020 |  WS) J.Yu  | New Creation
-//0.02    | 09/14/2020 |  WS) J.Yu  | Update
+//0.01    | 06/24/2020 |  WS) J.Yu		| New Creation
+//0.02    | 09/14/2020 |  WS) J.Yu		| Update
+//0.03	  | 04/19/2021 |  WS) M.Atayde  | Update
 //====================================================
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
@@ -187,10 +188,28 @@ public interface EnrollmentDao {
 	 */
 //	Integer addEnrolledMembersById(Participant participant);
     
+    /**
+	 * <pre>
+	 *
+	 *uploads the certificate to the database
+	 *@param certificate
+	 *@author m.atayde
+	 *
+	 * <pre>
+	 */
     void uploadCertificate(Certificate certificate);
 
+    /**
+	 * <pre>
+	 *
+	 *finds and only enables the upload certificate button for mandatory courses from the database
+	 *@param userId
+	 *@param courseId
+	 *@author m.atayde
+	 *
+	 * <pre>
+	 */
     public List<String> findCourseScheduleIfMandatory();
-
-	String findCertificateName(long userId, long courseId);
+		String findCertificateName(long userId, long courseId);
    
 }
