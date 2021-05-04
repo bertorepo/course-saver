@@ -54,21 +54,17 @@ public interface MandatoryCoursesDao {
      * <pre>
      *  Find the total number of  JDU who finished training  based on the given date range  
      * </pre>
-     * @param selectedStartDateTime
-     * @param selectedEndDateTime 
+     * @param name
      */
-    int findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime selectedStartDateTime,
-            ZonedDateTime selectedEndDateTime);
+    int findTotalNumberOfJduWhoFinishedTraining(String name);
     
     
     /**
      * <pre>
      *  Find the total number of  JDU who finished training lastweek  based on the given date range  
      * </pre>
-     * @param selectedStartDateTime
-     * @param selectedEndDateTime 
+     * @param name
      */
-    int findTotalNumberOfJduWhoFinishedTrainingLastWeek(ZonedDateTime selectedStartDateTime,
-            ZonedDateTime selectedEndDateTime);
+    int findTotalNumberOfJduWhoFinishedTrainingLastWeek(String name);
     
 }
