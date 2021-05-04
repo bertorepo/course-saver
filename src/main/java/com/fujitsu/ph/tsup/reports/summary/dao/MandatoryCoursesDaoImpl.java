@@ -52,7 +52,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
     @Autowired
     private NamedParameterJdbcTemplate template;
 
-    // NEED TO ADJUST
+    
     public Set<MandatoryCourses> findMandatoryCourses(LocalDateTime selectedStartDateTime,
             LocalDateTime selectedEndDateTime) {
             
@@ -86,8 +86,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
 
     }
 
-    // IF DEPARTMENT ID IS 2 WHICH IS G3CC
-    // NEED TO ADJUST
+    
     public int findTotalNumberOfJdu() {
             
         String query = "SELECT "
@@ -101,9 +100,8 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
          
     }
     
-    // NEED TO ADJUST
-    public int findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime selectedStartDateTime,
-            ZonedDateTime selectedEndDateTime) {
+    
+    public int findTotalNumberOfJduWhoFinishedTraining(String name) {
             
         String query =  "SELECT "                                                                                   
                     + "     COUNT(CA.ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING "                                                                             
@@ -117,19 +115,17 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                     + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                          
                     + "     ON CUPLOAD.COURSE_ID = C.ID "
                     + "WHERE CUPLOAD.CERTIFICATE IS NOT NULL "
+                    + "AND C.NAME = :name "
                     + "AND C.MANDATORY = 'YES';";                   
         
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
-                .addValue("scheduledStartDateTime", selectedStartDateTime.toOffsetDateTime())
-                .addValue("scheduledEndDateTime", selectedEndDateTime.toOffsetDateTime());
-        
+                .addValue("name", name);
         
          return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
     }
     
-    // NEED TO ADJUST
-    public int findTotalNumberOfJduWhoFinishedTrainingLastWeek(ZonedDateTime selectedStartDateTime,
-            ZonedDateTime selectedEndDateTime) {
+   
+    public int findTotalNumberOfJduWhoFinishedTrainingLastWeek(String name) {
             
         String query =  "SELECT "                                                                                   
                     + "     COUNT(CA.ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING_LASTWEEK  "                                                                               
@@ -142,13 +138,13 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                     + "     ON CSCHED.COURSE_ID = C.ID "                                                                                
                     + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                          
                     + "     ON CUPLOAD.COURSE_ID = C.ID "   
-                    + "WHERE CUPLOAD.UPLOAD_DATE IS NOT NULL AND "
-                    + "DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);";                                                                                
+                    + "WHERE CUPLOAD.UPLOAD_DATE IS NOT NULL "
+                    + "AND C.NAME = :name"
+                    + "AND DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);";                                                                                
                                                                                                             
 
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
-                .addValue("scheduledStartDateTime", selectedStartDateTime.toOffsetDateTime())
-                .addValue("scheduledEndDateTime", selectedEndDateTime.toOffsetDateTime());
+                .addValue("name", name);
 
          return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
     }
