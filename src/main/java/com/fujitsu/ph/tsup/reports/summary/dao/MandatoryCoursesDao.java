@@ -48,8 +48,7 @@ public interface MandatoryCoursesDao {
      * @param selectedStartDateTime
      * @param selectedEndDateTime 
      */
-    int findTotalNumberOfJdu(ZonedDateTime selectedStartDateTime,
-            ZonedDateTime selectedEndDateTime);
+    int findTotalNumberOfJdu();
     
     /**
      * <pre>
