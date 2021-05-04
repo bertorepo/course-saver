@@ -515,6 +515,15 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     // return enrollmentDao.addEnrolledMembersById(participant);
     // }
     
+    
+    /**
+     * Upload button enabled for Mandatory courses 
+     * Renamed the uploaded certificate according to the specifications
+     * 
+     * @param uploadCertificate
+     * @author A.Senamin
+     * 
+     */
     public void uploadCertificate(Certificate certificate) {
     	//call the dao method
     	enrollmentDao.uploadCertificate(certificate);	

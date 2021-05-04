@@ -82,6 +82,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.03    | 02/23/2021 | WS) E.Ceniza     | Update
 //0.03    | 03/24/2021 | WS) K.Sanchez    | Update
 //0.03    | 03/23/2021 | WS) C.Macatangay | Update
+//0.04    | 05/04/2021 | WS) A.Senamin    | Update
 //=======================================================
 
 /**
@@ -924,6 +925,17 @@ public class EnrollmentController {
 ////		return "redirect:/schedule";
 //		return "redirect:/enrollment/viewCourseEnroll";
 //	}
+	
+	
+	/**
+     * function in getting the courseID 
+     * 
+	 * @param uploadCertificate
+	 * @param model
+	 * @return
+	 * 
+	 */
+	
 	@GetMapping("/{courseId1}/upload")
     public String getCourseId(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
     		Model model) {
@@ -937,7 +949,7 @@ public class EnrollmentController {
     public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
     		Model model, @RequestParam("file")MultipartFile file) {
     	FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
-    	fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
+    	fileStorageProperties.setUploadDir("/Users/a.senamin/tsup/certificate");
     	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String fileName = enrollmentService.storeFile(file,id,fileStorageProperties,user.getId());
     	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -952,12 +964,21 @@ public class EnrollmentController {
         
     }
 
+	/**
+     * function for Certificate Download
+     * 
+	 * @param downloadFile
+	 * @param model
+	 * @return
+	 * 
+	 */
+
 	@GetMapping("/{courseIdHidden}/downloadFile")
 	public ResponseEntity<Resource> downloadFile(HttpServletRequest request,@RequestParam("courseIdHidden")long courseId) {
 	    // Load file as Resource
 		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
-	   	fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
+	   	fileStorageProperties.setUploadDir("/Users/a.senamin/tsup/certificate");
 	   	String fileName = enrollmentService.findCertificateName(user.getId(), courseId);
 	    Resource resource = enrollmentService.loadFileAsResource(fileName, fileStorageProperties);
 	
