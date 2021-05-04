@@ -80,8 +80,6 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
         
         Set<MandatoryCourses> mandatoryCourses = new HashSet<>(mandatoryCoursesList);
 
-        System.out.println("\r\n***** mandatoryCourses *****" + mandatoryCoursesList);
-        
         logger.debug("Result: {}", mandatoryCoursesList);
 
         return mandatoryCourses;
@@ -90,16 +88,15 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
 
     // IF DEPARTMENT ID IS 2 WHICH IS G3CC
     // NEED TO ADJUST
-    public int findTotalNumberOfJdu(ZonedDateTime selectedStartDateTime,
-            ZonedDateTime selectedEndDateTime) {
+    public int findTotalNumberOfJdu() {
             
         String query = "SELECT "
                     + "   COUNT(*) AS TOTAL_NUMBER_OF_JDU "                                                                                             
                     + "FROM TSUP.EMPLOYEE AS E "                                                                                            
-                    + "WHERE  E.DEPARTMENT_NAME = :DEPARTMENT_NAME;";   
+                    + "WHERE  E.DEPARTMENT_ID = :DEPARTMENT_ID";   
         
          SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
-                 .addValue(":DEPARTMENT_NAME", "FDC-G3CC");
+                 .addValue("DEPARTMENT_ID", 2);
          return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
          
     }
@@ -145,7 +142,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                     + "     ON CSCHED.COURSE_ID = C.ID "                                                                                
                     + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                          
                     + "     ON CUPLOAD.COURSE_ID = C.ID "   
-                    + "WHERE CUPLOAD.UPDATE_DATE IS NOT NULL AND "
+                    + "WHERE CUPLOAD.UPLOAD_DATE IS NOT NULL AND "
                     + "DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);";                                                                                
                                                                                                             
 
