@@ -812,8 +812,8 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     public List<String> findCourseScheduleIfMandatory() {
     	
     	String query = "SELECT name"
-    			+ "from TSUP.COURSE"
-    			+ "WHERE MANDATORY = :isMandatory";
+    			+ " from TSUP.COURSE"
+    			+ " WHERE MANDATORY = :isMandatory";
     	
     	SqlParameterSource courseMandatoryParameters = new MapSqlParameterSource()
     			.addValue("isMandatory", "Yes");

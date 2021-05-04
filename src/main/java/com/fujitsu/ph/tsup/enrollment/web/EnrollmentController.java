@@ -949,11 +949,7 @@ public class EnrollmentController {
     public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
     		Model model, @RequestParam("file")MultipartFile file) {
     	FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
-<<<<<<< Updated upstream
-    	fileStorageProperties.setUploadDir("/Users/a.senamin/tsup/certificate");
-=======
-    	fileStorageProperties.setUploadDir("/Users/m.atayde/tsup/certificate");
->>>>>>> Stashed changes
+    	fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
     	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String fileName = enrollmentService.storeFile(file,id,fileStorageProperties,user.getId());
     	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -982,11 +978,7 @@ public class EnrollmentController {
 	    // Load file as Resource
 		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
-<<<<<<< Updated upstream
-	   	fileStorageProperties.setUploadDir("/Users/a.senamin/tsup/certificate");
-=======
-	   	fileStorageProperties.setUploadDir("/Users/m.atayde/tsup/certificate");
->>>>>>> Stashed changes
+		fileStorageProperties.setUploadDir("/Users/m.salvador/tsup/certificate");
 	   	String fileName = enrollmentService.findCertificateName(user.getId(), courseId);
 	    Resource resource = enrollmentService.loadFileAsResource(fileName, fileStorageProperties);
 	
