@@ -338,9 +338,9 @@ hr {
 					+ String(d.getHours()).padStart(2, "0")
 					+ String(d.getMinutes()).padStart(2, "0")
 					+ String(d.getSeconds()).padStart(2, "0");
-			alert(dateFileName);
+			
 			link.setAttribute("href", encodedUri);
-			link.setAttribute("download", "SummaryOfMandatoryCourses_"+dateFileName+".csv");
+			link.setAttribute("download", document.getElementById("inputCourse").value + " Summary_"+dateFileName+".csv");
 			document.body.appendChild(link);
 
 			link.click();
