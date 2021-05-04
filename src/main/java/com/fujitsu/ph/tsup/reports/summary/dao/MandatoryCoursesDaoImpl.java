@@ -139,7 +139,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                     + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                          
                     + "     ON CUPLOAD.COURSE_ID = C.ID "   
                     + "WHERE CUPLOAD.UPLOAD_DATE IS NOT NULL "
-                    + "AND C.NAME = :name"
+                    + "AND C.NAME = :name "
                     + "AND DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);";                                                                                
                                                                                                             
 
