@@ -98,7 +98,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
         //String courseName = mandatoryCourse.getName();
 
         // To add course name on the method call
-        mandatoryCoursesForm.setTotalNoOfJDUMemFin((long) mandatoryCoursesDao.findTotalNumberOfJduWhoFinishedTraining(ZonedDateTime.now(), ZonedDateTime.now()));
+        mandatoryCoursesForm.setTotalNoOfJDUMemFin((long) mandatoryCoursesDao.findTotalNumberOfJduWhoFinishedTraining(mandatoryCourse));
 
         // TO BE CHANGED
         if (mandatoryCoursesForm.getTotalNoOfJDUMemFin() < 0) {
@@ -124,11 +124,11 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
         // to add course name on the method call
         mandatoryCoursesForm.setTotalNoOfJDUMemFinLastWk((long) mandatoryCoursesDao
-                .findTotalNumberOfJduWhoFinishedTrainingLastWeek(startDateAndTime, currentDateAndTime));
+                .findTotalNumberOfJduWhoFinishedTrainingLastWeek(mandatoryCourse));
 
         // TO BE CHANGED/CONFIRMED
         if (mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk() <= 0) {
-            throw new IllegalArgumentException();
+            return 0;
         } else {
             return mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk();
         }
