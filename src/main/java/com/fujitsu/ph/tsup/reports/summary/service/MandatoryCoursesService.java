@@ -58,12 +58,12 @@ public interface MandatoryCoursesService {
      * 
      * @return int
      */
-    public int getPercentageCompletion();
+    public double getPercentageCompletion();
 
     /**
      * Calculates the percentage completion per course within last week
      * 
      * @return int
      */
-    public int getPercentageCompletionLastWeek();
+    public double getPercentageCompletionLastWeek();
 }
