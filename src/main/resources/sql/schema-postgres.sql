@@ -227,6 +227,10 @@ TABLESPACE pg_default;
 ALTER TABLE tsup.COURSE
     OWNER to postgres;
     
+ALTER TABLE tsup.COURSE
+	ADD COLUMN MANDATORY character varying(5) COLLATE pg_catalog."default",
+	ADD COLUMN DEADLINE character varying(30) COLLATE pg_catalog."default";
+
 -- Table: tsup.VENUE
 
 --DROP TABLE tsup.VENUE;
