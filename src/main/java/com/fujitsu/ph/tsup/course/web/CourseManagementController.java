@@ -112,18 +112,27 @@ public class CourseManagementController {
     }
     
     @PostMapping("/search")
-    public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model) {
+    public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model, 
+    		RedirectAttributes redirectAttributes) {
     	
-    	if(searchCourseName.isEmpty()) {
+    	String searchName = searchCourseName.trim();
+    	
+    	System.out.println(searchName + "course");
+    	
+    	if(searchName.isEmpty()) {
     		return "redirect:/courses/load";
     	}
     	
-    	Set<Course> course = courseManagementService.findCoursesByName(searchCourseName);
+    	try {
+    		Set<Course> course = courseManagementService.findCoursesByName(searchName);
     	
-    	List<Course> listOfCourse = course.stream()
+    		List<Course> listOfCourse = course.stream()
                 .collect(Collectors.toList());
     	
-    	model.addAttribute("courseList", listOfCourse);
+    		model.addAttribute("courseList", listOfCourse);
+    	}catch (NullPointerException e) {
+    		return "course-management/manageCourse";
+		}
     	
     	return "course-management/manageCourse";
     }
