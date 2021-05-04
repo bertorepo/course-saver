@@ -87,10 +87,8 @@ public class SummaryGSTPMController {
 			      summaryGSTForm = summaryGSTPMService.getSummary(summaryGSTForm.getScheduledStartDateTime(),summaryGSTForm.getScheduledEndDateTime(),summaryGSTForm);
     
 	     model.addAttribute("summaryGST", summaryGSTForm);
-         model.addAttribute("nullMessage", "No Summary Report Found");
      
          return "reports/SummaryGSTForPM"; 
      }
 	
 }
-    
