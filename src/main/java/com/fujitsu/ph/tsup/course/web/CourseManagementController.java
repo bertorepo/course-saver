@@ -112,12 +112,9 @@ public class CourseManagementController {
     }
     
     @PostMapping("/search")
-    public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model, 
-    		RedirectAttributes redirectAttributes) {
+    public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model) {
     	
     	String searchName = searchCourseName.trim();
-    	
-    	System.out.println(searchName + "course");
     	
     	if(searchName.isEmpty()) {
     		return "redirect:/courses/load";
