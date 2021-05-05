@@ -23,7 +23,7 @@ import com.fujitsu.ph.tsup.reports.summary.service.MandatoryCoursesService;
 /**
  * The controller of mandatory courses
  * 
- * @author c.fuerzas (New Creation by: j.zamora)
+ * @author j.zamora (New Creation by: j.zamora)
  * @version Revision: 0.01 Date: 2021-04-21
  */
 @Controller
@@ -32,11 +32,6 @@ public class MandatoryCoursesController {
     @Autowired
     private MandatoryCoursesService mandatoryCoursesService;
     /**
-     * Logger Factory
-     */
-    //private static Logger logger = LoggerFactory.getLogger(MandatoryCourses.class);
-
-    /**
      * loads the summaryMandatoryCourses view
      * 
      * @param model
@@ -44,9 +39,6 @@ public class MandatoryCoursesController {
      */
     @GetMapping("load")
     public String loadGenerateReport(Model model) {
-        model.addAttribute("getTotalNumberOfJduMembers",
-                mandatoryCoursesService.getTotalNumberOfJduMembers());
-
         return "reports/summaryMandatoryCourses";
     }
     /**
