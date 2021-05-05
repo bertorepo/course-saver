@@ -10,14 +10,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
-import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
 import com.fujitsu.ph.tsup.reports.summary.service.MandatoryCoursesService;
 
 /**
@@ -34,11 +31,10 @@ public class MandatoryCoursesController {
     /**
      * loads the summaryMandatoryCourses view
      * 
-     * @param model
      * @return string
      */
     @GetMapping("load")
-    public String loadGenerateReport(Model model) {
+    public String loadGenerateReport() {
         return "reports/summaryMandatoryCourses";
     }
     /**
