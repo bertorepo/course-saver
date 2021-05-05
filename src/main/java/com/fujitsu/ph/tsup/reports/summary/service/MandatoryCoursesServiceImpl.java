@@ -3,17 +3,13 @@
  */
 package com.fujitsu.ph.tsup.reports.summary.service;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.reports.summary.dao.MandatoryCoursesDao;
-import com.fujitsu.ph.tsup.reports.summary.dao.MandatoryCoursesDaoImpl;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
 
@@ -27,12 +23,8 @@ import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
 public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
     @Autowired
-    private MandatoryCoursesDaoImpl mandatoryCoursesDao = new MandatoryCoursesDaoImpl();
-    private MandatoryCourses mandatoryCourses = new MandatoryCourses();
+    private MandatoryCoursesDao mandatoryCoursesDao;
     private MandatoryCoursesForm mandatoryCoursesForm = new MandatoryCoursesForm();
-    // private int totalNumberOfJduMembers;
-    // private int totalNumberOfCompletion;
-    // private int totalNumberOfCompletionLastWeek;
 
     /**
      * Finds all mandatory courses based on the given date
@@ -67,7 +59,6 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
         mandatoryCoursesForm.setTotalNoOfJDUMem((long) mandatoryCoursesDao.findTotalNumberOfJdu());
 
-        // TO BE CHANGED/CONFIRMED
         if (mandatoryCoursesForm.getTotalNoOfJDUMem() <= 0) {
             return 0;
         } else {
@@ -83,11 +74,10 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
      */
     @Override
     public long getTotalNumberOfCompletion(String mandatoryCourse) {
-        // To add course name on the method call
+
         mandatoryCoursesForm.setTotalNoOfJDUMemFin(
                 (long) mandatoryCoursesDao.findTotalNumberOfJduWhoFinishedTraining(mandatoryCourse));
 
-        // TO BE CHANGED
         if (mandatoryCoursesForm.getTotalNoOfJDUMemFin() < 0) {
             return 0;
         } else {
@@ -104,11 +94,9 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
     @Override
     public long getTotalNumberOfCompletionLastWeek(String mandatoryCourse) {
 
-        // to add course name on the method call
         mandatoryCoursesForm.setTotalNoOfJDUMemFinLastWk((long) mandatoryCoursesDao
                 .findTotalNumberOfJduWhoFinishedTrainingLastWeek(mandatoryCourse));
 
-        // TO BE CHANGED/CONFIRMED
         if (mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk() <= 0) {
             return 0;
         } else {
@@ -119,7 +107,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
     /**
      * Calculates the percentage completion per course
      * 
-     * @return int
+     * @return double
      */
     @Override
     public double getPercentageCompletion() {
@@ -133,7 +121,7 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
     /**
      * Calculates the percentage completion per course within last week
      * 
-     * @return int
+     * @return double
      */
     @Override
     public double getPercentageCompletionLastWeek() {
