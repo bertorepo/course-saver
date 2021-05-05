@@ -97,10 +97,12 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
         String query = "SELECT "
                     + "   COUNT(*) AS TOTAL_NUMBER_OF_JDU "                                                                                             
                     + "FROM TSUP.EMPLOYEE AS E "                                                                                            
-                    + "WHERE  E.DEPARTMENT_ID = :DEPARTMENT_ID";   
+                    + "INNER JOIN TSUP.DEPARTMENT D "
+                    + "   ON D.ID = E.DEPARTMENT_ID "
+                    + "WHERE  D.DEPARTMENT_NAME = :DEPARTMENT_NAME;";  
         
          SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
-                 .addValue("DEPARTMENT_ID", 2);
+                 .addValue("DEPARTMENT_NAME", "FDC-G3CC");
          return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
          
     }
