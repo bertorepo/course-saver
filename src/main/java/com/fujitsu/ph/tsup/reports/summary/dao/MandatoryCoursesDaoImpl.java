@@ -7,17 +7,14 @@
 // Version | Date       | Updated By            | Content                                                                                                                                                                           
 //---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
 // 1.0.0   | 2021/04/21 | WS)J.Barbadillo       | New Creation      
+// 1.0.1   | 2021/05/05 | WS)J.Barbadillo       | Updated
 //==================================================================================================
 package com.fujitsu.ph.tsup.reports.summary.dao;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +28,11 @@ import com.fujitsu.ph.tsup.reports.summary.model.*;
 
 /**
  * <pre>
- * The Dao for the MandatoryCourses
+ * The Dao Implmentation for the MandatoryCourses
  * </pre>
  * 
  * @author j.barbadillo
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 @Repository
@@ -52,7 +49,12 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
     @Autowired
     private NamedParameterJdbcTemplate template;
 
-    
+    /**
+     *  Find the total number of  JDU based on the given date range
+     * @param selectedStartDateTime
+     * @param selectedEndDateTime 
+     * @return mandatoryCourses
+     */
     public Set<MandatoryCourses> findMandatoryCourses(LocalDateTime selectedStartDateTime,
             LocalDateTime selectedEndDateTime) {
             
@@ -86,7 +88,10 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
 
     }
 
-    
+    /**
+     *  Count the total number of JDU
+     * @return int
+     */
     public int findTotalNumberOfJdu() {
             
         String query = "SELECT "
@@ -100,7 +105,11 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
          
     }
     
-    
+    /**
+     *  Find the total number of  JDU who finished training  based on the courses  
+     * @param mandatoryCourses
+     * @return int
+     */
     public int findTotalNumberOfJduWhoFinishedTraining(String name) {
             
         String query =  "SELECT "                                                                                   
@@ -124,7 +133,11 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
          return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
     }
     
-   
+    /**
+     *  Find the total number of  JDU who finished training lastweek  based on course
+     * @param mandatoryCourses
+     * @return int
+     */
     public int findTotalNumberOfJduWhoFinishedTrainingLastWeek(String name) {
             
         String query =  "SELECT "                                                                                   
