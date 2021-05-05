@@ -261,16 +261,22 @@
 					th:object="${viewCourseEnroll}">
 				<colgroup >
 					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
 					<col style="width:20%"/>
-					<col style="width:30%"/>
-					<col style="width:30%"/>
-					<col style="width:10%"/>
-					<col style="width:15%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="align-middle">Course ID</th>
-						<th class="align-middle">Course Name</th>
+						<th class="align-middle">Action</th>
+						<th class="align-middle text-left">Course Name</th>
 						<th class="align-middle">Instructor</th>
 						<th class="align-middle">Mandatory</th>
 						<th class="align-middle">Deadline</th>
@@ -281,8 +287,6 @@
 						<th class="align-middle">Minimum <br> Number of <br> Participants</th>
 						<th class="align-middle">Maximum <br> Number of <br> Participants</th>
 						<th class="align-middle">Total <br> Number of <br> Participants</th>
-						<th class="sticky">Action</th>
-					
 					</tr>
 				</thead>
 				<tbody th:each="courseSchedule : *{courseSchedules}"
@@ -292,9 +296,15 @@
 							th:with="courseScheduleId = ${courseSchedule.id}"
 							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',${courseSchedule.mandatory},
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}', '${courseSchedule.courseDetails}')|">
-									
-						<td th:text="${courseScheduleId}"/>
-						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+										
+						<td th:hidden="${courseScheduleId}"/>
+						<td class="align-middle" sec:authorize="hasAuthority('PMO')">
+							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
+									${courseSchedule.mandatory == 'false'}"
+									th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
+									type="button" class="btn btn-success" id="enrollMemberButton">Register</button>
+						</td>
+						<td class="text-left" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/>
 						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
 						<td class="align-middle" th:text="${courseSchedule.deadline}"/>  
@@ -313,16 +323,6 @@
 <!-- 							</button> -->
 <!-- 						</td> -->
 
-						<td class="sticky" sec:authorize="hasAuthority('PMO')">
-							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
-									${courseSchedule.mandatory == 'false'}"
-									th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
-									type="button" class="btn btn-success" id="enrollMemberButton">Register Member</button>
-									
-					<!-- 		<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
-							type="button" class="btn btn-success" 
-							title="Participants in this schedule is already full" disabled>Register</button> -->
-						</td>
 					</tr>
 				</tbody>
 			</table>
