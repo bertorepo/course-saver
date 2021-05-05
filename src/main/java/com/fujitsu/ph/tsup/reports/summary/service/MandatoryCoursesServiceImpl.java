@@ -1,6 +1,14 @@
-/*
- * Copyright (C) 2021 FUJITSU LIMITED All rights reserved.
- */
+//==================================================================================================                                                                                                                                                                            
+// Project Name : Training Sign Up
+// System Name  : MandatoryCoursesServiceImpl                                                                                                                                                               
+// Class Name   : MandatoryCoursesServiceImpl.java                                                                                                                                                                          
+//                                                                                                                                                                          
+// <<Modification History>>                                                                                                                                                                             
+// Version | Date       | Updated By            | Content                                                                                                                                                                           
+//---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
+// 1.0.0   | 2021/04/21 | WS)C.Fuerzas          | New Creation      
+// 1.0.1   | 2021/05/05 | WS)C.Fuerzas          | Updated
+//==================================================================================================
 package com.fujitsu.ph.tsup.reports.summary.service;
 
 import java.time.LocalDateTime;
@@ -14,10 +22,11 @@ import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
 import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
 
 /**
+ * <pre>
  * The implementation of mandatory courses services
- * 
- * @author c.fuerzas (New Creation by: c.fuerzas)
- * @version Revision: 0.01 Date: 2021-04-21
+ * </pre>
+ * @author c.fuerzas 
+ * @version 1.0.1
  */
 @Service
 public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
@@ -28,7 +37,6 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
     /**
      * Finds all mandatory courses based on the given date
-     * 
      * @param selectedStartDateTime
      * @param selectedEndDateTime
      * @return mandatoryCourses
@@ -51,7 +59,6 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
     /**
      * Acquires the total number of JDU members
-     * 
      * @return long
      */
     @Override
@@ -68,7 +75,6 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
     /**
      * Acquires the total number of completion for the specified course.
-     * 
      * @param mandatoryCourse
      * @return long
      */
@@ -87,7 +93,6 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
     /**
      * Acquires the total number of completion for the specified course within last week.
-     * 
      * @param mandatoryCourse
      * @return long
      */
@@ -106,7 +111,6 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
     /**
      * Calculates the percentage completion per course
-     * 
      * @return double
      */
     @Override
@@ -120,19 +124,21 @@ public class MandatoryCoursesServiceImpl implements MandatoryCoursesService {
 
     /**
      * Calculates the percentage completion per course within last week
-     * 
      * @return double
      */
     @Override
     public double getPercentageCompletionLastWeek() {
         double membersFinishedLastWk = mandatoryCoursesForm.getTotalNoOfJDUMemFinLastWk();
         double members = mandatoryCoursesForm.getTotalNoOfJDUMem();
-
         double percentageCompletionLastWk = round(((membersFinishedLastWk/members)*100), 2);
 
         return percentageCompletionLastWk;
     }
-
+    
+    /**
+     * Round up the course within last week
+     * @return double
+     */
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
