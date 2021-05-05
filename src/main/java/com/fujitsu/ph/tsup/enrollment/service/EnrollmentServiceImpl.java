@@ -556,7 +556,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     public Resource loadFileAsResource(String fileName,FileStorageProperties fileStorageProperties) {
-        fileName = fileName.substring(35).replaceAll("%20", " ");
+        fileName = fileName.substring(38).replaceAll("%20", " ");
        
     	try {
             Path filePath = Paths.get(fileStorageProperties.getUploadDir())
