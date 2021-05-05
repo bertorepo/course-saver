@@ -308,14 +308,14 @@
 						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/>
 						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
 						<td class="align-middle" th:text="${courseSchedule.deadline}"/>  
-						<td th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')}" />
-						<td th:utext="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
-						<td th:text="${courseScheduleDetail.duration}"/>
+						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')}" />
+						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
+						<td class="align-middle" th:text="${courseScheduleDetail.duration}"/>
 
-						<td th:text="${courseSchedule.venueName}"/>
-						<td th:text="${courseSchedule.minRequired}"/>
-						<td th:text="${courseSchedule.maxAllowed}"/>
-						<td th:text="${courseSchedule.totalParticipants}"/>
+						<td class="align-middle" th:text="${courseSchedule.venueName}"/>
+						<td class="align-middle" th:text="${courseSchedule.minRequired}"/>
+						<td class="align-middle" th:text="${courseSchedule.maxAllowed}"/>
+						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
 
 <!-- 						<td sec:authorize="hasAuthority('PMO')" class="sticky"> -->
 <!-- 							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|"> -->
