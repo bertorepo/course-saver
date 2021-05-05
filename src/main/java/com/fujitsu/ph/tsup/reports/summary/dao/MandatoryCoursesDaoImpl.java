@@ -1,4 +1,4 @@
-//==================================================================================================                                                                                                                                                                            
+	//==================================================================================================                                                                                                                                                                            
 // Project Name : Training Sign Up
 // System Name  : MandatoryCoursesDaoImpl                                                                                                                                                               
 // Class Name   : MandatoryCoursesDaoImpl.java                                                                                                                                                                          
@@ -110,7 +110,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
      * @param mandatoryCourses
      * @return int
      */
-    public int findTotalNumberOfJduWhoFinishedTraining(String name) {
+    public int findTotalNumberOfJduWhoFinishedTraining(String mandatoryCourses) {
             
         String query =  "SELECT "                                                                                   
                     + "     COUNT(CA.ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING "                                                                             
@@ -128,7 +128,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                     + "AND C.MANDATORY = 'YES';";                   
         
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
-                .addValue("name", name);
+                .addValue("name", mandatoryCourses);
         
          return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
     }
@@ -138,7 +138,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
      * @param mandatoryCourses
      * @return int
      */
-    public int findTotalNumberOfJduWhoFinishedTrainingLastWeek(String name) {
+    public int findTotalNumberOfJduWhoFinishedTrainingLastWeek(String mandatoryCourses) {
             
         String query =  "SELECT "                                                                                   
                     + "     COUNT(CA.ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING_LASTWEEK  "                                                                               
@@ -157,7 +157,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                                                                                                             
 
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
-                .addValue("name", name);
+                .addValue("name", mandatoryCourses);
 
          return template.queryForObject(query, mandatoryCoursesParameters, Integer.class);
     }
