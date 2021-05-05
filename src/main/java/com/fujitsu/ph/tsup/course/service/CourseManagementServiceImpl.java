@@ -6,17 +6,25 @@ package com.fujitsu.ph.tsup.course.service;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
 import com.fujitsu.ph.tsup.course.model.Course;
+import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
-/**
- * CourseManagementServiceImpl Class
- * 
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : CourseManagementServiceImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
+//0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//==================================================================================================
+
 @Service
 public class CourseManagementServiceImpl implements CourseManagementService {
 
@@ -73,13 +81,47 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     }
     
     /**
-     * Author: WS)C.Arias
+     * Author: WS)I.Fajardo
+     * Find if Course name already exists
+     * @param name Course name
+     * @param id Course id
+     * @return isCourseExists
+     */
+    @Override
+    public boolean findIfCourseNameExists(String name, Long id) {
+        Set<Course> courseList = courseManagementDao.findIfCourseNameExists(name, id);
+        boolean isCourseExists = false;
+        try {
+            if (!courseList.isEmpty()) {
+            	isCourseExists = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isCourseExists;
+    }
+    
+    /**
+     * Author: WS)I.Fajardo
      * Creates course.
      */
     public void createCourse(Course course) {
     	
-    	//call the dao method
-    	courseManagementDao.createCourse(course);
-    	
+    	try {
+    		courseManagementDao.createCourse(course);
+        } catch (DataAccessException ex) {
+            throw new IllegalArgumentException("Can't create new course");
+        }
+    }
+    
+    /**
+     * Loads all course
+     * Author: WS)I.Fajardo
+     * 
+     * @return courseManagementDao.loadAllCourse
+     */
+    @Override
+    public Set<Course> loadAllCourse() {
+        return courseManagementDao.loadAllCourse();
     }
 }

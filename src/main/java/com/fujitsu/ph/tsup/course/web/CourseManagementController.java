@@ -22,13 +22,18 @@ import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.course.model.CourseForm;
 import com.fujitsu.ph.tsup.course.service.CourseManagementService;
 
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : CourseManagementController.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
+//0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//==================================================================================================
 
-/**
- * CourseManagementController Class
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- *
- */
 @Controller
 @RequestMapping("/courses")
 public class CourseManagementController {
@@ -109,22 +114,29 @@ public class CourseManagementController {
     @PostMapping("/search")
     public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model) {
     	
-    	if(searchCourseName.isEmpty()) {
+    	String searchName = searchCourseName.trim();
+    	
+    	if(searchName.isEmpty()) {
     		return "redirect:/courses/load";
     	}
     	
-    	Set<Course> course = courseManagementService.findCoursesByName(searchCourseName);
+    	try {
+    		Set<Course> course = courseManagementService.findCoursesByName(searchName);
     	
-    	List<Course> listOfCourse = course.stream()
+    		List<Course> listOfCourse = course.stream()
                 .collect(Collectors.toList());
     	
-    	model.addAttribute("courseList", listOfCourse);
+    		model.addAttribute("courseList", listOfCourse);
+    	}catch (NullPointerException e) {
+    		return "course-management/manageCourse";
+		}
     	
     	return "course-management/manageCourse";
     }
     
     /**
      * Author: WS)C.Arias
+     * Updated: WS)I.Fajardo
      * <pre>
      * Create the course. Method = GET
      * 
@@ -133,7 +145,9 @@ public class CourseManagementController {
      */
     @GetMapping("/create")
     public String showCreateCourseForm(Model model) {
-    	
+    	Set<Course> course = courseManagementService.loadAllCourse();
+    	List<Course> courseList = course.stream().collect(Collectors.toList());
+    	model.addAttribute("courseList", courseList);
     	model.addAttribute("create");
     	
     	return "course-management/courseCreate";
@@ -142,6 +156,7 @@ public class CourseManagementController {
     
     /**
      * Author: WS)C.Arias
+ 	 * Updated: WS)I.Fajardo
      * <pre>
      * Create the course. Method = POST
      * 
@@ -152,12 +167,18 @@ public class CourseManagementController {
      * @return course Form and view
      */
     @PostMapping("/create")
-    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult,
-    		Model model) {
-		
-    		Set<Course> courseSize = courseManagementService.findCoursesByName(form.getName());
+    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult, Model model) {
+			
+	    	//remove irregular spaces
+	        String cName = form.getName().replaceAll("\\s+", " ");
+	        
+	        Set<Course> course = courseManagementService.loadAllCourse();
+	        List<Course> courseList = course.stream().collect(Collectors.toList());
+	        model.addAttribute("courseList", courseList);
+	        Set<Course> courseSize = courseManagementService.findCoursesByName(form.getName().toLowerCase());
+	        
     		if(courseSize == null) {
-    			Course courseDetails = new Course.Builder(form.getName(),form.getDetail(),form.getIsMandatory(),form.getDeadline()).build();
+    			Course courseDetails = new Course.Builder(cName.trim(),form.getDetail(),form.getIsMandatory(),form.getDeadline()).build();
     			courseManagementService.createCourse(courseDetails);
     		} else {
     			model.addAttribute("successMessage", "The course is already existing.");

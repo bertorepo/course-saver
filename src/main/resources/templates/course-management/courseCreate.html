@@ -1,140 +1,219 @@
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Course Management -->
+<!-- Name         : courseCreate.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | 2021/04/19 | WS) st.diaz           | Updated -->
+<!-- 0.02    | 2021/04/19 | WS) c.macatangay      | Updated -->
+<!-- 0.03    | 2021/04/20 | WS) i.fajardo         | Updated -->
+<!-- ================================================================================================== -->
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-    <head>
-       <meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="description" content="" />
-	<meta name="author" content="" />
-    <title> Create Course</title>  
-	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
-	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
-	<script th:src="@{/js/app/popper.min.js}"></script>
-	<script th:src="@{/js/app/bootstrap.min.js}"></script>
-   </head>
-   
- 
-  <body> 
-    <div th:insert="fragments/general.html :: header"> </div>
-    	<!--Success Message-->
-			<div class="modal fade"   th:text="${successMessage}" id="successMessage1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
-		<!--Success Message End-->
-		<form action="#" th:action= "@{/courses/create}" th:object="${create}"  method= "post">
-			<div class = "container mt-5">
-    				<h3><i class="fa fa-calendar-o"></i> Create Course</h3>
-					<hr>
-						<div class="card">
-							<div class="card-body">
-							<p>Please input your desired course name and detail</p>
-								<div class="form-group row">
-									<label class="col-lg-2 col-form-label">Course Name</label>
-										<div class="col-lg-5">
-											<input type="Text" placeholder="Enter Course Name" class="form-control"  id="name" name="name" >
-										</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-lg-2 col-form-label">Course Details</label>
-										<div class="col-lg-5">
-											<textarea rows="10" cols="50" placeholder="Enter Course Details" class="form-control" id="detail" name="detail" onkeyup=enableSubmitButton()></textarea>
-										</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-lg-2 col-form-label">Mandatory</label>
-										<div class="col-lg-5">
-											<input class="form-check-input" type="checkbox" value="Yes" name="isMandatory" id="isMandatory" onclick="showDeadline()" style="width: auto;margin:0px;">
-										</div>
-								</div>
-								<div class="form-group row" id="deadline" style="display: none">
-									<label class="col-lg-2 col-form-label">Deadline</label>
-										<div class="col-lg-5">
-											<select class=" form-control form-select" aria-label="Default select example" name="deadline">
-												<option selected>-</option>
-												<option th:value="Immediate" th:text="Immediate"></option>
-												<option th:value="Monthly" th:text="Monthly"></option>
-												<option th:value="Quarterly" th:text="Quarterly"></option>
-												<option th:value="Annually" th:text="Annually"></option>
-											  </select>
-										</div>
-								</div>
-								<div class="float-right">
-									<input type="button" class="btn btn-success" value="Submit" name="submit" id="submit" th:attr="onclick=|submitModal()|" disabled>
-								</div>
-								
-							</div>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Create Course</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/app/scheduling/scheduling.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/popper.min.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+</head>
+
+
+<body>
+	<div th:insert="fragments/general.html :: header"></div>
+	<!--Success Message-->
+	<div class="modal fade" th:text="${successMessage}" id="successMessage1" tabindex="-1" role="dialog"
+		 aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+	<!--Success Message End-->
+	
+	<form action="#" th:action="@{/courses/create}" th:object="${create}" method="post">
+		<div class="container mt-5">
+			<h3>
+				<i class="fa fa-calendar-o"></i> Create Course
+			</h3>
+			<hr>
+			<div class="card">
+				<div class="card-body">
+					<p>Please input your desired course name and detail</p>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Course Name</label>
+						<div class="col-lg-5">
+							<input type="text" placeholder="Enter Course Name" class="form-control"
+								id="name" name="name">
+						</div>
+						<span class="text-danger er" id="coursename_error"> </span>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Course Details</label>
+						<div class="col-lg-5">
+							<textarea rows="10" cols="50" placeholder="Enter Course Details" 
+								class="form-control" id="detail" name="detail"></textarea>
+						</div>
+						<span class="text-danger er" id="detail_error"></span>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Mandatory</label>
+						<div class="col-lg-1">
+							<input type="checkbox" value="Yes" name="isMandatory" 
+								id="isMandatory" onclick="showDeadline()"
+								onchange="enableSubmitButton(this)" style="margin-top: 6px;">
 						</div>
 					</div>
-			
+					<div class="form-group row" id="deadline" style="display: none">
+						<label class="col-lg-2 col-form-label">Deadline</label>
+						<div class="col-lg-5">
+							<select class="form-control form-select" aria-label="Default select example" 
+								id="deadlineSel" name= "deadline" onclick="enableSubmitButton(this)">
+								<option selected>-</option>
+								<option th:value="Immediate" th:text="Immediate"></option>
+								<option th:value="Monthly" th:text="Monthly"></option>
+								<option th:value="Quarterly" th:text="Quarterly"></option>
+								<option th:value="Annually" th:text="Annually"></option>
+							</select>
+						</div>
+					</div>
+					<div class="float-right">
+						<input id="submit_btn" type=button class="btn btn-success"
+							value="Submit" th:attr="onclick=|validateForm()|" disabled>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
 		<!--Success Modal-->
-		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
 						<h5 class="modal-title text-white">Success!</h5>
-						<button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+						<button type="submit" class="close" data-dismiss="modal"
+							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">You have successfully created this course.</label>
-						</div>	
+							<label class="col-lg-12 col-form-label">You have
+								successfully created this course.</label>
+						</div>
 						<div class="modal-footer">
-								<button type="submit" name="submit" value="submit"  class="btn btn-primary"> OK</button>
+							<button type="submit" name="submit" value="submit"
+								class="btn btn-primary">OK</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Success Modal End-->
-		
-		<!--Invalid Modal-->
-		<div class="modal fade" id="invalidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-success">
-						<h5 class="modal-title">Failed to create</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label" id="existingCourse"> The course is already existing.</label>
-						</div>	
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--Invalid Modal End-->
-		</form> 
-		<footer th:replace="fragments/general.html :: footer"></footer>
-		
-		<script th:inline="javascript">
-		//confirmation
-		function submitModal(){
-			
-			$('#successModal').modal('show');
-				
-		}
-		
-		//disabling and enabling of submit button
-		function enableSubmitButton(){
-			var name = document.getElementById("name");
-			var detail = document.getElementById("detail");
-			if((name.value === "" || detail.value ==="")  && (jQuery.trim(name).length > 0 && jQuery.trim(detail).length > 0)) {
-				document.getElementById('submit').disabled = true;
-				
-			} else {
-				document.getElementById('submit').disabled = false;
 
+	</form>
+	<footer th:replace="fragments/general.html :: footer"></footer>
+
+	<script th:inline="javascript">
+		
+		var courseNameErrorCount = 1;
+		var courseDetailErrorCount = 1;
+		var mandatoryErrorCount = 0;
+		var deadlineSel = document.getElementById("deadlineSel");
+		var mandatory = document.getElementById("isMandatory");
+		
+		/*<![CDATA[*/
+		var courseList = /*[[${courseList}]]*/'default';
+		/*]]>*/
+		
+		// returns true if name exists in the object
+		function courseNameExist(name) {
+			return courseList.some(function(course) {
+				return course.name.toLowerCase() === name.toLowerCase();
+			});
+		}
+			
+		// course name validation
+		$("#name").on("input", function(){
+			<!--removed all multi spaces and assign to a var-->
+			var cName = this.value.replace(/ +(?= )/g,'');
+			
+			if (courseNameExist(cName.trim())) {
+				$("#coursename_error").text("Course Name already exists in the table");
+				courseNameErrorCount++;
 			}
+			
+			<!--empty check-->
+			else if (this.value.trim() == "") {
+				$("#coursename_error").text("Please enter a Course Name");
+				courseNameErrorCount++;
+			} else {
+				$("#coursename_error").text("");
+				courseNameErrorCount = 0;
+			}
+			
+			checkForm();
+		});
+			
+		// course detail validation
+		$("#detail").on("input", function(){
+			<!--empty check-->
+			if (this.value.trim() == "") {
+				$("#detail_error").text("Please enter a Course Detail");
+				courseDetailErrorCount++;
+			} else {
+				$("#detail_error").text("");
+				courseDetailErrorCount = 0;
+			}
+			
+			checkForm();
+		});
+			
+		// confirmation
+		function validateForm(){
+			if (courseDetailErrorCount <= 0 && courseNameErrorCount <= 0) {
+				<!--clear error-->
+				$("#detail_error").text("");
+				$("#coursename_error").text("");
+	
+				<!--show modal-->
+				$('#successModal').modal('show');
+				
+				<!--put 2 seconds delay-->
+				setTimeout(function() {
+					$("#roleForm").submit();
+				}, 2000);
+			}		
+		}
+			
+		// disabling and enabling of submit button
+		 function enableSubmitButton(){
+			var mandatory = document.getElementById("isMandatory");
+			var deadlineSel = document.getElementById("deadlineSel");
+			
+			if(mandatory.checked === true && deadlineSel.value === "-"){
+				mandatoryErrorCount++;
+			} else {
+				mandatoryErrorCount = 0;
+			}
+			
+			checkForm();
 		}
 		
-		function showDeadline(){
+		// show deadline if course is mandatory
+		 function showDeadline(){
 			var mandatory = document.getElementById("isMandatory");
 			var deadline = document.getElementById("deadline");
 			if(mandatory.checked == true){
@@ -143,8 +222,18 @@
 				deadline.style.display = "none";
 			}
 		}
-		
-		
-		</script>
-	</body>
+			
+		// enable/disable submit button
+		function checkForm(){
+			if (courseNameErrorCount == 0 && courseDetailErrorCount == 0 && mandatoryErrorCount == 0) {
+				$('#submit_btn').removeAttr('disabled');
+			} else {
+	
+				$('#submit_btn').removeAttr('disabled');
+				$('#submit_btn').attr('disabled', true);
+			}
+		}	
+			
+	</script>
+</body>
 </html>
