@@ -372,7 +372,6 @@ hr {
 		}
 
 		function load() {
-
 			console.log("ROW COUNT: " + rowCount);
 			if ($("#selectReportType").val() == 0
 					|| $("#selectReportType").val() == null) {
@@ -428,6 +427,15 @@ hr {
 				document.getElementById("hEndDateTime").value = hEDate;
 
 				document.getElementById("inputCourse").value = hCourse;
+
+				var course = myTrim(document.getElementById("inputCourse").value);
+				if(course.length == 0){
+					document.getElementById("viewButton").disabled = true;
+					document.getElementById("exportButton").disabled = true;
+				} else {
+					document.getElementById("viewButton").disabled = false;
+					document.getElementById("exportButton").disabled = false;
+				}
 
 			} else {
 				var searchSdate = url.lastIndexOf("startDateTime");
@@ -525,7 +533,7 @@ hr {
 			var start = document.getElementById("startDateTime").value;
 			var end = document.getElementById("endDateTime").value;
 			if (start > end) {
-				document.getElementById("invalidMsg").innerHTML = "Date Range Invalid."
+				document.getElementById("invalidMsg").innerHTML = "Date Range Invalid.";
 				$('#invalidModal').modal('show');
 			} else {
 				document.getElementById("mandatoryCoursesForm").submit();
