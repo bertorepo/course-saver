@@ -12,16 +12,22 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.01    | 06/24/2020 | WS) T.Oviedo          | New Creation
 //0.02    | 08/24/2020 | WS) J.Yu              | Update
 //0.03    | 02/23/2021 | WS) E.Ceniza          | Update
+//0.03    | 05/04/2021 | WS) A.Senamin         | Update
 //==================================================================================================
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
 * <pre>
@@ -140,4 +146,21 @@ public interface EnrollmentService {
 	List<TopLearnerForm> findTopLearner(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
 
 	void updateSchedule(CourseParticipant courseParticipant);
+	
+	/* Upload Certificate */
+	void uploadCertificate(Certificate certificate);
+	
+	public String storeFile(MultipartFile file,Long id,FileStorageProperties fileStorageProperties,Long userId);
+	
+	public Resource loadFileAsResource(String fileName,FileStorageProperties fileStorageProperties);
+	
+	/**
+	 * find all mandatory courses
+	 * 
+	 * @param mandatoryCourse
+	 * @return
+	 */
+	List<String> findCourseScheduleIfMandatory();
+	
+	public String findCertificateName(long userId, long courseId);
 }

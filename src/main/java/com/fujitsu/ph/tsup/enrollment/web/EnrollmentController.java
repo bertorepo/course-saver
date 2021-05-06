@@ -1,5 +1,10 @@
 package com.fujitsu.ph.tsup.enrollment.web;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -8,12 +13,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,12 +38,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.CertificateForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseDeclineForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollCancelForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseEnrolledListForm;
@@ -40,6 +55,7 @@ import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
+import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
@@ -66,6 +82,7 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.03    | 02/23/2021 | WS) E.Ceniza     | Update
 //0.03    | 03/24/2021 | WS) K.Sanchez    | Update
 //0.03    | 03/23/2021 | WS) C.Macatangay | Update
+//0.04    | 05/04/2021 | WS) A.Senamin    | Update
 //=======================================================
 
 /**
@@ -311,14 +328,17 @@ public class EnrollmentController {
 					.sorted((e1, e2) -> e1.getCourseName().compareTo(e2.getCourseName())).collect(Collectors.toList());
 
 			courseEnrolledListForm.setCourseScheduleDetailForm(sortedCourseScheduleForm);
+			
+
 
 		} catch (Exception e) {
 
 			model.addAttribute("errorMessage", e.getMessage());
 
 		}
-
+		List<String> mandatoryCourseList = enrollmentService.findCourseScheduleIfMandatory();
 		model.addAttribute("myCourseSched", courseEnrolledListForm);
+		model.addAttribute("mandatoryCourseList", mandatoryCourseList);
 
 		return "enrollment/myCourseSched";
 	}
@@ -905,4 +925,79 @@ public class EnrollmentController {
 ////		return "redirect:/schedule";
 //		return "redirect:/enrollment/viewCourseEnroll";
 //	}
+	
+	
+	/**
+     * function in getting the courseID 
+     * 
+	 * @param uploadCertificate
+	 * @param model
+	 * @return
+	 * 
+	 */
+	
+	@GetMapping("/{courseId1}/upload")
+    public String getCourseId(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
+    		Model model) {
+    		form.setCourseId(id);
+    		System.out.println(">>>>>>>>>>>>>>> : " + id);
+    		return "redirect:/enrollment/mySchedules";
+        	
+    }
+    
+    @PostMapping("/{courseId1}/upload") 
+    public String submitCertificate(@RequestParam(value="courseId1") Long id, CertificateForm form, BindingResult bindingResult,
+    		Model model, @RequestParam("file")MultipartFile file) {
+    	FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
+    	fileStorageProperties.setUploadDir("/tsup/certificate");
+    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String fileName = enrollmentService.storeFile(file,id,fileStorageProperties,user.getId());
+    	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+    	System.out.println(fileDownloadUri);
+    		
+    		Certificate certDetails = new Certificate.Builder(id, file.getOriginalFilename(), user.getId(), ZonedDateTime.now(), fileDownloadUri).build();
+    		enrollmentService.uploadCertificate(certDetails);
+    		return "redirect:/enrollment/mySchedules";
+        
+    }
+
+	/**
+     * function for Certificate Download
+     * 
+	 * @param downloadFile
+	 * @param model
+	 * @return
+	 * 
+	 */
+
+	@GetMapping("/{courseIdHidden}/downloadFile")
+	public ResponseEntity<Resource> downloadFile(HttpServletRequest request,@RequestParam("courseIdHidden")long courseId) {
+	    // Load file as Resource
+		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		FileStorageProperties fileStorageProperties = new FileStorageProperties() ;
+		fileStorageProperties.setUploadDir("/tsup/certificate");
+	   	String fileName = enrollmentService.findCertificateName(user.getId(), courseId);
+	    Resource resource = enrollmentService.loadFileAsResource(fileName, fileStorageProperties);
+	
+	    // Try to determine file's content type
+	    String contentType = null;
+	    try {
+	    	contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+	    } catch (IOException ex) {
+	        logger.info("Could not determine file type.");
+	    }
+	
+	    // Fallback to the default content type if type could not be determined
+	    if(contentType == null) {
+	        contentType = "application/octet-stream";
+	    }
+	
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.parseMediaType(contentType))
+	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	            .body(resource);
+	}
 }
