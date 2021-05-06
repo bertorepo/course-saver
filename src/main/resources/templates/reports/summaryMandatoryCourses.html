@@ -88,8 +88,8 @@ hr {
 						
 						<div class="col-lg-5">
 							<input form="mandatoryCoursesForm" list="course"
-								class="form-control" id="inputCourse" onchange="hCourseValue()" type="text"
-								style="width: 525px;" autocomplete="off" />
+								class="form-control" id="inputCourse" onkeyup="enableButtons()" onchange="hCourseValue()" type="text"
+								style="width: 525px;" autocomplete="off"/>
 							<datalist id="course">
 								<option th:each="courseSelect : *{mandatoryCourses}"
 									th:text="${courseSelect.name}" th:value="${courseSelect.name}"
@@ -116,12 +116,12 @@ hr {
 						class="form-group row align-items-center justify-content-center"
 						style="margin-left: 20%">
 						<input type="submit" id="viewButton" class="btn btn-success"
-							value="View" onclick="btnView()" style="width: 100px"> <span
+							value="View" onclick="btnView()" style="width: 100px" disabled> <span
 							style="width: 100px"></span>
 						<input type="button"
 							id="exportButton"
 							onclick="exportMandatory()"
-							class="btn btn-success" value="Export" style="width: 100px">
+							class="btn btn-success" value="Export" style="width: 100px" disabled>
 					</div>
 					<label>Report Display</label>
 					<div id="reportTable"
@@ -265,24 +265,6 @@ hr {
 	<!--exportMandatoryCourses End-->
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
-		//-Retrieving data from controller
-		/*<![CDATA[*/
-		var getTotalNumberOfJduMembers = /*[[${getTotalNumberOfJduMembers}]]*/'default';
-		/*]]>*/
-		/*<![CDATA[*/
-		var getTotalNumberOfCompletion = /*[[${getTotalNumberOfCompletion}]]*/'default';
-		/*]]>*/
-		/*<![CDATA[*/
-		var getTotalNumberOfCompletionLastWeek = /*[[${getTotalNumberOfCompletionLastWeek}]]*/'default';
-		/*]]>*/
-		/*<![CDATA[*/
-		var getPercentageCompletion = /*[[${getPercentageCompletion}]]*/'default';
-		/*]]>*/
-		/*<![CDATA[*/
-		var getPercentageCompletionLastWeek = /*[[${getPercentageCompletionLastWeek}]]*/'default';
-		/*]]>*/
-		//-----------------------
-		
 		//Insert Data into Table
 		function insertIntoExport(){
 			document.getElementById("totalJDUMembers").innerHTML = document.getElementById("totalNumberOfJDUDevs").innerHTML;
@@ -290,6 +272,25 @@ hr {
 			document.getElementById("totalFinishedJDULW").innerHTML = document.getElementById("totalNumberOfJDUDevsFinishedLW").innerHTML;
 			document.getElementById("percentFinish").innerHTML = document.getElementById("percentageFinishedToday").innerHTML;
 			document.getElementById("percentFinishLW").innerHTML = document.getElementById("percentageFinishedLW").innerHTML;
+		}
+		//-----------------------
+		
+		//Trim function
+		function myTrim(stringToTrim){
+			return stringToTrim.replace(/^\s+|\s+$/gm,'');
+		}
+		//-----------------------
+		
+		//Enables View and Export button
+		function enableButtons(){
+			var course = myTrim(document.getElementById("inputCourse").value);
+			if(course.length == 0){
+				document.getElementById("viewButton").disabled = true;
+				document.getElementById("exportButton").disabled = true;
+			} else {
+				document.getElementById("viewButton").disabled = false;
+				document.getElementById("exportButton").disabled = false;
+			}
 		}
 		//-----------------------
 		
