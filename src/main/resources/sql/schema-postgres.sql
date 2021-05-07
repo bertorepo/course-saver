@@ -112,6 +112,18 @@ CREATE SEQUENCE tsup."COURSE_NON_PARTICIPANT_ID_seq"
 ALTER SEQUENCE tsup."COURSE_NON_PARTICIPANT_ID_seq"
     OWNER TO postgres;
     
+-- DROP SEQUENCE tsup."CERTIFICATE_ID_seq";
+
+CREATE SEQUENCE tsup."CERTIFICATE_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE tsup."CERTIFICATE_ID_seq"
+    OWNER TO postgres;
+    
 -- DROP SEQUENCE tsup."COURSE_ATTENDANCE_ID_seq";
 
 CREATE SEQUENCE tsup."COURSE_ATTENDANCE_ID_seq"
@@ -278,6 +290,10 @@ TABLESPACE pg_default;
 ALTER TABLE tsup.COURSE
     OWNER to postgres;
     
+ALTER TABLE tsup.COURSE
+	ADD COLUMN MANDATORY character varying(5) COLLATE pg_catalog."default",
+	ADD COLUMN DEADLINE character varying(30) COLLATE pg_catalog."default";
+
 -- Table: tsup.VENUE
 
 --DROP TABLE tsup.VENUE;
@@ -413,4 +429,25 @@ WITH (
 TABLESPACE pg_default;
 
 ALTER TABLE tsup.COURSE_ATTENDANCE
+    OWNER to postgres;
+
+CREATE TABLE tsup.CERTIFICATE_UPLOAD
+(
+    ID bigint NOT NULL DEFAULT nextval('tsup."CERTIFICATE_ID_seq"'::regclass),
+	EMPLOYEE_ID bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
+	COURSE_ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_ID_seq"'::regclass),
+	CERTIFICATE character varying(200) COLLATE pg_catalog."default",
+	UPLOAD_DATE timestamp with time zone NOT NULL,
+	fileDownloadUri character varying(200) COLLATE pg_catalog."default",
+    CONSTRAINT "CERTIFICATE_pkey" PRIMARY KEY (ID),
+	CONSTRAINT "COURSE_ID_fkey" FOREIGN KEY (COURSE_ID) REFERENCES tsup.COURSE(ID) MATCH SIMPLE ON DELETE CASCADE,
+	CONSTRAINT "EMPLOYEE_ID_fkey" FOREIGN KEY (EMPLOYEE_ID) REFERENCES tsup.EMPLOYEE(ID) MATCH SIMPLE ON DELETE CASCADE
+)
+WITH (
+    OIDS = FALSE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE tsup.CERTIFICATE_UPLOAD
     OWNER to postgres;

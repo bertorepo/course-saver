@@ -14,13 +14,20 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.fujitsu.ph.tsup.course.model.Course;
+import com.fujitsu.ph.tsup.roletype.dao.RoleTypeRowMapper;
+import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
-/**
- * CourseManagementDao class
- * 
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : CourseManagementDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
+//0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//==================================================================================================
 @Repository
 public class CourseManagementDaoImpl implements CourseManagementDao {
 
@@ -34,7 +41,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     @Override
     public Course findCourseById(Long id) {
 
-        String query = "SELECT id,name,detail FROM COURSE WHERE ID =" + id;
+        String query = "SELECT id,name,detail,mandatory,deadline FROM COURSE WHERE ID =" + id;
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
@@ -85,15 +92,49 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     public void createCourse(Course course) {
     	
     	String query = "INSERT INTO course"
-    			+ " (name, detail)"
-    			+ " VALUES(:name, :detail)";
+    			+ " (name, detail,mandatory,deadline)"
+    			+ " VALUES(:name, :detail, :mandatory, :deadline)";
     	
     	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
     			.addValue("name", course.getName())
-    			.addValue("detail", course.getDetail());
+    			.addValue("detail", course.getDetail())
+    			.addValue("mandatory", course.getIsMandatory())
+    			.addValue("deadline", course.getDeadline());
     	
     	template.update(query, sqlParameterSource);
     	
+    }
+    
+    /**
+     * Find if course name is already existing
+     * Author: WS)I.Fajardo
+     * @param name Course name
+     * @param id Course id
+     * @return course
+     */
+    @Override
+    public Set<Course> findIfCourseNameExists(String name, Long id) {
+        String query = "SELECT * FROM COURSE WHERE LOWER(name) LIKE LOWER('" + name
+                + "') AND id NOT IN (" + id + ")";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("name", name);
+        List<Course> courseList = template.query(query, sqlParameterSource, new CourseRowMapper());
+        Set<Course> course = new LinkedHashSet<>(courseList);
+        return course;
+    }
+    
+    /**
+     * Load all course
+     * Author: WS)I.Fajardo
+     * @return courses
+     */
+    @Override
+    public Set<Course> loadAllCourse() {
+        String query = "SELECT id, name, detail, mandatory, deadline FROM COURSE";
+
+        List<Course> courseList = template.query(query, new CourseRowMapper());
+        Set<Course> course = new LinkedHashSet<>(courseList);
+
+        return course;
     }
 
 }

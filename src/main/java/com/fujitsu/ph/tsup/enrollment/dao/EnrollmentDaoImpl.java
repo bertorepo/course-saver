@@ -8,6 +8,8 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -39,6 +41,7 @@ import org.springframework.stereotype.Repository;
 //0.01    | 07/14/2020 | WS) T.Oviedo          | Updated
 //0.01    | 09/14/2020 | WS) J.Yu              | Updated
 //0.01    | 09/14/2020 | WS) M.Lumontad        | Updated
+//0.01	  | 04/19/2021 | WS) M.Atayde		   | Updated
 //=================================================================================================
 /**
  * <pre>
@@ -798,4 +801,61 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("participantId", courseParticipant.getParticipantId());
         template.update(updateAttendance, updateCourseAttendanceParameters);
     }
+    
+    /**
+     * finds and only enables the upload certificate button for mandatory courses from the database
+     * 
+     * @return mandatoryCourses
+     * @author M.Atayde
+     **/
+    @Override
+    public List<String> findCourseScheduleIfMandatory() {
+    	
+    	String query = "SELECT name"
+    			+ " from TSUP.COURSE"
+    			+ " WHERE MANDATORY = :isMandatory";
+    	
+    	SqlParameterSource courseMandatoryParameters = new MapSqlParameterSource()
+    			.addValue("isMandatory", "Yes");
+    	List<String> mandatoryCourses = template.queryForList(query, courseMandatoryParameters, String.class);
+        return mandatoryCourses;
+    }
+    
+    /**
+     * uploads the certificate to the database
+     * @param certificate
+     * @author M.Atayde
+     **/
+    @Override
+    public void uploadCertificate(Certificate certificate) {
+    	
+    	String query = "INSERT INTO CERTIFICATE_UPLOAD"
+    			+ " (employee_id, course_id, certificate, upload_date, fileDownloadUri)"
+    			+ " VALUES(:employee_id, :course_id, :certificate, :upload_date, :filedownloaduri)";
+
+    	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+    			.addValue("certificate", certificate.getCertificate())
+    			.addValue("employee_id", certificate.getUser())
+    			.addValue("course_id", certificate.getCourseId())
+    			.addValue("upload_date", certificate.getUploadDate()
+    			.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+    			.addValue("filedownloaduri", certificate.getFileDownloadUri());		
+    	template.update(query, sqlParameterSource);
+    }
+    
+	@Override
+	public String findCertificateName(long userId, long courseId) {
+		String query =  
+				"SELECT filedownloaduri from tsup.certificate_upload"
+				+ " where upload_date =(select max(upload_date)"
+				+ " from tsup.certificate_upload"
+				+ " where course_id = :course_id and employee_id = :employee_id)";
+		
+		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+				.addValue("course_id", courseId)
+				.addValue("employee_id", userId);
+		
+		String certificateName = template.queryForObject(query, sqlParameterSource, String.class);
+		return certificateName;
+	}
 }
