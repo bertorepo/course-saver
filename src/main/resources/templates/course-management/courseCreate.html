@@ -9,6 +9,7 @@
 <!-- 0.01    | 2021/04/19 | WS) st.diaz           | Updated -->
 <!-- 0.02    | 2021/04/19 | WS) c.macatangay      | Updated -->
 <!-- 0.03    | 2021/04/20 | WS) i.fajardo         | Updated -->
+<!-- 0.04    | 2021/05/10 | WS) R.Naval           | Updated -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE html>
@@ -41,7 +42,7 @@
 		 aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 	<!--Success Message End-->
 	
-	<form action="#" th:action="@{/courses/create}" th:object="${create}" method="post">
+	<form action="#" th:action="@{/courses/create}" th:object="${create}" th:id = "createCourse" method="post">
 		<div class="container mt-5">
 			<h3>
 				<i class="fa fa-calendar-o"></i> Create Course
@@ -50,6 +51,25 @@
 			<div class="card">
 				<div class="card-body">
 					<p>Please input your desired course name and detail</p>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Course Category</label>
+						<div class="col-lg-5">
+							<input type="text" list="courseCategory" id="courseCategorydetail"
+										placeholder="Enter Course Category" 
+										class="form-control custom-select custom-select-md"
+										onmousedown="courseNameOnDown(this.id)"
+										onchange="courseNameOnChange()">
+							<div class="text-danger er" id="courseCategory_error"> </div>
+							<datalist id="courseCategory" >
+								<option value=""></option>
+							 	<option th:each="courseCategory : ${courseCategory}"
+							 			th:attr="data-value = ${courseCategory.id}"
+							 			th:value="${courseCategory.category}"
+							 			th:selected="${courseCategory.id}"></option>
+							</datalist>
+							<input type="hidden" th:id="course_category_id" name="course_category_id"  />
+						</div>
+					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Name</label>
 						<div class="col-lg-5">
@@ -95,7 +115,8 @@
 				</div>
 			</div>
 		</div>
-
+		</form>
+	
 		<!--Success Modal-->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -114,49 +135,82 @@
 								successfully created this course.</label>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" name="submit" value="submit"
-								class="btn btn-primary">OK</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Success Modal End-->
-
-	</form>
+		
+			<!--Error Modal-->
+		<div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title text-white">Error!</h5>
+						<button type="submit" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Course under selected Course Category already exist. Please choose another Course Category.</label>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Error Modal End-->
 	<footer th:replace="fragments/general.html :: footer"></footer>
 
 	<script th:inline="javascript">
 		
 		var courseNameErrorCount = 1;
 		var courseDetailErrorCount = 1;
+		var courseCategoryErrorCount = 1;
 		var mandatoryErrorCount = 0;
 		var deadlineSel = document.getElementById("deadlineSel");
 		var mandatory = document.getElementById("isMandatory");
-		
+		/*<![CDATA[*/
+		var ErrorModal = /*[[${ErrorModal}]]*/'default';
+			/*]]>*/
 		/*<![CDATA[*/
 		var courseList = /*[[${courseList}]]*/'default';
 		/*]]>*/
 		
-		// returns true if name exists in the object
-		function courseNameExist(name) {
-			return courseList.some(function(course) {
-				return course.name.toLowerCase() === name.toLowerCase();
-			});
+		if (ErrorModal == 1){
+			
+			$('#ErrorModal').modal('show');
+		}else if(ErrorModal==2){
+			$('#successModal').modal('show');
 		}
-			
-		// course name validation
-		$("#name").on("input", function(){
-			<!--removed all multi spaces and assign to a var-->
-			var cName = this.value.replace(/ +(?= )/g,'');
-			
-			if (courseNameExist(cName.trim())) {
-				$("#coursename_error").text("Course Name already exists in the table");
-				courseNameErrorCount++;
-			}
+
+		// course category validation
+		$("#courseCategorydetail").on("input", function(){
 			
 			<!--empty check-->
-			else if (this.value.trim() == "") {
+			if (this.value.trim() == "") {
+				$("#courseCategory_error").text("Please choose a Course Category");
+				courseCategoryErrorCount++;
+			} else {
+				$("#courseCategory_error").text("");
+				courseCategoryErrorCount = 0;
+			}
+			
+			checkForm();
+		});
+		
+		// course name validation
+		$("#name").on("input", function(){
+			
+			<!--empty check-->
+			if (this.value.trim() == "") {
 				$("#coursename_error").text("Please enter a Course Name");
 				courseNameErrorCount++;
 			} else {
@@ -183,18 +237,14 @@
 			
 		// confirmation
 		function validateForm(){
-			if (courseDetailErrorCount <= 0 && courseNameErrorCount <= 0) {
+			if (courseDetailErrorCount <= 0 && 
+				courseNameErrorCount <= 0 && 
+				courseCategoryErrorCount <= 0) {
 				<!--clear error-->
 				$("#detail_error").text("");
 				$("#coursename_error").text("");
-	
-				<!--show modal-->
-				$('#successModal').modal('show');
-				
-				<!--put 2 seconds delay-->
-				setTimeout(function() {
-					$("#roleForm").submit();
-				}, 2000);
+				$("#courseCategory_error").text("");
+				$("#createCourse").submit();
 			}		
 		}
 			
@@ -225,7 +275,7 @@
 			
 		// enable/disable submit button
 		function checkForm(){
-			if (courseNameErrorCount == 0 && courseDetailErrorCount == 0 && mandatoryErrorCount == 0) {
+			if (courseNameErrorCount == 0 && courseDetailErrorCount == 0 && mandatoryErrorCount == 0 && courseCategoryErrorCount == 0) {
 				$('#submit_btn').removeAttr('disabled');
 			} else {
 	
@@ -233,7 +283,45 @@
 				$('#submit_btn').attr('disabled', true);
 			}
 		}	
+		function courseNameOnDown(id){
+			var holder = document.getElementById(id).value;
+			var faceVal = document.getElementById(id).placeholder;
 			
+			if(holder == "" && faceVal !== ""){
+				document.getElementById(id).placeholder = faceVal;
+				document.getElementById(id).value = '';
+				
+				var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
+				
+				document.getElementById("course_category_id").value = courseId;
+			} else {
+				document.getElementById(id).placeholder = holder;
+				document.getElementById(id).value = '';
+				
+				var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
+				
+				document.getElementById("course_category_id").value = courseId;
+			}
+		}
+
+		function courseNameOnChange(){
+			
+			var courseName = $("#courseCategorydetail").val();
+			var holder = document.getElementById("courseCategorydetail").placeholder;
+			
+			if(courseName == "" && (holder !== "Enter Course Category" || holder !== "")){
+				document.getElementById("courseCategorydetail").value = holder;
+				
+				var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
+				
+				document.getElementById("course_category_id").value = courseId;
+				
+			} else {
+				var courseId = $('#courseCategory [value="'+ courseName +'"]').data('value');
+				
+				document.getElementById("course_category_id").value = courseId;
+			}
+		}	
 	</script>
 </body>
 </html>

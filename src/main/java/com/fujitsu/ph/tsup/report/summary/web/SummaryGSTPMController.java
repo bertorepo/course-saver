@@ -33,6 +33,7 @@ import ch.qos.logback.classic.Logger;
 //0.01    | 2021/04/20 | WS) d.escala          | Initial Version
 //0.02    | 2021/04/23 | WS) m.padaca          | Updated
 //0.03    | 2021/04/27 | WS) m.padaca          | Updated
+//0.03    | 2021/05/10 | WS) D.Escala          | Updated
 //==================================================================================================
 /**
 * <pre>
@@ -88,7 +89,7 @@ public class SummaryGSTPMController {
     
 	     model.addAttribute("summaryGST", summaryGSTForm);
      
-         return "reports/SummaryGSTForPM"; 
+         return "reports/summaryGSTForPM"; 
      }
 	
 }

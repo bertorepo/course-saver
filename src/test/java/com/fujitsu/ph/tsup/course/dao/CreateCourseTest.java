@@ -6,6 +6,7 @@ package com.fujitsu.ph.tsup.course.dao;
 * @version 0.01
 * @author st.diaz
 * @author st.diaz
+* @author D.Escala
 */
 
 //=======================================================
@@ -17,7 +18,7 @@ package com.fujitsu.ph.tsup.course.dao;
 //Version | Date       | Updated by       | Content
 //--------+------------+-----------------+---------------
 //0.01    | 04/26/2021 | WS) St.Diaz 	  | New Creation
-//
+//0.02    | 05/10/2021 | WS) D.Escala 	  | Updated
 //
 //=======================================================
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,6 +76,7 @@ class CreateCourseTest {
 		assertEquals(course.getDetail(), "Details");
 		assertEquals(course.getIsMandatory(), "Yes");
 		assertEquals(course.getDeadline(), "Monthly");
+		assertEquals(course.getCourse_category_id(), 4);
 		
 	}
 	
@@ -94,6 +96,7 @@ class CreateCourseTest {
 		assertEquals(course.getDetail(), "Details");
 		assertEquals(course.getIsMandatory(), "No");
 		assertEquals(course.getDeadline(), "-");
+		assertEquals(course.getCourse_category_id(), 3);
 	}
 
 
@@ -103,10 +106,10 @@ class CreateCourseTest {
      * <pre>
      */
 	private Course createCourseOne() {
-		return new Course.Builder("Javascript", "Details", "Yes", "Monthly").build();
+		return new Course.Builder("Javascript", "Details", "Yes", "Monthly",3).build();
 	}
 	
 	private Course createCourseTwo() {
-		return new Course.Builder("Python", "Details", "No", "-").build();
+		return new Course.Builder("Python", "Details", "No", "-",4).build();
 	}
 }

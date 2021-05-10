@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
+import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementService;
 import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.course.model.CourseForm;
 import com.fujitsu.ph.tsup.course.service.CourseManagementService;
@@ -32,6 +34,7 @@ import com.fujitsu.ph.tsup.course.service.CourseManagementService;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//0.03    | 2021/05/10 | WS) D.Escala        | Updated
 //==================================================================================================
 
 @Controller
@@ -41,6 +44,9 @@ public class CourseManagementController {
     // Course Management Service class
     @Autowired
     CourseManagementService courseManagementService;
+    
+    @Autowired
+    CourseCategoryManagementService courseCategoryManagementService;
 
     @GetMapping("/load")
     public String load(Model model) {
@@ -147,8 +153,11 @@ public class CourseManagementController {
     public String showCreateCourseForm(Model model) {
     	Set<Course> course = courseManagementService.loadAllCourse();
     	List<Course> courseList = course.stream().collect(Collectors.toList());
+    	Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
+    	List<CourseCategory> courseCategoryList = courseCategory.stream().collect(Collectors.toList());
     	model.addAttribute("courseList", courseList);
     	model.addAttribute("create");
+    	model.addAttribute("courseCategory",courseCategoryList);
     	
     	return "course-management/courseCreate";
     	
@@ -167,7 +176,7 @@ public class CourseManagementController {
      * @return course Form and view
      */
     @PostMapping("/create")
-    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult, Model model) {
+    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 			
 	    	//remove irregular spaces
 	        String cName = form.getName().replaceAll("\\s+", " ");
@@ -175,17 +184,22 @@ public class CourseManagementController {
 	        Set<Course> course = courseManagementService.loadAllCourse();
 	        List<Course> courseList = course.stream().collect(Collectors.toList());
 	        model.addAttribute("courseList", courseList);
-	        Set<Course> courseSize = courseManagementService.findCoursesByName(form.getName().toLowerCase());
 	        
-    		if(courseSize == null) {
-    			Course courseDetails = new Course.Builder(cName.trim(),form.getDetail(),form.getIsMandatory(),form.getDeadline()).build();
-    			courseManagementService.createCourse(courseDetails);
-    		} else {
-    			model.addAttribute("successMessage", "The course is already existing.");
-    		}
-    		  
-        	return "course-management/courseCreate";
-        	
+	        //check if course and course category matches in the list
+	        for(Course courseContains : courseList)	{
+	        	 
+	        	if(courseContains.getName().equals(form.getName()) && 
+	        		courseContains.getCourse_category_id() == form.getCourse_category_id()) {
+	        		redirectAttributes.addFlashAttribute("ErrorModal", 1);
+	        		return "redirect:/courses/create";
+	        	}
+	        }
+	        //proceed with creating course
+    		Course courseDetails = new Course.Builder(cName.trim(),form.getDetail(),form.getIsMandatory(),form.getDeadline(),form.getCourse_category_id()).build();
+    		courseManagementService.createCourse(courseDetails);
+    		redirectAttributes.addFlashAttribute("ErrorModal", 2);
+
+    		return "redirect:/courses/create";
     }
     
 }

@@ -34,6 +34,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2021/04/27 | WS) i.fajardo         | Initial Version
+//0.02    | 05/10/2021 | WS) D.Escala          | Updated
 //==================================================================================================
 
 @JdbcTest
@@ -87,6 +88,7 @@ public class CreateCourseTest {
         assertEquals(course.getDetail(), "New Data Detail");
         assertEquals(course.getIsMandatory(), "Yes");
         assertEquals(course.getDeadline(), "Immediate");
+		assertEquals(course.getCourse_category_id(), 3);
     }
     
     /**
@@ -117,6 +119,6 @@ public class CreateCourseTest {
      */
     private Course createCourse() {
 
-    	return new Course.Builder("New Data", "New Data Detail", "Yes", "Immediate").build();
+    	return new Course.Builder("New Data", "New Data Detail", "Yes", "Immediate",3).build();
     }
 }
