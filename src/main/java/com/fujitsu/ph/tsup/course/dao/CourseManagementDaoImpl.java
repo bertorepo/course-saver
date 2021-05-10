@@ -27,6 +27,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//0.03    | 2021/05/10 | WS) D.Escala        | Updated
 //==================================================================================================
 @Repository
 public class CourseManagementDaoImpl implements CourseManagementDao {
@@ -92,14 +93,15 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     public void createCourse(Course course) {
     	
     	String query = "INSERT INTO course"
-    			+ " (name, detail,mandatory,deadline)"
-    			+ " VALUES(:name, :detail, :mandatory, :deadline)";
+    			+ " (name, detail,mandatory,deadline,course_category_id)"
+    			+ " VALUES(:name, :detail, :mandatory, :deadline,:course_category_id)";
     	
     	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
     			.addValue("name", course.getName())
     			.addValue("detail", course.getDetail())
     			.addValue("mandatory", course.getIsMandatory())
-    			.addValue("deadline", course.getDeadline());
+    			.addValue("deadline", course.getDeadline())
+    			.addValue("course_category_id", course.getCourse_category_id());
     	
     	template.update(query, sqlParameterSource);
     	
@@ -129,7 +131,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
      */
     @Override
     public Set<Course> loadAllCourse() {
-        String query = "SELECT id, name, detail, mandatory, deadline FROM COURSE";
+        String query = "SELECT * FROM COURSE";
 
         List<Course> courseList = template.query(query, new CourseRowMapper());
         Set<Course> course = new LinkedHashSet<>(courseList);

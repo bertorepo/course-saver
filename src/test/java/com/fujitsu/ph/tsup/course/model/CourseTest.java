@@ -6,6 +6,7 @@ package com.fujitsu.ph.tsup.course.model;
 * @version 0.01
 * @author st.diaz
 * @author st.diaz
+* @author D.escala
 */
 
 //=======================================================
@@ -17,7 +18,7 @@ package com.fujitsu.ph.tsup.course.model;
 //Version | Date       | Updated by       | Content
 //--------+------------+-----------------+---------------
 //0.01    | 04/26/2021 | WS) St.Diaz      | New Creation
-//
+//0.02    | 05/10/2021 | WS) D.Escala     | Updated
 //
 //=======================================================
 import static org.junit.Assert.assertNotNull;
@@ -42,7 +43,7 @@ class CourseTest {
 		assertEquals(expected.getDetail(), "Details");
 		assertEquals(expected.getIsMandatory(), "Yes");
 		assertEquals(expected.getDeadline(), "Monthly");
-		
+		assertEquals(expected.getCourse_category_id(), 3);
 	}
 	
 	/**
@@ -59,6 +60,7 @@ class CourseTest {
 		assertEquals(expected.getDetail(), "Details");
 		assertEquals(expected.getIsMandatory(), "No");
 		assertEquals(expected.getDeadline(), "-");
+		assertEquals(expected.getCourse_category_id(), 4);
 	}
 
 	/**
@@ -69,7 +71,7 @@ class CourseTest {
 	 * 
 	 */
 	private Course createBuilderOne() {
-		return new Course.Builder("Javascript", "Details", "Yes", "Monthly").build();
+		return new Course.Builder("Javascript", "Details", "Yes", "Monthly",3).build();
 	}
 	
 	/**
@@ -80,6 +82,6 @@ class CourseTest {
 	 * 
 	 */
 	private Course createBuilderTwo() {
-		return new Course.Builder("Python", "Details", "No", "-").build();
+		return new Course.Builder("Python", "Details", "No", "-",4).build();
 	}
 }

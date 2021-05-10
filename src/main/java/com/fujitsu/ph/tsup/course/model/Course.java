@@ -13,6 +13,7 @@ package com.fujitsu.ph.tsup.course.model;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version
 //0.02    | 2021/04/19 | WS) st.diaz           | Updated
+//0.03    | 2021/05/10 | WS) D.Escala        | Updated
 //==================================================================================================
 
 public class Course {
@@ -22,6 +23,7 @@ public class Course {
     private String detail;
     private String isMandatory;
     private String deadline;
+    private Long course_category_id;
 
     /**
      * Empty Constructor for Course class
@@ -40,6 +42,7 @@ public class Course {
         this.detail = builder.detail;
         this.isMandatory = builder.isMandatory;
         this.deadline = builder.deadline;
+        this.course_category_id = builder.course_category_id;
     }
 
     
@@ -149,12 +152,28 @@ public class Course {
 		this.deadline = deadline;
 		
 	}
+	/**
+     * Getter Method for Course Category ID
+     * 
+     * @return Course Category ID
+     */
 
+    public Long getCourse_category_id() {
+		return course_category_id;
+	}
+	/**
+     * Setter Method for Course Category ID
+     * 
+     * @param Course Category ID
+     */
+	public void setCourse_category_id(Long course_category_id) {
+		this.course_category_id = course_category_id;
+	}
 
-    @Override
+	@Override
 	public String toString() {
 		return "Course [id=" + id + ", name=" + name + ", detail=" + detail + ", isMandatory=" + isMandatory
-				+ ", deadline=" + deadline + "]";
+				+ ", deadline=" + deadline + ", course_category_id= " + course_category_id +"]";
 	}
 
 
@@ -170,7 +189,7 @@ public class Course {
         private String detail;
         private String isMandatory;
         private String deadline;
-
+        private Long course_category_id;
         /** Builder Constructor
          * @param name
          */
@@ -201,9 +220,10 @@ public class Course {
          * @param detail
          * @param isMandatory
          * @param deadline
+         * @param course_category_id
          */
         
-        public Builder(String name, String detail, String isMandatory, String deadline) {
+        public Builder(String name, String detail, String isMandatory, String deadline, long course_category_id) {
         	
         	validateName(name);
         	validateDetail(detail);
@@ -212,6 +232,7 @@ public class Course {
         	this.detail = detail;
         	this.isMandatory = isMandatory;
         	this.deadline = deadline;
+        	this.course_category_id= course_category_id;
         	
         }
  
@@ -237,6 +258,15 @@ public class Course {
         	this.isMandatory = isMandatory;
         	this.deadline = deadline;
         	
+        	return this;
+        }
+        
+        /** Builder Constructor
+         * @param categoryId
+         * @return
+         */
+        public Builder categoryId(Long categoryId) {
+        	this.course_category_id = categoryId;
         	return this;
         }
         

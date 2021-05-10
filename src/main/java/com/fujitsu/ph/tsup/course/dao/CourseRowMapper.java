@@ -20,6 +20,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version
 //0.02    | 2021/04/19 | WS) st.diaz           | Updated
+//0.03    | 2021/05/10 | WS) D.Escala          | Updated
 //==================================================================================================
 
 public class CourseRowMapper implements RowMapper<Course> {
@@ -32,8 +33,9 @@ public class CourseRowMapper implements RowMapper<Course> {
         String detail = rs.getString("detail");
         String isMandatory = rs.getString("mandatory");
         String deadline = rs.getString("deadline");
+        Long CourseCategoryId = rs.getLong("course_category_id");
 
-        Course course = new Course.Builder(id, name).detail(detail).mandatory(isMandatory, deadline).build();
+        Course course = new Course.Builder(id, name).detail(detail).mandatory(isMandatory, deadline).categoryId(CourseCategoryId).build();
 
         return course;
     }
