@@ -540,14 +540,7 @@ hr {
 		Checking of date range
 		 */
 		function btnView() {
-			var start = document.getElementById("startDateTime").value;
-			var end = document.getElementById("endDateTime").value;
-			if (start > end) {
-				document.getElementById("invalidMsg").innerHTML = "Date Range Invalid.";
-				$('#invalidModal').modal('show');
-			} else {
-				document.getElementById("mandatoryCoursesForm").submit();
-			}
+			document.getElementById("mandatoryCoursesForm").submit();
 		}
 		//-----------------------
 
