@@ -112,20 +112,20 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
      */
     public int findTotalNumberOfJduWhoFinishedTraining(String mandatoryCourses) {
             
-        String query =  "SELECT "                                                                                   
-                    + "     COUNT(CA.ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING "                                                                             
-                    + "FROM TSUP.COURSE_SCHEDULE AS CSCHED "                                                                                    
-                    + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "                                                                                    
-                    + "     ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "                                                                               
-                    + "LEFT JOIN TSUP.COURSE_ATTENDANCE AS CA "                                                                                    
-                    + "     ON CA.ID = CSCHEDDET.ID "                                                                               
-                    + "INNER JOIN tsup.COURSE AS C "                                                                                
-                    + "     ON CSCHED.COURSE_ID =C .ID "
-                    + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                          
-                    + "     ON CUPLOAD.COURSE_ID = C.ID "
-                    + "WHERE CUPLOAD.CERTIFICATE IS NOT NULL "
-                    + "AND C.NAME = :name "
-                    + "AND C.MANDATORY = 'YES';";               
+        String query =  "SELECT "                                                                                  
+                + "     COUNT(DISTINCT CUPLOAD.EMPLOYEE_ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING "                                                                            
+                + "FROM TSUP.COURSE_SCHEDULE AS CSCHED "                                                                                   
+                + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "                                                                                   
+                + "     ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "                                                                              
+                + "INNER JOIN TSUP.COURSE_ATTENDANCE AS CA "                                                                                   
+                + "     ON CA.ID = CSCHEDDET.ID "                                                                              
+                + "INNER JOIN tsup.COURSE AS C "                                                                               
+                + "     ON CSCHED.COURSE_ID = C.ID "
+                + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                         
+                + "     ON CUPLOAD.COURSE_ID = C.ID "
+                + "WHERE CUPLOAD.CERTIFICATE IS NOT NULL "
+                + "AND C.NAME = :name "
+                + "AND C.MANDATORY = 'YES';";
         
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
                 .addValue("name", mandatoryCourses);
@@ -140,26 +140,26 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
      */
     public int findTotalNumberOfJduWhoFinishedTrainingLastWeek(String mandatoryCourses) {
             
-        String query =  "SELECT "                                                                                   
-                    + "     COUNT(CA.ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING_LASTWEEK  "                                                                               
-                    + "FROM TSUP.COURSE_SCHEDULE AS CSCHED "                                                                                    
-                    + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "                                                                                    
-                    + "     ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "                                                                               
-                    + "INNER JOIN TSUP.COURSE_ATTENDANCE AS CA "                                                                                    
-                    + "     ON CA.ID = CSCHEDDET.ID "                                                                               
-                    + "INNER JOIN tsup.COURSE AS C "                                                                                
-                    + "     ON CSCHED.COURSE_ID = C.ID "                                                                                
-                    + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                          
-                    + "     ON CUPLOAD.COURSE_ID = C.ID "   
-                    + "WHERE C.NAME = :name "
-                    + "AND C.MANDATORY = 'YES' "
-                    + "AND "
-                    + "CASE CUPLOAD.UPLOAD_DATE " 
-                    + "WHEN NULL THEN "
-                    + "    CA.LOG_OUT_DATETIME <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER) "
-                    + "ELSE "
-                    + "  CUPLOAD.UPLOAD_DATE <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER) "
-                	+ "END; ";
+        String query =  "SELECT "
+                + "     COUNT(DISTINCT CUPLOAD.EMPLOYEE_ID) AS TOTAL_NUMBER_OF_JDU_WHO_FINISHED_TRAINING_LASTWEEK  "
+                + "FROM TSUP.COURSE_SCHEDULE AS CSCHED "
+                + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSCHEDDET  "
+                + "     ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID  "
+                + "INNER JOIN TSUP.COURSE_ATTENDANCE AS CA  "
+                + "     ON CA.ID = CSCHEDDET.ID  "
+                + "INNER JOIN tsup.COURSE AS C  "
+                + "     ON CSCHED.COURSE_ID = C.ID  "
+                + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD  "
+                + "     ON CUPLOAD.COURSE_ID = C.ID  "
+                + "WHERE C.NAME = :name  "
+                + "AND C.MANDATORY = 'YES'  "
+                + "AND "
+                + "     CASE CUPLOAD.UPLOAD_DATE  "
+                + "WHEN NULL THEN  "
+                + "     CA.LOG_OUT_DATETIME <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER)  "
+                + "ELSE  "
+                + "     CUPLOAD.UPLOAD_DATE <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER) "
+                + "END;";  
           
 
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
