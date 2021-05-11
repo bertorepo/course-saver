@@ -52,9 +52,12 @@ hr {
 							</select>
 						</div>
 					</div>
-					<div
-						class="form-group row align-items-center justify-content-center">
 
+					<div style="margin-left:43%;">
+						<label id="errorMsg1" style="color:red; display:none;"></label>
+					</div>
+
+					<div class="form-group row align-items-center justify-content-center">
 						<span style="width: 31px"></span> <label
 							class="col-lg-3 col-form-label" style="font-weight: bold;">Date
 							Range</label> 
@@ -62,7 +65,7 @@ hr {
 						<span style="width: 8px"></span> <input class="form-control"
 							type="datetime-local" id="startDateTime" name="startDateTime"
 							form="dateForm" style="width: 225px; font-size: 14px;"
-							onchange="this.form.submit()" required />
+							onchange="verifDate()" required />
 						<input type="hidden"
 							id="hStartDateTime" name="hStartDateTime"
 							form="mandatoryCoursesForm" />
@@ -74,14 +77,14 @@ hr {
 							<input class="form-control" type="datetime-local"
 								id="endDateTime" name="endDateTime" form="dateForm"
 								style="width: 225px; font-size: 14px;"
-								onchange="this.form.submit()" required /> <input type="hidden"
+								onchange="verifDate()" required /> <input type="hidden"
 								id="hEndDateTime" name="hEndDateTime"
 								form="mandatoryCoursesForm" />
 						</div>
 
 					</div>
 					<div style="margin-left:43%;">
-						<label id="errorMsg" style="color:red; display:none;"></label>
+						<label id="errorMsg2" style="color:red; display:none;"></label>
 					</div>
 					<!-- *************************** COURSE *************************** -->
 					<div class="form-group row align-items-center justify-content-center">
@@ -215,30 +218,7 @@ hr {
 			</div>
 		</form>
 	</div>
-	<!--Invalid Modal-->
-	<div class="modal fade" id="invalidModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-sm text-center">
-			<div class="modal-content">
-				<div class="modal-header alert-danger">
-					<h5 class="modal-title text-white">Invalid Input!</h5>
-					<button type="submit" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div class="form-group row">
-						<label class="col-lg-12 col-form-label" id="invalidMsg"></label>
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-primary" onclick="btnOk()">OK</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--Invalid Modal End-->
+
 	<!--exportMandatoryCourses-->
 	<table id="exportMandatoryCourses" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
 		<thead>
@@ -267,6 +247,7 @@ hr {
 		</tbody>
 	</table>
 	<!--exportMandatoryCourses End-->
+
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
 		//Insert Data into Table
@@ -290,17 +271,28 @@ hr {
 			var course = document.getElementById("inputCourse").value;
 			var format = /[*/\"\'\\:<>?|+]/;
 			if(myTrim(course).length == 0){
-				document.getElementById('errorMsg').style.display = 'none';
+				document.getElementById('errorMsg2').style.display = 'none';
 				document.getElementById("viewButton").disabled = true;
 			} else {
 				if(format.test(course)){
-					document.getElementById("errorMsg").innerHTML = "*Course Name is invalid. Please remove invalid characters.";
-					document.getElementById('errorMsg').style.display = 'block';
+					document.getElementById("errorMsg2").innerHTML = "*Course Name is invalid. Please remove invalid characters.";
+					document.getElementById('errorMsg2').style.display = 'block';
 					document.getElementById("viewButton").disabled = true;
 				} else {
-					document.getElementById('errorMsg').style.display = 'none';
+					document.getElementById('errorMsg2').style.display = 'none';
 					document.getElementById("viewButton").disabled = false;
 				}
+			}
+		}
+		function verifDate(){
+			var start = document.getElementById("startDateTime").value;
+			var end = document.getElementById("endDateTime").value;
+			if (start > end) {
+				document.getElementById("errorMsg1").innerHTML = "*Date Range is invalid.";
+				document.getElementById('errorMsg1').style.display = 'block';
+			}else{
+				document.getElementById('errorMsg1').style.display = 'none';
+				document.getElementById("dateForm").submit();
 			}
 		}
 		//-----------------------
@@ -556,14 +548,6 @@ hr {
 			} else {
 				document.getElementById("mandatoryCoursesForm").submit();
 			}
-		}
-		//-----------------------
-
-		/**
-		Ok button for invalid modal
-		 */
-		function btnOk() {
-			$('#invalidModal').modal('hide');
 		}
 		//-----------------------
 
