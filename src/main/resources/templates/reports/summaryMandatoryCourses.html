@@ -129,81 +129,82 @@ hr {
 					<label>Report Display</label>
 					<div id="reportTable"
 						style="border-style: groove; width: 100%; height: 100%; display: block;">
-						<div class="card" style="align:center;">
+						<div class="card">
 							<div class="row" style="margin: 1% 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; padding: 10px 0px 10px 0px; text-align: center; background-color: #6ad4bf; border-width: 2px">
-									Total Number of JDU Members</div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
+									<label style="color: white; font-weight: bold;" >Total Number of JDU Members</label></div>
 								<div class="col-sm-1"
-									style="border-style: solid; border-width: 2px; padding: 10px 0px 10px 0px; background-color: #D3D3D3; margin-left: 1px; text-align: center;">
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfJDUDevs"
 										th:text="${totalNumberOfJduMembers}">0</label>
 								</div>
 								<div class="col-sm-6"
-									style="border-style: solid; padding: 15px 0px 15px 0px; background-color: #6ad4bf; border-width: 2px; margin-left: 46%; text-align: center; position: absolute;">
-									Percentage Finished As of Today (Total Members and also Total
-									Courses)</div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 15px 0px 15px 0px; background-color: #18BC9C; margin-left: 46%; text-align: center; position: absolute;">
+									<label style="color: white; font-weight: bold;" >Percentage Finished As of Today (Total Members and also Total
+									Courses)</label></div>
 							</div>
 
-							<div class="row" style="margin: 1% 0px 0px 2%;">
+							<div class="row" style="margin: 0px 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; padding: 10px 0px 10px 0px; text-align: center; background-color: #6ad4bf; border-width: 2px">
-									Total Number of JDU Members Last Week</div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; font-weight: bold; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; ">
+									<label style="color: white; font-weight: bold;" >Total Number of JDU Members Last Week</label>
+									</div>
 								<div class="col-sm-1"
-									style="border-style: solid; border-width: 2px; padding: 10px 0px 10px 0px; background-color: #D3D3D3; margin-left: 1px; text-align: center;">
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfJDUDevsLW">-</label>
 								</div>
 								<div class="col-sm-6 ghost-col"
-									style="border-style: solid; padding: 20px 0px 20px 0px; background-color: #D3D3D3; border-width: 2px; margin-left: 46%; text-align: center; position: absolute; font-size: 270%;">
-									<label id="percentageFinishedToday" th:text="${percentageCompletion} + '%'" >0</label>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 27px 0px 27px 0px; margin-top: 10px; margin-left: 46%; text-align: center; position: absolute; font-size: 270%;">
+									<h3 id="percentageFinishedToday" th:text="${percentageCompletion} + '%'" >0</h3>
 								</div>
 							</div>
 
-							<div class="row" style="margin: 1% 0px 0px 2%;">
+							<div class="row" style="margin: 0px 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; padding: 10px 0px 10px 0px; text-align: center; background-color: #6ad4bf; border-width: 2px">
-									Total Number of Existing Members</div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; border-width: 2px">
+									<label style="color: white; font-weight: bold;" >Total Number of Existing Members</label></div>
 								<div class="col-sm-1"
-									style="border-style: solid; border-width: 2px; padding: 10px 0px 10px 0px; background-color: #D3D3D3; margin-left: 1px; text-align: center;">
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfExistingMembers">-</label>
 								</div>
 							</div>
 
-							<div class="row" style="margin: 1% 0px 0px 2%;">
+							<div class="row" style="margin: 0px 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; padding: 10px 0px 10px 0px; text-align: center; background-color: #6ad4bf; border-width: 2px">
-									Total Number of New Members</div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; border-width: 2px">
+									<label style="color: white; font-weight: bold;" >Total Number of New Members</label></div>
 								<div class="col-sm-1"
-									style="border-style: solid; border-width: 2px; padding: 10px 0px 10px 0px; background-color: #D3D3D3; margin-left: 1px; text-align: center;">
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfNewMembers">-</label>
 								</div>
-								<div class="col-sm-6"
-									style="border-style: solid; padding: 15px 0px 15px 0px; background-color: #6ad4bf; border-width: 2px; margin-left: 46%; text-align: center; position: absolute;">
-									Percentage Finished As of Last Week (Total Members and also
-									Total Courses)</div>
+								<div class="col-sm-6" 
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 15px 0px 15px 0px; margin-top: 25px; background-color: #18BC9C; margin-left: 46%; text-align: center; position: absolute;">
+									<label style="color: white; font-weight: bold;" >Percentage Finished As of Last Week (Total Members and also
+									Total Courses)</label></div>
 							</div>
 
-							<div class="row" style="margin: 1% 0px 0px 2%;">
+							<div class="row" style="margin: 0px 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; padding: 10px 0px 10px 0px; text-align: center; background-color: #6ad4bf; border-width: 2px">
-									Total Number of JDU Members Who Finished the training</div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; border-width: 2px">
+									<label style="color: white; font-weight: bold;" >Total Number of JDU Members Who Finished the training</label></div>
 								<div class="col-sm-1"
-									style="border-style: solid; border-width: 2px; padding: 10px 0px 10px 0px; background-color: #D3D3D3; margin-left: 1px; text-align: center;">
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfJDUDevsFinished"
 										th:text="${totalNumberOfCompletion}">0</label>
 								</div>
 								<div class="col-sm-6 ghost-col"
-									style="border-style: solid; padding: 20px 0px 20px 0px; background-color: #D3D3D3; border-width: 2px; margin-left: 46%; text-align: center; position: absolute; font-size: 270%;">
-									<label id="percentageFinishedLW" th:text="${percentageCompletionLastWeek} + '%'" >0</label>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 27px 0px 27px 0px; margin-top: 31px; margin-left: 46%; text-align: center; position: absolute; font-size: 270%;">
+									<h3 id="percentageFinishedLW" th:text="${percentageCompletionLastWeek} + '%'" >0</h3>
 								</div>
 							</div>
 
-							<div class="row" style="margin: 1% 0px 1% 2%;">
+							<div class="row" style="margin: 0px 0px 1% 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; padding: 10px 0px 10px 0px; text-align: center; background-color: #6ad4bf; border-width: 2px">
-									Total Number of JDU Members Last Week Who Finished the training</div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; border-width: 2px">
+									<label style="color: white; font-weight: bold;" >Total Number of JDU Members Last Week Who Finished the training</label></div>
 								<div class="col-sm-1"
-									style="border-style: solid; border-width: 2px; padding: 20px 0px 10px 0px; background-color: #D3D3D3; margin-left: 1px; text-align: center;">
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 20px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfJDUDevsFinishedLW"
 										th:text="${totalNumberOfCompletionLastWeek}">0</label>
 								</div>
