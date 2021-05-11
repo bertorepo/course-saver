@@ -80,8 +80,8 @@ hr {
 						</div>
 
 					</div>
-					<div style="margin-left:43%">
-						<label id="errorMsg" style="color:red; visibility:hidden;"></label>
+					<div style="margin-left:43%;">
+						<label id="errorMsg" style="color:red; display:none;"></label>
 					</div>
 					<!-- *************************** COURSE *************************** -->
 					<div class="form-group row align-items-center justify-content-center">
@@ -287,16 +287,17 @@ hr {
 		//Enables View and Export button
 		function enableButtons(){
 			var course = document.getElementById("inputCourse").value;
-			var format = /[*/\"\'\\:<>?|+-]/;
+			var format = /[*/\"\'\\:<>?|+]/;
 			if(myTrim(course).length == 0){
+				document.getElementById('errorMsg').style.display = 'none';
 				document.getElementById("viewButton").disabled = true;
 			} else {
 				if(format.test(course)){
 					document.getElementById("errorMsg").innerHTML = "*Course Name is invalid. Please remove invalid characters.";
-					document.getElementById('errorMsg').style.visibility = 'visible';
+					document.getElementById('errorMsg').style.display = 'block';
 					document.getElementById("viewButton").disabled = true;
 				} else {
-					document.getElementById('errorMsg').style.visibility = 'hidden';
+					document.getElementById('errorMsg').style.display = 'none';
 					document.getElementById("viewButton").disabled = false;
 				}
 			}
