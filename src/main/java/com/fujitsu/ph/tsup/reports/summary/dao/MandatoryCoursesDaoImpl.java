@@ -117,15 +117,15 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                     + "FROM TSUP.COURSE_SCHEDULE AS CSCHED "                                                                                    
                     + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSCHEDDET "                                                                                    
                     + "     ON CSCHED.ID = CSCHEDDET.COURSE_SCHEDULE_ID "                                                                               
-                    + "INNER JOIN TSUP.COURSE_ATTENDANCE AS CA "                                                                                    
+                    + "LEFT JOIN TSUP.COURSE_ATTENDANCE AS CA "                                                                                    
                     + "     ON CA.ID = CSCHEDDET.ID "                                                                               
                     + "INNER JOIN tsup.COURSE AS C "                                                                                
-                    + "     ON CSCHED.COURSE_ID = C.ID "
+                    + "     ON CSCHED.COURSE_ID =C .ID "
                     + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                          
                     + "     ON CUPLOAD.COURSE_ID = C.ID "
                     + "WHERE CUPLOAD.CERTIFICATE IS NOT NULL "
                     + "AND C.NAME = :name "
-                    + "AND C.MANDATORY = 'YES';";                   
+                    + "AND C.MANDATORY = 'YES';";               
         
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
                 .addValue("name", mandatoryCourses);
@@ -151,10 +151,16 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                     + "     ON CSCHED.COURSE_ID = C.ID "                                                                                
                     + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD "                                                                          
                     + "     ON CUPLOAD.COURSE_ID = C.ID "   
-                    + "WHERE CUPLOAD.UPLOAD_DATE IS NOT NULL "
-                    + "AND C.NAME = :name "
-                    + "AND DATE_PART('week',CA.log_out_datetime) < DATE_PART('week',CURRENT_DATE);";                                                                                
-                                                                                                            
+                    + "WHERE C.NAME = :name "
+                    + "AND C.MANDATORY = 'YES' "
+                    + "AND "
+                    + "CASE CUPLOAD.UPLOAD_DATE " 
+                    + "WHEN NULL THEN "
+                    + "    CA.LOG_OUT_DATETIME <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER) "
+                    + "ELSE "
+                    + "  CUPLOAD.UPLOAD_DATE <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER) "
+                	+ "END; ";
+          
 
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
                 .addValue("name", mandatoryCourses);
