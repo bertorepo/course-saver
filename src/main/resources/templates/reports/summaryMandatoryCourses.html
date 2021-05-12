@@ -48,86 +48,75 @@ hr {
 									Type</option>
 								<option th:value="0" disabled hidden></option>
 								<option th:value="1">Summary of Course Conducted</option>
-								<option th:value="2" selected>Summary of Mandatory Courses</option>
+								<option th:value="2">Summary of JDU Standardization Training for Dev</option>
+								<option th:value="3">Summary of JDU Standardization Training for PM</option>
+								<option th:value="4" selected>Summary of Mandatory
+									Courses</option>
+									
 							</select>
 						</div>
 					</div>
 
-					<div style="margin-left:43%;">
-						<label id="errorMsg1" style="color:red; display:none;"></label>
+					<div style="margin-left: 43%;">
+						<label id="errorMsg1" style="color: red; display: none;"></label>
 					</div>
 
-					<div class="form-group row align-items-center justify-content-center">
+					<div
+						class="form-group row align-items-center justify-content-center">
 						<span style="width: 31px"></span> <label
 							class="col-lg-3 col-form-label" style="font-weight: bold;">Date
-							Range</label> 
-						<label class="col-form-label" style="font-weight: bold;">From</label>
+							Range</label> <label class="col-form-label" style="font-weight: bold;">From</label>
 						<span style="width: 8px"></span> <input class="form-control"
 							type="datetime-local" id="startDateTime" name="startDateTime"
 							form="dateForm" style="width: 225px; font-size: 14px;"
-							onchange="verifDate()" required />
-						<input type="hidden"
+							onchange="verifDate()" required /> <input type="hidden"
 							id="hStartDateTime" name="hStartDateTime"
-							form="mandatoryCoursesForm" />
-						<span style="width: 8px"></span>
+							form="mandatoryCoursesForm" /> <span style="width: 8px"></span>
 						<label class="col-form-label" style="font-weight: bold;">To</label>
 
 						<div class="col-lg-2">
 
 							<input class="form-control" type="datetime-local"
 								id="endDateTime" name="endDateTime" form="dateForm"
-								style="width: 225px; font-size: 14px;"
-								onchange="verifDate()" required /> <input type="hidden"
-								id="hEndDateTime" name="hEndDateTime"
-								form="mandatoryCoursesForm" />
+								style="width: 225px; font-size: 14px;" onchange="verifDate()"
+								required /> <input type="hidden" id="hEndDateTime"
+								name="hEndDateTime" form="mandatoryCoursesForm" />
 						</div>
 
 					</div>
-					<div style="margin-left:43%;">
-						<label id="errorMsg2" style="color:red; display:none;"></label>
+					<div style="margin-left: 43%;">
+						<label id="errorMsg2" style="color: red; display: none;"></label>
 					</div>
 					<!-- *************************** COURSE *************************** -->
-					<div class="form-group row align-items-center justify-content-center">
-						
+					<div
+						class="form-group row align-items-center justify-content-center">
+
 						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
-						
+
 						<span style="width: 75px"></span>
 						<div class="col-lg-5">
 							<input form="mandatoryCoursesForm" list="course"
-								class="form-control" id="inputCourse" onkeyup="enableButtons()" onchange="hCourseValue()" type="text"
-								style="width: 535px;" autocomplete="off"/>
+								class="form-control" id="inputCourse" onkeyup="enableButtons()"
+								onchange="hCourseValue()" type="text" style="width: 535px;"
+								autocomplete="off" />
 							<datalist id="course">
 								<option th:each="courseSelect : *{mandatoryCourses}"
 									th:text="${courseSelect.name}" th:value="${courseSelect.name}"
 									th:selected="${courseSelect.name eq lastSelected}"></option>
 							</datalist>
-
-							<!-- <select>
-								<option value="">--</option>
-								<option th:each="mandatoryCourse : *{mandatoryCourses)}"
-									th:value="${mandatoryCourse.name}" th:text="${mandatoryCourse.name}" disabled></option>
-							</select>  -->
-							
-							
-							
-							<input type="hidden"
-								id="hCourse" name="hCourse" value=""
+							<input type="hidden" id="hCourse" name="hCourse" value=""
 								form="mandatoryCoursesForm" />
 						</div>
 					</div>
-					<!-- *************************** COURSE *************************** -->
-
-
 					<div
 						class="form-group row align-items-center justify-content-center"
 						style="margin-left: 20%">
 						<input type="submit" id="viewButton" class="btn btn-success"
-							value="View" onclick="btnView()" style="width: 100px" disabled> <span
-							style="width: 100px"></span>
-						<input type="button"
-							id="exportButton"
-							onclick="exportMandatory()"
-							class="btn btn-success" value="Export" style="width: 100px" disabled>
+							value="View" onclick="btnView()" style="width: 100px" disabled>
+						<span style="width: 100px"></span> <input type="button"
+							id="exportButton" onclick="exportMandatory()"
+							class="btn btn-success" value="Export" style="width: 100px"
+							disabled>
 					</div>
 					<label>Report Display</label>
 					<div id="reportTable"
@@ -136,7 +125,9 @@ hr {
 							<div class="row" style="margin: 1% 0px 0px 2%;">
 								<div class="col-sm-4"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
-									<label style="color: white; font-weight: bold;" >Total Number of JDU Members</label></div>
+									<label style="color: white; font-weight: bold;">Total
+										Number of JDU Members</label>
+								</div>
 								<div class="col-sm-1"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfJDUDevs"
@@ -144,29 +135,34 @@ hr {
 								</div>
 								<div class="col-sm-6"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 15px 0px 15px 0px; background-color: #18BC9C; margin-left: 46%; text-align: center; position: absolute;">
-									<label style="color: white; font-weight: bold;" >Percentage Finished As of Today (Total Members and also Total
-									Courses)</label></div>
+									<label style="color: white; font-weight: bold;">Percentage
+										Finished As of Today (Total Members and also Total Courses)</label>
+								</div>
 							</div>
 
 							<div class="row" style="margin: 0px 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; font-weight: bold; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; ">
-									<label style="color: white; font-weight: bold;" >Total Number of JDU Members Last Week</label>
-									</div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; font-weight: bold; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
+									<label style="color: white; font-weight: bold;">Total
+										Number of JDU Members Last Week</label>
+								</div>
 								<div class="col-sm-1"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfJDUDevsLW">-</label>
 								</div>
 								<div class="col-sm-6 ghost-col"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 27px 0px 27px 0px; margin-top: 10px; margin-left: 46%; text-align: center; position: absolute; font-size: 270%;">
-									<h3 id="percentageFinishedToday" th:text="${percentageCompletion} + '%'" >0</h3>
+									<h3 id="percentageFinishedToday"
+										th:text="${percentageCompletion} + '%'">0</h3>
 								</div>
 							</div>
 
 							<div class="row" style="margin: 0px 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; border-width: 2px">
-									<label style="color: white; font-weight: bold;" >Total Number of Existing Members</label></div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
+									<label style="color: white; font-weight: bold;">Total
+										Number of Existing Members</label>
+								</div>
 								<div class="col-sm-1"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfExistingMembers">-</label>
@@ -175,22 +171,28 @@ hr {
 
 							<div class="row" style="margin: 0px 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; border-width: 2px">
-									<label style="color: white; font-weight: bold;" >Total Number of New Members</label></div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
+									<label style="color: white; font-weight: bold;">Total
+										Number of New Members</label>
+								</div>
 								<div class="col-sm-1"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfNewMembers">-</label>
 								</div>
-								<div class="col-sm-6" 
+								<div class="col-sm-6"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 15px 0px 15px 0px; margin-top: 25px; background-color: #18BC9C; margin-left: 46%; text-align: center; position: absolute;">
-									<label style="color: white; font-weight: bold;" >Percentage Finished As of Last Week (Total Members and also
-									Total Courses)</label></div>
+									<label style="color: white; font-weight: bold;">Percentage
+										Finished As of Last Week (Total Members and also Total
+										Courses)</label>
+								</div>
 							</div>
 
 							<div class="row" style="margin: 0px 0px 0px 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; border-width: 2px">
-									<label style="color: white; font-weight: bold;" >Total Number of JDU Members Who Finished the training</label></div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
+									<label style="color: white; font-weight: bold;">Total
+										Number of JDU Members Who Finished the training</label>
+								</div>
 								<div class="col-sm-1"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfJDUDevsFinished"
@@ -198,14 +200,17 @@ hr {
 								</div>
 								<div class="col-sm-6 ghost-col"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 27px 0px 27px 0px; margin-top: 31px; margin-left: 46%; text-align: center; position: absolute; font-size: 270%;">
-									<h3 id="percentageFinishedLW" th:text="${percentageCompletionLastWeek} + '%'" >0</h3>
+									<h3 id="percentageFinishedLW"
+										th:text="${percentageCompletionLastWeek} + '%'">0</h3>
 								</div>
 							</div>
 
 							<div class="row" style="margin: 0px 0px 1% 2%;">
 								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C; border-width: 2px">
-									<label style="color: white; font-weight: bold;" >Total Number of JDU Members Last Week Who Finished the training</label></div>
+									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
+									<label style="color: white; font-weight: bold;">Total
+										Number of JDU Members Last Week Who Finished the training</label>
+								</div>
 								<div class="col-sm-1"
 									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 20px 0px 10px 0px; margin-left: 1px; text-align: center;">
 									<label id="totalNumberOfJDUDevsFinishedLW"
@@ -220,17 +225,23 @@ hr {
 	</div>
 
 	<!--exportMandatoryCourses-->
-	<table id="exportMandatoryCourses" class="table table-bordered table-responsive text-center sticky-table width_max" style="overflow-y:scroll;display:none; width:100%; height:400px;">
+	<table id="exportMandatoryCourses"
+		class="table table-bordered table-responsive text-center sticky-table width_max"
+		style="overflow-y: scroll; display: none; width: 100%; height: 400px;">
 		<thead>
 			<tr>
-				<th style="width:35%">Total Number of JDU Members</th>
-				<th style="width:35%">Total Number of JDU Members Last Week</th>
-				<th style="width:35%">Total Number of Original Members</th>
-				<th style="width:35%">Total Number of New Members</th>
-				<th style="width:35%">Total Number of JDU Members Who Finished the Training</th>
-				<th style="width:35%">Total Number of JDU Members Last Week Who Finished the Training</th>
-				<th style="width:35%">Percentage Finished as of Today(Total Members and also Total Courses)</th>
-				<th style="width:35%">Percentage Finished as of Last Week(Total Members and also Total Courses)</th>
+				<th style="width: 35%">Total Number of JDU Members</th>
+				<th style="width: 35%">Total Number of JDU Members Last Week</th>
+				<th style="width: 35%">Total Number of Original Members</th>
+				<th style="width: 35%">Total Number of New Members</th>
+				<th style="width: 35%">Total Number of JDU Members Who Finished
+					the Training</th>
+				<th style="width: 35%">Total Number of JDU Members Last Week
+					Who Finished the Training</th>
+				<th style="width: 35%">Percentage Finished as of Today(Total
+					Members and also Total Courses)</th>
+				<th style="width: 35%">Percentage Finished as of Last
+					Week(Total Members and also Total Courses)</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -251,30 +262,35 @@ hr {
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
 		//Insert Data into Table
-		function insertIntoExport(){
-			document.getElementById("totalJDUMembers").innerHTML = document.getElementById("totalNumberOfJDUDevs").innerHTML;
-			document.getElementById("totalFinishedJDU").innerHTML = document.getElementById("totalNumberOfJDUDevsFinished").innerHTML;
-			document.getElementById("totalFinishedJDULW").innerHTML = document.getElementById("totalNumberOfJDUDevsFinishedLW").innerHTML;
-			document.getElementById("percentFinish").innerHTML = document.getElementById("percentageFinishedToday").innerHTML;
-			document.getElementById("percentFinishLW").innerHTML = document.getElementById("percentageFinishedLW").innerHTML;
+		function insertIntoExport() {
+			document.getElementById("totalJDUMembers").innerHTML = document
+					.getElementById("totalNumberOfJDUDevs").innerHTML;
+			document.getElementById("totalFinishedJDU").innerHTML = document
+					.getElementById("totalNumberOfJDUDevsFinished").innerHTML;
+			document.getElementById("totalFinishedJDULW").innerHTML = document
+					.getElementById("totalNumberOfJDUDevsFinishedLW").innerHTML;
+			document.getElementById("percentFinish").innerHTML = document
+					.getElementById("percentageFinishedToday").innerHTML;
+			document.getElementById("percentFinishLW").innerHTML = document
+					.getElementById("percentageFinishedLW").innerHTML;
 		}
 		//-----------------------
-		
+
 		//Trim function
-		function myTrim(stringToTrim){
-			return stringToTrim.replace(/^\s+|\s+$/gm,'');
+		function myTrim(stringToTrim) {
+			return stringToTrim.replace(/^\s+|\s+$/gm, '');
 		}
 		//-----------------------
-		
+
 		//Enables View and Export button
-		function enableButtons(){
+		function enableButtons() {
 			var course = document.getElementById("inputCourse").value;
 			var format = /[*/\"\'\\:<>?|+]/;
-			if(myTrim(course).length == 0){
+			if (myTrim(course).length == 0) {
 				document.getElementById('errorMsg2').style.display = 'none';
 				document.getElementById("viewButton").disabled = true;
 			} else {
-				if(format.test(course)){
+				if (format.test(course)) {
 					document.getElementById("errorMsg2").innerHTML = "*Course Name is invalid. Please remove invalid characters.";
 					document.getElementById('errorMsg2').style.display = 'block';
 					document.getElementById("viewButton").disabled = true;
@@ -284,59 +300,50 @@ hr {
 				}
 			}
 		}
-		function verifDate(){
+		function verifDate() {
 			var start = document.getElementById("startDateTime").value;
 			var end = document.getElementById("endDateTime").value;
 			if (start > end) {
 				document.getElementById("errorMsg1").innerHTML = "*Date Range is invalid.";
 				document.getElementById('errorMsg1').style.display = 'block';
-			}else{
+			} else {
 				document.getElementById('errorMsg1').style.display = 'none';
 				document.getElementById("dateForm").submit();
 			}
 		}
 		//-----------------------
-		
+
 		//exportMandatory function
-		function exportMandatory(){
+		function exportMandatory() {
 			insertIntoExport();
 			var table = document.getElementById("exportMandatoryCourses");
-			var rows =[];
-			var val= document.getElementById("totalJDUMembers").value
-			if(val != null){
+			var rows = [];
+			var val = document.getElementById("totalJDUMembers").value
+			if (val != null) {
 				document.getElementById("exportButton").disabled = true;
-			} else if (val == null){
+			} else if (val == null) {
 				document.getElementById("exportButton").disabled = false;
 			}
-			for(var i=0,row; row = table.rows[i];i++){
+			for (var i = 0, row; row = table.rows[i]; i++) {
 				//rows would be accessed using the "row" variable assigned in the for loop
 				//Get each cell value/column from the row
 				column1 = row.cells[0].innerText;
-                column2 = row.cells[1].innerText;
-                column3 = row.cells[2].innerText;
-                column4 = row.cells[3].innerText;
-                column5 = row.cells[4].innerText;
-                column6 = row.cells[5].innerText;
-                column7 = row.cells[6].innerText;
-                column8 = row.cells[7].innerText;
-                rows.push([
-                        column1,
-                        column2,
-                        column3,
-                        column4,
-                        column5,
-                        column6,
-                        column7,
-                        column8
-                    ]);
-            }
+				column2 = row.cells[1].innerText;
+				column3 = row.cells[2].innerText;
+				column4 = row.cells[3].innerText;
+				column5 = row.cells[4].innerText;
+				column6 = row.cells[5].innerText;
+				column7 = row.cells[6].innerText;
+				column8 = row.cells[7].innerText;
+				rows.push([ column1, column2, column3, column4, column5,
+						column6, column7, column8 ]);
+			}
 			csvContent = "data:text/csv;charset=utf-8,";
-			rows.forEach(function(rowArray){
+			rows.forEach(function(rowArray) {
 				row = rowArray.join(",");
 				csvContent += row + "\r\n";
 			});
-			
-			
+
 			var encodedUri = encodeURI(csvContent);
 			var link = document.createElement("a");
 
@@ -348,9 +355,11 @@ hr {
 					+ String(d.getHours()).padStart(2, "0")
 					+ String(d.getMinutes()).padStart(2, "0")
 					+ String(d.getSeconds()).padStart(2, "0");
-			
+
 			link.setAttribute("href", encodedUri);
-			link.setAttribute("download", document.getElementById("inputCourse").value + " Summary_"+dateFileName+".csv");
+			link.setAttribute("download", document
+					.getElementById("inputCourse").value
+					+ " Summary_" + dateFileName + ".csv");
 			document.body.appendChild(link);
 
 			link.click();
@@ -382,20 +391,6 @@ hr {
 		}
 
 		function load() {
-			
-			if ($("#selectReportType").val() == 0
-					|| $("#selectReportType").val() == null) {
-				//$("#exportButton").attr('disabled', 'disabled');
-				//$("#viewButton").attr('disabled', 'disabled');
-				//$("#inputCourse").attr('disabled', 'disabled');
-			} else if (rowCount <= 0) {
-				//$("#inputCourse").attr('disabled', 'disabled');
-				//$("#viewButton").removeAttr('disabled');
-			} else {
-				//$("#exportButton").removeAttr('disabled');
-				//$("#viewButton").removeAttr('disabled');
-				//$("#inputCourse").removeAttr('disabled');
-			}
 
 			var fromNewDate = fromDateTime.slice(0, 16);
 			var toNewDate = toDateTime.slice(0, 16);
@@ -405,7 +400,6 @@ hr {
 			var summaryString = url.search("summary");
 
 			if (generateCoursesString === -1 && summaryString === -1) {
-				//alert(document.getElementById("startDateTime").value);
 				document.getElementById("startDateTime").value = fromNewDate;
 				document.getElementById("endDateTime").value = toNewDate;
 
@@ -439,7 +433,7 @@ hr {
 				document.getElementById("inputCourse").value = hCourse;
 
 				var course = myTrim(document.getElementById("inputCourse").value);
-				if(course.length == 0){
+				if (course.length == 0) {
 					document.getElementById("viewButton").disabled = true;
 					document.getElementById("exportButton").disabled = true;
 				} else {
@@ -474,79 +468,12 @@ hr {
 			var reportDisplayTable = document.getElementById("reportTable");
 			var showMembersCompleted = document
 					.getElementById("summaryMembersTable");
-
-			/*if(selectReportType == 1){
-
-				showSummaryCourses.style.display = "block";
-				reportDisplayTable.style.display = "none";
-				listEmptyMessage.style.display = "block";
-			}
-			else if(selectReportType == 2){				
-				window.location.href = "/mandatoryCourses/load/";
-			}
-			else{
-				window.location.href = "/report/load/";
-			}*/
 		}
 
-		/* const m = moment();
-		//startDate = document.getElementById("startDate");
-		startDateTime.max = m.format("YYYY-MM-DDTHH:mm");
-		startDateTime.min = m.format("2017-01-01T00:00");
-
-		//endDate = document.getElementById("endDate");
-		endDateTime.max = m.format("YYYY-MM-DDTHH:mm");
-		endDateTime.min = m.format("2017-01-01T00:00");
-
-		console.log(m.format("YYYY-MM-DDTHH:mm"));*/
-		/**
-		Format Date Inputs
-		 */
-		/* Date.prototype.toISO = function() {
-			return this.getUTCFullYear() + '-'
-					+ String(this.getUTCMonth() + 1).padStart(2, "0") + '-'
-					+ String(this.getUTCDate()).padStart(2, "0") + 'T'
-					+ String(this.getUTCHours()).padStart(2, "0") + ':'
-					+ String(this.getUTCMinutes()).padStart(2, "0") + ':'
-					+ String(this.getUTCSeconds()).padStart(2, "0") + '.'
-					+ (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5)
-					+ 'Z';
-		};*/
-		/**
-		For HTML with FromDateTime and ToDateTime
-		 */
-		/*$("#startDateTime").blur(function() {
-			var formDate = document.getElementById("startDateTime").value;
-			var newDate = new Date(formDate);
-			var dateConcat = newDate.toISO().toString();
-			if (formDate == "") {
-				$("#startDateTime").prop('value', null);
-			} else {
-				$("#startDateTime").prop('value', dateConcat);
-			}
-		});
-		$("#endDateTime").blur(function() {
-			var formDate = document.getElementById("endDateTime").value;
-			var newDate = new Date(formDate);
-			var dateConcat = newDate.toISO().toString();
-			if (formDate == "") {
-				$("#endDateTime").prop('value', null);
-			} else {
-				$("#endDateTime").prop('value', dateConcat);
-			}
-		});*/
-		//-----------------------
-		/**
-		Checking of date range
-		 */
 		function btnView() {
 			document.getElementById("mandatoryCoursesForm").submit();
 		}
-		//-----------------------
-
-		/**
-		Function for Report Type
-		 */
+		
 		function selectReport() {
 			var selectedReportType = document
 					.getElementById("selectReportType").value;
@@ -554,6 +481,10 @@ hr {
 			if (selectedReportType == 1) {
 				window.location.href = "/report/course/";
 			} else if (selectedReportType == 2) {
+				window.location.href = "/report/summary/standardization/dev/";
+			} else if (selectedReportType == 3) {
+				window.location.href = "/report/summary/standardization/pm/";
+			} else if (selectedReportType == 4) {
 				window.location.href = "/mandatoryCourses/load/";
 			} else {
 
@@ -564,7 +495,7 @@ hr {
 			var manCourse = document.getElementById("inputCourse").value;
 			document.getElementById("hCourse").value = manCourse;
 		}
-		//-----------------------
+		
 	</script>
 </body>
 </html>
