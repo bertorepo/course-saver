@@ -65,10 +65,7 @@ function selectReport() {
     if (selectedReportType == 1) {
         window.location.href = "/report/course/";
     } else if (selectedReportType == 2) {
-        $("#viewButton").removeAttr('disabled');
-        $("#exportButton").attr('disabled', 'disabled');
-        document.getElementById("reportTable").style.display = "none";
-        document.getElementById("summaryMainDiv").style.display = "block";
+        window.location.href = "/report/summary/standardization/dev/";
     } else if (selectedReportType == 3) {
         window.location.href = "/report/summary/standardization/pm/";
     } else {
