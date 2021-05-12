@@ -2,21 +2,33 @@ package com.fujitsu.ph.tsup.scheduling.service;
 
 import java.time.Duration;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.InternetAddress;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 import com.fujitsu.ph.tsup.scheduling.dao.ScheduleDao;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
+
 
 /**
  * <pre>
@@ -52,7 +64,55 @@ public class ScheduleServiceImpl implements ScheduleService {
      */
     @Autowired
     private ScheduleDao scheduleDao;
+    
+	/**
+	 * Enrollment Service
+	 */
+	@Autowired
+	EnrollmentService enrollmentService;
+    
+    @Autowired
+    private JavaMailSender javaMailSender;
 
+    @Value("${sender.email}")
+    private String senderEmail;
+
+	public void sendEmailtoParticipants(Long id, ZonedDateTime formStart, ZonedDateTime formEnd) {
+		
+		CourseSchedule courseSched = scheduleDao.findCourseScheduleById(id);
+        MimeMessage message = javaMailSender.createMimeMessage();
+        String newStart = formStart.withZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MMM-dd-yyyy hh:mm a"));
+        String newEnd = formEnd.withZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MMM-dd-yyyy hh:mm a"));
+		
+		try {
+	    	Set<CourseParticipant> participants = enrollmentService.findAllParticipantByCourseScheduleId(id);
+			for(CourseParticipant participant : participants) {
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(participant.getEmail()));	
+			}
+			
+			message.setSubject("[UPDATE] " + courseSched.getCourseName() + " - Change in Schedule");
+			message.setFrom(new InternetAddress(senderEmail));
+			message.setContent("<body style='text-align:center;'><table style='font-family: segoe ui; text-align:center; border:1px solid #e6e6e6; width: 480px'>"
+					+ "<tr><td style='background: #2c3e50; color: white; padding: 15px'>" + courseSched.getCourseName() + "</td></tr>"
+					+ "<tr><td style='font-size: 12px'><br>NEW SCHEDULE</td></tr>"
+					+ "<tr><td><table style='width:100%; padding: 5px; text-align:center; border-collapse:collapse; font-family: segoe ui; font-size: 14px'>"
+					+ "<tr style='background: #fcfcfc'><th style='border: 1px solid #e6e6e6'>Start</th>"
+					+ "<th style='border: 1px solid #e6e6e6'>End</th></tr>"
+					+ "<tr><td style='padding-left: 10px; padding-right: 10px; border: 1px solid #e6e6e6'>" + newStart + "</td>"
+					+ "<td style='padding-left: 10px; padding-right: 10px; border: 1px solid #e6e6e6'>" + newEnd + "</td></tr>"
+					+ "</table></td></tr>"
+					+ "<tr><td style='text-align:left; font-size: 12px; color:gray; padding-top:20px; height: 20px;'>You are receiving this e-mail because you are enrolled to " + courseSched.getCourseName() + ".</td></tr>"
+					+ "<tr><td style='text-align:left; font-size: 12px; color:gray; padding-top:5px; padding-bottom:10px; height: 20px'>Training Sign-Up Team</td></tr>"
+					+ "</table></body>","text/html");
+			System.out.println("Sending...");
+			javaMailSender.send(message);
+			System.out.println("Sent");	
+		} catch(MessagingException e){
+			throw new IllegalArgumentException("This should never happen unless mail properties are invalid.", e);
+        }
+		System.out.println(this.toString());
+	}
+    
     /**
      * <pre>
      * Finds all scheduled courses based on the given date range Call
