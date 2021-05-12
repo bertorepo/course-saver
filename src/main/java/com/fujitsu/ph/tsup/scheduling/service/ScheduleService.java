@@ -26,6 +26,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleListForm;
@@ -123,4 +124,7 @@ public interface ScheduleService {
      * @param changeScheduleStatus
      */
     void changeScheduleStatus(Set<CourseSchedule> courseSchedules);
+    
+	/** Sends email to participants */
+	void sendEmailtoParticipants(Long id, ZonedDateTime formStart, ZonedDateTime formEnd);
 }
