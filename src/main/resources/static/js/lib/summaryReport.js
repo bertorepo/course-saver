@@ -68,7 +68,9 @@ function selectReport() {
         window.location.href = "/report/summary/standardization/dev/";
     } else if (selectedReportType == 3) {
         window.location.href = "/report/summary/standardization/pm/";
-    } else {
+    } else if (selectedReportType == 4) {
+		window.location.href = "/mandatoryCourses/load/";
+	} else {
 
     }
 }
@@ -85,7 +87,9 @@ function viewButton() {
         document.getElementById("summaryMainDiv").style.display = "block";
     } else if (selectedReportType == 3) {
         window.location.href = "/report/summary/standardization/pm/";
-    } else {
+    } else if (selectedReportType == 4) {
+		window.location.href = "/mandatoryCourses/load/";
+	} else {
 
     }
 }
