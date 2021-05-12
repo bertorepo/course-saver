@@ -851,11 +851,15 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
 				+ " from tsup.certificate_upload"
 				+ " where course_id = :course_id and employee_id = :employee_id)";
 		
-		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-				.addValue("course_id", courseId)
-				.addValue("employee_id", userId);
-		
-		String certificateName = template.queryForObject(query, sqlParameterSource, String.class);
-		return certificateName;
-	}
+		try {
+			SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+					.addValue("course_id", courseId)
+					.addValue("employee_id", userId);
+			
+			String certificateName = template.queryForObject(query, sqlParameterSource, String.class);
+			return certificateName;
+				} catch (EmptyResultDataAccessException e) {
+			    return null;
+			}
+		}
 }
