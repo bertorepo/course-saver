@@ -8,14 +8,14 @@
 //---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
 // 1.0.0   | 2021/02/22 | WS)J.Barbadillo       | New Creation             
 //==================================================================================================
-package com.fujitsu.ph.tsup.reports.summary.dao;
+package com.fujitsu.ph.tsup.report.summary.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
+import com.fujitsu.ph.tsup.report.summary.model.MandatoryCourses;
 
 /**
  * <pre>

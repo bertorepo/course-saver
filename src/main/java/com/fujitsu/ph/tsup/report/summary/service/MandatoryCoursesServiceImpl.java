@@ -9,7 +9,7 @@
 // 1.0.0   | 2021/04/21 | WS)C.Fuerzas          | New Creation      
 // 1.0.1   | 2021/05/05 | WS)C.Fuerzas          | Updated
 //==================================================================================================
-package com.fujitsu.ph.tsup.reports.summary.service;
+package com.fujitsu.ph.tsup.report.summary.service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -17,9 +17,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fujitsu.ph.tsup.reports.summary.dao.MandatoryCoursesDao;
-import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
-import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
+import com.fujitsu.ph.tsup.report.summary.dao.MandatoryCoursesDao;
+import com.fujitsu.ph.tsup.report.summary.model.MandatoryCourses;
+import com.fujitsu.ph.tsup.report.summary.model.MandatoryCoursesForm;
 
 /**
  * <pre>

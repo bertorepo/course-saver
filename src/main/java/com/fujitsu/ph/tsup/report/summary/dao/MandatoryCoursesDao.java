@@ -9,12 +9,12 @@
 // 1.0.0   | 2021/04/21 | WS)J.Barbadillo       | New Creation        
 // 1.0.1   | 2021/05/05 | WS)J.Barbadillo       | Updated
 //==================================================================================================                                                                                                                                                                                                                                                                                                                                                        
-package com.fujitsu.ph.tsup.reports.summary.dao; 
+package com.fujitsu.ph.tsup.report.summary.dao; 
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
+import com.fujitsu.ph.tsup.report.summary.model.MandatoryCourses;
 
 /**
 * <pre>

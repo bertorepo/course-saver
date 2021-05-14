@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2021 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.reports.summary.model;
+package com.fujitsu.ph.tsup.report.summary.model;
 
 
 /**

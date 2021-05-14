@@ -9,7 +9,7 @@
 // 1.0.0   | 2021/04/21 | WS)J.Barbadillo       | New Creation      
 // 1.0.1   | 2021/05/05 | WS)J.Barbadillo       | Updated
 //==================================================================================================
-package com.fujitsu.ph.tsup.reports.summary.dao;
+package com.fujitsu.ph.tsup.report.summary.dao;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -24,7 +24,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.fujitsu.ph.tsup.reports.summary.model.*;
+import com.fujitsu.ph.tsup.report.summary.model.*;
 
 /**
  * <pre>
@@ -59,7 +59,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
             LocalDateTime selectedEndDateTime) {
             
         String query = "SELECT "
-                    + "     C.ID AS ID, "
+                    + "     DISTINCT C.ID AS ID, "
                     + "     C.NAME AS COURSE_NAME "                                                                                             
                     + "FROM TSUP.COURSE_SCHEDULE AS CSCHED "                                                                                            
                     + "INNER JOIN TSUP.COURSE_SCHEDULE_DETAIL AS CSD "                                                                                          
@@ -69,7 +69,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                     + "WHERE COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) "                                                                                               
                     + "BETWEEN :scheduledStartDateTime "
                     + "AND :scheduledEndDateTime "                                                                                  
-                    + "AND C.MANDATORY = 'YES'" ;                                                                                       
+                    + "AND C.MANDATORY = 'Yes'" ;                                                                                       
         
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
                 .addValue("scheduledStartDateTime", selectedStartDateTime)
@@ -125,7 +125,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                 + "     ON CUPLOAD.COURSE_ID = C.ID "
                 + "WHERE CUPLOAD.CERTIFICATE IS NOT NULL "
                 + "AND C.NAME = :name "
-                + "AND C.MANDATORY = 'YES';";
+                + "AND C.MANDATORY = 'Yes';";
         
         SqlParameterSource mandatoryCoursesParameters = new MapSqlParameterSource()
                 .addValue("name", mandatoryCourses);
@@ -152,7 +152,7 @@ public class MandatoryCoursesDaoImpl implements MandatoryCoursesDao{
                 + "INNER JOIN TSUP.CERTIFICATE_UPLOAD AS CUPLOAD  "
                 + "     ON CUPLOAD.COURSE_ID = C.ID  "
                 + "WHERE C.NAME = :name  "
-                + "AND C.MANDATORY = 'YES'  "
+                + "AND C.MANDATORY = 'Yes'  "
                 + "AND "
                 + "     CASE CUPLOAD.UPLOAD_DATE  "
                 + "WHEN NULL THEN  "

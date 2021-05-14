@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2021 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.reports.summary.web;
+package com.fujitsu.ph.tsup.report.summary.web;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCourses;
-import com.fujitsu.ph.tsup.reports.summary.service.MandatoryCoursesService;
+import com.fujitsu.ph.tsup.report.summary.model.MandatoryCourses;
+import com.fujitsu.ph.tsup.report.summary.service.MandatoryCoursesService;
 
 /**
  * The controller of mandatory courses
