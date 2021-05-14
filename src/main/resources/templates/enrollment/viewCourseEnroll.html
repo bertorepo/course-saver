@@ -66,28 +66,31 @@
 			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
 					th:object="${viewCourseEnroll}">
 				<colgroup >
-					<col style="width:20%"/>
-					<col style="width:20%"/>
 					<col style="width:30%"/>
-					<col style="width:10%"/>
-					<col style="width:20%"/>
-					<col style="width:15%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
 				</colgroup>
 				<thead>
 					<tr>
 						<th class="align-middle hide">Course ID</th>
-						<th class="align-middle">Course Name</th>
-						<th class="align-middle">Instructor</th>
-						<th class="align-middle">Start Date/Time<br><hr> End Date/Time</th>
+						<th class="align-middle ">Action</th>
+						<th class="align-middle text-left">Course Name</th>
+						<th class="align-middle ">Instructor</th>
+						<th class="align-middle ">Mandatory</th>
+						<th class="align-middle ">Deadline</th>
+						<th class="align-middle ">Start Date/Time<br><hr> End Date/Time</th>
 						<th class="align-middle hide">Start Date Time</th>
 						<th class="align-middle hide">End Date Time</th>
-						<th class="align-middle">Duration(Hrs)</th>
-						<th class="align-middle">Venue</th>
+						<th class="align-middle ">Duration(Hrs)</th>
+						<th class="align-middle ">Venue</th>
 						<th class="align-middle hide">Minimum <br> Number of <br> Participants</th>
 						<th class="align-middle hide">Maximum <br> Number of <br> Participants</th>
-						<th class="align-middle">Total <br> Number of <br> Participants</th>
-						<th class="align-middle">Action</th>
-					
+						<th class="align-middle ">Total <br> Number of <br> Participants</th>
 					</tr>
 				</thead>
 				<tbody th:each="courseSchedule : *{courseSchedules}"
@@ -95,12 +98,24 @@
 						
 					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
 							th:with="courseScheduleId = ${courseSchedule.id}"
-							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',${courseSchedule.mandatory},
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}', '${courseSchedule.courseDetails}')|">
 									
 						<td class="hide" th:text="${courseScheduleId}"/>
-						<td class="align-middle" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td sec:authorize="hasAuthority('Member')">
+							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
+									${courseSchedule.mandatory == 'false'}"
+									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
+									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
+									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}', 
+									'${courseSchedule.courseDetails}')|" 
+									type="button" class="btn btn-success" >Register</button>	
+						</td>
+						<td class="align-middle text-left" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td class="align-middle" th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
+						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
+						<td class="hide" th:text="${courseSchedule.mandatory}"/>
+						<td class="align-middle" th:text="${courseSchedule.deadline}"/> 
 						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')} + '&lt;br /&gt; <hr>' + 
 						${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
 						
@@ -114,19 +129,9 @@
 						<td class="hide" th:text="${courseSchedule.maxAllowed}"/>
 						<td class="hide" th:text="${courseSchedule.courseDetails}"></td>
 						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
+	
 
-						<td class="sticky" sec:authorize="hasAuthority('Member')">
-							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
-									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
-									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
-									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}', 
-									'${courseSchedule.courseDetails}')|" 
-									type="button" class="btn btn-success">Register</button>
-									
-							<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
-							type="button" class="btn btn-success" 
-							title="Participants in this schedule is already full" disabled>Register</button>
-						</td>
+						
 					</tr>
 				</tbody>
 			</table>
@@ -209,7 +214,7 @@
 				<thead>
 					<tr>
 						<th class="align-middle hide">Course ID</th>
-						<th class="align-middle">Course Name</th>
+						<th class="align-middle text-left">Course Name</th>
 						<th class="align-middle">Instructor</th>
 						<th class="align-middle hide">Start Date Time</th>
 						<th class="align-middle hide">End Date Time</th>
@@ -225,7 +230,7 @@
 						th:with="courseScheduleDetail = ${courseSchedule.getCourseScheduleDetails()}">
 						
 						<td class="hide" th:text="${courseSchedule.getId()}"></td>
-						<td th:text="${courseSchedule.courseName}"></td>
+						<td class="text-left" th:text="${courseSchedule.courseName}"></td>
 						<td th:text="${courseSchedule.instructorName}"></td>
 						
 						<td class="hide" th:text="${courseScheduleDetail.scheduledStartDateTime}"></td>
@@ -268,16 +273,16 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="align-middle">Course ID</th>
-						<th class="align-middle">Course Name</th>
-						<th class="align-middle">Instructor</th>
-						<th class="align-middle">Start Date Time</th>
-						<th class="align-middle">End Date Time</th>
-						<th class="align-middle">Duration(Hrs)</th>
-						<th class="align-middle">Venue</th>
-						<th class="align-middle">Minimum <br> Number of <br> Participants</th>
-						<th class="align-middle">Maximum <br> Number of <br> Participants</th>
-						<th class="align-middle">Total <br> Number of <br> Participants</th>
+						<th class="align-middle hide">Course ID</th>
+						<th class="align-middle text-left">Course Name</th>
+						<th class="align-middle ">Instructor</th>
+						<th class="align-middle ">Start Date Time</th>
+						<th class="align-middle ">End Date Time</th>
+						<th class="align-middle ">Duration(Hrs)</th>
+						<th class="align-middle ">Venue</th>
+						<th class="align-middle ">Minimum <br> Number of <br> Participants</th>
+						<th class="align-middle ">Maximum <br> Number of <br> Participants</th>
+						<th class="align-middle ">Total <br> Number of <br> Participants</th>
 					</tr>
 				</thead>
 				<tbody id="table-body">
@@ -691,9 +696,9 @@
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="courseRegistrationTime" disabled>
 								</div>
-							</div>
-							<div class="">
-								<h5 style="color:red">This is a required training</h5>
+							</div> --
+							<div class="" id="showRequired">
+								<h5 style="color:red" >This is a required training</h5>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
@@ -779,8 +784,8 @@
 									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
 								</div>
 							</div>	
-							<div class="">
-								<h5 style="color:red">This is a required training</h5>
+							<div class="" id="showRequired">
+								<h5 style="color:red" >This is a required training</h5>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
@@ -892,7 +897,7 @@
 // 	<!--Message alert End-->
 
 	//Information Modal
-	function showInformation(id, courseName, instructorName, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
+	function showInformation(id, courseName, instructorName, mandatory, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
 // 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
 
 		var startDate = scheduleStartDateTime.slice(0,10);
@@ -912,6 +917,13 @@
 		
 		var instructorNameInput = document.getElementById('infoInstructorName');
 		instructorNameInput.value = instructorName;
+		
+		if(mandatory == true){
+			$('[id$=showRequired]').show();
+		}
+		else{
+			$('[id$=showRequired]').hide();
+		}
 		
 		var dateInput = document.getElementById('infoDate');
 		dateInput.value = startDate;

@@ -35,6 +35,10 @@ public class CourseScheduleForm {
 
     /* Instructor Name(LASTNAME, FIRSTNAME) */
     private String instructorName;
+    
+    private String mandatory; // added
+    
+    private String deadline; // added
 
     /* Venue Id */
     private Long venueId;
@@ -182,17 +186,40 @@ public class CourseScheduleForm {
     public void setTotalParticipants(int totalParticipants) {
         this.totalParticipants = totalParticipants;
     }
+    
+    
+    public String getDeadline() {
+		return deadline;
+	}
+    
+    public void setDeadline(String deadline) {
+    	this.deadline = deadline;
+    	
+    }
+    
+	public String getMandatory() {
+		return mandatory;
+	}
+	
+	public void setMandatory(String mandatory) {
+		this.mandatory = mandatory;
+	}
+
 
     @Override
     public String toString() {
         return "CourseScheduleForm [id=" + id + ", courseId=" + courseId
                 + ", courseName=" + courseName + ", instructorId="
                 + instructorId + ", instructorName=" + instructorName
+                + ", deadline= " + deadline + ", mandatory = " +mandatory
                 + ", venueId=" + venueId + ", venueName=" + venueName
                 + ", courseScheduleDetail=" + courseScheduleDetail
                 + ", minRequired=" + minRequired + ", maxAllowed=" + maxAllowed
                 + ", totalParticipants=" + totalParticipants
                 + ", courseDetails=" + courseDetails + "]";
     }
+
+
+	
 
 }

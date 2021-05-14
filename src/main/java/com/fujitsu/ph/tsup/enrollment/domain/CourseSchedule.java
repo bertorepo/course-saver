@@ -32,6 +32,12 @@ public class CourseSchedule {
      */
     private String instructorFirstName;
 
+    
+    private String mandatory; // Added
+    
+    private String deadline; // Added
+    
+    
     /**
      * Venue Id
      */
@@ -89,6 +95,8 @@ public class CourseSchedule {
         this.instructorId = builder.instructorId;
         this.instructorLastName = builder.instructorLastName;
         this.instructorFirstName = builder.instructorFirstName;
+        this.mandatory = builder.mandatory; // Added
+        this.deadline = builder.deadline; // Added
         this.venueId = builder.venueId;
         this.venueName = builder.venueName;
         this.minRequired = builder.minRequired;
@@ -126,7 +134,15 @@ public class CourseSchedule {
     public String getInstructorFirstName() {
         return instructorFirstName;
     }
-
+    
+    public String getMandatory() { // Added
+        return mandatory;
+    }
+    
+    public String getDeadline() { // Added
+        return deadline;
+    }
+    
     public Long getVenueId() {
         return venueId;
     }
@@ -200,7 +216,11 @@ public class CourseSchedule {
          * Instructor First Name
          */
         private String instructorFirstName;
-
+        
+        private String mandatory; // added
+        
+        private String deadline; // added
+        
         /**
          * Venue Id
          */
@@ -252,6 +272,8 @@ public class CourseSchedule {
          * @param instuctorId
          * @param instructorLastName
          * @param instructorFirstName
+         * @param mandatory
+         * @param deadline
          * @param venueId
          * @param venueName
          * @param minRequired
@@ -259,8 +281,8 @@ public class CourseSchedule {
          * @param totalParticipant
          */
         public Builder(Long id, Long courseId, String courseName, Long instructorId, String instructorLastName,
-                String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed,
-                int totalParticipants, char status) {
+                String instructorFirstName, String mandatory, String deadline, Long venueId, String venueName, int minRequired, int maxAllowed,
+                int totalParticipants, char status) { // added String mandatory & String deadline
             
             validateId(id);
             validateCourseId(courseId);
@@ -272,7 +294,10 @@ public class CourseSchedule {
             validateVenueName(venueName);
             validateMinRequired(minRequired);
             validateMaxAllowed(maxAllowed);
-
+            validateMandatory(mandatory);
+            validateDeadline(deadline);
+            
+            
             this.id = id;
             this.courseId = courseId;
             this.instructorId = instructorId;
@@ -281,6 +306,8 @@ public class CourseSchedule {
             this.courseName = courseName;
             this.instructorLastName = instructorLastName;
             this.instructorFirstName = instructorFirstName;
+            this.mandatory = mandatory; // added
+            this.deadline = deadline; // added
             this.venueName = venueName;
             this.maxAllowed = maxAllowed;
             this.status = status;
@@ -289,8 +316,8 @@ public class CourseSchedule {
         }
         //TEMPORARY
         public Builder(Long id, Long courseId, String courseName, Long instructorId, String instructorLastName,
-                String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed,
-                 char status) {/*int totalParticipants,*/
+                String instructorFirstName, String mandatory, String deadline, Long venueId, String venueName, int minRequired, int maxAllowed,
+                 char status) {/*int totalParticipants,*/ // added String mandatory & String deadline
             
             validateId(id);
             validateCourseId(courseId);
@@ -298,11 +325,14 @@ public class CourseSchedule {
             validateInstructorId(instructorId);
             validateInstructorLastName(instructorLastName);
             validateInstructorFirstName(instructorFirstName);
+            validateMandatory(mandatory); // added
+            validateDeadline(deadline); // added
             validateVenueId(venueId);
             validateVenueName(venueName);
             validateMinRequired(minRequired);
             validateMaxAllowed(maxAllowed);
 
+            
             this.id = id;
             this.courseId = courseId;
             this.instructorId = instructorId;
@@ -311,6 +341,8 @@ public class CourseSchedule {
             this.courseName = courseName;
             this.instructorLastName = instructorLastName;
             this.instructorFirstName = instructorFirstName;
+            this.mandatory = mandatory; // added
+            this.deadline = deadline; // added
             this.venueName = venueName;
             this.maxAllowed = maxAllowed;
             this.status = status;
@@ -505,6 +537,40 @@ public class CourseSchedule {
             }
         }
 
+        //Added
+        /**
+         * <pre>
+         * Validate the mandatory based on the condition below. If it is
+         * invalid then throw an IllegalArgumentException with the corresponding
+         * message.
+         * 
+         * <pre>
+         * 
+         * @param instructorFirstName
+         */
+        private void validateMandatory(String mandatory) {
+            if (mandatory == null || mandatory.isEmpty()) {
+                throw new IllegalArgumentException("Mandatory should not be empty");
+            }
+        }
+        
+        //Added
+        /**
+         * <pre>
+         * Validate the Deadline based on the condition below. If it is
+         * invalid then throw an IllegalArgumentException with the corresponding
+         * message.
+         * 
+         * <pre>
+         * 
+         * @param instructorFirstName
+         */
+        private void validateDeadline(String deadline) {
+            if (deadline == null || deadline.isEmpty()) {
+                throw new IllegalArgumentException("Deadline should not be empty");
+            }
+        }
+        
         /**
          * <pre>
          * Validate the venue id based on the condition below. If it is invalid then
@@ -595,7 +661,8 @@ public class CourseSchedule {
     public String toString() {
         return "CourseSchedule [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", instructorId="
                 + instructorId + ", instructorLastName=" + instructorLastName + ", instructorFirstName="
-                + instructorFirstName + ", venueId=" + venueId + ", venueName=" + venueName + ", minRequired="
+                + instructorFirstName + ", mandatory=" + mandatory + ", deadline=" + deadline +
+                ", venueId=" + venueId + ", venueName=" + venueName + ", minRequired="
                 + minRequired + ", maxAllowed=" + maxAllowed + ", courseScheduleDetail=" + courseScheduleDetail
                 + ", totalParticipants=" + totalParticipants + ", status=" + status + "]";
     }

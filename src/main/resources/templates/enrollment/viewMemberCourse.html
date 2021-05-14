@@ -236,8 +236,8 @@
 									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
 								</div>
 							</div>	
-							<div class="">
-								<h5 style="color:red">This is a required training</h5>
+							<div class="" id="showRequired">
+								<h5 style="color:red" >This is a required training</h5>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
@@ -261,17 +261,25 @@
 					th:object="${viewCourseEnroll}">
 				<colgroup >
 					<col style="width:20%"/>
+					<col style="width:30%"/>
+					<col style="width:30%"/>
 					<col style="width:20%"/>
-					<col style="width:30%"/>
-					<col style="width:30%"/>
-					<col style="width:10%"/>
-					<col style="width:15%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
+					<col style="width:20%"/>
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="align-middle">Course ID</th>
-						<th class="align-middle">Course Name</th>
+						<th class="align-middle">Action</th>
+						<th class="align-middle text-left">Course Name</th>
 						<th class="align-middle">Instructor</th>
+						<th class="align-middle">Mandatory</th>
+						<th class="align-middle">Deadline</th>
 						<th class="align-middle">Start Date Time</th>
 						<th class="align-middle">End Date Time</th>
 						<th class="align-middle">Duration(Hrs)</th>
@@ -279,8 +287,6 @@
 						<th class="align-middle">Minimum <br> Number of <br> Participants</th>
 						<th class="align-middle">Maximum <br> Number of <br> Participants</th>
 						<th class="align-middle">Total <br> Number of <br> Participants</th>
-						<th  class="sticky"></th>
-					
 					</tr>
 				</thead>
 				<tbody th:each="courseSchedule : *{courseSchedules}"
@@ -288,20 +294,28 @@
 						
 					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
 							th:with="courseScheduleId = ${courseSchedule.id}"
-							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',
+							th:attr="ondblclick=|showInformation('${courseScheduleId}','${courseSchedule.courseName}','${courseSchedule.instructorName}',${courseSchedule.mandatory},
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}', '${courseSchedule.courseDetails}')|">
-									
-						<td th:text="${courseScheduleId}"/>
-						<td th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
-						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
-						<td th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')}" />
-						<td th:utext="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
-						<td th:text="${courseScheduleDetail.duration}"/>
+										
+						<td th:hidden="${courseScheduleId}"/>
+						<td class="align-middle" sec:authorize="hasAuthority('PMO')">
+							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
+									${courseSchedule.mandatory == 'false'}"
+									th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
+									type="button" class="btn btn-success" id="enrollMemberButton">Register</button>
+						</td>
+						<td class="text-left" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/>
+						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
+						<td class="align-middle" th:text="${courseSchedule.deadline}"/>  
+						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')}" />
+						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
+						<td class="align-middle" th:text="${courseScheduleDetail.duration}"/>
 
-						<td th:text="${courseSchedule.venueName}"/>
-						<td th:text="${courseSchedule.minRequired}"/>
-						<td th:text="${courseSchedule.maxAllowed}"/>
-						<td th:text="${courseSchedule.totalParticipants}"/>
+						<td class="align-middle" th:text="${courseSchedule.venueName}"/>
+						<td class="align-middle" th:text="${courseSchedule.minRequired}"/>
+						<td class="align-middle" th:text="${courseSchedule.maxAllowed}"/>
+						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
 
 <!-- 						<td sec:authorize="hasAuthority('PMO')" class="sticky"> -->
 <!-- 							<button class="btn btn-danger" name="" th:attr="onclick=|cancellation('${courseScheduleId}','${courseSchedule.courseName}')|"> -->
@@ -309,15 +323,6 @@
 <!-- 							</button> -->
 <!-- 						</td> -->
 
-						<td class="sticky" sec:authorize="hasAuthority('PMO')">
-							<button th:if="${courseSchedule.totalParticipants} < ${courseSchedule.maxAllowed}"
-									th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
-									type="button" class="btn btn-success" id="enrollMemberButton">Register Member</button>
-									
-							<button th:if="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed}" 
-							type="button" class="btn btn-success" 
-							title="Participants in this schedule is already full" disabled>Register</button>
-						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -360,11 +365,10 @@
 		inpFromDateTime.value = finalFromDateTime;
 		inpToDateTime.value = finalToDateTime;
 	}
-
+	
 	//Information Modal
-	function showInformation(id, courseName, instructorName, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
+	function showInformation(id, courseName, instructorName, mandatory, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
 // 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
-
 		var startDate = scheduleStartDateTime.slice(0,10);
 		var startTime = moment.utc(scheduleStartDateTime, 'YYYY-MM-DD HH:mm').format(
 		'HH:mm A');
@@ -383,6 +387,14 @@
 		var instructorNameInput = document.getElementById('infoInstructorName');
 		instructorNameInput.value = instructorName;
 		
+		
+		if(mandatory == true){
+			$('[id$=showRequired]').show();
+		}
+		else{
+			$('[id$=showRequired]').hide();
+		}
+			
 		var dateInput = document.getElementById('infoDate');
 		dateInput.value = startDate;
 		
