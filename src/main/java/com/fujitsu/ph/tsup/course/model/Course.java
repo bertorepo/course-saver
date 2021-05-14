@@ -3,17 +3,27 @@
  */
 package com.fujitsu.ph.tsup.course.model;
 
-/**
- * CourseForm class
- * 
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : Course.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version
+//0.02    | 2021/04/19 | WS) st.diaz           | Updated
+//0.03    | 2021/05/10 | WS) D.Escala        | Updated
+//==================================================================================================
+
 public class Course {
 
     private Long id;
     private String name;
     private String detail;
+    private String isMandatory;
+    private String deadline;
+    private Long course_category_id;
 
     /**
      * Empty Constructor for Course class
@@ -30,9 +40,14 @@ public class Course {
         this.id = builder.id;
         this.name = builder.name;
         this.detail = builder.detail;
+        this.isMandatory = builder.isMandatory;
+        this.deadline = builder.deadline;
+        this.course_category_id = builder.course_category_id;
     }
 
-    /**
+    
+
+	/**
      * Getter method for Course Id
      * 
      * @return Course Id
@@ -97,13 +112,73 @@ public class Course {
         this.detail = detail;
 
     }
+    
+    /**
+     * Getter Method for Course is Mandatory
+     * 
+     * @return Course is Mandatory
+     */
+    public String getIsMandatory() {
+		return isMandatory;
+		
+	}
 
-    @Override
-    public String toString() {
-        return "Course [ID + " +id +"Name " + name +" Detail " +detail;
-    }
+    /**
+     * Setter Method for Course is Mandatory
+     * 
+     * @param isMandatory Course is Mandatory
+     */
+	public void setIsMandatory(String isMandatory) {
+		this.isMandatory = isMandatory;
+		
+	}
 
-    /** Builder Class
+	/**
+     * Getter Method for Course Deadline
+     * 
+     * @return Course Deadline
+     */
+	public String getDeadline() {
+		return deadline;
+		
+	}
+
+	/**
+     * Setter Method for Course Deadline
+     * 
+     * @param deadline Course Deadline
+     */
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
+		
+	}
+	/**
+     * Getter Method for Course Category ID
+     * 
+     * @return Course Category ID
+     */
+
+    public Long getCourse_category_id() {
+		return course_category_id;
+	}
+	/**
+     * Setter Method for Course Category ID
+     * 
+     * @param Course Category ID
+     */
+	public void setCourse_category_id(Long course_category_id) {
+		this.course_category_id = course_category_id;
+	}
+
+	@Override
+	public String toString() {
+		return "Course [id=" + id + ", name=" + name + ", detail=" + detail + ", isMandatory=" + isMandatory
+				+ ", deadline=" + deadline + ", course_category_id= " + course_category_id +"]";
+	}
+
+
+
+	/** Builder Class
      * @author c.lepiten
      *
      */
@@ -112,7 +187,9 @@ public class Course {
         private Long id;
         private String name;
         private String detail;
-
+        private String isMandatory;
+        private String deadline;
+        private Long course_category_id;
         /** Builder Constructor
          * @param name
          */
@@ -141,15 +218,21 @@ public class Course {
         /** Builder Constructor
          * @param name
          * @param detail
+         * @param isMandatory
+         * @param deadline
+         * @param course_category_id
          */
         
-        public Builder(String name, String detail) {
+        public Builder(String name, String detail, String isMandatory, String deadline, long course_category_id) {
         	
         	validateName(name);
         	validateDetail(detail);
         	
         	this.name = name;
         	this.detail = detail;
+        	this.isMandatory = isMandatory;
+        	this.deadline = deadline;
+        	this.course_category_id= course_category_id;
         	
         }
  
@@ -165,7 +248,28 @@ public class Course {
             return this;
 
         }
-
+        
+        /** Builder Constructor
+         * @param isMandatory
+         * @param deadline
+         * @return
+         */
+        public Builder mandatory(String isMandatory, String deadline) {
+        	this.isMandatory = isMandatory;
+        	this.deadline = deadline;
+        	
+        	return this;
+        }
+        
+        /** Builder Constructor
+         * @param categoryId
+         * @return
+         */
+        public Builder categoryId(Long categoryId) {
+        	this.course_category_id = categoryId;
+        	return this;
+        }
+        
         public Course build() {
 
             return new Course(this);
@@ -213,7 +317,7 @@ public class Course {
             }
 
         }
-
+ 
     }
 
 }

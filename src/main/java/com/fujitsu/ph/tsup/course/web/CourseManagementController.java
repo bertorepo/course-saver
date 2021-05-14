@@ -18,17 +18,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
+import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementService;
 import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.course.model.CourseForm;
 import com.fujitsu.ph.tsup.course.service.CourseManagementService;
 
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Course Management
+//Class Name   : CourseManagementController.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
+//0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//0.03    | 2021/05/10 | WS) D.Escala        | Updated
+//==================================================================================================
 
-/**
- * CourseManagementController Class
- * @author c.lepiten (New Creation by: c.Lepiten)
- * @version Revision: 0.01 Date: 2020-08-28
- *
- */
 @Controller
 @RequestMapping("/courses")
 public class CourseManagementController {
@@ -36,6 +44,9 @@ public class CourseManagementController {
     // Course Management Service class
     @Autowired
     CourseManagementService courseManagementService;
+    
+    @Autowired
+    CourseCategoryManagementService courseCategoryManagementService;
 
     @GetMapping("/load")
     public String load(Model model) {
@@ -77,6 +88,8 @@ public class CourseManagementController {
         form.setId(course.getId());
         form.setName(course.getName());
         form.setDetail(course.getDetail());
+        form.setIsMandatory(course.getIsMandatory());
+        form.setDeadline(course.getDeadline());
 
         model.addAttribute("deleteCourseForm", form);
 
@@ -107,22 +120,29 @@ public class CourseManagementController {
     @PostMapping("/search")
     public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model) {
     	
-    	if(searchCourseName.isEmpty()) {
+    	String searchName = searchCourseName.trim();
+    	
+    	if(searchName.isEmpty()) {
     		return "redirect:/courses/load";
     	}
     	
-    	Set<Course> course = courseManagementService.findCoursesByName(searchCourseName);
+    	try {
+    		Set<Course> course = courseManagementService.findCoursesByName(searchName);
     	
-    	List<Course> listOfCourse = course.stream()
+    		List<Course> listOfCourse = course.stream()
                 .collect(Collectors.toList());
     	
-    	model.addAttribute("courseList", listOfCourse);
+    		model.addAttribute("courseList", listOfCourse);
+    	}catch (NullPointerException e) {
+    		return "course-management/manageCourse";
+		}
     	
     	return "course-management/manageCourse";
     }
     
     /**
      * Author: WS)C.Arias
+     * Updated: WS)I.Fajardo
      * <pre>
      * Create the course. Method = GET
      * 
@@ -131,8 +151,13 @@ public class CourseManagementController {
      */
     @GetMapping("/create")
     public String showCreateCourseForm(Model model) {
-    	
+    	Set<Course> course = courseManagementService.loadAllCourse();
+    	List<Course> courseList = course.stream().collect(Collectors.toList());
+    	Set<CourseCategory> courseCategory = courseCategoryManagementService.findAllCourseCategory();
+    	List<CourseCategory> courseCategoryList = courseCategory.stream().collect(Collectors.toList());
+    	model.addAttribute("courseList", courseList);
     	model.addAttribute("create");
+    	model.addAttribute("courseCategory",courseCategoryList);
     	
     	return "course-management/courseCreate";
     	
@@ -140,6 +165,7 @@ public class CourseManagementController {
     
     /**
      * Author: WS)C.Arias
+ 	 * Updated: WS)I.Fajardo
      * <pre>
      * Create the course. Method = POST
      * 
@@ -150,19 +176,30 @@ public class CourseManagementController {
      * @return course Form and view
      */
     @PostMapping("/create")
-    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult,
-    		Model model) {
-		
-    		Set<Course> courseSize = courseManagementService.findCoursesByName(form.getName());
-    		if(courseSize == null) {
-    			Course courseDetails = new Course.Builder(form.getName(),form.getDetail()).build();
-    			courseManagementService.createCourse(courseDetails);
-    		} else {
-    			model.addAttribute("successMessage", "The course is already existing.");
-    		}
-    		  
-        	return "course-management/courseCreate";
-        	
+    public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+			
+	    	//remove irregular spaces
+	        String cName = form.getName().replaceAll("\\s+", " ");
+	        
+	        Set<Course> course = courseManagementService.loadAllCourse();
+	        List<Course> courseList = course.stream().collect(Collectors.toList());
+	        model.addAttribute("courseList", courseList);
+	        
+	        //check if course and course category matches in the list
+	        for(Course courseContains : courseList)	{
+	        	 
+	        	if(courseContains.getName().equals(form.getName()) && 
+	        		courseContains.getCourse_category_id() == form.getCourse_category_id()) {
+	        		redirectAttributes.addFlashAttribute("ErrorModal", 1);
+	        		return "redirect:/courses/create";
+	        	}
+	        }
+	        //proceed with creating course
+    		Course courseDetails = new Course.Builder(cName.trim(),form.getDetail(),form.getIsMandatory(),form.getDeadline(),form.getCourse_category_id()).build();
+    		courseManagementService.createCourse(courseDetails);
+    		redirectAttributes.addFlashAttribute("ErrorModal", 2);
+
+    		return "redirect:/courses/create";
     }
     
 }

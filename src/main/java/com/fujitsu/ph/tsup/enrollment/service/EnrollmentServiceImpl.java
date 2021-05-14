@@ -16,6 +16,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.03    | 03/05/2021 | WS) E.Ceniza          | Update
 //0.03    | 03/24/2021 | WS) K.Sanchez         | Update
 //0.03    | 03/23/2021 | WS) C.Macatangay      | Update
+//0.04    | 05/04/2021 | WS) A.Senamin         | Update
 //==================================================================================================
 
 import com.fujitsu.ph.auth.model.FpiUser;
@@ -24,10 +25,18 @@ import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
+import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -49,11 +58,15 @@ import javax.mail.util.ByteArrayDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <pre>
@@ -75,7 +88,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Value("${sender.email}")
     private String senderEmail;
-
+    
     /**
      * 
      * Sends calendar invite to the successfully enrolled participant
@@ -502,5 +515,70 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     // public Integer addEnrolledMembersById(Participant participant) {
     // return enrollmentDao.addEnrolledMembersById(participant);
     // }
+    
+    
+    /**
+     * Upload button enabled for Mandatory courses 
+     * Renamed the uploaded certificate according to the specifications
+     * 
+     * @param uploadCertificate
+     * @author A.Senamin
+     * 
+     */
+    public void uploadCertificate(Certificate certificate) {
+    	//call the dao method
+    	enrollmentDao.uploadCertificate(certificate);	
+    }
+    
+    public String storeFile(MultipartFile file, Long id, FileStorageProperties fileStorageProperties,Long userId) {
+        // Normalize file name
+    	Path fileStorageLocation =  Paths.get(fileStorageProperties.getUploadDir())
+				.toAbsolutePath().normalize();
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        fileName = userId +"_"+ id +"_"+ fileName ;
+        try {
+            // Check if the file's name contains invalid characters
+        	 Files.createDirectories(fileStorageLocation);
+            if(fileName.contains("..")) {
+                throw new IllegalArgumentException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
 
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            return fileName;
+        } catch (IOException ex) {
+            throw new IllegalArgumentException("Could not store file " + fileName + ". Please try again!", ex);
+        }catch (Exception ex){
+            throw new IllegalArgumentException("Could not create the directory where the uploaded files will be stored.", ex);
+        }
+    }
+
+    public Resource loadFileAsResource(String fileName,FileStorageProperties fileStorageProperties) {
+        fileName = fileName.substring(38).replaceAll("%20", " ");
+       
+    	try {
+            Path filePath = Paths.get(fileStorageProperties.getUploadDir())
+    				.toAbsolutePath().normalize().resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                throw new IllegalArgumentException("File not found " + fileName);
+            }
+        } catch (MalformedURLException ex) {
+            throw new IllegalArgumentException("File not found " + fileName, ex);
+        }
+    }
+    
+    public List<String> findCourseScheduleIfMandatory(){
+    	return enrollmentDao.findCourseScheduleIfMandatory();
+    }
+
+	@Override
+	public String findCertificateName(long userId, long courseId) {
+		
+		return enrollmentDao.findCertificateName(userId, courseId);
+	}
 }

@@ -1,0 +1,199 @@
+<!-- @Author: Naval, Rosalyn-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Page of Generate Reports" />
+<meta name="author" content=" " />
+<title>Generate Reports</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/report/summaryGSTForPM.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+<script th:src="@{/js/app/moment.min.js}"></script>
+<script th:src="@{/js/lib/summaryReport.js}"></script>
+</head>
+<body onload="load()">
+	<div th:insert="fragments/general.html :: header" > </div>
+	<div class="container mt-5 div_minheight">
+		<h3><i class="fa fa-file-text"></i> Generate Reports</h3>
+		<hr>
+		<form id="summaryGstForPMForm" class="form-horizontal" action="#" th:action="@{/report/summary/standardization/pm}"  th:object="${summaryGST}"  method="GET">
+		<div class="card">
+			<div class="card-body">
+				<div class="form-group row align-items-center justify-content-center">
+					<label class="col-lg-2 col-form-label" style="font-weight: bold;">Report Type</label>
+					<span style="width:70px"></span>
+						<div class="col-lg-5">
+							<select id="selectReportType" name="selectReportType" class="form-control" required
+							onchange="selectReport()" style="width:525px; text-align-last:center;">
+								<option value="" disabled selected hidden>Please Select Report Type</option>
+								<option th:value="0" disabled hidden></option>
+								<option th:value="1">Summary of Course Conducted</option>
+								<option th:value="2">Summary of JDU Standardization Training for Dev</option>
+								<option th:value="3" selected>Summary of JDU Standardization Training for PM</option>
+								<option th:value="4">Summary of Mandatory
+									Courses</option>
+							</select>
+						</div>
+				</div>	     		
+ 				<div class="form-group row align-items-center justify-content-center">
+ 				<span style="width:31px"></span>
+                <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+                        <label class="col-form-label" style="font-weight: bold;">From</label>
+								<span style="width:8px"></span>
+	                            <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+								<input type="hidden" th:field="*{scheduledStartDateTime}"/>
+								<span style="width:8px"></span>
+	                        <label class="col-form-label" style="font-weight: bold;">To</label>
+	                        <div class="col-lg-2">
+	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+	                            <input type="hidden" th:field="*{scheduledEndDateTime}"/>
+	                       </div>
+                 </div> 
+                 
+                 <div class="form-group row align-items-center justify-content-center">
+ 						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
+ 						<span style="width:75px"></span>
+ 						<div class="col-lg-5">
+							<input list="course" class="form-control" id="inputCourse" type="text" style="width:525px;" autocomplete="off" disabled>
+								<datalist id="course">
+								  <option></option>
+								</datalist>
+						    </div>
+					</div>
+					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
+						<input type="button" id="viewButton" class="btn btn-success"
+						value="View" onclick="viewButtonClick()" style="width: 100px">
+						<span style="width:100px"></span>
+						<input type="button" id="exportButton" onclick="fileNameCreator()" class="btn btn-success" value="Export" style="width:100px">
+					</div>
+					
+					<label>Report Display Summary</label>
+					<div class="container" id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
+						<div id="summaryPM" class="row" style="margin-top:11px">
+							<div class="col-md-6"> 
+								<table class="summaryTable">
+									<tr>
+										<td class="table-success titletd">Total Number of JDU PM</td>
+										<td class=centertd th:text="*{TotalNoJDUPMValue}"></td>
+									</tr>
+									<tr>
+										<td class="table-success">Total Number of JDU PM Last Week</td>
+										<td class="table-dark centertd">NA</td>
+									</tr>
+									<tr>
+										<td class="table-success"> Total Number of Original Members</td>
+										<td class="table-dark centertd">NA</td>
+									</tr>
+									<tr>
+										<td class="table-success">Total Number of New Members</td>
+										<td class="table-dark centertd">NA</td>
+									</tr>
+									<tr>
+										<td class="table-success"> Total Number of JDU PM Who Finished the Training</td>
+										<td class=centertd th:text="*{TotalNoJDUPMFinValue}"></td>
+									</tr>
+									<tr>
+										<td class="table-success">Total Number of JDU PM Last Week Who Finished the Training</td>
+										<td class=centertd th:text="*{TotalNoJDUPMLastWkFinValue}"></td>
+									</tr>
+								</table>
+							</div>
+							<div class="col-md-6"> 
+								<table class="percenttable">
+									<tr>
+										<td class="table-success percenttd">Percentage Finished As of Today (Total PM and also Total Courses)</td>
+									</tr>
+									<tr>
+										<td class="percenttext" th:text="*{PercentageFinTodayValue} + '%'"><h3></h3></td>
+									</tr>
+									<tr>
+										<td class="table-success percenttd"> Percentage Finished as of Last Week (Total PM and Also Total Courses)</td>
+									</tr>
+									<tr>
+										<td class="percenttext" th:text="*{PercentageFinLastWkValue}+ '%'"></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	
+
+	<!-- Export Summary of JDU Standardization Training  -->
+		<table id="exportSummaryTable"
+				class="table table-bordered table-responsive text-center sticky-table width_max"
+				style="display: none; width: 100%; height: 400px;">
+			<thead>
+				<tr>
+					<th>Total Number of JDU PM</th>
+					<th>Total Number of JDU PM Last Week</th>
+					<th>Total Number of Original Members</th>
+					<th>Total Number of New Members</th>
+					<th>Total Number of JDU PM Who Finished the Training</th>
+					<th>Total Number of JDU PM Last Week Who Finished the Training</th>
+					<th>Percentage Finished As Of Today (Total PM and Also Total Courses)</th>
+					<th>Percentage Finished As Of Last Week (Total PM and Also Total Courses)</th>
+				</tr>
+			</thead>
+			<tbody id="tBodyExportSummary" th:object="${summaryGST}">
+				<tr class="content">
+					<td th:text="*{TotalNoJDUPMValue}"></td>
+					<td>NA</td>
+					<td>NA</td>
+					<td>NA</td>
+					<td th:utext="*{TotalNoJDUPMFinValue}"></td>
+					<td th:utext="*{TotalNoJDUPMLastWkFinValue}"></td>
+					<td th:text="*{percentageFinTodayValue} + '%'"></td>
+					<td th:text="*{percentageFinLastWkValue} + '%'"></td>
+				</tr>
+			</tbody>
+		</table>
+	<!-- End of Export Summary of  JDU Standardization Training -->	
+	<!-- Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" id="message"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Error Modal End -->
+	</div>
+	<footer th:replace="fragments/general.html :: footer"></footer>
+	
+</body>
+<script>
+$("input[type='datetime-local']").change(function(){
+	if( $("#startDate").val() >=  $("#endDate").val()){
+		$("#viewButton").attr('disabled', 'disabled');
+		$("#exportButton").attr('disabled', 'disabled');
+		document.getElementById("message").innerHTML = dateErrorMessage;
+		$('#errorModal').modal('show');
+	}else{
+		$("#viewButton").removeAttr('disabled');
+		$("#exportButton").removeAttr('disabled');
+	}
+});
+</script>
+</html>

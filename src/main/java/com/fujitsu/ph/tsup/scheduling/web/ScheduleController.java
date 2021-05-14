@@ -41,10 +41,13 @@ import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,6 +64,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.auth.model.FpiUser;
+import com.fujitsu.ph.tsup.authz.service.AuthorizationService;
+import com.fujitsu.ph.tsup.common.domain.Employee;
+import com.fujitsu.ph.tsup.course.model.Course;
+import com.fujitsu.ph.tsup.course.service.CourseManagementService;
+import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
+import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
+import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.ChangeStatusForm;
@@ -81,6 +91,31 @@ import com.fujitsu.ph.tsup.scheduling.service.ScheduleService;
 @RequestMapping("/schedules")
 public class ScheduleController {
 
+	//Test
+	@Autowired
+	private EnrollmentDao enrollmentDao;
+	
+	@Value("${sender.email}")
+    private String senderEmail;
+	
+	/**
+	 * Authorization Service
+	 */
+	@Autowired
+	AuthorizationService authorizationService;
+	
+	/**
+	 * Course Management Service
+	 */
+	@Autowired
+	CourseManagementService courseManagementService;
+	
+	/**
+	 * Enrollment Service
+	 */
+	@Autowired
+	EnrollmentService enrollmentService;
+	
     /**
      * Schedule Service 
      */
@@ -559,16 +594,20 @@ public class ScheduleController {
      */
 	@GetMapping("/courseSchedule/{courseScheduleId}/update")
 	public String showUpdateCourseScheduleForm(@PathVariable("courseScheduleId") Long id, Model model,
-			CourseScheduleUpdateForm courseScheduleUpdateForm) {
+			CourseScheduleUpdateForm courseScheduleUpdateForm, RedirectAttributes redirectAttributes) {
 
 		if (model.containsAttribute("updateView")) {
 			return "scheduling/viewSched";
 		}
 
+//		CourseSchedule courseSched = scheduleService.findCourseScheduleById(id);		
+//		Course course = courseManagementService.findCourseById(courseSched.getCourseId());
+		
 		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
 		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
 		Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
 		List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
+		Course course = courseManagementService.findCourseById(courseSchedule.getCourseId());
 		
 		for(CourseScheduleDetail detail : courseSchedule.getCourseScheduleDetail()) {
 		    CourseScheduleDetailForm detailForm = new CourseScheduleDetailForm();
@@ -591,9 +630,15 @@ public class ScheduleController {
 		courseScheduleUpdateForm.setVenues(venueFormList);
 		courseScheduleUpdateForm.setCourseScheduleDetailList(detailFormList);
 		
+		if(course.getIsMandatory().equals("Yes") && course.getDeadline().equals("Immediate")) {
+		model.addAttribute("notice", "The system automatically sends email to participants of courses tagged as [Mandatory] and [Immediate]. "
+				+ "If you encounter mailing server errors, please try again some other time.");
+		}		
+		
 		model.addAttribute("updateView", courseScheduleUpdateForm);
 		model.addAttribute("deleteView", new CourseScheduleDeleteForm());
 		model.addAttribute("changeSchedule", listForm);
+
 		return "scheduling/viewSched";
 
     }
@@ -654,7 +699,7 @@ public class ScheduleController {
     public String submitUpdateCourseScheduleForm(@PathVariable("courseScheduleId") Long id, 
             @Valid @ModelAttribute("updateView") CourseScheduleUpdateForm form, BindingResult bindingResult, 
             Model model, RedirectAttributes redirectAttributes) {
-        
+    	
         CourseScheduleListForm courseSchedListForm = new CourseScheduleListForm();
         
         courseSchedListForm.setFromDateTime(listForm.getFromDateTime());
@@ -753,17 +798,54 @@ public class ScheduleController {
 				form.getVenueId(), form.getMinRequired(), courseScheduleDetailSet).maxAllowed(form.getMaxAllowed())
 						.build();
 		
-		scheduleService.updateCourseSchedule(courseSchedule);
+		/*
+		 * <pre>
+		 * Send email notification to participants
+		 * </pre>
+		 *@param id Long id
+		 *@param courseSchedId Long id
+		 *
+		 *
+		 */
+		CourseSchedule courseSched = scheduleService.findCourseScheduleById(id);		
+		Course course = courseManagementService.findCourseById(courseSched.getCourseId());
+		ZonedDateTime formStart = form.getCourseScheduleDetails().iterator().next().getScheduledStartDateTime();
+		ZonedDateTime formEnd = form.getCourseScheduleDetails().iterator().next().getScheduledEndDateTime();
+		//validate if there is participant
+		Set<CourseParticipant> courseParticipant = enrollmentDao.findAllParticipantByCourseScheduleId(courseSched.getId());
+		if(!courseParticipant.isEmpty()) {
+			
+			//validate if course is mandatory and immediate
+			if(course.getIsMandatory().equals("Yes") && course.getDeadline().equals("Immediate")) {
+					
+				//Send immediate email to participants
+				try {
+					scheduleService.sendEmailtoParticipants(id, formStart, formEnd);			
+					scheduleService.updateCourseSchedule(courseSchedule);
+		        } catch(MailAuthenticationException e) {
+		        	//Cancel rescheduling
+		        	redirectAttributes.addFlashAttribute("error", "Can't communicate with the mail server. Please try again later");
+		        	return "redirect:/schedules/courseSchedules/view";
+
+		        }
+				redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
+	    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been updated. Email notification has been sent.");
+			}else {
+	        	scheduleService.updateCourseSchedule(courseSchedule);
+	    		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
+	    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been updated");
+			}
+        }else {
+        	scheduleService.updateCourseSchedule(courseSchedule);
+    		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
+    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been updated");
+        }
 		
 		form.setVenues(venueFormList);
 		form.setInstructors(instructorFormList);
 		
-	
-		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
-		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been updated");
-		
 		listForm = null;
-		
+        
     	return "redirect:/schedules/courseSchedules/view";
     
     }

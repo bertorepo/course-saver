@@ -1,4 +1,4 @@
---DROP DATABASE tsup;
+﻿--DROP DATABASE tsup;
 
 /*CREATE DATABASE tsup
     WITH 
@@ -112,6 +112,18 @@ CREATE SEQUENCE tsup."COURSE_NON_PARTICIPANT_ID_seq"
 ALTER SEQUENCE tsup."COURSE_NON_PARTICIPANT_ID_seq"
     OWNER TO postgres;
     
+-- DROP SEQUENCE tsup."CERTIFICATE_ID_seq";
+
+CREATE SEQUENCE tsup."CERTIFICATE_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE tsup."CERTIFICATE_ID_seq"
+    OWNER TO postgres;
+    
 -- DROP SEQUENCE tsup."COURSE_ATTENDANCE_ID_seq";
 
 CREATE SEQUENCE tsup."COURSE_ATTENDANCE_ID_seq"
@@ -178,6 +190,53 @@ TABLESPACE pg_default;
 ALTER TABLE tsup.EMPLOYEE_AUTH
     OWNER to postgres;
     
+-- Table: tsup.COURSE_CATEGORY
+
+--DROP TABLE tsup.COURSE_CATEGORY;
+
+CREATE TABLE tsup.COURSE_CATEGORY
+(
+    ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_CATEGORY_ID_seq"'::regclass),
+    CATEGORY character varying(100) COLLATE pg_catalog."default",
+    DETAIL character varying(200) COLLATE pg_catalog."default",
+    CONSTRAINT "COURSE_CATEGORY_pkey" PRIMARY KEY (ID),
+    CONSTRAINT "COURSE_CATEGORY_unique" UNIQUE (CATEGORY)
+)
+WITH (
+    OIDS = FALSE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE tsup.COURSE_CATEGORY
+    OWNER to postgres;
+
+CREATE SEQUENCE tsup."MEMBER_ROLEID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE tsup.MEMBER_ROLE
+(
+    id bigint NOT NULL DEFAULT nextval('tsup."MEMBER_ROLEID_seq"'::regclass),
+    role_type character varying(40),
+    role_desc character varying(120),
+    deleted_at timestamp,
+    PRIMARY KEY (id)
+
+)
+WITH (
+    OIDS = FALSE
+)
+
+
+TABLESPACE pg_default;
+
+ALTER TABLE tsup.MEMBER_ROLE
+    OWNER to postgres;    
+    
         
 -- Table: tsup.EMPLOYEE
 
@@ -192,12 +251,14 @@ CREATE TABLE tsup.EMPLOYEE
     email_address character varying(50) COLLATE pg_catalog."default" NOT NULL,
     username character varying(50) COLLATE pg_catalog."default" NOT NULL,
     department_id bigint NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
+    member_role_id bigint NOT NULL DEFAULT nextval('tsup."MEMBER_ROLEID_seq"'::regclass),
     employment_date date NOT NULL,
     CONSTRAINT "EMPLOYEE_pkey" PRIMARY KEY (id),
     CONSTRAINT "EMAIL_ADDRESS_unique" UNIQUE (email_address),
     CONSTRAINT "NUMBER_unique" UNIQUE ("number"),
     CONSTRAINT "USER_NAME_unique" UNIQUE (username),
-    CONSTRAINT "DEPARTMENT_ID_fkey" FOREIGN KEY (department_id) REFERENCES tsup.department (id) MATCH SIMPLE 
+    CONSTRAINT "DEPARTMENT_ID_fkey" FOREIGN KEY (department_id) REFERENCES tsup.department (id) MATCH SIMPLE, 
+    CONSTRAINT "MEMBER_ROLE_ID_fkey" FOREIGN KEY (member_role_id) REFERENCES tsup.member_role (id) MATCH SIMPLE 
 )
 WITH (
     OIDS = FALSE
@@ -216,8 +277,10 @@ CREATE TABLE tsup.COURSE
     ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_ID_seq"'::regclass),
     NAME character varying(100) COLLATE pg_catalog."default",
     DETAIL character varying(200) COLLATE pg_catalog."default",
+    course_category_id bigint NOT NULL DEFAULT nextval('tsup."COURSE_CATEGORY_ID_seq"'::regclass),
     CONSTRAINT "COURSE_pkey" PRIMARY KEY (ID),
-    CONSTRAINT "COURSE_NAME_unique" UNIQUE (NAME)
+    CONSTRAINT "COURSE_NAME_unique" UNIQUE (NAME),
+    CONSTRAINT "COURSE_CATEGORY_ID_fkey" FOREIGN KEY (course_category_id) REFERENCES tsup.COURSE_CATEGORY (id) MATCH SIMPLE
 )
 WITH (
     OIDS = FALSE
@@ -227,6 +290,10 @@ TABLESPACE pg_default;
 ALTER TABLE tsup.COURSE
     OWNER to postgres;
     
+ALTER TABLE tsup.COURSE
+	ADD COLUMN MANDATORY character varying(5) COLLATE pg_catalog."default",
+	ADD COLUMN DEADLINE character varying(30) COLLATE pg_catalog."default";
+
 -- Table: tsup.VENUE
 
 --DROP TABLE tsup.VENUE;
@@ -363,19 +430,18 @@ TABLESPACE pg_default;
 
 ALTER TABLE tsup.COURSE_ATTENDANCE
     OWNER to postgres;
-<<<<<<< src/main/resources/sql/schema-postgres.sql
-    
--- Table: tsup.COURSE_CATEGORY
 
---DROP TABLE tsup.COURSE_CATEGORY;
-
-CREATE TABLE tsup.COURSE_CATEGORY
+CREATE TABLE tsup.CERTIFICATE_UPLOAD
 (
-    ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_CATEGORY_ID_seq"'::regclass),
-    CATEGORY character varying(100) COLLATE pg_catalog."default",
-    DETAIL character varying(200) COLLATE pg_catalog."default",
-    CONSTRAINT "COURSE_CATEGORY_pkey" PRIMARY KEY (ID),
-    CONSTRAINT "COURSE_CATEGORY_unique" UNIQUE (CATEGORY)
+    ID bigint NOT NULL DEFAULT nextval('tsup."CERTIFICATE_ID_seq"'::regclass),
+	EMPLOYEE_ID bigint NOT NULL DEFAULT nextval('tsup."EMPLOYEE_ID_seq"'::regclass),
+	COURSE_ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_ID_seq"'::regclass),
+	CERTIFICATE character varying(200) COLLATE pg_catalog."default",
+	UPLOAD_DATE timestamp with time zone NOT NULL,
+	fileDownloadUri character varying(200) COLLATE pg_catalog."default",
+    CONSTRAINT "CERTIFICATE_pkey" PRIMARY KEY (ID),
+	CONSTRAINT "COURSE_ID_fkey" FOREIGN KEY (COURSE_ID) REFERENCES tsup.COURSE(ID) MATCH SIMPLE ON DELETE CASCADE,
+	CONSTRAINT "EMPLOYEE_ID_fkey" FOREIGN KEY (EMPLOYEE_ID) REFERENCES tsup.EMPLOYEE(ID) MATCH SIMPLE ON DELETE CASCADE
 )
 WITH (
     OIDS = FALSE
@@ -383,32 +449,5 @@ WITH (
 
 TABLESPACE pg_default;
 
-ALTER TABLE tsup.COURSE_CATEGORY
+ALTER TABLE tsup.CERTIFICATE_UPLOAD
     OWNER to postgres;
-
-CREATE SEQUENCE tsup."MEMBER_ROLEID_seq"
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-CREATE TABLE tsup.MEMBER_ROLE
-(
-    id bigint NOT NULL DEFAULT nextval('tsup."MEMBER_ROLEID_seq"'::regclass),
-    role_type character varying(40),
-    role_desc character varying(120),
-    deleted_at timestamp,
-    PRIMARY KEY (id)
-
-)
-WITH (
-    OIDS = FALSE
-)
-
-
-TABLESPACE pg_default;
-
-ALTER TABLE tsup.MEMBER_ROLE
-    OWNER to postgres;    
-
