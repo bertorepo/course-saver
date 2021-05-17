@@ -234,14 +234,10 @@ hr {
 				<th style="width: 35%">Total Number of JDU Members Last Week</th>
 				<th style="width: 35%">Total Number of Original Members</th>
 				<th style="width: 35%">Total Number of New Members</th>
-				<th style="width: 35%">Total Number of JDU Members Who Finished
-					the Training</th>
-				<th style="width: 35%">Total Number of JDU Members Last Week
-					Who Finished the Training</th>
-				<th style="width: 35%">Percentage Finished as of Today(Total
-					Members and also Total Courses)</th>
-				<th style="width: 35%">Percentage Finished as of Last
-					Week(Total Members and also Total Courses)</th>
+				<th style="width: 35%">Total Number of JDU Members Who Finished the Training</th>
+				<th style="width: 35%">Total Number of JDU Members Last Week Who Finished the Training</th>
+				<th style="width: 35%">Percentage Finished as of Today(Total Members and also Total Courses)</th>
+				<th style="width: 35%">Percentage Finished as of Last Week(Total Members and also Total Courses)</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -430,7 +426,7 @@ hr {
 				document.getElementById("hStartDateTime").value = hSDate;
 				document.getElementById("hEndDateTime").value = hEDate;
 
-				document.getElementById("inputCourse").value = hCourse;
+				document.getElementById("inputCourse").value = decodeURIComponent(hCourse);
 
 				var course = myTrim(document.getElementById("inputCourse").value);
 				if (course.length == 0) {

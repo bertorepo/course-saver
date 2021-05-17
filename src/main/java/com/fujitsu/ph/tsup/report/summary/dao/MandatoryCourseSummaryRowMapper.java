@@ -1,11 +1,11 @@
-package com.fujitsu.ph.tsup.reports.summary.dao;
+package com.fujitsu.ph.tsup.report.summary.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.fujitsu.ph.tsup.reports.summary.model.MandatoryCoursesForm;
+import com.fujitsu.ph.tsup.report.summary.model.MandatoryCoursesForm;
 
 public class MandatoryCourseSummaryRowMapper implements RowMapper<MandatoryCoursesForm> {
 
