@@ -42,7 +42,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     @Override
     public Course findCourseById(Long id) {
 
-        String query = "SELECT id,name,detail,mandatory,deadline FROM COURSE WHERE ID =" + id;
+    	String query = "SELECT id,name,detail,mandatory,deadline,course_category_id FROM COURSE WHERE ID =" + id;
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
