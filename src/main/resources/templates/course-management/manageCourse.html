@@ -9,6 +9,7 @@
 <!-- 0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version -->
 <!-- 0.02    | 2021/04/19 | WS) st.diaz           | Updated -->
 <!-- 0.03    | 2021/04/21 | WS) i.fajardo         | Updated -->
+<!-- 0.04    | 2021/05/24 | WS) mi.aguinldo         | Added Course Category column; Added Update button and its modal  -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE HTML>
@@ -21,7 +22,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="description" content="" />
 	<meta name="author" content="" />
-	<title>Delete Course</title>
+	<title>Manage Course</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
@@ -97,6 +98,80 @@
 		</form>
 		<!-- </form> -->
 	</div>
+	
+	
+	<div class="modal fade" id="infoModalForUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+
+		<form id="infoModalFormId" th:action="@{/courses/__${courseIdInput}__/delete}" method="get">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"><i class="fa fa-pencil"></i> Update Course</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h5>Course Information</h5>
+						<div class="form-group row">
+						<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput"></input>
+    						<label for="inputEmail3" class="col-sm-2 col-form-label">Course Name:</label>
+    						<div class="col-sm-10">
+     	 						<input class="form-control" id="updateCourseName" name="updateCourseName" type="text">
+    						</div>
+ 						</div>
+ 						<div class="form-group row">
+						<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput"></input>
+    						<label for="inputEmail3" class="col-sm-2 col-form-label">Course Category:</label>
+    						<div class="col-sm-10">
+     	 						<select class="form-control" id="exampleFormControlSelect1">
+      								<option>Programming Best Practices</option>
+      								<option>2</option>
+      								<option>3</option>
+      								<option>4</option>
+      								<option>5</option>
+    							</select>
+    						</div>
+ 						</div>
+ 						<div class="form-group row">
+    						<label for="inputEmail3" class="col-sm-2 col-form-label">Detail:</label>
+    						<div class="col-sm-10">
+     	 						<textarea class="form-control" id="updateCourseDetail" name="updateCourseDetail"></textarea>
+    						</div>
+ 						</div>
+						 <div class="form-group row">
+						    <label for="inputEmail3" class="col-sm-2 col-form-label">Mandatory:</label>
+    						<div class="col-sm-10">
+     	 						<select class="form-control" id="updateMandatory" name="updateMandatory">
+      								<option>Yes</option>
+      								<option>No</option>
+    							</select>
+    						</div>
+						  </div>
+ 						<div class="form-group row">
+    						<label for="inputUpdateDeadline" class="col-sm-2 col-form-label">Deadline:</label>
+    						<div class="col-sm-10">
+     	 						<!-- <input class="form-control" id="updateDeadline" name="updateDeadline" type="text"> -->
+     	 						<select class="form-control" id="updateDeadline" name="updateDeadline" disabled="true">
+      								<option>Immediate</option>
+      								<option>2</option>
+      								<option>3</option>
+      								<option>4</option>
+      								<option>5</option>
+    							</select>
+    						</div>
+ 						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger" href="#confirmModal">Update</button>
+						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- </form> -->
+	</div>
 
 	<!-- Info modal End-->
 
@@ -123,53 +198,62 @@
 
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
 			<h3>
-				<i class="fa fa-calendar-o"></i> Search Course Name
+				<i class="fa fa-book"></i> Manage Course
 			</h3>
 			<hr>
 			<div class="card">
 				<div class="card-body">
+					<h5>
+						<i class="fa fa-search"></i> Search Course Name
+					</h5>
+					<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Search:</label>
 						<div class="col-lg-3">
 							<input type="Text" class="form-control" name="searchCourseName" 
-								id="searchCourseName">
+								id="searchCourseName" maxlength="100" tabindex="1">
 						</div>
-					</div>
-					<div class="float-right">
+						<div class="float-right">
 						<input type="submit" class="btn btn-success" value="Submit">
 					</div>
+					</div>
+					</form>
 				</div>
 			</div>
-		</form>
 
 		<div class="card mb-5">
 			<div class="card-header">
 				<h3>
-					<i class="fa fa-exclamation-triangle"></i> Delete Courses
+					<i class="fa fa-list-alt"></i> List Of Courses
 				</h3>
 			</div>
 			<div class="card-body">
 				<div style="overflow-x: auto; display: block; white-space: nowrap;">
 					<table class="table table-bordered text-center">
 						<thead>
+							<th style="width: 15%;">Action</th>
 							<th style="width: 20%;">Course Name</th>
+							<th style="width: 20%;">Course Category</th>
 							<th>Detail</th>
 							<th style="width: 10%;">Mandatory</th>
 							<th style="width: 15%;">Deadline</th>
-							<th style="width: 15%;">Action</th>
 						</thead>
 						<tbody th:each="course : *{courseList}">
 							<tr>
-								<td th:text="${course.name}"></td>
-								<td th:text="${course.detail}">Sample2</td>
-								<td th:text="${course.isMandatory}">Yes/No</td>
-								<td th:text="${course.deadline}">Sample2</td>
-								<td><input type="submit" value="Delete" class="btn btn-danger"
+								<td>
+								<input type="submit" value="Update" class="btn btn-success" 
+										th:attr="onclick=|updateButton('${course.id}','${course.name}',
+										'${course.detail}','${course.isMandatory}','${course.deadline}')|">
+								<input type="submit" value="Delete" class="btn btn-danger"
 										th:attr="onclick=|deleteButton('${course.id}','${course.name}',
 										'${course.detail}','${course.isMandatory}','${course.deadline}')|">									
 								</td>
+								<td th:text="${course.name}"></td>
+								<td th:text="${course.courseCategory.category}"></td>
+								<td th:text="${course.detail}">Sample2</td>
+								<td th:text="${course.isMandatory}">Yes/No</td>
+								<td th:text="${course.deadline}">Sample2</td>
 							</tr>
 						</tbody>
 					</table>
@@ -193,6 +277,18 @@
 			document.getElementById("courseDetail").innerHTML = detail;
 
 			$('#infoModal').modal('show');
+
+		}
+		
+		function updateButton(id, courseName, detail, mandatory, deadline) {
+
+			document.getElementById("updateCourseIdInput").value = id;
+			document.getElementById("updateCourseName").value = courseName;
+			document.getElementById("updateCourseDetail").value = detail;
+			document.getElementById("updateMandatory").value = mandatory;
+			document.getElementById("updateDeadline").value = deadline;
+			
+			$('#infoModalForUpdate').modal('show');
 
 		}
 	</script>
