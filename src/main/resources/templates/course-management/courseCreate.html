@@ -67,7 +67,7 @@
 							 			th:value="${courseCategory.category}"
 							 			th:selected="${courseCategory.id}"></option>
 							</datalist>
-							<input type="hidden" th:id="course_category_id" name="course_category_id"  />
+							<input type="hidden" th:id="courseCategoryId" name="courseCategoryId"  />
 						</div>
 					</div>
 					<div class="form-group row">
@@ -293,14 +293,14 @@
 				
 				var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
 				
-				document.getElementById("course_category_id").value = courseId;
+				document.getElementById("courseCategoryId").value = courseId;
 			} else {
 				document.getElementById(id).placeholder = holder;
 				document.getElementById(id).value = '';
 				
 				var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
 				
-				document.getElementById("course_category_id").value = courseId;
+				document.getElementById("courseCategoryId").value = courseId;
 			}
 		}
 
@@ -314,12 +314,12 @@
 				
 				var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
 				
-				document.getElementById("course_category_id").value = courseId;
+				document.getElementById("courseCategoryId").value = courseId;
 				
 			} else {
 				var courseId = $('#courseCategory [value="'+ courseName +'"]').data('value');
 				
-				document.getElementById("course_category_id").value = courseId;
+				document.getElementById("courseCategoryId").value = courseId;
 			}
 		}	
 	</script>
