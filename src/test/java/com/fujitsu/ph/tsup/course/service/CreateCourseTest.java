@@ -2,19 +2,17 @@ package com.fujitsu.ph.tsup.course.service;
 
 
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -88,7 +86,7 @@ public class CreateCourseTest {
         assertEquals(course.getDetail(), "New Data Detail");
         assertEquals(course.getIsMandatory(), "Yes");
         assertEquals(course.getDeadline(), "Immediate");
-		assertEquals(course.getCourse_category_id(), 3);
+		assertEquals(course.getCourseCategoryId(), 3);
     }
     
     /**
@@ -118,7 +116,12 @@ public class CreateCourseTest {
      * <pre>
      */
     private Course createCourse() {
-
-    	return new Course.Builder("New Data", "New Data Detail", "Yes", "Immediate",3).build();
+	return Course.builder()
+		     .withName("New Data")
+		     .withDeadline("New Data Detail")
+		     .withIsMandatory("Yes")
+		     .withDeadline("Immediate")
+		     .withCourseCategoryId(3L)
+		     .build();
     }
 }

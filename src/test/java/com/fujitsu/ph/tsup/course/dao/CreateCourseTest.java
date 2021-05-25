@@ -27,9 +27,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.test.annotation.Rollback;
 
 import com.fujitsu.ph.tsup.course.model.Course;
@@ -76,7 +76,7 @@ class CreateCourseTest {
 		assertEquals(course.getDetail(), "Details");
 		assertEquals(course.getIsMandatory(), "Yes");
 		assertEquals(course.getDeadline(), "Monthly");
-		assertEquals(course.getCourse_category_id(), 4);
+		assertEquals(course.getCourseCategoryId(), 4);
 		
 	}
 	
@@ -96,7 +96,7 @@ class CreateCourseTest {
 		assertEquals(course.getDetail(), "Details");
 		assertEquals(course.getIsMandatory(), "No");
 		assertEquals(course.getDeadline(), "-");
-		assertEquals(course.getCourse_category_id(), 3);
+		assertEquals(course.getCourseCategoryId(), 3);
 	}
 
 
@@ -106,10 +106,21 @@ class CreateCourseTest {
      * <pre>
      */
 	private Course createCourseOne() {
-		return new Course.Builder("Javascript", "Details", "Yes", "Monthly",3).build();
+	    return Course.builder()
+			 .withName("JavaScript")
+			 .withDeadline("Details")
+			 .withIsMandatory("Yes")
+			 .withCourseCategoryId(3L)
+			 .build();
 	}
 	
 	private Course createCourseTwo() {
-		return new Course.Builder("Python", "Details", "No", "-",4).build();
+	    return Course.builder()
+			 .withName("Python")
+			 .withDetail("Details")
+			 .withIsMandatory("No")
+			 .withDeadline("-")
+			 .withCourseCategoryId(4L)
+			 .build();
 	}
 }
