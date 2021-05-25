@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
 import com.fujitsu.ph.tsup.course.model.Course;
-import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -124,4 +123,16 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     public Set<Course> loadAllCourse() {
         return courseManagementDao.loadAllCourse();
     }
+
+    @Override
+    public void updateCourse(Course course) {
+	
+	try {
+	    courseManagementDao.updateCourse(course);
+	} catch (DataAccessException ex) {
+	    throw new IllegalArgumentException("Can't update course");
+	}
+	
+    }
+    
 }

@@ -3,15 +3,19 @@
  */
 package com.fujitsu.ph.tsup.course.web;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +44,8 @@ import com.fujitsu.ph.tsup.course.service.CourseManagementService;
 @Controller
 @RequestMapping("/courses")
 public class CourseManagementController {
-
+    private static Logger LOGGER = LoggerFactory.getLogger(CourseManagementController.class);
+    
     // Course Management Service class
     @Autowired
     CourseManagementService courseManagementService;
@@ -53,13 +58,51 @@ public class CourseManagementController {
 
         Set<Course> course = courseManagementService.findAllCourses();
 
-        List<Course> listOfCourse = course.stream()
-                .collect(Collectors.toList());
-
+	List<Course> listOfCourse = course.stream()
+					  .sorted(Comparator.comparing(Course::getName))
+					  .collect(Collectors.toList());
+        
         model.addAttribute("courseList", listOfCourse);
+        
+	List<CourseCategory> courseCategoryList = courseCategoryManagementService.findAllCourseCategory()
+										 .stream()
+										 .collect(Collectors.toList());
+    	model.addAttribute("courseCategory",courseCategoryList);
+        
+        model.addAttribute("course", new CourseForm());
 
         return "course-management/manageCourse";
 
+    }
+
+    @GetMapping("/update")
+    public String showUpdateCourseForm(@ModelAttribute CourseForm course,
+	    RedirectAttributes redirectAttributes) {
+	if (course.getDeadline().equals("Nan")) {
+	    course.setDeadline("-");
+	}
+
+	redirectAttributes.addFlashAttribute("updateCourse", course);
+
+	return "redirect:/courses/load#updateConfirmModal";
+    }
+    
+    @PostMapping("/update")
+    public String updateCourseForm(@ModelAttribute CourseForm courseForUpdate, RedirectAttributes redirectAttributes) {
+	Course updatedCourse = Course.builder()
+				     .withId(courseForUpdate.getId())
+				     .withCourseCategoryId(courseForUpdate.getCourseCategoryId())
+				     .withName(courseForUpdate.getName())
+				     .withDetail(courseForUpdate.getDetail())
+				     .withIsMandatory(courseForUpdate.getIsMandatory())
+				     .withDeadline(courseForUpdate.getDeadline())
+				     .build();
+
+	courseManagementService.updateCourse(updatedCourse);
+        redirectAttributes.addFlashAttribute("deleteSuccessMessage",
+                "You have successfully update this course "+ courseForUpdate.getName());
+	
+	return "redirect:/courses/load#successModal";
     }
 
     /**
@@ -127,15 +170,15 @@ public class CourseManagementController {
     	}
     	
     	try {
-    		Set<Course> course = courseManagementService.findCoursesByName(searchName);
-    	
-    		List<Course> listOfCourse = course.stream()
-                .collect(Collectors.toList());
-    	
-    		model.addAttribute("courseList", listOfCourse);
-    	}catch (NullPointerException e) {
-    		return "course-management/manageCourse";
-		}
+	    List<Course> listOfCourse = courseManagementService.findCoursesByName(searchName)
+							       .stream()
+							       .collect(Collectors.toList());
+	    
+	    model.addAttribute("courseList", listOfCourse);
+	    model.addAttribute("course", new CourseForm());
+	} catch (NullPointerException e) {
+	    return "course-management/manageCourse";
+	}
     	
     	return "course-management/manageCourse";
     }
@@ -189,13 +232,22 @@ public class CourseManagementController {
 	        for(Course courseContains : courseList)	{
 	        	 
 	        	if(courseContains.getName().equals(form.getName()) && 
-	        		courseContains.getCourse_category_id() == form.getCourse_category_id()) {
+	        		courseContains.getCourseCategoryId() == form.getCourseCategoryId()) {
 	        		redirectAttributes.addFlashAttribute("ErrorModal", 1);
 	        		return "redirect:/courses/create";
 	        	}
 	        }
 	        //proceed with creating course
-    		Course courseDetails = new Course.Builder(cName.trim(),form.getDetail(),form.getIsMandatory(),form.getDeadline(),form.getCourse_category_id()).build();
+//    		Course courseDetails = new Course.Builder(cName.trim(),form.getDetail(),form.getIsMandatory(),form.getDeadline(),form.getCourse_category_id()).build();
+		Course courseDetails = Course.builder()
+			     .withName(cName.trim())
+					     .withDetail(form.getDetail())
+					     .withIsMandatory(form.getIsMandatory())
+					     .withDeadline(form.getDeadline())
+					     .withCourseCategoryId(form.getCourseCategoryId())
+					     .build();
+		
+		
     		courseManagementService.createCourse(courseDetails);
     		redirectAttributes.addFlashAttribute("ErrorModal", 2);
 

@@ -6,7 +6,6 @@ package com.fujitsu.ph.tsup.course.dao;
 import java.util.Set;
 
 import com.fujitsu.ph.tsup.course.model.Course;
-import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -39,6 +38,8 @@ public interface CourseManagementDao {
     
     // Method for creating courses
     void createCourse(Course course);
+    
+    void updateCourse(Course course);
     
 	// Method for loading all Course in Course View
     Set<Course> loadAllCourse();

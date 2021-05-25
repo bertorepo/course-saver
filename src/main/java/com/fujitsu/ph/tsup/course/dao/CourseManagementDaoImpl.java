@@ -14,8 +14,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.fujitsu.ph.tsup.course.model.Course;
-import com.fujitsu.ph.tsup.roletype.dao.RoleTypeRowMapper;
-import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -68,7 +66,11 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     @Override
     public Set<Course> findAllCourses() {
 
-        String query = "SELECT * FROM COURSE";
+//        String query = "SELECT * FROM COURSE";
+	String query = "SELECT * " + 
+		       "FROM course CE " +
+		       "LEFT JOIN course_category CC " +
+		       "ON CE.course_category_id = CC.id ";
 
         List<Course> courseList = template.query(query, new CourseRowMapper());
         Set<Course> courses = new LinkedHashSet<>(courseList);
@@ -79,7 +81,12 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     @Override
     public Set<Course> findCoursesByName(String name) {
     	
-    	String query = "SELECT * FROM COURSE WHERE LOWER(name) LIKE LOWER('%"+ name +"%')";
+//    	String query = "SELECT * FROM COURSE WHERE LOWER(name) LIKE LOWER('%"+ name +"%')";
+	String query = "SELECT * " + 
+		       "FROM course CE " +
+		       "LEFT JOIN course_category CC " +
+		       "ON CE.course_category_id = CC.id "+
+		       "WHERE LOWER(name) LIKE LOWER('%" + name +"%')";
     	
     	SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("name", name);
     	
@@ -101,7 +108,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     			.addValue("detail", course.getDetail())
     			.addValue("mandatory", course.getIsMandatory())
     			.addValue("deadline", course.getDeadline())
-    			.addValue("course_category_id", course.getCourse_category_id());
+    			.addValue("course_category_id", course.getCourseCategoryId());
     	
     	template.update(query, sqlParameterSource);
     	
@@ -118,6 +125,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     public Set<Course> findIfCourseNameExists(String name, Long id) {
         String query = "SELECT * FROM COURSE WHERE LOWER(name) LIKE LOWER('" + name
                 + "') AND id NOT IN (" + id + ")";
+		
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("name", name);
         List<Course> courseList = template.query(query, sqlParameterSource, new CourseRowMapper());
         Set<Course> course = new LinkedHashSet<>(courseList);
@@ -137,6 +145,29 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
         Set<Course> course = new LinkedHashSet<>(courseList);
 
         return course;
+    }
+
+    @Override
+    public void updateCourse(Course course) {
+	String query = "INSERT INTO course"
+			+ " (id,name, detail,mandatory,deadline,course_category_id)"
+			+ " VALUES(:id, :name, :detail, :mandatory, :deadline,:course_category_id)"
+			+ " ON CONFLICT (id)"
+			+ " DO UPDATE"
+			+ " SET name = EXCLUDED.name, detail = EXCLUDED.detail,"
+			+ " mandatory = EXCLUDED.mandatory, deadline = EXCLUDED.deadline,"
+			+ " course_category_id = EXCLUDED.course_category_id";
+	
+	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+			.addValue("id", course.getId())
+			.addValue("name", course.getName())
+			.addValue("detail", course.getDetail())
+			.addValue("mandatory", course.getIsMandatory())
+			.addValue("deadline", course.getDeadline())
+			.addValue("course_category_id", course.getCourseCategoryId());
+	
+	template.update(query, sqlParameterSource);
+	
     }
 
 }
