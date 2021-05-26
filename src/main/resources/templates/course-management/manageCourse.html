@@ -80,7 +80,7 @@
 					<input type="hidden" th:value="${updateCourse != null ? updateCourse.courseCategoryId: course.courseCategoryId}" th:name="courseCategoryId" th:id="courseCategoryId">
 						<button type="submit" class="btn btn-danger">Confirm Update</button>					
 					</form>
-					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+					<button type="submit" class="btn btn-primary" data-dismiss="modal" href="#">Back</button>
 				</div>
 
 			</div>
@@ -146,31 +146,38 @@
 						<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput" th:field="*{id}">
     						<label for="inputEmail3" class="col-sm-2 col-form-label">Course Name:</label>
     						<div class="col-sm-10">
-     	 						<input class="form-control" id="updateCourseName" name="updateCourseName" type="text" th:field="*{name}">
+     	 						<input class="form-control needs-validation" id="updateCourseName" name="updateCourseName" type="text" th:field="*{name}" required>
+								<div class="invalid-feedback">
+									Please Enter A Course Name.
+								</div>
     						</div>
  						</div>
  						<div class="form-group row">
 						<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput"></input>
     						<label for="inputEmail3" class="col-sm-2 col-form-label">Course Category:</label>
     						<div class="col-sm-10">
-     	 						<select class="form-control" id="updateCourseCategorty" name="updateCourseCategorty"  th:field="*{courseCategoryId}">
+     	 						<select class="form-control" id="updateCourseCategorty" name="updateCourseCategorty"  th:field="*{courseCategoryId}" required>
       								<option th:each="courseCategory : ${courseCategory}"
 							 			th:attr="data-value = ${courseCategory.id}"
 							 			th:value="${courseCategory.id}"
-							 			th:text="${courseCategory.category}"></option>
+							 			th:text="${courseCategory.category}">
+							 		</option>
     							</select>
     						</div>
  						</div>
  						<div class="form-group row">
     						<label for="inputEmail3" class="col-sm-2 col-form-label">Detail:</label>
     						<div class="col-sm-10">
-     	 						<textarea class="form-control" id="updateCourseDetail" name="updateCourseDetail" th:field="*{detail}"></textarea>
+     	 						<textarea class="form-control needs-validation" id="updateCourseDetail" name="updateCourseDetail" th:field="*{detail}" required></textarea>
+     	 						<div class="invalid-feedback">
+									Please Enter A Detail.
+								</div>
     						</div>
  						</div>
 						 <div class="form-group row">
 						    <label for="inputEmail3" class="col-sm-2 col-form-label">Mandatory:</label>
     						<div class="col-sm-10">
-     	 						<select class="form-control" id="updateMandatory" name="updateMandatory" th:field="*{isMandatory}">
+     	 						<select class="form-control" id="updateMandatory" name="updateMandatory" onchange="enableOrDisableDeadline()" th:field="*{isMandatory}">
       								<option th:value="Yes" th:text="Yes"></option>
       								<option th:value="No" th:text="No"></option>
     							</select>
@@ -179,8 +186,8 @@
  						<div class="form-group row">
     						<label for="inputUpdateDeadline" class="col-sm-2 col-form-label">Deadline:</label>
     						<div class="col-sm-10">
-     	 						<select class="form-control" id="updateDeadline" name="updateDeadline" th:field="*{deadline}" >
-      								<option th:value="Nan">-</option>
+     	 						<select class="form-control  update-mandatory" id="updateDeadline" name="updateDeadline" th:field="*{deadline}" >
+      								<option id="nan" th:value="Nan">-</option>
 									<option th:value="Immediate" th:text="Immediate"></option>
 									<option th:value="Monthly" th:text="Monthly"></option>
 									<option th:value="Quarterly" th:text="Quarterly"></option>
@@ -190,7 +197,7 @@
  						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-danger" href="#confirmModal">Update</button>
+						<button type="submit" class="btn btn-danger update-button" href="#confirmModal">Update</button>
 						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
 					</div>
 				</div>
@@ -309,17 +316,27 @@
 		function updateButton(id, courseName, detail, mandatory, deadline, courseCategortyId) {
 			if(deadline === "-"){
 				deadline = "Nan";
+				$(".update-mandatory").prop('disabled', true);
 			}
 			document.getElementById("updateCourseIdInput").value = id;
 			document.getElementById("updateCourseName").value = courseName;
 			document.getElementById("updateCourseDetail").value = detail;
 			document.getElementById("updateMandatory").value = mandatory;
 			document.getElementById("updateDeadline").value = deadline;
-			document.getElementById("updateCourseCategorty").value = courseCategortyId;
-			
+			document.getElementById("updateCourseCategorty").value = courseCategortyId;	
 			
 			$('#infoModalForUpdate').modal('show');
-
+		}
+		
+		function enableOrDisableDeadline(){
+			var mandatory = document.getElementById("updateMandatory").value;
+			
+			if(mandatory === "No"){
+				$(".update-mandatory").prop('disabled', true);
+				document.getElementById("updateDeadline").value = "Nan";
+			} else {
+				$(".update-mandatory").prop('disabled', false);
+			}
 		}
 	</script>
 
@@ -342,6 +359,43 @@
 			}
 
 		});
+		
+		
+		
+		$('#updateConfirmModal').on('hidden.bs.modal', function () {
+			window.location = "/courses/load";
+		});
+		
+		$('#infoModalForUpdate').on('hidden.bs.modal', function () {
+			location.reload();
+		})
+
+		//Update validation
+		$(document).ready((function () {
+				'use strict';
+				window.addEventListener('load', function () {
+					// fetch all the forms we want to apply custom style
+					var inputs = document.getElementsByClassName('needs-validation')
+					console.log(inputs)
+					// loop over each input and watch blue event
+					var validation = Array.prototype.filter.call(inputs, function (input) {
+
+						input.addEventListener('blur', function (event) {
+							// reset
+							input.classList.remove('is-invalid')
+							input.classList.remove('is-valid')
+
+							if (input.checkValidity() === false) {
+								input.classList.add('is-invalid')
+								$(".update-button").prop('disabled', true);
+							}
+							else {
+								$(".update-button").prop('disabled', false);
+							}
+						}, false);
+					});
+				}, false);
+			}));
 		
 	</script>
 
