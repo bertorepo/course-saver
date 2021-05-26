@@ -53,9 +53,6 @@ public class CourseRowMapper implements RowMapper<Course> {
 			 .withCourseCategory(courseCategory)
 			 .build();
 	}
-
-//        Course course = new Course.Builder(id, name).detail(detail).mandatory(isMandatory, deadline).categoryId(CourseCategoryId).build();
-
 	return coursBuilder.build();
     }
 

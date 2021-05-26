@@ -242,7 +242,6 @@ public class CourseManagementController {
 	        	}
 	        }
 	        //proceed with creating course
-//    		Course courseDetails = new Course.Builder(cName.trim(),form.getDetail(),form.getIsMandatory(),form.getDeadline(),form.getCourse_category_id()).build();
 		Course courseDetails = Course.builder()
 			     .withName(cName.trim())
 					     .withDetail(form.getDetail())
