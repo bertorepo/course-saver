@@ -3,8 +3,11 @@
  */
 package com.fujitsu.ph.tsup.course.web;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -78,7 +81,7 @@ public class CourseManagementController {
     @GetMapping("/update")
     public String showUpdateCourseForm(@ModelAttribute CourseForm course,
 	    RedirectAttributes redirectAttributes) {
-	if (course.getDeadline().equals("Nan")) {
+	if (Objects.isNull(course.getDeadline()) || course.getDeadline().equals("Nan")) {
 	    course.setDeadline("-");
 	}
 
@@ -170,9 +173,10 @@ public class CourseManagementController {
     	}
     	
     	try {
-	    List<Course> listOfCourse = courseManagementService.findCoursesByName(searchName)
-							       .stream()
-							       .collect(Collectors.toList());
+	    List<Course> listOfCourse = Optional.ofNullable(courseManagementService.findCoursesByName(searchName))
+						.orElse(Collections.emptySet())
+						.stream()
+						.collect(Collectors.toList());
 	    
 	    model.addAttribute("courseList", listOfCourse);
 	    model.addAttribute("course", new CourseForm());
