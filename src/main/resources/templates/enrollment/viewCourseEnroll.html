@@ -40,12 +40,12 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">From Date</label>
+						<label class="col-lg-2 col-form-label align-middle">From Date</label>
 						<div class="col-lg-3">
 							<input type="datetime-local" class="form-control" id="fromDateTime">
 							<input type="hidden" class="form-control" name="fromDateTime" id="inputFromDateTime">
 						</div>
-						<label class="col-lg-2 col-form-label">To Date</label>
+						<label class="col-lg-2 col-form-label align-middle">To Date</label>
 						<div class="col-lg-3">
 							<input type="datetime-local" class="form-control" id="toDateTime" >
 							<div class="text-danger" id="toDateTime_error"></div>
@@ -78,8 +78,8 @@
 				<thead>
 					<tr>
 						<th class="align-middle hide">Course ID</th>
-						<th class="align-middle ">Action</th>
-						<th class="align-middle text-left">Course Name</th>
+						<th sec:authorize="hasAuthority('Member')" class="align-middle">Action</th>
+						<th class="align-middle ">Course Name</th>
 						<th class="align-middle ">Instructor</th>
 						<th class="align-middle ">Mandatory</th>
 						<th class="align-middle ">Deadline</th>
@@ -102,16 +102,22 @@
 									'${courseScheduleDetail.scheduledStartDateTime}','${courseScheduleDetail.scheduledEndDateTime}', '${courseSchedule.courseDetails}')|">
 									
 						<td class="hide" th:text="${courseScheduleId}"/>
-						<td sec:authorize="hasAuthority('Member')">
-							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
-									${courseSchedule.mandatory == 'false'}"
-									th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
-									'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
-									'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}', 
-									'${courseSchedule.courseDetails}')|" 
-									type="button" class="btn btn-success" >Register</button>	
+						<td class="align-middle" sec:authorize="hasAuthority('Member')">
+							<div class="tooltip-a">
+								<button th:disabled="${courseSchedule.totalParticipants} == ${courseSchedule.maxAllowed} or
+										${courseSchedule.mandatory == 'Yes'} or
+										${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}" 
+										th:attr="onclick=|registration('${courseScheduleId}','${courseSchedule.courseName}',
+										'${courseSchedule.instructorName}','${courseScheduleDetail.scheduledStartDateTime}',
+										'${courseScheduleDetail.scheduledEndDateTime}', '${courseScheduleDetail.id}', 
+										'${courseSchedule.courseDetails}')|" 
+										type="button" class="btn btn-success">Register</button>	
+								<span class="tooltiptext-a" th:if="${courseSchedule.mandatory == 'Yes'}">This course is mandatory</span>
+								<span class="tooltiptext-a" th:if="${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}">Registration ended</span>	
+								<span class="tooltiptext-a" th:if="${courseSchedule.totalParticipants} == ${courseSchedule.maxAllowed}">Course is full</span>					
+					    	</div>
 						</td>
-						<td class="align-middle text-left" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td class="align-middle" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
 						<td class="align-middle" th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/> 
 						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
 						<td class="hide" th:text="${courseSchedule.mandatory}"/>
@@ -128,10 +134,7 @@
 						<td class="hide" th:text="${courseSchedule.minRequired}"/>
 						<td class="hide" th:text="${courseSchedule.maxAllowed}"/>
 						<td class="hide" th:text="${courseSchedule.courseDetails}"></td>
-						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>
-	
-
-						
+						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"/>						
 					</tr>
 				</tbody>
 			</table>
@@ -197,11 +200,11 @@
 		</form>
 		
 		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
-			<h3><i class="fa fa-list"></i> List of All Available Course
-			<button id="cancelBelowMinimumbtn" class="btn btn-danger float-right"  >
+			<h3><i class="fa fa-list"></i> List of All Available Courses
+			<button id="cancelBelowMinimumbtn" class="btn btn-danger float-right" th:disabled="${#lists.isEmpty(activeCourseSchedule)}">
 				Cancel Below Minimum 
 			</button></h3>
-			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
+			<table id="data table 2" class="table table-bordered table-responsive text-center" style="width:100%" 
 			th:object="${activeCourseSchedule} ">
 				<colgroup >
 					<col style="width:20%"/>
@@ -214,11 +217,12 @@
 				<thead>
 					<tr>
 						<th class="align-middle hide">Course ID</th>
-						<th class="align-middle text-left">Course Name</th>
+						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
+						<th class="align-middle">Start Date/Time<br><hr> End Date/Time</th>
 						<th class="align-middle hide">Start Date Time</th>
 						<th class="align-middle hide">End Date Time</th>
-						<th class="align-middle">Duration(Hrs)</th>
+						<th class="align-middle hide">Duration(Hrs)</th>
 						<th class="align-middle">Venue</th>
 						<th class="align-middle">Minimum <br> Number of <br> Participants</th>
 						<th class="align-middle">Maximum <br> Number of <br> Participants</th>
@@ -230,31 +234,32 @@
 						th:with="courseScheduleDetail = ${courseSchedule.getCourseScheduleDetails()}">
 						
 						<td class="hide" th:text="${courseSchedule.getId()}"></td>
-						<td class="text-left" th:text="${courseSchedule.courseName}"></td>
-						<td th:text="${courseSchedule.instructorName}"></td>
+						<td class="align-middle" th:text="${courseSchedule.courseName}"></td>
+						<td class="align-middle" th:text="${courseSchedule.instructorName}"></td>
 						
+						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')} + '&lt;br /&gt; <hr>' + 
+						${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
 						<td class="hide" th:text="${courseScheduleDetail.scheduledStartDateTime}"></td>
 						<td class="hide" th:text="${courseScheduleDetail.scheduledEndDateTime}"></td>
-						<td th:text="${courseScheduleDetail.duration}"></td>
+						<td class="hide" th:text="${courseScheduleDetail.duration}"></td>
 						
-						<td th:text="${courseSchedule.venueName}"></td>
-						<td th:text="${courseSchedule.minRequired}"></td>
-						<td th:text="${courseSchedule.maxAllowed}"></td>
-						<td th:text="${courseSchedule.totalParticipants}"></td>
+						<td class="align-middle" th:text="${courseSchedule.venueName}"></td>
+						<td class="align-middle" th:text="${courseSchedule.minRequired}"></td>
+						<td class="align-middle" th:text="${courseSchedule.maxAllowed}"></td>
+						<td class="align-middle" th:text="${courseSchedule.totalParticipants}"></td>
 					</tr>
 				</tbody>
 			</table>
-<!-- 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}"> -->
-<!-- 				<div class="alert alert-dismissible alert-danger text-center"> -->
-<!-- 					<strong th:text="${nullMessage}"></strong>  -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-			
+ 			<div th:if="${#lists.isEmpty(activeCourseSchedule)}">
+ 				<div class="alert alert-dismissible alert-danger text-center">
+ 					<strong th:text="${nullMessage}"></strong> 
+ 				</div>
+ 			</div>			
 		</div>
 		
 		<!-- CANCELATION & RESCHEDULE -->
 		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5" >
-			<h3><i class="fa fa-list"></i>List of Available Course by <span id="listNames"> Months/Quarter</span>
+			<h3><i class="fa fa-list"></i>List of Available Courses by <span id="listNames"> Months/Quarter</span>
 			<div class="col-lg-2 float-right">
 				<select class="form-control"  id="dropDown">
 					<option value="month">Month</option>
@@ -273,15 +278,14 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="align-middle hide">Course ID</th>
-						<th class="align-middle text-left">Course Name</th>
+						<!-- <th class="align-middle ">Action</th> -->
+						<th class="align-middle ">Course Name</th>
 						<th class="align-middle ">Instructor</th>
-						<th class="align-middle ">Start Date Time</th>
-						<th class="align-middle ">End Date Time</th>
+						<th class="align-middle ">Mandatory</th>
+						<th class="align-middle ">Deadline</th>
+						<th class="align-middle">Start Date/Time<br><hr> End Date/Time</th>
 						<th class="align-middle ">Duration(Hrs)</th>
 						<th class="align-middle ">Venue</th>
-						<th class="align-middle ">Minimum <br> Number of <br> Participants</th>
-						<th class="align-middle ">Maximum <br> Number of <br> Participants</th>
 						<th class="align-middle ">Total <br> Number of <br> Participants</th>
 					</tr>
 				</thead>
@@ -289,11 +293,11 @@
 					
 				</tbody>
 			</table>
-<!-- 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}"> -->
-<!-- 				<div class="alert alert-dismissible alert-danger text-center"> -->
-<!-- 					<strong th:text="${nullMessage}"></strong>  -->
-<!-- 				</div> -->
-<!-- 			</div> -->
+ 			<div th:if="${#lists.isEmpty(activeCourseSchedule)}">
+ 				<div class="alert alert-dismissible alert-danger text-center">
+ 					<strong th:text="${nullMessage}"></strong> 
+ 				</div>
+ 			</div>
 		</div>
 		<!-- CANCELATION & RESCHEDULE END-->
 			
@@ -1127,6 +1131,16 @@
 		document.getElementById("message").innerHTML = errorMessageReschedule;
 		$('#errorModal').modal('show');
 	}
+	
+	//DISABLE CANCEL BELOW MINIMUM BUTTON
+	$(function(){
+    var rowCount = $('#data table 2 tbody tr').length;
+    if(rowCount < 1){
+        $('#cancelBelowMinimumbtn').attr('disabled','disabled');
+    } else {
+        $('#cancelBelowMinimumbtn').removeAttr('disabled');
+    }
+});
 </script>
 </body>
 </html>
