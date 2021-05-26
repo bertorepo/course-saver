@@ -276,12 +276,11 @@
 				<thead>
 					<tr>
 						<th class="align-middle">Action</th>
-						<th class="align-middle text-left">Course Name</th>
+						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
 						<th class="align-middle">Mandatory</th>
 						<th class="align-middle">Deadline</th>
-						<th class="align-middle">Start Date Time</th>
-						<th class="align-middle">End Date Time</th>
+						<th class="align-middle ">Start Date/Time<br><hr> End Date/Time</th>
 						<th class="align-middle">Duration(Hrs)</th>
 						<th class="align-middle">Venue</th>
 						<th class="align-middle">Minimum <br> Number of <br> Participants</th>
@@ -299,17 +298,21 @@
 										
 						<td th:hidden="${courseScheduleId}"/>
 						<td class="align-middle" sec:authorize="hasAuthority('PMO')">
-							<button th:hidden="${courseSchedule.totalParticipants} > ${courseSchedule.maxAllowed} or
-									${courseSchedule.mandatory == 'false'}"
-									th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
-									type="button" class="btn btn-success" id="enrollMemberButton">Register</button>
+							<div class="tooltip-a">
+								<button th:disabled="${courseSchedule.totalParticipants} == ${courseSchedule.maxAllowed} or
+										${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}" 
+										th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
+										type="button" class="btn btn-success" id="enrollMemberButton">Register</button>
+								<span class="tooltiptext-a" th:if="${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}">Registration ended</span>	
+								<span class="tooltiptext-a" th:if="${courseSchedule.totalParticipants} == ${courseSchedule.maxAllowed}">Course is full</span>			
+							</div>		
 						</td>
-						<td class="text-left" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
-						<td th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/>
+						<td class="align-middle" th:text="${courseSchedule.courseName}" th:with="courseScheduleName = ${courseSchedule.courseName}"/>
+						<td class="align-middle" th:text="${courseSchedule.instructorName}" th:with="courseScheduleInstructor = ${courseSchedule.instructorName}"/>
 						<td class="align-middle" th:text="${courseSchedule.mandatory} ? 'Yes' : 'No'"/> 
 						<td class="align-middle" th:text="${courseSchedule.deadline}"/>  
-						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')}" />
-						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
+						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')} + '&lt;br /&gt; <hr>' + 
+						${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
 						<td class="align-middle" th:text="${courseScheduleDetail.duration}"/>
 
 						<td class="align-middle" th:text="${courseSchedule.venueName}"/>

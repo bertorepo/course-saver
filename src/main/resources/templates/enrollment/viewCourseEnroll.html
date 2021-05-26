@@ -43,6 +43,7 @@
 						<label class="col-lg-2 col-form-label align-middle">From Date</label>
 						<div class="col-lg-3">
 							<input type="datetime-local" class="form-control" id="fromDateTime">
+							<div class="text-danger" id="fromDateTime_error"></div>
 							<input type="hidden" class="form-control" name="fromDateTime" id="inputFromDateTime">
 						</div>
 						<label class="col-lg-2 col-form-label align-middle">To Date</label>
@@ -124,8 +125,6 @@
 						<td class="align-middle" th:text="${courseSchedule.deadline}"/> 
 						<td class="align-middle" th:utext="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E)- HH:mm a')} + '&lt;br /&gt; <hr>' + 
 						${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
-						
-						
 						<td class="hide" th:text="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E) HH:mm a')}"/>
 						<td class="hide" th:text="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"/>
 						<td class="align-middle" th:text="${courseScheduleDetail.duration}"/>
@@ -1119,8 +1118,9 @@
 	//FromDateTime is Higher that ToDateTime
 	/*<![CDATA[*/
 	var errorMessage = /*[[${error}]]*/'default';
-	if (errorMessage == "To Date should be greater than From Date") {
-		document.getElementById("toDateTime_error").innerHTML = errorMessage;
+	if (errorMessage == "Invalid Date") {
+		document.getElementById("toDateTime_error").innerHTML = "must be greater than [From Date]";
+		document.getElementById("fromDateTime_error").innerHTML = "must be greater than [To Date]";
 	}
 	/*]]>*/
 	

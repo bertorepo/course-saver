@@ -143,7 +143,7 @@ public class EnrollmentController {
 		if (form.getFromDateTime().isAfter(form.getToDateTime())
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
-			model.addAttribute("error", "To Date should be greater than From Date");
+			model.addAttribute("error", "Invalid Date");
 			model.addAttribute("nullMessage", "No schedules found");
 			return "enrollment/viewCourseEnroll";
 		}
