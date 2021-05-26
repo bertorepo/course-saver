@@ -11,8 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,8 +45,6 @@ import com.fujitsu.ph.tsup.course.service.CourseManagementService;
 @Controller
 @RequestMapping("/courses")
 public class CourseManagementController {
-    private static Logger LOGGER = LoggerFactory.getLogger(CourseManagementController.class);
-    
     // Course Management Service class
     @Autowired
     CourseManagementService courseManagementService;
@@ -81,6 +77,10 @@ public class CourseManagementController {
     @GetMapping("/update")
     public String showUpdateCourseForm(@ModelAttribute CourseForm course,
 	    RedirectAttributes redirectAttributes) {
+	if(Objects.isNull(course.getId())) {
+	    return "redirect:/courses/load";
+	}
+	
 	if (Objects.isNull(course.getDeadline()) || course.getDeadline().equals("Nan")) {
 	    course.setDeadline("-");
 	}
@@ -102,6 +102,7 @@ public class CourseManagementController {
 				     .build();
 
 	courseManagementService.updateCourse(updatedCourse);
+	
         redirectAttributes.addFlashAttribute("deleteSuccessMessage",
                 "You have successfully update this course "+ courseForUpdate.getName());
 	
