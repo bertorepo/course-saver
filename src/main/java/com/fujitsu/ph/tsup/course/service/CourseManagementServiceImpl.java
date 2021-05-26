@@ -5,6 +5,8 @@ package com.fujitsu.ph.tsup.course.service;
 
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 
 @Service
 public class CourseManagementServiceImpl implements CourseManagementService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseManagementServiceImpl.class);
 
     @Autowired
     CourseManagementDao courseManagementDao;
@@ -130,6 +133,7 @@ public class CourseManagementServiceImpl implements CourseManagementService {
 	try {
 	    courseManagementDao.updateCourse(course);
 	} catch (DataAccessException ex) {
+	    LOGGER.error(ex.getMessage(),ex);
 	    throw new IllegalArgumentException("Can't update course");
 	}
 	
