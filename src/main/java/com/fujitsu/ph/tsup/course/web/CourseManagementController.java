@@ -192,6 +192,12 @@ public class CourseManagementController {
 						.stream()
 						.collect(Collectors.toList());
 	    
+	    List<CourseCategory> courseCategoryList = Optional.ofNullable(courseCategoryManagementService.findAllCourseCategory())
+							      .orElse(Collections.emptySet())
+							      .stream()
+							      .collect(Collectors.toList());
+	    
+	    model.addAttribute("courseCategory",courseCategoryList);
 	    model.addAttribute("courseList", listOfCourse);
 	    model.addAttribute("course", new CourseForm());
 	} catch (NullPointerException e) {
