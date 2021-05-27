@@ -74,6 +74,12 @@ public class CourseManagementController {
 
     }
 
+    /**
+     * Method for getting course to update
+     * @param course
+     * @param redirectAttributes
+     * @return
+     */
     @GetMapping("/update")
     public String showUpdateCourseForm(@ModelAttribute CourseForm course,
 	    RedirectAttributes redirectAttributes) {
@@ -90,6 +96,13 @@ public class CourseManagementController {
 	return "redirect:/courses/load#updateConfirmModal";
     }
     
+    
+    /**
+     * Method for updating the course
+     * @param courseForUpdate
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping("/update")
     public String updateCourseForm(@ModelAttribute CourseForm courseForUpdate, RedirectAttributes redirectAttributes) {
 	Course updatedCourse = Course.builder()
