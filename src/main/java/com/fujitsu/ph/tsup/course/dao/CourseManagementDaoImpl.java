@@ -26,7 +26,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
 //0.03    | 2021/05/10 | WS) D.Escala        | Updated
-//0.04    | 2021/05/26 | WS) mi.aguinaldo    | Implemented update course and update findCoursesByName and findAllCourses
+//0.04    | 2021/05/26 | WS) mi.aguinaldo    | Implemented update course function and update findCoursesByName and findAllCourses
 //==================================================================================================
 @Repository
 public class CourseManagementDaoImpl implements CourseManagementDao {

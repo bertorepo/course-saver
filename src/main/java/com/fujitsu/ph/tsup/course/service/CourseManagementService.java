@@ -17,6 +17,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/16 | WS) i.fajardo       | Updated
+//0.03    | 2021/05/27 | WS) mi.aguinaldo    | Added updateCourse
 //==================================================================================================
 
 public interface CourseManagementService {

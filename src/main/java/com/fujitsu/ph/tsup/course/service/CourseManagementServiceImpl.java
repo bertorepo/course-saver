@@ -24,6 +24,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//0.03	  | 2021/05/27 | WS) mi.aguinaldo    | Implemented update function
 //==================================================================================================
 
 @Service
@@ -127,16 +128,19 @@ public class CourseManagementServiceImpl implements CourseManagementService {
         return courseManagementDao.loadAllCourse();
     }
 
+    /**
+     * Update a course
+     *@param course; Course object to be update
+     */
     @Override
     public void updateCourse(Course course) {
-	
 	try {
 	    courseManagementDao.updateCourse(course);
 	} catch (DataAccessException ex) {
-	    LOGGER.error(ex.getMessage(),ex);
+	    LOGGER.error(ex.getMessage(), ex);
 	    throw new IllegalArgumentException("Can't update course");
 	}
-	
+
     }
     
 }
