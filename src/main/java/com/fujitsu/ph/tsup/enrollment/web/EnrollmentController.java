@@ -144,7 +144,7 @@ public class EnrollmentController {
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
 			model.addAttribute("error", "Invalid Date");
-			model.addAttribute("nullMessage", "No schedules found");
+			model.addAttribute("nullMessage", "No course schedule found");
 			return "enrollment/viewCourseEnroll";
 		}
 		List<TopLearnerForm> listTopLearnerByMonth = enrollmentService.findTopLearner(ZonedDateTime.now(),
@@ -483,7 +483,7 @@ public class EnrollmentController {
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
 			model.addAttribute("error", "To Date should be greater than or equal to From Date");
-			model.addAttribute("nullMessage", "No schedules found");
+			model.addAttribute("nullMessage", "No course schedule found");
 			return "enrollment/viewMemberCourse";
 		}
 		System.out.println("From Date Time: " + form.getFromDateTime());

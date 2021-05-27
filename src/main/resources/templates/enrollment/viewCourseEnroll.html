@@ -699,10 +699,12 @@
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="courseRegistrationTime" disabled>
 								</div>
-							</div> --
+							</div>
+							<!--
 							<div class="" id="showRequired">
 								<h5 style="color:red" >This is a required training</h5>
 							</div>
+							-->							
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
 								<div class="col-lg-9">
@@ -787,9 +789,11 @@
 									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
 								</div>
 							</div>	
-							<div class="" id="showRequired">
+							<!--
+							 <div class="" id="showRequired">
 								<h5 style="color:red" >This is a required training</h5>
 							</div>
+							 -->
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
 								<div class="col-lg-9">
@@ -921,12 +925,14 @@
 		var instructorNameInput = document.getElementById('infoInstructorName');
 		instructorNameInput.value = instructorName;
 		
-		if(mandatory == true){
+		/*
+		if(mandatory == 'Yes'){
 			$('[id$=showRequired]').show();
 		}
 		else{
 			$('[id$=showRequired]').hide();
 		}
+		*/
 		
 		var dateInput = document.getElementById('infoDate');
 		dateInput.value = startDate;
