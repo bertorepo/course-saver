@@ -32,6 +32,7 @@
             <hr>
             <div class="card">
                 <div class="card-body">
+					<p>Please input your desired Course Category Name and Description</p>
                     <form action="#" th:action="@{/courseCategory/create}" th:object="${create}" method="post">
                         <span  style="margin-left:185px; color:red; visibility:hidden;" id="required">*Required field</span>
                         <div class="form-group row">
@@ -100,7 +101,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label class="col-lg-12 col-form-label" id="invalidMsg">Course Category Name already exist.</label>
+                        <label class="col-lg-12 col-form-label" id="invalidMsg">Course Category Name already exists.</label>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" id="closeModalInvalid"> OK</button>
