@@ -290,6 +290,14 @@
 							</tr>
 						</tbody>
 					</table>
+					<div th:if="${#lists.isEmpty(courseList)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+							<strong>No Course Found</strong>
+						</div>
+						<div class="card-footer" style="display: none">
+							<div id="pagination"></div>
+						</div>
+					</div>
 				</div>
 				
 				<div class="float-right">
@@ -367,7 +375,15 @@
 		});
 		
 		$('#infoModalForUpdate').on('hidden.bs.modal', function () {
-			location.reload();
+			var inputs = document.getElementsByClassName('needs-validation')
+			var validation = Array.prototype.filter.call(inputs, function (input) {
+				input.classList.remove('is-invalid');
+				input.classList.remove('is-valid');
+				
+			});
+
+			$(".update-button").prop('disabled', false);
+			$(this).find('form').trigger('reset');
 		})
 
 		//Update validation
