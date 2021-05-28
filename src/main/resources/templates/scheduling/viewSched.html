@@ -19,118 +19,114 @@
 </head>
 
 <body onload="load()">
-	<div th:insert="fragments/general.html :: header" > </div>
-	
+	<div th:insert="fragments/general.html :: header"> </div>
+
 	<div class="container mt-5 div_minheight">
-		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedules/view}" th:object="${changeSchedule}" method="get">
+		<form class="form-horizontal" action="#" th:action="@{/schedules/courseSchedules/view}"
+			th:object="${changeSchedule}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
-            <hr>
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label">From Date</label>
-                        <div class="col-lg-3">
-                           <input class="form-control" type="datetime-local" id="fromDate" name="fromDate"/>
-                           <!-- This is used to compile the converted date and pass it to the controller -->
-                           <input type="hidden" th:field="*{fromDateTime}" />
-                        </div>
-                        <label class="col-lg-2 col-form-label">To Date</label>
-                        <div class="col-lg-3">
-                            <input class="form-control" type="datetime-local" id="toDate" name="toDate"/>
-                            <!-- This is used to compile the converted date and pass it to the controller -->
-                            <input type="hidden" th:field="*{toDateTime}" />
-                        </div>
-                    </div>
-                    <div class="float-right">
-                        <input type="submit" class="btn btn-success" value="Submit">
-                    </div>
-                </div>
-            </div>
-             
-		<!--Error1 Modal-->
-		<div class="modal fade" id="error1Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-danger">
-						<h5 class="modal-title"></h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+			<hr>
+			<div class="card">
+				<div class="card-body">
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">From Date</label>
+						<div class="col-lg-3">
+							<input class="form-control" type="datetime-local" id="fromDate" name="fromDate" />
+							<!-- This is used to compile the converted date and pass it to the controller -->
+							<input type="hidden" th:field="*{fromDateTime}" />
+						</div>
+						<label class="col-lg-2 col-form-label">To Date</label>
+						<div class="col-lg-3">
+							<input class="form-control" type="datetime-local" id="toDate" name="toDate" />
+							<!-- This is used to compile the converted date and pass it to the controller -->
+							<input type="hidden" th:field="*{toDateTime}" />
+						</div>
 					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">To Date can't be less than the From Date.</label>
-						</div>	
+					<div class="float-right">
+						<input type="submit" class="btn btn-success" value="Submit">
 					</div>
 				</div>
 			</div>
-		</div>
-		<!--Error1 Modal End-->
-		<!--Error2 Modal-->
-		<div class="modal fade" id="error2Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-danger">
-						<h5 class="modal-title"></h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">From Date can't be greater than the To Date.</label>
-						</div>	
+
+			<!--Error1 Modal-->
+			<div class="modal fade" id="error1Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-sm text-center">
+					<div class="modal-content">
+						<div class="modal-header alert-danger">
+							<h5 class="modal-title"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group row">
+								<label class="col-lg-12 col-form-label">To Date can't be less than the From
+									Date.</label>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!--Error2 Modal End-->
-		<div class="mt-5 nw_block">
-			<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
-			<table id="data" class="table table-bordered table-responsive text-center width_max">
-				<colgroup >
-					<col style="width:20%"/>
-					<col style="width:20%"/>
-					<col style="width:30%"/>
-					<col style="width:30%"/>
-					<col style="width:10%"/>
-				</colgroup>
-				<thead>
-					<tr>
-						<th>Course Name</th>
-						<th>Instructor</th>
-						<th>Start Date/Time</th>
-						<th>End Date/Time</th>
-						<th>Duration</th>
-						<th></th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody th:each="courseSchedules, stat : *{courseSchedules}">
-                	<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
-                        <td th:text="${courseSchedules.courseName}"></td>
-                        <td th:text="${courseSchedules.instructorName}"></td>
-                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
+			<!--Error1 Modal End-->
+			<!--Error2 Modal-->
+			<div class="modal fade" id="error2Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-sm text-center">
+					<div class="modal-content">
+						<div class="modal-header alert-danger">
+							<h5 class="modal-title"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group row">
+								<label class="col-lg-12 col-form-label">From Date can't be greater than the To
+									Date.</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--Error2 Modal End-->
+			<div class="mt-5 nw_block">
+				<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
+				<table id="data" class="table table-bordered table-responsive text-center width_max">
+					<colgroup>
+						<col style="width:20%" />
+						<col style="width:20%" />
+						<col style="width:30%" />
+						<col style="width:30%" />
+						<col style="width:10%" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th>Action</th>
+							<th>Course Name</th>
+							<th>Instructor</th>
+							<th>Start Date/Time</th>
+							<th>End Date/Time</th>
+							<th>Duration</th>
+						</tr>
+					</thead>
+					<tbody th:each="courseSchedules, stat : *{courseSchedules}">
+						<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
+							<td>
+								<a th:value="${courseSchedules.id}" th:id="${'update' + (stat.index + 1)}" th:href="@{/schedules/courseSchedule/{courseScheduleId}/update
+												(courseScheduleId=${courseSchedules.id})}" class="btn btn-warning">
+									<i class="fa fa-pencil"></i> Update
+								</a>
+								<a th:value="${courseSchedules.id}" th:id="${'delete' + (stat.index + 1)}" th:href="@{/schedules/courseSchedule/{courseScheduleId}/delete
+												(courseScheduleId=${courseSchedules.id})}" class="btn btn-danger">
+									<i class="fa fa-trash-o"></i> Delete
+								</a>
+							</td>
+							<td th:text="${courseSchedules.courseName}"></td>
+							<td th:text="${courseSchedules.instructorName}"></td>
+							<td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
                         <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
                         <td th:text="${courseScheduleDetails.duration}"></td>
-						<td class="sticky1">
-								<a 	th:value="${courseSchedules.id}" 
-									th:id="${'update' + (stat.index + 1)}"
-									th:href="@{/schedules/courseSchedule/{courseScheduleId}/update
-												(courseScheduleId=${courseSchedules.id})}"
-									class="btn btn-warning">
-										<i class="fa fa-pencil"></i> Update	
-								</a>
-						</td>
-						<td class="sticky2">
-								<a th:value="${courseSchedules.id}" 
-								   th:id="${'delete' + (stat.index + 1)}"
-								   th:href="@{/schedules/courseSchedule/{courseScheduleId}/delete
-												(courseScheduleId=${courseSchedules.id})}"
-								   class="btn btn-danger">
-										<i class="fa fa-trash-o"></i> Delete
-								</a>
-					</td>
 					</tr>
 				</tbody>
 			</table>
@@ -217,11 +213,11 @@
 										<thead>
 										<tr>
 											<td>
-												<label class="col-lg-6 col-form-label">Start/End Date</label>
+												<label class="col-lg-6 col-form-label">Start Date and Start Time</label>
 											</td>
 											<td></td>
 											<td>
-												<label class="col-lg-6 col-form-label">Start/End Time</label>
+												<label class="col-lg-6 col-form-label">End Date and End Time</label>
 											</td>
 										</tr>
 										</thead>
@@ -288,6 +284,7 @@
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
 						<div class="modal-header alert-success">
+							<h4 class="modal-title">Update Confirmation</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -434,6 +431,7 @@
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
 						<div class="modal-header alert-success">
+						<h4 class="modal-title">Delete Confirmation</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -539,145 +537,145 @@
 	
 	<!-- For CDATA -->
 	<script th:inline="javascript">
-	
+
 		/*<![CDATA[*/
 		var errorMessage = /*[[${error}]]*/ 'default';
-		if(errorMessage == "To Date should be greater than or equal to From Date"){
+		if (errorMessage == "To Date should be greater than or equal to From Date") {
 			$('#error1Modal').modal('show');
 		}
 		/*<![CDATA[*/
-			
-		$("#goToModal").click(function(){
+
+		$("#goToModal").click(function () {
 			$('#updateModal').modal('show');
 		});
-		
-		function load(){
+
+		function load() {
 			var fromDateTime = $("#fromDateTime").val();
 			var toDateTime = $("#toDateTime").val();
-			var fromNewDate = fromDateTime.toString().slice(0,16);
-			var toNewDate = toDateTime.toString().slice(0,16);
-			
+			var fromNewDate = fromDateTime.toString().slice(0, 16);
+			var toNewDate = toDateTime.toString().slice(0, 16);
+
 			document.getElementById("fromDate").value = fromNewDate;
 			document.getElementById("toDate").value = toNewDate;
-			
-			if ($("#updateView").length > 0){
+
+			if ($("#updateView").length > 0) {
 				var updateCourseScheduleId = $("#updateCourseScheduleId").val();
-				if(updateCourseScheduleId !== "" && $("#errorModal").length == 0){
-					if($('#noticeModal').length != 0){
+				if (updateCourseScheduleId !== "" && $("#errorModal").length == 0) {
+					if ($('#noticeModal').length != 0) {
 						$('#noticeModal').modal('show');
-						$("#goToModal2").click(function(){
+						$("#goToModal2").click(function () {
 							$('#updateModal').modal('show');
 						});
-					}else{
+					} else {
 						$('#updateModal').modal('show');
 					}
 				}
-			    
-			    var startDateTime = document.getElementById("startDateTime1").value;
-			    var endDateTime = document.getElementById("endDateTime1").value;
-			    
-			    var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-			    var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
-			    
-			    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-			    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-			    
-			    document.getElementById("startDate1").value = rowStartDate;
-			    document.getElementById("endDate1").value = rowEndDate;
-			    
-			    document.getElementById("startTime1").value = rowStartTime;
-			    document.getElementById("endTime1").value = rowEndTime;
+
+				var startDateTime = document.getElementById("startDateTime1").value;
+				var endDateTime = document.getElementById("endDateTime1").value;
+
+				var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+				var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
+
+				var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+				var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+
+				document.getElementById("startDate1").value = rowStartDate;
+				document.getElementById("endDate1").value = rowEndDate;
+
+				document.getElementById("startTime1").value = rowStartTime;
+				document.getElementById("endTime1").value = rowEndTime;
 			}
-			
+
 			if ($("#deleteView").length > 0) {
-				var deleteCourseScheduleId =  $("#deleteCourseScheduleId").val();
-				if(deleteCourseScheduleId !== ""){
+				var deleteCourseScheduleId = $("#deleteCourseScheduleId").val();
+				if (deleteCourseScheduleId !== "") {
 					$('#deleteModal').modal('show');
 				}
-				
+
 				var startDateTime = document.getElementById("startDateTime1").value;
-			    var endDateTime = document.getElementById("endDateTime1").value;
-			    
-			    var startDate = startDateTime.substring(0, startDateTime.indexOf("T")).replace(/[-]/gi, "/");
-			    var endDate = endDateTime.substring(0, endDateTime.indexOf("T")).replace(/[-]/gi, "/");
-			    
-			    document.getElementById("startDate1").value = startDate;
-			    document.getElementById("endDate1").value = endDate;
-		    
-			    var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-			    var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-			    
-			    var startHours = parseInt(rowStartTime.substring(0, startDateTime.indexOf(":")));
-			    var startMinutes = rowStartTime.substring(3, 5);
-			    
-			    if(startHours > 12){
-			    	var startTime = String(startHours-12).padStart(2, "0") +":"+ startMinutes + " PM";
-			    	document.getElementById("startTime1").value = startTime;
-			    } else if(startHours == 12) {
-			    	document.getElementById("startTime1").value = rowStartTime + " PM";
-			    } else {
-			    	document.getElementById("startTime1").value = rowStartTime + " AM";
-			    }
-			    
-			    var endHours = parseInt(rowEndTime.substring(0, endDateTime.indexOf(":")));
-			    var endMinutes = rowEndTime.substring(3, 5);
-			    
-			    if(endHours > 12){
-			    	var endTime = String(endHours-12).padStart(2, "0") + ":" + endMinutes + " PM";
-			    	document.getElementById("endTime1").value = endTime;
-			    } else if(endHours == 12){
-			    	document.getElementById("endTime1").value = rowEndTime + " PM";
-			    } else {
-			    	document.getElementById("endTime1").value = rowEndTime + " AM";
-			    }
-			   
+				var endDateTime = document.getElementById("endDateTime1").value;
+
+				var startDate = startDateTime.substring(0, startDateTime.indexOf("T")).replace(/[-]/gi, "/");
+				var endDate = endDateTime.substring(0, endDateTime.indexOf("T")).replace(/[-]/gi, "/");
+
+				document.getElementById("startDate1").value = startDate;
+				document.getElementById("endDate1").value = endDate;
+
+				var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+				var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+
+				var startHours = parseInt(rowStartTime.substring(0, startDateTime.indexOf(":")));
+				var startMinutes = rowStartTime.substring(3, 5);
+
+				if (startHours > 12) {
+					var startTime = String(startHours - 12).padStart(2, "0") + ":" + startMinutes + " PM";
+					document.getElementById("startTime1").value = startTime;
+				} else if (startHours == 12) {
+					document.getElementById("startTime1").value = rowStartTime + " PM";
+				} else {
+					document.getElementById("startTime1").value = rowStartTime + " AM";
+				}
+
+				var endHours = parseInt(rowEndTime.substring(0, endDateTime.indexOf(":")));
+				var endMinutes = rowEndTime.substring(3, 5);
+
+				if (endHours > 12) {
+					var endTime = String(endHours - 12).padStart(2, "0") + ":" + endMinutes + " PM";
+					document.getElementById("endTime1").value = endTime;
+				} else if (endHours == 12) {
+					document.getElementById("endTime1").value = rowEndTime + " PM";
+				} else {
+					document.getElementById("endTime1").value = rowEndTime + " AM";
+				}
+
 			}
-			
-			if($("#updateSuccessModal").length > 0){
+
+			if ($("#updateSuccessModal").length > 0) {
 				/*<![CDATA[*/
 				var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
-				
+
 				var updated = document.getElementById("updated").innerHTML;
-	
+
 				if (updateSuccess == updated) {
 					$('#updateSuccessModal').modal('show');
 				}
 				/*]]>*/
 			}
-			
-			if($("#deleteSuccessModal").length > 0){
+
+			if ($("#deleteSuccessModal").length > 0) {
 				/*<![CDATA[*/
 				var deleteSuccess = /*[[${updateSuccess}]]*/ 'default';
-				
+
 				var deleted = document.getElementById("deleted").innerHTML;
-	
+
 				if (deleteSuccess == updated) {
 					$('#deleteSuccessModal').modal('show');
 				}
 				/*]]>*/
 			}
-			
+
 			//Conflict Modal Validation
-			if($("#errorModal").length > 0){
+			if ($("#errorModal").length > 0) {
 				/*<![CDATA[*/
-			    var errorMessage = /*[[${error}]]*/ 'default';
-			    var element = document.getElementById('hasError').value;
-			    
-			    if(element.includes('conflict')){
-			    	document.getElementById('errorTitle').innerHTML = "Conflict!";
-			    }
+				var errorMessage = /*[[${error}]]*/ 'default';
+				var element = document.getElementById('hasError').value;
 
-			    console.log(element);
+				if (element.includes('conflict')) {
+					document.getElementById('errorTitle').innerHTML = "Conflict!";
+				}
 
-			    if (errorMessage == element) {
-					
-			        $('#errorModal').modal('show');
+				console.log(element);
 
-			    }
-			    /*]]>*/
+				if (errorMessage == element) {
+
+					$('#errorModal').modal('show');
+
+				}
+				/*]]>*/
 			}
 		}
-		
+
 	</script>
 </body>
 

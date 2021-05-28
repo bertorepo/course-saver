@@ -240,6 +240,8 @@ public class ScheduleController {
             courseScheduleNewForm.setInstructors(instructorFormList);
             courseScheduleNewForm.setVenues(venueFormList);
             courseScheduleNewForm.setCourses(courseFormList);
+            courseScheduleNewForm.setMinRequired(1);
+            courseScheduleNewForm.setMaxAllowed(100);
 
             model.addAttribute("scheduleNew", courseScheduleNewForm);
             
@@ -730,6 +732,7 @@ public class ScheduleController {
             for(CourseScheduleDetail cSchedDet: cSchedDetail) {
 
                 //Check if there is any conflicting schedules when submitting form
+            	if(id != courseSchedule.getId()) {
                 if(((courseSchedule.getCourseId() == form.getCourseId()) ||
                         (courseSchedule.getInstructorId() == form.getInstructorId()) ||
                         (courseSchedule.getVenueId() == form.getVenueId())) &&
@@ -769,6 +772,7 @@ public class ScheduleController {
                         model.addAttribute("updateView", form);
                         return "scheduling/viewSched";
                 } 
+              }
             }
         }
 
@@ -865,6 +869,10 @@ public class ScheduleController {
 	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") Long id, 
 	        Model model, RedirectAttributes redirectAttributes) {
 	    
+    	CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
+		   
+        String courseName = courseSchedule.getCourseName();
+        
 	    CourseScheduleListForm courseSchedListForm = new CourseScheduleListForm();
         
         courseSchedListForm.setFromDateTime(listForm.getFromDateTime());
@@ -872,7 +880,7 @@ public class ScheduleController {
 
 		scheduleService.deleteCourseScheduleById(id);
 		
-		redirectAttributes.addFlashAttribute("deleteSuccess", "The Course Schedule["+id+"] has been successfully deleted.");
+		redirectAttributes.addFlashAttribute("deleteSuccess", "The Course Schedule for the course: [" + courseName + "] has been successfully deleted.");
 		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
 		
 		listForm = null;

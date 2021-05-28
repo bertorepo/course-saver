@@ -2,7 +2,6 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 //=======================================================
 //$Id: PR02$
@@ -29,11 +28,9 @@ import java.time.ZoneId;
 */
 
 import java.time.ZonedDateTime;
-
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +46,6 @@ import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
-import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
@@ -149,10 +145,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
      */
     @Override
     public Set<CourseForm> findAllCourses() {
-        String query = "SELECT * FROM COURSE";
+        String query = "SELECT * FROM COURSE ORDER BY name ASC";
 
         List<CourseForm> courseList = template.query(query, new CourseRowMapper());
-        Set<CourseForm> courses = new HashSet<>(courseList);
+        Set<CourseForm> courses = new LinkedHashSet<>(courseList);
 
         return courses;
     }
@@ -170,10 +166,11 @@ public class ScheduleDaoImpl implements ScheduleDao {
                      + "FROM EMPLOYEE AS E "
                      + "INNER JOIN EMPLOYEE_AUTH AS EA "
                      + "ON E.USERNAME = EA.USERNAME "
-                     + "WHERE EA.AUTH_NAME = 'Instructor'";
+                     + "WHERE EA.AUTH_NAME = 'Instructor'"
+                     + "ORDER BY E.LAST_NAME ASC";
 
         List<InstructorForm> instructorList = template.query(query, new InstructorRowMapper());
-        Set<InstructorForm> instructors = new HashSet<>(instructorList);
+        Set<InstructorForm> instructors = new LinkedHashSet<>(instructorList);
 
         return instructors;
     }
@@ -186,10 +183,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
      */
     @Override
     public Set<VenueForm> findAllVenues() {
-        String query = "SELECT * FROM VENUE";
+        String query = "SELECT * FROM VENUE ORDER BY name ASC";
 
         List<VenueForm> venueList = template.query(query, new VenueRowMapper());
-        Set<VenueForm> venues = new HashSet<>(venueList);
+        Set<VenueForm> venues = new LinkedHashSet<>(venueList);
 
         return venues;
     }
