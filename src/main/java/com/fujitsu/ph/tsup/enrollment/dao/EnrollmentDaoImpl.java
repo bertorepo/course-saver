@@ -40,6 +40,7 @@ import org.springframework.stereotype.Repository;
 //0.01    | 09/14/2020 | WS) J.Yu              | Updated
 //0.01    | 09/14/2020 | WS) M.Lumontad        | Updated
 //0.01	  | 04/19/2021 | WS) M.Atayde		   | Updated
+//0.01	  | 05/27/2021 | WS) L.Celoso		   | Updated
 //=================================================================================================
 /**
  * <pre>
@@ -390,8 +391,6 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         
         Long key = (Long) generatedKeyHolder.getKeys().get("id");
         System.out.println("\nCourse Participant ID to be deleted: " + key + "\n");
-     
-       
     }
     
     /**
@@ -461,7 +460,6 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "INNER JOIN VENUE AS V "
                 + "ON CS.VENUE_ID = V.ID " 
                 + "WHERE CS.STATUS = 'A' " 
-                //+ " ORDER BY CS.ID";
                 + "ORDER BY SCHEDULED_START_DATETIME";
         List<CourseSchedule> courseScheduleList = template.query(query, new EnrollmentRowMapperCourseSchedule());
         Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<>(courseScheduleList);
@@ -516,7 +514,6 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "ON CS.VENUE_ID = V.ID " 
                 + "WHERE CS.STATUS = 'A' "
                 + "AND (SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT WHERE COURSE_SCHEDULE_ID = CS.ID) < MIN_REQUIRED "
-                //+ "ORDER BY CS.ID";
                 + "ORDER BY SCHEDULED_START_DATETIME";
         List<CourseSchedule> courseScheduleList = template.query(sql, new EnrollmentRowMapperCourseSchedule());
         Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<>(courseScheduleList);

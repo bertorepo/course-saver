@@ -61,9 +61,10 @@
 		
 		<div style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of Available Courses
-			<div class="float-right mt-3">
-            <h4><a href="" name="topLearners" data-toggle="modal" data-target="#topLearnersModal"><i class="fa fa-search"></i> View Top Learners...</a></h4>
-            </div></h3>
+				<div class="float-right mt-3">
+            		<h4><a href="" name="topLearners" data-toggle="modal" data-target="#topLearnersModal"><i class="fa fa-search"></i> View Top Learners...</a></h4>
+            	</div>
+            </h3>
 			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
 					th:object="${viewCourseEnroll}">
 				<colgroup >
@@ -259,12 +260,13 @@
 		<!-- CANCELATION & RESCHEDULE -->
 		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5" >
 			<h3><i class="fa fa-list"></i>List of Available Courses by <span id="listNames"> Months/Quarter</span>
-			<div class="col-lg-2 float-right">
-				<select class="form-control"  id="dropDown">
-					<option value="month">Month</option>
-					<option value="quarter">Quarter</option>
-				</select>
-			</div></h3>
+				<div class="col-lg-2 float-right">
+					<select class="form-control"  id="dropDown">
+						<option value="month">Month</option>
+						<option value="quarter">Quarter</option>
+					</select>
+				</div>
+			</h3>
 			<table id="data table3" class="table table-bordered table-responsive text-center" style="width:100%" 
 			th:object="${activeCourseSchedule}">
 				<colgroup >
@@ -700,11 +702,6 @@
 									<input type="text" class="form-control-plaintext" id="courseRegistrationTime" disabled>
 								</div>
 							</div>
-							<!--
-							<div class="" id="showRequired">
-								<h5 style="color:red" >This is a required training</h5>
-							</div>
-							-->							
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
 								<div class="col-lg-9">
@@ -788,12 +785,7 @@
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="infoTime" disabled>
 								</div>
-							</div>	
-							<!--
-							 <div class="" id="showRequired">
-								<h5 style="color:red" >This is a required training</h5>
 							</div>
-							 -->
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Course Description:</label>
 								<div class="col-lg-9">
@@ -809,9 +801,6 @@
 			</div>
 		</form>
 		<!--Information Modal End-->
-		
-		
-		
 	</div>
 	
 	<footer th:replace="fragments/general.html :: footer"></footer>
@@ -833,79 +822,10 @@
 		inpToDateTime.value = finalToDateTime;
 	}
 
-	//SUBMIT FROM/TO DATE TIME END
-// 	$("#fromDateTime").focus(function (){
-// 		$(this).prop('type', 'date')
-// 	});
-	
-// 	$("#fromDateTime").blur(function () {
-// 		var formDate = document.getElementById("fromDateTime").value;
-// 		var newDate = new Date(formDate);
-// 		var dateConcat = newDate.toISO().toString();
-// 		if (formDate == "") {
-// 			$(this).prop('type', 'text')
-// 			$(this).prop('value', null);
-// 		} else {
-// 			$(this).prop('type', 'text')
-// 			$(this).prop('value', dateConcat);
-// 		}
-// 	}); 
-	
-// 	$("#toDateTime").focus(function (){
-// 		$(this).prop('type', 'date')
-// 	});
-	
-// 	$("#toDateTime").blur(function () {
-// 		var formDate = document.getElementById("toDateTime").value;
-// 		var newDate = new Date(formDate);
-// 		var dateConcat = newDate.toISO().toString(); 
-// 		if (formDate == "") {
-// 			$(this).prop('type', 'text')
-// 			$(this).prop('value', null);
-// 		} else {
-// 			$(this).prop('type', 'text')
-// 			$(this).prop('value', dateConcat);
-// 		}
-// 	}); 
-	
-// 	//Format Date Inputs
-// 	Date.prototype.toISO = function() {
-// 		 return this.getUTCFullYear() +
-// 	        '-' + String(this.getUTCMonth() + 1).padStart(2, "0") +
-// 	        '-' + String(this.getUTCDate()).padStart(2, "0") +
-// 	        'T' + String(this.getUTCHours()).padStart(2, "0") +
-// 	        ':' + String(this.getUTCMinutes()).padStart(2, "0") +
-// 	        ':' + String(this.getUTCSeconds()).padStart(2, "0") +
-// 	        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-// 	        'Z';
-// 	}; 
-	
-// 	<!--Message alert-->
-// 	$('tbody').on('dblclick', function() {
-// 		$('#infoModal').modal('show');
-// 		var a = ${this}.
-// 	});
-	
-//	var action 
-	//add if statement for the success/fail messages
-// 	$('input[name="error"]').on('click', function() {
-// 		$('#errorModal').modal('show');
-// 	});
-	
-// 	$('input[name="success"]').on('click', function() {
-// 		$('#successModal').modal('show');
-// 	});
-	
-	
-// 	$('button[name="cancellation"]').on('click', function() {
-// 		$('#confirmModal').modal('show');
-// 	});
-	
 // 	<!--Message alert End-->
 
 	//Information Modal
 	function showInformation(id, courseName, instructorName, mandatory, scheduleStartDateTime, scheduleEndDateTime, courseDetails){
-// 		alert(id + courseName + instructorName + scheduleStartDateTime + " | " + scheduleEndDateTime);
 
 		var startDate = scheduleStartDateTime.slice(0,10);
 		var startTime = moment.utc(scheduleStartDateTime, 'YYYY-MM-DD HH:mm').format(
@@ -925,15 +845,6 @@
 		var instructorNameInput = document.getElementById('infoInstructorName');
 		instructorNameInput.value = instructorName;
 		
-		/*
-		if(mandatory == 'Yes'){
-			$('[id$=showRequired]').show();
-		}
-		else{
-			$('[id$=showRequired]').hide();
-		}
-		*/
-		
 		var dateInput = document.getElementById('infoDate');
 		dateInput.value = startDate;
 		
@@ -942,14 +853,6 @@
 		$('#infoModal').modal('show');
 	}
 	//Information Modal End
-	
-	//Confirmation
-// 	function cancellation(courseId,courseName){
-// 		$('#confirmModal').modal('show');
-// 		document.getElementById("courseName").innerHTML = courseName ;
-// 		var input = document.getElementById("id");
-// 		input.value=courseId
-// 	}
 
 	//SHOW REGISTRATION POP UP
 	function registration(courseScheduleId, courseScheduleName, courseScheduleInstructorName, startDateTime, 
@@ -986,7 +889,6 @@
 	
 	//SHOW REGISTRATION CONFIRMATION POP UP
 	function registrationConfirm(){
-// 		alert(id);
 		var csdId = document.getElementById('courseRegistrationCSDId').value;
 		document.getElementById('courseScheduleDetailIdHidden').value=csdId;
 		
