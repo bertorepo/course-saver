@@ -19,11 +19,13 @@
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
 </head>
 <body>
-     <div th:insert="fragments/general.html :: header"></div> 
+    <div th:insert="fragments/general.html :: header"></div>
+
     <!--Success Message-->
     <div class="modal fade" th:text="${successMessage}"
         id="successMessage1" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+
     <!--Success Message End-->
     <div class="container mt-5">
             <h3>
@@ -110,10 +112,12 @@
             </div>
         </div>
     </div>
+
     <!--Invalid Modal End-->
     <script th:inline="javascript">
 	    var category = document.getElementById("category");
 	    var detail = document.getElementById("detail");
+
        /*<![CDATA[*/
         var courseCategoryList = /*[[${categoryList}]]*/ 'default';
         /*]]>*/
@@ -134,15 +138,18 @@
             $('#invalidModal').modal('show');
         }
         /*]]>*/
+
         function btnsubmit(){
             localStorage.setItem("category", category.value);
             localStorage.setItem("detail", detail.value);
         }
+
         $(function() {
             $("#closeModal").click(function() {
                 $("#successModal").modal('hide');
             });
-        }); 
+        });
+
         $(function() {
             $("#closeModalInvalid").click(function() {
                 $("#invalidModal").modal('hide');
@@ -150,6 +157,7 @@
                 document.getElementById('required').style.visibility = 'visible';
             });
         });
+
         //disabling and enabling of submit button
         document.getElementById("category").value = localStorage.getItem("category");
         document.getElementById("detail").value = localStorage.getItem("detail");
@@ -165,41 +173,44 @@
             document.getElementById('submit').disabled = false;
             
             //Enables Error messages for category
-            if (trimCategory.length == 0){
+            if (trimCategory.length == 0) {
                 document.getElementById('required').innerHTML = "*Required field";
                 document.getElementById('required').style.visibility = 'visible';
                 document.getElementById('submit').disabled = true;
             } 
-            //Enables error message for details
-            if (trimDetail.length == 0){
-                document.getElementById('required2').innerHTML = "*Required field.";
-                document.getElementById('required2').style.visibility = 'visible';
-                document.getElementById('submit').disabled = true;
-            } 
             
-            if(checkingForDuplicate(category.value)){
+            if(checkingForDuplicate(category.value)) {
                 document.getElementById('required').innerHTML = "*Course Category Name already exist";
                 document.getElementById('required').style.visibility = 'visible';
                 document.getElementById('submit').disabled = true;
+            } 
+
+            //Enables error message for details
+            else if (trimDetail.length == 0) { 
+                document.getElementById('required2').innerHTML = "*Required field.";
+                document.getElementById('required2').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
             }
             
-            if(format.test(category.value)){
+            if(format.test(category.value)) {
             	document.getElementById('required').innerHTML = "*Category Name is invalid. Please remove invalid characters.";
                 document.getElementById('required').style.visibility = 'visible';
                 document.getElementById('submit').disabled = true;
             }
             
-            if(format.test(detail.value)){
+            if(format.test(detail.value)) {
             	document.getElementById('required2').innerHTML = "*Detail is invalid. Please remove invalid characters.";
                 document.getElementById('required2').style.visibility = 'visible';
                 document.getElementById('submit').disabled = true;
             }
         }
+
         function checkingForDuplicate(categoryName){
             return courseCategoryList.some(function(categ) {
                 return categ.category.toLowerCase() === categoryName.toLowerCase();
             })
         }
+
         function myTrim(stringToTrim){
             return stringToTrim.replace(/^\s+|\s+$/gm,'');
         }
