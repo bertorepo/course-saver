@@ -11,7 +11,7 @@ import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +105,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                 new EnrollmentRowMapperCourseSchedule());
-        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
         } else {           
             query +=  "WHERE COALESCE(CSD.RESCHEDULED_START_DATETIME, "
@@ -118,7 +118,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                     .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
             List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                     new EnrollmentRowMapperCourseSchedule());
-            Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+            Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<CourseSchedule>(courseScheduleList);
             return courseScheduleSet;
         }
     }
@@ -276,7 +276,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
         List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipant());
-        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+        Set<CourseParticipant> courseEnrolled = new LinkedHashSet<>(courseEnrolledList);
         return courseEnrolled;
     } else {
         query +=  "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, "
@@ -290,7 +290,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
         List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipant());
-        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+        Set<CourseParticipant> courseEnrolled = new LinkedHashSet<>(courseEnrolledList);
         return courseEnrolled;
     }
   }
@@ -405,7 +405,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      */
     @Override
     public void deleteCourseParticipantById(Long id) {
-        
+    	 
          KeyHolder generatedKeyHolder = new GeneratedKeyHolder(); String sql =
          "DELETE FROM COURSE_PARTICIPANT WHERE id = :id"; SqlParameterSource
          namedParameters = new MapSqlParameterSource().addValue("id", id);
@@ -463,7 +463,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "WHERE CS.STATUS = 'A' " 
                 + " ORDER BY CS.ID";
         List<CourseSchedule> courseScheduleList = template.query(query, new EnrollmentRowMapperCourseSchedule());
-        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
     }
     /**
@@ -517,7 +517,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "AND (SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT WHERE COURSE_SCHEDULE_ID = CS.ID) < MIN_REQUIRED "
                 + "ORDER BY CS.ID";
         List<CourseSchedule> courseScheduleList = template.query(sql, new EnrollmentRowMapperCourseSchedule());
-        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
     }
     @Override
@@ -587,7 +587,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "AND EXTRACT(MONTH FROM CSD.SCHEDULED_START_DATETIME) = EXTRACT(MONTH FROM NOW()) "
                 + "ORDER BY CS.ID";
         List<CourseSchedule> courseScheduleList = template.query(sql, new EnrollmentRowMapperCourseSchedule());
-        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
     }
     @Override
@@ -611,7 +611,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "AND EXTRACT(QUARTER FROM CSD.SCHEDULED_START_DATETIME) = EXTRACT(QUARTER FROM NOW()) "
                 + " ORDER BY CS.ID";
         List<CourseSchedule> courseScheduleList = template.query(sql, new EnrollmentRowMapperCourseSchedule());
-        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
     }
     @Override
@@ -640,7 +640,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 courseParticipant);
         List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
-        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+        Set<CourseParticipant> courseEnrolled = new LinkedHashSet<>(courseEnrolledList);
         return courseEnrolled;
     }
     @Override
@@ -668,7 +668,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("employeeNumber", courseParticipant.getEmployeeNumber());
         List<CourseParticipant> courseEnrolledList = template.query(query, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
-        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+        Set<CourseParticipant> courseEnrolled = new LinkedHashSet<>(courseEnrolledList);
         return courseEnrolled;
     }
     @Override
@@ -694,7 +694,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("courseScheduleId", searchForm.getCourseScheduleId());
         List<CourseParticipant> courseEnrolledList = template.query(sql, courseEnrolledParameters,
                 new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
-        Set<CourseParticipant> courseEnrolled = new HashSet<>(courseEnrolledList);
+        Set<CourseParticipant> courseEnrolled = new LinkedHashSet<>(courseEnrolledList);
         return courseEnrolled;
     }
     @Override
@@ -722,7 +722,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("courseScheduleId", courseSchedule.getId());
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                 new EnrollmentRowMapperCourseSchedule());
-        Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>(courseScheduleList);
+        Set<CourseSchedule> courseScheduleSet = new LinkedHashSet<CourseSchedule>(courseScheduleList);
         return courseScheduleSet;
     }
     @Override

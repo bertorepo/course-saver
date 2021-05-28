@@ -100,7 +100,8 @@
 				</colgroup>
 				<thead>
 					<tr>
-
+					
+						<th class="align-middle">Actions</th>
 						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
 						<th class="align-middle">Venue Name</th>
@@ -114,38 +115,14 @@
 						<th class="hide">Participant ID</th>
 						<th class="hide">Registration Date</th>
 						<th class="hide">Course Participant ID</th>
-						<th class="align-middle">Actions</th>
+						
+						
 					</tr>
 				</thead>
 				<tbody id="scheds">
 					<th:block th:each="courseSchedules : *{courseSchedules}">
 						<tr th:each="courseEnrollmentForm : ${courseSchedules.courseScheduleDetails}">
-
-							<td class="align-middle" th:if= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
-							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}','${courseSchedules.courseId}')|"
-							th:text="${courseSchedules.courseName}"></td>
-							<td class="align-middle" th:unless= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
-							th:text="${courseSchedules.courseName}"></td>
-							<td class="align-middle" th:text="${courseSchedules.instructorName}"></td>
-							<td class="align-middle" th:text="${courseSchedules.venueName}"></td>
-
-							<td class="align-middle" th:utext="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')} + '&lt;br /&gt; <hr>' + 
-						${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}" />
-
-
-
-							<td class="hide"
-								th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
-							</td>
-							<td class="hide"
-								th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
-							</td>
-							<td class="align-middle" th:text="|${courseEnrollmentForm.duration} hour/s|"></td>
-							<td class="hide" th:text="${courseSchedules.courseScheduleId}"></td>
-							<td class="hide" th:text="${courseSchedules.participantId}"></td>
-							<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
-							<td class="hide" th:text="${courseSchedules.id}"></td>
-
+						
 							<td class="sticky align-middle" th:attr="data-container='body', 
 									 data-toggle='tooltip', 
 									 data-placement='top',
@@ -175,6 +152,7 @@
 									class="btn btn-primary">
 									<i class="fa fa-edit"></i>
 								</button>
+								
 								<!-- Upload Certificate Modal -->
 								<button th:if= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}" 
 								Type="button" class="btn btn-info" aria-label="Settings" data-toggle="modal"
@@ -185,6 +163,33 @@
 
 								<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
 							</td>
+
+							<td class="align-middle" th:if= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
+							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}','${courseSchedules.courseId}')|"
+							th:text="${courseSchedules.courseName}"></td>
+							<td class="align-middle" th:unless= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
+							th:text="${courseSchedules.courseName}"></td>
+							<td class="align-middle" th:text="${courseSchedules.instructorName}"></td>
+							<td class="align-middle" th:text="${courseSchedules.venueName}"></td>
+
+							<td class="align-middle" th:utext="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')} + '&lt;br /&gt; <hr>' + 
+						${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}" />
+
+
+
+							<td class="hide"
+								th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
+							</td>
+							<td class="hide"
+								th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
+							</td>
+							<td class="align-middle" th:text="|${courseEnrollmentForm.duration} hour/s|"></td>
+							<td class="hide" th:text="${courseSchedules.courseScheduleId}"></td>
+							<td class="hide" th:text="${courseSchedules.participantId}"></td>
+							<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
+							<td class="hide" th:text="${courseSchedules.id}"></td>
+
+							
 						</tr>
 					</th:block>
 
