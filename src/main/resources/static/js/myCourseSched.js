@@ -8,7 +8,7 @@ var changeCourseSchedule;
 //	//	});
 //});
 function declineUpdate(courseId, courseName, courseScheduleId) {
-	//	alert("Course ID: " + courseId + " Course Name: " + courseName + " Course Schedule Id: " + courseScheduleId);
+		//alert("Course ID: " + courseId + " Course Name: " + courseName + " Course Schedule Id: " + courseScheduleId);
 
 	document.getElementById('courseScheduleId_replace').value = courseScheduleId;
 	document.getElementById('changeCourseSchedule').innerText = courseName;
@@ -194,10 +194,9 @@ function declinedCourseSchedule(courseParticipantId,
 
 
 
-
-	document.getElementById('courseParticipantIdHidden').value = courseParticipantId;
+	document.getElementById('courseParticipantIdHiddenDecline').value = courseParticipantId;
 	document.getElementById('courseScheduleIdHidden').value = courseScheduleId;
-	document.getElementById('courseName').value = courseName;
+	document.getElementById('courseNameDecline').value = courseName;
 	document.getElementById('courseSchedInstructor').value = instructorName;
 	document.getElementById('courseSchedDate').value = startDate + " to " + endDate;
 
@@ -205,7 +204,7 @@ function declinedCourseSchedule(courseParticipantId,
 	document.getElementById('courseSchedVenue').value = venueName;
 	document.getElementById('participantName').value = "No need to insert this";
 	document.getElementById('registrationDate').value = registrationDate;
-	document.getElementById('courseIdHidden').value = courseId;
+	document.getElementById('courseIdHiddenDecline').value = courseId;
 	document.getElementById('courseDescription').value = courseDetails;
 
 	document.getElementById('mainConfirmCourseName').value = courseName + " ? ";
