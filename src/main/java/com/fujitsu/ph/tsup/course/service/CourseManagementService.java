@@ -31,7 +31,7 @@ public interface CourseManagementService {
     Set<Course> findCoursesByName(String name);
     
     void createCourse(Course course);
-    
+    // Method for updating a course
     void updateCourse(Course course);
     
     // Method for loading all Course in Course View
