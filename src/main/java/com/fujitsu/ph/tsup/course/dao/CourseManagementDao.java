@@ -39,6 +39,7 @@ public interface CourseManagementDao {
     
     // Method for creating courses
     void createCourse(Course course);
+    
     // Method for updating a course
     void updateCourse(Course course);
     
