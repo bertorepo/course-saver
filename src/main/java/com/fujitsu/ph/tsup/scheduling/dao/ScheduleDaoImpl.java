@@ -14,6 +14,7 @@ import java.time.LocalDate;
 //0.01    | 06/26/2020 | WS) J.Macabugao | New Creation
 //0.01    | 06/26/2020 | WS) JC.Jimenez  | New Creation
 //0.01    | 06/26/2020 | WS) J.Balanon   | New Creation
+//0.02    | 05/28/2021 | WS) J.Atendido  | Bug fixes and enhancements
 //=======================================================
 
 /**
