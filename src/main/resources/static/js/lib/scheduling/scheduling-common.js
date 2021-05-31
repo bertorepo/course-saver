@@ -86,6 +86,86 @@ function timeOnly(id)
 			time.value = hour.padStart(2, "0") + ":00";	
 		}
 		
-	}
+	}	
+}
+
+//For search boxes of Instructor and Venue in Create scheduling and Update Scheduling
+function instructorNameOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
 	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+		
+		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+		
+		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	}
+}
+
+function instructorNameOnChange(){
+	
+	var instructorName = $("#instructorName").val();
+	var holder = document.getElementById("instructorName").placeholder;
+	
+	if(courseName == "" && (holder !== "Select Instructor" || holder !== "")){
+		document.getElementById("instructorName").value = holder;
+		
+		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+		
+	} else {
+		var instructorId = $('#instructors [value="'+ instructorName +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	}
+}
+
+function venueNameOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
+	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+		
+		var venueId = $('#venues [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+		
+		var venueId = $('#venues [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+	}
+}
+
+function venueNameOnChange(){
+	
+	var venueName = $("#venueName").val();
+	var holder = document.getElementById("venueName").placeholder;
+	
+	if(courseName == "" && (holder !== "Select Venue" || holder !== "")){
+		document.getElementById("venueName").value = holder;
+		
+		var venueId = $('#venues [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+		
+	} else {
+		var venueId = $('#venues [value="'+ venueName +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+	}
 }

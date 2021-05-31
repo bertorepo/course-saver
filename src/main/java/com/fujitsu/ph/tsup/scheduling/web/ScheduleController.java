@@ -1,8 +1,6 @@
 package com.fujitsu.ph.tsup.scheduling.web;
 
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 
 //=======================================================
@@ -16,6 +14,7 @@ import java.time.ZoneId;
 //0.01    | 06/26/2020 | WS) J.Macabugao | New Creation
 //0.01    | 06/26/2020 | WS) JC.Jimenez  | New Creation
 //0.01    | 06/26/2020 | WS) J.Balanon   | New Creation
+//0.02    | 05/28/2021 | WS) J.Atendido  | Bug fixes and enhancements
 //=======================================================
 
 /**
@@ -31,17 +30,13 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,15 +52,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.authz.service.AuthorizationService;
-import com.fujitsu.ph.tsup.common.domain.Employee;
 import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.course.service.CourseManagementService;
 import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
@@ -240,6 +231,8 @@ public class ScheduleController {
             courseScheduleNewForm.setInstructors(instructorFormList);
             courseScheduleNewForm.setVenues(venueFormList);
             courseScheduleNewForm.setCourses(courseFormList);
+            courseScheduleNewForm.setMinRequired(1);
+            courseScheduleNewForm.setMaxAllowed(100);
 
             model.addAttribute("scheduleNew", courseScheduleNewForm);
             
@@ -730,6 +723,7 @@ public class ScheduleController {
             for(CourseScheduleDetail cSchedDet: cSchedDetail) {
 
                 //Check if there is any conflicting schedules when submitting form
+            	if(id != courseSchedule.getId()) {
                 if(((courseSchedule.getCourseId() == form.getCourseId()) ||
                         (courseSchedule.getInstructorId() == form.getInstructorId()) ||
                         (courseSchedule.getVenueId() == form.getVenueId())) &&
@@ -769,6 +763,7 @@ public class ScheduleController {
                         model.addAttribute("updateView", form);
                         return "scheduling/viewSched";
                 } 
+              }
             }
         }
 
@@ -865,6 +860,10 @@ public class ScheduleController {
 	public String submitDeleteCourseScheduleForm(@PathVariable("courseScheduleId") Long id, 
 	        Model model, RedirectAttributes redirectAttributes) {
 	    
+    	CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
+		   
+        String courseName = courseSchedule.getCourseName();
+        
 	    CourseScheduleListForm courseSchedListForm = new CourseScheduleListForm();
         
         courseSchedListForm.setFromDateTime(listForm.getFromDateTime());
@@ -872,7 +871,7 @@ public class ScheduleController {
 
 		scheduleService.deleteCourseScheduleById(id);
 		
-		redirectAttributes.addFlashAttribute("deleteSuccess", "The Course Schedule["+id+"] has been successfully deleted.");
+		redirectAttributes.addFlashAttribute("deleteSuccess", "The Course Schedule for the course: [" + courseName + "] has been successfully deleted.");
 		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
 		
 		listForm = null;

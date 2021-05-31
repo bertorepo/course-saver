@@ -54,29 +54,39 @@
 					<div class="form-group row align-items-center justify-content-center">
 						<label class="col-lg-2 col-form-label">Instructor</label>
 						<div class="col-lg-5">
-							<select class="form-control custom-select custom-select-md" th:field="*{instructorId}" id="instructorId">
-								<option value="" selected>Select Instructor</option>
+						<input type="text" list="instructors" id="instructorName" 
+										placeholder="Select Instructor" 
+										class="form-control custom-select custom-select-md"
+										onmousedown="instructorNameOnDown(this.id)"
+										onchange="instructorNameOnChange()">
+							<div class="text-danger er" id="instructorId_error"></div>
+							<datalist id="instructors" >
+								<option value=""></option>
 								<option th:each="instructors : *{instructors}" 
-										th:value="${instructors.id}"
-										th:text="${instructors.name}"
+								        th:attr="data-value = ${instructors.id}"
+										th:value="${instructors.name}"
 										th:selected="${instructors.id} eq *{instructorId}"></option>
-							</select> 
-								<div class="text-danger er" id="instructorId_error">
-							</div>
+							</datalist> 
+							<input type="hidden" th:id="instructorId" th:field="*{instructorId}"/>
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
 						<label class="col-lg-2 col-form-label">Venue</label>
 						<div class="col-lg-5">
-							<select class="form-control custom-select custom-select-md" th:field="*{venueId}" id="venueId">
-								<option value="" selected>Select Venue</option>
+						<input type="text" list="venues" id="venueName" 
+										placeholder="Select Venue" 
+										class="form-control custom-select custom-select-md"
+										onmousedown="venueNameOnDown(this.id)"
+										onchange="venueNameOnChange()">
+							<div class="text-danger er" id="venueId_error"></div>
+							<datalist id="venues" >
+								<option value=""></option>
 								<option th:each="venues : *{venues}" 
-										th:value="${venues.id}"
-										th:text="${venues.name}"
+								        th:attr="data-value = ${venues.id}"
+										th:value="${venues.name}"
 										th:selected="${venues.id} eq *{venueId}"></option>
-							</select>
-								<div class="text-danger er" id="venueId_error">
-							</div>
+							</datalist> 
+							<input type="hidden" th:id="venueId" th:field="*{venueId}"/>
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
@@ -132,6 +142,7 @@
 									<td class="form-group">
 										<div class="">
 											<input type="date" class="form-control"
+															   max="9999-12-31"
 															   th:id="${'startDate' + (stat.index + 1)}"
 															   onblur="datetimeBlur()">
 											<div class="text-danger er" th:id="${'startDate' + (stat.index + 1) + '_error'}">
@@ -161,6 +172,7 @@
 									<td class="form-group">
 										<div class="">
 											<input type="date" class="form-control" 
+											                   max="9999-12-31"
 																th:id="${'endDate' + (stat.index + 1)}" 
 																onblur="datetimeBlur()">
 											<div class="text-danger er" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
@@ -191,7 +203,7 @@
 		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
-					<div class="modal-header alert-warning">
+					<div class="modal-header alert-success">
 						<h5 class="modal-title">Confirmation</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -204,9 +216,9 @@
 							</label>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
 								<input type="hidden" name="id" id="id" />
-								<button type="submit" name="submit" value="submit" class="btn btn-primary"> Yes</button>
+								<button type="submit" name="submit" value="submit" class="btn btn-success"> Yes</button>
+         						<button type="button" class="btn btn-danger" data-dismiss="modal"> No</button>
 						</div>
 					</div>
 				</div>
