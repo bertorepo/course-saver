@@ -185,26 +185,15 @@ function toTable(data){
 	data.forEach(function(object){		
 		var courseScheduleDetail = object.courseScheduleDetail;
 		var tr = document.createElement('tr'); 
-		tr.innerHTML = 
-			'<td>' + object.id + '</td>' +
-			'<td>' + object.courseName + '</td>' +
-			'<td>' + object.instructorLastName + ' ' + object.instructorFirstName + '</td>' +
-			'<td>' + moment.utc(courseScheduleDetail.scheduledStartDateTime, 'YYYY-MM-DD HH:mm').format(
-			'MMM DD, YYYY (ddd)- HH:mm A') + '</td>' +
-			'<td>' + moment.utc(courseScheduleDetail.scheduledEndDateTime, 'YYYY-MM-DD HH:mm').format(
-			'MMM DD, YYYY (ddd)- HH:mm A') + '</td>' +
-			'<td>' + courseScheduleDetail.duration + '</td>' +
-			'<td>' + object.venueName + '</td>' +
-			'<td>' + object.minRequired + '</td>' +
-			'<td>' + object.maxAllowed + '</td>' +
-			'<td>' + object.totalParticipants + '</td>';
+		
+		/* Removing the buttons in the table
 		//creating td element
 		var tdButtonReschedule = document.createElement("td");
 		//creating button element
 		var buttonReschedule = document.createElement("button");
 		//give a value of a button
 		buttonReschedule.innerHTML = "Reschedule"
-			//assigning class of button
+		//assigning class of button
 		buttonReschedule.classList.add("btn");
 		buttonReschedule.classList.add("btn-success");
 		buttonReschedule.classList.add("float-right");
@@ -222,11 +211,9 @@ function toTable(data){
 		buttonCancel.classList.add("btn-danger");
 		buttonCancel.classList.add("float-right");
 
-		tdButtonCancel.append(buttonCancel);
+		tdButtonReschedule.append(buttonCancel);
 
 		tr.append(tdButtonReschedule);
-		tr.append(tdButtonCancel);
-		table.append(tr);
 		//give a button a eventListener
 		buttonReschedule.addEventListener("click", function(){
 			reschedule(object.id,object.courseName, courseScheduleDetail.id, courseScheduleDetail.scheduledStartDateTime, courseScheduleDetail.scheduledEndDateTime);
@@ -235,7 +222,21 @@ function toTable(data){
 		buttonCancel.addEventListener("click", function(){
 			cancellation(object.id,object.courseName);
 		});
+		*/
 		
+		tr.innerHTML = 
+			'<td class="align-middle">' + object.courseName + '</td>' +
+			'<td class="align-middle">' + object.instructorLastName + ' ' + object.instructorFirstName + '</td>' +
+			'<td class="align-middle">' + object.mandatory + '</td>' +
+			'<td class="align-middle">' + object.deadline + '</td>' +
+			'<td class="align-middle">' + moment.utc(courseScheduleDetail.scheduledStartDateTime, 'YYYY-MM-DD HH:mm').format(
+			'MMM DD, YYYY (ddd)- HH:mm A') + 
+			'<hr>' + moment.utc(courseScheduleDetail.scheduledEndDateTime, 'YYYY-MM-DD HH:mm').format(
+			'MMM DD, YYYY (ddd)- HH:mm A') + '</td>' +
+			'<td class="align-middle">' + courseScheduleDetail.duration + '</td>' +
+			'<td class="align-middle">' + object.venueName + '</td>' +
+			'<td class="align-middle">' + object.totalParticipants + '</td>';
+		table.append(tr);
 	});
 	
 }
