@@ -14,6 +14,7 @@ package com.fujitsu.ph.tsup.course.model;
 //0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version
 //0.02    | 2021/04/19 | WS) st.diaz           | Updated
 //0.03    | 2021/05/10 | WS) D.Escala          | Updated
+//0.04    | 2021/05/28 | WS) mi.aguinaldo      | Updated
 //==================================================================================================
 
 public class CourseForm {
@@ -23,18 +24,16 @@ public class CourseForm {
     private String detail;
     private String isMandatory = "No";
     private String deadline;
-    private Long course_category_id;
+    private Long courseCategoryId;
 
-
-
-	/**
+    /**
      * Getter method for Course Id
      * 
      * @return Course Id
      */
     public Long getId() {
 
-        return id;
+	return id;
 
     }
 
@@ -45,7 +44,7 @@ public class CourseForm {
      */
     public void setId(Long id) {
 
-        this.id = id;
+	this.id = id;
 
     }
 
@@ -56,7 +55,7 @@ public class CourseForm {
      */
     public String getName() {
 
-        return name;
+	return name;
 
     }
 
@@ -67,7 +66,7 @@ public class CourseForm {
      */
     public void setName(String name) {
 
-        this.name = name;
+	this.name = name;
 
     }
 
@@ -78,7 +77,7 @@ public class CourseForm {
      */
     public String getDetail() {
 
-        return detail;
+	return detail;
 
     }
 
@@ -89,7 +88,7 @@ public class CourseForm {
      */
     public void setDetail(String detail) {
 
-        this.detail = detail;
+	this.detail = detail;
 
     }
 
@@ -99,54 +98,57 @@ public class CourseForm {
      * @return Course is Mandatory
      */
     public String getIsMandatory() {
-		return isMandatory;
-	}
-    
+	return isMandatory;
+    }
+
     /**
      * Setter Method for Course is Mandatory
      * 
      * @param isMandatory Course is Mandatory
      */
-	public void setIsMandatory(String isMandatory) {
-		this.isMandatory = isMandatory;
-	}
+    public void setIsMandatory(String isMandatory) {
+	this.isMandatory = isMandatory;
+    }
 
-	/**
+    /**
      * Getter Method for Course Deadline
      * 
      * @return Course Deadline
      */
-	public String getDeadline() {
-		return deadline;
-	}
+    public String getDeadline() {
+	return deadline;
+    }
 
-	/**
+    /**
      * Setter Method for Course Deadline
      * 
      * @param deadline Course Deadline
      */
-	public void setDeadline(String deadline) {
-		this.deadline = deadline;
-	}
-	/**
+    public void setDeadline(String deadline) {
+	this.deadline = deadline;
+    }
+
+    /**
      * Getter Method for Course Category ID
      * 
      * @return Course Category ID
      */
-    public Long getCourse_category_id() {
-		return course_category_id;
-	}
-	/**
+    public Long getCourseCategoryId() {
+	return courseCategoryId;
+    }
+
+    /**
      * Setter Method for Course Category ID
      * 
      * @param Course Category ID
      */
-	public void setCourse_category_id(Long course_category_id) {
-		this.course_category_id = course_category_id;
-	}
+    public void setCourseCategoryId(Long courseCategoryId) {
+	this.courseCategoryId = courseCategoryId;
+    }
+
     @Override
-	public String toString() {
-		return "Course [id=" + id + ", name=" + name + ", detail=" + detail + ", isMandatory=" + isMandatory
-				+ ", deadline=" + deadline + ", course_category_id= " + course_category_id +"]";
-	}
+    public String toString() {
+	return "Course [id=" + id + ", name=" + name + ", detail=" + detail + ", isMandatory=" + isMandatory
+		+ ", deadline=" + deadline + ", courseCategoryId= " + courseCategoryId + "]";
+    }
 }

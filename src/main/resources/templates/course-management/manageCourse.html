@@ -9,6 +9,7 @@
 <!-- 0.01    | 2020/08/28 | WS) c.lepiten         | Initial Version -->
 <!-- 0.02    | 2021/04/19 | WS) st.diaz           | Updated -->
 <!-- 0.03    | 2021/04/21 | WS) i.fajardo         | Updated -->
+<!-- 0.04    | 2021/05/24 | WS) mi.aguinldo       | Added Course Category column; Added Update button and its modal  -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE HTML>
@@ -21,7 +22,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="description" content="" />
 	<meta name="author" content="" />
-	<title>Delete Course</title>
+	<title>Manage Course</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
@@ -49,9 +50,37 @@
 				<div class="modal-footer">
 					<form class="form-horizontal" th:action="@{/courses/__${param.courseId}__/delete}" 
 						method="post">
-						<button type="submit" class="btn btn-danger">Confirm Deletion</button>							
+						<button type="submit" class="btn btn-danger">Confirm Deletion</button>					
 					</form>
 					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="updateConfirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" th:object="${updateCourse != null ? updateCourse: course}">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-body">
+
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label">Are you sure you
+							want to update this course?</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<form class="form-horizontal" th:action="@{/courses/update}" method="post" th:object="${course}">
+					<input type="hidden" th:value="${updateCourse != null ? updateCourse.id: course.id}" th:name="id" th:id="id">
+					<input type="hidden" th:value="${updateCourse != null ? updateCourse.name: course.name}" th:name="name" th:id="name">
+					<input type="hidden" th:value="${updateCourse != null ? updateCourse.detail: course.detail}" th:name="detail" th:id="detail">
+					<input type="hidden" th:value="${updateCourse != null ? updateCourse.isMandatory: course.isMandatory}" th:name="isMandatory" th:id="isMandatory">
+					<input type="hidden" th:value="${updateCourse != null ? updateCourse.deadline: course.deadline}" th:name="deadline" th:id="deadline">
+					<input type="hidden" th:value="${updateCourse != null ? updateCourse.courseCategoryId: course.courseCategoryId}" th:name="courseCategoryId" th:id="courseCategoryId">
+						<button type="submit" class="btn btn-danger">Confirm Update</button>					
+					</form>
+					<button type="submit" class="btn btn-primary" data-dismiss="modal" href="#">Back</button>
 				</div>
 
 			</div>
@@ -97,6 +126,85 @@
 		</form>
 		<!-- </form> -->
 	</div>
+	
+	
+	<div class="modal fade" id="infoModalForUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+
+		<form id="infoModalFormId"  th:action="@{/courses/update}" th:object="${course}" th:id = "updateCourse" method="get">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"><i class="fa fa-pencil"></i> Update Course</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h5>Course Information</h5>
+						<div class="form-group row">
+						<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput" th:field="*{id}">
+    						<label for="inputEmail3" class="col-sm-2 col-form-label">Course Name:</label>
+    						<div class="col-sm-10">
+     	 						<input class="form-control needs-validation" id="updateCourseName" name="updateCourseName" type="text" th:field="*{name}" required>
+								<div class="invalid-feedback">
+									Please Enter A Course Name.
+								</div>
+    						</div>
+ 						</div>
+ 						<div class="form-group row">
+						<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput"></input>
+    						<label for="inputEmail3" class="col-sm-2 col-form-label">Course Category:</label>
+    						<div class="col-sm-10">
+     	 						<select class="form-control" id="updateCourseCategory" name="updateCourseCategory"  th:field="*{courseCategoryId}" required>
+      								<option th:each="courseCategory : ${courseCategory}"
+							 			th:attr="data-value = ${courseCategory.id}"
+							 			th:value="${courseCategory.id}"
+							 			th:text="${courseCategory.category}">
+							 		</option>
+    							</select>
+    						</div>
+ 						</div>
+ 						<div class="form-group row">
+    						<label for="inputEmail3" class="col-sm-2 col-form-label">Detail:</label>
+    						<div class="col-sm-10">
+     	 						<textarea class="form-control needs-validation" id="updateCourseDetail" name="updateCourseDetail" th:field="*{detail}" required></textarea>
+     	 						<div class="invalid-feedback">
+									Please Enter A Detail.
+								</div>
+    						</div>
+ 						</div>
+						 <div class="form-group row">
+						    <label for="inputEmail3" class="col-sm-2 col-form-label">Mandatory:</label>
+    						<div class="col-sm-10">
+     	 						<select class="form-control" id="updateMandatory" name="updateMandatory" onchange="enableOrDisableDeadline()" th:field="*{isMandatory}">
+      								<option th:value="Yes" th:text="Yes"></option>
+      								<option th:value="No" th:text="No"></option>
+    							</select>
+    						</div>
+						  </div>
+ 						<div class="form-group row">
+    						<label for="inputUpdateDeadline" class="col-sm-2 col-form-label">Deadline:</label>
+    						<div class="col-sm-10">
+     	 						<select class="form-control  update-mandatory" id="updateDeadline" name="updateDeadline" th:field="*{deadline}" >
+      								<option id="nan" th:value="Nan">-</option>
+									<option th:value="Immediate" th:text="Immediate"></option>
+									<option th:value="Monthly" th:text="Monthly"></option>
+									<option th:value="Quarterly" th:text="Quarterly"></option>
+									<option th:value="Annually" th:text="Annually"></option>
+    							</select>
+    						</div>
+ 						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger update-button" href="#confirmModal">Update</button>
+						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- </form> -->
+	</div>
 
 	<!-- Info modal End-->
 
@@ -123,56 +231,73 @@
 
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
 			<h3>
-				<i class="fa fa-calendar-o"></i> Search Course Name
+				<i class="fa fa-book"></i> Manage Course
 			</h3>
 			<hr>
 			<div class="card">
 				<div class="card-body">
+					<h5>
+						<i class="fa fa-search"></i> Search Course Name
+					</h5>
+					<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Search:</label>
 						<div class="col-lg-3">
 							<input type="Text" class="form-control" name="searchCourseName" 
-								id="searchCourseName">
+								id="searchCourseName" maxlength="100" tabindex="1">
+						</div>
+						<div class="col-auto my-1">
+							<input type="submit" class="btn btn-success" value="Submit">
 						</div>
 					</div>
-					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
-					</div>
+					</form>
 				</div>
 			</div>
-		</form>
 
 		<div class="card mb-5">
 			<div class="card-header">
 				<h3>
-					<i class="fa fa-exclamation-triangle"></i> Delete Courses
+					<i class="fa fa-list-alt"></i> List Of Courses
 				</h3>
 			</div>
 			<div class="card-body">
 				<div style="overflow-x: auto; display: block; white-space: nowrap;">
 					<table class="table table-bordered text-center">
 						<thead>
+							<th style="width: 15%;">Action</th>
 							<th style="width: 20%;">Course Name</th>
+							<th style="width: 20%;">Course Category</th>
 							<th>Detail</th>
 							<th style="width: 10%;">Mandatory</th>
 							<th style="width: 15%;">Deadline</th>
-							<th style="width: 15%;">Action</th>
 						</thead>
 						<tbody th:each="course : *{courseList}">
 							<tr>
-								<td th:text="${course.name}"></td>
-								<td th:text="${course.detail}">Sample2</td>
-								<td th:text="${course.isMandatory}">Yes/No</td>
-								<td th:text="${course.deadline}">Sample2</td>
-								<td><input type="submit" value="Delete" class="btn btn-danger"
+								<td>
+								<input type="submit" value="Update" class="btn btn-success" 
+										th:attr="onclick=|updateButton('${course.id}','${course.name}',
+										'${course.detail}','${course.isMandatory}','${course.deadline}',${course.courseCategory.id})|">
+								<input type="submit" value="Delete" class="btn btn-danger"
 										th:attr="onclick=|deleteButton('${course.id}','${course.name}',
 										'${course.detail}','${course.isMandatory}','${course.deadline}')|">									
 								</td>
+								<td th:text="${course.name}"></td>
+								<td th:text="${course.courseCategory.category}"></td>
+								<td th:text="${course.detail}">Sample2</td>
+								<td th:text="${course.isMandatory}">Yes/No</td>
+								<td th:text="${course.deadline}">Sample2</td>
 							</tr>
 						</tbody>
 					</table>
+					<div th:if="${#lists.isEmpty(courseList)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+							<strong>No Course Found</strong>
+						</div>
+						<div class="card-footer" style="display: none">
+							<div id="pagination"></div>
+						</div>
+					</div>
 				</div>
 				
 				<div class="float-right">
@@ -195,6 +320,32 @@
 			$('#infoModal').modal('show');
 
 		}
+		
+		function updateButton(id, courseName, detail, mandatory, deadline, courseCategoryId) {
+			if(deadline === "-"){
+				deadline = "Nan";
+				$(".update-mandatory").prop('disabled', true);
+			}
+			document.getElementById("updateCourseIdInput").value = id;
+			document.getElementById("updateCourseName").value = courseName;
+			document.getElementById("updateCourseDetail").value = detail;
+			document.getElementById("updateMandatory").value = mandatory;
+			document.getElementById("updateDeadline").value = deadline;
+			document.getElementById("updateCourseCategory").value = courseCategoryId;	
+			
+			$('#infoModalForUpdate').modal('show');
+		}
+		
+		function enableOrDisableDeadline(){
+			var mandatory = document.getElementById("updateMandatory").value;
+			
+			if(mandatory === "No"){
+				$(".update-mandatory").prop('disabled', true);
+				document.getElementById("updateDeadline").value = "Nan";
+			} else {
+				$(".update-mandatory").prop('disabled', false);
+			}
+		}
 	</script>
 
 	<script>
@@ -204,6 +355,9 @@
 				$('#confirmModal').modal('show');
 			}
 
+			if (window.location.href.indexOf('#updateConfirmModal') != -1) {
+				$('#updateConfirmModal').modal('show');
+			}
 		});
 
 		$(document).ready(function () {
@@ -213,6 +367,50 @@
 			}
 
 		});
+		
+		
+		
+		$('#updateConfirmModal').on('hidden.bs.modal', function () {
+			window.location = "/courses/load";
+		});
+		
+		$('#infoModalForUpdate').on('hidden.bs.modal', function () {
+			var inputs = document.getElementsByClassName('needs-validation')
+			var validation = Array.prototype.filter.call(inputs, function (input) {
+				input.classList.remove('is-invalid');
+				input.classList.remove('is-valid');
+				
+			});
+
+			$(".update-button").prop('disabled', false);
+			$(this).find('form').trigger('reset');
+		})
+
+		//Update validation
+		$(document).ready((function () {
+				'use strict';
+				window.addEventListener('load', function () {
+					// fetch all the forms we want to apply custom style
+					var inputs = document.getElementsByClassName('needs-validation')
+					// loop over each input and watch blue event
+					var validation = Array.prototype.filter.call(inputs, function (input) {
+
+						input.addEventListener('blur', function (event) {
+							// reset
+							input.classList.remove('is-invalid')
+							input.classList.remove('is-valid')
+
+							if (input.checkValidity() === false) {
+								input.classList.add('is-invalid')
+								$(".update-button").prop('disabled', true);
+							}
+							else {
+								$(".update-button").prop('disabled', false);
+							}
+						}, false);
+					});
+				}, false);
+			}));
 		
 	</script>
 

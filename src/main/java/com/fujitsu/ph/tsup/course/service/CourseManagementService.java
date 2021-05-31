@@ -6,7 +6,6 @@ package com.fujitsu.ph.tsup.course.service;
 import java.util.Set;
 
 import com.fujitsu.ph.tsup.course.model.Course;
-import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -18,6 +17,7 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/16 | WS) i.fajardo       | Updated
+//0.03    | 2021/05/27 | WS) mi.aguinaldo    | Added updateCourse
 //==================================================================================================
 
 public interface CourseManagementService {
@@ -31,6 +31,9 @@ public interface CourseManagementService {
     Set<Course> findCoursesByName(String name);
     
     void createCourse(Course course);
+    
+    // Method for updating a course
+    void updateCourse(Course course);
     
     // Method for loading all Course in Course View
     Set<Course> loadAllCourse();
