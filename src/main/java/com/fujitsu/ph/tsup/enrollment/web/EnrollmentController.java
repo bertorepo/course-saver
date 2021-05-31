@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -142,8 +143,8 @@ public class EnrollmentController {
 		if (form.getFromDateTime().isAfter(form.getToDateTime())
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
-			model.addAttribute("error", "To Date should be greater than From Date");
-			model.addAttribute("nullMessage", "No schedules found");
+			model.addAttribute("error", "Invalid Date");
+			model.addAttribute("nullMessage", "No course schedule found");
 			return "enrollment/viewCourseEnroll";
 		}
 		List<TopLearnerForm> listTopLearnerByMonth = enrollmentService.findTopLearner(ZonedDateTime.now(),
@@ -152,7 +153,7 @@ public class EnrollmentController {
 				ZonedDateTime.now().plusMonths(4));
 		Set<CourseSchedule> courseScheduleAllActive = enrollmentService.findAllActiveCourseSchedule();
 		System.out.println(courseScheduleAllActive.size() + "SIZE OF COURSE ACTIVE");
-		Set<CourseScheduleForm> courseScheduleSetForm = new HashSet<>();
+		Set<CourseScheduleForm> courseScheduleSetForm = new LinkedHashSet<>();
 		for (CourseSchedule courseSchedule : courseScheduleAllActive) {
 			CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
 			courseScheduleForm.setId(courseSchedule.getId());
@@ -197,7 +198,7 @@ public class EnrollmentController {
 		try {
 			Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(form.getFromDateTime(),
 					form.getToDateTime());
-			Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
+			Set<CourseScheduleForm> courseScheduleFormSet = new LinkedHashSet<CourseScheduleForm>();
 			for (CourseSchedule courseSchedule : courseSchedules) {
 				CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
 				courseScheduleForm.setId(courseSchedule.getId());
@@ -482,7 +483,7 @@ public class EnrollmentController {
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
 			model.addAttribute("error", "To Date should be greater than or equal to From Date");
-			model.addAttribute("nullMessage", "No schedules found");
+			model.addAttribute("nullMessage", "No course schedule found");
 			return "enrollment/viewMemberCourse";
 		}
 		System.out.println("From Date Time: " + form.getFromDateTime());

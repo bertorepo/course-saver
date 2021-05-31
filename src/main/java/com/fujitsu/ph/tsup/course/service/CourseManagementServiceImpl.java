@@ -5,13 +5,14 @@ package com.fujitsu.ph.tsup.course.service;
 
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
 import com.fujitsu.ph.tsup.course.model.Course;
-import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -23,10 +24,12 @@ import com.fujitsu.ph.tsup.roletype.domain.RoleType;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
+//0.03	  | 2021/05/27 | WS) mi.aguinaldo    | Implemented update function
 //==================================================================================================
 
 @Service
 public class CourseManagementServiceImpl implements CourseManagementService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseManagementServiceImpl.class);
 
     @Autowired
     CourseManagementDao courseManagementDao;
@@ -124,4 +127,20 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     public Set<Course> loadAllCourse() {
         return courseManagementDao.loadAllCourse();
     }
+
+    /**
+     * Update a course
+     *@param course; Course object to be update
+     */
+    @Override
+    public void updateCourse(Course course) {
+	try {
+	    courseManagementDao.updateCourse(course);
+	} catch (DataAccessException ex) {
+	    LOGGER.error(ex.getMessage(), ex);
+	    throw new IllegalArgumentException("Can't update course");
+	}
+
+    }
+    
 }

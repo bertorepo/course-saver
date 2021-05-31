@@ -43,7 +43,7 @@ class CourseTest {
 		assertEquals(expected.getDetail(), "Details");
 		assertEquals(expected.getIsMandatory(), "Yes");
 		assertEquals(expected.getDeadline(), "Monthly");
-		assertEquals(expected.getCourse_category_id(), 3);
+		assertEquals(expected.getCourseCategoryId(), 3);
 	}
 	
 	/**
@@ -60,7 +60,7 @@ class CourseTest {
 		assertEquals(expected.getDetail(), "Details");
 		assertEquals(expected.getIsMandatory(), "No");
 		assertEquals(expected.getDeadline(), "-");
-		assertEquals(expected.getCourse_category_id(), 4);
+		assertEquals(expected.getCourseCategoryId(), 4);
 	}
 
 	/**
@@ -71,7 +71,13 @@ class CourseTest {
 	 * 
 	 */
 	private Course createBuilderOne() {
-		return new Course.Builder("Javascript", "Details", "Yes", "Monthly",3).build();
+	    return Course.builder()
+			 .withName("JavaScript")
+			 .withDeadline("Details")
+			 .withIsMandatory("Yes")
+			 .withDeadline("Monthly")
+			 .withCourseCategoryId(3L)
+			 .build();
 	}
 	
 	/**
@@ -82,6 +88,12 @@ class CourseTest {
 	 * 
 	 */
 	private Course createBuilderTwo() {
-		return new Course.Builder("Python", "Details", "No", "-",4).build();
+	    return Course.builder()
+			 .withName("Phython")
+			 .withDeadline("Details")
+			 .withIsMandatory("No")
+			 .withDeadline("-")
+			 .withCourseCategoryId(4L)
+			 .build();
 	}
 }
