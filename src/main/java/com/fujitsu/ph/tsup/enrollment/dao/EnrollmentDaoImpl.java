@@ -3,8 +3,6 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
-//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
-//import com.fujitsu.ph.tsup.enrollment.model.MemberSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
@@ -40,6 +38,7 @@ import org.springframework.stereotype.Repository;
 //0.01    | 09/14/2020 | WS) J.Yu              | Updated
 //0.01    | 09/14/2020 | WS) M.Lumontad        | Updated
 //0.01	  | 04/19/2021 | WS) M.Atayde		   | Updated
+//0.01	  | 05/28/2021 | WS) K.Sevilla		   | Updated
 //=================================================================================================
 /**
  * <pre>
@@ -705,7 +704,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "CS.VENUE_ID AS VENUE_ID, " + "V.NAME AS VENUE_NAME, " + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
-                + "CS.MAX_ALLOWED AS MAX_ALLOWED, " + "C.DETAIL AS COURSE_DETAIL, "
+                + "CS.MAX_ALLOWED AS MAX_ALLOWED, " + "C.DETAIL AS COURSE_DETAIL, " + "C.MANDATORY AS MANDATORY, " + "C.DEADLINE AS DEADLINE, "
                 + "(SELECT COUNT(PARTICIPANT_ID) AS TOTAL_PARTICIPANTS FROM COURSE_PARTICIPANT "
                 + "WHERE COURSE_SCHEDULE_ID = CS.ID), " + "CS.STATUS AS STATUS, "
                 + "COALESCE(CSD.RESCHEDULED_START_DATETIME, CSD.SCHEDULED_START_DATETIME) AS SCHEDULED_START_DATETIME, "
