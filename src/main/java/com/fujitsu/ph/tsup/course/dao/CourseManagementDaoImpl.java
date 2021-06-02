@@ -88,7 +88,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     
     @Override
     public Set<Course> findAllCourses(Pageable pageable) {
-	Order order = !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Order.desc("CE.course_category_id");
+	Order order = !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Order.asc("CC.category");
 	String query = "SELECT * " + 
 		       "FROM course CE " +
 		       "LEFT JOIN course_category CC " +

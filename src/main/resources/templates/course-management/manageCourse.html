@@ -25,7 +25,6 @@
 	<title>Manage Course</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
 	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -284,19 +283,33 @@
 								</td>
 								<td th:text="${course.name}"></td>
 								<td th:text="${course.courseCategory.category}"></td>
-								<td th:text="${course.detail}">Sample2</td>
+								<td class="text-truncate" style="max-width: 250px;" data-toggle="tooltip" th:title="${course.detail}" th:text="${course.detail}"></td>
 								<td th:text="${course.isMandatory}">Yes/No</td>
 								<td th:text="${course.deadline}">Sample2</td>
 							</tr>
 						</tbody>
 					</table>
-					<div class="card-footer" style="text-align: center !important;" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
-						<div th:if="${paginatedCourse.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
-						<input type="hidden" th:value="@{__${#httpServletRequest.requestURI}__(size=${paginatedCourse.size}, page=${pageNumber})}" th:name="test" th:id="test">
-							<a th:href="@{/courses/load(size=${paginatedCourse.size}, page=${pageNumber})}" th:text=${pageNumber}
-								th:class="${pageNumber==paginatedCourse.number + 1} ? active"></a>
-						</div>
-					</div>
+					<nav aria-label="Pagination" th:if="${paginatedCourse.totalPages gt 0} and ${#httpServletRequest.getRequestURI() != '/courses/search'}">
+						<ul class="pagination justify-content-center font-weight-bold">
+							<li class="page-item" th:classappend="${paginatedCourse.number eq 0} ? 'disabled'">
+								<a class="page-link" th:href="@{/courses/load?page={id}(id=${paginatedCourse.number lt 2 ? 1 : paginatedCourse.number})}"
+									aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li class="page-item" th:classappend="${i eq paginatedCourse.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, paginatedCourse.totalPages, 1)}">
+					            <a class="page-link" th:href="@{/courses/load?page={id}(id=${i})}" th:text="${i}"
+					               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+					        </li>
+					        <li class="page-item" th:classappend="${paginatedCourse.number + 1 eq paginatedCourse.totalPages} ? 'disabled'">
+					            <a class="page-link"
+					               th:href="@{/courses/load?page={id}(id=${paginatedCourse.number + 2})}"
+					               aria-label="Next" title="Next Page" data-toggle="tooltip">
+					                <span aria-hidden="true">&raquo;</span>
+					            </a>
+					        </li>
+					    </ul>
+					</nav>
 					<div th:if="${paginatedCourse.isEmpty()}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No Course Found</strong>
