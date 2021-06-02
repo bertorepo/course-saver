@@ -588,6 +588,9 @@ public class ScheduleController {
 	@GetMapping("/courseSchedule/{courseScheduleId}/update")
 	public String showUpdateCourseScheduleForm(@PathVariable("courseScheduleId") Long id, Model model,
 			CourseScheduleUpdateForm courseScheduleUpdateForm, RedirectAttributes redirectAttributes) {
+		
+		String currentInstructor = "";
+		String currentVenue = "";
 
 		if (model.containsAttribute("updateView")) {
 			return "scheduling/viewSched";
@@ -626,11 +629,25 @@ public class ScheduleController {
 		if(course.getIsMandatory().equals("Yes") && course.getDeadline().equals("Immediate")) {
 		model.addAttribute("notice", "The system automatically sends email to participants of courses tagged as [Mandatory] and [Immediate]. "
 				+ "If you encounter mailing server errors, please try again some other time.");
-		}		
+		}
+		
+		for(InstructorForm instructor: instructorFormList) {
+			if(instructor.getId() == courseScheduleUpdateForm.getInstructorId()) {
+				currentInstructor = instructor.getName();
+			}
+		}
+		
+		for(VenueForm venue: venueFormList) {
+			if(venue.getId() == courseScheduleUpdateForm.getVenueId()) {
+				currentVenue = venue.getName();
+			}
+		}
 		
 		model.addAttribute("updateView", courseScheduleUpdateForm);
 		model.addAttribute("deleteView", new CourseScheduleDeleteForm());
 		model.addAttribute("changeSchedule", listForm);
+		model.addAttribute("currentInstructor", currentInstructor);
+		model.addAttribute("currentVenue", currentVenue);
 
 		return "scheduling/viewSched";
 

@@ -167,26 +167,40 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Instructor:</label>
 								<div class="col-lg-7">
-									<select class="form-control" th:field="*{instructorId}">
-										<option value=""></option>
-										<option th:each="instructors : *{instructors}" 
-												th:value="${instructors.id}"
-												th:text="${instructors.name}"
-												th:selected="${instructors.id} eq *{instructorId}"></option>
-									</select>
+									<input type="text" list="instructors" id="instructorName" 
+									    th:attr="value = ${currentInstructor}"
+										class="form-control custom-select custom-select-md"
+										onmousedown="instructorNameOnDown(this.id)"
+										onchange="instructorNameOnChange()">
+							<div class="text-danger er" id="instructorId_error"></div>
+							<datalist id="instructors" >
+								<option value=""></option>
+								<option th:each="instructors : *{instructors}" 
+								        th:attr="data-value = ${instructors.id}"
+										th:value="${instructors.name}"
+										th:selected="${instructors.id} eq *{instructorId}"></option>
+							</datalist> 
+							<input type="hidden" th:id="instructorId" th:field="*{instructorId}"/>
 									<div class="text-danger er" id="instructorId_error"></div>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Venue:</label>
 								<div class="col-lg-7">
-									<select class="form-control" th:field="*{venueId}" id="venueId">
-										<option value=""></option>
-										<option th:each="venues : *{venues}" 
-												th:value="${venues.id}"
-												th:text="${venues.name}"
-												th:selected="${venues.id} eq *{venueId}"></option>
-									</select>
+									<input type="text" list="venues" id="venueName" 
+									    th:attr="value = ${currentVenue}"
+										class="form-control custom-select custom-select-md"
+										onmousedown="venueNameOnDown(this.id)"
+										onchange="venueNameOnChange()">
+							<div class="text-danger er" id="venueId_error"></div>
+							<datalist id="venues" >
+								<option value=""></option>
+								<option th:each="venues : *{venues}" 
+								        th:attr="data-value = ${venues.id}"
+										th:value="${venues.name}"
+										th:selected="${venues.id} eq *{venueId}"></option>
+							</datalist> 
+							<input type="hidden" th:id="venueId" th:field="*{venueId}"/>
 									<div class="text-danger er" id="venueId_error"></div>
 								</div>
 							</div>
