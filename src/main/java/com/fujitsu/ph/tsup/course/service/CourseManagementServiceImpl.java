@@ -3,12 +3,17 @@
  */
 package com.fujitsu.ph.tsup.course.service;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
@@ -55,6 +60,20 @@ public class CourseManagementServiceImpl implements CourseManagementService {
         return courseManagementDao.findAllCourses();
     }
     
+    
+    @Override
+    public Page<Course> findAllCourses(Pageable pageable) {
+	
+	List<Course> courses = courseManagementDao.findAllCourses(pageable)
+						  .stream()
+						  .collect(Collectors.toList());
+	
+	int countCourse = courseManagementDao.countCourse();
+	
+	return new PageImpl<>(courses,pageable,countCourse);
+    }
+    
+
     @Override
     public Set<Course> findCoursesByName(String name) {
 

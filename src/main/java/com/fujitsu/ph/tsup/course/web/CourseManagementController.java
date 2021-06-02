@@ -4,14 +4,18 @@
 package com.fujitsu.ph.tsup.course.web;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,19 +58,31 @@ public class CourseManagementController {
     CourseCategoryManagementService courseCategoryManagementService;
 
     @GetMapping("/load")
-    public String load(Model model) {
+    public String load(Model model, @RequestParam("page") Optional<Integer> page, 
+	      @RequestParam("size") Optional<Integer> size) {
+	
+	int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+	
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+	Page<Course> paginatedCourse = courseManagementService.findAllCourses(pageable);
 
-        Set<Course> course = courseManagementService.findAllCourses();
-
-	List<Course> listOfCourse = course.stream()
-					  .sorted(Comparator.comparing(Course::getName))
-					  .collect(Collectors.toList());
+	int totalPages = paginatedCourse.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                .boxed()
+                .collect(Collectors.toList());
+ 
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         
-        model.addAttribute("courseList", listOfCourse);
         
 	List<CourseCategory> courseCategoryList = courseCategoryManagementService.findAllCourseCategory()
 										 .stream()
 										 .collect(Collectors.toList());
+	
+	model.addAttribute("paginatedCourse", paginatedCourse);
+	
     	model.addAttribute("courseCategory",courseCategoryList);
         
         model.addAttribute("course", new CourseForm());
@@ -178,7 +194,7 @@ public class CourseManagementController {
         return "redirect:/courses/load#successModal";
     }
     
-    @PostMapping("/search")
+    @GetMapping("/search")
     public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model) {
     	
     	String searchName = searchCourseName.trim();
@@ -192,6 +208,18 @@ public class CourseManagementController {
 						.orElse(Collections.emptySet())
 						.stream()
 						.collect(Collectors.toList());
+	    
+	    Page<Course> paginatedCourse = new PageImpl<Course>(listOfCourse);
+
+	    model.addAttribute("paginatedCourse", paginatedCourse);
+
+	    int totalPages = paginatedCourse.getTotalPages();
+	    if (totalPages > 0) {
+		List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+						     .boxed()
+						     .collect(Collectors.toList());
+		model.addAttribute("pageNumbers", pageNumbers);
+	    }
 	    
 	    List<CourseCategory> courseCategoryList = Optional.ofNullable(courseCategoryManagementService.findAllCourseCategory())
 							      .orElse(Collections.emptySet())

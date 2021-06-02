@@ -240,7 +240,7 @@
 					<h5>
 						<i class="fa fa-search"></i> Search Course Name
 					</h5>
-					<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
+					<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="get">
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Search:</label>
 						<div class="col-lg-3">
@@ -272,7 +272,7 @@
 							<th style="width: 10%;">Mandatory</th>
 							<th style="width: 15%;">Deadline</th>
 						</thead>
-						<tbody th:each="course : *{courseList}">
+						<tbody th:each="course : *{paginatedCourse.content}">
 							<tr>
 								<td>
 								<input type="submit" value="Update" class="btn btn-success" 
@@ -290,7 +290,14 @@
 							</tr>
 						</tbody>
 					</table>
-					<div th:if="${#lists.isEmpty(courseList)}">
+					<div class="card-footer" style="text-align: center !important;" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+						<div th:if="${paginatedCourse.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+						<input type="hidden" th:value="@{__${#httpServletRequest.requestURI}__(size=${paginatedCourse.size}, page=${pageNumber})}" th:name="test" th:id="test">
+							<a th:href="@{/courses/load(size=${paginatedCourse.size}, page=${pageNumber})}" th:text=${pageNumber}
+								th:class="${pageNumber==paginatedCourse.number + 1} ? active"></a>
+						</div>
+					</div>
+					<div th:if="${paginatedCourse.isEmpty()}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No Course Found</strong>
 						</div>

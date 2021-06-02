@@ -3,11 +3,15 @@
  */
 package com.fujitsu.ph.tsup.course.dao;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -34,6 +38,9 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     // Call NamedParameterJdbcTemplate
     @Autowired
     private NamedParameterJdbcTemplate template;
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * Method for finding Course by Id
@@ -77,6 +84,30 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
         return courses;
     }
     
+    
+    
+    @Override
+    public Set<Course> findAllCourses(Pageable pageable) {
+	Order order = !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Order.desc("CE.course_category_id");
+	String query = "SELECT * " + 
+		       "FROM course CE " +
+		       "LEFT JOIN course_category CC " +
+		       "ON CE.course_category_id = CC.id " +
+		       "ORDER BY " + order.getProperty() + " " + order.getDirection() + " " +
+		       "LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
+
+	List<Course> courseList = template.query(query, new CourseRowMapper());
+	
+	return courseList.isEmpty() ? Collections.emptySet() : new LinkedHashSet<>(courseList);
+    }
+    
+    
+
+    @Override
+    public int countCourse() {
+	return jdbcTemplate.queryForObject("SELECT count(*) FROM course", Integer.class);
+    }
+
     @Override
     public Set<Course> findCoursesByName(String name) {
     	
