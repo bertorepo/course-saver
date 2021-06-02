@@ -483,7 +483,7 @@ public class ScheduleController {
         form.setVenues(venueFormList);
         form.setInstructors(instructorFormList);
 
-        redirectAttributes.addFlashAttribute("message", "Success!! Schedule has been created");
+        redirectAttributes.addFlashAttribute("message", "You have successfully created new schedule!");
      
         return "redirect:/schedules/new";
 

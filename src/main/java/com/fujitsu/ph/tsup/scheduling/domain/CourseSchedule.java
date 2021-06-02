@@ -527,7 +527,7 @@ public class CourseSchedule {
          */
         private void validateInstructorId(Long instructorId) {
             if(instructorId == null || instructorId == 0L) {
-                throw new IllegalArgumentException("Instructor should not be empty");
+                throw new IllegalArgumentException("This field is required.");
             }
         }
     
@@ -541,7 +541,7 @@ public class CourseSchedule {
          */
         private void validateVenueId(Long venueId) {
             if(venueId == null || venueId == 0L) {
-                throw new IllegalArgumentException("Venue should not be empty");
+                throw new IllegalArgumentException("Venue should not be empty.");
             }
         }
         /**
@@ -621,7 +621,7 @@ public class CourseSchedule {
          */
         private void validateMaxAllowed(int maxAllowed) {
             if(maxAllowed < 0) {
-                throw new IllegalArgumentException("Maximum No. of Participants should not be less than 0");
+                throw new IllegalArgumentException("Maximum Number of Participants should not be less than 0.");
             }
         }
         
@@ -660,7 +660,7 @@ public class CourseSchedule {
         
         private void validateCourseDetails(String courseDetails) {
        	 if(venueName == null || venueName.isEmpty()) {
-                throw new IllegalArgumentException("Course Details should not be empty");
+                throw new IllegalArgumentException("Course Details should not be empty.");
        	     }
         }
         

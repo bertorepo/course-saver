@@ -46,7 +46,7 @@ public class CourseScheduleNewForm{
     /**
      * Instructor Id
      */
-    @NotNull(message = "Please fill up instructors")
+    @NotNull(message = "This field is required.")
     private Long instructorId;
     
     /**
