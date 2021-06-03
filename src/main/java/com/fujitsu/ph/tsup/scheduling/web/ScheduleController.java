@@ -435,14 +435,14 @@ public class ScheduleController {
                         form.setVenues(venueFormList);
                         form.setInstructors(instructorFormList);
                         model.addAttribute("error", 
-                                                "The Schedule you have submitted has conflict with " + 
+                                                "The schedule you have submitted has conflict with " + 
                                                         courseSchedule.getCourseName()+" [" +
                                                         DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
                                                              .format(cSchedDet.getScheduledStartDateTime()
                                                                      .withZoneSameInstant(ZoneId.systemDefault())) +" - " + 
                                                         DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
                                                                 .format(cSchedDet.getScheduledEndDateTime()
-                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +"]");
+                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +"]. Please select a different schedule.");
                         model.addAttribute("scheduleNew", form);
                         return "scheduling/createSched";
                 } 
@@ -504,14 +504,13 @@ public class ScheduleController {
     public String viewChangeCourseSchedule(
             @Valid @ModelAttribute("changeSchedule") CourseScheduleListForm courseScheduleListForm,
             BindingResult bindingResult, Model model) {
-	    
-	    
-
-        logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
+		
+		logger.debug("CourseScheduleListForm: {}", courseScheduleListForm);
         logger.debug("Result: {}", bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "scheduling/changeSchedule";
+        	model.addAttribute("errorMessage", bindingResult.getAllErrors());
+            return "scheduling/viewSched";
         }
 
         if (courseScheduleListForm.getToDateTime() == null || courseScheduleListForm.getFromDateTime() == null) {
@@ -519,17 +518,19 @@ public class ScheduleController {
             courseScheduleListForm.setToDateTime(ZonedDateTime.now().plusDays(5));
         }
 
-        if (courseScheduleListForm.getToDateTime().isBefore(courseScheduleListForm.getFromDateTime())) {
+        if (courseScheduleListForm.getFromDateTime().isAfter(courseScheduleListForm.getToDateTime())) {
             model.addAttribute("changeSchedule", courseScheduleListForm);
-            model.addAttribute("error", "To Date should be greater than or equal to From Date");
+            model.addAttribute("error", "Invalid Date");
+            model.addAttribute("nullMessage", "No Course Schedule Found");
             return "scheduling/viewSched";
         } 
-        
-        if (courseScheduleListForm.getToDateTime() == (courseScheduleListForm.getFromDateTime())) {
-            model.addAttribute("changeSchedule", courseScheduleListForm);
-            model.addAttribute("error", "From Datetime and To Datetime should not be exactly equal to each other");
-            return "scheduling/viewSched";
-        } 
+        if (courseScheduleListForm.getFromDateTime().isEqual(courseScheduleListForm.getToDateTime())) {
+			model.addAttribute("changeSchedule", courseScheduleListForm);
+			model.addAttribute("error", "Equal Date");
+            model.addAttribute("nullMessage", "No Course Schedule Found");
+			return "scheduling/viewSched";
+		}
+        try {
 
         Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
                 courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
@@ -564,6 +565,9 @@ public class ScheduleController {
         }
         
         courseScheduleListForm.setCourseSchedules(courseScheduleViewFormSet);
+        } catch (Exception e) {
+			model.addAttribute("nullMessage", e.getMessage());
+		}
      
         model.addAttribute("changeSchedule", courseScheduleListForm);
         model.addAttribute("updateView", new CourseScheduleUpdateForm());
@@ -758,7 +762,7 @@ public class ScheduleController {
                                                                      .withZoneSameInstant(ZoneId.systemDefault())) +" - " + 
                                                         DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
                                                                 .format(cSchedDet.getScheduledEndDateTime()
-                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +"]");
+                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +"]. Please pick a different schedule.");
                         model.addAttribute("changeSchedule", listForm);
                         model.addAttribute("updateView", form);
                         return "scheduling/viewSched";
@@ -819,21 +823,21 @@ public class ScheduleController {
 					scheduleService.updateCourseSchedule(courseSchedule);
 		        } catch(MailAuthenticationException e) {
 		        	//Cancel rescheduling
-		        	redirectAttributes.addFlashAttribute("error", "Can't communicate with the mail server. Please try again later");
+		        	redirectAttributes.addFlashAttribute("error", "Can't communicate with the mail server. Please try again later.");
 		        	return "redirect:/schedules/courseSchedules/view";
 
 		        }
 				redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
-	    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been updated. Email notification has been sent.");
+	    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been successfully updated. Email notification has been sent.");
 			}else {
 	        	scheduleService.updateCourseSchedule(courseSchedule);
 	    		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
-	    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been updated");
+	    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been successfully updated.");
 			}
         }else {
         	scheduleService.updateCourseSchedule(courseSchedule);
     		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
-    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been updated");
+    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been successfully updated.");
         }
 		
 		form.setVenues(venueFormList);
@@ -871,7 +875,7 @@ public class ScheduleController {
 
 		scheduleService.deleteCourseScheduleById(id);
 		
-		redirectAttributes.addFlashAttribute("deleteSuccess", "The Course Schedule for the course: [" + courseName + "] has been successfully deleted.");
+		redirectAttributes.addFlashAttribute("deleteSuccess", "The schedule for the course, " + courseName + ", has been successfully deleted.");
 		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
 		
 		listForm = null;
@@ -963,8 +967,6 @@ public class ScheduleController {
 
 		}
 		
-		
-		
         /*
          * changeStatusFormListSorted.forEach(i -> { System.out.println(i); });
          */
@@ -1054,7 +1056,7 @@ public class ScheduleController {
         System.out.println(changeStatusForm.getCourseSchedules().get(0).getCourseName());
         
         redirectAttributes
-            .addFlashAttribute("changeStatusSuccess", "You successfully changed the status of Schedules in "+
+            .addFlashAttribute("changeStatusSuccess", "You have successfully changed the schedule status of the course, "+
                     changeStatusForm.getCourseSchedules().get(0).getCourseName()+".");
         
         return "redirect:/schedules/courseSchedule/"+id+"/changeStatus";
