@@ -10,6 +10,8 @@
 //==================================================================================================
 package com.fujitsu.ph.tsup.report.summary.service;
 
+import java.time.ZonedDateTime;
+
 import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
 
 /**
@@ -26,7 +28,10 @@ public interface SummaryGSTDevService {
      * <pre>
      * Get Summary of members who completed G3CC Standardization Training
      * </pre>
+	 * @param summaryGSTDev 
+	 * @param zonedDateTime2 
+	 * @param zonedDateTime 
      * @return SummaryGSTDevForm
      */
-	SummaryGSTDevForm getSummary();
+	SummaryGSTDevForm getSummary(ZonedDateTime StartDateTime,ZonedDateTime EndDateTime, SummaryGSTDevForm summaryGSTDev);
 }

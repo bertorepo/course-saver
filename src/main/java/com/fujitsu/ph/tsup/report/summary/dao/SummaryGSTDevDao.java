@@ -12,6 +12,7 @@
 
 package com.fujitsu.ph.tsup.report.summary.dao;
 
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 /**
@@ -37,8 +38,8 @@ public interface SummaryGSTDevDao {
 
     int findAllJDUNewMembers();
 
-    int findTotalCoursePerEmployee(Set<Long> course_id, Long participant_id);
+    int findTotalCoursePerEmployee(Set<Long> course_id, Long participant_id, ZonedDateTime EndDate);
 
-    int findTotalCoursePerEmployeeLastWeek(Set<Long> course_id, Long participant_id);
+    int findTotalCoursePerEmployeeLastWeek(ZonedDateTime startDate, ZonedDateTime EndDate, Set<Long> course_id, Long participant_id);
 
 }

@@ -12,6 +12,7 @@
 
 package com.fujitsu.ph.tsup.report.summary.dao;
 
+import java.time.ZonedDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,7 +79,7 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
     }
 
     @Override
-    public int findTotalCoursePerEmployee(Set<Long> course_id, Long participant_id) {
+    public int findTotalCoursePerEmployee(Set<Long> course_id, Long participant_id, ZonedDateTime EndDate) {
         String query = "SELECT COUNT(DISTINCT course_id)" 
                 +" FROM tsup.course_attendance CA" 
                 +" LEFT Join tsup.course_schedule_detail CSD ON" 
@@ -88,18 +89,18 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
                 +" WHERE CS.status = 'D'"
                 +" AND CA.status = 'P'"
                 +" AND CS.course_id IN (:courses)"
-                +" AND CA.participant_id = :participant_id";
-
+                +" AND CA.participant_id = :participant_id"
+        		+" AND ca.log_out_dateTime < :EndDate;";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("courses", course_id)
-                .addValue("participant_id", participant_id);
-
+                .addValue("participant_id", participant_id)
+        		.addValue("EndDate", EndDate.toOffsetDateTime());
         int no_of_course = template.queryForObject(query, sqlParameterSource, Integer.class);
 
         return no_of_course;
     }
 
     @Override
-    public int findTotalCoursePerEmployeeLastWeek(Set<Long> course_id, Long participant_id) {
+    public int findTotalCoursePerEmployeeLastWeek(ZonedDateTime startDate, ZonedDateTime EndDate, Set<Long> course_id, Long participant_id) {
         String query = "SELECT COUNT(DISTINCT course_id)"  
                 +" FROM  tsup.course_attendance CA"  
                 +" LEFT Join tsup.course_schedule_detail CSD"  
@@ -110,13 +111,18 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
                 +" AND CA.status = 'P'" 
                 +" AND CS.course_id IN (:courses)" 
                 +" AND CA.participant_id = :participant_id"
-                +" AND CA.log_out_datetime <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER)";
-        
+				/*
+				 * +" AND CA.log_out_datetime <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER)"
+				 */
+		        +" AND ((ca.log_out_dateTime >= date_trunc('week', :startDate - interval '1 week')"																					
+				+" AND ca.log_out_dateTime < date_trunc('week', :EndDate)));";
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("courses", course_id)
-                .addValue("participant_id", participant_id);
-
-        int no_of_course = template.queryForObject(query, sqlParameterSource, Integer.class);
+                .addValue("participant_id", participant_id)
+		        .addValue("EndDate",EndDate.toOffsetDateTime())
+				.addValue("startDate", startDate.toOffsetDateTime());
+		
+		        int no_of_course = template.queryForObject(query, sqlParameterSource, Integer.class);
 
         return no_of_course;
     }

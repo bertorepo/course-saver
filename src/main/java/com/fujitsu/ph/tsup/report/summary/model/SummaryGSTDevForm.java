@@ -11,6 +11,14 @@
 //==================================================================================================    
 package com.fujitsu.ph.tsup.report.summary.model;
 
+import java.time.ZonedDateTime;
+
+import javax.validation.constraints.Null;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.sun.istack.NotNull;
+
 /**
  * <pre>
  * The model for G3CC standardization training for dev
@@ -40,10 +48,25 @@ public class SummaryGSTDevForm {
     private int TotalNoJDUDevLastWkFinValue;
 
     /* Percentage Finished As of Today (Total Devs and also Total Courses */
-    private int PercentageFinTodayValue;
+    private double PercentageFinTodayValue;
 
     /* Percentage Finished As of Last Week (Total Devs and also Total Courses) */
-    private int PercentageFinLastWkValue;
+    private double PercentageFinLastWkValue;
+    
+    /**
+     *	Scheduled Start Date and Time
+     */
+    @NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private ZonedDateTime scheduledStartDateTime;
+	
+	/**
+     *	Scheduled End Date and Time
+     */
+	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private ZonedDateTime scheduledEndDateTime;
+
 
     public int getTotalNoJDUDevValue() {
         return TotalNoJDUDevValue;
@@ -93,21 +116,37 @@ public class SummaryGSTDevForm {
         this.TotalNoJDUDevLastWkFinValue = totalNoJDUDevLastWkFinValue;
     }
 
-    public int getPercentageFinTodayValue() {
+    public double getPercentageFinTodayValue() {
         return PercentageFinTodayValue;
     }
 
-    public void setPercentageFinTodayValue(int percentageFinTodayValue) {
+    public void setPercentageFinTodayValue(double percentageFinTodayValue) {
         this.PercentageFinTodayValue = percentageFinTodayValue;
     }
 
-    public int getPercentageFinLastWkValue() {
+    public double getPercentageFinLastWkValue() {
         return PercentageFinLastWkValue;
     }
 
-    public void setPercentageFinLastWkValue(int percentageFinLastWkValue) {
+    public void setPercentageFinLastWkValue(double percentageFinLastWkValue) {
         this.PercentageFinLastWkValue = percentageFinLastWkValue;
     }
+    public ZonedDateTime getScheduledStartDateTime() {
+		return scheduledStartDateTime;
+	}
+
+	public void setScheduledStartDateTime(ZonedDateTime scheduledStartDateTime) {
+		this.scheduledStartDateTime = scheduledStartDateTime;
+	}
+
+	public ZonedDateTime getScheduledEndDateTime() {
+		return scheduledEndDateTime;
+	}
+
+	public void setScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
+		this.scheduledEndDateTime = scheduledEndDateTime;
+	}
+
 
     @Override
     public String toString() {
@@ -119,4 +158,6 @@ public class SummaryGSTDevForm {
                 + ", PercentageFinLastWkValue =" + PercentageFinLastWkValue + " ]";
     }
 
+
+	
 }

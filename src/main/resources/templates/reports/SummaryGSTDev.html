@@ -12,21 +12,8 @@
 <title>Generate Reports</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
-<style>
-.table th {
-	vertical-align: middle !important;
-	background-color: #18BC9C;
-	color: #ffffff;
-}
+<link rel="stylesheet" type="text/css" href="/css/app/report/summaryGSTForDev.common.css">
 
-.table td {
-	vertical-align: middle !important;
-}
-
-hr {
-	margin: 5px;
-}
-</style>
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
 <script th:src="@{/js/app/moment.min.js}"></script>
@@ -39,6 +26,7 @@ hr {
 			<i class="fa fa-file-text"></i> Generate Reports
 		</h3>
 		<hr>
+		<form id="summaryGstForDevForm" class="form-horizontal" action="#" th:action="@{/report/summary/standardization/dev}"  th:object="${summaryGSTDev}"  method="GET">
 		<div class="card">
 			<div class="card-body">
 				<div
@@ -61,22 +49,20 @@ hr {
 					</div>
 				</div>
 
-				<div
-					class="form-group row align-items-center justify-content-center">
-					<span style="width: 31px"></span> <label
-						class="col-lg-3 col-form-label" style="font-weight: bold;">Date
-						Range</label> <label class="col-form-label" style="font-weight: bold;">From</label>
-					<span style="width: 8px"></span> <input class="form-control"
-						type="datetime-local" id="startDate" name="startDate"
-						style="width: 220px; font-size: 14px;" onkeydown="return false"
-						disabled /> <span style="width: 8px"></span> <label
-						class="col-form-label" style="font-weight: bold;">To</label>
-					<div class="col-lg-2">
-						<input class="form-control" type="datetime-local" id="endDate"
-							name="endDate" style="width: 220px; font-size: 14px;"
-							onkeydown="return false" disabled />
-					</div>
-				</div>
+				<div class="form-group row align-items-center justify-content-center">
+ 				<span style="width:31px"></span>
+                <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+                        <label class="col-form-label" style="font-weight: bold;">From</label>
+								<span style="width:8px"></span>
+	                            <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+								<input type="hidden" th:field="*{scheduledStartDateTime}"/>
+								<span style="width:8px"></span>
+	                        <label class="col-form-label" style="font-weight: bold;">To</label>
+	                        <div class="col-lg-2">
+	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+	                            <input type="hidden" th:field="*{scheduledEndDateTime}"/>
+	                       </div>
+                 </div> 
 
 				<div
 					class="form-group row align-items-center justify-content-center">
@@ -91,77 +77,65 @@ hr {
 					class="form-group row align-items-center justify-content-center"
 					style="margin-left: 20%">
 					<input type="button" id="viewButton" class="btn btn-success"
-						value="View" onclick="viewButton()" style="width: 100px" disabled />
+						value="View" onclick="viewButtonDev()" style="width: 100px" />
 					<span style="width: 100px"></span> <input type="button"
 						id="exportButton" class="btn btn-success"
-						onclick="fileNameCreator()" value="Export" style="width: 100px"
-						disabled />
+						onclick="fileNameCreator()" value="Export" style="width: 100px" />
 				</div>
-				<label>Report Display</label>
-				<div id="reportTable"
-					style="border-style: groove; width: 100%; height: 400px;"></div>
+				<label>Report Display Summary</label>
+				<div class="container" id="reportTable"  style="border-style: groove; width: 100%; height: 400px; display:block;">
 				<!-- Display Summary of G3CC Standardization Training  -->
-				<div id="summaryMainDiv">
-					<div style="display: flex" id="summaryGSTDev">
+					<div id="summaryGSTDev" class="row" style="margin-top:11px" >
 						<div class="col-lg-6">
-							<table id="summaryGSTDev1"
-								class=" table table-bordered text-center">
-								<colgroup>
-									<col width="70%" />
-									<col width="30%" />
-								</colgroup>
-								<tr>
-									<th>Total Number of JDU Devs</th>
-									<td th:text="${TotalNoJDUDevValue}"></td>
-								</tr>
-								<tr>
-									<th>Total Number of JDU Devs Last Week</th>
-									<td th:text="${TotalNoJDUDevLastWeekValue}"></td>
-								</tr>
-								<tr>
-									<th>Total Number of Existing Members</th>
-									<td th:text="${TotalNoExistingMemValue}"></td>
-								</tr>
-								<tr>
-									<th>Total Number of New Members</th>
-									<td th:text="${TotalNoNewMemValue}"></td>
-								</tr>
-								<tr>
-									<th>Total Number of JDU Devs Who Finished the training</th>
-									<td th:text="${TotalNoJDUDevFinValue}"></td>
-								</tr>
-								<tr>
-									<th>Total Number of JDU Devs Last Week Who Finished the training</th>
-									<td th:text="${TotalNoJDUDevLastWkFinValue}"></td>
-								</tr>
-							</table>
+							<table class="summaryTable">
+									<tr>
+										<td class="table-success titletd">Total Number of JDU Devs</td>
+										<td class=centertd th:text="*{TotalNoJDUDevValue}"></td>
+									</tr>
+									<tr>
+										<td class="table-success">Total Number of JDU Devs Last Week</td>
+										<td class=centertd th:text="*{TotalNoJDUDevLastWeekValue}"></td>
+									</tr>
+									<tr>
+										<td class="table-success"> Total Number of Existing Members</td>
+										<td class=centertd th:text="*{TotalNoExistingMemValue}"></td>
+									</tr>
+									<tr>
+										<td class="table-success">Total Number of New Members</td>
+										<td class=centertd th:text="*{TotalNoNewMemValue}"></td>
+									</tr>
+									<tr>
+										<td class="table-success"> Total Number of JDU Devs Who Finished the training</td>
+										<td class=centertd th:text="*{TotalNoJDUDevFinValue}"></td>
+									</tr>
+									<tr>
+										<td class="table-success">Total Number of JDU Devs Last Week Who Finished the training</td>
+										<td class=centertd th:text="*{TotalNoJDUDevLastWkFinValue}"></td>
+									</tr> 
+								</table>
 						</div>
 						<div class="col-lg-6">
-							<table id="summaryGSTDev2"
-								class="table table-bordered text-center">
-								<tr>
-									<th>Percentage Finished As Of Today (Total Devs and Also Total Courses)</th>
-								</tr>
-								<tr style="font-size: 200%; line-height: 2.4;">
-									<td th:text="${PercentageFinTodayValue + '%'}"></td>
-								</tr>
-							</table>
-							<table id="summaryGSTDev3"
-								class="table table-bordered text-center">
-								<tr>
-									<th>Percentage Finished As Of Last Week (Total Devs and Also Total Courses)</th>
-								</tr>
-								<tr style="font-size: 200%; line-height: 2.4;">
-									<td th:text="${PercentageFinLastWkValue + '%'}"></td>
-								</tr>
+							<table class="percenttable">
+									<tr>
+										<td class="table-success percenttd">Percentage Finished As Of Today (Total Devs and Also Total Courses)</td>
+									</tr>
+									<tr>
+										<td class="percenttext" th:text="*{PercentageFinTodayValue + '%'}"></td>
+									</tr>
+									<tr>
+										<td class="table-success percenttd"> Percentage Finished As Of Last Week (Total Devs and Also Total Courses)</td>
+									</tr>
+									<tr>
+										<td class="percenttext" th:text="*{PercentageFinLastWkValue + '%'}"></td>
+									</tr>
 							</table>
 						</div>
-					</div>
-
-				</div>
-				<!-- End of Display Summary of G3CC Standardization Training -->
 			</div>
 		</div>
+	</div>
+</div>
+</form>
+		<!-- End of Display Summary of G3CC Standardization Training -->
 		<!-- Export Summary of G3CC Standardization Training  -->
 			<table id="exportSummaryTable"
 				class="table table-bordered table-responsive text-center sticky-table width_max"
@@ -217,4 +191,18 @@ hr {
 	</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 </body>
+<script>
+
+$("input[type='datetime-local']").change(function(){
+	if( $("#startDate").val() >=  $("#endDate").val()){
+		$("#viewButton").attr('disabled', 'disabled');
+		$("#exportButton").attr('disabled', 'disabled');
+		document.getElementById("message").innerHTML = dateErrorMessage;
+		$('#errorModal').modal('show');
+	}else{
+		$("#viewButton").removeAttr('disabled');
+		$("#exportButton").removeAttr('disabled');
+	}
+});
+</script>
 </html>

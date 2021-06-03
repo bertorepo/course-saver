@@ -10,6 +10,8 @@
 //==================================================================================================
 package com.fujitsu.ph.tsup.report.summary.web;
 
+import java.time.ZonedDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,17 +44,37 @@ public class SummaryGSTDevController {
      */
 
     @GetMapping("/standardization/dev")
-    public String loadSummary(Model model) {
-
-        SummaryGSTDevForm summaryGSTDev = summaryGSTDevService.getSummary();
-        model.addAttribute("TotalNoJDUDevValue", summaryGSTDev.getTotalNoJDUDevValue());
-        model.addAttribute("TotalNoJDUDevLastWeekValue", summaryGSTDev.getTotalNoJDUDevLastWeekValue());
-        model.addAttribute("TotalNoExistingMemValue", summaryGSTDev.getTotalNoExistingMemValue());
-        model.addAttribute("TotalNoNewMemValue", summaryGSTDev.getTotalNoNewMemValue());
-        model.addAttribute("TotalNoJDUDevFinValue", summaryGSTDev.getTotalNoJDUDevFinValue());
-        model.addAttribute("TotalNoJDUDevLastWkFinValue", summaryGSTDev.getTotalNoJDUDevLastWkFinValue());
-        model.addAttribute("PercentageFinTodayValue", summaryGSTDev.getPercentageFinTodayValue());
-        model.addAttribute("PercentageFinLastWkValue", summaryGSTDev.getPercentageFinLastWkValue());
+    public String loadSummary(SummaryGSTDevForm summaryGSTDev, Model model) {
+    	
+    	if (summaryGSTDev.getScheduledStartDateTime() == null ||
+    			summaryGSTDev.getScheduledEndDateTime() == null) { 
+			/* model.addAttribute("nullMessage","No Summary Found"); */
+		          summaryGSTDev.setScheduledStartDateTime(ZonedDateTime.now().minusDays(5).withHour(0).withMinute(0));
+		          summaryGSTDev.setScheduledEndDateTime(ZonedDateTime.now());
+		      }
+    	
+      
+		summaryGSTDev = summaryGSTDevService.getSummary(summaryGSTDev.getScheduledStartDateTime(),summaryGSTDev.getScheduledEndDateTime(),summaryGSTDev);
+     
+        
+		/*
+		 * model.addAttribute("TotalNoJDUDevValue",
+		 * summaryGSTDev.getTotalNoJDUDevValue());
+		 * model.addAttribute("TotalNoJDUDevLastWeekValue",
+		 * summaryGSTDev.getTotalNoJDUDevLastWeekValue());
+		 * model.addAttribute("TotalNoExistingMemValue",
+		 * summaryGSTDev.getTotalNoExistingMemValue());
+		 * model.addAttribute("TotalNoNewMemValue",
+		 * summaryGSTDev.getTotalNoNewMemValue());
+		 * model.addAttribute("TotalNoJDUDevFinValue",
+		 * summaryGSTDev.getTotalNoJDUDevFinValue());
+		 * model.addAttribute("TotalNoJDUDevLastWkFinValue",
+		 * summaryGSTDev.getTotalNoJDUDevLastWkFinValue());
+		 * model.addAttribute("PercentageFinTodayValue",
+		 * summaryGSTDev.getPercentageFinTodayValue());
+		 * model.addAttribute("PercentageFinLastWkValue",
+		 * summaryGSTDev.getPercentageFinLastWkValue());
+		 */
         model.addAttribute("summaryGSTDev", summaryGSTDev);
         return "reports/SummaryGSTDev";
 

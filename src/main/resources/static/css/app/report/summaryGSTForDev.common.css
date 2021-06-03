@@ -1,0 +1,44 @@
+table {
+	border-collapse: collapse;
+    width: 100%;
+    border: 1px solid black;
+    padding: 9px;  
+}
+td,
+th {
+     padding: 9px;
+   }
+
+hr {
+	margin: 5px; 
+ }
+
+.summaryTable{
+	margin-left: 1px;
+	height:122%;
+	border
+}
+ 
+.titletd{
+	width:70%;
+}
+ 
+.centertd{
+    text-align:center;
+}
+
+.percenttable{
+	border: 1px solid black;
+	height:122%;
+	text-align:center;
+	bgcolor:white
+} 
+
+.percenttd{
+	height:20%;
+}
+
+.percenttext{
+	font-size: 200%;
+	line-height: 2.4;
+}
