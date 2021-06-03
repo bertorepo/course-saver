@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -203,23 +202,15 @@ public class CourseManagementController {
 	    
 	    Page<Course> paginatedCourse = new PageImpl<Course>(listOfCourse);
 
-	    model.addAttribute("paginatedCourse", paginatedCourse);
 
-	    int totalPages = paginatedCourse.getTotalPages();
-	    if (totalPages > 0) {
-		List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-						     .boxed()
-						     .collect(Collectors.toList());
-		model.addAttribute("pageNumbers", pageNumbers);
-	    }
-	    
+
 	    List<CourseCategory> courseCategoryList = Optional.ofNullable(courseCategoryManagementService.findAllCourseCategory())
 							      .orElse(Collections.emptySet())
 							      .stream()
 							      .collect(Collectors.toList());
 	    
+	    model.addAttribute("paginatedCourse", paginatedCourse);
 	    model.addAttribute("courseCategory",courseCategoryList);
-	    model.addAttribute("courseList", listOfCourse);
 	    model.addAttribute("course", new CourseForm());
 	} catch (NullPointerException e) {
 	    return "course-management/manageCourse";
