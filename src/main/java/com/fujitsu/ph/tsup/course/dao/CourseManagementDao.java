@@ -33,9 +33,12 @@ public interface CourseManagementDao {
     // Method for loading all course in Course View
     Set<Course> findAllCourses();
     
+    // Method for finding all courses base on Pageable object provided
     Set<Course> findAllCourses(Pageable pageable);
     
-    int countCourse();    
+    // Method for counting course
+    int countCourse();
+    
     // Method for searching Courses by Name
     Set<Course> findCoursesByName(String name);
     

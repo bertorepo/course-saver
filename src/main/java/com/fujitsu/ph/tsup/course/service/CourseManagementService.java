@@ -31,6 +31,7 @@ public interface CourseManagementService {
     
     Set<Course> findAllCourses();
    
+    // Method for finding all courses base on Pageable object provided
     Page<Course> findAllCourses(Pageable pageable);
     
     Set<Course> findCoursesByName(String name);

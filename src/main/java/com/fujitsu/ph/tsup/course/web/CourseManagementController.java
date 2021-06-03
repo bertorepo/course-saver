@@ -63,18 +63,10 @@ public class CourseManagementController {
 	
 	int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
+        
 	
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
 	Page<Course> paginatedCourse = courseManagementService.findAllCourses(pageable);
-
-	int totalPages = paginatedCourse.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
- 
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
         
         
 	List<CourseCategory> courseCategoryList = courseCategoryManagementService.findAllCourseCategory()
