@@ -2,6 +2,12 @@ function deleteButton(id, category, detail) {
 	document.getElementById("courseCategoryIdInput").value = id;
 	document.getElementById("courseCategoryName").innerHTML = category;
 	document.getElementById("courseCategoryDetail").innerHTML = detail;
+	
+	var form  = document.getElementById("infoModalFormId");
+	form.addEventListener('submit', function(){
+		this.action = "/courseCategory/" + id + "/delete";
+	});
+	
 	$('#infoModal').modal('show');
 }
 

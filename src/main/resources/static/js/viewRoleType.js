@@ -1,7 +1,13 @@
 function deleteButton(id, roleName, roleDesc) {
-	document.getElementById("roleIdInput").value = id;
+	//document.getElementById("roleIdInput").value = id;
 	document.getElementById("roleName").innerHTML = roleName;
 	document.getElementById("roleDesc").innerHTML = roleDesc;
+	
+	var form  = document.getElementById("infoModalFormId");
+	form.addEventListener('submit', function(){
+		this.action = "/roletype/" + id + "/delete";
+	});
+
 	$('#infoModal').modal('show');
 }
 
