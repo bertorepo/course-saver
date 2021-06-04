@@ -88,12 +88,36 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     
     @Override
     public Set<Course> findAllCourses(Pageable pageable) {
-	Order order = !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Order.asc("CC.category");
+	Order order =  !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Order.asc("CC.category");
+	String orderProperty;
+	switch (order.getProperty()) {
+	case "courseName":
+	    orderProperty = "CE.name";
+	    break;
+	    
+	case "courseCategory": 
+	    orderProperty = "CC.category";
+	    break;
+	    
+	case "mandatory": 
+	    orderProperty = "CE.mandatory";
+	    break;
+	    
+	case "deadline": 
+	    orderProperty = "CE.deadline";
+	    break;
+	    
+	default:
+	    orderProperty = "CC.category";
+	    break;
+	}
+	
+	
 	String query = "SELECT * " + 
 		       "FROM course CE " +
 		       "LEFT JOIN course_category CC " +
 		       "ON CE.course_category_id = CC.id " +
-		       "ORDER BY " + order.getProperty() + " " + order.getDirection() + " " +
+		       "ORDER BY " + orderProperty + " " + order.getDirection() + " " +
 		       "LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
 
 	List<Course> courseList = template.query(query, new CourseRowMapper());

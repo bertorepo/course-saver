@@ -62,15 +62,15 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     
     
     @Override
-    public Page<Course> findAllCourses(Pageable pageable) {
+    public Page<Course> findAllCourses(Pageable pagable) {
 	
-	List<Course> courses = courseManagementDao.findAllCourses(pageable)
+	List<Course> courses = courseManagementDao.findAllCourses(pagable)
 						  .stream()
 						  .collect(Collectors.toList());
 	
 	int countCourse = courseManagementDao.countCourse();
 	
-	return new PageImpl<>(courses,pageable,countCourse);
+	return new PageImpl<>(courses,pagable,countCourse);
     }
     
 

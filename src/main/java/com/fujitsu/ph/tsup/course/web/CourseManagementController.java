@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,20 +59,34 @@ public class CourseManagementController {
     CourseCategoryManagementService courseCategoryManagementService;
 
     @GetMapping("/load")
-    public String load(Model model, @RequestParam("page") Optional<Integer> page, 
-	      @RequestParam("size") Optional<Integer> size) {
+    public String load(Model model, @RequestParam("page") Optional<Integer> page,
+	    			    @RequestParam("size") Optional<Integer> size, 
+	    			    @RequestParam("sortField") Optional<String> sortField,
+	    			    @RequestParam("sortDir") Optional<String> sortDir) {
 	
 	int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
         
+	String sortFieldVal = sortField.filter(str -> !str.isEmpty())
+				       .orElse("courseCategory");
 	
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-	Page<Course> paginatedCourse = courseManagementService.findAllCourses(pageable);
+	String sortVal = sortDir.filter(str -> !str.isEmpty())
+				.orElse("asc");
+	
+	
+	Sort sort = Sort.by(Direction.valueOf(sortVal.toUpperCase()), sortFieldVal);
+	Pageable pageable = PageRequest.of(currentPage - 1, pageSize,sort);
+
         
+	Page<Course> paginatedCourse = courseManagementService.findAllCourses(pageable);
         
 	List<CourseCategory> courseCategoryList = courseCategoryManagementService.findAllCourseCategory()
 										 .stream()
 										 .collect(Collectors.toList());
+	
+	model.addAttribute("reverseSortDir", sortVal);
+	
+	model.addAttribute("currentPage", currentPage);
 	
 	model.addAttribute("paginatedCourse", paginatedCourse);
 	
