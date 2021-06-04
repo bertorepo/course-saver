@@ -31,40 +31,33 @@ function validateIfEmpty() {
 	
 	// validate empty category
 	if (roleName.value == "" ) {
-		document.getElementById("nameErrorMsg").innerHTML = "*Required";
+		document.getElementById("nameErrorMsg").innerHTML = "Please enter a Role Name";
 		document.getElementById("updateBtn").disabled = true;
 	} 
 	
 	// validate empty detail
 	if (roleDesc.value == "") {
-		document.getElementById("descErrorMsg").innerHTML = "*Required";
+		document.getElementById("descErrorMsg").innerHTML = "Please enter a Role Description";
 		document.getElementById("updateBtn").disabled = true;
 	}
 	 
 	// validate duplicate --to work--
 	if (roleNameExist(roleName.value, id.value)) { 
-		document.getElementById("nameErrorMsg").innerHTML = "*Role Name already exist";
+		document.getElementById("nameErrorMsg").innerHTML = "Role Name already exist";
 		document.getElementById("updateBtn").disabled = true;
-		//localStorage.setItem("id", id.value);
-		//localStorage.setItem("category", category.value);
-		//localStorage.setItem("detail", detail.value);
 	} 
 	
-	// validation for special character 
-	
+	// validation for special character for Role Name
 	if (roleName.value.match(format)){
-		document.getElementById("nameErrorMsg").innerHTML = "*Role Name is invalid. Please remove invalid characters";
+		document.getElementById("nameErrorMsg").innerHTML = "Role Name is invalid. Please omit special characters";
 		document.getElementById("updateBtn").disabled = true;
 	}
 	
-	// validation for special character 
-	if (format.test(roleDesc.value)) { 
-		document.getElementById("descErrorMsg").innerHTML = "*Detail is invalid. Please remove invalid characters ";
+	// validation for special character for Role Description
+	if (roleDesc.value.match(format)){
+		document.getElementById("descErrorMsg").innerHTML = "Role Description is invalid. Please omit special characters";
 		document.getElementById("updateBtn").disabled = true;
-		//localStorage.setItem("id", id.value);
-		//localStorage.setItem("category", category.value);
-		//localStorage.setItem("detail", detail.value);
-	} 
+	}
 	
 	// validate no change
 	if (checkingForNoChange(roleName.value, id.value, roleDesc.value)) { 
@@ -72,6 +65,19 @@ function validateIfEmpty() {
 		localStorage.clear();
 	} 
 }
+
+$(document).ready(function() {
+
+	if (window.location.href.indexOf('#successUpdateModal') != -1) {
+			$('#successUpdateModal').modal('show');
+			localStorage.clear();
+	}
+	
+	$('#confirmUpdateBtn').click(function() {
+		$("#roleForm").submit();
+	});
+	
+});
 
 function roleNameExist(rolename, id) {
 	  return roletypeList.some(function(role) {
@@ -105,10 +111,6 @@ $(document).ready(function() {
 	if (window.location.href.indexOf('#successModal') != -1) {
 		$('#successModal').modal('show');
 	}
-});
-
-$('#updateButton').click(function() {
-		$('#successModal').modal('show');
 });
 
 $(function() {
