@@ -9,7 +9,7 @@ package com.fujitsu.ph.tsup.scheduling.domain;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/22/2020 | WS) J.Macabugao | New Creation
-//
+//0.02    | 06/04/2021 | WS) J. Atendido | Bug fix and enhancements
 //
 //=======================================================
 
@@ -66,6 +66,11 @@ public class CourseSchedule {
      * Venue Name
      */
     private String venueName;
+
+    /**
+     * Venue venueOverlap boolean
+     */
+    private boolean venueOverlap;
     
     /**
      * Minimum number of participants
@@ -113,6 +118,7 @@ public class CourseSchedule {
         this.instructorFirstName = builder.instructorFirstName;
         this.venueId = builder.venueId;
         this.venueName = builder.venueName;
+        this.venueOverlap = builder.venueOverlap;
         this.minRequired = builder.minRequired;
         this.maxAllowed = builder.maxAllowed;
         this.courseScheduleDetail = builder.courseScheduleDetail;
@@ -158,12 +164,21 @@ public class CourseSchedule {
         return venueName;
     }
 
+    public boolean isVenueOverlap() {
+		return venueOverlap;
+	}
+
+
+	public void setVenueOverlap(boolean venueOverlap) {
+		this.venueOverlap = venueOverlap;
+	}
+
 
     public int getMinRequired() {
         return minRequired;
     }
 
-    public int getMaxAllowed() {
+	public int getMaxAllowed() {
         return maxAllowed;
     }
 
@@ -196,8 +211,8 @@ public class CourseSchedule {
      *
      */
     public static class Builder {
-        
-        /**
+
+		/**
          * Id
          */
         private Long id;
@@ -238,6 +253,11 @@ public class CourseSchedule {
          * Venue Name
          */
         private String venueName;
+
+        /**
+         * Venue venueOverlap boolean
+         */
+        private boolean venueOverlap;
         
         /**
          * Minimum number of participants
@@ -349,13 +369,14 @@ public class CourseSchedule {
          * @param instuctorFirstName
          * @param venueId
          * @param venueName
+         * @param venueOverlap 
          * @param minRequired
          * @param maxAllowed
          * @param status
          */
     
         public Builder(Long id, Long courseId,  String courseName,Long instructorId, String instructorLastName, 
-            String instructorFirstName, Long venueId, String venueName, int minRequired, int maxAllowed, char status, int totalParticipants) {
+            String instructorFirstName, Long venueId, String venueName, boolean venueOverlap, int minRequired, int maxAllowed, char status, int totalParticipants) {
         
         validateId(id);
         validateCourseId(courseId);
@@ -378,6 +399,7 @@ public class CourseSchedule {
         this.instructorFirstName = instructorFirstName;
         this.venueId = venueId;
         this.venueName = venueName;
+        this.venueOverlap = venueOverlap;
         this.minRequired = minRequired;
         this.maxAllowed = maxAllowed;
         this.status = status;
@@ -668,12 +690,10 @@ public class CourseSchedule {
         public String toString() {
             return "Builder [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", instructorId="
                     + instructorId + ", instructorLastName=" + instructorLastName + ", instructorFirstName="
-                    + instructorFirstName + ", venueId=" + venueId + ", venueName=" + venueName + ", minRequired="
-                    + minRequired + ", maxAllowed=" + maxAllowed + ", courseScheduleDetail=" + courseScheduleDetail
+                    + instructorFirstName + ", venueId=" + venueId + ", venueName=" + venueName + ", venueOverlap=" + venueOverlap
+                    + ", minRequired=" + minRequired + ", maxAllowed=" + maxAllowed + ", courseScheduleDetail=" + courseScheduleDetail
                     + ", status=" + status + "]";
         }
-    
-    
     
     }
 }

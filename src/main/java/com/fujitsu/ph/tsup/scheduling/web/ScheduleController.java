@@ -405,7 +405,7 @@ public class ScheduleController {
                 //Check if there is any conflicting schedules when submitting form
                 if(((courseSchedule.getCourseId() == form.getCourseId()) ||
                         (courseSchedule.getInstructorId() == form.getInstructorId()) ||
-                        (courseSchedule.getVenueId() == form.getVenueId())) &&
+                        ((courseSchedule.getVenueId() == form.getVenueId() && !courseSchedule.isVenueOverlap()))) &&
                         //Checks if there's a same schedule that matches the submitted Schedule
                         (form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> 
                             i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
@@ -743,14 +743,14 @@ public class ScheduleController {
             	if(id != courseSchedule.getId()) {
                 if(((courseSchedule.getCourseId() == form.getCourseId()) ||
                         (courseSchedule.getInstructorId() == form.getInstructorId()) ||
-                        (courseSchedule.getVenueId() == form.getVenueId())) &&
+                        ((courseSchedule.getVenueId() == form.getVenueId() && !courseSchedule.isVenueOverlap()))) &&
                         //Checks if there's a same schedule that matches the submitted Schedule
-                        (form.getCourseScheduleDetailList().stream().anyMatch(i -> 
+                        ((form.getCourseScheduleDetailList().stream().anyMatch(i -> 
                             i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
                                 .equals(cSchedDet.getScheduledEndDateTime()))) &&
                         (form.getCourseScheduleDetailList().stream().anyMatch(o -> 
                             o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
-                                .equals(cSchedDet.getScheduledStartDateTime())))) {
+                                .equals(cSchedDet.getScheduledStartDateTime()))))) {
                     
                         List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
                         

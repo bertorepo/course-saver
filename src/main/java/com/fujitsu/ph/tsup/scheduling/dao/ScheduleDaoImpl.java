@@ -1,6 +1,21 @@
 package com.fujitsu.ph.tsup.scheduling.dao;
 
 
+//=======================================================
+//$Id: PR02$
+//Project Name: Training Sign Up
+//Class Name: CourseScheduleRowMapper.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by      | Content
+//--------+------------+-----------------+---------------
+//0.01    | 06/26/2020 | WS) J.Macabugao | New Creation
+//0.01    | 06/26/2020 | WS) JC.Jimenez  | New Creation
+//0.01    | 06/26/2020 | WS) J.Balanon   | New Creation
+//0.02    | 06/04/2021 | WS) J.Atendido  | Added overlap attribute for venue
+//
+//=======================================================
+
 import java.time.LocalDate;
 
 //=======================================================
@@ -91,6 +106,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "CSCHED.VENUE_ID AS VENUE_ID, " 
                 + "V.NAME AS VENUE_NAME, "
+                + "V.OVERLAP AS VENUE_OVERLAP, "
                 + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED, " 
                 + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
                 + "(SELECT COUNT(PARTICIPANT_ID)"
@@ -400,6 +416,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "CSCHED.VENUE_ID AS VENUE_ID, " 
                 + "V.NAME AS VENUE_NAME, "
+                + "V.OVERLAP AS VENUE_OVERLAP, "
                 + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED, " 
                 + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
                 + "(SELECT COUNT(PARTICIPANT_ID)"
@@ -452,6 +469,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "CSCHED.VENUE_ID AS VENUE_ID, " 
                 + "V.NAME AS VENUE_NAME, "
+                + "V.OVERLAP AS VENUE_OVERLAP, "
                 + "CSCHED.MIN_REQUIRED AS MIN_REQUIRED, " 
                 + "CSCHED.MAX_ALLOWED AS MAX_ALLOWED, "
                 + "(SELECT COUNT(PARTICIPANT_ID)"
