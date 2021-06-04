@@ -28,44 +28,51 @@ function validateIfEmpty() {
 	var id = document.getElementById("id");
 	var category = document.getElementById("category");
 	var detail = document.getElementById("detail");
-	var format = /[*:'?"\\|<>\/]/;
+	var format = /[^a-zA-Z0-9 ]/g;
+	
 	document.getElementById("updateBtn").disabled = false;
 	document.getElementById("categoryErrorMsg").innerHTML = "";
 	document.getElementById("detailErrorMsg").innerHTML = "";
+	
 	// validate empty category
 	if (category.value == "" ) {
-		document.getElementById("categoryErrorMsg").innerHTML = "*Required";
+		document.getElementById("categoryErrorMsg").innerHTML = "Please enter a Course Category";
 		document.getElementById("updateBtn").disabled = true;
 	} 
+	
 	// validate empty detail
 	if (detail.value == "") {
-		document.getElementById("detailErrorMsg").innerHTML = "*Required";
+		document.getElementById("detailErrorMsg").innerHTML = "Please enter Course Category details";
 		document.getElementById("updateBtn").disabled = true;
 	} 
+	
 	// validate duplicate
 	if (checkingForDuplicate(category.value, id.value)) { 
-		document.getElementById("categoryErrorMsg").innerHTML = "*Course Category Name already exist";
+		document.getElementById("categoryErrorMsg").innerHTML = "Course Category Name already exist";
 		document.getElementById("updateBtn").disabled = true;
 		localStorage.setItem("id", id.value);
 		localStorage.setItem("category", category.value);
 		localStorage.setItem("detail", detail.value);
 	} 
+	
 	// validation for special character 
-	if (format.test(category.value)) { 
-		document.getElementById("categoryErrorMsg").innerHTML = "*Category Name is invalid. Please remove invalid characters. ";
+	if (category.value.match(format)){
+		document.getElementById("categoryErrorMsg").innerHTML = "Category Name is invalid. Please remove invalid characters. ";
 		document.getElementById("updateBtn").disabled = true;
 		localStorage.setItem("id", id.value);
 		localStorage.setItem("category", category.value);
 		localStorage.setItem("detail", detail.value);
-	} 
+	}
+		
 	// validation for special character 
-	if (format.test(detail.value)) { 
-		document.getElementById("detailErrorMsg").innerHTML = "*Detail is invalid. Please remove invalid characters. ";
+	if (detail.value.match(format)) { 
+		document.getElementById("detailErrorMsg").innerHTML = "Detail is invalid. Please omit special characters. ";
 		document.getElementById("updateBtn").disabled = true;
 		localStorage.setItem("id", id.value);
 		localStorage.setItem("category", category.value);
 		localStorage.setItem("detail", detail.value);
 	} 
+	
 	// validate no change
 	if (checkingForNoChange(category.value, id.value, detail.value)) { 
 		document.getElementById("updateBtn").disabled = true;
