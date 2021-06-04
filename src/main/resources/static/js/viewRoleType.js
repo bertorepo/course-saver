@@ -4,14 +4,14 @@ function showUpdateModal(id, rolename, roledesc) {
 	document.getElementById("descErrorMsg").innerHTML = "";
 	
 	if (id == localStorage.getItem("id")){
-		document.getElementById("roleIdUpdate").value = localStorage.getItem("id");
-		document.getElementById("roleNameUpdate").value = localStorage.getItem("rolename");
-		document.getElementById("roleDescUpdate").value = localStorage.getItem("roledesc");
+		document.getElementById("id").value = localStorage.getItem("id");
+		document.getElementById("rolename").value = localStorage.getItem("rolename");
+		document.getElementById("roledesc").value = localStorage.getItem("roledesc");
 		
 	} else {
-		document.getElementById("roleIdUpdate").value = id;
-		document.getElementById("roleNameUpdate").value = rolename;
-		document.getElementById("roleDescUpdate").value = roledesc;
+		document.getElementById("id").value = id;
+		document.getElementById("rolename").value = rolename;
+		document.getElementById("roledesc").value = roledesc;
 	}
 	
 	$('#updateModal').modal('show');
@@ -20,9 +20,9 @@ function showUpdateModal(id, rolename, roledesc) {
 
 function validateIfEmpty() {
 
-	var id = document.getElementById("roleIdUpdate");
-	var roleName = document.getElementById("roleNameUpdate");
-	var roleDesc = document.getElementById("roleDescUpdate");
+	var id = document.getElementById("id");
+	var roleName = document.getElementById("rolename");
+	var roleDesc = document.getElementById("roledesc");
 	var format = /[^a-zA-Z0-9 ]/g;
 	
 	document.getElementById("updateBtn").disabled = false;
@@ -49,13 +49,7 @@ function validateIfEmpty() {
 	
 	// validation for special character for Role Name
 	if (roleName.value.match(format)){
-		document.getElementById("nameErrorMsg").innerHTML = "Role Name is invalid. Please omit special characters";
-		document.getElementById("updateBtn").disabled = true;
-	}
-	
-	// validation for special character for Role Description
-	if (roleDesc.value.match(format)){
-		document.getElementById("descErrorMsg").innerHTML = "Role Description is invalid. Please omit special characters";
+		document.getElementById("nameErrorMsg").innerHTML = "Role Name is invalid, please omit special characters";
 		document.getElementById("updateBtn").disabled = true;
 	}
 	
@@ -68,21 +62,20 @@ function validateIfEmpty() {
 
 $(document).ready(function() {
 
-	if (window.location.href.indexOf('#successUpdateModal') != -1) {
-			$('#successUpdateModal').modal('show');
+	if (window.location.href.indexOf('#successModal') != -1) {
+			$('#successyModal').modal('show');
 			localStorage.clear();
 	}
 	
 	$('#confirmUpdateBtn').click(function() {
 		$("#roleForm").submit();
 	});
-	
 });
 
 function roleNameExist(rolename, id) {
-	  return roletypeList.some(function(role) {
-	    return role.rolename.toLowerCase() === rolename.toLowerCase() && role.id != id;
-	  }); 
+  return roletypeList.some(function(role) {
+    return role.rolename.toLowerCase() === rolename.toLowerCase() && role.id != id;
+  }); 
 }
 
 function checkingForNoChange(roleName, id, roleDesc) {
