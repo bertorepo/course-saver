@@ -1,12 +1,21 @@
+$(document).ready(function() {
+	choices();
+});
+
 function choices() {
 	var id = $('#courseId').val();
-
 	if (id != "") {
-		var id = document.getElementById("courseId").value;
-		var callUrl = '/attendance/schedules/' + id + '/participants';
-		document.location.href = callUrl;
+		$("#emptyDiv").removeAttr('hidden');
+		
 	}
 }
+
+function successUrl() {
+	var id = document.getElementById("courseId").value;
+	var callUrl = '/attendance/schedules/' + id + '/participants';
+	document.location.href = callUrl;
+}
+
 function ValidateDropDown(input) {
 	var button = document.getElementById(".btn-success")
 	if (input.value == '') {
