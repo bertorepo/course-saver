@@ -1,49 +1,3 @@
-table {
-	border-collapse: collapse;
-    width: 100%;
-    border: 1px solid black;
-    padding: 9px;  
-}
-td,
-th {
-     padding: 9px;
-   }
-
-hr {
-	margin: 5px; 
- }
-
-.summaryTable{
-	margin-left: 1px;
-	height:122%;
-	
-}
- 
-.titletd{
-	width:70%;
-}
- 
-.centertd{
-    text-align:center;
-}
-
-.percenttable{
-	border: 1px solid black;
-	height:122%;
-	text-align:center;
-	bgcolor:white
-} 
-
-.percenttd{
-	height:20%;
-}
-
-.percenttext{
-	font-size: 200%;
-	line-height: 2.4;
-}
-
-
  @media (min-width: 1200px) {
 .dateRange {
     margin-left: 40px !important;
@@ -54,7 +8,6 @@ select#selectReportType {
 input#inputCourse {
     width: 510px;
 }
-
 }
 
 		
@@ -77,32 +30,14 @@ input#inputCourse {
 	.form-group.row.align-items-center.justify-content-center.viewAndExportButton {
     margin-left: 0% !important;
 }
-#summaryGSTDev
-{
-	margin-bottom: 100px !important;
-}
 
 }
-
 
 
 @media only screen and (min-device-width : 600px) and (max-device-width : 767px) {
 
-.percenttable {
-   
-    margin-top: 80px;
-
-}
-
-.percenttext {
-    line-height: 0.2;
-}
 .form-group.row.align-items-center.justify-content-center.viewAndExportButton {
     margin-left: 10% !important;
-}
-#summaryGSTDev
-{
-	margin-bottom: 150px !important;
 }
 }
 
@@ -116,36 +51,4 @@ input#exportButton {
 .form-group.row.align-items-center.justify-content-center.viewAndExportButton{
 	margin-left: 0% !important;
 }
-.percenttext {
-    line-height: 0.2;
-}
-
-}
-
-@media (max-width : 600px){
-
-.percenttable {
-   
-    margin-top: 90px !important;
-
-}
-#summaryGSTDev
-{
-	margin-bottom: 170px !important;
-}
-
-}
-
-@media (max-width : 430px){
-
-.percenttable {
-   
-    margin-top: 120px !important;
-
-}
-#summaryGSTDev
-{
-	margin-bottom: 220px !important;
-}
-
 }

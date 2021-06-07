@@ -36,7 +36,7 @@
 					<div class="col-lg-5">
 						<select id="selectReportType" name="selectReportType"
 							class="form-control" required onchange="selectReport()"
-							style="width: 525px; text-align-last: center;">
+							style="text-align-last: center;">
 							<option value="" disabled hidden>Please Select
 								Report Type</option>
 							<option th:value="0" disabled hidden></option>
@@ -48,33 +48,36 @@
 						</select>
 					</div>
 				</div>
-
-				<div class="form-group row align-items-center justify-content-center">
- 				<span style="width:31px"></span>
-                <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+				
+				<div class="dateRange">
+				 <div class="form-group row align-items-center justify-content-center">
+ 				 <span style="width:31px"></span>
+                  <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+                	<div class= "fromDate" style="display:inherit;">
                         <label class="col-form-label" style="font-weight: bold;">From</label>
-								<span style="width:8px"></span>
-	                            <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+						  <span style="width:8px"></span>
+	                         <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
 								<input type="hidden" th:field="*{scheduledStartDateTime}"/>
-								<span style="width:8px"></span>
-	                        <label class="col-form-label" style="font-weight: bold;">To</label>
-	                        <div class="col-lg-2">
+					</div>
+						  <span style="width:8px"></span>
+							<div class= "toDate" style="display:inherit;">
+	                         <label class="col-form-label" style="font-weight: bold;">To</label>
+	                          <span style="width:8px"></span>
 	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
-	                            <input type="hidden" th:field="*{scheduledEndDateTime}"/>
-	                       </div>
-                 </div> 
-
-				<div
-					class="form-group row align-items-center justify-content-center">
+	                            <input type="hidden" th:field="*{scheduledEndDateTime}"/>         
+                 			</div> 
+					</div>
+				  </div>
+				<div class="form-group row align-items-center justify-content-center">
 					<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
 					<span style="width: 75px"></span>
 					<div class="col-lg-5">
 						<input list="course" class="form-control" id="inputCourse"
-							type="text" style="width: 525px;" autocomplete="off" disabled>
+							type="text" autocomplete="off" disabled>
 					</div>
 				</div>
 				<div
-					class="form-group row align-items-center justify-content-center"
+					class="form-group row align-items-center justify-content-center viewAndExportButton"
 					style="margin-left: 20%">
 					<input type="button" id="viewButton" class="btn btn-success"
 						value="View" onclick="viewButtonDev()" style="width: 100px" />
@@ -83,10 +86,11 @@
 						onclick="fileNameCreator()" value="Export" style="width: 100px" />
 				</div>
 				<label>Report Display Summary</label>
-				<div class="container" id="reportTable"  style="border-style: groove; width: 100%; height: 400px; display:block;">
+				<div class="container" id="reportTable"  style="border-style: groove; width: 100%; height: 400px; display:block; overflow-x:auto;">
 				<!-- Display Summary of G3CC Standardization Training  -->
-					<div id="summaryGSTDev" class="row" style="margin-top:11px" >
-						<div class="col-lg-6">
+					<div id="summaryGSTDev" class="row" style="margin-top:11px;">
+						<div class="col-md-6">
+						
 							<table class="summaryTable">
 									<tr>
 										<td class="table-success titletd">Total Number of JDU Devs</td>
@@ -113,8 +117,10 @@
 										<td class=centertd th:text="*{TotalNoJDUDevLastWkFinValue}"></td>
 									</tr> 
 								</table>
+						
 						</div>
-						<div class="col-lg-6">
+						<div class="col-md-6">
+						 
 							<table class="percenttable">
 									<tr>
 										<td class="table-success percenttd">Percentage Finished As Of Today (Total Devs and Also Total Courses)</td>
@@ -129,7 +135,8 @@
 										<td class="percenttext" th:text="*{PercentageFinLastWkValue + '%'}"></td>
 									</tr>
 							</table>
-						</div>
+						
+					</div>
 			</div>
 		</div>
 	</div>

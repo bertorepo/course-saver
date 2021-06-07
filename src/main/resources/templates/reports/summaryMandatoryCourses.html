@@ -11,6 +11,7 @@
 <meta name="author" content=" " />
 <title>Generate Reports</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/report/summaryGSTforMandatory.common.css">
 <link rel="stylesheet" type="text/css"
 	href="/css/app/font-awesome.min.css">
 <style>
@@ -33,7 +34,6 @@ hr {
 			action="/mandatoryCourses/load/getMandatoryCourses" method="GET"></form>
 		<form id="mandatoryCoursesForm" class="form-horizontal"
 			action="/mandatoryCourses/load/summary" method="GET">
-
 			<div class="card">
 				<div class="card-body">
 					<div
@@ -43,16 +43,14 @@ hr {
 						<div class="col-lg-5">
 							<select id="selectReportType" name="selectReportType"
 								class="form-control" required onchange="selectReport()"
-								style="width: 535px; text-align-last: center;">
+								style="text-align-last: center;">
 								<option value="" disabled hidden>Please Select Report
 									Type</option>
 								<option th:value="0" disabled hidden></option>
 								<option th:value="1">Summary of Course Conducted</option>
 								<option th:value="2">Summary of JDU Standardization Training for Dev</option>
 								<option th:value="3">Summary of JDU Standardization Training for PM</option>
-								<option th:value="4" selected>Summary of Mandatory
-									Courses</option>
-									
+								<option th:value="4" selected>Summary of Mandatory Courses</option>
 							</select>
 						</div>
 					</div>
@@ -60,30 +58,32 @@ hr {
 					<div style="margin-left: 43%;">
 						<label id="errorMsg1" style="color: red; display: none;"></label>
 					</div>
-
-					<div
-						class="form-group row align-items-center justify-content-center">
+				 
+				 <div class="dateRange">
+					<div class="form-group row align-items-center justify-content-center">
 						<span style="width: 31px"></span> <label
-							class="col-lg-3 col-form-label" style="font-weight: bold;">Date
-							Range</label> <label class="col-form-label" style="font-weight: bold;">From</label>
+							class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label> 
+							<div class= "fromDate" style="display:inherit;">
+							<label class="col-form-label" style="font-weight: bold;">From</label>
 						<span style="width: 8px"></span> <input class="form-control"
 							type="datetime-local" id="startDateTime" name="startDateTime"
 							form="dateForm" style="width: 225px; font-size: 14px;"
 							onchange="verifDate()" required /> <input type="hidden"
 							id="hStartDateTime" name="hStartDateTime"
-							form="mandatoryCoursesForm" /> <span style="width: 8px"></span>
-						<label class="col-form-label" style="font-weight: bold;">To</label>
-
-						<div class="col-lg-2">
-
+							form="mandatoryCoursesForm" /> 
+							</div>
+							<span style="width: 8px"></span>
+							<div class= "toDate" style="display:inherit;">
+						   <label class="col-form-label" style="font-weight: bold;">To</label>
+						   <span style="width: 8px"></span>
 							<input class="form-control" type="datetime-local"
 								id="endDateTime" name="endDateTime" form="dateForm"
 								style="width: 225px; font-size: 14px;" onchange="verifDate()"
 								required /> <input type="hidden" id="hEndDateTime"
 								name="hEndDateTime" form="mandatoryCoursesForm" />
-						</div>
-
+							</div>
 					</div>
+				</div>
 					<div style="margin-left: 43%;">
 						<label id="errorMsg2" style="color: red; display: none;"></label>
 					</div>
@@ -97,8 +97,7 @@ hr {
 						<div class="col-lg-5">
 							<input form="mandatoryCoursesForm" list="course"
 								class="form-control" id="inputCourse" onkeyup="enableButtons()"
-								onchange="hCourseValue()" type="text" style="width: 535px;"
-								autocomplete="off" />
+								onchange="hCourseValue()" type="text" autocomplete="off" />
 							<datalist id="course">
 								<option th:each="courseSelect : *{mandatoryCourses}"
 									th:text="${courseSelect.name}" th:value="${courseSelect.name}"
@@ -108,9 +107,7 @@ hr {
 								form="mandatoryCoursesForm" />
 						</div>
 					</div>
-					<div
-						class="form-group row align-items-center justify-content-center"
-						style="margin-left: 20%">
+					<div class="form-group row align-items-center justify-content-center viewAndExportButton" style="margin-left: 20%;">
 						<input type="submit" id="viewButton" class="btn btn-success"
 							value="View" onclick="btnView()" style="width: 100px" disabled>
 						<span style="width: 100px"></span> <input type="button"
@@ -118,112 +115,59 @@ hr {
 							class="btn btn-success" value="Export" style="width: 100px"
 							disabled>
 					</div>
-					<label>Report Display</label>
-					<div id="reportTable"
-						style="border-style: groove; width: 100%; height: 100%; display: block;">
-						<div class="card">
-							<div class="row" style="margin: 1% 0px 0px 2%;">
-								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
-									<label style="color: white; font-weight: bold;">Total
-										Number of JDU Members</label>
-								</div>
-								<div class="col-sm-1"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
-									<label id="totalNumberOfJDUDevs"
-										th:text="${totalNumberOfJduMembers}">0</label>
-								</div>
-								<div class="col-sm-6"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 15px 0px 15px 0px; background-color: #18BC9C; margin-left: 46%; text-align: center; position: absolute;">
-									<label style="color: white; font-weight: bold;">Percentage
-										Finished As of Today (Total Members and also Total Courses)</label>
-								</div>
-							</div>
-
-							<div class="row" style="margin: 0px 0px 0px 2%;">
-								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; font-weight: bold; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
-									<label style="color: white; font-weight: bold;">Total
-										Number of JDU Members Last Week</label>
-								</div>
-								<div class="col-sm-1"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
-									<label id="totalNumberOfJDUDevsLW">-</label>
-								</div>
-								<div class="col-sm-6 ghost-col"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 27px 0px 27px 0px; margin-top: 10px; margin-left: 46%; text-align: center; position: absolute; font-size: 270%;">
-									<h3 id="percentageFinishedToday"
-										th:text="${percentageCompletion} + '%'">0</h3>
-								</div>
-							</div>
-
-							<div class="row" style="margin: 0px 0px 0px 2%;">
-								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
-									<label style="color: white; font-weight: bold;">Total
-										Number of Existing Members</label>
-								</div>
-								<div class="col-sm-1"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
-									<label id="totalNumberOfExistingMembers">-</label>
-								</div>
-							</div>
-
-							<div class="row" style="margin: 0px 0px 0px 2%;">
-								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
-									<label style="color: white; font-weight: bold;">Total
-										Number of New Members</label>
-								</div>
-								<div class="col-sm-1"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
-									<label id="totalNumberOfNewMembers">-</label>
-								</div>
-								<div class="col-sm-6"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 15px 0px 15px 0px; margin-top: 25px; background-color: #18BC9C; margin-left: 46%; text-align: center; position: absolute;">
-									<label style="color: white; font-weight: bold;">Percentage
-										Finished As of Last Week (Total Members and also Total
-										Courses)</label>
-								</div>
-							</div>
-
-							<div class="row" style="margin: 0px 0px 0px 2%;">
-								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
-									<label style="color: white; font-weight: bold;">Total
-										Number of JDU Members Who Finished the training</label>
-								</div>
-								<div class="col-sm-1"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; margin-left: 1px; text-align: center;">
-									<label id="totalNumberOfJDUDevsFinished"
-										th:text="${totalNumberOfCompletion}">0</label>
-								</div>
-								<div class="col-sm-6 ghost-col"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 27px 0px 27px 0px; margin-top: 31px; margin-left: 46%; text-align: center; position: absolute; font-size: 270%;">
-									<h3 id="percentageFinishedLW"
-										th:text="${percentageCompletionLastWeek} + '%'">0</h3>
-								</div>
-							</div>
-
-							<div class="row" style="margin: 0px 0px 1% 2%;">
-								<div class="col-sm-4"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 10px 0px 10px 0px; text-align: center; background-color: #18BC9C;">
-									<label style="color: white; font-weight: bold;">Total
-										Number of JDU Members Last Week Who Finished the training</label>
-								</div>
-								<div class="col-sm-1"
-									style="border-style: solid; border-color: #D3D3D3; border-width: 1px; padding: 20px 0px 10px 0px; margin-left: 1px; text-align: center;">
-									<label id="totalNumberOfJDUDevsFinishedLW"
-										th:text="${totalNumberOfCompletionLastWeek}">0</label>
-								</div>
-							</div>
+					<label>Report Display Summary</label>
+					<div class="container" id="reportTable" style= "border-style: groove; width: 100%; height: 400px; display:block; overflow-x:auto;">
+				<!-- Display Summary of G3CC Standardization Training  -->
+					<div id="summaryMandatory" class="row" style="margin-top:11px;" >
+						<div class="col-md-6">
+							<table class="summaryTable">
+									<tr>
+										<td class="table-success titletd">Total Number of JDU Members</td>
+										<td id="totalNumberOfJDUDevs" class=centertd th:text="${totalNumberOfJduMembers}"></td>
+									</tr>
+									<tr>
+										<td class="table-success"> Total Number of JDU Members Last Week</td>
+										<td id="totalNumberOfJDUDevsLW" class="table-dark centertd">NA</td>
+									</tr>
+									<tr>
+										<td class="table-success">Total Number of Existing Members</td>
+										<td id="totalNumberOfExistingMembers" class="table-dark centertd">NA</td>
+									</tr>
+									<tr>
+										<td class="table-success"> Total Number of New Members</td>
+										<td id="totalNumberOfNewMembers" class="table-dark centertd">NA</td>
+									</tr>
+									<tr>
+										<td class="table-success">Total Number of JDU Members Who Finished the training</td>
+										<td class=centertd id="totalNumberOfJDUDevsFinished" th:text="${totalNumberOfCompletion}"></td>
+									</tr> 
+									<tr>
+										<td class="table-success">Total Number of JDU Members Last Week Who Finished the training</td>
+										<td class=centertd id="totalNumberOfJDUDevsFinishedLW" th:text="${totalNumberOfCompletionLastWeek}"></td>
+									</tr> 
+								</table>
 						</div>
+						<div class="col-md-6">
+							<table class="percenttable">
+									<tr>
+										<td class="table-success percenttd">Percentage Finished As of Today (Total Members and also Total Courses)</td>
+									</tr>
+									<tr>
+										<td id="percentageFinishedToday" th:text="${percentageCompletion} + '%'" class="percenttext" ></td>
+									</tr>
+									<tr>
+										<td class="table-success percenttd"> Percentage Finished As of Last Week (Total Members and also Total Courses)</td>
+									</tr>
+									<tr>
+										<td class="percenttext" ></td>
+									</tr>
+							</table>
+						</div> 
 					</div>
-				</div>
+				</div>				
 			</div>
-		</form>
-	</div>
-
+		</div>
+	</form>
 	<!--exportMandatoryCourses-->
 	<table id="exportMandatoryCourses"
 		class="table table-bordered table-responsive text-center sticky-table width_max"
@@ -254,7 +198,7 @@ hr {
 		</tbody>
 	</table>
 	<!--exportMandatoryCourses End-->
-
+</div>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 	<script th:inline="javascript">
 		//Insert Data into Table

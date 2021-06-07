@@ -41,3 +41,113 @@ hr {
 	font-size: 200%;
 	line-height: 2.4;
 }
+
+@media (min-width: 1200px) {
+.dateRange {
+    margin-left: 40px !important;
+}
+select#selectReportType {
+    width: 510px;
+}
+input#inputCourse {
+    width: 510px;
+}
+
+}
+
+		
+@media only screen and (min-device-width : 992px) and (max-device-width : 1199px) {
+
+select#selectReportType {
+    width: 480px;
+}
+input#inputCourse {
+    width: 480px;
+}
+.dateRange {
+    margin-left: 75px !important;
+}
+}
+
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 991px) {
+
+	.form-group.row.align-items-center.justify-content-center.viewAndExportButton {
+    margin-left: 0% !important;
+}
+#summaryPM
+{
+	margin-bottom: 100px !important;
+}
+
+}
+
+
+
+@media only screen and (min-device-width : 600px) and (max-device-width : 767px) {
+
+.percenttable {
+   
+    margin-top: 80px;
+    
+}
+
+.percenttext {
+    line-height: 0.2;
+}
+.form-group.row.align-items-center.justify-content-center.viewAndExportButton {
+    margin-left: 10% !important;
+}
+#summaryPM
+{
+	margin-bottom: 150px !important;
+}
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+input#viewButton {
+	width: 75px !important;
+}
+input#exportButton { 
+    width: 75px !important;
+}
+.form-group.row.align-items-center.justify-content-center.viewAndExportButton{
+	margin-left: 0% !important;
+}
+.percenttable {
+   
+    margin-top: 120px;
+}
+.percenttext {
+    line-height: 0.2;
+}
+
+}
+
+@media (max-width : 600px){
+
+.percenttable {
+   
+    margin-top: 90px !important;
+
+}
+#summaryPM
+{
+	margin-bottom: 170px !important;
+}
+
+}
+
+@media (max-width : 430px){
+
+.percenttable {
+   
+    margin-top: 120px !important;
+
+}
+#summaryPM
+{
+	margin-bottom: 220px !important;
+}
+
+}
