@@ -107,10 +107,11 @@ class CreateCourseTest {
      */
 	private Course createCourseOne() {
 	    return Course.builder()
-			 .withName("JavaScript")
-			 .withDeadline("Details")
+			 .withName("Javascript")
+			 .withDetail("Details")
+			 .withDeadline("Monthly")
 			 .withIsMandatory("Yes")
-			 .withCourseCategoryId(3L)
+			 .withCourseCategoryId(4L)
 			 .build();
 	}
 	
@@ -120,7 +121,7 @@ class CreateCourseTest {
 			 .withDetail("Details")
 			 .withIsMandatory("No")
 			 .withDeadline("-")
-			 .withCourseCategoryId(4L)
+			 .withCourseCategoryId(3L)
 			 .build();
 	}
 }

@@ -118,7 +118,7 @@ public class CreateCourseTest {
     private Course createCourse() {
 	return Course.builder()
 		     .withName("New Data")
-		     .withDeadline("New Data Detail")
+		     .withDetail("New Data Detail")
 		     .withIsMandatory("Yes")
 		     .withDeadline("Immediate")
 		     .withCourseCategoryId(3L)
