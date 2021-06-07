@@ -65,7 +65,7 @@ public class CourseManagementController {
 	    			    @RequestParam("sortDir") Optional<String> sortDir) {
 	
 	int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
+        int pageSize = size.orElse(8);
         
 	String sortFieldVal = sortField.filter(str -> !str.isEmpty())
 				       .orElse("courseCategory");
