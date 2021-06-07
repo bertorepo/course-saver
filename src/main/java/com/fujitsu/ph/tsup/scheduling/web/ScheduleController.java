@@ -396,23 +396,17 @@ public class ScheduleController {
             model.addAttribute("scheduleNew", form);
             return "scheduling/createSched";
         }
+        boolean hasDateOrTimeConflict = false;
         
         for(CourseSchedule courseSchedule : courseSchedules) {
             Set<CourseScheduleDetail> cSchedDetail = courseSchedule.getCourseScheduleDetail();
             
             for(CourseScheduleDetail cSchedDet: cSchedDetail) {
-
-                //Check if there is any conflicting schedules when submitting form
-                if(((courseSchedule.getCourseId() == form.getCourseId()) ||
-                        (courseSchedule.getInstructorId() == form.getInstructorId()) ||
-                        ((courseSchedule.getVenueId() == form.getVenueId() && !courseSchedule.isVenueOverlap()))) &&
-                        //Checks if there's a same schedule that matches the submitted Schedule
-                        (form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> 
-                            i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
-                                .equals(cSchedDet.getScheduledEndDateTime()))) &&
-                        (form.getCourseScheduleDetailsAsList().stream().anyMatch(o -> 
-                            o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
-                                .equals(cSchedDet.getScheduledStartDateTime())))) {
+            	
+            	 //Check if there is any conflicting schedules when submitting form
+                hasDateOrTimeConflict = scheduleService.checkForScheduleConflict(form, courseSchedule, cSchedDet);
+                           	
+                if(hasDateOrTimeConflict) {
                     
                         List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
                         
