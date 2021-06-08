@@ -358,7 +358,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public boolean checkForScheduleConflict(CourseScheduleNewForm form, CourseSchedule courseSchedule, CourseScheduleDetail cSchedDet) {
-		if((courseSchedule.isVenueOverlap() && courseSchedule.getCourseId() != form.getCourseId() &&
+		if(form.isVenueOverlap() && (courseSchedule.getCourseId() != form.getCourseId() &&
 				(courseSchedule.getInstructorId() != form.getInstructorId()))){
 			return false;
 		} 
