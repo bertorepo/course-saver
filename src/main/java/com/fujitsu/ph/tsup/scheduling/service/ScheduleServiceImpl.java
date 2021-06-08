@@ -358,25 +358,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public boolean checkForScheduleConflict(CourseScheduleNewForm form, CourseSchedule courseSchedule, CourseScheduleDetail cSchedDet) {
-		if((courseSchedule.getCourseId() == form.getCourseId()) ||
-				(courseSchedule.getInstructorId() == form.getInstructorId()) ||
-				((courseSchedule.getVenueId() == form.getVenueId() && !courseSchedule.isVenueOverlap()))){
-			//Checks if there's a same schedule that matches the submitted Schedule
-			if((form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> 
-			i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
-			.equals(cSchedDet.getScheduledEndDateTime()))) &&
-					(form.getCourseScheduleDetailsAsList().stream().anyMatch(o -> 
-					o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
-					.equals(cSchedDet.getScheduledStartDateTime())))) {
-				return true;
-			}
-			// Get each scheduled time from form (start and end date) then compare with all schedules start and end time for overlap
-			return form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> (((i.getScheduledStartDateTime().isBefore(cSchedDet.getScheduledEndDateTime()) || 
-					i.getScheduledStartDateTime().isEqual(cSchedDet.getScheduledEndDateTime())) && 
-					((cSchedDet.getScheduledStartDateTime().isBefore(i.getScheduledEndDateTime())) || 
-							(cSchedDet.getScheduledStartDateTime().isEqual(i.getScheduledEndDateTime()))))));
-		}
-		return false;
+		if((courseSchedule.isVenueOverlap() && courseSchedule.getCourseId() != form.getCourseId() &&
+				(courseSchedule.getInstructorId() != form.getInstructorId()))){
+			return false;
+		} 
+		return form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> (
+				(((i.getScheduledStartDateTime().isBefore(cSchedDet.getScheduledEndDateTime())) && 
+						(cSchedDet.getScheduledStartDateTime().isBefore(i.getScheduledEndDateTime()))) ||
+						((i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
+								.equals(cSchedDet.getScheduledEndDateTime())) &&
+								(form.getCourseScheduleDetailsAsList().stream().anyMatch(o -> 
+								o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
+								.equals(cSchedDet.getScheduledStartDateTime())))))));
 	}
 
 }
