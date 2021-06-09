@@ -1,58 +1,198 @@
-<!-- Created by: Jhaisy Jade Yu -->
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Venue Management -->
+<!-- Name         : venueView.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | 07/06/2021 | WS) dw.cardenas       | Created -->
+<!-- ================================================================================================== -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
 <title>Venues</title>
-<link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}" crossorigin="anonymous">
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
+<link rel="stylesheet" type="text/css" href="/css/app/roletype/roletype.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/popper.min.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
 </head>
 <body>
-<div class="container">
-<H1>View Venues</H1>
-<form action="#" th:action="@{/venues/view}" th:object="${view}" method="post">
-	<table class="table">
-		<thead class="table-success">
-			<tr>
-			    <th>ID</th>
-				<th>Venue Name</th> 
-			</tr>
-		</thead>
-		<tbody> 
-			<tr th:each="Venue : ${view}">
-				<td th:text="${Venue.id}" />
-				<td th:text="${Venue.venuename}" />	
-			</tr>
-		</tbody>		
-	</table> 
-   	<div>
-		<div class="w-50">
-			<label for="delete" class="col-sm-8 col-form-label">Search the Id number of the Venue</label>
-			<div class="col-sm-9">
-    			<input type="text" name="search" th:value="*{search}"/>
-  			</div>
-  		</div>
-    </div>
-  	<div>
- 	 	<div class="w-50">
-	  		<ul>
-	    		<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
-	        		<span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
-	        		<span th:text="${e.message}">The error message</span>
-	    		</li>
-	  		</ul>
- 	 	</div>
-	</div>	 
- 	<br></br>
- 	<div>
-		<div class="w-50">
-	 		<div class="col-sm-9">
-	 			<button class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</button>
-	 			<a href="http://localhost:8080/venues" class="btn btn-danger"><i class="fa fa-arrow-left"> Back</i></a>
-	 		</div> 
+	<div th:insert="fragments/general.html :: header"></div>
+
+	<!-- Update Modal -->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
+		aria-labelledbye="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header alert-info">
+					<h5 class="modal-title">Update Venue</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form id="venueUpdateForm" th:action="@{/venue/update}" method="POST">
+					<div class="modal-body">
+						<div class="form-group row">
+							<input type="hidden" id="venueUpdateId" name="id"/>
+							<div class="col-lg-3">
+								<label class="col-form-label">Venue Name:</label>
+							</div>
+							<div class="col-lg-9">
+								<input type="text" placeholder="Enter venue name" id="venueUpdateName"
+									class="form-control" maxlength="100" name="name" onkeyup="validateUpdateInput()"/>
+								<span id="nameErrorMsg" style="color: red;"></span>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" id="updateButton" class="btn btn-success">Update</button>
+						<button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
+			</div>
 		</div>
-	</div>	
-</form>  
-</div>
+	</div>
+	<!-- Update Modal End -->
+
+	<!-- Delete Modal -->
+	<div class="modal fade" id="deleteInfoModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
+		aria-labelledbye="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header alert-info">
+					<h5 class="modal-title">Delete Venue</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label">Are you sure you
+							want to delete this Venue? In doing so, the action cannot be undone.</label>
+						<label class="col-lg-3 col-form-label"> Venue Name:</label>
+						<div class="col-lg-9">
+							<label class="col-lg-12 col-form-label" id="venueName"
+								name="venueName"></label>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<form id="venueDeleteForm" method="POST">
+						<button type="submit" class="btn btn-danger">Yes, delete it.</button>
+						<button class="btn btn-primary"
+							data-dismiss="modal">No, keep it.</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Delete Modal End -->
+
+	<!-- Success Modal -->
+	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-success">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${message}"></label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-primary" data-dismiss="modal"
+						value="Okay" onclick="refreshPage()">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Success Modal End -->
+
+	<div class="container mt-5">
+		<h3>
+			<i class="fa fa-calendar-o"></i> Manage Venues
+		</h3>
+		<hr>
+		<div class="card">
+			<div class="card-body">
+				<form class="form-horizontal" th:action="@{/venue/search}" method="GET">
+					<div class="form-group row justify-content-center">
+						<label class="col-lg-1 col-form-label">Search:</label>
+						<div class="col-lg-8">
+							<input type="Text" class="form-control" id="searchVenueName"
+								name="searchKeyName" maxlength="100" tabindex="1"/>
+						</div>
+						<div class="float-right">
+							<input type="submit" class="btn btn-success" tabindex="2" value="Submit">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3>
+					<i class="fa fa-cogs"></i> Venue List
+				</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x: auto; display:block">
+					<a class="btn btn-info pull-right" th:href="@{/venue/create}">Add New Venue</a><br> <br>
+					<table class="table table-bordered text-center">
+						<thead>
+							<tr>
+								<th style = "width: 20%"> Action </th>
+								<th style = "width: 80%"> Venue Name </th>
+							</tr>
+						</thead>
+						<tbody th:each = "venue : *{venueList}">
+							<tr>
+								<td style = "width: 20%">
+									<input type="submit" value="Edit" class="btn btn-success"
+										th:attr="onclick=|showUpdateModal('${venue.id}', '${venue.name}')|"/>
+									<input type="submit" value="Delete" class="btn btn-danger"
+										th:attr="onclick=|showDeleteModal('${venue.id}', '${venue.name}')|"/>
+								</td>
+								<td th:text = "${venue.name}">
+							</tr>
+						</tbody>
+					</table>
+
+					<div th:if = "${#lists.isEmpty(venueList)}">
+						<div class="alert alert-dismissible alert-danger text-center">
+							<strong>No venues available</strong>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script th:inline="javascript">
+		var venueList = /*[[${venueList}]]*/ [];
+	</script>
+	<script type="text/javascript" src="/js/lib/viewVenue.js"></script>
+	<footer th:replace="fragments/general.html :: footer"></footer>
 </body>
-</html>  
+</html>
