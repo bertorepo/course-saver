@@ -116,23 +116,23 @@
 										th:text="${generateAttendance.duration}"></label></td>
 								</tr>
 								<tr>
-									<td colspan="1"><label class="col-lg-6 col-form-label">INCLUSIVE
+									<td colspan="1"><label class="col-lg-8 col-form-label">INCLUSIVE
 											DATES</label></td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">START</label>
+									<td colspan="1"><label class="col-lg-8 col-form-label">START DATE</label>
 										<label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										id="start1"></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 										text-center"
-										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'MMM dd, yyyy (E)')}"></label>
 									</td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">END</label>
+									<td colspan="1"><label class="col-lg-7 col-form-label">END DATE</label>
 										<label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										id="end1"></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 											text-center"
-										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'MMM dd, yyyy (E)')}"></label>
 									</td>
 									<td colspan="1"><label class="col-lg-6 col-form-label">VENUE</label>
 										<label
@@ -144,21 +144,21 @@
 										<label class="col-lg-1 col-form-label text-center">1</label> <label
 										class="col-lg-3 col-form-label text-center">OF</label> <label
 										class="col-lg-1 col-form-label text-center">5</label></td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">START
+									<td colspan="1"><label class="col-lg-8 col-form-label">START
 											TIME</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										id="start2"></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 										text-center"
-										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'HH:mm a')}"></label>
 									</td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">END
+									<td colspan="1"><label class="col-lg-8 col-form-label">END
 											TIME</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										id="end2"></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 										text-center"
-										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'HH:mm a')}"></label>
 									</td>
 									<td colspan="1" rowspan="2"><label
 										class="col-lg-6 col-form-label">INSTRUCTOR</label>

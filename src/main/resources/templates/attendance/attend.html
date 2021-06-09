@@ -61,8 +61,8 @@ div.text-danger {
 						</div>
 						<label class="col-lg-3 col-form-label">Course Date:</label>
 						<div class="col-lg-7">
-							<label class="col-lg-3 col-form-label"
-								th:text="*{#temporals.format(scheduledStartDateTime, 'yyyy-MM-dd')}" /></label>
+							<label class="col-lg-4 col-form-label"
+								th:text="*{#temporals.format(scheduledStartDateTime, 'MMM dd, yyyy (E)')}" /></label>
 						</div>
 						<label class="col-lg-3 col-form-label">Timeslot:</label>
 						<div class="col-lg-7">

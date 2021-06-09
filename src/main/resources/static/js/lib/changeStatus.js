@@ -238,7 +238,6 @@ function ValidateDropDown(input) {
 
 function choices() {
    var id = document.getElementById("id").value;
-   alert(id);
    if (id != "") {
 		$("#emptyDiv").removeAttr('hidden');
    }

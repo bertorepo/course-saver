@@ -134,19 +134,19 @@
 										th:text="*{duration}"></label></td>
 								</tr>
 								<tr>
-									<td colspan="1"><label class="col-lg-6 col-form-label">INCLUSIVE
+									<td colspan="1"><label class="col-lg-8 col-form-label">INCLUSIVE
 											DATES</label></td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">START</label>
+									<td colspan="1"><label class="col-lg-8 col-form-label">START DATE</label>
 										<label
 										class="form-control-plaintext col-lg-12 col-form-label 
 											text-center"
-										th:text="${#temporals.format(attendanceForAbsent.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(attendanceForAbsent.scheduledStartDateTime, 'MMM dd, yyyy (E)')}"></label>
 									</td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">END</label>
+									<td colspan="1"><label class="col-lg-8 col-form-label">END DATE</label>
 										<label
 										class="form-control-plaintext col-lg-12 col-form-label 
 											text-center"
-										th:text="${#temporals.format(attendanceForAbsent.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(attendanceForAbsent.scheduledEndDateTime, 'MMM dd, yyyy (E)')}"></label>
 									</td>
 									<td colspan="1"><label class="col-lg-6 col-form-label">VENUE:</label>
 										<label
@@ -162,13 +162,13 @@
 											TIME</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 											text-center"
-										th:text="${#temporals.format(attendanceForAbsent.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(attendanceForAbsent.scheduledStartDateTime, 'HH:mm a')}"></label>
 									</td>
 									<td colspan="1"><label class="col-lg-12 col-form-label">END
 											TIME</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 											text-center"
-										th:text="${#temporals.format(attendanceForAbsent.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(attendanceForAbsent.scheduledEndDateTime, 'HH:mm a')}"></label>
 									</td>
 									<td colspan="1" rowspan="2"><label
 										class="col-lg-6 col-form-label">INSTRUCTOR:</label>

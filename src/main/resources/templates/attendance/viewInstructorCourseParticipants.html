@@ -133,13 +133,13 @@
 										class="col-lg-12 col-form-label"><b>Start Date & Time</b></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 										text-center"
-										th:text="${#temporals.format(courses.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(courses.scheduledStartDateTime, 'MMM dd, yyyy (E) - hh:mm a')}"></label>
 									</td>
 									<td colspan="1" th:if="${stat.index} == 0"><label
 										class="col-lg-12 col-form-label"><b>End Date & Time</b></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 										text-center"
-										th:text="${#temporals.format(courses.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(courses.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}"></label>
 
 									</td>
 									<td colspan="1" th:if="${stat.index} == 0"><label
