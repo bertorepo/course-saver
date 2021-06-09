@@ -354,6 +354,7 @@ public class EnrollmentController {
 			System.out.println("courseScheduleId: " + courseDeclineForm.getCourseScheduleId());
 			System.out.println("instructorName: " + courseDeclineForm.getInstructorName());
 			System.out.println("venueName: " + courseDeclineForm.getVenueName());
+			System.out.println("courseStatus: " + courseDeclineForm.getCourseStatus());
 			System.out.println("registrationDate: " + courseDeclineForm.getRegistrationDate());
 			System.out.println("Reason: " + courseDeclineForm.getReason());
 			CourseParticipant courseParticipant = new CourseParticipant.Builder(courseDeclineForm.getId(),

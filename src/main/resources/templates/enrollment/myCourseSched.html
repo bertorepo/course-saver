@@ -140,6 +140,7 @@
  									'${courseSchedules.registrationDate}',
  									'${courseSchedules.instructorName}',
  									'${courseSchedules.venueName}',
+ 									'${courseSchedules.courseStatus}',
  									'${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
  									'${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
  									'${courseEnrollmentForm.duration}',
@@ -437,6 +438,11 @@
 								<div class="col-lg-9">
 									<input type="text" class="form-control border-0 bg-white shadow-none"
 										id="courseSchedVenue" name="venueName" readonly>
+								</div>
+								<label class="col-lg-3 col-form-label">Course Status:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control border-0 bg-white shadow-none"
+										id="courseStatus" name="courseStatus" readonly>
 								</div>
 								<label class="col-lg-3 col-form-label">Course Details:</label>
 								<div class="col-lg-9">

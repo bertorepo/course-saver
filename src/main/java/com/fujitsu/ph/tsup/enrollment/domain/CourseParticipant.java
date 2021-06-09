@@ -651,7 +651,7 @@ public class CourseParticipant {
 		 * @param CourseStatus
 		 */
 		private void validateCourseStatus(String courseStatus) {
-			if (venueName == null || venueName.isEmpty()) {
+			if (courseStatus == null || courseStatus.isEmpty()) {
 				throw new IllegalArgumentException("Course Status should not be empty");
 			}
 		}
