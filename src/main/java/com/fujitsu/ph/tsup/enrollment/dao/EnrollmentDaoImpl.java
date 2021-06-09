@@ -239,6 +239,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.DETAIL AS DETAILS, " 
                 + "C.MANDATORY AS MANDATORY," // Added
                 + "C.DEADLINE AS DEADLINE," // Added
+                + "CSCHED.STATUS AS COURSE_STATUS," //Added
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, " 
                 + "V.NAME AS VENUE_NAME, "

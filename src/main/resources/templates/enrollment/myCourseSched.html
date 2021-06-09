@@ -111,6 +111,7 @@
 						<th class="hide">Start Date/Time</th>
 						<th class="hide">End Date/Time</th>
 						<th class="align-middle">Duration</th>
+						<th class="align-middle">Course Schedule Status</th>
 						<th class="hide">Course Schedule ID</th>
 						<th class="hide">Participant ID</th>
 						<th class="hide">Registration Date</th>
@@ -144,13 +145,13 @@
  									'${courseEnrollmentForm.duration}',
  									'${courseSchedules.courseId}',
  									'${courseSchedules.courseDetails}')|" class="btn btn-danger">
-									<i class="fa fa-trash-o fa-lg"></i>
+									DELETE
 								</button>
 
 								<button th:if="${courseSchedules.attendanceStatus == 'A'}" title="Change Schedule"
 									th:attr="onclick=|declineUpdate('${courseSchedules.courseId}','${courseSchedules.courseName}','${courseSchedules.courseScheduleId}')|"
 									class="btn btn-primary">
-									<i class="fa fa-edit"></i>
+									UPDATE
 								</button>
 								
 								<!-- Upload Certificate Modal -->
@@ -158,7 +159,7 @@
 								Type="button" class="btn btn-info" aria-label="Settings" data-toggle="modal"
 									data-target="#uploadModal"
 									th:attr="onclick=|getCourseId('${courseSchedules.courseId}')|"title="Upload Certificate" >
-									<i class="fa fa-upload"></i>
+									UPLOAD
 									</button>
 
 								<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
@@ -184,6 +185,7 @@
 								th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
 							</td>
 							<td class="align-middle" th:text="|${courseEnrollmentForm.duration} hour/s|"></td>
+							<td class="align-middle" th:text="${courseSchedules.courseStatus}"></td>
 							<td class="hide" th:text="${courseSchedules.courseScheduleId}"></td>
 							<td class="hide" th:text="${courseSchedules.participantId}"></td>
 							<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
@@ -510,7 +512,7 @@
 		<!-- Success Modal -->
 		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 			aria-hidden="true">
-			<div class="modal-dialog modal-lg">
+			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">

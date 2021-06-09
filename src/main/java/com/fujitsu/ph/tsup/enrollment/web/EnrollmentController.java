@@ -166,6 +166,7 @@ public class EnrollmentController {
             courseScheduleForm.setDeadline(courseSchedule.getDeadline());// added
 			courseScheduleForm.setVenueId(courseSchedule.getVenueId());
 			courseScheduleForm.setVenueName(courseSchedule.getVenueName());
+			courseScheduleForm.setCourseStatus(courseSchedule.getCourseStatus());	
 			courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
 			courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
 			courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
@@ -208,6 +209,7 @@ public class EnrollmentController {
                 courseScheduleForm.setMandatory(courseSchedule.getMandatory());
 	            courseScheduleForm.setDeadline(courseSchedule.getDeadline());
 				courseScheduleForm.setVenueName(courseSchedule.getVenueName());
+				courseScheduleForm.setCourseStatus(courseSchedule.getCourseStatus());	
 				courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
 				courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
 				courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
@@ -269,8 +271,8 @@ public class EnrollmentController {
 				courseEnrollmentForm.setCourseScheduleId(enrolledCourse.getCourseScheduleId());
 				courseEnrollmentForm.setCourseName(enrolledCourse.getCourseName());
 				courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
-
 				courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
+				courseEnrollmentForm.setCourseStatus(enrolledCourse.getCourseStatus());	
 				courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
 				courseEnrollmentForm.setParticipantId(enrolledCourse.getParticipantId());
 				courseEnrollmentForm.setAttendanceStatus(enrolledCourse.getAttendanceStatus());
@@ -316,6 +318,7 @@ public class EnrollmentController {
 		courseDeclineForm.setCourseName(courseParticipant.getCourseName());
 		courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
 		courseDeclineForm.setVenueName(courseParticipant.getVenueName());
+		courseDeclineForm.setCourseStatus(courseParticipant.getCourseStatus());
 		courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
 		courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
 		courseDeclineForm.setReason(courseParticipant.getReason());
@@ -356,7 +359,7 @@ public class EnrollmentController {
 			CourseParticipant courseParticipant = new CourseParticipant.Builder(courseDeclineForm.getId(),
 					courseDeclineForm.getCourseId(), courseDeclineForm.getCourseScheduleId(),
 					courseDeclineForm.getCourseName(), courseDeclineForm.getInstructorName(),
-					courseDeclineForm.getVenueName(), courseDeclineForm.getId(), courseDeclineForm.getParticipantName(),
+					courseDeclineForm.getVenueName(), courseDeclineForm.getCourseStatus(), courseDeclineForm.getId(), courseDeclineForm.getParticipantName(),
 					courseDeclineForm.getRegistrationDate())
 							.decline(courseDeclineForm.getReason()).build();
 			enrollmentService.declineCourse(courseParticipant);
