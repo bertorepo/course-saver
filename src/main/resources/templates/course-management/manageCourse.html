@@ -10,6 +10,7 @@
 <!-- 0.02    | 2021/04/19 | WS) st.diaz           | Updated -->
 <!-- 0.03    | 2021/04/21 | WS) i.fajardo         | Updated -->
 <!-- 0.04    | 2021/05/24 | WS) mi.aguinldo       | Added Course Category column; Added Update button and its modal  -->
+<!-- 0.05    | 2021/06/02 | WS) m.yanoyan         | Changed button value("back" to "cancel"); removed "view more" footer -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE HTML>
@@ -52,7 +53,7 @@
 						method="post">
 						<button type="submit" class="btn btn-danger">Confirm Deletion</button>					
 					</form>
-					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 				</div>
 
 			</div>
@@ -80,7 +81,7 @@
 					<input type="hidden" th:value="${updateCourse != null ? updateCourse.courseCategoryId: course.courseCategoryId}" th:name="courseCategoryId" th:id="courseCategoryId">
 						<button type="submit" class="btn btn-danger">Confirm Update</button>					
 					</form>
-					<button type="submit" class="btn btn-primary" data-dismiss="modal" href="#">Back</button>
+					<button type="submit" class="btn btn-primary" data-dismiss="modal" href="#">Cancel</button>
 				</div>
 
 			</div>
@@ -119,7 +120,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-danger" href="#confirmModal">Delete</button>
-						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 					</div>
 				</div>
 			</div>
@@ -198,7 +199,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-danger update-button" href="#confirmModal">Update</button>
-						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 					</div>
 				</div>
 			</div>
@@ -359,12 +360,6 @@
 							<div id="pagination"></div>
 						</div>
 					</div>
-				</div>
-				
-				<div class="float-right">
-					<a th:href="@{/enrollment/viewCourseEnroll}">View More 
-						<i class="fa fa-arrow-circle-right"></i>
-					</a>
 				</div>
 			</div>
 		</div>
