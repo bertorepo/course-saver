@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -541,7 +542,7 @@ public class ScheduleController {
                     courseSched.getInstructorLastName() + ", " + courseSched.getInstructorFirstName());
 
             Set<CourseScheduleDetail> courseSchedDetSet = courseSched.getCourseScheduleDetail();
-            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
+            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new LinkedHashSet<>();
 
             for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
                 CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
