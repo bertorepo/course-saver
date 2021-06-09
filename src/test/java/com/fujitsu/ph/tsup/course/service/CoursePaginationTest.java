@@ -16,10 +16,8 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
 import com.fujitsu.ph.tsup.course.model.Course;
@@ -41,9 +40,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2021/06/07 | WS) m.aguinaldo       | Initial Version
 //==================================================================================================
-
-@JdbcTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
+@ExtendWith(SpringExtension.class)
 public class CoursePaginationTest {
     
     /**
@@ -72,7 +69,7 @@ public class CoursePaginationTest {
 	 * @return CourseManagementServiceImpl
 	 */
 	@Bean
-	public CourseManagementService courseManagementDao() {
+	public CourseManagementService courseManagementService() {
 	    return new CourseManagementServiceImpl();
 	}
     }

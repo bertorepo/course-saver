@@ -9,15 +9,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
 import com.fujitsu.ph.tsup.course.model.Course;
@@ -33,11 +32,9 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 2021/04/27 | WS) i.fajardo         | Initial Version
 //0.02    | 05/10/2021 | WS) D.Escala          | Updated
+//0.03	  | 06/09/2021 | WS) M.Aguinaldo       | Fix and update the test
 //==================================================================================================
-
-@JdbcTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-
+@ExtendWith(SpringExtension.class)
 public class CreateCourseTest {
 
 	/**
