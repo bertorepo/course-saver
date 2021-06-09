@@ -25,7 +25,7 @@
 	<title>Manage Course</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/course-management/manage-course.common.css">
 	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -240,7 +240,7 @@
 					<h5>
 						<i class="fa fa-search"></i> Search Course Name
 					</h5>
-					<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
+					<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="get">
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Search:</label>
 						<div class="col-lg-3">
@@ -266,13 +266,53 @@
 					<table class="table table-bordered text-center">
 						<thead>
 							<th style="width: 15%;">Action</th>
-							<th style="width: 20%;">Course Name</th>
-							<th style="width: 20%;">Course Category</th>
+							<th style="width: 20%;">
+								<div class="flex-column">
+									<span>Course Name</span>
+									<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+										<a class="fa fa-caret-up" style="color:black;"
+											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseName&sortDir=asc'"></a>
+										<a class="fa fa-caret-down" style="color:black;"
+											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseName&sortDir=desc'"></a>
+									</div>
+								</div>
+							</th>
+							<th style="width: 20%;">
+								<div class="flex-column">
+									<span>Course Category</span>
+									<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+										<a class="fa fa-caret-up" style="color:black;"
+											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseCategory&sortDir=asc'"></a>
+										<a class="fa fa-caret-down" style="color:black;"
+											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseCategory&sortDir=desc'"></a>
+									</div>
+								</div>
+							</th>
 							<th>Detail</th>
-							<th style="width: 10%;">Mandatory</th>
-							<th style="width: 15%;">Deadline</th>
+							<th style="width: 10%;">
+								<div class="flex-column">
+									<span>Mandatory</span>
+									<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+										<a class="fa fa-caret-up" style="color:black;"
+											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=mandatory&sortDir=asc'"></a>
+										<a class="fa fa-caret-down" style="color:black;"
+										th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=mandatory&sortDir=desc'"></a>
+									</div>
+								</div>
+							</th>
+							<th style="width: 15%;">
+								<div class="flex-column">
+									<span>Deadline</span>
+									<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+										<a class="fa fa-caret-up" style="color:black;"
+											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=deadline&sortDir=asc'"></a>
+										<a class="fa fa-caret-down" style="color:black;"
+											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=deadline&sortDir=desc'"></a>
+									</div>
+								</div>
+							</th>
 						</thead>
-						<tbody th:each="course : *{courseList}">
+						<tbody th:each="course : *{paginatedCourse.content}">
 							<tr>
 								<td>
 								<input type="submit" value="Update" class="btn btn-success" 
@@ -284,13 +324,34 @@
 								</td>
 								<td th:text="${course.name}"></td>
 								<td th:text="${course.courseCategory.category}"></td>
-								<td th:text="${course.detail}">Sample2</td>
+								<td class="text-truncate" style="max-width: 250px;" data-toggle="tooltip" th:title="${course.detail}" th:text="${course.detail}"></td>
 								<td th:text="${course.isMandatory}">Yes/No</td>
 								<td th:text="${course.deadline}">Sample2</td>
 							</tr>
 						</tbody>
 					</table>
-					<div th:if="${#lists.isEmpty(courseList)}">
+					<nav aria-label="Pagination" th:if="${paginatedCourse.totalPages gt 0} and ${#httpServletRequest.getRequestURI() != '/courses/search'}">
+						<ul class="pagination justify-content-center font-weight-bold">
+							<li class="page-item" th:classappend="${paginatedCourse.number eq 0} ? 'disabled'">
+								<a class="page-link" th:href="@{/courses/load?page={id}&sortField={sortField}&sortDir={sortDir}(id=${paginatedCourse.number lt 2 ? 1 : paginatedCourse.number},sortField=${#request.getParameter('sortField')},sortDir=${#request.getParameter('sortDir')})}"
+									aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li class="page-item" th:classappend="${i eq paginatedCourse.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, paginatedCourse.totalPages, 1)}">
+					            <a class="page-link" th:href="@{/courses/load?page={id}&sortField={sortField}&sortDir={sortDir}(id=${i},sortField=${#request.getParameter('sortField')},sortDir=${#request.getParameter('sortDir')})}" th:text="${i}"
+					               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+					        </li>
+					        <li class="page-item" th:classappend="${paginatedCourse.number + 1 eq paginatedCourse.totalPages} ? 'disabled'">
+					            <a class="page-link"
+					               th:href="@{/courses/load?page={id}&sortField={sortField}&sortDir={sortDir}(id=${paginatedCourse.number + 2},sortField=${#request.getParameter('sortField')},sortDir=${#request.getParameter('sortDir')})}"
+					               aria-label="Next" title="Next Page" data-toggle="tooltip">
+					                <span aria-hidden="true">&raquo;</span>
+					            </a>
+					        </li>
+					    </ul>
+					</nav>
+					<div th:if="${paginatedCourse.isEmpty()}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No Course Found</strong>
 						</div>

@@ -5,6 +5,9 @@ package com.fujitsu.ph.tsup.course.service;
 
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.fujitsu.ph.tsup.course.model.Course;
 
 //==================================================================================================
@@ -27,6 +30,9 @@ public interface CourseManagementService {
     Course findCourseById(Long id);
     
     Set<Course> findAllCourses();
+   
+    // Method for finding all courses base on Pageable object provided
+    Page<Course> findAllCourses(Pageable pagable);
     
     Set<Course> findCoursesByName(String name);
     
