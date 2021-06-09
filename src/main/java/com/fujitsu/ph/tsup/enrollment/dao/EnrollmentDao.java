@@ -1,5 +1,8 @@
 package com.fujitsu.ph.tsup.enrollment.dao; 
 
+import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
+import com.fujitsu.ph.tsup.course.model.Course;
+
 //====================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -19,6 +22,8 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
+import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import java.time.ZonedDateTime;
@@ -40,7 +45,7 @@ public interface EnrollmentDao {
      * @param fromDateTime
      * @param toDateTime
      */
-    Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
+    Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
     
     /**
      * Finds the course schedule by id
@@ -211,5 +216,44 @@ public interface EnrollmentDao {
 	 */
     public List<String> findCourseScheduleIfMandatory();
 		String findCertificateName(long userId, long courseId);
-   
+		
+    /**
+	 * <pre>
+	 *
+	 *Method for loading all course category in View Enroll Course
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+    Set<CourseCategory> findAllCourseCategory();
+    
+    /**
+   	 * <pre>
+   	 *
+   	 *Method for loading all course name in View Enroll Course
+   	 *@author l.celoso
+   	 *
+   	 * <pre>
+   	 */
+     Set<Course> findAllCourseName();
+     
+     /**
+      * <pre>
+      *
+      *Method for loading all instructor in View Enroll Course
+      *@author l.celoso
+      *
+      * <pre>
+      */
+      Set<InstructorForm> findAllInstructor();
+      
+      /**
+       * <pre>
+       *
+       *Method for loading all venue in View Enroll Course
+       *@author l.celoso
+       *
+       * <pre>
+       */
+       Set<VenueForm> findAllVenue();
 }

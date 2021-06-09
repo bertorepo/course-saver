@@ -20,7 +20,8 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //==================================================================================================
 
 import com.fujitsu.ph.auth.model.FpiUser;
-
+import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
+import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
@@ -29,10 +30,11 @@ import com.fujitsu.ph.tsup.enrollment.model.Certificate;
 import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
+import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -207,10 +209,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
      * 
      */
     @Override
-    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
+    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, 
+    		String instructorId, String venueId, String mandatory, String deadline) {
         try {
             Set<CourseSchedule> courseScheduleSet = enrollmentDao.findAllScheduledCourses(fromDateTime,
-                    toDateTime);
+                    toDateTime, courseCategoryId, courseNameId, instructorId, venueId, mandatory, deadline);
             if (courseScheduleSet == null || courseScheduleSet.isEmpty()) {
                 throw new IllegalArgumentException("No Course Schedule Found");
             }
@@ -221,11 +224,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime,
-            ZonedDateTime toDateTime) {
+    public Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, 
+    		String courseNameId, String instructorId, String venueId, String mandatory, String deadline) {
         try {
             Set<CourseSchedule> courseScheduleSet = enrollmentDao.findAllScheduledCourses(fromDateTime,
-                    toDateTime);
+                    toDateTime,courseCategoryId,courseNameId, instructorId, venueId, mandatory, deadline);
             return courseScheduleSet;
         } catch (DataAccessException ex) {
             throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
@@ -581,4 +584,28 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		
 		return enrollmentDao.findCertificateName(userId, courseId);
 	}
+	
+    @Override
+    public Set<CourseCategory> findAllCourseCategory() {
+
+        return enrollmentDao.findAllCourseCategory();
+    }
+    
+    @Override
+    public Set<Course> findAllCourseName() {
+
+        return enrollmentDao.findAllCourseName();
+    }
+    
+    @Override
+    public Set<InstructorForm> findAllInstructor() {
+
+        return enrollmentDao.findAllInstructor();
+    }
+    
+    @Override
+    public Set<VenueForm> findAllVenue() {
+
+        return enrollmentDao.findAllVenue();
+    }
 }

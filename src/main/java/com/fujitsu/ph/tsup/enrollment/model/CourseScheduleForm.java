@@ -28,6 +28,9 @@ public class CourseScheduleForm {
     private Long courseId;
 
     /* Course Name */
+    private String courseCategory;
+    
+    /* Course Name */
     private String courseName;
 
     /* Instructor Id */
@@ -97,6 +100,16 @@ public class CourseScheduleForm {
         this.courseId = courseId;
     }
 
+    /** get Course Category */
+    public String getCourseCategory() {
+        return courseCategory;
+    }
+
+    /** set Course Category */
+    public void setCourseCategory(String courseCategory) {
+        this.courseCategory = courseCategory;
+    }
+    
     /** get Course Name */
     public String getCourseName() {
         return courseName;
@@ -209,7 +222,7 @@ public class CourseScheduleForm {
     @Override
     public String toString() {
         return "CourseScheduleForm [id=" + id + ", courseId=" + courseId
-                + ", courseName=" + courseName + ", instructorId="
+                + ", courseName=" + courseName + ", courseCategory=" + courseCategory + ", instructorId="
                 + instructorId + ", instructorName=" + instructorName
                 + ", deadline= " + deadline + ", mandatory = " +mandatory
                 + ", venueId=" + venueId + ", venueName=" + venueName
