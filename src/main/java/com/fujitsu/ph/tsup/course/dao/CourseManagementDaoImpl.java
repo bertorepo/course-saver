@@ -5,9 +5,12 @@ package com.fujitsu.ph.tsup.course.dao;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Order;
@@ -18,6 +21,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.fujitsu.ph.tsup.course.model.Course;
+import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -86,6 +90,53 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     
     
     
+    @Override
+    public Set<Course> findCoursesByCourseSearchFilter(CourseSearchFilter courseSearchFilter){	
+	StringBuilder queryBuilder = new StringBuilder();
+	queryBuilder.append("SELECT * ");
+	queryBuilder.append("FROM course CE ");
+	queryBuilder.append("LEFT JOIN course_category CC ");
+	queryBuilder.append("ON CE.course_category_id = CC.id ");
+	queryBuilder.append("WHERE ");
+	
+	List<String> conditionList = new LinkedList<>();
+	
+	if(StringUtils.isNoneBlank(courseSearchFilter.getCourseName())) {
+	    addToConditionList(conditionList, "CE.name", courseSearchFilter.getCourseName());
+	}
+	
+	if(StringUtils.isNoneBlank(courseSearchFilter.getCourseCategory())) {
+	    addToConditionList(conditionList,"CC.category",courseSearchFilter.getCourseCategory());
+	}
+	
+	if(StringUtils.isNoneBlank(courseSearchFilter.getMandatory())) {
+	    addToConditionList(conditionList,"CE.mandatory",courseSearchFilter.getMandatory());
+	}
+	
+	if(StringUtils.isNoneBlank(courseSearchFilter.getDeadline())) {
+	    addToConditionList(conditionList,"CE.deadline",courseSearchFilter.getDeadline());
+	}
+	
+	queryBuilder.append(conditionList.stream().collect(Collectors.joining()));
+	
+	
+	List<Course> courseList = template.query(queryBuilder.toString(), new CourseRowMapper());
+	
+	return new LinkedHashSet<>(courseList);
+    }
+
+    /**
+     * @param courseSearchFilter
+     * @param conditionList
+     */
+    private void addToConditionList(List<String> conditionList,String sqlField, String fieldValue) {
+	if (conditionList.isEmpty()) {
+	    conditionList.add("LOWER("+sqlField + ") LIKE LOWER('%" + fieldValue + "%') ");
+	} else {
+	    conditionList.add("AND LOWER("+ sqlField + ") LIKE LOWER('%" + fieldValue + "%') ");
+	}
+    }
+
     @Override
     public Set<Course> findAllCourses(Pageable pageable) {
 	Order order =  !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Order.asc("CC.category");

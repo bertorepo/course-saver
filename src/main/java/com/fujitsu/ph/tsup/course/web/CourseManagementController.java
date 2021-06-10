@@ -33,6 +33,7 @@ import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementServi
 import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.course.model.CourseForm;
 import com.fujitsu.ph.tsup.course.service.CourseManagementService;
+import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -201,23 +202,19 @@ public class CourseManagementController {
         return "redirect:/courses/load#successModal";
     }
     
-    @GetMapping("/search")
-    public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model) {
+    @PostMapping("/search")
+    public String submitSearchCourseForm(@ModelAttribute CourseSearchFilter courseSearchFilter, Model model) {
     	
-    	String searchName = searchCourseName.trim();
-    	
-    	if(searchName.isEmpty()) {
+    	if(courseSearchFilter.isSearchEmpty()) {
     		return "redirect:/courses/load";
     	}
     	
     	try {
-	    List<Course> listOfCourse = Optional.ofNullable(courseManagementService.findCoursesByName(searchName))
-						.orElse(Collections.emptySet())
-						.stream()
-						.collect(Collectors.toList());
+	    List<Course> listOfCourse = courseManagementService.findCoursesByCourseSearchFilter(courseSearchFilter)
+							       .stream()
+							       .collect(Collectors.toList());
 	    
-	    Page<Course> paginatedCourse = new PageImpl<Course>(listOfCourse);
-
+	    Page<Course> paginatedCourse = new PageImpl<>(listOfCourse);
 
 
 	    List<CourseCategory> courseCategoryList = Optional.ofNullable(courseCategoryManagementService.findAllCourseCategory())

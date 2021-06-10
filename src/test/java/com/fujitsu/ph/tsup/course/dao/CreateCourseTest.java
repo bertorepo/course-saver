@@ -19,10 +19,11 @@ package com.fujitsu.ph.tsup.course.dao;
 //--------+------------+-----------------+---------------
 //0.01    | 04/26/2021 | WS) St.Diaz 	  | New Creation
 //0.02    | 05/10/2021 | WS) D.Escala 	  | Updated
-//
+//0.03    | 06/09/2021 | WS) M.Aguinaldo  | Disable test
 //=======================================================
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -34,6 +35,7 @@ import org.springframework.test.annotation.Rollback;
 
 import com.fujitsu.ph.tsup.course.model.Course;
 
+@Disabled("This a integration test")
 @JdbcTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 class CreateCourseTest {
