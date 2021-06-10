@@ -75,7 +75,7 @@ function courseNameOnChange(){
 	var courseName = $("#courseName").val();
 	var holder = document.getElementById("courseName").placeholder;
 	
-	if(courseName == "" && (holder !== "Enter Course Name" || holder !== "")){
+	if(courseName == "" && (holder !== "This field is required." || holder !== "")){
 		document.getElementById("courseName").value = holder;
 		
 		var courseId = $('#courses [value="'+ holder +'"]').data('value');
@@ -86,6 +86,86 @@ function courseNameOnChange(){
 		var courseId = $('#courses [value="'+ courseName +'"]').data('value');
 		
 		document.getElementById("courseId").value = courseId;
+	}
+}
+
+function instructorNameOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
+	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+		
+		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+		
+		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	}
+}
+
+function instructorNameOnChange(){
+	
+	var instructorName = $("#instructorName").val();
+	var holder = document.getElementById("instructorName").placeholder;
+	
+	if(instructorName == "" && (holder !== "This field is required." || holder !== "")){
+		document.getElementById("instructorName").value = holder;
+		
+		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+		
+	} else {
+		var instructorId = $('#instructors [value="'+ instructorName +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	}
+}
+
+function venueNameOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
+	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+		
+		var venueId = $('#venues [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+		
+		var venueId = $('#venues [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+	}
+}
+
+function venueNameOnChange(){
+	
+	var venueName = $("#venueName").val();
+	var holder = document.getElementById("venueName").placeholder;
+	
+	if(venueName == "" && (holder !== "This field is required." || holder !== "")){
+		document.getElementById("venueName").value = holder;
+		
+		var venueId = $('#venues [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+		
+	} else {
+		var venueId = $('#venues [value="'+ venueName +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
 	}
 }
 
@@ -105,9 +185,9 @@ function removeNewRow(id) {
 function validations() {
 	var errorCount = 0;
 	var courseName = $('#courseName').val();
-	var instructor = $('#instructorId').val();
 	var venue = $('#venueId').val();
 	var courseId = $('#courseId').val();
+	var instructorId = $('#instructorId').val();
 	var minRequired = parseInt($('#minRequired').val().replace("", "0"));
 	var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
 	
@@ -115,40 +195,40 @@ function validations() {
 	//Empty Fields Validations
 	if (courseName == "") {
 		errorCount++;
-		courseNameError = "Please fill up Course Name"; 
+		courseNameError = "This field is required."; 
         document.getElementById("courseName_error").innerHTML = courseNameError;
 	}
 	
 	if ((courseId == "undefined") || (courseId == null) || (courseId == "")) {
 		errorCount++;
-		courseNameError = 'No Course found with the name, "'+courseName+'".  Please Select from the List.'; 
+		courseNameError = 'No course found with the name, "'+courseName+'".  Please select one from the list.'; 
         document.getElementById("courseName_error").innerHTML = courseNameError;
 	}
 	
-	if (instructor == "") {
+	if (instructorId == "") {
 		errorCount++;
-		instructorError = "Please fill up Instructor";
+		instructorError = "This field is required.";
         document.getElementById("instructorId_error").innerHTML = instructorError;
 	}
 	if (venue == "") {
 		errorCount++;
-		venueError = "Please fill up Venue";
+		venueError = "This field is required.";
         document.getElementById("venueId_error").innerHTML = venueError;
 	}
 	if (minRequired <= 0) {
 		errorCount++;
-	  	minRequiredError = "Please fill up Minimum no. of Participants";
+	  	minRequiredError = "This field is required.";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 	}
 	if (maxAllowed <=0) {
 		errorCount++;
-	  	maxAllowedError = "Please fill up Maximum no. of Participants";
+	  	maxAllowedError = "This field is required.";
 	  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
 	}
 	if (minRequired !==0) {
 		if (maxAllowed <= minRequired) {
 			errorCount++;
-	  	minRequiredError = "Minimum can't be greater or equal to Maximum Participants";
+	  	minRequiredError = "Min shouldn't be greater than Max.";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 		}
 	}
@@ -183,23 +263,23 @@ function validations() {
 
 	if (startDateCount <= 0) {
 		errorCount++;
-		startDateError = "Please fill up Start Date";
+		startDateError = "This field is required.";
 	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
 	}
 	if (startTimeCount <= 0) {
 		errorCount++;
-		startTimeError = "Please fill up Start Time";
+		startTimeError = "This field is required.";
 	  	document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
 	}
 
 	if (endDateCount <= 0) {
 		errorCount++;
-		endDateError = "Please fill up End Date";
+		endDateError = "This field is required.";
 	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	}
 	if (endTimeCount <= 0) {
 		errorCount++;
-		endTimeError = "Please fill up End Time";
+		endTimeError = "This field is required.";
 	  	document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
 	}
 	
@@ -230,7 +310,7 @@ function validations() {
 	    	//Start and End Time Validation
         	if (startDate > endDate)  {
         		errorCount++;
-        		startDateError = "Start Date can't be greater than or equal to end date";
+        		startDateError = "";
         	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
             }
         	
@@ -246,21 +326,21 @@ function validations() {
         	//If Date is Less Than Today
         	if (isLessThanToday(startDate)) {
         		errorCount++;
-        		startDateError = "Date can't be less than today";
+        		startDateError = "Please pick a future date.";
         	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
         	}
         	
         	if (isLessThanToday(endDate)) {
         		errorCount++;
-        		endDateError = "Date can't be less than today";
+        		endDateError = "Please pick a date that's greater <br>than the value of 'Start Date' field.";
         	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
         	}
         	if((startDate !== "") && (endDate !== "")) {
         		//If Datetime is equal Validation
             	if ((startDate == endDate) && (startTime == endTime)) {
             		errorCount++;
-            		startDateError = "Start Date Time and End Date Time shouldn't be equal";
-            		endDateError = "Start Date Time and End Date Time shouldn't be equal";
+            		startDateError = "";
+            		endDateError = "Please pick a date where 'Start Date' & 'End <br>Date' field values should not <br>be equal.";
             	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
             		document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
             	}
@@ -269,26 +349,26 @@ function validations() {
         	
         	if(startDate == "") {
         		errorCount++;
-        		startDateError = "Please fill up Start Date";
+        		startDateError = "This field is required.";
         	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
         	}
         	
         	if(endDate == "") {
         		errorCount++;
-        		endDateError = "Please fill up End Date";
+        		endDateError = "This field is required.";
         	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
         	}
         	
         	
         	if (startTime == "") {
         		errorCount++;
-        		startTimeError = "Please fill up Start Time";
+        		startTimeError = "This field is required.";
         	  	document.getElementById("startTime" + i + "_error").innerHTML = startTimeError;
         	}
         	
         	if (endTime == "") {
         		errorCount++;
-        		endTimeError = "Please fill up End Time";
+        		endTimeError = "This field is required.";
         	  	document.getElementById("endTime" + i + "_error").innerHTML = endTimeError;
         	}
         	
@@ -302,8 +382,8 @@ function validations() {
                 		(startTime == startTimeBefore) && (endTime == endTimeBefore)) {
                 
                 	errorCount++;
-            		startDateError = "Start Date Time and End Date Time should be not the same.";
-            		endDateError = "Start Date Time and End Date Time should be not the same.";
+            		startDateError = "";
+            		endDateError = "Please pick a date where 'Start Date' & 'End <br>Date' field values should not be equal.";
             	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
             		document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
             		document.getElementById("startDate" + (i-1) + "_error").innerHTML = startDateError;

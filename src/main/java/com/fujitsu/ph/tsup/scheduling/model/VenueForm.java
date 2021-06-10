@@ -9,6 +9,7 @@ package com.fujitsu.ph.tsup.scheduling.model;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/22/2020 | WS) JC. Jimenez | New Creation
+//0.02    | 06/07/2021 | WS) R. Gemparo  | Fixed toString return
 //
 //=======================================================
 
@@ -51,6 +52,6 @@ public class VenueForm {
     
     @Override
     public String toString() {
-        return "InstructorForm [id = " + id + ", name = " + name + "]";
+        return "VenueForm [id = " + id + ", name = " + name + "]";
     }
 }

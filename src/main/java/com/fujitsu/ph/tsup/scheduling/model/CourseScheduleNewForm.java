@@ -40,7 +40,7 @@ public class CourseScheduleNewForm{
     /**
      * Course Id
      */
-    @NotNull(message = "Please fill up course name")
+    @NotNull(message = "This field is required.")
     private Long courseId;
     
     /**
@@ -52,19 +52,19 @@ public class CourseScheduleNewForm{
     /**
      * Venue Id
      */
-    @NotNull(message = "Please fill up venues")
+    @NotNull(message = "This field is required.")
     private Long venueId;
     
     /**
      * Minimum Required Participants
      */
-    @Min(value = 1, message = "Please fill up minimum no. of participants")
+    @Min(value = 1, message = "This field is required.")
     private int minRequired;
     
     /**
      * Maximum Allowed Participants
      */
-    @Min(value = 1, message = "Please fill up maximum no. of participants")
+    @Min(value = 1, message = "This field is required.")
     private int maxAllowed;
     
     

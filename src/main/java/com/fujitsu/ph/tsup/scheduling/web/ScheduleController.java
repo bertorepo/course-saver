@@ -15,6 +15,7 @@ import java.time.ZoneId;
 //0.01    | 06/26/2020 | WS) JC.Jimenez  | New Creation
 //0.01    | 06/26/2020 | WS) J.Balanon   | New Creation
 //0.02    | 05/28/2021 | WS) J.Atendido  | Bug fixes and enhancements
+//0.03    | 06/07/2021 | WS) R.Gemparo   | Bug fixes & enhancements
 //=======================================================
 
 /**
@@ -238,7 +239,7 @@ public class ScheduleController {
             
         } catch(IllegalArgumentException ex) {
             
-            String errInitStr = "You can't schedule a Course Yet.";
+            String errInitStr = "You can't schedule a course yet.";
             
             if(ex.getMessage() == "Can't find Courses") {
                 
@@ -435,21 +436,21 @@ public class ScheduleController {
                         form.setVenues(venueFormList);
                         form.setInstructors(instructorFormList);
                         model.addAttribute("error", 
-                                                "The schedule you have submitted has conflict with " + 
-                                                        courseSchedule.getCourseName()+" [" +
+                                                "The schedule you have submitted has a conflict with the course, " + 
+                                                        courseSchedule.getCourseName()+" having a time schedule of " +
                                                         DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
                                                              .format(cSchedDet.getScheduledStartDateTime()
                                                                      .withZoneSameInstant(ZoneId.systemDefault())) +" - " + 
                                                         DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
                                                                 .format(cSchedDet.getScheduledEndDateTime()
-                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +"]. Please select a different schedule.");
+                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +". Please pick a different time schedule.");
                         model.addAttribute("scheduleNew", form);
                         return "scheduling/createSched";
                 } 
             }
         }
         
-        System.out.println("The Schedule has no Conflicts with other Schedule");
+        System.out.println("The schedule has no conflict with any other schedule.");
         
         Set<CourseScheduleDetailForm> courseScheduleDetailsAsListSet = new HashSet<>();
         
@@ -483,7 +484,7 @@ public class ScheduleController {
         form.setVenues(venueFormList);
         form.setInstructors(instructorFormList);
 
-        redirectAttributes.addFlashAttribute("message", "You have successfully created new schedule!");
+        redirectAttributes.addFlashAttribute("message", "You have successfully created a new schedule!");
      
         return "redirect:/schedules/new";
 
@@ -755,14 +756,14 @@ public class ScheduleController {
                         form.setVenues(venueFormList);
                         form.setInstructors(instructorFormList);
                         model.addAttribute("error", 
-                                                "The Schedule you have updated has conflict with " + 
-                                                        courseSchedule.getCourseName()+" [" +
+                                                "The schedule you have updated has a conflict with the course, " + 
+                                                        courseSchedule.getCourseName()+" having a time schedule of " +
                                                         DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
                                                              .format(cSchedDet.getScheduledStartDateTime()
                                                                      .withZoneSameInstant(ZoneId.systemDefault())) +" - " + 
                                                         DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
                                                                 .format(cSchedDet.getScheduledEndDateTime()
-                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +"]. Please pick a different schedule.");
+                                                                        .withZoneSameInstant(ZoneId.systemDefault())) +". Please pick a different time schedule.");
                         model.addAttribute("changeSchedule", listForm);
                         model.addAttribute("updateView", form);
                         return "scheduling/viewSched";
@@ -832,12 +833,12 @@ public class ScheduleController {
 			}else {
 	        	scheduleService.updateCourseSchedule(courseSchedule);
 	    		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
-	    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been successfully updated.");
+	    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been successfully updated!");
 			}
         }else {
         	scheduleService.updateCourseSchedule(courseSchedule);
     		redirectAttributes.addFlashAttribute("changeSchedule", courseSchedListForm);
-    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been successfully updated.");
+    		redirectAttributes.addFlashAttribute("updateSuccess", "Schedule has been successfully updated!");
         }
 		
 		form.setVenues(venueFormList);

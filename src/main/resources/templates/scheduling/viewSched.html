@@ -44,7 +44,7 @@
 						</div>
 					
 					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
+						<input type="submit" class="btn btn-success" value="Search">
 					</div></div>
 				</div>
 			</div>
@@ -72,12 +72,10 @@
 						<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
 							<td>
 								<a th:value="${courseSchedules.id}" th:id="${'update' + (stat.index + 1)}" th:href="@{/schedules/courseSchedule/{courseScheduleId}/update
-												(courseScheduleId=${courseSchedules.id})}" class="btn btn-warning">
-									<i class="fa fa-pencil"></i> 
+												(courseScheduleId=${courseSchedules.id})}" class="btn btn-success">Update
 								</a>
 								<a th:value="${courseSchedules.id}" th:id="${'delete' + (stat.index + 1)}" th:href="@{/schedules/courseSchedule/{courseScheduleId}/delete
-												(courseScheduleId=${courseSchedules.id})}" class="btn btn-danger">
-									<i class="fa fa-trash-o"></i> 
+												(courseScheduleId=${courseSchedules.id})}" class="btn btn-danger">Delete 
 								</a>
 							</td>
 							<td th:text="${courseSchedules.courseName}"></td>
@@ -156,12 +154,12 @@
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label">Participant(s) :</label>
 								<div class="col-lg-3">
-									<input type="text" class="form-control" th:field="*{minRequired}" id="minRequired">
+									<input type="text" class="form-control" th:field="*{minRequired}" id="minRequired" placeholder="Min">
 									<div class="text-danger er" id="minRequired_error"></div>
 								</div>
 								<div class="col-lg-1 text-center">—</div>
 								<div class="col-lg-3">
-									<input type="text" class="form-control" th:field="*{maxAllowed}"  id="maxAllowed" >
+									<input type="text" class="form-control" th:field="*{maxAllowed}"  id="maxAllowed" placeholder="Max">
 									<div class="text-danger er" id="maxAllowed_error"></div>
 								</div>
 							</div>	
@@ -237,7 +235,7 @@
 						</div>
 						<div class="modal-footer">
 							<input type="button" name="update" class="btn btn-success" value="Update Schedule" th:attr="onclick=|validations()|">
-							<input type="button" class="btn btn-danger" data-dismiss="modal" name="backButton" value="Back">
+							<input type="button" class="btn btn-primary" data-dismiss="modal" name="backButton" value="Back">
 						</div>
 					</div>
 				</div>
@@ -246,8 +244,8 @@
 			<div class="modal fade" id="updateConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
-						<div class="modal-header alert-success">
-							<h4 class="modal-title">Update Confirmation</h4>
+						<div class="modal-header alert-warning">
+							<h4 class="modal-title"><i class="fa fa-warning"></i></h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -258,8 +256,8 @@
 						<div class="modal-footer">
 							<button type="submit" id="update" 
 									name="update" value="submit" 
-									class="btn btn-success">Yes</button>
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
+									class="btn btn-success">Yes, update it.</button>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No, leave as is.">
 						</div>
 					</div>
 				</div>
@@ -274,15 +272,19 @@
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
+						<h5 class="modal-title"><i class="fa fa-check-square-o"></i></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<p class="text-center" th:if="${updateSuccess}" th:text="${updateSuccess}" id="updated"></p>
-					</div>
-					<div class="modal-footer">
-						<input type="button" name="updateSuccess" class="btn btn-success" data-dismiss="modal" value="OK">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" th:if="${updateSuccess}" th:text="${updateSuccess}" id="updated"></label>
+							
+						</div>		
+						<div align="center">					
+						<input type="button" name="updateSuccess" class="btn btn-primary" data-dismiss="modal" value="OK">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -384,7 +386,7 @@
 						</div>
 						<div class="modal-footer">
 							<input type="button" name="delete" class="btn btn-success" value="Delete Schedule">
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+							<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
 						</div>
 					</div>
 				</div>
@@ -393,8 +395,8 @@
 			<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
-						<div class="modal-header alert-success">
-						<h4 class="modal-title">Delete Confirmation</h4>
+						<div class="modal-header alert-warning">
+						<h4 class="modal-title"><i class="fa fa-warning"></i></h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -406,8 +408,8 @@
 							<button type="submit" id="deleteBtn" 
 										name="deleteConfirmation" 
 										class="btn btn-success" 
-										th:value="*{id}">Yes</button>
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
+										th:value="*{id}">Yes, delete it.</button>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No, keep it.">
 						</div>
 					</div>
 				</div>
@@ -422,15 +424,18 @@
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
+					<i class="fa fa-check-square-o"></i>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<p class="text-center" th:if="${deleteSuccess}" th:text="${deleteSuccess}" id="deleted"></p>
-					</div>
-					<div class="modal-footer">
-						<input type="submit" name="deleteSuccess" class="btn btn-success" data-dismiss="modal" value="OK">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" th:if="${deleteSuccess}" th:text="${deleteSuccess}" id="deleted"></label>
+						</div>		
+						<div align="center">					
+						<input type="submit" name="deleteSuccess" class="btn btn-primary" data-dismiss="modal" value="OK">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -443,8 +448,8 @@
 				data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog text-center">
 				<div class="modal-content">
-					<div class="modal-header alert-warning">
-						<h5 id="noticeTitle" class="modal-title">Important Notice</h5>
+					<div class="modal-header btn-info">
+						<h5 id="noticeTitle" class="modal-title"><i class="fa fa-info-circle"></i>  </h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -455,7 +460,7 @@
 							<label class="col-lg-12 col-form-label" th:if="${notice}" th:text="${notice}"></label>
 						</div>	
 					</div>
-					<div class="modal-footer">
+					<div align="center">
 						<button type="button" name="goToModal2" 
 								id="goToModal2" class="btn btn-secondary" data-dismiss="modal">OK</button>
 					</div>
@@ -473,155 +478,161 @@
 	
 	<!-- For CDATA -->
 	<script th:inline="javascript">
+	$("form").keypress(function(e) {
+	  //Enter key
+	  if (e.which == 13) {
+	    return false;
+	  }
+	});
 
-		/*<![CDATA[*/
-		
-		//FromDateTime is HIGHER with ToDateTime
-		/*<![CDATA[*/
-		var errorMessage = /*[[${error}]]*/'default';
-		if (errorMessage == "Invalid Date") {
-			document.getElementById("toDateTime_error").innerHTML = "Please pick a date that's greater than the value of 'From Date' field.";
-		}
-		/*]]>*/
-		
-		//FromDateTime is EQUAL with ToDateTime
-		/*<![CDATA[*/
-		var errorMessage = /*[[${error}]]*/'default';
-		if (errorMessage == "Equal Date") {
-			document.getElementById("toDateTime_error").innerHTML = "Please pick a date where 'From Date' & 'To Date' field values should not be equal.";
-		}
-		/*]]>*/
+	/*<![CDATA[*/
+	
+	//FromDateTime is HIGHER with ToDateTime
+	/*<![CDATA[*/
+	var errorMessage = /*[[${error}]]*/'default';
+	if (errorMessage == "Invalid Date") {
+		document.getElementById("toDateTime_error").innerHTML = "Please pick a date that's greater than the value of 'From Date' field.";
+	}
+	/*]]>*/
+	
+	//FromDateTime is EQUAL with ToDateTime
+	/*<![CDATA[*/
+	var errorMessage = /*[[${error}]]*/'default';
+	if (errorMessage == "Equal Date") {
+		document.getElementById("toDateTime_error").innerHTML = "Please pick a date where 'From Date' & 'To Date' field values should not be equal.";
+	}
+	/*]]>*/
 
-		$("#goToModal").click(function () {
-			$('#updateModal').modal('show');
-		});
+	$("#goToModal").click(function () {
+		$('#updateModal').modal('show');
+	});
 
-		function load() {
-			var fromDateTime = $("#fromDateTime").val();
-			var toDateTime = $("#toDateTime").val();
-			var fromNewDate = fromDateTime.toString().slice(0, 16);
-			var toNewDate = toDateTime.toString().slice(0, 16);
+	function load() {
+		var fromDateTime = $("#fromDateTime").val();
+		var toDateTime = $("#toDateTime").val();
+		var fromNewDate = fromDateTime.toString().slice(0, 16);
+		var toNewDate = toDateTime.toString().slice(0, 16);
 
-			document.getElementById("fromDate").value = fromNewDate;
-			document.getElementById("toDate").value = toNewDate;
+		document.getElementById("fromDate").value = fromNewDate;
+		document.getElementById("toDate").value = toNewDate;
 
-			if ($("#updateView").length > 0) {
-				var updateCourseScheduleId = $("#updateCourseScheduleId").val();
-				if (updateCourseScheduleId !== "" && $("#errorModal").length == 0) {
-					if ($('#noticeModal').length != 0) {
-						$('#noticeModal').modal('show');
-						$("#goToModal2").click(function () {
-							$('#updateModal').modal('show');
-						});
-					} else {
+		if ($("#updateView").length > 0) {
+			var updateCourseScheduleId = $("#updateCourseScheduleId").val();
+			if (updateCourseScheduleId !== "" && $("#errorModal").length == 0) {
+				if ($('#noticeModal').length != 0) {
+					$('#noticeModal').modal('show');
+					$("#goToModal2").click(function () {
 						$('#updateModal').modal('show');
-					}
-				}
-
-				var startDateTime = document.getElementById("startDateTime1").value;
-				var endDateTime = document.getElementById("endDateTime1").value;
-
-				var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-				var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
-
-				var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-				var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-
-				document.getElementById("startDate1").value = rowStartDate;
-				document.getElementById("endDate1").value = rowEndDate;
-
-				document.getElementById("startTime1").value = rowStartTime;
-				document.getElementById("endTime1").value = rowEndTime;
-			}
-
-			if ($("#deleteView").length > 0) {
-				var deleteCourseScheduleId = $("#deleteCourseScheduleId").val();
-				if (deleteCourseScheduleId !== "") {
-					$('#deleteModal').modal('show');
-				}
-
-				var startDateTime = document.getElementById("startDateTime1").value;
-				var endDateTime = document.getElementById("endDateTime1").value;
-
-				var startDate = startDateTime.substring(0, startDateTime.indexOf("T")).replace(/[-]/gi, "/");
-				var endDate = endDateTime.substring(0, endDateTime.indexOf("T")).replace(/[-]/gi, "/");
-
-				document.getElementById("startDate1").value = startDate;
-				document.getElementById("endDate1").value = endDate;
-
-				var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-				var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-
-				var startHours = parseInt(rowStartTime.substring(0, startDateTime.indexOf(":")));
-				var startMinutes = rowStartTime.substring(3, 5);
-
-				if (startHours > 12) {
-					var startTime = String(startHours - 12).padStart(2, "0") + ":" + startMinutes + " PM";
-					document.getElementById("startTime1").value = startTime;
-				} else if (startHours == 12) {
-					document.getElementById("startTime1").value = rowStartTime + " PM";
+					});
 				} else {
-					document.getElementById("startTime1").value = rowStartTime + " AM";
+					$('#updateModal').modal('show');
 				}
-
-				var endHours = parseInt(rowEndTime.substring(0, endDateTime.indexOf(":")));
-				var endMinutes = rowEndTime.substring(3, 5);
-
-				if (endHours > 12) {
-					var endTime = String(endHours - 12).padStart(2, "0") + ":" + endMinutes + " PM";
-					document.getElementById("endTime1").value = endTime;
-				} else if (endHours == 12) {
-					document.getElementById("endTime1").value = rowEndTime + " PM";
-				} else {
-					document.getElementById("endTime1").value = rowEndTime + " AM";
-				}
-
 			}
 
-			if ($("#updateSuccessModal").length > 0) {
-				/*<![CDATA[*/
-				var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
+			var startDateTime = document.getElementById("startDateTime1").value;
+			var endDateTime = document.getElementById("endDateTime1").value;
 
-				var updated = document.getElementById("updated").innerHTML;
+			var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+			var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
 
-				if (updateSuccess == updated) {
-					$('#updateSuccessModal').modal('show');
-				}
-				/*]]>*/
-			}
+			var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+			var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
 
-			if ($("#deleteSuccessModal").length > 0) {
-				/*<![CDATA[*/
-				var deleteSuccess = /*[[${updateSuccess}]]*/ 'default';
+			document.getElementById("startDate1").value = rowStartDate;
+			document.getElementById("endDate1").value = rowEndDate;
 
-				var deleted = document.getElementById("deleted").innerHTML;
-
-				if (deleteSuccess == updated) {
-					$('#deleteSuccessModal').modal('show');
-				}
-				/*]]>*/
-			}
-
-			//Conflict Modal Validation
-			if ($("#errorModal").length > 0) {
-				/*<![CDATA[*/
-				var errorMessage = /*[[${error}]]*/ 'default';
-				var element = document.getElementById('hasError').value;
-
-				if (element.includes('conflict')) {
-					document.getElementById('errorTitle').innerHTML = "Conflict!";
-				}
-
-				console.log(element);
-
-				if (errorMessage == element) {
-
-					$('#errorModal').modal('show');
-
-				}
-				/*]]>*/
-			}
+			document.getElementById("startTime1").value = rowStartTime;
+			document.getElementById("endTime1").value = rowEndTime;
 		}
+
+		if ($("#deleteView").length > 0) {
+			var deleteCourseScheduleId = $("#deleteCourseScheduleId").val();
+			if (deleteCourseScheduleId !== "") {
+				$('#deleteModal').modal('show');
+			}
+
+			var startDateTime = document.getElementById("startDateTime1").value;
+			var endDateTime = document.getElementById("endDateTime1").value;
+
+			var startDate = startDateTime.substring(0, startDateTime.indexOf("T")).replace(/[-]/gi, "/");
+			var endDate = endDateTime.substring(0, endDateTime.indexOf("T")).replace(/[-]/gi, "/");
+
+			document.getElementById("startDate1").value = startDate;
+			document.getElementById("endDate1").value = endDate;
+
+			var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+			var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+
+			var startHours = parseInt(rowStartTime.substring(0, startDateTime.indexOf(":")));
+			var startMinutes = rowStartTime.substring(3, 5);
+
+			if (startHours > 12) {
+				var startTime = String(startHours - 12).padStart(2, "0") + ":" + startMinutes + " PM";
+				document.getElementById("startTime1").value = startTime;
+			} else if (startHours == 12) {
+				document.getElementById("startTime1").value = rowStartTime + " PM";
+			} else {
+				document.getElementById("startTime1").value = rowStartTime + " AM";
+			}
+
+			var endHours = parseInt(rowEndTime.substring(0, endDateTime.indexOf(":")));
+			var endMinutes = rowEndTime.substring(3, 5);
+
+			if (endHours > 12) {
+				var endTime = String(endHours - 12).padStart(2, "0") + ":" + endMinutes + " PM";
+				document.getElementById("endTime1").value = endTime;
+			} else if (endHours == 12) {
+				document.getElementById("endTime1").value = rowEndTime + " PM";
+			} else {
+				document.getElementById("endTime1").value = rowEndTime + " AM";
+			}
+
+		}
+
+		if ($("#updateSuccessModal").length > 0) {
+			/*<![CDATA[*/
+			var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
+
+			var updated = document.getElementById("updated").innerHTML;
+
+			if (updateSuccess == updated) {
+				$('#updateSuccessModal').modal('show');
+			}
+			/*]]>*/
+		}
+
+		if ($("#deleteSuccessModal").length > 0) {
+			/*<![CDATA[*/
+			var deleteSuccess = /*[[${updateSuccess}]]*/ 'default';
+
+			var deleted = document.getElementById("deleted").innerHTML;
+
+			if (deleteSuccess == updated) {
+				$('#deleteSuccessModal').modal('show');
+			}
+			/*]]>*/
+		}
+
+		//Conflict Modal Validation
+		if ($("#errorModal").length > 0) {
+			/*<![CDATA[*/
+			var errorMessage = /*[[${error}]]*/ 'default';
+			var element = document.getElementById('hasError').value;
+
+			if (element.includes('conflict')) {
+				document.getElementById('errorTitle').innerHTML = "Conflict!";
+			}
+
+			console.log(element);
+
+			if (errorMessage == element) {
+
+				$('#errorModal').modal('show');
+
+			}
+			/*]]>*/
+		}
+	}
 
 	</script>
 </body>
