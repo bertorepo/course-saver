@@ -39,7 +39,7 @@ class CourseTest {
 		Course expected = createBuilderOne();
 		
 		assertNotNull(expected);
-		assertEquals(expected.getName(), "Javascript");
+		assertEquals(expected.getName(), "JavaScript");
 		assertEquals(expected.getDetail(), "Details");
 		assertEquals(expected.getIsMandatory(), "Yes");
 		assertEquals(expected.getDeadline(), "Monthly");
@@ -72,8 +72,9 @@ class CourseTest {
 	 */
 	private Course createBuilderOne() {
 	    return Course.builder()
+		    	 .withDetail("Details")
 			 .withName("JavaScript")
-			 .withDeadline("Details")
+			 .withDeadline("Monthly")
 			 .withIsMandatory("Yes")
 			 .withDeadline("Monthly")
 			 .withCourseCategoryId(3L)
@@ -89,8 +90,8 @@ class CourseTest {
 	 */
 	private Course createBuilderTwo() {
 	    return Course.builder()
-			 .withName("Phython")
-			 .withDeadline("Details")
+			 .withName("Python")
+			 .withDetail("Details")
 			 .withIsMandatory("No")
 			 .withDeadline("-")
 			 .withCourseCategoryId(4L)

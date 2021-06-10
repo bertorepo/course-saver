@@ -122,6 +122,12 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+    		<groupId>org.junit.platform</groupId>
+    		<artifactId>junit-platform-commons</artifactId>
+    		<version>1.7.0</version>
+    		<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
