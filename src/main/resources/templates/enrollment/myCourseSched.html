@@ -186,7 +186,12 @@
 								th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
 							</td>
 							<td class="align-middle" th:text="|${courseEnrollmentForm.duration} hour/s|"></td>
-							<td class="align-middle" th:text="${courseSchedules.courseStatus}"></td>
+							<td class="align-middle" >
+								<p th:if="${courseSchedules.courseStatus == 'A'}">Active</p>
+								<p th:if="${courseSchedules.courseStatus == 'O'}">Ongoing</p>
+								<p th:if="${courseSchedules.courseStatus == 'D'}">Done</p>
+								<p th:if="${courseSchedules.courseStatus == 'C'}">Closed</p>
+							</td>
 							<td class="hide" th:text="${courseSchedules.courseScheduleId}"></td>
 							<td class="hide" th:text="${courseSchedules.participantId}"></td>
 							<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
