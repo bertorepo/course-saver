@@ -212,6 +212,8 @@
 							<h5 class="modal-title">Enroll Member <span id="registerCourse"></span></h5>
 							<input type="hidden" id="registerCourseScheduleId">
 							<input type="hidden" id="registerCourseScheduleDetailId">
+							<input type="hidden" id="maxCourseParticipants">
+							<input type="hidden" id="curCourseParticipants">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -222,12 +224,12 @@
 								<input class="form-control" id="searchInput" type="text" aria-label="Search">
 								
 							</div>
-							<table class="table table-bordered table-responsive" style="width:100%">
+							<table class="table table-bordered table-responsive text-center" style="width:100%">
 								<colgroup >
-									<col style="width:10%"/>
-									<col style="width:30%"/>
-									<col style="width:30%"/>
-									<col style="width:30%"/>
+									<col style="width:5%"/>
+									<col style="width:15%"/>
+									<col style="width:15%"/>
+									<col style="width:15%"/>
 								</colgroup>
 								<thead class="text-center">
 									<tr>
@@ -241,15 +243,21 @@
 
 								</tbody>
 							</table>
-							
+							<div id="enrollMemberMsg" class="alert alert-dismissible alert-danger text-center">
+			 					<strong id="enrollErrMsg"></strong> 
+			 				</div>
+							<div class="modal-footer">
+								<input id="enrollBtn" type="button" class="btn btn-success" value="Enroll" onClick="showEnrollModal()">
+							</div>
+								
 							<hr>
 							<h5 style="font-weight : bold">List of Enrolled Members</h5>
-								<table class="table table-bordered table-responsive" style="width:100%">
+								<table class="table table-bordered table-responsive text-center" style="width:100%">
 								<colgroup >
-									<col style="width:10%"/>
-									<col style="width:30%"/>
-									<col style="width:30%"/>
-									<col style="width:30%"/>
+									<col style="width:5%"/>
+									<col style="width:15%"/>
+									<col style="width:15%"/>
+									<col style="width:15%"/>
 								</colgroup>
 								<thead class="text-center">
 									<tr>
@@ -263,7 +271,12 @@
 
 								</tbody>
 							</table>
-							
+			 				<div id="removeMemberMsg" class="alert alert-dismissible alert-danger text-center">
+			 					<strong>No members are enrolled yet.</strong> 
+			 				</div>
+							<div class="modal-footer">
+								<input id="removeBtn" type="button" class="btn btn-danger" value="Remove" onClick="showRemoveModal()">
+							</div>								
 						</div>
 						<div class="modal-footer">
 							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
@@ -278,32 +291,26 @@
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
-					<div class="modal-header alert-danger">
-						<h5 class="modal-title">Confirmation</h5>
+					<div class="modal-header alert-warning">
+						<h5 class="modal-title"><i class="fa fa-warning"></i></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">Are you sure you want to Enroll <span id="enrollMemberName"></span>
-							to <span id="enrollMemberCourseName"></span>?
+							<label class="col-lg-12 col-form-label">Are you sure you want to enroll the selected member(s) from the course schedule ?
 							</label>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
-							
 							<form id="form" action="#" 
-								th:action="@{/enrollment/enrollMember}" th:object="${courseEnrollmentForm}"
+								th:action="@{/enrollment/enrollBatchMembers}" th:object="${courseEnrollmentForm}"
 									 method="post">
-								<input type="hidden" name="id" id="confirmEnrollMemberParticipantId" />
-								<input type="hidden" name="courseScheduleId" id="confirmEnrollMemberCourseScheduleId" />
-								<input type="hidden" name="courseScheduleDetails.id" id="confirmEnrollMemberCourseScheduleDetailId" />
-								<input type="hidden" name="courseScheduleDetails.id" id="confirmEnrollMemberCourseScheduleDetailId" />
-								<input type="hidden" name="emailAddress" id="confirmEnrollMemberEmailAddress" />
-								
-								<button type="submit" name="submit" value="submit" class="btn btn-primary" >Yes</button>
+								<input type="hidden" id="enrollBatchIds" name="batchId" />
+								<input type="hidden" id="enrollCourseId" name="courseId" />
+								<button type="submit" name="submit" value="submit" class="btn btn-success" >Yes, Enroll</button>
 							</form>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
 						</div>
 					</div>
 				</div>
@@ -311,7 +318,42 @@
 		</div>
 		<!--Enroll Member Confirmation Modal End-->
 		
-			<!--Error Modal-->
+		<!--Remove Member Confirmation Modal-->
+		<div class="modal fade" id="removeEnrollMemberModal" tabindex="-1" 
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-warning">
+						<h5 class="modal-title"><i class="fa fa-warning"></i></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label">Are you sure you want to remove the selected member(s) from the course schedule ?
+							</label>
+						</div>
+						<div class="modal-footer">
+							<!-- <input id="removeMembers" type="button" class="btn btn-success" data-dismiss="modal" value="Remove" onClick="removeEnrolledMember()">
+							 -->
+							<form id="form" action="#" 
+								th:action="@{/enrollment/removeEnrolledMember}" th:object="${courseEnrollmentForm}"
+									 method="post">
+								<input type="hidden" id="batchIds" name="batchId" />
+								<input type="hidden" id="courseId" name="courseId" />
+								<button type="submit" name="submit" value="submit" class="btn btn-success" >Yes, Remove</button>
+							</form>
+							
+							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Remove Member Confirmation Modal End-->
+		
+		<!--Error Modal-->
 		<div class="modal fade" id="errorModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
@@ -429,12 +471,10 @@
 						<td th:hidden="${courseScheduleId}"/>
 						<td class="align-middle" sec:authorize="hasAuthority('PMO')">
 							<div class="tooltip-a">
-								<button th:disabled="${courseSchedule.totalParticipants} == ${courseSchedule.maxAllowed} or
-										${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}" 
-										th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}')|" 
+								<button th:disabled="${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}" 
+										th:attr="onclick=|enrollMember('${courseScheduleId}','${courseSchedule.courseName}', '${courseScheduleDetail.id}', '${courseSchedule.maxAllowed}', '${courseSchedule.totalParticipants}')|" 
 										type="button" class="btn btn-success" id="enrollMemberButton">Register</button>
-								<span class="tooltiptext-a" th:if="${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}">Registration ended</span>	
-								<span class="tooltiptext-a" th:if="${courseSchedule.totalParticipants} == ${courseSchedule.maxAllowed}">Course is full</span>			
+								<span class="tooltiptext-a" th:if="${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}">Registration has ended</span>	
 							</div>		
 						</td>
 						<td class="align-middle" th:text="${courseSchedule.courseCategory}"/>
@@ -474,12 +514,15 @@
 <script th:inline="javascript">
 
 	//EnrollMember
-	function enrollMember(courseScheduleId, courseName, courseScheduleDetailId){
+	function enrollMember(courseScheduleId, courseName, courseScheduleDetailId, maxParticipants, curParticipants){
+		
 		findEnrolledMemberByCourseScheduleId(courseScheduleId);
 		findMemberNotEnrolledByCourseScheduleId(courseScheduleId);
 		document.getElementById('registerCourseScheduleDetailId').value = courseScheduleDetailId;
 		document.getElementById('registerCourseScheduleId').value = courseScheduleId;
-		document.getElementById('registerCourse').textContent = "(" + courseScheduleId + " " + courseName + ")";
+		document.getElementById('registerCourse').textContent = "(" + courseName + ")";
+		document.getElementById('maxCourseParticipants').value = maxParticipants;
+		document.getElementById('curCourseParticipants').value = curParticipants;
 		$('#registerMemberModal').modal('show');
 	}
 	//EnrollMember END
@@ -625,24 +668,13 @@
 	/*<![CDATA[*/
 	var successMsg = /*[[${successMsg}]]*/ 'default';
 
-	if(successMsg === "Successfully Enrolled a Member!!!"){
+	if(successMsg === "Successfully enrolled the selected member(s)."){
 
+		document.getElementById("successMessage").innerHTML = successMsg;
+		$('#successModal').modal('show');
 		
-// 		var courseId = courseEnrollmentForm.courseScheduleId;
-// 		var courseName = courseEnrollmentForm.courseName;
-// 		var instructorName = courseEnrollmentForm.instructorName;
-// 		alert("Course ID: " + courseId + " Course Name: " + courseName + " Instructor Name:" + instructorName);
+	} else if(successMsg === "Successfully removed the selected member(s).") {
 		
-// 		var courseIdInput = document.getElementById('infoId');
-// 		var courseNameInput = document.getElementById('infoCourseName');
-// 		var courseInstructorNameInput = document.getElementById('infoInstructorName');
-
-// 		courseIdInput.value = courseId;
-// 		courseNameInput.value = courseName;
-// 		courseInstructorNameInput.value = instructorName;
-
-// 		$('#infoModal').modal('show');
-
 		document.getElementById("successMessage").innerHTML = successMsg;
 		$('#successModal').modal('show');
 		
@@ -710,7 +742,58 @@
 		document.getElementById("deadlineSel").value = "-";
 		document.getElementById("deadlineDiv").style.display = "none";
 	}
+
+	function removeMembers(){
+
+		var courseId = document.getElementById("registerCourseScheduleId").value
+		var chk=document.getElementsByName('removeChk');  
+        var ids = "";
+    
+        for(var i=0; i<chk.length; i++){  
+            if(chk[i].checked == true)  {
+            	ids += chk[i].value + ",";
+            }
+        } 
+        
+        document.getElementById("batchIds").value = ids;
+        document.getElementById("courseId").value = courseId;
+        if(ids == "") {
+        	document.getElementById("removeBtn").disabled = true;
+        } else {
+        	document.getElementById("removeBtn").disabled = false;
+        }
+        
+	}        
 	
+	function enrollMembers(){
+
+		var courseId = document.getElementById("registerCourseScheduleId").value
+		var chk=document.getElementsByName('enrollChk');  
+		var curParticipants = parseInt(document.getElementById("curCourseParticipants").value);
+		var maxParticipants = parseInt(document.getElementById("maxCourseParticipants").value);
+		var addedParticipants = 0;
+        var ids = "";
+    
+        for(var i=0; i<chk.length; i++){  
+            if(chk[i].checked == true)  {
+            	ids += chk[i].value + ",";
+            	addedParticipants += 1;
+            }
+        } 
+        
+        document.getElementById("enrollBatchIds").value = ids;
+        document.getElementById("enrollCourseId").value = courseId;
+        if(ids == "") {
+        	document.getElementById("enrollBtn").disabled = true;
+    		document.getElementById("enrollMemberMsg").style.display = "none";
+        } else if(curParticipants + addedParticipants > maxParticipants) {
+        	document.getElementById("enrollBtn").disabled = true;
+    		document.getElementById("enrollMemberMsg").style.display = "block";
+        } else {
+        	document.getElementById("enrollBtn").disabled = false;
+    		document.getElementById("enrollMemberMsg").style.display = "none";
+        }
+	}     
 </script>
 </body>
 </html>

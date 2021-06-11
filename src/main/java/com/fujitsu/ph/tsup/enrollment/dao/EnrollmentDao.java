@@ -25,6 +25,8 @@ import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.EnrolledMemberForm;
+
 //import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -256,4 +258,24 @@ public interface EnrollmentDao {
        * <pre>
        */
        Set<VenueForm> findAllVenue();
+       
+       /**
+        * <pre>
+        *
+        *Method for removing selected enrolled members from a course schedule
+        *@author l.celoso
+        *
+        * <pre>
+        */  
+       void removeBatchMember(EnrolledMemberForm enrolledMember);
+       
+       /**
+        * <pre>
+        *
+        *Method for enrolling selected members to a course schedule
+        *@author l.celoso
+        *
+        * <pre>
+        */  
+       void enrollBatchMember(EnrolledMemberForm enrolledMember);
 }

@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -52,6 +53,7 @@ import com.fujitsu.ph.tsup.enrollment.model.CourseEnrollmentForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleForm;
 import com.fujitsu.ph.tsup.enrollment.model.CourseScheduleListForm;
+import com.fujitsu.ph.tsup.enrollment.model.EnrolledMemberForm;
 import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
@@ -545,6 +547,7 @@ public class EnrollmentController {
 			for (CourseSchedule courseSchedule : courseSchedules) {
 				CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
 				courseScheduleForm.setId(courseSchedule.getId());
+				courseScheduleForm.setCourseCategory(courseSchedule.getCourseCategory());
 				courseScheduleForm.setCourseName(courseSchedule.getCourseName());
 				courseScheduleForm.setInstructorName(
 						courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
@@ -739,11 +742,7 @@ public class EnrollmentController {
 	@ResponseBody
 	public Set<CourseParticipant> findAllEnrolledMemberByCourseScheduleId(@RequestBody Long courseScheduleId) {
 		Set<CourseParticipant> courseParticipant = new HashSet<CourseParticipant>();
-//    	try {
 		courseParticipant = enrollmentService.findAllParticipantByCourseScheduleId(courseScheduleId);
-//    	}catch(Exception e) {
-//    		e.printStackTrace();
-//    	}
 		return courseParticipant;
 	}
 	/**
@@ -780,16 +779,7 @@ public class EnrollmentController {
 	public String submitCourseEnrollmentMemberForm(@Valid @ModelAttribute CourseEnrollmentForm courseEnrollmentForm,
 			BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		try {
-			System.out.println(
-					"CourseScheduleId: " + courseEnrollmentForm.getCourseScheduleId() + " CourseScheduleDetailId: "
-							+ courseEnrollmentForm.getCourseScheduleDetails().getId() + " ParticipantId: "
-							+ courseEnrollmentForm.getId() + "EMAIL: " + courseEnrollmentForm.getEmailAddress());
-			System.out.println("IT WORKS");
-			System.out.println("(POST ENROLL)Participant ID: " + courseEnrollmentForm.getId());
-			System.out.println("(POST ENROLL)Course Schedule ID: " + courseEnrollmentForm.getCourseScheduleId());
-			System.out.println("(POST ENROLL)Email: " + courseEnrollmentForm.getCourseName());
 			CourseScheduleDetailForm courseScheduleDetailForm = courseEnrollmentForm.getCourseScheduleDetails();
-			System.out.println("(POST ENROLL)Course Schedule Detail ID: " + courseScheduleDetailForm.getId());
 			CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(
 					courseScheduleDetailForm.getId()).build();
 			CourseParticipant courseParticipant = new CourseParticipant.Builder(
@@ -797,7 +787,7 @@ public class EnrollmentController {
 					courseEnrollmentForm.getEmailAddress(), ZonedDateTime.now()).addDetail(courseScheduleDetail)
 							.build();
 			enrollmentService.enroll(courseParticipant);
-			redirectAttributes.addFlashAttribute("successMsg", "Successfully Enrolled a Member!!!");
+			redirectAttributes.addFlashAttribute("successMsg", "Successfully enrolled the selected member(s).");
 			redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -992,5 +982,56 @@ public class EnrollmentController {
 		}
 		
 		return filterId;
+	}
+	
+	/**
+	 * Remove all selected member enrolled in course schedule
+	 * 
+	 * @param courseScheduleId
+	 * @return
+	 */
+//	@PostMapping("/removeEnrolledMember")
+//	@ResponseStatus( HttpStatus.OK )
+//	public void removeEnrolledMember(@RequestBody EnrolledMemberForm removeMembers) {
+//		
+//		try {
+//			enrollmentService.removeEnrolledMember(removeMembers.getBatchId(), removeMembers.getCourseId());
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+	
+	@PostMapping("/removeEnrolledMember")
+	public String removeEnrolledMember(@Valid @ModelAttribute EnrolledMemberForm removeMembers,
+			BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+		try {
+			enrollmentService.removeBatchMember(removeMembers);
+			redirectAttributes.addFlashAttribute("successMsg", "Successfully removed the selected member(s).");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			model.addAttribute("errorMessage01", e.getMessage());
+		}
+		return "redirect:/enrollment/viewMemberCourse";
+	}
+	/**
+	 * Enroll a member to course schedule
+	 * 
+	 * @param courseEnrollmentForm
+	 * @param result
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@PostMapping("/enrollBatchMembers")
+	public String enrollBatchMembers(@Valid @ModelAttribute EnrolledMemberForm enrollMembers,
+			BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+		try {
+			enrollmentService.enrollBatchMember(enrollMembers);
+			redirectAttributes.addFlashAttribute("successMsg", "Successfully enrolled the selected member(s).");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			model.addAttribute("errorMessage01", e.getMessage());
+		}
+		return "redirect:/enrollment/viewMemberCourse";
 	}
 }

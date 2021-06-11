@@ -27,6 +27,7 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.EnrolledMemberForm;
 import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
@@ -250,8 +251,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     /** enroll using the courseParticipant */
     @Override
     public void enroll(CourseParticipant courseParticipant) {
-        System.out.println("MY COURSE ID 2: " + courseParticipant.getCourseScheduleId());
-        System.out.println("FPI USER ID 2: " + courseParticipant.getParticipantId());
+        //System.out.println("MY COURSE ID 2: " + courseParticipant.getCourseScheduleId());
+        //System.out.println("FPI USER ID 2: " + courseParticipant.getParticipantId());
 
         // try {
         CourseSchedule courseRecord = enrollmentDao
@@ -607,5 +608,39 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public Set<VenueForm> findAllVenue() {
 
         return enrollmentDao.findAllVenue();
+    }
+    
+    @Override
+    public void removeBatchMember(EnrolledMemberForm enrolledMember) {
+
+    	//Check if the target Course Schedule still exists
+        CourseSchedule courseRecord = enrollmentDao
+                .findCourseScheduleById(enrolledMember.getCourseId());
+
+        if (courseRecord == null) {
+            throw new IllegalArgumentException("This course schedule id "
+                    + enrolledMember.getCourseId() + " is not existing");
+        }
+        //-------------------------------------------------
+    	
+        // Remove the selected members by batch from the Course schedule
+        enrollmentDao.removeBatchMember(enrolledMember);
+    }
+    
+    @Override
+    public void enrollBatchMember(EnrolledMemberForm enrolledMember) {
+
+    	//Check if the target Course Schedule still exists
+    	CourseSchedule courseRecord = enrollmentDao
+                .findCourseScheduleById(enrolledMember.getCourseId());
+
+        if (courseRecord == null) {
+            throw new IllegalArgumentException("This course schedule id "
+                    + enrolledMember.getCourseId() + " is not existing");
+        }
+        //-------------------------------------------------
+        
+        // Enroll the selected members by batch to the Course schedule
+        enrollmentDao.enrollBatchMember(enrolledMember);
     }
 }

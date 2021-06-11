@@ -69,7 +69,7 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<button type="button" id="filterBtn" class="collapsible">Filter</button>
+					<button type="button" id="filterBtn" class="collapsible">Advanced Search</button>
 					<div id="filterItems" class="content">	  
 						<!-- Course Category -->
 						<div class="form-group row">
@@ -244,7 +244,7 @@
 										'${courseSchedule.courseDetails}')|" 
 										type="button" class="btn btn-success">Register</button>	
 								<span class="tooltiptext-a" th:if="${courseSchedule.mandatory == 'Yes'}">This course is mandatory</span>
-								<span class="tooltiptext-a" th:if="${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}">Registration ended</span>	
+								<span class="tooltiptext-a" th:if="${#dates.format(#calendars.createNow(), 'yyyyMMddHHmm')} > ${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'yyyyMMddHHmm')}">Registration has ended</span>	
 								<span class="tooltiptext-a" th:if="${courseSchedule.totalParticipants} == ${courseSchedule.maxAllowed}">Course is full</span>					
 					    	</div>
 						</td>

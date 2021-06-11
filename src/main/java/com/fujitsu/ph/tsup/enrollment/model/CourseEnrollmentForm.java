@@ -172,14 +172,17 @@ public class CourseEnrollmentForm {
     
     @Override
     public String toString() {
-        return "CourseEnrollmentForm [id=" + id + ", courseId=" + courseId
-                + ", courseScheduleId=" + courseScheduleId + ", courseName="
-                + courseName + ", participantId=" + participantId
-                + ", instructorName=" + instructorName + ", venueName="
-                + venueName + ", emailAddress=" + emailAddress
+        return "CourseEnrollmentForm [id=" + id 
+        		+ ", courseId=" + courseId
+                + ", courseScheduleId=" + courseScheduleId 
+                + ", courseName=" + courseName 
+                + ", participantId=" + participantId
+                + ", instructorName=" + instructorName 
+                + ", venueName=" + venueName 
+                + ", emailAddress=" + emailAddress
                 + ", courseScheduleDetails=" + courseScheduleDetails
                 + ", registrationDate=" + registrationDate
-                + ", attendanceStatus=" + attendanceStatus + ", courseDetails="
-                + courseDetails + "]";
+                + ", attendanceStatus=" + attendanceStatus 
+                + ", courseDetails=" + courseDetails + "]";
     }
 }

@@ -45,62 +45,75 @@ function findMemberNotEnrolledByCourseScheduleId(courseScheduleId){
 			toTableMemberList(data);
 		},
 		error: function(){
-			alert("ERROR findMemberNotEnrolledByCourseScheduleId");
+			$('#search-body-table').empty();
+			document.getElementById('enrollBtn').disabled = true; 
 		}
 	});
 }
 function toTableMemberList(data){
 	$('#search-body-table').empty();
 	var table = document.getElementById('search-body-table');
+	
 	data.forEach(function(object){
-//		alert();
+
 		var tr = document.createElement('tr');		
 		var td = document.createElement('td');
-		var enrollButton = document.createElement('button');
-		enrollButton.classList.add("btn");
-		enrollButton.classList.add("btn-primary");
-		enrollButton.innerHTML="Enroll";
-		td.append(enrollButton);
+		var enrollChk = document.createElement('input');
+		enrollChk.setAttribute("type", "checkbox");
+		enrollChk.setAttribute("name", "enrollChk");
+		enrollChk.setAttribute("value", object.participantId);
+		td.append(enrollChk);
 		tr.append(td);
 		
 		var tdEmpNum = document.createElement('td');
 		var tdEmpNam = document.createElement('td');
 		var tdEmpEmail = document.createElement('td');
-		tdEmpNum.classList.add("text-center");
+		tdEmpNum.classList.add("align-middle");
 		tdEmpNum.append(object.employeeNumber);
-		tdEmpNam.classList.add("text-center");
+		tdEmpNam.classList.add("align-middle");
 		tdEmpNam.append(object.participantName); 
-		tdEmpEmail.classList.add("text-center");
+		tdEmpEmail.classList.add("align-middle");
 		tdEmpEmail.append(object.email);
 		
 		tr.append(tdEmpNum);
 		tr.append(tdEmpNam);
 		tr.append(tdEmpEmail);
 		
+		tr.classList.add("table-row");
+		
 		table.append(tr);
-		enrollButton.addEventListener("click", function(){
-//			alert(object.participantId);
-//			alert(object.participantName);
-			enrollmentMember(object.participantName, object.participantId, object.email);
+		enrollChk.addEventListener("change", function(){
+			enrollMembers();
 		});
 	});
+	
+	document.getElementById('enrollBtn').disabled = true; 
+	
+	if ($("#search-body-table").children().length == 0) {
+		document.getElementById("enrollMemberMsg").style.display = "block";
+		document.getElementById("enrollErrMsg").innerHTML = "No available members to enroll."
+	} else {
+		document.getElementById("enrollMemberMsg").style.display = "none";
+		document.getElementById("enrollErrMsg").innerHTML = "Maximum participants allowed reached."
+	}
 }
-function enrollmentMember(participantName, participantId, participantEmail){//ERROR IF METHOD NAME IS enrollMember
+//function enrollmentMember(participantName, participantId, participantEmail){//ERROR IF METHOD NAME IS enrollMember
+//
+//	var courseScheduleId = document.getElementById('registerCourseScheduleId').value;
+//	var courseScheduleDetailId = document.getElementById('registerCourseScheduleDetailId').value;
+//	var courseName = document.getElementById('registerCourse').innerText;
+//
+//	//CALL MODAL AND PASS IT TO SPRING
+//	document.getElementById('enrollMemberName').innerText = participantName;
+//	document.getElementById('enrollMemberCourseName').innerText = courseName;
+//	document.getElementById('confirmEnrollMemberCourseScheduleDetailId').value=courseScheduleDetailId;
+//	document.getElementById('confirmEnrollMemberCourseScheduleId').value=courseScheduleId;
+//	document.getElementById('confirmEnrollMemberParticipantId').value=participantId;
+//	document.getElementById('confirmEnrollMemberEmailAddress').value=participantEmail;
+//	$('#confirmEnrollMemberModal').modal('show');
+//}
 
-	var courseScheduleId = document.getElementById('registerCourseScheduleId').value;
-	var courseScheduleDetailId = document.getElementById('registerCourseScheduleDetailId').value;
-	var courseName = document.getElementById('registerCourse').innerText;
-//	alert(participantEmail);
-//	alert(participantId + "1." +participantName);
-	//CALL MODAL AND PASS IT TO SPRING
-	document.getElementById('enrollMemberName').innerText = participantName;
-	document.getElementById('enrollMemberCourseName').innerText = courseName;
-	document.getElementById('confirmEnrollMemberCourseScheduleDetailId').value=courseScheduleDetailId;
-	document.getElementById('confirmEnrollMemberCourseScheduleId').value=courseScheduleId;
-	document.getElementById('confirmEnrollMemberParticipantId').value=participantId;
-	document.getElementById('confirmEnrollMemberEmailAddress').value=participantEmail;
-	$('#confirmEnrollMemberModal').modal('show');
-}
+
 function findEnrolledMemberByCourseScheduleId(courseScheduleId){
 	
 	$.ajax({
@@ -113,7 +126,8 @@ function findEnrolledMemberByCourseScheduleId(courseScheduleId){
 			toTableEnrolledMember(data);
 		},
 		error: function(){
-		
+			$('#enrolled-data').empty();
+			document.getElementById('removeBtn').disabled = true; 
 		}
 	});
 	
@@ -122,23 +136,48 @@ function findEnrolledMemberByCourseScheduleId(courseScheduleId){
 function toTableEnrolledMember(data){
 	$('#enrolled-data').empty();
 	var table = document.getElementById('enrolled-data');
+	
 	data.forEach(function(object){
 		var tr = document.createElement('tr');		
 		var td = document.createElement('td');
-		var enrollButton = document.createElement('button');
-		enrollButton.classList.add("btn");
-		enrollButton.classList.add("btn-danger");
-		enrollButton.innerHTML="Remove";
-		td.append(enrollButton);
+		var removeChk = document.createElement('input');
+		removeChk.setAttribute("type", "checkbox");
+		removeChk.setAttribute("name", "removeChk");
+		removeChk.setAttribute("value", object.participantId);
+		tr.classList.add("table-row");
+		td.append(removeChk);
 		tr.append(td);
-		tr.innerHTML = tr.innerHTML + '<td class="text-center">' +object.employeeNumber+ '</td>'+
-						'<td class="text-center">' +object.participantName+ '</td>'+ 
-						'<td class="text-center">' +object.email+ '</td>';
+		
+		var tdEmpNum = document.createElement('td');
+		var tdEmpNam = document.createElement('td');
+		var tdEmpEmail = document.createElement('td');
+		tdEmpNum.classList.add("align-middle");
+		tdEmpNum.append(object.employeeNumber);
+		tdEmpNam.classList.add("align-middle");
+		tdEmpNam.append(object.participantName); 
+		tdEmpEmail.classList.add("align-middle");
+		tdEmpEmail.append(object.email);
+		
+		tr.append(tdEmpNum);
+		tr.append(tdEmpNam);
+		tr.append(tdEmpEmail);
+		
 		table.append(tr);
-		enrollButton.addEventListener("click", function(){
-			enrollmentMember(object.participantName, object.participantId, object.email);
+		
+		removeChk.addEventListener("change", function(){
+//			alert(object.participantId);
+//			alert(object.participantName);
+			removeMembers();
 		});
 	});
+	
+	document.getElementById('removeBtn').disabled = true; 
+	
+	if ($("#enrolled-data").children().length == 0) {
+		document.getElementById("removeMemberMsg").style.display = "block";
+	} else {
+		document.getElementById("removeMemberMsg").style.display = "none";
+	}
 }
 
 
@@ -301,4 +340,12 @@ function venueOnChange(){
 		
 		document.getElementById("venueId").value = venueId;
 	}
+}
+
+function showRemoveModal(){
+	$('#removeEnrollMemberModal').modal('show');
+}
+
+function showEnrollModal(){
+	$('#confirmEnrollMemberModal').modal('show');
 }

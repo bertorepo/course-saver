@@ -15,11 +15,16 @@ import com.fujitsu.ph.tsup.scheduling.dao.VenueRowMapper;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.EnrolledMemberForm;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -115,7 +120,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                     + "AND TO_CHAR(CS.VENUE_ID, 'FM9999') LIKE :venueId "
                     + "AND C.MANDATORY LIKE :mandatory "
                     + "AND C.DEADLINE LIKE :deadline "
-                    + "ORDER BY CSD.SCHEDULED_START_DATETIME ";
+                    + "ORDER BY SCHEDULED_START_DATETIME ";
 	        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
 	                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
 	                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
@@ -134,7 +139,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                     + "CSD.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
                     + "AND CS.INSTRUCTOR_ID = :instructorId "
                     + "AND CS.STATUS = 'A' "
-                    + "ORDER BY CSD.SCHEDULED_START_DATETIME ";
+                    + "ORDER BY SCHEDULED_START_DATETIME ";
             SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
                     .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                     .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
@@ -242,6 +247,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 .addValue("courseScheduleDetailId", courseParticipant.getCourseScheduleDetail().getId())
                 .addValue("participantId", courseParticipant.getParticipantId())
                 .addValue("email", courseParticipant.getEmail());
+        
         template.update(saveAttendance, saveAttendanceParameters);
     }
     /**
@@ -903,5 +909,55 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         Set<VenueForm> venue = new LinkedHashSet<>(venueList);
 
         return venue;
+    }
+    
+    /**
+     * <pre>
+     * Method for removing selected enrolled members in a course schedule
+     * 
+     * <pre>
+     */
+    @Override
+    public void removeBatchMember(EnrolledMemberForm enrolledMember) {
+    	
+        List<Long> items = Arrays.asList(enrolledMember.getBatchId().split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
+    	
+        // Delete record from the COURSE_PARTICIPANT table
+        String deleteFromCoursePaticipant = "DELETE FROM COURSE_PARTICIPANT " +
+        									"WHERE COURSE_SCHEDULE_ID = :course_id " +
+        									"AND PARTICIPANT_ID IN (:participant_id) ";
+    	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+    			.addValue("course_id", enrolledMember.getCourseId())
+    			.addValue("participant_id", items);	
+    	template.update(deleteFromCoursePaticipant, sqlParameterSource);
+    	
+    	// Delete record from the COURSE_ATTENDANCE table
+    	String deleteFromCourseAttendance = "DELETE FROM COURSE_ATTENDANCE " + 
+    										"WHERE COURSE_SCHEDULE_DETAIL_ID = :course_id " +
+    										"AND PARTICIPANT_ID IN (:participant_id) ";
+    	template.update(deleteFromCourseAttendance, sqlParameterSource);
+    }
+    
+    /**
+     * Method to Save data to Table tsup.course_participant
+     **/
+    @Override
+    public void enrollBatchMember(EnrolledMemberForm enrolledMember) {
+    	List<Long> items = Arrays.asList(enrolledMember.getBatchId().split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
+    	
+        // Insert record to the COURSE_PARTICIPANT table
+        String enrollToCoursePaticipant = "INSERT INTO COURSE_PARTICIPANT " +
+        									"(COURSE_SCHEDULE_ID, PARTICIPANT_ID, REGISTRATION_DATE) " +
+        									"SELECT :course_id, E.id, NOW() FROM EMPLOYEE E WHERE E.id IN (:participant_id); ";
+    	SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+    			.addValue("course_id", enrolledMember.getCourseId())
+    			.addValue("participant_id", items);	
+    	template.update(enrollToCoursePaticipant, sqlParameterSource);
+    	
+    	// Insert record to the COURSE_ATTENDANCE table
+    	String enrollToCourseAttendance = "INSERT INTO tsup.COURSE_ATTENDANCE " + 
+    										"(COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT_ID,STATUS,LOG_IN_DATETIME,LOG_OUT_DATETIME, EMAIL) " +
+    										"SELECT :course_id, E.id, 'A', null, null, E.email_address FROM tsup.EMPLOYEE E WHERE E.id IN (:participant_id); ";
+    	template.update(enrollToCourseAttendance, sqlParameterSource);
     }
 }

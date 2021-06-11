@@ -22,6 +22,7 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.EnrolledMemberForm;
 import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
@@ -209,4 +210,24 @@ public interface EnrollmentService {
 	 * <pre>
 	 */
     Set<VenueForm> findAllVenue();
+    
+    /**
+	 * <pre>
+	 *
+	 *Method for removing selected enrolled members from a course schedule
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+    void removeBatchMember(EnrolledMemberForm enrolledMember);
+    
+    /**
+	 * <pre>
+	 *
+	 *Method for enrolling selected enrolled members to a course schedule
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+	void enrollBatchMember(EnrolledMemberForm enrolledMember);
 }
