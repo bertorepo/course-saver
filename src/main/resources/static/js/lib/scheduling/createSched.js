@@ -310,8 +310,8 @@ function validations() {
 	    	//Start and End Time Validation
         	if (startDate > endDate)  {
         		errorCount++;
-        		startDateError = "";
-        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
+        		endDateError = "Please pick a date that's greater than <br>the value of 'Start Date' field.";
+        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
             }
         	
         	if(startDate == endDate) {
@@ -332,7 +332,7 @@ function validations() {
         	
         	if (isLessThanToday(endDate)) {
         		errorCount++;
-        		endDateError = "Please pick a date that's greater <br>than the value of 'Start Date' field.";
+        		endDateError = "Please pick a future date.";
         	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
         	}
         	if((startDate !== "") && (endDate !== "")) {
