@@ -3,6 +3,19 @@
 <!-- @Author: Labador, Sweet Ophaline-->
 <!-- @Author: Baton, Maria Chelsea-->
 <!-- @Author: Sinda, Chaniza Van -->
+
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Maintenance -->
+<!-- Name         : roleTypeView.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | ----/--/-- | WS) -		  | Created -->
+<!-- 0.02    | 2021/06/04 | WS) R.Gaquit  | Updated --> 
+<!-- ================================================================================================== -->
+
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -24,6 +37,62 @@
 <script th:src="@{/js/viewRoleType.js}"></script>
 </head>
 <body>
+	<!--Confirm Delete Modal-->
+	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true"
+		th:object="${deleteRoleTypeForm}">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="form-group row">
+						<input type="hidden" id="roleId" name="roleId"></input>
+						<p th:text="${param.roleId}" hidden=true></p>
+						<label class="col-lg-12 col-form-label">Are you sure you
+							want to delete this Role Type?</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<form class="form-horizontal"
+						th:action="@{/roletype/__${param.roleId}__/delete}" method="post">
+						<button type="submit" class="btn btn-danger">Confirm
+							Deletion</button>
+					</form>
+					<a class="btn btn-primary" th:href="@{/roletype/load/1}">Cancel</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Confirm Delete Modal End-->
+	
+	<!--Confirm Update Modal-->
+	<div class="modal fade" id="confirmUpdateModal" tabindex="-1"
+		data-backdrop="static" data-keyboard="false" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true"
+		th:object="${updateRoleTypeForm}">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-warning">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label">Are you sure you
+							want to update the selected course category?</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" id="confirmUpdateBtn">Confirm
+						Update</button>
+					<input type="button" class="btn btn-primary" data-dismiss="modal"
+						value="Back">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Confirm Update Modal End-->
 
 	<!-- Delete - Info modal -->
 	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog"
@@ -31,7 +100,7 @@
 		<form id="infoModalFormId" method="post">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
-					<div class="modal-header">
+					<div class="modal-header alert-info">
 						<h5 class="modal-title">Role Type Information</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
@@ -58,7 +127,7 @@
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-danger">Delete</button>
 						<input type="button" class="btn btn-primary" data-dismiss="modal"
-							value="Back">
+							value="Cancel">
 					</div>
 				</div>
 			</div>
@@ -76,7 +145,7 @@
 						<input type="hidden" id="roleId" name="roleId"></input>
 						<p th:text="${param.roleId}" hidden=true></p>
 						<label class="col-lg-12 col-form-label"
-							th:text="${deleteSuccessMessage}"></label>
+							th:text="${message}"></label>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -86,8 +155,64 @@
 			</div>
 		</div>
 	</div>
-
 	<!--Success Modal End-->
+			
+	<!-- Update modal -->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+		<form id="roleForm" name="roleForm" action="#"
+			th:action="@{/roletype/update/__${roleIdInput}__}"
+			th:object="${updateRoleTypeForm}" method="post">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header alert-info">
+						<h5 class="modal-title">Update Role</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<input type="hidden" id="id" name="id"></input>
+							<div class="col-lg-3">
+								<label class="col-form-label">Role Name:</label>
+							</div>
+							<div class="col-lg-9">
+								<input type="text" class="form-control" id="rolename"
+									maxlength="40" name="rolename" onkeyup="validateIfEmpty()"/>
+								<span id="nameErrorMsg" style="color: red;"></span>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-lg-3">
+								<label class="col-form-label">Role Description:</label>
+							</div>
+							<div class="col-lg-9">
+								<textarea rows="10" cols="50" maxlength="120"
+									class="form-control" id="roledesc" name="roledesc" 
+									onkeyup="validateIfEmpty()"></textarea>
+								<span id="descErrorMsg" style="color: red;"></span>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="updateBtn" class="btn btn-danger"
+							data-dismiss="modal" data-toggle="modal"
+							data-target="#confirmUpdateModal" disabled>Update
+							Role</button>
+						<input type="button" class="btn btn-primary" data-dismiss="modal"
+							value="Back">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- </form> -->
+	</div>
+	<!-- Update modal End-->
+	
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5">
 		<form class="form-horizontal" action="#"
@@ -132,11 +257,12 @@
 						</thead>
 						<tbody th:each="role : *{roletypeList}">
 							<tr>
-								<td style="width: 20%;"><a id="updateButton" type="submit"
-									class="btn btn-success"
-									th:href="@{/roletype/update/{roleId}(roleId=${role.id})}">Edit</a>
+								<td>
+									<input type="submit" value="Edit"
+										class="btn btn-success"
+										th:attr="onclick=|showUpdateModal('${role.id}','${role.rolename}','${role.roledesc}')|"></input>
 									<input type="submit" value="Delete" class="btn btn-danger"
-									th:attr="onclick=|deleteButton('${role.id}','${role.rolename}','${role.roledesc}')|"></input>
+										th:attr="onclick=|deleteButton('${role.id}','${role.rolename}','${role.roledesc}')|"></input>
 								</td>
 								<td th:text="${role.rolename}"
 									style="word-wrap: break-word; width: 20%;"></td>
@@ -177,6 +303,15 @@
 			</div>
 		</div>
 	</div>
+	
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var roletypeList = /*[[${roletypeList}]]*/'default';
+		var roleId = /*[[${roleId}]]*/'default';
+		/*]]>*/
+		
+	</script>
+	
 	<footer th:replace="fragments/general.html :: footer"></footer>
 </body>
 </html>
