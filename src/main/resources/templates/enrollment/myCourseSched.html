@@ -134,7 +134,7 @@
 									 			? 'The Course is already ongoing.' : 
 									 		 (${courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() 
 									 		   		le #temporals.createNow()} ? 'The Course has already ended.' : '') ">
-								<button th:if="${courseSchedules.attendanceStatus == 'A' } " title="Decline" th:attr="onclick=|declinedCourseSchedule('${courseSchedules.id}',
+								<button th:if="${courseSchedules.attendanceStatus == 'A' && courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() > #temporals.createNow() } " title="Decline" th:attr="onclick=|declinedCourseSchedule('${courseSchedules.id}',
  									'${courseSchedules.courseName}',
  									'${courseSchedules.courseScheduleId}',
  									'${courseSchedules.registrationDate}',
@@ -149,7 +149,7 @@
 									DELETE
 								</button>
 
-								<button th:if="${courseSchedules.attendanceStatus == 'A'}" title="Change Schedule"
+								<button th:if="${courseSchedules.attendanceStatus == 'A' && courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() > #temporals.createNow() }" title="Change Schedule"
 									th:attr="onclick=|declineUpdate('${courseSchedules.courseId}','${courseSchedules.courseName}','${courseSchedules.courseScheduleId}')|"
 									class="btn btn-primary">
 									UPDATE
@@ -162,7 +162,7 @@
 									th:attr="onclick=|getCourseId('${courseSchedules.courseId}')|"title="Upload Certificate" >
 									UPLOAD
 									</button>
-
+								<p th:if="${courseSchedules.attendanceStatus == 'A' && courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() < #temporals.createNow() }">Course is Past Due</p>
 								<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
 							</td>
 
