@@ -1,5 +1,8 @@
 package com.fujitsu.ph.tsup.enrollment.service;
 
+import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
+import com.fujitsu.ph.tsup.course.model.Course;
+
 //==================================================================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -19,9 +22,13 @@ import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
+import com.fujitsu.ph.tsup.enrollment.model.EnrolledMemberForm;
 import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
+import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
+import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
@@ -43,10 +50,10 @@ public interface EnrollmentService {
 	void sendCalendarInvite(CourseParticipant courseParticipant);
 
 	/** Finds all scheduled courses based on the given date range */
-	Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
+	Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
 
 	/** Finds specific details on courses based on the given date range */
-	Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime);
+	Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
 
 	/** Finds the course schedule by Id */
 	CourseSchedule findCourseScheduleById(Long id);
@@ -163,4 +170,64 @@ public interface EnrollmentService {
 	List<String> findCourseScheduleIfMandatory();
 	
 	public String findCertificateName(long userId, long courseId);
+	
+    /**
+	 * <pre>
+	 *
+	 *Method for loading all course category in View Enroll Course
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+    Set<CourseCategory> findAllCourseCategory();
+    
+    /**
+	 * <pre>
+	 *
+	 *Method for loading all course name in View Enroll Course
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+    Set<Course> findAllCourseName();
+    
+    /**
+	 * <pre>
+	 *
+	 *Method for loading all instructor in View Enroll Course
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+    Set<InstructorForm> findAllInstructor();
+    
+    /**
+	 * <pre>
+	 *
+	 *Method for loading all venue in View Enroll Course
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+    Set<VenueForm> findAllVenue();
+    
+    /**
+	 * <pre>
+	 *
+	 *Method for removing selected enrolled members from a course schedule
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+    void removeBatchMember(EnrolledMemberForm enrolledMember);
+    
+    /**
+	 * <pre>
+	 *
+	 *Method for enrolling selected enrolled members to a course schedule
+	 *@author l.celoso
+	 *
+	 * <pre>
+	 */
+	void enrollBatchMember(EnrolledMemberForm enrolledMember);
 }

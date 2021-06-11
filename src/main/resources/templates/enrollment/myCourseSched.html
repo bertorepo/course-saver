@@ -76,7 +76,7 @@
 						</div>
 
 						<div class="float-right">
-							<input type="submit" class="btn btn-success" value="Submit" onclick="submitDateTime()">
+							<input type="submit" class="btn btn-success" value="Search" onclick="submitDateTime()">
 						</div>
 					</div>
 				</div>
@@ -105,11 +105,11 @@
 						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
 						<th class="align-middle">Venue Name</th>
-						<th class="align-middle">Start Date/Time <br />
-							<hr> End Date/Time
+						<th class="align-middle">Start Date & Time <br />
+							<hr> End Date & Time
 						</th>
-						<th class="hide">Start Date/Time</th>
-						<th class="hide">End Date/Time</th>
+						<th class="hide">Start Date & Time</th>
+						<th class="hide">End Date & Time</th>
 						<th class="align-middle">Duration</th>
 						<th class="align-middle">Course Schedule Status</th>
 						<th class="hide">Course Schedule ID</th>
@@ -141,8 +141,8 @@
  									'${courseSchedules.instructorName}',
  									'${courseSchedules.venueName}',
  									'${courseSchedules.courseStatus}',
- 									'${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
- 									'${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
+ 									'${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - hh:mm a')}',
+ 									'${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}',
  									'${courseEnrollmentForm.duration}',
  									'${courseSchedules.courseId}',
  									'${courseSchedules.courseDetails}')|" class="btn btn-danger">
@@ -167,23 +167,23 @@
 							</td>
 
 							<td class="align-middle" th:if= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
-							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}','${courseSchedules.courseId}')|"
+							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}','${courseSchedules.courseId}')|"
 							th:text="${courseSchedules.courseName}"></td>
 							<td class="align-middle" th:unless= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
 							th:text="${courseSchedules.courseName}"></td>
 							<td class="align-middle" th:text="${courseSchedules.instructorName}"></td>
 							<td class="align-middle" th:text="${courseSchedules.venueName}"></td>
 
-							<td class="align-middle" th:utext="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')} + '&lt;br /&gt; <hr>' + 
-						${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}" />
+							<td class="align-middle" th:utext="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - hh:mm a')} + '&lt;br /&gt; <hr>' + 
+						${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}" />
 
 
 
 							<td class="hide"
-								th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
+								th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - hh:mm a')}">
 							</td>
 							<td class="hide"
-								th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
+								th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}">
 							</td>
 							<td class="align-middle" th:text="|${courseEnrollmentForm.duration} hour/s|"></td>
 							<td class="align-middle" >
@@ -348,8 +348,8 @@
 								<tr>
 									<th>Instructor</th>
 									<th>Venue</th>
-									<th>Start Date/Time</th>
-									<th>End Date/Time</th>
+									<th>Start Date & Time</th>
+									<th>End Date & Time</th>
 									<th>Action</th>
 								</tr>
 							</thead>
