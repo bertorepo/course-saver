@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -101,6 +106,7 @@ public class EnrollmentController {
 	@Autowired
 	private EnrollmentService enrollmentService;
 	private CourseEnrolledListForm enrolledListForm = new CourseEnrolledListForm();
+	private final static int pageSize = 10;
 	/**
 	 * <pre>
 	 * US02. As a member, I can view all course that I can enroll. URL Value =
@@ -124,12 +130,17 @@ public class EnrollmentController {
 	@GetMapping("/viewCourseEnroll")
 	public String viewAllCourseSchedule(@Valid @ModelAttribute("viewCourseEnroll") CourseScheduleListForm form,
 			BindingResult result, Model model) {
+		
 		logger.debug("CourseScheduleListForm: {}", form);
 		logger.debug("Result: {}", result);
-		System.out.println("From Date Time: " + form.getFromDateTime());
-		System.out.println("To Date Time: " + form.getToDateTime());
-		
 
+		int currentPage = 1;
+		String currentPageStr = form.getCurrentPage();
+		if(isNumeric(currentPageStr)) {
+			currentPage = Integer.parseInt(currentPageStr);
+		}
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+        
 		//Get all Filter dropdown values =======================================================================
 		//
 		//Get all course categories
@@ -189,7 +200,6 @@ public class EnrollmentController {
 		form.setDeadline(checkFilterId(form.getDeadline()));
 		// --------------------
 		
-		
 		List<TopLearnerForm> listTopLearnerByMonth = enrollmentService.findTopLearner(ZonedDateTime.now(),
 				ZonedDateTime.now().plusMonths(1));
 		List<TopLearnerForm> listTopLearnerByQuarter = enrollmentService.findTopLearner(ZonedDateTime.now(),
@@ -233,21 +243,28 @@ public class EnrollmentController {
 			model.addAttribute(form);
 			model.addAttribute("error", "Invalid Date");
 			model.addAttribute("nullMessage", "No Course Schedule Found");
+			model.addAttribute("paginatedViewCourseEnroll", new PageImpl<>(new ArrayList<CourseScheduleForm>()));
 			return "enrollment/viewCourseEnroll";
 		}
-		
+
+		Set<CourseScheduleForm> courseScheduleFormSet = new LinkedHashSet<CourseScheduleForm>();
 		try {
-			Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(form.getFromDateTime(),
-					form.getToDateTime(), form.getCourseCategoryId(), form.getCourseNameId(), form.getInstructorId(), 
-					form.getVenueId(), form.getMandatory(), form.getDeadline());
-			Set<CourseScheduleForm> courseScheduleFormSet = new LinkedHashSet<CourseScheduleForm>();
+			Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
+															form.getFromDateTime(),
+															form.getToDateTime(), 
+															form.getCourseCategoryId(), 
+															form.getCourseNameId(), 
+															form.getInstructorId(), 
+															form.getVenueId(), 
+															form.getMandatory(), 
+															form.getDeadline(),
+															pageable);
 			for (CourseSchedule courseSchedule : courseSchedules) {
 				CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
 				courseScheduleForm.setId(courseSchedule.getId());
 				courseScheduleForm.setCourseCategory(courseSchedule.getCourseCategory());
 				courseScheduleForm.setCourseName(courseSchedule.getCourseName());
-				courseScheduleForm.setInstructorName(
-						courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
+				courseScheduleForm.setInstructorName(courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
                 courseScheduleForm.setMandatory(courseSchedule.getMandatory());
 	            courseScheduleForm.setDeadline(courseSchedule.getDeadline());
 				courseScheduleForm.setVenueName(courseSchedule.getVenueName());
@@ -264,16 +281,28 @@ public class EnrollmentController {
 				courseScheduleForm.setCourseScheduleDetails(courseSchedDetailForm);
 				courseScheduleFormSet.add(courseScheduleForm);
 				form.setCourseSchedules(courseScheduleFormSet);
-				for (TopLearnerForm top : listTopLearnerByQuarter) {
-					System.out.println("PartName" + top.getParticipantName());
-				}
 			}
 		} catch (Exception e) {
 			model.addAttribute("nullMessage", e.getMessage());
 		}
 		model.addAttribute("viewCourseEnroll", form);
 		
-		logger.debug("courseScheduleListForm: {}", form);
+		// For Pagination ================================================================
+		List<CourseScheduleForm> listOfviewCourseEnroll = courseScheduleFormSet
+			       .stream()
+			       .collect(Collectors.toList());
+		int availableCourse = enrollmentService.countCourse(form.getFromDateTime(),
+															form.getToDateTime(), 
+															form.getCourseCategoryId(), 
+															form.getCourseNameId(), 
+															form.getInstructorId(), 
+															form.getVenueId(), 
+															form.getMandatory(), 
+															form.getDeadline());
+		Page<CourseScheduleForm> paginatedCourseEnroll= new PageImpl<>(listOfviewCourseEnroll,pageable,availableCourse);
+		model.addAttribute("paginatedViewCourseEnroll", paginatedCourseEnroll);
+		// ===============================================================================
+		
 		return "enrollment/viewCourseEnroll";
 	}
 	/**
@@ -510,71 +539,15 @@ public class EnrollmentController {
 			BindingResult result, Model model) {
 		logger.debug("CourseScheduleListForm: {}", form);
 		logger.debug("Result: {}", result);
-		if (result.hasErrors()) {
-			model.addAttribute("errorMessage", result.getAllErrors());
-			return "enrollment/viewMemberCourse";
-		}
-		if (form.getFromDateTime() == null) {
-			form.setFromDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
-		}
-		if (form.getToDateTime() == null) {
-			form.setToDateTime(ZonedDateTime.now().plusDays(5));
-		}
 		
-		//Check filters ----
-		form.setCourseCategoryId(checkFilterId(form.getCourseCategoryId()));
-		form.setCourseNameId(checkFilterId(form.getCourseNameId()));
-		form.setInstructorId(checkFilterId(form.getInstructorId()));
-		form.setVenueId(checkFilterId(form.getVenueId()));
-		form.setMandatory(checkFilterId(form.getMandatory()));
-		form.setDeadline(checkFilterId(form.getDeadline()));
-		// --------------------
-		
-		if (form.getFromDateTime().isAfter(form.getToDateTime())
-				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
-			model.addAttribute(form);
-			model.addAttribute("error", "To Date should be greater than or equal to From Date");
-			model.addAttribute("nullMessage", "No course schedule found");
-			return "enrollment/viewMemberCourse";
+		int currentPage = 1;
+		String currentPageStr = form.getCurrentPage();
+		if(isNumeric(currentPageStr)) {
+			currentPage = Integer.parseInt(currentPageStr);
 		}
-		System.out.println("From Date Time: " + form.getFromDateTime());
-		System.out.println("To Date Time: " + form.getToDateTime());
-		try {
-			Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(form.getFromDateTime(),
-					form.getToDateTime(),form.getCourseCategoryId(),form.getCourseNameId(), form.getInstructorId(), 
-					form.getVenueId(), form.getMandatory(), form.getDeadline());
-			Set<CourseScheduleForm> courseScheduleFormSet = new LinkedHashSet<CourseScheduleForm>();
-			for (CourseSchedule courseSchedule : courseSchedules) {
-				CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
-				courseScheduleForm.setId(courseSchedule.getId());
-				courseScheduleForm.setCourseCategory(courseSchedule.getCourseCategory());
-				courseScheduleForm.setCourseName(courseSchedule.getCourseName());
-				courseScheduleForm.setInstructorName(
-						courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
-                courseScheduleForm.setMandatory(courseSchedule.getMandatory());
-                courseScheduleForm.setDeadline(courseSchedule.getDeadline());
-				courseScheduleForm.setVenueName(courseSchedule.getVenueName());
-				courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
-				courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
-				courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
-				courseScheduleForm.setCourseDetails(courseSchedule.getCourseDetails());
-				CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
-				CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
-				courseSchedDetailForm.setId(courseScheduleDetail.getId());
-				courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
-				courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
-				courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
-				courseScheduleForm.setCourseScheduleDetails(courseSchedDetailForm);
-				courseScheduleFormSet.add(courseScheduleForm);
-				form.setCourseSchedules(courseScheduleFormSet);
-			}
-			model.addAttribute("viewMemberCourse", form);
-			logger.debug("courseScheduleListForm: {}", form);
-		} catch (Exception e) {
-			model.addAttribute("nullMessage", e.getMessage());
-		}
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
 		
-		//Get all course categories
+        //Get all course categories
 		try {
 			Set<CourseCategory> courseCategory = enrollmentService.findAllCourseCategory();
 	        List<CourseCategory> listOfCourseCategory = courseCategory.stream().collect(Collectors.toList());
@@ -610,7 +583,93 @@ public class EnrollmentController {
 			model.addAttribute("venueListError", e.getMessage());
 		}
 		//
+        
+		if (result.hasErrors()) {
+			model.addAttribute("errorMessage", result.getAllErrors());
+			return "enrollment/viewMemberCourse";
+		}
+		if (form.getFromDateTime() == null) {
+			form.setFromDateTime(ZonedDateTime.now().withHour(0).withMinute(0));
+		}
+		if (form.getToDateTime() == null) {
+			form.setToDateTime(ZonedDateTime.now().plusDays(5));
+		}
 		
+		//Check filters ----
+		form.setCourseCategoryId(checkFilterId(form.getCourseCategoryId()));
+		form.setCourseNameId(checkFilterId(form.getCourseNameId()));
+		form.setInstructorId(checkFilterId(form.getInstructorId()));
+		form.setVenueId(checkFilterId(form.getVenueId()));
+		form.setMandatory(checkFilterId(form.getMandatory()));
+		form.setDeadline(checkFilterId(form.getDeadline()));
+		// --------------------
+		
+		if (form.getFromDateTime().isAfter(form.getToDateTime())
+				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
+			model.addAttribute(form);
+			model.addAttribute("error", "To Date should be greater than or equal to From Date");
+			model.addAttribute("nullMessage", "No course schedule found");
+			model.addAttribute("paginatedViewMemberCourse", new PageImpl<>(new ArrayList<CourseScheduleForm>()));
+			return "enrollment/viewMemberCourse";
+		}
+
+		Set<CourseScheduleForm> courseScheduleFormSet = new LinkedHashSet<CourseScheduleForm>();
+		try {
+			Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(form.getFromDateTime(),
+																							form.getToDateTime(),
+																							form.getCourseCategoryId(),
+																							form.getCourseNameId(), 
+																							form.getInstructorId(), 
+																							form.getVenueId(), 
+																							form.getMandatory(), 
+																							form.getDeadline(), 
+																							pageable);
+			for (CourseSchedule courseSchedule : courseSchedules) {
+				CourseScheduleForm courseScheduleForm = new CourseScheduleForm();
+				courseScheduleForm.setId(courseSchedule.getId());
+				courseScheduleForm.setCourseCategory(courseSchedule.getCourseCategory());
+				courseScheduleForm.setCourseName(courseSchedule.getCourseName());
+				courseScheduleForm.setInstructorName(
+						courseSchedule.getInstructorLastName() + ", " + courseSchedule.getInstructorFirstName());
+                courseScheduleForm.setMandatory(courseSchedule.getMandatory());
+                courseScheduleForm.setDeadline(courseSchedule.getDeadline());
+				courseScheduleForm.setVenueName(courseSchedule.getVenueName());
+				courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
+				courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
+				courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
+				courseScheduleForm.setCourseDetails(courseSchedule.getCourseDetails());
+				CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+				CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
+				courseSchedDetailForm.setId(courseScheduleDetail.getId());
+				courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+				courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+				courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
+				courseScheduleForm.setCourseScheduleDetails(courseSchedDetailForm);
+				courseScheduleFormSet.add(courseScheduleForm);
+				form.setCourseSchedules(courseScheduleFormSet);
+			}
+			model.addAttribute("viewMemberCourse", form);
+			logger.debug("courseScheduleListForm: {}", form);
+			
+		} catch (Exception e) {
+			model.addAttribute("nullMessage", e.getMessage());
+		}
+		
+		// For Pagination ================================================================
+		List<CourseScheduleForm> listOfviewCourseEnroll = courseScheduleFormSet
+			       .stream()
+			       .collect(Collectors.toList());
+		int availableCourse = enrollmentService.countCourse(form.getFromDateTime(),
+															form.getToDateTime(), 
+															form.getCourseCategoryId(), 
+															form.getCourseNameId(), 
+															form.getInstructorId(), 
+															form.getVenueId(), 
+															form.getMandatory(), 
+															form.getDeadline());
+		Page<CourseScheduleForm> paginatedCourseEnroll= new PageImpl<>(listOfviewCourseEnroll,pageable,availableCourse);
+		model.addAttribute("paginatedViewMemberCourse", paginatedCourseEnroll);
+		// ===============================================================================
 		
 		return "enrollment/viewMemberCourse";
 	}
@@ -968,38 +1027,7 @@ public class EnrollmentController {
 	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 	            .body(resource);
 	}
-	
-	/**
-     * Check if filter Id is null, empty or undefined
-     * 
-	 * @return
-	 * 
-	 */	
-	private String checkFilterId(String filterId) {
-		
-		if(filterId == null || filterId.isEmpty() || filterId.equals("undefined") || filterId.equals("-")) {
-			return "%";
-		}
-		
-		return filterId;
-	}
-	
-	/**
-	 * Remove all selected member enrolled in course schedule
-	 * 
-	 * @param courseScheduleId
-	 * @return
-	 */
-//	@PostMapping("/removeEnrolledMember")
-//	@ResponseStatus( HttpStatus.OK )
-//	public void removeEnrolledMember(@RequestBody EnrolledMemberForm removeMembers) {
-//		
-//		try {
-//			enrollmentService.removeEnrolledMember(removeMembers.getBatchId(), removeMembers.getCourseId());
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+
 	
 	@PostMapping("/removeEnrolledMember")
 	public String removeEnrolledMember(@Valid @ModelAttribute EnrolledMemberForm removeMembers,
@@ -1034,4 +1062,38 @@ public class EnrollmentController {
 		}
 		return "redirect:/enrollment/viewMemberCourse";
 	}
+	
+	
+	/**
+     * Check if filter Id is null, empty or undefined
+     * 
+	 * @return
+	 * 
+	 */	
+	private String checkFilterId(String filterId) {
+		
+		if(filterId == null || filterId.isEmpty() || filterId.equals("undefined") || filterId.equals("-")) {
+			return "%";
+		}
+		
+		return filterId;
+	}
+	
+	/**
+     * Check if String is Numeric
+     * 
+	 * @return
+	 * 
+	 */		
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
 }

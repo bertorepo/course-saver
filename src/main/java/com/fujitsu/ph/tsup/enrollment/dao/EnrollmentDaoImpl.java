@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -67,6 +69,10 @@ import org.springframework.stereotype.Repository;
 public class EnrollmentDaoImpl implements EnrollmentDao {
     @Autowired
     private NamedParameterJdbcTemplate template;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
     /**
      * Finds the scheduled courses by the given fromDateTime and toDateTime
      * 
@@ -76,7 +82,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      * @author J.yu
      **/
     @Override
-    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline) {
+    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline, Pageable pageable) {
         FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String query = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
@@ -120,7 +126,9 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                     + "AND TO_CHAR(CS.VENUE_ID, 'FM9999') LIKE :venueId "
                     + "AND C.MANDATORY LIKE :mandatory "
                     + "AND C.DEADLINE LIKE :deadline "
-                    + "ORDER BY SCHEDULED_START_DATETIME ";
+                    + "ORDER BY SCHEDULED_START_DATETIME "
+                    + "LIMIT " + pageable.getPageSize() + " "
+                    + "OFFSET " + pageable.getOffset();
 	        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
 	                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
 	                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
@@ -959,5 +967,58 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     										"(COURSE_SCHEDULE_DETAIL_ID, PARTICIPANT_ID,STATUS,LOG_IN_DATETIME,LOG_OUT_DATETIME, EMAIL) " +
     										"SELECT :course_id, E.id, 'A', null, null, E.email_address FROM tsup.EMPLOYEE E WHERE E.id IN (:participant_id); ";
     	template.update(enrollToCourseAttendance, sqlParameterSource);
+    }
+    
+    /**
+     * Method to Count the available course
+     **/
+    @Override
+    public int countCourse(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline) {
+    	
+    	FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	
+    	String query = "SELECT COUNT(*) " 
+                + "FROM COURSE_SCHEDULE AS CS " 
+                + "INNER JOIN COURSE_SCHEDULE_DETAIL AS CSD "
+                + "ON CS.ID = CSD.COURSE_SCHEDULE_ID " 
+                + "INNER JOIN COURSE AS C " 
+                + "ON CS.COURSE_ID = C.ID "
+                + "INNER JOIN EMPLOYEE AS E " 
+                + "ON CS.INSTRUCTOR_ID = E.ID " 
+                + "INNER JOIN VENUE AS V "
+                + "ON CS.VENUE_ID = V.ID "
+                + "INNER JOIN COURSE_CATEGORY AS CC "
+                + "ON C.COURSE_CATEGORY_ID = CC.ID "; 
+        if(!user.getRoles().contains("Instructor") || user.getRoles().contains("PMO")) {
+            query +=  "WHERE COALESCE(CSD.RESCHEDULED_START_DATETIME, "
+                    + "CSD.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CS.STATUS = 'A' "
+                    + "AND TO_CHAR(C.course_category_id, 'FM9999') LIKE :courseCategoryID "
+                    + "AND TO_CHAR(CS.COURSE_ID, 'FM9999') LIKE :courseNameId "
+                    + "AND TO_CHAR(CS.INSTRUCTOR_ID, 'FM9999') LIKE :instructorId "
+                    + "AND TO_CHAR(CS.VENUE_ID, 'FM9999') LIKE :venueId "
+                    + "AND C.MANDATORY LIKE :mandatory "
+                    + "AND C.DEADLINE LIKE :deadline ";
+	        SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+	                .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+	                .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+            		.addValue("courseCategoryID", courseCategoryId)
+            		.addValue("courseNameId", courseNameId)
+            		.addValue("instructorId", instructorId)
+            		.addValue("venueId", venueId)
+		    		.addValue("mandatory", mandatory)
+		    		.addValue("deadline", deadline);
+	        return template.queryForObject(query, courseScheduleParameters, Integer.class);
+	    } else {           
+            query +=  "WHERE COALESCE(CSD.RESCHEDULED_START_DATETIME, "
+                    + "CSD.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
+                    + "AND CS.INSTRUCTOR_ID = :instructorId "
+                    + "AND CS.STATUS = 'A' "
+                    + "ORDER BY SCHEDULED_START_DATETIME ";
+            SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
+                    .addValue("fromDateTime", fromDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                    .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
+	        return template.queryForObject(query, courseScheduleParameters, Integer.class);
+        }
     }
 }

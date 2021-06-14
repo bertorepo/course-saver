@@ -42,7 +42,7 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/enrollment/viewMemberCourse}" th:object="${viewMemberCourse}" method="get">
+		<form id="availableCourseForm" class="form-horizontal" action="#" th:action="@{/enrollment/viewMemberCourse}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
 			<hr>
 			<div class="card">
@@ -182,6 +182,7 @@
 					</div>
 				</div>
 			</div>
+			<input type="hidden" class="form-control" id="currentPage" name="currentPage"  />
 		</form>
 		
 		<!--Success Modal-->
@@ -500,6 +501,26 @@
 					</tr>
 				</tbody>
 			</table>
+			<nav aria-label="Pagination" th:if="${paginatedViewMemberCourse.totalPages gt 0} and ${!paginatedViewMemberCourse.isEmpty()}">
+				<ul class="pagination justify-content-center font-weight-bold">
+					<li class="page-item" th:classappend="${paginatedViewMemberCourse.number eq 0} ? 'disabled'">
+						<a class="page-link" th:onclick="|onSubmit(); setPage('${paginatedViewMemberCourse.number lt 2 ? 1 : paginatedViewMemberCourse.number}'); document.getElementById('availableCourseForm').submit();|"
+							aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</li>
+					<li class="page-item" th:classappend="${i eq paginatedViewMemberCourse.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, paginatedViewMemberCourse.totalPages, 1)}">
+			            <a class="page-link" th:onclick="|onSubmit(); setPage('${i}'); document.getElementById('availableCourseForm').submit();|" th:text="${i}"
+			               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+		        	</li>
+			        <li class="page-item" th:classappend="${paginatedViewMemberCourse.number + 1 eq paginatedViewMemberCourse.totalPages} ? 'disabled'">
+			            <a class="page-link" th:onclick="|onSubmit(); setPage('${paginatedViewMemberCourse.number + 2}'); document.getElementById('availableCourseForm').submit();|"
+				               aria-label="Next" title="Next Page" data-toggle="tooltip">
+			                <span aria-hidden="true">&raquo;</span>
+			            </a>
+			        </li>
+			    </ul>
+			</nav>
 			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}">
 				<div class="alert alert-dismissible alert-danger text-center">
 					<strong th:text="${nullMessage}"></strong> 
@@ -794,6 +815,10 @@
     		document.getElementById("enrollMemberMsg").style.display = "none";
         }
 	}     
+	
+	function setPage(currPage){
+		document.getElementById("currentPage").value = currPage;
+	}
 </script>
 </body>
 </html>

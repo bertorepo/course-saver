@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -50,10 +51,10 @@ public interface EnrollmentService {
 	void sendCalendarInvite(CourseParticipant courseParticipant);
 
 	/** Finds all scheduled courses based on the given date range */
-	Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
+	Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline, Pageable pageable);
 
 	/** Finds specific details on courses based on the given date range */
-	Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
+	Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline, Pageable pageable);
 
 	/** Finds the course schedule by Id */
 	CourseSchedule findCourseScheduleById(Long id);
@@ -230,4 +231,15 @@ public interface EnrollmentService {
 	 * <pre>
 	 */
 	void enrollBatchMember(EnrolledMemberForm enrolledMember);
+	
+	/**
+     * <pre>
+     *
+     *Method for counting the number of available course
+     *@author l.celoso
+     *
+     * <pre>
+     */  
+    int countCourse(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
+
 }
