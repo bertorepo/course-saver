@@ -159,7 +159,8 @@ public class ScheduleController {
             return "scheduling/instructorCourseScheduleList";
         } 
 
-        Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
+        Set<CourseSchedule> courseSchedule = new LinkedHashSet<CourseSchedule>();
+        courseSchedule = scheduleService.findAllScheduledCourses(
                 courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
 
         List<TopLearnersForm> monthlyTopLearnerList = scheduleService.findTopLearners(ZonedDateTime.now(), ZonedDateTime.now().plusMonths(1));
@@ -168,7 +169,7 @@ public class ScheduleController {
         
         int totalTrainings = scheduleService.countAllEnrolledCoursesByInstructorId(employeeId);
         
-        		Set<CourseScheduleViewForm> courseScheduleViewFormSet = new HashSet<>();
+        		Set<CourseScheduleViewForm> courseScheduleViewFormSet = new LinkedHashSet<>();
 
         for (CourseSchedule courseSched : courseSchedule) {
             CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
@@ -408,7 +409,6 @@ public class ScheduleController {
                 hasDateOrTimeConflict = scheduleService.checkForScheduleConflict(form, courseSchedule, cSchedDet);
                            	
                 if(hasDateOrTimeConflict) {
-                    
                         List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
                         
                         for (CourseScheduleDetailForm detForm : form.getCourseScheduleDetailsAsList()) {
@@ -459,7 +459,7 @@ public class ScheduleController {
         form.setCourseScheduleDetails(courseScheduleDetailsAsListSet);
 
         Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = form.getCourseScheduleDetails();
-        Set<CourseScheduleDetail> courseScheduleDetailSet = new HashSet<>();
+        Set<CourseScheduleDetail> courseScheduleDetailSet = new LinkedHashSet<>();
 
         for (CourseScheduleDetailForm courseSchedDetForm : courseScheduleDetailFormSet) {
             CourseScheduleDetail courseScheduleDetail = new CourseScheduleDetail.Builder(1L,
@@ -529,7 +529,7 @@ public class ScheduleController {
         Set<CourseSchedule> courseSchedule = scheduleService.findAllScheduledCourses(
                 courseScheduleListForm.getFromDateTime(), courseScheduleListForm.getToDateTime());
 
-        Set<CourseScheduleViewForm> courseScheduleViewFormSet = new HashSet<>();
+        Set<CourseScheduleViewForm> courseScheduleViewFormSet = new LinkedHashSet<>();
 
         for (CourseSchedule courseSched : courseSchedule) {
             CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
@@ -728,7 +728,8 @@ public class ScheduleController {
                                         ZonedDateTime.now().withHour(23).withMinute(59)
                                             .withSecond(59).withYear(9999));
 		
-		
+        boolean hasDateOrTimeConflict = false;
+
 		for(CourseSchedule courseSchedule : courseSchedules) {
             Set<CourseScheduleDetail> cSchedDetail = courseSchedule.getCourseScheduleDetail();
             
@@ -736,16 +737,10 @@ public class ScheduleController {
 
                 //Check if there is any conflicting schedules when submitting form
             	if(id != courseSchedule.getId()) {
-                if(((courseSchedule.getCourseId() == form.getCourseId()) ||
-                        (courseSchedule.getInstructorId() == form.getInstructorId()) ||
-                        ((courseSchedule.getVenueId() == form.getVenueId() && !courseSchedule.isVenueOverlap()))) &&
-                        //Checks if there's a same schedule that matches the submitted Schedule
-                        ((form.getCourseScheduleDetailList().stream().anyMatch(i -> 
-                            i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
-                                .equals(cSchedDet.getScheduledEndDateTime()))) &&
-                        (form.getCourseScheduleDetailList().stream().anyMatch(o -> 
-                            o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
-                                .equals(cSchedDet.getScheduledStartDateTime()))))) {
+            		//Check if there is any conflicting schedules when submitting form
+                    hasDateOrTimeConflict = scheduleService.checkForScheduleConflictUpdate(form, courseSchedule, cSchedDet);
+                               	
+                    if(hasDateOrTimeConflict) {
                     
                         List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
                         

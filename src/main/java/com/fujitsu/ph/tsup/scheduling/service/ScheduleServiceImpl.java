@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -27,6 +28,7 @@ import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleUpdateForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
@@ -358,18 +360,96 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public boolean checkForScheduleConflict(CourseScheduleNewForm form, CourseSchedule courseSchedule, CourseScheduleDetail cSchedDet) {
-		if(form.isVenueOverlap() && (courseSchedule.getCourseId() != form.getCourseId() &&
-				(courseSchedule.getInstructorId() != form.getInstructorId()))){
-			return false;
-		} 
-		return form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> (
+
+		boolean isVenueOverlap = false;
+
+		for (VenueForm venue: findAllVenues()){
+			if(form.getVenueId().equals(venue.getId())) {
+				isVenueOverlap = venue.isOverlap();
+				break;
+			}
+		}
+
+		//Checks for time conflict
+		if(form.getCourseScheduleDetailsAsList().stream().anyMatch(i -> (
 				(((i.getScheduledStartDateTime().isBefore(cSchedDet.getScheduledEndDateTime())) && 
 						(cSchedDet.getScheduledStartDateTime().isBefore(i.getScheduledEndDateTime()))) ||
 						((i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
 								.equals(cSchedDet.getScheduledEndDateTime())) &&
 								(form.getCourseScheduleDetailsAsList().stream().anyMatch(o -> 
 								o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
-								.equals(cSchedDet.getScheduledStartDateTime())))))));
+								.equals(cSchedDet.getScheduledStartDateTime())))))))){
+			//If there is a time conflict, check if venue is can have overlapping schedules
+			if(isVenueOverlap || courseSchedule.isVenueOverlap()) {
+				//If venue can have overlap make sure course or trainer is not the same
+				if(courseSchedule.getCourseId() == form.getCourseId() ||
+						courseSchedule.getInstructorId() == form.getInstructorId()) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				// If Venue overlap is not allowed, check if venue chosen is the same as the venue of an existing schedule
+				if(form.getVenueId().equals(courseSchedule.getVenueId())) {
+					return true;
+				} else {
+					//If Venue is not the same, check if the course or instructor is the same
+					if(courseSchedule.getCourseId() == form.getCourseId() ||
+							courseSchedule.getInstructorId() == form.getInstructorId()) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
+	public boolean checkForScheduleConflictUpdate(CourseScheduleUpdateForm form, CourseSchedule courseSchedule, CourseScheduleDetail cSchedDet) {
+
+		boolean isVenueOverlap = false;
+
+		for (VenueForm venue: findAllVenues()){
+			if(form.getVenueId().equals(venue.getId())) {
+				isVenueOverlap = venue.isOverlap();
+				break;
+			}
+		}
+
+		//Checks for time conflict
+		if(form.getCourseScheduleDetailList().stream().anyMatch(i -> (
+				(((i.getScheduledStartDateTime().isBefore(cSchedDet.getScheduledEndDateTime())) && 
+						(cSchedDet.getScheduledStartDateTime().isBefore(i.getScheduledEndDateTime()))) ||
+						((i.getScheduledEndDateTime().withZoneSameInstant(ZoneId.systemDefault())
+								.equals(cSchedDet.getScheduledEndDateTime())) &&
+								(form.getCourseScheduleDetailList().stream().anyMatch(o -> 
+								o.getScheduledStartDateTime().withZoneSameInstant(ZoneId.systemDefault())
+								.equals(cSchedDet.getScheduledStartDateTime())))))))){
+			//If there is a time conflict, check if venue is can have overlapping schedules
+			if(isVenueOverlap || courseSchedule.isVenueOverlap()) {
+				//If venue can have overlap make sure course or trainer is not the same
+				if(courseSchedule.getCourseId() == form.getCourseId() ||
+						courseSchedule.getInstructorId() == form.getInstructorId()) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				// If Venue overlap is not allowed, check if venue chosen is the same as the venue of an existing schedule
+				if(form.getVenueId().equals(courseSchedule.getVenueId())) {
+					return true;
+				} else {
+					//If Venue is not the same, check if the course or instructor is the same
+					if(courseSchedule.getCourseId() == form.getCourseId() ||
+							courseSchedule.getInstructorId() == form.getInstructorId()) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		}
+		return false;
+	}
 }

@@ -135,12 +135,12 @@ public class ScheduleDaoImpl implements ScheduleDao {
                             toDateTime.equals(toDateTimeConflictUpperLimit))) {
             query += "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, " 
                     + " CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
-                    + "ORDER BY ID, SCHEDULED_START_DATETIME";
+                    + "ORDER BY SCHEDULED_START_DATETIME";
         } else {
             query += "WHERE COALESCE(CSCHEDDET.RESCHEDULED_START_DATETIME, " 
                     + " CSCHEDDET.SCHEDULED_START_DATETIME) BETWEEN :fromDateTime AND :toDateTime "
                     + "AND (STATUS NOT IN ('C', 'D'))"
-                    + "ORDER BY ID, SCHEDULED_START_DATETIME";
+                    + "ORDER BY SCHEDULED_START_DATETIME";
             
         }
         SqlParameterSource courseScheduleParameters = new MapSqlParameterSource()
@@ -149,7 +149,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
         List<CourseSchedule> courseScheduleList = template.query(query, courseScheduleParameters,
                 new CourseScheduleRowMapper());
-        Set<CourseSchedule> courseSchedule = new HashSet<>(courseScheduleList);
+        Set<CourseSchedule> courseSchedule = new LinkedHashSet<>(courseScheduleList);
 
         return courseSchedule;
     }

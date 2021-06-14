@@ -244,15 +244,15 @@ function validations() {
         	}
         	
         	//If Date is Less Than Today
-        	if (isLessThanToday(startDate)) {
+        	if (isLessThanToday(rowStartDateTime)) {
         		errorCount++;
-        		startDateError = "Date can't be less than today";
+        		startDateError = "Date or Time can't be less than today";
         	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
         	}
         	
-        	if (isLessThanToday(endDate)) {
+        	if (isLessThanToday(rowEndDateTime)) {
         		errorCount++;
-        		endDateError = "Date can't be less than today";
+        		endDateError = "Date or Time can't be less than today";
         	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
         	}
         	if((startDate !== "") && (endDate !== "")) {
