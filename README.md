@@ -1,5 +1,5 @@
 # TS-Up
-Training Sign-Up Application
+A training management system that allows Managers to easily keep track of existing training schedules and training attendance of employees. PMOs can easily create courses and training schedules and assign mandatory courses to employees as needed. For Instructors, this provides easy creation and management of training schedules and attendance tracking. For employees, this allows you to easily register and view existing training schedules (mandatory and voluntary)
 
 # Dependencies
 This project requires **[Java 8](https://www.oracle.com/ph/java/technologies/javase/javase-jdk8-downloads.html)**, **[JDK 8](https://codenotfound.com/java-download-install-jdk-8-windows.html)** and **[JRE 8](https://www.oracle.com/java/technologies/javase-jre8-downloads.html)**.
