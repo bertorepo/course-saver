@@ -26,10 +26,16 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.scheduling.domain.CourseSchedule;
+import com.fujitsu.ph.tsup.scheduling.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.scheduling.model.CourseForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleDetailForm;
 import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleListForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleNewForm;
+import com.fujitsu.ph.tsup.scheduling.model.CourseScheduleUpdateForm;
 import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
 import com.fujitsu.ph.tsup.scheduling.model.TopLearnersForm;
 import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
@@ -127,4 +133,13 @@ public interface ScheduleService {
     
 	/** Sends email to participants */
 	void sendEmailtoParticipants(Long id, ZonedDateTime formStart, ZonedDateTime formEnd);
+	
+	/** Checks if date and time range entered conflicts with any existing schedule (New)
+	 * @param courseSchedule **/
+	boolean checkForScheduleConflict(@Valid CourseScheduleNewForm form, CourseSchedule courseSchedule, CourseScheduleDetail cSchedDet);
+	
+	/** Checks if date or time range entered conflicts with any existing schedule (Update)
+	 * @param courseSchedule **/
+	boolean checkForScheduleConflictUpdate(@Valid CourseScheduleUpdateForm form, CourseSchedule courseSchedule,
+			CourseScheduleDetail cSchedDet);
 }

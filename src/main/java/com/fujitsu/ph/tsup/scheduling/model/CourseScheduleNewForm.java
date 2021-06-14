@@ -56,6 +56,11 @@ public class CourseScheduleNewForm{
     private Long venueId;
     
     /**
+     * Venue Overlap
+     */
+    private boolean venueOverlap;
+        
+    /**
      * Minimum Required Participants
      */
     @Min(value = 1, message = "This field is required.")
@@ -126,7 +131,15 @@ public class CourseScheduleNewForm{
         return venueId;
     }
     
-    public void setMinRequired(int minRequired) {
+    public boolean isVenueOverlap() {
+		return venueOverlap;
+	}
+
+	public void setVenueOverlap(boolean venueOverlap) {
+		this.venueOverlap = venueOverlap;
+	}
+
+	public void setMinRequired(int minRequired) {
         this.minRequired = minRequired;
     }
     

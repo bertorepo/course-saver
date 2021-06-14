@@ -75,15 +75,15 @@ function validations() {
 	        	}
 	        	
 	        	//If Date is Less Than Today
-	        	if (isLessThanToday(startDate)) {
+	        	if (isLessThanToday(rowStartDateTime)) {
 	        		errorCount++;
-	        		startDateError = "Please pick a future date.";
+	        		startDateError = "Please pick a future date and time.";
 	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
 	        	}
 	        	
-	        	if (isLessThanToday(endDate)) {
+	        	if (isLessThanToday(rowEndDateTime)) {
 	        		errorCount++;
-	        		endDateError = "Please pick a future date.";
+        		    endDateError = "Please pick a future date and time.";
 	        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	        	}
 	        	
