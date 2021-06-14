@@ -144,7 +144,7 @@ public class EnrollmentController {
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
 			model.addAttribute("error", "Invalid Date");
-			model.addAttribute("nullMessage", "No course schedule found");
+			model.addAttribute("nullMessage", "No Course Schedule Found");
 			return "enrollment/viewCourseEnroll";
 		}
 		List<TopLearnerForm> listTopLearnerByMonth = enrollmentService.findTopLearner(ZonedDateTime.now(),
