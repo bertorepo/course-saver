@@ -32,6 +32,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Pageable;
+
 /**
  * <pre>
  * The data access interface for enrollment related database access
@@ -47,7 +49,7 @@ public interface EnrollmentDao {
      * @param fromDateTime
      * @param toDateTime
      */
-    Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
+    Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, String courseNameId, String instructorId, String venueId, String mandatory, String deadline, Pageable pageable);
     
     /**
      * Finds the course schedule by id
@@ -278,4 +280,14 @@ public interface EnrollmentDao {
         * <pre>
         */  
        void enrollBatchMember(EnrolledMemberForm enrolledMember);
+       
+       /**
+        * <pre>
+        *
+        *Method for counting the number of available course
+        *@author l.celoso
+        *
+        * <pre>
+        */  
+       int countCourse(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
 }

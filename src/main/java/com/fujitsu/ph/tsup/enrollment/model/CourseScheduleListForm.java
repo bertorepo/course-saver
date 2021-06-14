@@ -62,6 +62,9 @@ public class CourseScheduleListForm {
     /* Filter deadline */
     private String deadline;
     
+    /* Current Page */
+    private String currentPage;
+    
     /** Course From Date Getter */
     public ZonedDateTime getFromDateTime() {
         return fromDateTime;
@@ -172,6 +175,16 @@ public class CourseScheduleListForm {
         this.deadline = deadline;
     }
     
+    /** Current Page Getter */
+    public String getCurrentPage() {
+        return currentPage;
+    }
+
+    /** Current Page Setter */
+    public void setCurrentPage(String currentPage) {
+        this.currentPage = currentPage;
+    }
+    
     @Override
     public String toString() {
         return "CourseScheduleListForm [fromDateTime=" + fromDateTime + ", toDateTime=" + toDateTime 
@@ -185,6 +198,5 @@ public class CourseScheduleListForm {
                 + ", topLearnerByQuarter=" + topLearnerByQuarter +
                 " ]";
     }   
-    
 
 }

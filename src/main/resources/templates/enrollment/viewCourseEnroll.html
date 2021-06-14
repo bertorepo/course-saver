@@ -46,7 +46,7 @@
 	<div th:insert="fragments/general.html :: header"> </div>
 	
 	<div class="container mt-5">
-		<form class="form-horizontal" action="#" th:action="@{/enrollment/viewCourseEnroll}" th:object="${viewCourseEnroll}" method="get">
+		<form id="availableCourseForm" class="form-horizontal" action="#" th:action="@{/enrollment/viewCourseEnroll}" method="get">
 			<h3><i class="fa fa-calendar-o"></i> Select Training Period</h3>
 			<hr>
 			<div class="card">
@@ -87,8 +87,7 @@
 								 			th:value="${courseCategory.category}"
 								 			th:selected="${courseCategory.id}"></option>
 								</datalist>
-								<input type="hidden" class="form-control" th:id="courseCategoryId" name="courseCategoryId"
-										th:value="${viewCourseEnroll.courseCategoryId}" />
+								<input type="hidden" class="form-control" th:id="courseCategoryId" name="courseCategoryId" />
 							</div>
 						</div>
 						<!-- Course Name -->
@@ -107,8 +106,7 @@
 								 			th:value="${courseName.name}"
 								 			th:selected="${courseName.id}"></option>
 								</datalist>
-								<input type="hidden" class="form-control" id="courseNameId" name="courseNameId"  
-										th:value="${viewCourseEnroll.courseNameId}"  />
+								<input type="hidden" class="form-control" id="courseNameId" name="courseNameId" />
 							</div>
 						</div>
 						<!-- Instructor -->
@@ -127,8 +125,7 @@
 								 			th:value="${instructor.name}"
 								 			th:selected="${instructor.id}"></option>
 								</datalist>
-								<input type="hidden" class="form-control" id="instructorId" name="instructorId" 
-										th:value="${viewCourseEnroll.instructorId}" />
+								<input type="hidden" class="form-control" id="instructorId" name="instructorId"  />
 							</div>
 						</div>
 						<!-- Venue -->
@@ -147,8 +144,7 @@
 								 			th:value="${venue.name}"
 								 			th:selected="${venue.id}"></option>
 								</datalist>
-								<input type="hidden" class="form-control" id="venueId" name="venueId" 
-										th:value="${viewCourseEnroll.venueId}" />
+								<input type="hidden" class="form-control" id="venueId" name="venueId"  />
 							</div>
 						</div>
 						<!-- Mandatory -->
@@ -193,8 +189,7 @@
             		<h4><a href="" name="topLearners" data-toggle="modal" data-target="#topLearnersModal"><i class="fa fa-search"></i> View Top Learners...</a></h4>
             	</div>
             </h3>
-			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%" 
-					th:object="${viewCourseEnroll}">
+			<table id="data" class="table table-bordered table-responsive text-center" style="width:100%">
 				<colgroup >
 					<col style="width:30%"/>
 					<col style="width:30%"/>
@@ -224,7 +219,7 @@
 						<th class="align-middle ">Total <br> Number of <br> Participants</th>
 					</tr>
 				</thead>
-				<tbody th:each="courseSchedule : *{courseSchedules}"
+				<tbody th:each="courseSchedule : *{paginatedViewCourseEnroll.content}"
 						th:with="courseScheduleDetails = ${courseSchedule.getCourseScheduleDetails()}">
 						
 					<tr class="table-row" th:each=" courseScheduleDetail : ${courseScheduleDetails}" 
@@ -259,7 +254,6 @@
 						<td class="hide" th:text="${#calendars.format(courseScheduleDetail.scheduledStartDateTime, 'MMM dd, yyyy (E) hh:mm a')}"/>
 						<td class="hide" th:text="${#calendars.format(courseScheduleDetail.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}"/>
 						<td class="align-middle" th:text="${courseScheduleDetail.duration}"/>
-
 						<td class="align-middle" th:text="${courseSchedule.venueName}"/>
 						<td class="hide" th:text="${courseSchedule.minRequired}"/>
 						<td class="hide" th:text="${courseSchedule.maxAllowed}"/>
@@ -268,7 +262,29 @@
 					</tr>
 				</tbody>
 			</table>
-			<div th:if="${#lists.isEmpty(viewCourseEnroll.courseSchedules)}">
+			<nav aria-label="Pagination" th:if="${paginatedViewCourseEnroll.totalPages gt 0} and ${!paginatedViewCourseEnroll.isEmpty()}">
+				<ul class="pagination justify-content-center font-weight-bold">
+					<li class="page-item" th:classappend="${paginatedViewCourseEnroll.number eq 0} ? 'disabled'">
+						<a class="page-link" th:onclick="|onSubmit(); setPage('${paginatedViewCourseEnroll.number lt 2 ? 1 : paginatedViewCourseEnroll.number}'); document.getElementById('availableCourseForm').submit();|"
+							aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</li>
+					<li class="page-item" th:classappend="${i eq paginatedViewCourseEnroll.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, paginatedViewCourseEnroll.totalPages, 1)}">
+			            <a class="page-link" th:onclick="|onSubmit(); setPage('${i}'); document.getElementById('availableCourseForm').submit();|" th:text="${i}"
+			               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+		        	</li>
+			        <li class="page-item" th:classappend="${paginatedViewCourseEnroll.number + 1 eq paginatedViewCourseEnroll.totalPages} ? 'disabled'">
+			            <a class="page-link" th:onclick="|onSubmit(); setPage('${paginatedViewCourseEnroll.number + 2}'); document.getElementById('availableCourseForm').submit();|"
+				               aria-label="Next" title="Next Page" data-toggle="tooltip">
+			                <span aria-hidden="true">&raquo;</span>
+			            </a>
+			        </li>
+			    </ul>
+			</nav>
+			<input type="hidden" class="form-control" id="currentPage" name="currentPage"  />
+			
+			<div th:if="${paginatedViewCourseEnroll.isEmpty()}">
 				<div class="alert alert-dismissible alert-danger text-center">
 					<strong th:text="${nullMessage}"></strong> 
 				</div>
@@ -968,18 +984,26 @@
 		}
 		
 		localStorage.setItem("courseCategory", document.getElementById('courseCategorydetail').value);
+		localStorage.setItem("courseCategoryId", document.getElementById('courseCategoryId').value);
 		localStorage.setItem("courseName", document.getElementById('courseNamedetail').value);
+		localStorage.setItem("courseNameId", document.getElementById('courseNameId').value);
 		localStorage.setItem("instructor", document.getElementById('instructordetail').value);
+		localStorage.setItem("instructorId", document.getElementById('instructorId').value);
 		localStorage.setItem("venue", document.getElementById('venuedetail').value);
+		localStorage.setItem("venueId", document.getElementById('venueId').value);
 		localStorage.setItem("mandatory", document.getElementById('mandatorySel').value);
 		localStorage.setItem("deadline", document.getElementById('deadlineSel').value);
 	}
 	
 	if(localStorage.getItem("courseCategory") != null) {
 		document.getElementById('courseCategorydetail').value = localStorage.getItem("courseCategory");
+		document.getElementById('courseCategoryId').value = localStorage.getItem("courseCategoryId");
 		document.getElementById('courseNamedetail').value = localStorage.getItem("courseName");
+		document.getElementById('courseNameId').value = localStorage.getItem("courseNameId");
 		document.getElementById('instructordetail').value = localStorage.getItem("instructor");
+		document.getElementById('instructorId').value = localStorage.getItem("instructorId");
 		document.getElementById('venuedetail').value = localStorage.getItem("venue");
+		document.getElementById('venueId').value = localStorage.getItem("venueId");
 		document.getElementById('mandatorySel').value = localStorage.getItem("mandatory");
 
 		var deadline = document.getElementById("deadlineDiv");
@@ -1207,7 +1231,8 @@
 	/*<![CDATA[*/
 	var errorMessage = /*[[${error}]]*/'default';
 	if (errorMessage == "Invalid Date") {
-		document.getElementById("toDateTime_error").innerHTML = "must be greater than [From Date]";
+		document.getElementById("toDateTime_error").innerHTML = "To Date should be greater than or equal to From Date";
+		//document.getElementById("fromDateTime_error").innerHTML = "To Date should be greater than or equal to From Date";
 	}
 	/*]]>*/
 	
@@ -1256,7 +1281,7 @@
 			deadlineDiv.style.display = "none";
 		}
 	}
-
+	
 	//CLEAR SELECTED FILTERS
 	function clearFilter(){
 		document.getElementById("courseCategorydetail").placeholder = "Enter Course Category";
@@ -1278,6 +1303,10 @@
 		document.getElementById("mandatorySel").value = "-";
 		document.getElementById("deadlineSel").value = "-";
 		document.getElementById("deadlineDiv").style.display = "none";
+	}
+	
+	function setPage(currPage){
+		document.getElementById("currentPage").value = currPage;
 	}
 	
 </script>
