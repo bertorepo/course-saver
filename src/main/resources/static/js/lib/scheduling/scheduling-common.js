@@ -36,7 +36,9 @@ Date.prototype.toISO = function() {
 //Checks if Date is Today
 function isLessThanToday(date){
 	var dateEntry = new Date(date);
-	var today = new Date((new Date).setHours(0, 0, 0, 0));
+	var today = new Date();
+	console.log(dateEntry + " Date entry");
+	console.log(today + " Today");
 	return dateEntry < today;
 }  
 

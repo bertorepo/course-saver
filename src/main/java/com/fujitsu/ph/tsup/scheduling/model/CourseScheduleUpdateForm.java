@@ -31,6 +31,11 @@ public class CourseScheduleUpdateForm {
     private Long venueId;
     
     /**
+     * Venue Overlap
+     */
+    private boolean venueOverlap;
+    
+    /**
      * Minimum Required Participants
      */
     private int minRequired;
@@ -99,6 +104,14 @@ public class CourseScheduleUpdateForm {
 
 	public void setVenueId(Long venueId) {
 		this.venueId = venueId;
+	}
+	
+    public boolean isVenueOverlap() {
+		return venueOverlap;
+	}
+
+	public void setVenueOverlap(boolean venueOverlap) {
+		this.venueOverlap = venueOverlap;
 	}
 
 	public int getMinRequired() {
