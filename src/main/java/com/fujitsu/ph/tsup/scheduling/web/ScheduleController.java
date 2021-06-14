@@ -170,30 +170,33 @@ public class ScheduleController {
         		Set<CourseScheduleViewForm> courseScheduleViewFormSet = new HashSet<>();
 
         for (CourseSchedule courseSched : courseSchedule) {
-            CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
+        
+            if (courseSched.getInstructorId() == employeeId) {
+                CourseScheduleViewForm courseScheduleViewForm = new CourseScheduleViewForm();
 
-            courseScheduleViewForm.setId(courseSched.getId());
-            courseScheduleViewForm.setCourseId(courseSched.getCourseId());
-            courseScheduleViewForm.setCourseName(courseSched.getCourseName());
-            courseScheduleViewForm.setInstructorId(courseSched.getInstructorId());
-            courseScheduleViewForm.setInstructorName(
-                    courseSched.getInstructorLastName() + ", " + courseSched.getInstructorFirstName());
+                courseScheduleViewForm.setId(courseSched.getId());
+                courseScheduleViewForm.setCourseId(courseSched.getCourseId());
+                courseScheduleViewForm.setCourseName(courseSched.getCourseName());
+                courseScheduleViewForm.setInstructorId(courseSched.getInstructorId());
+                courseScheduleViewForm.setInstructorName(
+                        courseSched.getInstructorLastName() + ", " + courseSched.getInstructorFirstName());
 
-            Set<CourseScheduleDetail> courseSchedDetSet = courseSched.getCourseScheduleDetail();
-            Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
+                Set<CourseScheduleDetail> courseSchedDetSet = courseSched.getCourseScheduleDetail();
+                Set<CourseScheduleDetailForm> courseScheduleDetailFormSet = new HashSet<>();
 
-            for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
-                CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
+                for (CourseScheduleDetail courseScheduleDetail : courseSchedDetSet) {
+                        CourseScheduleDetailForm courseSchedDetailForm = new CourseScheduleDetailForm();
 
-                courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
-                courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
-                courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
-                courseScheduleDetailFormSet.add(courseSchedDetailForm);
+                    courseSchedDetailForm.setScheduledStartDateTime(courseScheduleDetail.getScheduledStartDateTime());
+                    courseSchedDetailForm.setScheduledEndDateTime(courseScheduleDetail.getScheduledEndDateTime());
+                    courseSchedDetailForm.setDuration(courseScheduleDetail.getDuration());
+                    courseScheduleDetailFormSet.add(courseSchedDetailForm);
 
-            }
+                }
 
             courseScheduleViewForm.setCourseScheduleDetails(courseScheduleDetailFormSet);
             courseScheduleViewFormSet.add(courseScheduleViewForm);
+            }
         }
         courseScheduleListForm.setTotalTrainings(totalTrainings);
         courseScheduleListForm.setMonthlyTopLearners(monthlyTopLearnerList);

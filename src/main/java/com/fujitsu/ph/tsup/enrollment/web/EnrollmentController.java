@@ -189,6 +189,14 @@ public class EnrollmentController {
 		}
 		if (form.getToDateTime() == null) {
 			form.setToDateTime(ZonedDateTime.now().plusDays(5));
+//            System.out.println("SECOND TO DATE TIME: "+form.getToDateTime());
+		}
+		if (form.getFromDateTime().isAfter(form.getToDateTime())
+				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
+			model.addAttribute(form);
+			model.addAttribute("error", "Invalid Date");
+			model.addAttribute("nullMessage", "No Course Schedule Found");
+			return "enrollment/viewCourseEnroll";
 		}
 		
 		//Check selected filters ----
