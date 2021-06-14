@@ -52,6 +52,10 @@ public class CourseSchedule {
      * Venue Name
      */
     private String venueName;
+    
+    //new
+    /** Attendance Status **/
+	private String courseStatus;
 
     /**
      * Minimum number of participants
@@ -159,6 +163,11 @@ public class CourseSchedule {
 
     public String getVenueName() {
         return venueName;
+    }
+    
+    //new
+    public String getCourseStatus() {
+        return courseStatus;
     }
 
     public int getMinRequired() {
@@ -696,11 +705,11 @@ public class CourseSchedule {
         return "CourseSchedule [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", instructorId="
                 + instructorId + ", instructorLastName=" + instructorLastName + ", instructorFirstName="
                 + instructorFirstName + ", mandatory=" + mandatory + ", deadline=" + deadline +
-                ", venueId=" + venueId + ", venueName=" + venueName + ", minRequired="
+                ", venueId=" + venueId + ", venueName=" + venueName +  ", courseStatus=" + courseStatus +  ", minRequired="
                 + minRequired + ", maxAllowed=" + maxAllowed + ", courseScheduleDetail=" + courseScheduleDetail
                 + ", totalParticipants=" + totalParticipants + ", status=" + status + "]";
     }
-    
+
     /**
      * Creates a new instance of the course schedule.
      * 

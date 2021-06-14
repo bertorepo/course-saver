@@ -48,6 +48,8 @@ public class CourseScheduleForm {
 
     /* Venue Name */
     private String venueName;
+    
+    private String courseStatus;
 
     /* Set of course schedule details */
     private CourseScheduleDetailForm courseScheduleDetail;
@@ -159,6 +161,16 @@ public class CourseScheduleForm {
     public void setVenueName(String venueName) {
         this.venueName = venueName;
     }
+    
+    /** setCourseStatus Getter */
+    public String getCourseStatus() {
+        return courseStatus;
+    }
+
+    /** setCourseStatus Setter */
+    public void setCourseStatus(String courseStatus) {
+    	this.courseStatus = courseStatus;
+    }	
 
     /** get Set of course schedule details */
     public CourseScheduleDetailForm getCourseScheduleDetails() {
@@ -225,14 +237,11 @@ public class CourseScheduleForm {
                 + ", courseName=" + courseName + ", courseCategory=" + courseCategory + ", instructorId="
                 + instructorId + ", instructorName=" + instructorName
                 + ", deadline= " + deadline + ", mandatory = " +mandatory
-                + ", venueId=" + venueId + ", venueName=" + venueName
+                + ", venueId=" + venueId + ", venueName=" + venueName  + ", courseStatus=" + courseStatus
                 + ", courseScheduleDetail=" + courseScheduleDetail
                 + ", minRequired=" + minRequired + ", maxAllowed=" + maxAllowed
                 + ", totalParticipants=" + totalParticipants
                 + ", courseDetails=" + courseDetails + "]";
     }
-
-
-	
 
 }

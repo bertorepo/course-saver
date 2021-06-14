@@ -43,6 +43,8 @@ public class CourseDeclineForm {
 
     /* Venue Name */
     private String venueName;
+    
+    private String courseStatus;
 
     /* Participant Name (LASTNAME, FIRSTNAME) */
     private String participantName;
@@ -116,6 +118,16 @@ public class CourseDeclineForm {
         this.venueName = venueName;
     }
 
+    /** setCourseStatus Getter */
+    public String getCourseStatus() {
+        return courseStatus;
+    }
+
+    /** setCourseStatus Setter */
+    public void setCourseStatus(String courseStatus) {
+    	this.courseStatus = courseStatus;
+    }	
+	
     /** Participant Name (LASTNAME, FIRSTNAME) Getter */
     public String getParticipantName() {
         return participantName;
@@ -170,10 +182,11 @@ public class CourseDeclineForm {
         return "CourseDeclineForm [id=" + id + ", courseName=" + courseName
                 + ", courseId=" + courseId + ", courseScheduleId="
                 + courseScheduleId + ", instructorName=" + instructorName
-                + ", venueName=" + venueName + ", participantName="
+                + ", venueName=" + venueName + ", courseStatus=" + courseStatus + ", participantName="
                 + participantName + ", courseScheduleDetailsForm="
                 + courseScheduleDetailsForm + ", registrationDate="
                 + registrationDate + ", reason=" + reason + ", details="
                 + details + "]";
     }
+
 }
