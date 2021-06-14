@@ -68,6 +68,10 @@ input#inputCourse {
 .dateRange {
     margin-left: 75px !important;
 }
+#summaryPM
+{
+	margin-bottom: 90px;
+}
 }
 
 
@@ -78,7 +82,7 @@ input#inputCourse {
 }
 #summaryPM
 {
-	margin-bottom: 100px !important;
+	margin-bottom: 100px;
 }
 
 }
@@ -101,7 +105,7 @@ input#inputCourse {
 }
 #summaryPM
 {
-	margin-bottom: 150px !important;
+	margin-bottom: 150px;
 }
 }
 
@@ -129,12 +133,12 @@ input#exportButton {
 
 .percenttable {
    
-    margin-top: 90px !important;
+    margin-top: 90px;
 
 }
 #summaryPM
 {
-	margin-bottom: 170px !important;
+	margin-bottom: 170px;
 }
 
 }
@@ -143,12 +147,12 @@ input#exportButton {
 
 .percenttable {
    
-    margin-top: 120px !important;
+    margin-top: 120px;
 
 }
 #summaryPM
 {
-	margin-bottom: 220px !important;
+	margin-bottom: 220px;
 }
 
 }

@@ -47,7 +47,7 @@ hr {
 
  @media (min-width: 1200px) {
 .dateRange {
-    margin-left: 40px !important;
+    margin-left: 40px ;
 }
 select#selectReportType {
     width: 510px;
@@ -62,13 +62,17 @@ input#inputCourse {
 @media only screen and (min-device-width : 992px) and (max-device-width : 1199px) {
 
 select#selectReportType {
-    width: 480px;
+    width: 480px !important;
 }
 input#inputCourse {
-    width: 480px;
+    width: 480px !important;
 }
 .dateRange {
-    margin-left: 75px !important;
+    margin-left: 75px !important ;
+}
+#summaryGSTDev
+{
+	margin-bottom: 90px;
 }
 }
 
@@ -80,7 +84,7 @@ input#inputCourse {
 }
 #summaryGSTDev
 {
-	margin-bottom: 100px !important;
+	margin-bottom: 100px ;
 }
 
 }
@@ -103,7 +107,7 @@ input#inputCourse {
 }
 #summaryGSTDev
 {
-	margin-bottom: 160px !important;
+	margin-bottom: 160px;
 }
 }
 
@@ -127,12 +131,12 @@ input#exportButton {
 
 .percenttable {
    
-    margin-top: 90px !important;
+    margin-top: 90px ;
 
 }
 #summaryGSTDev
 {
-	margin-bottom: 170px !important;
+	margin-bottom: 170px;
 }
 
 }
@@ -141,12 +145,12 @@ input#exportButton {
 
 .percenttable {
    
-    margin-top: 120px !important;
+    margin-top: 120px;
 
 }
 #summaryGSTDev
 {
-	margin-bottom: 220px !important;
+	margin-bottom: 220px;
 }
 
 }

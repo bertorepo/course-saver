@@ -70,9 +70,9 @@ input#inputCourse {
 }
 #summaryMandatory{
 
-	margin-top:8px !important;
+	margin-top:8px;
+	margin-bottom: 90px;
 }
-
 }
 
 
@@ -82,7 +82,7 @@ input#inputCourse {
     margin-left: 0% !important;
 }
 #summaryMandatory{
-	margin-bottom: 110px !important;
+	margin-bottom: 110px;
 }
 }
 
@@ -102,7 +102,7 @@ input#inputCourse {
 }
 #summaryMandatory{
 
-	margin-bottom: 160px !important;
+	margin-bottom: 160px;
 }
 }
 
@@ -128,11 +128,11 @@ input#exportButton {
 
 .percenttable {
    
-    margin-top: 90px !important;
+    margin-top: 90px ;
 
 }
 #summaryMandatory{
-	margin-bottom: 170px !important;
+	margin-bottom: 170px;
 }
 
 }
@@ -141,11 +141,11 @@ input#exportButton {
 
 .percenttable {
    
-    margin-top: 120px !important;
+    margin-top: 120px;
 
 }
 #summaryMandatory{
-	margin-bottom: 220px !important;
+	margin-bottom: 220px;
 }
 
 }
