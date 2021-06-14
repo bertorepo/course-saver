@@ -11,28 +11,28 @@ function validations() {
 		//Empty Fields Validations
 		if (instructor == "") {
 			errorCount++;
-			instructorError = "Please fill up Instructor";
+			instructorError = "This field is required.";
 	        document.getElementById("instructorId_error").innerHTML = instructorError;
 		}
 		if (venue == "") {
 			errorCount++;
-			venueError = "Please fill up Venue";
+			venueError = "This field is required.";
 	        document.getElementById("venueId_error").innerHTML = venueError;
 		}
 		if (minRequired <= 0) {
 			errorCount++;
-		  	minRequiredError = "Please fill up Minimum no. of Participants";
+		  	minRequiredError = "This field is required.";
 		  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 		}
 		if (maxAllowed <=0) {
 			errorCount++;
-		  	maxAllowedError = "Please fill up Maximum no. of Participants";
+		  	maxAllowedError = "This field is required.";
 		  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
 		}
 		if (minRequired !==0) {
 			if (maxAllowed <= minRequired) {
 				errorCount++;
-		  	minRequiredError = "Minimum can't be greater or equal to Maximum Participants";
+		  	minRequiredError = "Min shouldn't be greater than Max.";
 		  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 			}
 		}
@@ -60,15 +60,15 @@ function validations() {
 		    	//Start and End Time Validation
 	        	if (startDate > endDate)  {
 	        		errorCount++;
-	        		startDateError = "Start Date can't be greater <br> than or equal to end date";
-	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
+	        		endDateError = "Please pick a date that's greater than <br>the value of 'Start Date' field.";
+	        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	            } 
 	        	
 	        	//Start and End Date Validation
 	        	if (startDate == endDate) {
 	        		if (startTime > endTime) {
 		        		errorCount++;
-		        		endStartTimeError = "Start time can't be greater <br> than or equal to end time";
+		        		endStartTimeError = "Please pick a time that's greater than <br>the value of 'Start Time' field.";
 		        	  	document.getElementById("startTime" + i + "_error").innerHTML = endStartTimeError;
 		        	  	document.getElementById("endTime" + i + "_error").innerHTML = endStartTimeError;
 		            }
@@ -77,31 +77,31 @@ function validations() {
 	        	//If Date is Less Than Today
 	        	if (isLessThanToday(rowStartDateTime)) {
 	        		errorCount++;
-	        		startDateError = "Date or Time can't be less than today";
+	        		startDateError = "Please pick a future date and time.";
 	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
 	        	}
 	        	
 	        	if (isLessThanToday(rowEndDateTime)) {
 	        		errorCount++;
-	        		endDateError = "Date or Time can't be less than today";
+        		    endDateError = "Please pick a future date and time.";
 	        	  	document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	        	}
 	        	
 	        	//If Datetime is equal Validation
 	        	if ((startDate == endDate) && (startTime == endTime)) {
 	        		errorCount++;
-	        		startDateError = "Start Date Time and End Date Time shouldn't be equal";
-	        		endDateError = "Start Date Time and End Date Time shouldn't be equal";
+	        		startDateError = "";
+	        		endDateError = "Please pick a date where 'Start Date' <br>& 'End Date' field values should not <br>be equal.";
 	        	  	document.getElementById("startDate" + i + "_error").innerHTML = startDateError;
 	        		document.getElementById("endDate" + i + "_error").innerHTML = endDateError;
 	        	}
 	        	
 	        	if((startDate == "") && (endDate == "") && (startTime == "") && (endTime == "")) {
 	        		errorCount++;
-	        		document.getElementById("startDate" + i + "_error").innerHTML = "Start Date cannot be null.";
-	        		document.getElementById("endDate" + i + "_error").innerHTML = "End Date cannot be null.";
-	        		document.getElementById("startTime" + i + "_error").innerHTML = "Start Time cannot be null.";
-	        	  	document.getElementById("endTime" + i + "_error").innerHTML = "End Time cannot be null.";
+	        		document.getElementById("startDate" + i + "_error").innerHTML = "This field is required.";
+	        		document.getElementById("endDate" + i + "_error").innerHTML = "This field is required.";
+	        		document.getElementById("startTime" + i + "_error").innerHTML = "This field is required.";
+	        	  	document.getElementById("endTime" + i + "_error").innerHTML = "This field is required.";
 	    	    } else {
 	    	    	var startDateTime = rowStartDateTime.toISO().toString();
 	    	        /* console.log(rowStartDateTime);
