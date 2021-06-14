@@ -13,15 +13,28 @@ package com.fujitsu.ph.tsup.report.summary.service;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.fujitsu.ph.tsup.report.summary.dao.SummaryGSTDevDao;
 import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
+
+
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Summary of JDU Standardization Training for Dev
+//Class Name   : SummaryGSTDevServiceImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | ----/--/-- | WS) -                 | Initial Version
+//0.02    | ----/--/-- | WS) n.dejesus         | Updated
+//0.02    | ----/--/-- | WS) a.batongbacal     | Updated
+//0.03    | 2021/06/14 | WS) m.padaca          | Updated
+//==================================================================================================
+
+
 /**
  * <pre>
  * The implementation of G3CC standardization training for dev service
@@ -29,8 +42,9 @@ import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
  * 
  * @version 0.02
  * @author n.dejesus
- * @author a.batongbaca
- *
+ * @author a.batongbacal
+ * @version 0.03
+ * @author m.padaca
  */
 @Service
 public class SummaryGSTDevServiceImpl implements SummaryGSTDevService {
@@ -68,20 +82,6 @@ public class SummaryGSTDevServiceImpl implements SummaryGSTDevService {
 
         double percentageFinToday = (totalDevFin * 100) / employeeList.size();
         double percentageFinLastWk = (totalDevFinLastWk * 100) / employeeList.size();
-        
-		/*
-		 * SummaryGSTDevForm summary = new SummaryGSTDevForm();
-		 * summary.setTotalNoJDUDevValue(employeeList.size());
-		 * summary.setTotalNoJDUDevLastWeekValue(reportSummaryGSTDevDao.
-		 * findAllJDUDevLastWeek());
-		 * summary.setTotalNoExistingMemValue(reportSummaryGSTDevDao.
-		 * findAllJDUExisitingMembers());
-		 * summary.setTotalNoNewMemValue(reportSummaryGSTDevDao.findAllJDUNewMembers());
-		 * summary.setTotalNoJDUDevFinValue(totalDevFin);
-		 * summary.setTotalNoJDUDevLastWkFinValue(totalDevFinLastWk);
-		 * summary.setPercentageFinTodayValue(percentageFinToday);
-		 * summary.setPercentageFinLastWkValue(percentageFinLastWk);
-		 */
 		double df = Math.pow(10, 2);
 
        

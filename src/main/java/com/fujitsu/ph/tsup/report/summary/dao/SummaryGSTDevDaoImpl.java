@@ -23,6 +23,18 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Summary of JDU Standardization Training for Dev
+//Class Name   : SummaryGSTDevDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | ---        | WS) r.rivero          | Initial Version
+//0.01    | ---        | WS) g.cabiling        | Initial Version
+//0.02    | 2021/06/14 | WS) m.padaca          | Updated
+//==================================================================================================
 /**
  * <pre>
  * The implementation of G3CC standardization training for dev dao
@@ -31,6 +43,8 @@ import org.springframework.stereotype.Repository;
  * @version 0.01
  * @author r.rivero
  * @author g.cabiling
+ * @version 0.02
+ * @author m.padaca
  *
  */
 
@@ -111,9 +125,6 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
                 +" AND CA.status = 'P'" 
                 +" AND CS.course_id IN (:courses)" 
                 +" AND CA.participant_id = :participant_id"
-				/*
-				 * +" AND CA.log_out_datetime <= (NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER)"
-				 */
 		        +" AND ((ca.log_out_dateTime >= date_trunc('week', :startDate - interval '1 week')"																					
 				+" AND ca.log_out_dateTime < date_trunc('week', :EndDate)));";
 

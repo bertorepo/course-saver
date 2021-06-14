@@ -12,20 +12,32 @@
 package com.fujitsu.ph.tsup.report.summary.model;
 
 import java.time.ZonedDateTime;
-
-import javax.validation.constraints.Null;
-
 import org.springframework.format.annotation.DateTimeFormat;
-
 import com.sun.istack.NotNull;
+
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Summary of JDU Standardization Training for Dev
+//Class Name   : SummaryGSTDevDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | ----/--/-- | WS) -                 | Initial Version
+//0.02    | ----/--/-- | WS) g.cabiling        | Updated
+//0.03    | 2021/06/14 | WS) m.padaca          | Updated
+//==================================================================================================
+
 
 /**
  * <pre>
  * The model for G3CC standardization training for dev
  * </pre>
  * 
- * @version 0.0.2
+ * @version 0.02
  * @author g.cabiling
+ * @version 0.03
+ * @author m.padaca
  */
 
 public class SummaryGSTDevForm {
