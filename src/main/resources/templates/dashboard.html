@@ -115,7 +115,7 @@
 						<tbody>
 							<tr th:each="instructorCourse : *{instructorCourses}">
 								<td th:text="${instructorCourse.getCourseName()}"></td>
-								<td th:utext="${#temporals.format(instructorCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')}> + '<hr>' + ${#temporals.format(instructorCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
+								<td th:utext="${#temporals.format(instructorCourse.getStartDateTime(), 'dd-MM-yyyy HH:mm:ss')} + '<hr>' + ${#temporals.format(instructorCourse.getEndDateTime(), 'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${instructorCourse.getVenueName()}"></td>
 							</tr>
 							
