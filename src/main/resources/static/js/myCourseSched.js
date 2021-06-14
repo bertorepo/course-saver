@@ -182,6 +182,7 @@ function declinedCourseSchedule(courseParticipantId,
 	registrationDate,
 	instructorName,
 	venueName,
+	courseStatus,
 	startDateTime,
 	endDateTime,
 	duration,
@@ -202,6 +203,7 @@ function declinedCourseSchedule(courseParticipantId,
 
 	document.getElementById('courseSchedTime').value = startTime + " to " + endTime + " ( " + duration + " ) hour/(s)";
 	document.getElementById('courseSchedVenue').value = venueName;
+	document.getElementById('courseStatus').value = courseStatus;
 	document.getElementById('participantName').value = "No need to insert this";
 	document.getElementById('registrationDate').value = registrationDate;
 	document.getElementById('courseIdHiddenDecline').value = courseId;

@@ -28,6 +28,9 @@ public class CourseScheduleForm {
     private Long courseId;
 
     /* Course Name */
+    private String courseCategory;
+    
+    /* Course Name */
     private String courseName;
 
     /* Instructor Id */
@@ -45,6 +48,8 @@ public class CourseScheduleForm {
 
     /* Venue Name */
     private String venueName;
+    
+    private String courseStatus;
 
     /* Set of course schedule details */
     private CourseScheduleDetailForm courseScheduleDetail;
@@ -97,6 +102,16 @@ public class CourseScheduleForm {
         this.courseId = courseId;
     }
 
+    /** get Course Category */
+    public String getCourseCategory() {
+        return courseCategory;
+    }
+
+    /** set Course Category */
+    public void setCourseCategory(String courseCategory) {
+        this.courseCategory = courseCategory;
+    }
+    
     /** get Course Name */
     public String getCourseName() {
         return courseName;
@@ -146,6 +161,16 @@ public class CourseScheduleForm {
     public void setVenueName(String venueName) {
         this.venueName = venueName;
     }
+    
+    /** setCourseStatus Getter */
+    public String getCourseStatus() {
+        return courseStatus;
+    }
+
+    /** setCourseStatus Setter */
+    public void setCourseStatus(String courseStatus) {
+    	this.courseStatus = courseStatus;
+    }	
 
     /** get Set of course schedule details */
     public CourseScheduleDetailForm getCourseScheduleDetails() {
@@ -209,17 +234,14 @@ public class CourseScheduleForm {
     @Override
     public String toString() {
         return "CourseScheduleForm [id=" + id + ", courseId=" + courseId
-                + ", courseName=" + courseName + ", instructorId="
+                + ", courseName=" + courseName + ", courseCategory=" + courseCategory + ", instructorId="
                 + instructorId + ", instructorName=" + instructorName
                 + ", deadline= " + deadline + ", mandatory = " +mandatory
-                + ", venueId=" + venueId + ", venueName=" + venueName
+                + ", venueId=" + venueId + ", venueName=" + venueName  + ", courseStatus=" + courseStatus
                 + ", courseScheduleDetail=" + courseScheduleDetail
                 + ", minRequired=" + minRequired + ", maxAllowed=" + maxAllowed
                 + ", totalParticipants=" + totalParticipants
                 + ", courseDetails=" + courseDetails + "]";
     }
-
-
-	
 
 }

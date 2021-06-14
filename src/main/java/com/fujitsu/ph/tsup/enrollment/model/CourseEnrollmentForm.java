@@ -52,6 +52,8 @@ public class CourseEnrollmentForm {
     /* Venue Name */
     private String venueName;
     
+    private String courseStatus;
+    
     /* Email Address */
     //NEW
     private String emailAddress;
@@ -65,7 +67,7 @@ public class CourseEnrollmentForm {
     private String attendanceStatus;
     
     private String courseDetails;
-    
+
 
     public String getCourseDetails() {
         return courseDetails;
@@ -105,6 +107,11 @@ public class CourseEnrollmentForm {
     /** Venue Name Getter */
     public String getVenueName() {
         return venueName;
+    }
+    
+    /** setCourseStatus Getter */
+    public String getCourseStatus() {
+        return courseStatus;
     }
     
     public String getEmailAddress() {
@@ -155,6 +162,11 @@ public class CourseEnrollmentForm {
     public void setVenueName(String venueName) {
         this.venueName = venueName;
     }
+    
+    /** setCourseStatus Setter */
+    public void setCourseStatus(String courseStatus) {
+    	this.courseStatus = courseStatus;
+	}
 
     /** CourseScheduleDetails Setter */
     public void setCourseScheduleDetails(CourseScheduleDetailForm courseScheduleDetails) {
@@ -172,14 +184,19 @@ public class CourseEnrollmentForm {
     
     @Override
     public String toString() {
-        return "CourseEnrollmentForm [id=" + id + ", courseId=" + courseId
-                + ", courseScheduleId=" + courseScheduleId + ", courseName="
-                + courseName + ", participantId=" + participantId
-                + ", instructorName=" + instructorName + ", venueName="
-                + venueName + ", emailAddress=" + emailAddress
+        return "CourseEnrollmentForm [id=" + id 
+                + ", courseId=" + courseId
+                + ", courseScheduleId=" + courseScheduleId 
+                + ", courseName=" + courseName 
+                + ", participantId=" + participantId
+                + ", instructorName=" + instructorName 
+                + ", venueName=" + venueName 
+                + ", courseStatus=" + courseStatus
+                + ", emailAddress=" + emailAddress
                 + ", courseScheduleDetails=" + courseScheduleDetails
                 + ", registrationDate=" + registrationDate
-                + ", attendanceStatus=" + attendanceStatus + ", courseDetails="
-                + courseDetails + "]";
+                + ", attendanceStatus=" + attendanceStatus 
+                + ", courseDetails=" + courseDetails + "]";
     }
+	
 }
