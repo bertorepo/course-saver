@@ -48,9 +48,9 @@
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">Course Category Details</label>
                             <div class="col-lg-5">
-                                <textarea rows="10" cols="50" maxlength="200" tabindex="2" placeholder="Enter Course Category Details"
+                                <textarea rows="10" cols="50" tabindex="2" placeholder="Enter Course Category Details"
                                     class="form-control" id="detail" name="detail"
-                                    onkeyup=enableSubmitButton()></textarea>
+                                    onkeyup=enableSubmitButton() maxlength="200"></textarea>
                             </div>
                             <span class="text-danger er" id="required2"> </span>
                         </div>
@@ -179,7 +179,11 @@
                 document.getElementById('required').innerHTML = "Please enter a Course Category";
                 document.getElementById('required').style.visibility = 'visible';
                 document.getElementById('submit').disabled = true;
-            } 
+            } else if (trimCategory.length == 100){
+            	document.getElementById('required').innerHTML = "Course Category is too long";
+                document.getElementById('required').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            }
             
             if(checkingForDuplicate(category.value)) {
                 document.getElementById('required').innerHTML = "Course Category Name already exist";
@@ -188,8 +192,12 @@
             } 
 
             //Enables error message for details
-            else if (trimDetail.length == 0) { 
+            if (trimDetail.length == 0) { 
                 document.getElementById('required2').innerHTML = "Please enter a Course Category details";
+                document.getElementById('required2').style.visibility = 'visible';
+                document.getElementById('submit').disabled = true;
+            } else if (trimDetail.length == 200){
+            	document.getElementById('required2').innerHTML = "Course Category details is too long";
                 document.getElementById('required2').style.visibility = 'visible';
                 document.getElementById('submit').disabled = true;
             }

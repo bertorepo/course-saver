@@ -88,7 +88,6 @@ function checkingForNoChange(roleName, id, roleDesc) {
 }
 
 function deleteButton(id, roleName, roleDesc) {
-	//document.getElementById("roleIdInput").value = id;
 	document.getElementById("roleName").innerHTML = roleName;
 	document.getElementById("roleDesc").innerHTML = roleDesc;
 	

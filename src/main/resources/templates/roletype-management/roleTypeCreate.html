@@ -161,6 +161,9 @@
 			else if (this.value.trim() == "") {
 				$("#roledesc_error").text("Please enter a Role Description");
 				roleDescErrorCount++;
+			} else if (this.value.match(specialChars)) {
+				$("#roledesc_error").text("Role description is invalid, please omit special characters");
+				roleDescErrorCount++;
 			} else {
 				$("#roledesc_error").text("");
 				roleDescErrorCount = 0;
