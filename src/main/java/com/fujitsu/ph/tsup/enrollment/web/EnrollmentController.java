@@ -1,4 +1,4 @@
-package com.fujitsu.ph.tsup.enrollment.web;
+	package com.fujitsu.ph.tsup.enrollment.web;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -189,14 +189,6 @@ public class EnrollmentController {
 		}
 		if (form.getToDateTime() == null) {
 			form.setToDateTime(ZonedDateTime.now().plusDays(5));
-//            System.out.println("SECOND TO DATE TIME: "+form.getToDateTime());
-		}
-		if (form.getFromDateTime().isAfter(form.getToDateTime())
-				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
-			model.addAttribute(form);
-			model.addAttribute("error", "Invalid Date");
-			model.addAttribute("nullMessage", "No Course Schedule Found");
-			return "enrollment/viewCourseEnroll";
 		}
 		
 		//Check selected filters ----
@@ -255,7 +247,7 @@ public class EnrollmentController {
 			model.addAttribute("paginatedViewCourseEnroll", new PageImpl<>(new ArrayList<CourseScheduleForm>()));
 			return "enrollment/viewCourseEnroll";
 		}
-
+		
 		Set<CourseScheduleForm> courseScheduleFormSet = new LinkedHashSet<CourseScheduleForm>();
 		try {
 			Set<CourseSchedule> courseSchedules = enrollmentService.findAllScheduledCourses(
