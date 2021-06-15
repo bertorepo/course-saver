@@ -1,4 +1,4 @@
-	package com.fujitsu.ph.tsup.enrollment.web;
+package com.fujitsu.ph.tsup.enrollment.web;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +37,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -527,7 +524,6 @@ public class EnrollmentController {
 			RedirectAttributes redirectAttributes) {
 		enrollmentService.cancel(id);
 		redirectAttributes.addFlashAttribute("successMessage", "Successfully Canceled the Course Schedule");
-//      return "redirect:/schedule";
 		return "redirect:/enrollment/viewCourseEnroll";
 	}
 	/**
@@ -686,14 +682,13 @@ public class EnrollmentController {
 	@PostMapping("/findSchedules")
 	@ResponseBody
 	public Set<CourseSchedule> findAllCourseScheduleByMonthOrQuarter(@RequestBody String queryBy) {
-//    	String queryBy = "Quarter";
+		
 		Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>();
-//    	System.out.println("STRING IS: " + queryBy);
+		
 		try {
 			courseScheduleSet = enrollmentService.findAllCouresScheduleByMonthOrQuarter(queryBy);
 			return courseScheduleSet;
 		} catch (Exception e) {
-//    		return e.getMessage();
 			return courseScheduleSet;
 		}
 	}
@@ -705,7 +700,7 @@ public class EnrollmentController {
 	@GetMapping("/getAllScheduleBelowMinimum")
 	@ResponseBody
 	public Set<CourseScheduleForm> findAllCourseScheduleBelowMinimumParticipants() {
-//    	System.out.println("CANCE BELOW MINIMUM");
+
 		try {
 			Set<CourseSchedule> courseScheduleSet = enrollmentService.findAllCourseScheduleBelowMinimumParticipants();
 			Set<CourseScheduleForm> courseScheduleFormSet = new HashSet<CourseScheduleForm>();
@@ -724,8 +719,6 @@ public class EnrollmentController {
 				courseScheduleDetailForm.setDuration(courseScheduleDetail.getDuration());
 				courseScheduleForm.setCourseScheduleDetails(courseScheduleDetailForm);
 				courseScheduleFormSet.add(courseScheduleForm);
-//    			System.out.println("CONTROLLER COURSE " + courseScheduleForm.getId() + " " + courseScheduleForm.getCourseName());
-//    			System.out.println("START:" + courseScheduleDetailForm.getScheduledStartDateTime() + " END: " + courseScheduleDetailForm.getScheduledEndDateTime() + " Duration: " + courseScheduleDetailForm.getDuration() );
 			}
 			return courseScheduleFormSet;
 		} catch (Exception e) {
@@ -786,13 +779,11 @@ public class EnrollmentController {
 	public Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(@RequestBody Long courseScheduleId) {
 		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Set<CourseParticipant> courseParticipantSet = new HashSet<CourseParticipant>();
-//    	try {
+
 		CourseParticipant courseParticipant = new CourseParticipant.Builder()
 				.addCourseScheduleIdAndEmployeeNumber(courseScheduleId, user.getEmployeeNumber()).build();
 		courseParticipantSet = enrollmentService.findAllMemberNotEnrolledByCourseScheduleId(courseParticipant);
-//    	}catch(Exception e) {
-//    		e.printStackTrace();
-//    	}
+		
 		return courseParticipantSet;
 	}
 	/**
@@ -820,13 +811,10 @@ public class EnrollmentController {
 	public Set<CourseParticipant> findMember(@RequestBody SearchForm search, HttpServletRequest request) {
 		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Set<CourseParticipant> courseParticipant = new HashSet<CourseParticipant>();
-		System.out.println("REQUEST: " + request);
-//		try {
+		
 		search.setEmployeeNumber(user.getEmployeeNumber());
 		courseParticipant = enrollmentService.findMemberNotEnrolledByCourseScheduleId(search);
-//    	}catch(Exception e) {
-//    		e.printStackTrace();
-//    	}
+		
 		return courseParticipant;
 	}
 	/**
@@ -850,7 +838,8 @@ public class EnrollmentController {
 					courseEnrollmentForm.getEmailAddress(), ZonedDateTime.now()).addDetail(courseScheduleDetail)
 							.build();
 			enrollmentService.enroll(courseParticipant);
-			redirectAttributes.addFlashAttribute("successMsg", "Successfully enrolled the selected member(s).");
+			enrollmentService.sendCalendarInvite(courseParticipant);
+			redirectAttributes.addFlashAttribute("successMsg", "Successfully Enrolled a Member!!!");
 			redirectAttributes.addFlashAttribute("courseEnrollmentForm", courseEnrollmentForm);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -904,54 +893,6 @@ public class EnrollmentController {
 		}
 		return "redirect:/enrollment/mySchedules";
 	}
-//    @PostMapping("/findSchedules")
-//    @ResponseBody
-//    public Set<CourseSchedule> findAllCourseScheduleByMonthOrQuarter(@RequestBody String queryBy){
-////    	String queryBy = "Quarter";
-//    	Set<CourseSchedule> courseScheduleSet = new HashSet<CourseSchedule>();
-////    	System.out.println("STRING IS: " + queryBy);
-//    	try {
-//    		courseScheduleSet = enrollmentService.findAllCouresScheduleByMonthOrQuarter(queryBy);
-//        	return courseScheduleSet;
-//    	}catch(Exception e) {
-////    		return e.getMessage();
-//    		return courseScheduleSet;
-//    	}
-//    	
-//    }
-//    @RequestMapping(value = "/viewEnrolled", method = RequestMethod.GET)
-//	public @ResponseBody List<Participant> viewMemberEnrolled (@RequestParam Long id) {
-//    	return enrollmentService.findEnrolledMembersById(id);
-//    }
-//    @RequestMapping(value = "/addEnrolled", method = RequestMethod.POST)
-//	public String addMemberEnrolled (@RequestBody @Valid @ModelAttribute("participantForm") Participant participant, 
-//			RedirectAttributes redirectAttributes, BindingResult result) {
-//    	
-//    	if (result.hasErrors()) {
-//    		List<FieldError> err=result.getFieldErrors();
-//    		
-//    		
-//    		for(FieldError e:err){
-//                System.out.println("Error on object ---> "+e.getObjectName()+" on field ---> "+e.getField()+". Message ---> "+e.getDefaultMessage());
-//           }
-//    		
-//    		return "redirect:/enrollment/viewMemberCourse";
-//    	}
-//    	
-//    	enrollmentService.addEnrolledMembersById(participant);
-//    	
-//    	redirectAttributes.addFlashAttribute("success","{employee} has been added");
-//    	return "redirect:/enrollment/viewMemberCourse";
-//    }
-//}
-//	public String submitCourseEnrollmentCancelForm(@RequestParam("courseScheduleId") Long id, Model model, 
-//			RedirectAttributes redirectAttributes) {
-//		enrollmentService.cancel(id);
-//		redirectAttributes.addFlashAttribute("successMessage","Successfully Canceled the Course Schedule");
-////		return "redirect:/schedule";
-//		return "redirect:/enrollment/viewCourseEnroll";
-//	}
-	
 	
 	/**
      * function in getting the courseID 
@@ -1069,8 +1010,8 @@ public class EnrollmentController {
 	
 	
 	/**
-     * Check if filter Id is null, empty or undefined
-     * 
+	 * Check if filter Id is null, empty or undefined
+	 * 
 	 * @return
 	 * 
 	 */	
