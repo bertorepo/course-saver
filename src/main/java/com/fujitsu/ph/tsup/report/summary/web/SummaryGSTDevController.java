@@ -38,9 +38,8 @@ import com.fujitsu.ph.tsup.report.summary.service.SummaryGSTDevService;
  * The controller of G3CC standardization training for developers
  * </pre>
  * 
- * @version 0.01
- * @author g.cabiling
  * @version 0.02
+ * @author g.cabiling
  * @author m.padaca
  */
 @Controller
@@ -64,9 +63,10 @@ public class SummaryGSTDevController {
     			summaryGSTDev.getScheduledEndDateTime() == null) { 
 		          summaryGSTDev.setScheduledStartDateTime(ZonedDateTime.now().minusDays(5).withHour(0).withMinute(0));
 		          summaryGSTDev.setScheduledEndDateTime(ZonedDateTime.now());
-		      }
+		}
     	
-		summaryGSTDev = summaryGSTDevService.getSummary(summaryGSTDev.getScheduledStartDateTime(),summaryGSTDev.getScheduledEndDateTime(),summaryGSTDev);
+		summaryGSTDev = summaryGSTDevService.getSummary(summaryGSTDev.getScheduledStartDateTime(),
+	    summaryGSTDev.getScheduledEndDateTime(),summaryGSTDev);
      
         model.addAttribute("summaryGSTDev", summaryGSTDev);
         return "reports/SummaryGSTDev";

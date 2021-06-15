@@ -34,9 +34,8 @@ import com.sun.istack.NotNull;
  * The model for G3CC standardization training for dev
  * </pre>
  * 
- * @version 0.02
- * @author g.cabiling
  * @version 0.03
+ * @author g.cabiling
  * @author m.padaca
  */
 

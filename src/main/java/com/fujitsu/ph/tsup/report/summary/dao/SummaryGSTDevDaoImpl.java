@@ -40,10 +40,9 @@ import org.springframework.stereotype.Repository;
  * The implementation of G3CC standardization training for dev dao
  * </pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author r.rivero
  * @author g.cabiling
- * @version 0.02
  * @author m.padaca
  *
  */
@@ -114,7 +113,8 @@ public class SummaryGSTDevDaoImpl implements SummaryGSTDevDao {
     }
 
     @Override
-    public int findTotalCoursePerEmployeeLastWeek(ZonedDateTime startDate, ZonedDateTime EndDate, Set<Long> course_id, Long participant_id) {
+    public int findTotalCoursePerEmployeeLastWeek(ZonedDateTime startDate, ZonedDateTime EndDate, 
+    	Set<Long> course_id, Long participant_id) {
         String query = "SELECT COUNT(DISTINCT course_id)"  
                 +" FROM  tsup.course_attendance CA"  
                 +" LEFT Join tsup.course_schedule_detail CSD"  

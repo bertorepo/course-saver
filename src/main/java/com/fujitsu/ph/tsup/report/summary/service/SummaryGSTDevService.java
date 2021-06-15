@@ -33,9 +33,8 @@ import com.fujitsu.ph.tsup.report.summary.model.SummaryGSTDevForm;
  * The interface of G3CC standardization training for dev service
  * </pre>
  * 
- * @version 0.01
- * @author n.dejesus
  * @version 0.02
+ * @author n.dejesus
  * @author m.padaca
  *
  */
@@ -51,5 +50,6 @@ public interface SummaryGSTDevService {
      */
 	
 	//Method for accumulating summary data
-	SummaryGSTDevForm getSummary(ZonedDateTime StartDateTime,ZonedDateTime EndDateTime, SummaryGSTDevForm summaryGSTDev);
+	SummaryGSTDevForm getSummary(ZonedDateTime StartDateTime,ZonedDateTime EndDateTime, 
+	SummaryGSTDevForm summaryGSTDev);
 }

@@ -32,10 +32,9 @@ import java.util.Set;
  * The interface of G3CC standardization training for dev dao
  * </pre>
  * 
- * @version 0.01
+ * @version 0.02
  * @author r.rivero
  * @author g.cabiling
- * @version 0.02
  * @author m.padaca
  */
 
@@ -60,6 +59,7 @@ public interface SummaryGSTDevDao {
     int findTotalCoursePerEmployee(Set<Long> course_id, Long participant_id, ZonedDateTime EndDate);
 
     // Find Total Course of JDU Dev Finished Last Week
-    int findTotalCoursePerEmployeeLastWeek(ZonedDateTime startDate, ZonedDateTime EndDate, Set<Long> course_id, Long participant_id);
+    int findTotalCoursePerEmployeeLastWeek(ZonedDateTime startDate, ZonedDateTime EndDate, 
+    	Set<Long> course_id, Long participant_id);
 
 }
