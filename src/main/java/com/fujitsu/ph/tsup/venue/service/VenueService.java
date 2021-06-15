@@ -9,7 +9,7 @@ import com.fujitsu.ph.tsup.venue.domain.Venue;
 
 //=======================================================
 //Project Name: Training Sign Up
-//Class Name: VenueForm.java
+//Class Name: VenueService.java
 //
 //<<Modification History>>
 //Version | Date       | Updated by       | Content

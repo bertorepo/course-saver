@@ -5,7 +5,7 @@ package com.fujitsu.ph.tsup.venue.model;
 
 //=======================================================
 //Project Name: Training Sign Up
-//Class Name: VenueServiceImpl.java
+//Class Name: VenueForm.java
 //
 //<<Modification History>>
 //Version | Date       | Updated by       | Content

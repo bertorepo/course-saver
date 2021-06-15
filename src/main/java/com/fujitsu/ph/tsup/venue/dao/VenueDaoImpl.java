@@ -57,7 +57,6 @@ public class VenueDaoImpl implements VenueDao {
 	@Override
 	public Set<Venue> findVenueByName(String name) {
 		String query = "SELECT * FROM VENUE WHERE LOWER(name) LIKE LOWER('%" + name + "%') ORDER BY name";
-//		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("name", name);
 		List<Venue> venueList = template.query(query, new VenueRowMapper());
 		Set<Venue> venueSet = new LinkedHashSet<>(venueList);
 
