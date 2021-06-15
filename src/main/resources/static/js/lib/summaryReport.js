@@ -153,15 +153,11 @@ function viewButtonClick() {
     }
  }
  
-
 function viewButtonDev() {
-
     if ($("#startDate").val() >= $("#endDate").val()) {
         document.getElementById("message").innerHTML = dateErrorMessage;
         $('#errorModal').modal('show');
     } else {
-    	
         document.getElementById("summaryGstForDevForm").submit();
-        
     }
  }
