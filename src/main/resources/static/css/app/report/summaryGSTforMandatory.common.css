@@ -68,8 +68,9 @@ input#inputCourse {
 .dateRange {
     margin-left: 75px !important;
 }
-#summaryPM
-{
+#summaryMandatory{
+
+	margin-top:8px;
 	margin-bottom: 90px;
 }
 }
@@ -80,11 +81,9 @@ input#inputCourse {
 	.form-group.row.align-items-center.justify-content-center.viewAndExportButton {
     margin-left: 0% !important;
 }
-#summaryPM
-{
-	margin-bottom: 100px;
+#summaryMandatory{
+	margin-bottom: 110px;
 }
-
 }
 
 
@@ -92,9 +91,7 @@ input#inputCourse {
 @media only screen and (min-device-width : 600px) and (max-device-width : 767px) {
 
 .percenttable {
-   
-    margin-top: 80px;
-    
+    margin-top: 90px;
 }
 
 .percenttext {
@@ -103,9 +100,9 @@ input#inputCourse {
 .form-group.row.align-items-center.justify-content-center.viewAndExportButton {
     margin-left: 10% !important;
 }
-#summaryPM
-{
-	margin-bottom: 150px;
+#summaryMandatory{
+
+	margin-bottom: 160px;
 }
 }
 
@@ -126,18 +123,15 @@ input#exportButton {
 .percenttext {
     line-height: 0.2;
 }
-
 }
-
 @media (max-width : 600px){
 
 .percenttable {
    
-    margin-top: 90px;
+    margin-top: 90px ;
 
 }
-#summaryPM
-{
+#summaryMandatory{
 	margin-bottom: 170px;
 }
 
@@ -150,8 +144,7 @@ input#exportButton {
     margin-top: 120px;
 
 }
-#summaryPM
-{
+#summaryMandatory{
 	margin-bottom: 220px;
 }
 
