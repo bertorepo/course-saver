@@ -58,7 +58,7 @@ public class SummaryGSTDevServiceImpl implements SummaryGSTDevService {
      */
 	@Override
 	public SummaryGSTDevForm getSummary(ZonedDateTime StartDateTime,ZonedDateTime EndDateTime, 
-		   SummaryGSTDevForm summaryGSTDev) {
+				SummaryGSTDevForm summaryGSTDev) {
 //		return reportSummaryGSTDevDao.getSummary();
 	    Set<Long> employeeList = reportSummaryGSTDevDao.findAllJDUDev();
         Set<Long> courseList = reportSummaryGSTDevDao.findAllCoursesByCategoryId();
@@ -67,21 +67,21 @@ public class SummaryGSTDevServiceImpl implements SummaryGSTDevService {
         //for JDU Dev who Finished 
         for (long employee_id : employeeList) {
             int total_course_completed = reportSummaryGSTDevDao.findTotalCoursePerEmployee
-            (courseList, employee_id, EndDateTime);
+            		(courseList, employee_id, EndDateTime);
             totalCoursePerEmployee.put((int) employee_id, total_course_completed);
         }
         int totalDevFin = (int) totalCoursePerEmployee.entrySet().stream().filter(v -> 
-        v.getValue().equals(courseList.size())).count();
+        	v.getValue().equals(courseList.size())).count();
 
         //for JDU Dev who Finished Last Week
         totalCoursePerEmployee = new HashMap<>();
         for (long employee_id : employeeList) {
             int total_course_completed = reportSummaryGSTDevDao.findTotalCoursePerEmployeeLastWeek
-            (StartDateTime, EndDateTime, courseList, employee_id);
+            		(StartDateTime, EndDateTime, courseList, employee_id);
             totalCoursePerEmployee.put((int) employee_id, total_course_completed);
         }
         int totalDevFinLastWk = (int) totalCoursePerEmployee.entrySet().stream().filter(v -> 
-        v.getValue().equals(courseList.size())).count();
+        	v.getValue().equals(courseList.size())).count();
         
         double percentageFinToday = (totalDevFin * 100) / employeeList.size();
         double percentageFinLastWk = (totalDevFinLastWk * 100) / employeeList.size();

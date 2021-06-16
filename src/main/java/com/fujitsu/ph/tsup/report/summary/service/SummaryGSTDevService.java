@@ -51,5 +51,5 @@ public interface SummaryGSTDevService {
 	
 	//Method for accumulating summary data
 	SummaryGSTDevForm getSummary(ZonedDateTime StartDateTime,ZonedDateTime EndDateTime, 
-	SummaryGSTDevForm summaryGSTDev);
+			SummaryGSTDevForm summaryGSTDev);
 }

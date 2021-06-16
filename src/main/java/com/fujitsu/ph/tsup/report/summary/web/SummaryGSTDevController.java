@@ -60,13 +60,13 @@ public class SummaryGSTDevController {
     public String loadSummary(SummaryGSTDevForm summaryGSTDev, Model model) {
     	
     	if (summaryGSTDev.getScheduledStartDateTime() == null ||
-    			summaryGSTDev.getScheduledEndDateTime() == null) { 
+    		summaryGSTDev.getScheduledEndDateTime() == null) { 
 		          summaryGSTDev.setScheduledStartDateTime(ZonedDateTime.now().minusDays(5).withHour(0).withMinute(0));
 		          summaryGSTDev.setScheduledEndDateTime(ZonedDateTime.now());
 		}
     	
 		summaryGSTDev = summaryGSTDevService.getSummary(summaryGSTDev.getScheduledStartDateTime(),
-	    summaryGSTDev.getScheduledEndDateTime(),summaryGSTDev);
+				summaryGSTDev.getScheduledEndDateTime(),summaryGSTDev);
      
         model.addAttribute("summaryGSTDev", summaryGSTDev);
         return "reports/SummaryGSTDev";
