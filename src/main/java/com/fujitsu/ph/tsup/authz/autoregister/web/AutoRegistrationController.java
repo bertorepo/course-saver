@@ -36,6 +36,7 @@ import com.fujitsu.ph.tsup.common.domain.Employee;
 /**
  * AutoRegistrationController Class
  * @author k.sala (New Creation by: k.sala)
+ * @author r.gaquit (Updated)
  * @version 0.02
  *
  */

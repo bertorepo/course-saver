@@ -26,6 +26,7 @@ import com.fujitsu.ph.tsup.common.domain.Employee;
  * AutoRegistrationDao class
  * 
  * @author k.sala (New Creation by: k.sala)
+ * @author r.gaquit (Updated)
  * @version 0.02
  */
 public interface AutoRegistrationDao {

@@ -19,6 +19,7 @@ package com.fujitsu.ph.tsup.authz.autoregister.model;
  * AutoRegistrationForm class
  * 
  * @author k.sala (New Creation by: k.sala)
+ * @author r.gaquit (Updated)
  * @version 0.02
  */
 public class AutoRegistrationForm {
