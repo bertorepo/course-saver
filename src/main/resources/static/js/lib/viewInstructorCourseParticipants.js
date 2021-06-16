@@ -6,7 +6,6 @@ function choices() {
 	var id = $('#courseId').val();
 	if (id != "") {
 		$("#emptyDiv").removeAttr('hidden');
-		
 	}
 }
 

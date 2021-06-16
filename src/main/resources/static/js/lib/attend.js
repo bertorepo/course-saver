@@ -1,4 +1,3 @@
-
 function onValidation() {
     var fromDateTimeEmpty = $("fromDateTime").val();
     var toDateTimeEmpty = $("toDateTime").val();
