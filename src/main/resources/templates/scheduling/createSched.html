@@ -57,6 +57,7 @@
 						<input type="text" list="instructors" id="instructorName" 
 										placeholder=" Please select . . ." 
 										class="form-control custom-select custom-select-md"
+										onmousedown="instructorNameOnDown(this.id)"
 										onchange="instructorNameOnChange()">
 							<div class="text-danger er" id="instructorId_error"></div>
 							<datalist id="instructors" >
@@ -378,6 +379,16 @@
 		    }
 		    /*]]>*/
 		}
+		
+		//Check if Course name, Instructor and venue has values, enable submit button
+		
+		if((courseName !== "") && (courseName !== undefined) && (courseName !== null) &&
+		(instructorName !== "") && (instructorName !== undefined) && (instructorName !== null) &&
+		(venueName !== "") && (venueName !== undefined) && (venueName !== null)) {
+		  
+		  $('#submit_btn').removeAttr('disabled');
+		
+		}
 	}
 	
 	/* ========================
@@ -434,6 +445,7 @@
 			$('#submit_btn').attr('disabled', true);
 		}
 	});
+	
 	</script>
 </body>
 
