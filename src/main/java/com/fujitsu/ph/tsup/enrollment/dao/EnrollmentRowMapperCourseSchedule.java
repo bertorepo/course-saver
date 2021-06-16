@@ -9,8 +9,10 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
 //0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
-//0.01    | 06/29/2020 | WS) J.Yu              | Update
-//0.01    | 07/15/2020 | WS) T.Oviedo          | Update
+//0.02    | 06/29/2020 | WS) J.Yu              | Update
+//0.03    | 07/15/2020 | WS) T.Oviedo          | Update
+//0.04    | 06/14/2021 | WS) L.Celoso          | Update
+//0.04    | 06/16/2021 | WS) M.Taboada         | Update
 //=================================================================================================
 /**
 * <pre>
@@ -23,10 +25,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import org.springframework.jdbc.core.RowMapper;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;

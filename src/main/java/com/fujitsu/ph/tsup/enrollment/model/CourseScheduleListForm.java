@@ -11,6 +11,7 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) M. Lumontad       | New Creation
 //0.02    | 09/09/2020 | WS) J.Yu              | Update
+//0.03    | 06/14/2021 | WS) L.Celoso          | Update
 //==================================================================================================
 /**
 * <pre>
@@ -23,7 +24,6 @@ package com.fujitsu.ph.tsup.enrollment.model;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class CourseScheduleListForm {

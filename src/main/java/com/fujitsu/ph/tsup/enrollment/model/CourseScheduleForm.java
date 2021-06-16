@@ -9,6 +9,8 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
 //0.02    | 06/24/2020 | WS) J.Yu              | New Creation
+//0.03    | 06/14/2021 | WS) L.Celoso          | Update
+//0.04    | 06/16/2021 | WS) M.Taboada         | Update
 //=================================================================================================
 /**
 * <pre>
@@ -18,7 +20,6 @@ package com.fujitsu.ph.tsup.enrollment.model;
 * @version 0.01
 * @author j.yu                       
 */
-import java.util.Set;
 
 public class CourseScheduleForm {
     /* Course Schedule Id */

@@ -86,6 +86,7 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 //0.03    | 03/23/2021 | WS) C.Macatangay | Update
 //0.04    | 05/04/2021 | WS) A.Senamin    | Update
 //0.05    | 06/02/2021 | WS) l.Celoso     | Update
+//0.05    | 06/16/2021 | WS) M.Taboada    | Update
 //=======================================================
 /**
  * <pre>
@@ -1032,11 +1033,6 @@ public class EnrollmentController {
 	 */		
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
-            return false;
-        }
-        try {
-            double d = Double.parseDouble(strNum);
-        } catch (NumberFormatException nfe) {
             return false;
         }
         return true;

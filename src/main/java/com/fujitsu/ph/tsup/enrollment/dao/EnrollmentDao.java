@@ -3,6 +3,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 import com.fujitsu.ph.tsup.course.model.Course;
 
+
 //====================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -15,6 +16,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //0.01    | 06/24/2020 |  WS) J.Yu		| New Creation
 //0.02    | 09/14/2020 |  WS) J.Yu		| Update
 //0.03	  | 04/19/2021 |  WS) M.Atayde  | Update
+//0.04	  | 06/14/2021 |  WS) L.Celoso  | Update
 //====================================================
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
