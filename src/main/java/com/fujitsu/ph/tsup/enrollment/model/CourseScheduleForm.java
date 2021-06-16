@@ -8,7 +8,8 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
-//0.02    | 06/24/2020 | WS) J.Yu              | New Creation
+//0.01    | 06/24/2020 | WS) J.Yu              | New Creation
+//0.02    | 06/16/2021 | WS) K.Sevilla              | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -18,7 +19,6 @@ package com.fujitsu.ph.tsup.enrollment.model;
 * @version 0.01
 * @author j.yu                       
 */
-import java.util.Set;
 
 public class CourseScheduleForm {
     /* Course Schedule Id */
@@ -27,9 +27,6 @@ public class CourseScheduleForm {
     /* Course Id */
     private Long courseId;
 
-    /* Course Name */
-    private String courseCategory;
-    
     /* Course Name */
     private String courseName;
 
@@ -102,16 +99,6 @@ public class CourseScheduleForm {
         this.courseId = courseId;
     }
 
-    /** get Course Category */
-    public String getCourseCategory() {
-        return courseCategory;
-    }
-
-    /** set Course Category */
-    public void setCourseCategory(String courseCategory) {
-        this.courseCategory = courseCategory;
-    }
-    
     /** get Course Name */
     public String getCourseName() {
         return courseName;
@@ -234,7 +221,7 @@ public class CourseScheduleForm {
     @Override
     public String toString() {
         return "CourseScheduleForm [id=" + id + ", courseId=" + courseId
-                + ", courseName=" + courseName + ", courseCategory=" + courseCategory + ", instructorId="
+                + ", courseName=" + courseName + ", instructorId="
                 + instructorId + ", instructorName=" + instructorName
                 + ", deadline= " + deadline + ", mandatory = " +mandatory
                 + ", venueId=" + venueId + ", venueName=" + venueName  + ", courseStatus=" + courseStatus
