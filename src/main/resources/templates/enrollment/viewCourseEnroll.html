@@ -8,6 +8,7 @@
 <!-- --------+------------+-----------------------+--------------------------------------------------- -->
 <!-- 0.01    | ----/--/-- | WS) -		          | Created -->
 <!-- 0.02    | 2021/06/02 | WS) l.celoso          | Updated -->
+<!-- 0.02    | 2021/06/16 | WS) m.taboada         | Updated -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE html>
@@ -1231,8 +1232,7 @@
 	/*<![CDATA[*/
 	var errorMessage = /*[[${error}]]*/'default';
 	if (errorMessage == "Invalid Date") {
-		document.getElementById("toDateTime_error").innerHTML = "To Date should be greater than or equal to From Date";
-		//document.getElementById("fromDateTime_error").innerHTML = "To Date should be greater than or equal to From Date";
+		document.getElementById("toDateTime_error").innerHTML = "To Date should be greater than From Date";
 	}
 	/*]]>*/
 	
@@ -1275,10 +1275,12 @@
 	function showDeadline(){
 		var mandatory = document.getElementById("mandatorySel");
 		var deadlineDiv = document.getElementById("deadlineDiv");
+		var deadlineSel = document.getElementById("deadlineSel");
 		if(mandatory.value == "Yes"){
 			deadlineDiv.style.display = "flex";
 		} else {
 			deadlineDiv.style.display = "none";
+			deadlineSel.value = "-";
 		}
 	}
 	

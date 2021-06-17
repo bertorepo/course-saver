@@ -236,12 +236,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public CourseSchedule findCourseScheduleById(Long id) {
         return enrollmentDao.findCourseScheduleById(id);
-        // try {
-        //
-        // } catch(DataAccessException ex) {
-        // throw new IllegalArgumentException("Can't Access Id.");
-        // }
-
     }
 
     /** enroll using the courseParticipant */
@@ -262,15 +256,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         CourseParticipant participantRecord = enrollmentDao
                 .findCourseParticipantByCourseScheduleIdAndParticipantId(
                         courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
-        // System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
         if (participantRecord != null) {
             throw new IllegalArgumentException("You are already enrolled in this course.");
         }
 
         enrollmentDao.saveCourseParticipant(courseParticipant);
-        // } catch (DataAccessException e) {
-        // throw new IllegalArgumentException("Can't Access Course Participant");
-        // }
     }
 
     /**
@@ -480,7 +470,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 .findCourseParticipantByCourseScheduleIdAndParticipantId(
                         courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
 
-        // System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
         if (participantRecord != null) {
             throw new IllegalArgumentException("You are already enrolled to this course.");
 
@@ -504,19 +493,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     }
 
-    /** Finds the participant of course by Id */
-    // @Override
-    // public List<Participant> findEnrolledMembersById(Long id) {
-    // return enrollmentDao.viewEnrolledMembers(id);
-    // }
-
-    /** Add the participant of course by Id */
-    // @Override
-    // public Integer addEnrolledMembersById(Participant participant) {
-    // return enrollmentDao.addEnrolledMembersById(participant);
-    // }
-    
-    
     /**
      * Upload button enabled for Mandatory courses 
      * Renamed the uploaded certificate according to the specifications
@@ -581,4 +557,69 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		
 		return enrollmentDao.findCertificateName(userId, courseId);
 	}
+	
+    @Override
+    public Set<CourseCategory> findAllCourseCategory() {
+
+        return enrollmentDao.findAllCourseCategory();
+    }
+    
+    @Override
+    public Set<Course> findAllCourseName() {
+
+        return enrollmentDao.findAllCourseName();
+    }
+    
+    @Override
+    public Set<InstructorForm> findAllInstructor() {
+
+        return enrollmentDao.findAllInstructor();
+    }
+    
+    @Override
+    public Set<VenueForm> findAllVenue() {
+
+        return enrollmentDao.findAllVenue();
+    }
+    
+    @Override
+    public void removeBatchMember(EnrolledMemberForm enrolledMember) {
+
+    	//Check if the target Course Schedule still exists
+        CourseSchedule courseRecord = enrollmentDao
+                .findCourseScheduleById(enrolledMember.getCourseId());
+
+        if (courseRecord == null) {
+            throw new IllegalArgumentException("This course schedule id "
+                    + enrolledMember.getCourseId() + " is not existing");
+        }
+        //-------------------------------------------------
+    	
+        // Remove the selected members by batch from the Course schedule
+        enrollmentDao.removeBatchMember(enrolledMember);
+    }
+    
+    @Override
+    public void enrollBatchMember(EnrolledMemberForm enrolledMember) {
+
+    	//Check if the target Course Schedule still exists
+    	CourseSchedule courseRecord = enrollmentDao
+                .findCourseScheduleById(enrolledMember.getCourseId());
+
+        if (courseRecord == null) {
+            throw new IllegalArgumentException("This course schedule id "
+                    + enrolledMember.getCourseId() + " is not existing");
+        }
+        //-------------------------------------------------
+        
+        // Enroll the selected members by batch to the Course schedule
+        enrollmentDao.enrollBatchMember(enrolledMember);
+    }
+    
+    @Override
+    public int countCourse(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline) {
+    	
+    	return enrollmentDao.countCourse(fromDateTime, toDateTime, courseCategoryId, courseNameId, instructorId, venueId, mandatory, deadline);
+    	
+    }
 }

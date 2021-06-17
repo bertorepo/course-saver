@@ -10,8 +10,10 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/22/2020 | WS) G.Cabiling        | New Creation
-//0.01    | 07/30/2020 | WS) M.Lumontad        | Updated
-//0.02    | 06/16/2021 | WS) K.Sevilla         | Updated
+//0.02    | 07/30/2020 | WS) M.Lumontad        | Updated
+//0.03    | 06/14/2021 | WS) L.Celoso          | Update
+//0.03    | 06/16/2021 | WS) M.Taboada         | Update
+//0.03    | 06/16/2021 | WS) K.Sevilla         | Updated
 //==================================================================================================
 
 /** 
@@ -25,7 +27,10 @@ package com.fujitsu.ph.tsup.enrollment.model;
 */
 import java.time.ZonedDateTime;
 import java.util.List;
+<<<<<<< src/main/java/com/fujitsu/ph/tsup/enrollment/model/CourseEnrolledListForm.java
+=======
 
+>>>>>>> src/main/java/com/fujitsu/ph/tsup/enrollment/model/CourseEnrolledListForm.java
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class CourseEnrolledListForm {

@@ -8,8 +8,10 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
-//0.01    | 06/24/2020 | WS) J.Yu              | New Creation
-//0.02    | 06/16/2021 | WS) K.Sevilla              | Updated
+//0.02    | 06/24/2020 | WS) J.Yu              | New Creation
+//0.03    | 06/14/2021 | WS) L.Celoso          | Update
+//0.03    | 06/16/2021 | WS) M.Taboada         | Update
+//0.03    | 06/16/2021 | WS) K.Sevilla         | Updated
 //=================================================================================================
 /**
 * <pre>

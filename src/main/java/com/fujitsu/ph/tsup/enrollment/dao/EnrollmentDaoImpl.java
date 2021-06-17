@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -41,7 +42,27 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
-
+//=================================================================================================
+//$Id:PR01$
+//Project Name :Training Sign Up
+//System Name  :Enroll Course
+//Class Name   :EnrollmentDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+--------------------------------------------------
+//0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
+//0.02    | 06/29/2020 | WS) G.Cabiling        | Updated
+//0.03    | 06/30/2020 | WS) K.Freo            | Updated
+//0.04    | 07/07/2020 | WS) J.Yu              | Updated
+//0.05    | 07/14/2020 | WS) T.Oviedo          | Updated
+//0.06    | 09/14/2020 | WS) J.Yu              | Updated
+//0.07    | 09/14/2020 | WS) M.Lumontad        | Updated
+//0.08	  | 04/19/2021 | WS) M.Atayde		   | Updated
+//0.09	  | 05/27/2021 | WS) L.Celoso		   | Updated
+//0.10    | 06/14/2021 | WS) L.Celoso          | Updated
+//0.10	  | 06/16/2021 | WS) M.Taboada		   | Updated
+//=================================================================================================
 /**
  * <pre>
  * EnrollmentDaoImpl.java is data access class for enrollment related database
@@ -431,7 +452,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      */
     @Override
     public Set<CourseSchedule> findAllActiveCourseSchedule() {
-        // TODO Auto-generated method stub
+        
         String query = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
@@ -474,7 +495,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
      */
     @Override
     public void cancelCourseSchedulesById(Set<CourseSchedule> courseScheduleSet) {
-        // TODO Auto-generated method stub
+        
         String sql = "UPDATE COURSE_SCHEDULE SET status = :status WHERE id = :id";
         for (CourseSchedule courseSchedule : courseScheduleSet) {
             System.out.println("(DAO) COURSE_SCHEDULE_ID" + courseSchedule.getId());
@@ -554,7 +575,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     }
     @Override
     public Set<CourseSchedule> findAllCourseScheduleByMonth() {
-        // TODO Auto-generated method stub
+        
         String sql = "SELECT C.NAME AS COURSE_NAME, "
                 + "C.DETAIL AS DETAILS, " 
                 + "CS.ID AS ID, " 
@@ -593,7 +614,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     }
     @Override
     public Set<CourseSchedule> findAllCourseScheduleByQuarter() {
-        // TODO Auto-generated method stub
+        
         String sql = "SELECT C.NAME AS COURSE_NAME, "
                 + "C.DETAIL AS DETAILS, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
@@ -619,7 +640,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     }
     @Override
     public void reschedule(CourseScheduleDetail courseScheduleDetail) {
-        // TODO Auto-generated method stub
+        
         String query = "UPDATE COURSE_SCHEDULE_DETAIL SET RESCHEDULED_START_DATETIME = :startDateTime, "
                 + "		RESCHEDULED_END_DATETIME = :endDateTime," + "		DURATION = :duration "
                 + "		WHERE ID = :id";
@@ -631,7 +652,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     }
     @Override
     public Set<CourseParticipant> findAllParticipantByCourseScheduleId(Long courseParticipant) {
-        // TODO Auto-generated method stub
+        
         String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " 
         		+ "						E.ID as EMP_ID, "
                 + "			E.LAST_NAME AS EMPLOYEE_LAST_NAME, " 
@@ -651,7 +672,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     	System.out.println("START OF DAO");
     	System.out.println("DAO COURSE SCHEDULE ID: " + courseParticipant.getCourseScheduleId());
     	System.out.println("DAO EMPLOYEE NUMBER: " + courseParticipant.getEmployeeNumber());
-        // TODO Auto-generated method stub
+        
         String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " + "						"
         		+ "						E.ID as EMP_ID, "
                 + "						E.LAST_NAME AS EMPLOYEE_LAST_NAME, "
@@ -676,7 +697,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     }
     @Override
     public Set<CourseParticipant> findMemberNotEnrolledByCourseScheduleId(SearchForm searchForm) {
-        // TODO Auto-generated method stub
+        
         String sql = "SELECT E.NUMBER AS EMPLOYEE_ID, " 
                 + "E.ID as EMP_ID, "
                 + "E.LAST_NAME AS EMPLOYEE_LAST_NAME, " 
@@ -702,7 +723,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     }
     @Override
     public Set<CourseSchedule> findCourseScheduleByCourseId(CourseSchedule courseSchedule) {
-        // TODO Auto-generated method stub
+        
         String query = "SELECT C.NAME AS COURSE_NAME, "
                 + "C.DETAIL AS DETAILS, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "

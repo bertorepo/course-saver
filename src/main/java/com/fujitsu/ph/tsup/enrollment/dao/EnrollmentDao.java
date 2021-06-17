@@ -1,5 +1,9 @@
 package com.fujitsu.ph.tsup.enrollment.dao; 
 
+import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
+import com.fujitsu.ph.tsup.course.model.Course;
+
+
 //====================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -212,4 +216,4 @@ public interface EnrollmentDao {
     public List<String> findCourseScheduleIfMandatory();
 		String findCertificateName(long userId, long courseId);
    
-}
+}
