@@ -1,10 +1,18 @@
 function validateInput() {
 	var hasInvalidInput = false;
 	var venueNameValue =  $('#venueName').val().trim();
+	var format = /[`!@#$%^&*+\=\[\]{};':"\\|,.<>\/?~]/;
+
 	$('#venueNameError').text('');
 
 	if (venueNameValue == "") {
 		$('#venueNameError').text("Please enter a venue name.");
+		hasInvalidInput = true;
+	}
+
+	if (format.test(venueNameValue))
+	{
+		$('#venueNameError').text("Venue name contains invalid special characters.");
 		hasInvalidInput = true;
 	}
 

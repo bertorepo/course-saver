@@ -21,10 +21,18 @@ function showUpdateModal(id, name) {
 function validateUpdateInput() {
 	var hasInvalidInput = false;
 	var venueNameValue =  $('#venueUpdateName').val().trim();
+	var format = /[`!@#$%^&*+\=\[\]{};':"\\|,.<>\/?~]/;
+
 	$('#nameErrorMsg').text('');
 
 	if (venueNameValue == "") {
-		$('#nameErrorMsg').text("Please enter a venue name");
+		$('#nameErrorMsg').text("Please enter a venue name.");
+		hasInvalidInput = true;
+	}
+
+	if (format.test(venueNameValue))
+	{
+		$('#nameErrorMsg').text("Venue name contains invalid special characters.");
 		hasInvalidInput = true;
 	}
 

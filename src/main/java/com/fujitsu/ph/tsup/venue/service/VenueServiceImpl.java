@@ -57,7 +57,7 @@ public class VenueServiceImpl implements VenueService {
 		try {
 			venueDao.updateVenue(venue);
 		} catch (Exception ex) {
-			throw new IllegalArgumentException("Failed to save new venue");
+			throw new IllegalArgumentException("Failed to update venue");
 		}
 	}
 
@@ -66,7 +66,7 @@ public class VenueServiceImpl implements VenueService {
 		try {
 			venueDao.deleteVenueById(id);
 		} catch (Exception ex) {
-			throw new IllegalArgumentException("Failed to save new venue");
+			throw new IllegalArgumentException("Failed to delete venue");
 		}
 	}
 }

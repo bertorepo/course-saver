@@ -245,7 +245,6 @@ public class RoleTypeController {
         form.setRoledesc(role.getRoledesc());
         model.addAttribute("updateRoleTypeForm", form);
 
-       // return "roletype-management/roleTypeUpdate";
         return "redirect:/roletype/load/1?roleIdUpdate= " + id + "#confirmUpdateModal";
     }
 
