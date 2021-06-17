@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="description" content="" />
 	<meta name="author" content="" />
-	<title>Create Sched</title>
+	<title>Create Schedule</title>
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
@@ -33,10 +33,10 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row align-items-center justify-content-center">
-						<label class="col-lg-2 col-form-label">Course Name</label>
+						<label class="col-lg-2 col-form-label">Course Name :</label>
 						<div class="col-lg-5">
 							<input type="text" list="courses" id="courseName" 
-										placeholder="Enter Course Name" 
+										placeholder=" Please select . . ." 
 										class="form-control custom-select custom-select-md"
 										onmousedown="courseNameOnDown(this.id)"
 										onchange="courseNameOnChange()">
@@ -52,10 +52,10 @@
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
-						<label class="col-lg-2 col-form-label">Instructor</label>
+						<label class="col-lg-2 col-form-label">Instructor :</label>
 						<div class="col-lg-5">
 						<input type="text" list="instructors" id="instructorName" 
-										placeholder="Select Instructor" 
+										placeholder=" Please select . . ." 
 										class="form-control custom-select custom-select-md"
 										onmousedown="instructorNameOnDown(this.id)"
 										onchange="instructorNameOnChange()">
@@ -71,10 +71,10 @@
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
-						<label class="col-lg-2 col-form-label">Venue</label>
+						<label class="col-lg-2 col-form-label">Venue :</label>
 						<div class="col-lg-5">
 						<input type="text" list="venues" id="venueName" 
-										placeholder="Select Venue" 
+										placeholder=" Please select . . ." 
 										class="form-control custom-select custom-select-md"
 										onmousedown="venueNameOnDown(this.id)"
 										onchange="venueNameOnChange()">
@@ -90,10 +90,10 @@
 						</div>
 					</div>
 					<div class="form-group row align-items-center justify-content-center">
-						<label class="col-lg-2 col-form-label">Participants</label>
+						<label class="col-lg-2 col-form-label">Participant(s) :</label>
 						<div class="col-lg-2">
 							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
-									class="form-control" placeholder="Minimum Required" 
+									class="form-control" placeholder="Min" 
 									th:field="*{minRequired}"id="minRequired" > 
 								<div class="text-danger er" id="minRequired_error"> 
 							</div>
@@ -101,7 +101,7 @@
 						<div class="col-lg-1 text-center">—</div>
 						<div class="col-lg-2">
 							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
-									class="form-control" placeholder="Maximum Allowed" 
+									class="form-control" placeholder="Max" 
 									th:field="*{maxAllowed}" id="maxAllowed" >
 								<div class="text-danger er" id="maxAllowed_error"> 
 							</div>
@@ -120,17 +120,17 @@
 							<thead>
 								<tr>
 									<th colspan="3">
-										<label class="col-lg-3 col-form-label">Start Date and Start Time</label>
+										<label class="col-lg-3 col-form-label">Start Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Start Time</label>
 									</th>
 									<th colspan="3">
-										<label class="col-lg-3 col-form-label">End Date and End Time</label>
+										<label class="col-lg-3 col-form-label">End Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; End Time</label>
 									</th>
 								</tr>
 							</thead>	
 							<tbody th:id="courseScheduleDetails">
 								<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailsAsList}">
 									<td class="form-group">
-										<button type="submit" value="" name="addRow" onclick="addNewRow()" class="btn btn-info"> 
+										<button type="submit" value="" name="addRow" onclick="addNewRow(this.id)" class="btn btn-info"> 
 											+
 										</button>
 										<button type="submit" th:id="${'row' + (stat.index + 1)}" th:value="${stat.index + 1}" 
@@ -189,13 +189,10 @@
 								</tr>
 							</tbody>
 						</table>
-						<div>
-							
-						</div>
 					</div>
 					<div class="float-right">
-						<input type="button" class="btn btn-success" th:attr="onclick=|validations()|" value="Create">
-						<a class="btn btn-danger" th:href="@{/dashboard}" >Cancel</a>
+						<input id="submit_btn" type="button" class="btn btn-success" th:attr="onclick=|validations()|" value="Submit" disabled>
+						<!-- <a class="btn btn-danger" th:href="@{/dashboard}" >Cancel</a> -->
 					</div>
 				</div>
 			</div>
@@ -203,21 +200,21 @@
 		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
-					<div class="modal-header alert-success">
-						<h5 class="modal-title">Confirmation</h5>
+					<div class="modal-header alert-warning">
+						<h5 class="modal-title"><i class="fa fa-warning"></i></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">Are you sure you want to submit this form?
+							<label class="col-lg-12 col-form-label">Are you sure you want to create this schedule?
 								<strong id="courseName"></strong>
 							</label>
 						</div>
 						<div class="modal-footer">
 								<input type="hidden" name="id" id="id" />
-								<button type="submit" name="submit" value="submit" class="btn btn-success"> Yes</button>
+								<button type="submit" name="submit" value="submit" class="btn btn-success"> Yes, create it.</button>
          						<button type="button" class="btn btn-danger" data-dismiss="modal"> No</button>
 						</div>
 					</div>
@@ -233,7 +230,7 @@
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
-						<h5 class="modal-title">Success</h5>
+						<h5 class="modal-title"><i class="fa fa-check-square-o"></i></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -241,8 +238,9 @@
 					<div class="modal-body">
 						<div class="form-group row">
 							<input type="hidden" id="successConfirmed" th:value="${message}"/>
-							<label class="col-lg-12 col-form-label" >The Schedule has been created!</label>
+							<label class="col-lg-12 col-form-label" >You have successfully created a new schedule!</label>
 						</div>	
+						<a class="btn btn-primary" th:href="@{/schedules/new}" >OK</a>
 					</div>
 				</div>
 			</div>
@@ -255,7 +253,7 @@
 			<div class="modal-dialog modal-sm text-center">
 				<div class="modal-content">
 					<div class="modal-header alert-danger">
-						<h5 id="errorTitle" class="modal-title"></h5>
+						<h5 id="errorTitle" class="modal-title"><i class="fa fa-warning"></i></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -265,13 +263,10 @@
 							<input type="hidden" th:value="${error}" id="hasError"/>
 							<label class="col-lg-12 col-form-label" th:if="${error}" th:text="${error}"></label>
 						</div>	
+						
+						<input type="button" class="btn btn-primary" data-dismiss="modal" name="backButton" value="OK">
 					</div>
-					<div class="modal-footer" th:if="${#strings.contains(error, 'Please Create') ||
-														 #strings.contains(error, 'Please Set') }">
-						<div class="form-group row">
-							<a class="btn btn-danger" th:href="@{/dashboard}" >Okay</a>
-						</div>	
-					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -284,14 +279,37 @@
 	
 	<!-- For CDATA -->
 	<script th:inline="javascript">
+	$("form").keypress(function(e) {
+	  //Enter key
+	  if (e.which == 13) {
+	    return false;
+	  }
+	});
+	
 	//Set Values on load
 	function load(){
+		
+		
 		
 		//Setting Course Name on Load
 		var courseName = $("#courses option[data-value='"+$('#courseId').val()+"']").val();
 		
 		if((courseName !== "") && (courseName !== undefined) && (courseName !== null)) {
 			document.getElementById("courseName").value = courseName;
+		}
+		
+		//Setting Instructor Name on Load
+		var instructorName = $("#instructors option[data-value='"+$('#instructorId').val()+"']").val();
+		
+		if((instructorName !== "") && (instructorName !== undefined) && (instructorName !== null)) {
+			document.getElementById("instructorName").value = instructorName;
+		}
+		
+		//Setting Venue Name on Load
+		var venueName = $("#venues option[data-value='"+$('#venueId').val()+"']").val();
+		
+		if((venueName !== "") && (venueName !== undefined) && (venueName !== null)) {
+			document.getElementById("venueName").value = venueName;
 		}
 		
 		if($("#courseScheduleDetails").length > 0){
@@ -347,9 +365,9 @@
 		    var element = document.getElementById('hasError').value;
 		    
 		    if(element.includes('conflict')){
-		    	document.getElementById('errorTitle').innerHTML = "Conflict!";
+		    	//document.getElementById('errorTitle').innerHTML = "";
 		    } else if(element.includes("Can't find")){
-		    	documen.getElementById('errorTitle').innerHTML = "Error!"
+		    	//documen.getElementById('errorTitle').innerHTML = ""
 		    }
 
 		    console.log(successMessage);
@@ -361,7 +379,73 @@
 		    }
 		    /*]]>*/
 		}
+		
+		//Check if Course name, Instructor and venue has values, enable submit button
+		
+		if((courseName !== "") && (courseName !== undefined) && (courseName !== null) &&
+		(instructorName !== "") && (instructorName !== undefined) && (instructorName !== null) &&
+		(venueName !== "") && (venueName !== undefined) && (venueName !== null)) {
+		  
+		  $('#submit_btn').removeAttr('disabled');
+		
+		}
 	}
+	
+	/* ========================
+	 *  On input Validation 
+	 * ========================
+	 */
+	 
+	 var courseNameCount = 1;
+	 var instructorNameCount = 1;
+	 var venueNameCount = 1;
+	 var minParticipantCount = 1;
+		 
+	$("#courseName").on("input", function() {
+		if (this.value.trim() == "") {
+		courseNameCount++;
+		} else {
+			courseNameCount = 0;
+		}
+		
+		if (courseNameCount == 0 && instructorNameCount == 0 && venueNameCount == 0) {
+				$('#submit_btn').removeAttr('disabled');
+		} else {
+			$('#submit_btn').removeAttr('disabled');
+			$('#submit_btn').attr('disabled', true);
+		}
+	});
+	
+	$("#instructorName").on("input", function() {
+		if (this.value.trim() == "") {
+		instructorNameCount++;
+		} else {
+			instructorNameCount = 0;
+		}
+		
+		if (courseNameCount == 0 && instructorNameCount == 0 && venueNameCount == 0) {
+				$('#submit_btn').removeAttr('disabled');
+		} else {
+			$('#submit_btn').removeAttr('disabled');
+			$('#submit_btn').attr('disabled', true);
+		}
+	});
+	
+	$("#venueName").on("input", function() {
+		if (this.value.trim() == "") {
+		venueNameCount++;
+		} else {
+			venueNameCount = 0;
+		}
+		
+		if (courseNameCount == 0 && instructorNameCount == 0 && venueNameCount == 0) {
+				$('#submit_btn').removeAttr('disabled');
+		} else {
+			$('#submit_btn').removeAttr('disabled');
+			$('#submit_btn').attr('disabled', true);
+		}
+	});
+	
 	</script>
 </body>
 
