@@ -251,7 +251,7 @@ public class EnrollmentController {
 		if (courseEnrolledListForm.getToDateTime().isBefore(courseEnrolledListForm.getFromDateTime())) {
 			model.addAttribute("myCourseSched", courseEnrolledListForm);
 			model.addAttribute("errorMessage", "No Course Schedule Found");
-			model.addAttribute("error", "To Date should be greater than or equal to From Date");
+			model.addAttribute("error", "To Date should be greater than From Date");
 			return "enrollment/myCourseSched";
 		}
 		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -481,7 +481,7 @@ public class EnrollmentController {
 		if (form.getFromDateTime().isAfter(form.getToDateTime())
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
-			model.addAttribute("error", "To Date should be greater than or equal to From Date");
+			model.addAttribute("error", "To Date should be greater than From Date");
 			model.addAttribute("nullMessage", "No course schedule found");
 			return "enrollment/viewMemberCourse";
 		}
