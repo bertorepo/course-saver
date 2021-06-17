@@ -3,11 +3,24 @@
  */
 package com.fujitsu.ph.tsup.authz.autoregister.model;
 
+//=======================================================
+//$Id: 
+//Project Name: Training Sign Up
+//Class Name: AutoRegistration.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by       | Content
+//--------+------------+------------------+---------------
+//0.01    | ----/--/-- | k.sala	     	  | Created
+//0.02    | 2021/06/07 | WS) R.Gaquit	  | Updated
+//=======================================================
+
 /**
  * AutoRegistration class
  * 
  * @author k.sala (New Creation by: k.sala)
- * @version 0.01
+ * @author r.gaquit (Updated)
+ * @version 0.02
  */
 public class AutoRegistration {
     private Long employeeNumber;
@@ -17,6 +30,7 @@ public class AutoRegistration {
     private Long departmentid;
     private String userName;
     private String employmentDate;
+    private Long memberRoleId;
 
     /**
      * AutoRegistration Constructor
@@ -31,6 +45,7 @@ public class AutoRegistration {
         this.departmentid = builder.departmentid;
         this.userName = builder.userName;
         this.employmentDate = builder.employmentDate;
+        this.memberRoleId = builder.memberRoleId;
     }
 
     /**
@@ -158,15 +173,34 @@ public class AutoRegistration {
     public void setEmploymentDate(String employmentDate) {
         this.employmentDate = employmentDate;
     }
+    
+    /**
+     * Getter method for AutoRegistration Member Role ID
+     * 
+     * @return AutoRegistration memberRoleId
+     */
+    public Long getMemberRoleId() {
+		return memberRoleId;
+	}
+    
+    /**
+     * Setter method for AutoRegistration Member Role ID
+     * 
+     * @param AutoRegistration memberRoleId
+     */
+	public void setMemberRoleId(Long memberRoleId) {
+		this.memberRoleId = memberRoleId;
+	}
+
 
     @Override
-    public String toString() {
-        return "AutoRegistration [ID=" + employeeNumber + ", FirstName=" + firstName + ", LastName=" + lastName
-                + ", EmailAddress=" + emailAddress + ", DepartmentID=" + departmentid + ", UserName="
-                + userName + ", EmploymentDate=" + employmentDate;
-    }
+	public String toString() {
+		return "AutoRegistration [employeeNumber=" + employeeNumber + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", emailAddress=" + emailAddress + ", departmentid=" + departmentid + ", userName="
+				+ userName + ", employmentDate=" + employmentDate + ", memberRoleId=" + memberRoleId + "]";
+	}
 
-    /**
+	/**
      * Builder Class
      * @author k.sala
      *
@@ -179,6 +213,7 @@ public class AutoRegistration {
         private Long departmentid;
         private String userName;
         private String employmentDate;
+        private Long memberRoleId;
 
         /**
          * Builder Constructor
@@ -189,8 +224,9 @@ public class AutoRegistration {
          * @param departmentid
          * @param userName
          * @param employmentDate
+         * @param memberRoleId
          */
-        public Builder(Long employeeNumber, String firstName, String lastName, String emailAddress, Long departmentid,
+        public Builder(Long employeeNumber, String firstName, String lastName, String emailAddress, Long departmentid, Long memberRoleId,
                 String userName, String employmentDate) {
             validateEmployeeNumber(employeeNumber);
             validateFirstName(firstName);
@@ -199,6 +235,8 @@ public class AutoRegistration {
             validateDepartmentID(departmentid);
             validateUserName(userName);
             validateEmploymentDate(employmentDate);
+            validateMemberRoleId(memberRoleId);
+            
 
             this.employeeNumber = employeeNumber;
             this.firstName = firstName;
@@ -207,6 +245,7 @@ public class AutoRegistration {
             this.departmentid = departmentid;
             this.userName = userName;
             this.employmentDate = employmentDate;
+            this.memberRoleId = memberRoleId;
 
         }
 
@@ -226,6 +265,12 @@ public class AutoRegistration {
                 throw new IllegalArgumentException("ID should not be empty");
             }
 
+        }
+        
+        private void validateMemberRoleId(Long memberRoleId) {
+        	if (memberRoleId == null || memberRoleId == 0) {
+                throw new IllegalArgumentException("ID should not be empty");
+            }
         }
 
         /**

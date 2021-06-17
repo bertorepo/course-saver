@@ -39,18 +39,20 @@ import com.fujitsu.ph.tsup.roletype.service.RoleTypeService;
 //0.08    | 2021/03/11 | WS) p.cui             | Updated
 //0.09    | 2021/03/11 | WS) j.sayaboc         | Updated
 //0.10    | 2021/03/18 | WS) rl.naval          | Updated
+//0.11	  | 2021/06/08 | WS) r.gaquit		   | Updated
 //==================================================================================================
 /**
  * <pre>
  * This is the implementation of Role Type Controller.
  * </pre>
  * 
- * @version 0.10
+ * @version 0.11
  * @author rl.naval
  * @author c.sinda
  * @author c.rondina
  * @author p.cui
  * @author j.sayaboc
+ * @author r.gaquit
  *
  */
 @Controller
@@ -86,6 +88,7 @@ public class RoleTypeController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("roletypeList", roletypeList);
         model.addAttribute("currentPage", page);
+        model.addAttribute("localStorage", model.getAttribute("localStorage"));
 
         return "roletype-management/roleTypeView";
     }
@@ -131,7 +134,7 @@ public class RoleTypeController {
 
         // Call deleteRoleTypeById() method
         roleTypeService.deleteRoleTypeById(id);
-        redirectAttributes.addFlashAttribute("deleteSuccessMessage",
+        redirectAttributes.addFlashAttribute("message",
                 "You have successfully deleted this role type");
         return "redirect:/roletype/load/1#successModal";
     }
@@ -224,14 +227,14 @@ public class RoleTypeController {
      * @param model Model
      * @return RoleTypeForm and view
      */
-    @GetMapping("/update/{roleId}")
-    public String showUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
+    @GetMapping("/update/{roleIdUpdate}")
+    public String showUpdateRoleTypeForm(@PathVariable("roleIdUpdate") Long id, RoleTypeForm form, Model model) {
         
         // assign all roletypes to roletypeList model attribute
         Set<RoleType> roletype = roleTypeService.loadAllRoleType();
         List<RoleType> roletypeList = roletype.stream().collect(Collectors.toList());
         model.addAttribute("roletypeList", roletypeList);
-        model.addAttribute("roleId", id);
+        model.addAttribute("roleIdUpdate", id);
         
         // Set Value for RoleType Object
         RoleType role = roleTypeService.findRoleById(id);
@@ -242,7 +245,8 @@ public class RoleTypeController {
         form.setRoledesc(role.getRoledesc());
         model.addAttribute("updateRoleTypeForm", form);
 
-        return "roletype-management/roleTypeUpdate";
+       // return "roletype-management/roleTypeUpdate";
+        return "redirect:/roletype/load/1?roleIdUpdate= " + id + "#confirmUpdateModal";
     }
 
     /**
@@ -251,10 +255,11 @@ public class RoleTypeController {
      * @param id roleId
      * @param form RoleTypeForm
      * @param model Model
+     * @param redirectAttributes RedirectAttributes
      * @return RoleTypeForm and view
      */
     @PostMapping("/update/{roleId}")
-    public String submitUpdateRoleTypeForm(@PathVariable("roleId") Long id, RoleTypeForm form, Model model) {
+    public String submitUpdateRoleTypeForm(@RequestParam("id") Long id, RoleTypeForm form, Model model, RedirectAttributes redirectAttributes) {
 
       //remove irregular spaces
         String rName = form.getRolename().replaceAll("\\s+", " ");
@@ -270,10 +275,12 @@ public class RoleTypeController {
         if (isRoleExisting) {
             form.setId(id);
             model.addAttribute("updateRoleTypeForm", form);
-            return "roletype-management/roleTypeUpdate";
+            return "redirect:/roletype/load/1";
         } else {
             RoleType updatedRoleType = new RoleType.Builder(rName.trim(), form.getRoledesc()).build();
             roleTypeService.updateRoleType(id, updatedRoleType);
+            redirectAttributes.addFlashAttribute("message",
+                    "You have successfully updated this role type");
 
             // set 2 seconds delay
             try {
@@ -281,7 +288,8 @@ public class RoleTypeController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            
         }
-        return "redirect:/roletype/load/1";
+        return "redirect:/roletype/load/1#successModal";
     }
 }

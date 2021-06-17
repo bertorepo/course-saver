@@ -21,10 +21,23 @@ import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistrationForm;
 import com.fujitsu.ph.tsup.authz.autoregister.service.AutoRegistrationService;
 import com.fujitsu.ph.tsup.common.domain.Employee;
 
+//=======================================================
+//$Id: 
+//Project Name: Training Sign Up
+//Class Name: AutoRegistrationController.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by       | Content
+//--------+------------+------------------+---------------
+//0.01    | ----/--/-- | k.sala	     	  | Created
+//0.02    | 2021/06/07 | WS) R.Gaquit	  | Updated
+//=======================================================
+
 /**
  * AutoRegistrationController Class
  * @author k.sala (New Creation by: k.sala)
- * @version 0.01
+ * @author r.gaquit (Updated)
+ * @version 0.02
  *
  */
 @Controller
@@ -50,6 +63,7 @@ public class AutoRegistrationController {
 
         model.addAttribute("username", user.getUserName());
         model.addAttribute("departmentList", autoRegistrationService.getAllDepartments());
+        model.addAttribute("memberRoleList", autoRegistrationService.getAllMemberRole());
         return "register";
     }
     
@@ -81,7 +95,7 @@ public class AutoRegistrationController {
 	
 	        AutoRegistration autoRegistrationDetails = new AutoRegistration.Builder(form.getEmployeeNumber(),
 	                form.getFirstName(), form.getLastName(), form.getEmailAddress(), form.getDepartmentid(),
-	                user.getUserName(), form.getEmploymentDate()).build();
+	                form.getMemberRoleId(), user.getUserName(), form.getEmploymentDate()).build();
 	        int rowsAffected = autoRegistrationService.addAutoRegistration(autoRegistrationDetails);
 	        
 	        if(rowsAffected == 0) {

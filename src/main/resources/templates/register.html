@@ -1,3 +1,15 @@
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Auto Register -->
+<!-- Name         : register.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | ----/--/-- | WS) -		 		  | Created -->
+<!-- 0.02    | 2021/06/07 | WS) R.Gaquit          | Updated -->
+<!-- ================================================================================================== -->
+
 <!doctype html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
@@ -82,6 +94,7 @@
             var lastName_value = $("#lastName").val();
             var userName_value = $("#userName").val();
             var dept_value = $("#departmentid").val();
+            var memberRole_value = $("#memberRoleId").val();
             
             if(id_value.match(/[a-z]/i)){
                 $('#idErrorMessage').text("Please input numbers only")
@@ -107,7 +120,8 @@
 							if ((id_value != '') &&
 							 (firstName_value.trim() != '') &&
 		                     (lastName_value.trim() != '') &&
-		  	        		 (dept_value != null)) {
+		  	        		 (dept_value != null) &&
+		  	        		 (memberRole_value != null)) {
 				                 $('input[type="submit"]').attr('disabled', false);
 				             } else {
 				            	 $('input[type="submit"]').attr('disabled', true);
@@ -193,6 +207,16 @@
 									<option th:each="department : ${departmentList}" th:value="${department.id}" th:text="${department.department}"></option>
 								</select>
 								<p id="DepartmentErrorMessage" class="errorLabel"></p>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-4 control-label col-form-label pl-0">Member Role</label>
+							<div class="col-sm-8 pl-0 pr-0">
+								<select class="form-control" id="memberRoleId" name="memberRoleId" onBlur="inputValidation('MemberRoleErrorMessage', this)" required>
+									<option disabled selected></option>
+									<option th:each="member : ${memberRoleList}" th:value="${member.id}" th:text="${member.roleType}"></option>
+								</select>
+								<p id="MemberRoleErrorMessage" class="errorLabel"></p>
 							</div>
 						</div>
 						<div class="form-group row">
