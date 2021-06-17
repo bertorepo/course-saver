@@ -245,19 +245,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public CourseSchedule findCourseScheduleById(Long id) {
         return enrollmentDao.findCourseScheduleById(id);
-        // try {
-        //
-        // } catch(DataAccessException ex) {
-        // throw new IllegalArgumentException("Can't Access Id.");
-        // }
-
     }
 
     /** enroll using the courseParticipant */
     @Override
     public void enroll(CourseParticipant courseParticipant) {
-        //System.out.println("MY COURSE ID 2: " + courseParticipant.getCourseScheduleId());
-        //System.out.println("FPI USER ID 2: " + courseParticipant.getParticipantId());
 
         // try {
         CourseSchedule courseRecord = enrollmentDao
@@ -271,15 +263,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         CourseParticipant participantRecord = enrollmentDao
                 .findCourseParticipantByCourseScheduleIdAndParticipantId(
                         courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
-        // System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
         if (participantRecord != null) {
             throw new IllegalArgumentException("You are already enrolled in this course.");
         }
 
         enrollmentDao.saveCourseParticipant(courseParticipant);
-        // } catch (DataAccessException e) {
-        // throw new IllegalArgumentException("Can't Access Course Participant");
-        // }
     }
 
     /**
@@ -489,7 +477,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 .findCourseParticipantByCourseScheduleIdAndParticipantId(
                         courseParticipant.getCourseScheduleId(), courseParticipant.getParticipantId());
 
-        // System.out.println("PARTICIPANT RECORD IS EMPTY!!!");
         if (participantRecord != null) {
             throw new IllegalArgumentException("You are already enrolled to this course.");
 
@@ -513,19 +500,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     }
 
-    /** Finds the participant of course by Id */
-    // @Override
-    // public List<Participant> findEnrolledMembersById(Long id) {
-    // return enrollmentDao.viewEnrolledMembers(id);
-    // }
-
-    /** Add the participant of course by Id */
-    // @Override
-    // public Integer addEnrolledMembersById(Participant participant) {
-    // return enrollmentDao.addEnrolledMembersById(participant);
-    // }
-    
-    
     /**
      * Upload button enabled for Mandatory courses 
      * Renamed the uploaded certificate according to the specifications
@@ -649,6 +623,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         enrollmentDao.enrollBatchMember(enrolledMember);
     }
     
+    @Override
     public int countCourse(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline) {
     	
     	return enrollmentDao.countCourse(fromDateTime, toDateTime, courseCategoryId, courseNameId, instructorId, venueId, mandatory, deadline);
