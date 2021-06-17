@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Attendance -->
+<!-- Name         : attendCourseList.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | ----/--/-- | WS) -		          | Created -->
+<!-- 0.02    | 2021/06/04 | WS) rl.naval          | Updated -->
+<!-- ================================================================================================== -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -81,16 +92,18 @@
 			</h3>
 			<table id="data"
 				class="table table-bordered table-responsive text-center"
-				style="width: 100%">
+				style="width: 100%;">
 				<colgroup>
+					<col style="width: 10%" />
 					<col style="width: 20%" />
 					<col style="width: 20%" />
-					<col style="width: 30%" />
-					<col style="width: 30%" />
+					<col style="width: 20%" />
+					<col style="width: 20%" />
 					<col style="width: 10%" />
 				</colgroup>
 				<thead>
 					<tr>
+						<th>Action</th>
 						<th>Course Name</th>
 						<th>Instructor</th>
 						<th>Start Date/Time</th>
@@ -98,21 +111,18 @@
 						<th>Duration (in HRS)</th>
 					</tr>
 				</thead>
-				<tbody
-					th:each="setCourseScheduleForm : *{attendCourseList.courseSchedules}">
-					<tr
-						th:each="courseScheduleDetailForm : *{setCourseScheduleForm.courseScheduleDetails}"
-						style="cursor: pointer;"
-						onMouseOver="this.style.background='#DADADA'"
-						onMouseOut="this.style.background='white'">
+				<tbody th:each="setCourseScheduleForm : *{attendCourseList.courseSchedules}">
+					<tr th:each="courseScheduleDetailForm : *{setCourseScheduleForm.courseScheduleDetails}">
 						<td th:text="${courseScheduleDetailForm.getId()}" id="id"
 							style="display: none"></td>
+						<td style="color: white;"><a id="viewButton"
+									class="btn btn-info" th:href = "@{/attendance/signin/{courseId}(courseId=${courseScheduleDetailForm.getId()})}">Sign In</a></td>	
 						<td th:text="${setCourseScheduleForm.getCourseName()}"></td>
 						<td th:text="${setCourseScheduleForm.getInstructorName()}"></td>
 						<td
-							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledStartDateTime(), 'yyyy-MM-dd (E) HH:mm:ss')}"></td>
+							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledStartDateTime(), 'MMM dd, yyyy (E) - hh:mm a')}"></td>
 						<td
-							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledEndDateTime(), 'yyyy-MM-dd (E) HH:mm:ss')}"></td>
+							th:text="${#temporals.format(courseScheduleDetailForm.getScheduledEndDateTime(), 'MMM dd, yyyy (E) - hh:mm a')}"></td>
 						<td th:text="${courseScheduleDetailForm.getDuration()}"></td>
 					</tr>
 				</tbody>

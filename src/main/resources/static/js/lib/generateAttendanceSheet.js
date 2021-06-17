@@ -1,14 +1,14 @@
+$(document).ready(function() {
+	choices();
+});
+
 function choices() {
-	var id = $('#courseId').val();
-	var courseName = $('#courseId :selected').text();
-	var message = 'You have signed in to this ' + courseName;
-	if (id != "") {
-		$('#successModal').modal('show');
-		$('#successModal').on('shown.bs.modal', function() {
-			$('#successModal').find('.modal-body').html(message);
-		});
-	}
+   var id = $('#courseId').val();
+   if (id != "") {
+		$("#emptyDiv").removeAttr('hidden');
+   }
 }
+
 function ValidateDropDown(input) {
 	var button = document.getElementById(".btn-success")
 	if (input.value == '') {
