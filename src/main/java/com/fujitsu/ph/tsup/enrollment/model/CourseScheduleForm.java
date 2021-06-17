@@ -8,7 +8,8 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //<<Modification History>>
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
-//0.02    | 06/24/2020 | WS) J.Yu              | New Creation
+//0.01    | 06/24/2020 | WS) J.Yu              | New Creation
+//0.02    | 06/16/2021 | WS) K.Sevilla              | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -18,7 +19,6 @@ package com.fujitsu.ph.tsup.enrollment.model;
 * @version 0.01
 * @author j.yu                       
 */
-import java.util.Set;
 
 public class CourseScheduleForm {
     /* Course Schedule Id */
@@ -45,6 +45,8 @@ public class CourseScheduleForm {
 
     /* Venue Name */
     private String venueName;
+    
+    private String courseStatus;
 
     /* Set of course schedule details */
     private CourseScheduleDetailForm courseScheduleDetail;
@@ -146,6 +148,16 @@ public class CourseScheduleForm {
     public void setVenueName(String venueName) {
         this.venueName = venueName;
     }
+    
+    /** setCourseStatus Getter */
+    public String getCourseStatus() {
+        return courseStatus;
+    }
+
+    /** setCourseStatus Setter */
+    public void setCourseStatus(String courseStatus) {
+    	this.courseStatus = courseStatus;
+    }	
 
     /** get Set of course schedule details */
     public CourseScheduleDetailForm getCourseScheduleDetails() {
@@ -212,14 +224,11 @@ public class CourseScheduleForm {
                 + ", courseName=" + courseName + ", instructorId="
                 + instructorId + ", instructorName=" + instructorName
                 + ", deadline= " + deadline + ", mandatory = " +mandatory
-                + ", venueId=" + venueId + ", venueName=" + venueName
+                + ", venueId=" + venueId + ", venueName=" + venueName  + ", courseStatus=" + courseStatus
                 + ", courseScheduleDetail=" + courseScheduleDetail
                 + ", minRequired=" + minRequired + ", maxAllowed=" + maxAllowed
                 + ", totalParticipants=" + totalParticipants
                 + ", courseDetails=" + courseDetails + "]";
     }
-
-
-	
 
 }

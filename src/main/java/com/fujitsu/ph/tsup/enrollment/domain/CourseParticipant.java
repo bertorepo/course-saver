@@ -1,7 +1,5 @@
 package com.fujitsu.ph.tsup.enrollment.domain;
 
-import java.time.ZonedDateTime;
-
 //==================================================================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -14,7 +12,12 @@ import java.time.ZonedDateTime;
 //0.01    | 06/23/2020 | WS) K.Freo        | New Creation
 //0.01    | 07/06/2020 | WS) J.Macabugao   | Update
 //0.01	  | 07/07/2020 | WS) T.Oviedo	   | Update
+//0.02	  | 06/16/2021 | WS) K.Sevilla	   | Update
 //==================================================================================================
+
+import java.time.ZonedDateTime;
+
+
 /**
 * <pre>
 * Enrollment Model Use as Course Participant Builder Pattern <added
@@ -45,6 +48,10 @@ public class CourseParticipant {
 
 	/** venueName **/
 	private String venueName;
+	
+    //new
+    /** Attendance Status **/
+	private String courseStatus;
 
 	/** participantId **/
 	private Long participantId;
@@ -81,6 +88,7 @@ public class CourseParticipant {
     /** Attendance Status **/
     private String attendanceStatus;
 
+
 	protected CourseParticipant() {
 
 	}
@@ -92,6 +100,7 @@ public class CourseParticipant {
 		this.courseName = builder.courseName;
 		this.instructorName = builder.instructorName;
 		this.venueName = builder.venueName;
+		this.courseStatus = builder.courseStatus;
 		this.participantId = builder.participantId;
 		this.participantName = builder.participantName;
 		this.email = builder.email;
@@ -131,6 +140,11 @@ public class CourseParticipant {
 	public String getVenueName() {
 		return venueName;
 	}
+    
+    //new
+    public String getCourseStatus() {
+        return courseStatus;
+    }
 
 	public Long getParticipantId() {
 		return participantId;
@@ -177,6 +191,7 @@ public class CourseParticipant {
     public String getAttendanceStatus() {
         return attendanceStatus;
     }
+    
 	/**
 	 * <pre>
 	 * The builder class of the course participant The builder is a public static
@@ -207,6 +222,9 @@ public class CourseParticipant {
 
 		/** Venue Name **/
 		private String venueName;
+		
+		/** courseStatus **/
+		public String courseStatus;
 
 		/** from the Employee Id **/
 		private Long participantId;
@@ -298,9 +316,10 @@ public class CourseParticipant {
 		 * @param courseName
 		 * @param instructorName
 		 * @param venueName
+		 * @param courseStatus
 		 * @param participantName
 		 */
-		public Builder(Long id, Long courseScheduleId, String courseName, String instructorName, String venueName,
+		public Builder(Long id, Long courseScheduleId, String courseName, String instructorName, String venueName, String courseStatus,
 				Long participantId, String participantName, ZonedDateTime registrationDate,
 				String reason, ZonedDateTime declineDate) {
 
@@ -311,6 +330,7 @@ public class CourseParticipant {
 			validateCourseName(courseName);
 			validateInstructorName(instructorName);
 			validateVenueName(venueName);
+			validateCourseStatus(courseStatus);
 			validateParticipantName(participantName);
 
 			this.id = id;
@@ -318,6 +338,7 @@ public class CourseParticipant {
 			this.courseName = courseName;
 			this.instructorName = instructorName;
 			this.venueName = venueName;
+			this.courseStatus = courseStatus;
 			this.participantId = participantId;
 			this.participantName = participantName;
 			this.registrationDate = registrationDate;
@@ -351,7 +372,7 @@ public class CourseParticipant {
 		}
 		
 		//added a builder
-		public Builder(Long id, Long courseScheduleId, String courseName, String instructorName, String venueName,
+		public Builder(Long id, Long courseScheduleId, String courseName, String instructorName, String venueName, String courseStatus,
                 Long participantId, String participantName, ZonedDateTime registrationDate) {
 
             validateId(id);
@@ -361,6 +382,7 @@ public class CourseParticipant {
             validateCourseName(courseName);
             validateInstructorName(instructorName);
             validateVenueName(venueName);
+            validateCourseStatus(courseStatus);
             validateParticipantName(participantName);
 
 
@@ -369,6 +391,7 @@ public class CourseParticipant {
             this.courseName = courseName;
             this.instructorName = instructorName;
             this.venueName = venueName;
+            this.courseStatus = courseStatus;
             this.participantId = participantId;
             this.participantName = participantName;
             this.registrationDate = registrationDate;         
@@ -394,7 +417,7 @@ public class CourseParticipant {
 			this.participantName = participantName;
 			this.email = email;
 		}
-		public Builder(Long id, Long courseId, Long courseScheduleId, String courseName, String instructorName, String venueName,
+		public Builder(Long id, Long courseId, Long courseScheduleId, String courseName, String instructorName, String venueName, String courseStatus,
                 Long participantId, String participantName, ZonedDateTime registrationDate) {
 
             validateId(id);
@@ -405,6 +428,7 @@ public class CourseParticipant {
             validateCourseName(courseName);
             validateInstructorName(instructorName);
             validateVenueName(venueName);
+            validateCourseStatus(courseStatus);
             validateParticipantName(participantName);
 
 
@@ -414,6 +438,7 @@ public class CourseParticipant {
             this.courseName = courseName;
             this.instructorName = instructorName;
             this.venueName = venueName;
+            this.courseStatus = courseStatus;
             this.participantId = participantId;
             this.participantName = participantName;
             this.registrationDate = registrationDate;         
@@ -616,6 +641,21 @@ public class CourseParticipant {
 		private void validateVenueName(String venueName) {
 			if (venueName == null || venueName.isEmpty()) {
 				throw new IllegalArgumentException("Venue name should not be empty");
+			}
+		}
+		
+		/**
+		 * <pre>
+		 * Validate the course Status based on the condition below. If it is invalid then
+		 * throw an IllegalArgumentException with the corresponding message.
+		 * 
+		 * <pre>
+		 * 
+		 * @param CourseStatus
+		 */
+		private void validateCourseStatus(String courseStatus) {
+			if (courseStatus == null || courseStatus.isEmpty()) {
+				throw new IllegalArgumentException("Course Status should not be empty");
 			}
 		}
 		

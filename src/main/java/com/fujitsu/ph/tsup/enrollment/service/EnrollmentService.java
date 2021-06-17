@@ -13,6 +13,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.02    | 08/24/2020 | WS) J.Yu              | Update
 //0.03    | 02/23/2021 | WS) E.Ceniza          | Update
 //0.03    | 05/04/2021 | WS) A.Senamin         | Update
+//0.04    | 06/16/2021 | WS) K.Sevilla         | Update
 //==================================================================================================
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;

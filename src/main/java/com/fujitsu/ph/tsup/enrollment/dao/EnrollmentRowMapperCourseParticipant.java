@@ -14,6 +14,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //0.01    | 07/08/2020 | WS) K.Freo            | Updated
 //0.01    | 07/29/2020 | WS) K.Freo            | Updated
 //0.01    | 07/30/2020 | WS) M.Lumontad        | Updated
+//0.01	  | 06/16/2021 | WS) K.Sevilla 		   | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -27,7 +28,6 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -47,6 +47,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
         String courseDetails = rs.getString("DETAILS");
         String instructorName = rs.getString("INSTRUCTOR_LAST_NAME") + ", " + rs.getString("INSTRUCTOR_FIRST_NAME");
         String venueName = rs.getString("VENUE_NAME");
+        String courseStatus = rs.getString("COURSE_STATUS");
         Long participantId = rs.getLong("PARTICIPANT_ID");
         String participantName = rs.getString("PARTICIPANT_LAST_NAME") + ", " + rs.getString("PARTICIPANT_FIRST_NAME");
         float duration = rs.getFloat("DURATION");
@@ -62,7 +63,7 @@ public class EnrollmentRowMapperCourseParticipant implements RowMapper<CoursePar
                 courseScheduleId, scheduledStartDateTime, scheduledEndDateTime, duration).build();        
         
         CourseParticipant courseParticipant = new CourseParticipant.Builder(id, courseId, courseScheduleId, courseName,
-                instructorName, venueName, participantId, participantName, registrationDate)
+                instructorName, venueName, courseStatus, participantId, participantName, registrationDate)
                         .addDetail(courseScheduleDetail).addCourseDetails(courseDetails).addAttendanceStatus(status).build();
         
         return courseParticipant;

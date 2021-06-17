@@ -1,5 +1,18 @@
 package com.fujitsu.ph.tsup.enrollment.domain;
 
+//==================================================================================================
+//$Id:PR01$
+//Project Name :Training Sign Up
+//System Name  :Enroll Course
+//Class Name   :CourseSchedule.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 06/23/2020 | WS) K.Freo        | New Creation
+//0.02	  | 06/16/2021 | WS) K.Sevilla	   | Update
+//==================================================================================================
+
 public class CourseSchedule {
 
     /**
@@ -47,6 +60,10 @@ public class CourseSchedule {
      * Venue Name
      */
     private String venueName;
+    
+    //new
+    /** Attendance Status **/
+	private String courseStatus;
 
     /**
      * Minimum number of participants
@@ -149,6 +166,11 @@ public class CourseSchedule {
 
     public String getVenueName() {
         return venueName;
+    }
+    
+    //new
+    public String getCourseStatus() {
+        return courseStatus;
     }
 
     public int getMinRequired() {
@@ -662,11 +684,11 @@ public class CourseSchedule {
         return "CourseSchedule [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", instructorId="
                 + instructorId + ", instructorLastName=" + instructorLastName + ", instructorFirstName="
                 + instructorFirstName + ", mandatory=" + mandatory + ", deadline=" + deadline +
-                ", venueId=" + venueId + ", venueName=" + venueName + ", minRequired="
+                ", venueId=" + venueId + ", venueName=" + venueName +  ", courseStatus=" + courseStatus +  ", minRequired="
                 + minRequired + ", maxAllowed=" + maxAllowed + ", courseScheduleDetail=" + courseScheduleDetail
                 + ", totalParticipants=" + totalParticipants + ", status=" + status + "]";
     }
-    
+
     /**
      * Creates a new instance of the course schedule.
      * 

@@ -1,10 +1,6 @@
 package com.fujitsu.ph.tsup.enrollment.web;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -13,9 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,10 +72,11 @@ import com.fujitsu.ph.tsup.enrollment.service.EnrollmentService;
 //0.01    | 07/30/2020 | WS) M.Lumontad   | Updated
 //0.01    | 08/05/2020 | WS) J.Yu         | Updated
 //0.02    | 09/15/2020 | WS) J.Yu         | Updated
-//0.03    | 02/23/2021 | WS) E.Ceniza     | Update
-//0.03    | 03/24/2021 | WS) K.Sanchez    | Update
-//0.03    | 03/23/2021 | WS) C.Macatangay | Update
-//0.04    | 05/04/2021 | WS) A.Senamin    | Update
+//0.03    | 02/23/2021 | WS) E.Ceniza     | Updated
+//0.03    | 03/24/2021 | WS) K.Sanchez    | Updated
+//0.03    | 03/23/2021 | WS) C.Macatangay | Updated
+//0.04    | 05/04/2021 | WS) A.Senamin    | Updated
+//0.05    | 06/16/2021 | WS) K.Sevilla    | Updated
 //=======================================================
 /**
  * <pre>
@@ -166,6 +161,7 @@ public class EnrollmentController {
             courseScheduleForm.setDeadline(courseSchedule.getDeadline());// added
 			courseScheduleForm.setVenueId(courseSchedule.getVenueId());
 			courseScheduleForm.setVenueName(courseSchedule.getVenueName());
+			courseScheduleForm.setCourseStatus(courseSchedule.getCourseStatus());	
 			courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
 			courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
 			courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
@@ -208,6 +204,7 @@ public class EnrollmentController {
                 courseScheduleForm.setMandatory(courseSchedule.getMandatory());
 	            courseScheduleForm.setDeadline(courseSchedule.getDeadline());
 				courseScheduleForm.setVenueName(courseSchedule.getVenueName());
+				courseScheduleForm.setCourseStatus(courseSchedule.getCourseStatus());	
 				courseScheduleForm.setMinRequired(courseSchedule.getMinRequired());
 				courseScheduleForm.setMaxAllowed(courseSchedule.getMaxAllowed());
 				courseScheduleForm.setTotalParticipants(courseSchedule.getTotalParticipants());
@@ -254,7 +251,7 @@ public class EnrollmentController {
 		if (courseEnrolledListForm.getToDateTime().isBefore(courseEnrolledListForm.getFromDateTime())) {
 			model.addAttribute("myCourseSched", courseEnrolledListForm);
 			model.addAttribute("errorMessage", "No Course Schedule Found");
-			model.addAttribute("error", "To Date should be greater than or equal to From Date");
+			model.addAttribute("error", "To Date should be greater than From Date");
 			return "enrollment/myCourseSched";
 		}
 		FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -269,8 +266,8 @@ public class EnrollmentController {
 				courseEnrollmentForm.setCourseScheduleId(enrolledCourse.getCourseScheduleId());
 				courseEnrollmentForm.setCourseName(enrolledCourse.getCourseName());
 				courseEnrollmentForm.setInstructorName(enrolledCourse.getInstructorName());
-
 				courseEnrollmentForm.setVenueName(enrolledCourse.getVenueName());
+				courseEnrollmentForm.setCourseStatus(enrolledCourse.getCourseStatus());	
 				courseEnrollmentForm.setRegistrationDate(enrolledCourse.getRegistrationDate());
 				courseEnrollmentForm.setParticipantId(enrolledCourse.getParticipantId());
 				courseEnrollmentForm.setAttendanceStatus(enrolledCourse.getAttendanceStatus());
@@ -316,6 +313,7 @@ public class EnrollmentController {
 		courseDeclineForm.setCourseName(courseParticipant.getCourseName());
 		courseDeclineForm.setInstructorName(courseParticipant.getInstructorName());
 		courseDeclineForm.setVenueName(courseParticipant.getVenueName());
+		courseDeclineForm.setCourseStatus(courseParticipant.getCourseStatus());
 		courseDeclineForm.setParticipantName(courseParticipant.getParticipantName());
 		courseDeclineForm.setRegistrationDate(courseParticipant.getRegistrationDate());
 		courseDeclineForm.setReason(courseParticipant.getReason());
@@ -351,12 +349,13 @@ public class EnrollmentController {
 			System.out.println("courseScheduleId: " + courseDeclineForm.getCourseScheduleId());
 			System.out.println("instructorName: " + courseDeclineForm.getInstructorName());
 			System.out.println("venueName: " + courseDeclineForm.getVenueName());
+			System.out.println("courseStatus: " + courseDeclineForm.getCourseStatus());
 			System.out.println("registrationDate: " + courseDeclineForm.getRegistrationDate());
 			System.out.println("Reason: " + courseDeclineForm.getReason());
 			CourseParticipant courseParticipant = new CourseParticipant.Builder(courseDeclineForm.getId(),
 					courseDeclineForm.getCourseId(), courseDeclineForm.getCourseScheduleId(),
 					courseDeclineForm.getCourseName(), courseDeclineForm.getInstructorName(),
-					courseDeclineForm.getVenueName(), courseDeclineForm.getId(), courseDeclineForm.getParticipantName(),
+					courseDeclineForm.getVenueName(), courseDeclineForm.getCourseStatus(), courseDeclineForm.getId(), courseDeclineForm.getParticipantName(),
 					courseDeclineForm.getRegistrationDate())
 							.decline(courseDeclineForm.getReason()).build();
 			enrollmentService.declineCourse(courseParticipant);
@@ -482,7 +481,7 @@ public class EnrollmentController {
 		if (form.getFromDateTime().isAfter(form.getToDateTime())
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
-			model.addAttribute("error", "To Date should be greater than or equal to From Date");
+			model.addAttribute("error", "To Date should be greater than From Date");
 			model.addAttribute("nullMessage", "No course schedule found");
 			return "enrollment/viewMemberCourse";
 		}

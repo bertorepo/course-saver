@@ -225,14 +225,15 @@ function toTable(data){
 		*/
 		
 		tr.innerHTML = 
+			'<td class="align-middle">' + object.courseCategory + '</td>' +
 			'<td class="align-middle">' + object.courseName + '</td>' +
 			'<td class="align-middle">' + object.instructorLastName + ' ' + object.instructorFirstName + '</td>' +
 			'<td class="align-middle">' + object.mandatory + '</td>' +
 			'<td class="align-middle">' + object.deadline + '</td>' +
-			'<td class="align-middle">' + moment.utc(courseScheduleDetail.scheduledStartDateTime, 'YYYY-MM-DD HH:mm').format(
-			'MMM DD, YYYY (ddd)- HH:mm A') + 
-			'<hr>' + moment.utc(courseScheduleDetail.scheduledEndDateTime, 'YYYY-MM-DD HH:mm').format(
-			'MMM DD, YYYY (ddd)- HH:mm A') + '</td>' +
+			'<td class="align-middle">' + moment.utc(courseScheduleDetail.scheduledStartDateTime, 'YYYY-MM-DD hh:mm').format(
+			'MMM DD, YYYY (ddd)- hh:mm A') + 
+			'<hr>' + moment.utc(courseScheduleDetail.scheduledEndDateTime, 'YYYY-MM-DD hh:mm').format(
+			'MMM DD, YYYY (ddd)- hh:mm A') + '</td>' +
 			'<td class="align-middle">' + courseScheduleDetail.duration + '</td>' +
 			'<td class="align-middle">' + object.venueName + '</td>' +
 			'<td class="align-middle">' + object.totalParticipants + '</td>';
@@ -289,3 +290,163 @@ function confirmReschedule() {
 	}
 }
 
+function courseCategoryOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
+	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+		
+		var courseId = $('#courseCategory [value="'+ faceVal +'"]').data('value');
+		
+		document.getElementById("courseCategoryId").value = courseId;
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+		
+		var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("courseCategoryId").value = courseId;
+	}
+}
+
+function courseCategoryOnChange(){
+	
+	var courseCategory = $("#courseCategorydetail").val();
+	var holder = document.getElementById("courseCategorydetail").placeholder;
+	
+	if(courseCategory == "" && (holder !== "Enter Course Category" || holder !== "")){
+		document.getElementById("courseCategorydetail").value = holder;
+		
+		var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("courseCategoryId").value = courseId;
+		
+	} else {
+		var courseId = $('#courseCategory [value="'+ courseCategory +'"]').data('value');
+		
+		document.getElementById("courseCategoryId").value = courseId;
+	}
+}
+
+function courseNameOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
+	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+		
+		var courseId = $('#courseName [value="'+ faceVal +'"]').data('value');
+		
+		document.getElementById("courseNameId").value = courseId;
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+		
+		var courseId = $('#courseName [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("courseNameId").value = courseId;
+	}
+}
+
+function courseNameOnChange(){
+	
+	var courseName = $("#courseNamedetail").val();
+	var holder = document.getElementById("courseNamedetail").placeholder;
+	
+	if(courseName == "" && (holder !== "Enter Course Category" || holder !== "")){
+		document.getElementById("courseNamedetail").value = holder;
+		
+		var courseId = $('#courseName [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("courseNameId").value = courseId;
+		
+	} else {
+		var courseId = $('#courseName [value="'+ courseName +'"]').data('value');
+		
+		document.getElementById("courseNameId").value = courseId;
+	}
+}
+
+function instructorOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
+	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+		
+		var instructorId = $('#instructor [value="'+ faceVal +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+		
+		var instructorId = $('#instructor [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	}
+}
+
+function instructorOnChange(){
+	
+	var instructorName = $("#instructordetail").val();
+	var holder = document.getElementById("instructordetail").placeholder;
+	
+	if(instructorName == "" && (holder !== "Enter Instructor" || holder !== "")){
+		document.getElementById("instructordetail").value = holder;
+		
+		var instructorId = $('#instructor [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+		
+	} else {
+		var instructorId = $('#instructor [value="'+ instructorName +'"]').data('value');
+		
+		document.getElementById("instructorId").value = instructorId;
+	}
+}
+
+
+function venueOnDown(id){
+	var holder = document.getElementById(id).value;
+	var faceVal = document.getElementById(id).placeholder;
+	
+	if(holder == "" && faceVal !== ""){
+		document.getElementById(id).placeholder = faceVal;
+		document.getElementById(id).value = '';
+		
+		var venueId = $('#venue [value="'+ faceVal +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+	} else {
+		document.getElementById(id).placeholder = holder;
+		document.getElementById(id).value = '';
+		
+		var venueId = $('#venue [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+	}
+}
+
+function venueOnChange(){
+	
+	var venueName = $("#venuedetail").val();
+	var holder = document.getElementById("venuedetail").placeholder;
+	
+	if(venueName == "" && (holder !== "Enter Venue" || holder !== "")){
+		document.getElementById("venuedetail").value = holder;
+		
+		var venueId = $('#venue [value="'+ holder +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+		
+	} else {
+		var venueId = $('#venue [value="'+ venueName +'"]').data('value');
+		
+		document.getElementById("venueId").value = venueId;
+	}
+}

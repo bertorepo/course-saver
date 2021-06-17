@@ -1,5 +1,25 @@
 package com.fujitsu.ph.tsup.enrollment.dao;
 
+//=================================================================================================
+//$Id:PR01$
+//Project Name :Training Sign Up
+//System Name  :Enroll Course
+//Class Name   :EnrollmentDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+--------------------------------------------------
+//0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
+//0.01    | 06/29/2020 | WS) G.Cabiling        | Updated
+//0.01    | 06/30/2020 | WS) K.Freo            | Updated
+//0.01    | 07/07/2020 | WS) J.Yu              | Updated
+//0.01    | 07/14/2020 | WS) T.Oviedo          | Updated
+//0.01    | 09/14/2020 | WS) J.Yu              | Updated
+//0.01    | 09/14/2020 | WS) M.Lumontad        | Updated
+//0.01	  | 04/19/2021 | WS) M.Atayde		   | Updated
+//0.01	  | 05/27/2021 | WS) L.Celoso		   | Updated
+//0.01	  | 06/16/2021 | WS) K.Sevilla		   | Updated
+//=================================================================================================
 import com.fujitsu.ph.auth.model.FpiUser;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
@@ -21,25 +41,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
-//=================================================================================================
-//$Id:PR01$
-//Project Name :Training Sign Up
-//System Name  :Enroll Course
-//Class Name   :EnrollmentDaoImpl.java
-//
-//<<Modification History>>
-//Version | Date       | Updated By            | Content
-//--------+------------+-----------------------+--------------------------------------------------
-//0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
-//0.01    | 06/29/2020 | WS) G.Cabiling        | Updated
-//0.01    | 06/30/2020 | WS) K.Freo            | Updated
-//0.01    | 07/07/2020 | WS) J.Yu              | Updated
-//0.01    | 07/14/2020 | WS) T.Oviedo          | Updated
-//0.01    | 09/14/2020 | WS) J.Yu              | Updated
-//0.01    | 09/14/2020 | WS) M.Lumontad        | Updated
-//0.01	  | 04/19/2021 | WS) M.Atayde		   | Updated
-//0.01	  | 05/27/2021 | WS) L.Celoso		   | Updated
-//=================================================================================================
+
 /**
  * <pre>
  * EnrollmentDaoImpl.java is data access class for enrollment related database
@@ -239,6 +241,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.DETAIL AS DETAILS, " 
                 + "C.MANDATORY AS MANDATORY," // Added
                 + "C.DEADLINE AS DEADLINE," // Added
+                + "CSCHED.STATUS AS COURSE_STATUS," //Added
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, " 
                 + "V.NAME AS VENUE_NAME, "
@@ -312,6 +315,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.DETAIL AS DETAILS, " 
                 + "C.MANDATORY AS MANDATORY," // Added
                 + "C.DEADLINE AS DEADLINE," // Added
+                + "CSCHED.STATUS AS COURSE_STATUS," //Added
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, "
                 + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, " 
                 + "V.NAME AS VENUE_NAME, "

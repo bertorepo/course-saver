@@ -17,6 +17,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.03    | 03/24/2021 | WS) K.Sanchez         | Update
 //0.03    | 03/23/2021 | WS) C.Macatangay      | Update
 //0.04    | 05/04/2021 | WS) A.Senamin         | Update
+//0.05    | 06/16/2021 | WS) K.Sevilla         | Update
 //==================================================================================================
 
 import com.fujitsu.ph.auth.model.FpiUser;
@@ -32,7 +33,6 @@ import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
