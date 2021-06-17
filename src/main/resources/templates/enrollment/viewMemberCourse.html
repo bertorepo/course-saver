@@ -8,7 +8,6 @@
 <!-- --------+------------+-----------------------+--------------------------------------------------- -->
 <!-- 0.01    | ----/--/-- | WS) -		          | Created -->
 <!-- 0.02    | 2021/06/02 | WS) l.celoso          | Updated -->
-<!-- 0.02    | 2021/06/16 | WS) m.taboada         | Updated -->
 <!-- ================================================================================================== -->
 <!DOCTYPE html>
 
@@ -57,7 +56,6 @@
 						<label class="col-lg-2 col-form-label">To Date</label>
 						<div class="col-lg-3">
 							<input type="datetime-local" class="form-control" id="toDateTime" >
-							<div class="text-danger" id="toDateTime_error"></div>
 							<input type="hidden" class="form-control" name="toDateTime" id="inputToDateTime">
 						</div>
 						<div class="float-right">
@@ -653,15 +651,12 @@
 	}
 	//Information Modal End
 	
-		//FromDateTime is Higher that ToDateTime
+	//FromDateTime is Higher that ToDateTime
 	/*<![CDATA[*/
 	var errorMessage = /*[[${error}]]*/ 'default';
-	//if(errorMessage ==  "To Date should be greater than or equal to From Date"){
-	//	document.getElementById("message").innerHTML = errorMessage;
-	//	$('#errorModal').modal('show');
-	//}
-	if (errorMessage == "Invalid Date") {
-		document.getElementById("toDateTime_error").innerHTML = "To Date should be greater than From Date";
+	if(errorMessage ==  "To Date should be greater than or equal to From Date"){
+		document.getElementById("message").innerHTML = errorMessage;
+		$('#errorModal').modal('show');
 	}
 	/*]]>*/
 	
@@ -739,12 +734,10 @@
 	function showDeadline(){
 		var mandatory = document.getElementById("mandatorySel");
 		var deadlineDiv = document.getElementById("deadlineDiv");
-		var deadlineSel = document.getElementById("deadlineSel");
 		if(mandatory.value == "Yes"){
 			deadlineDiv.style.display = "flex";
 		} else {
 			deadlineDiv.style.display = "none";
-			deadlineSel.value = "-";
 		}
 	}
 

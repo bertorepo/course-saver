@@ -10,10 +10,9 @@ package com.fujitsu.ph.tsup.enrollment.domain;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) K.Freo        | New Creation
-//0.02    | 07/06/2020 | WS) J.Macabugao   | Update
-//0.03	  | 07/07/2020 | WS) T.Oviedo	   | Update
-//0.04    | 06/14/2021 | WS) L.Celoso      | Update
-//0.04	  | 06/16/2021 | WS) K.Sevilla	   | Update
+//0.01    | 07/06/2020 | WS) J.Macabugao   | Update
+//0.01	  | 07/07/2020 | WS) T.Oviedo	   | Update
+//0.02	  | 06/16/2021 | WS) K.Sevilla	   | Update
 //==================================================================================================
 
 import java.time.ZonedDateTime;

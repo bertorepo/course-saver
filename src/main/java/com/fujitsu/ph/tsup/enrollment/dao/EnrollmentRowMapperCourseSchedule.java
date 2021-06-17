@@ -9,11 +9,9 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+--------------------------------------------------
 //0.01    | 06/26/2020 | WS) M.Lumontad        | New Creation
-//0.02    | 06/29/2020 | WS) J.Yu              | Update
-//0.03    | 07/15/2020 | WS) T.Oviedo          | Update
-//0.04    | 06/14/2021 | WS) L.Celoso          | Update
-//0.04    | 06/16/2021 | WS) M.Taboada         | Update
-//0.04    | 06/16/2021 | WS) K.Sevilla         | Update
+//0.01    | 06/29/2020 | WS) J.Yu              | Update
+//0.01    | 07/15/2020 | WS) T.Oviedo          | Update
+//0.01    | 06/16/2021 | WS) K.Sevilla         | Update
 //=================================================================================================
 /**
 * <pre>
