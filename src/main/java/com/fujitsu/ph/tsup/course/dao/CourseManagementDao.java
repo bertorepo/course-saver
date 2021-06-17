@@ -5,7 +5,10 @@ package com.fujitsu.ph.tsup.course.dao;
 
 import java.util.Set;
 
+import org.springframework.data.domain.Pageable;
+
 import com.fujitsu.ph.tsup.course.model.Course;
+import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -30,6 +33,14 @@ public interface CourseManagementDao {
     
     // Method for loading all course in Course View
     Set<Course> findAllCourses();
+    
+    // Method for finding all courses base on Pageable object provided
+    Set<Course> findAllCourses(Pageable pageable);
+    
+    Set<Course> findCoursesByCourseSearchFilter(CourseSearchFilter searchCriteria);
+    
+    // Method for counting course
+    int countCourse();
     
     // Method for searching Courses by Name
     Set<Course> findCoursesByName(String name);

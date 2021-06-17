@@ -4,7 +4,6 @@
 package com.fujitsu.ph.tsup.course.web;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,6 +11,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +33,7 @@ import com.fujitsu.ph.tsup.course.category.service.CourseCategoryManagementServi
 import com.fujitsu.ph.tsup.course.model.Course;
 import com.fujitsu.ph.tsup.course.model.CourseForm;
 import com.fujitsu.ph.tsup.course.service.CourseManagementService;
+import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 
 //==================================================================================================
 //Project Name : Training Sign Up
@@ -54,19 +60,37 @@ public class CourseManagementController {
     CourseCategoryManagementService courseCategoryManagementService;
 
     @GetMapping("/load")
-    public String load(Model model) {
-
-        Set<Course> course = courseManagementService.findAllCourses();
-
-	List<Course> listOfCourse = course.stream()
-					  .sorted(Comparator.comparing(Course::getName))
-					  .collect(Collectors.toList());
+    public String load(Model model, @RequestParam("page") Optional<Integer> page,
+	    			    @RequestParam("size") Optional<Integer> size, 
+	    			    @RequestParam("sortField") Optional<String> sortField,
+	    			    @RequestParam("sortDir") Optional<String> sortDir) {
+	
+	int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
         
-        model.addAttribute("courseList", listOfCourse);
+	String sortFieldVal = sortField.filter(str -> !str.isEmpty())
+				       .orElse("courseCategory");
+	
+	String sortVal = sortDir.filter(str -> !str.isEmpty())
+				.orElse("asc");
+	
+	
+	Sort sort = Sort.by(Direction.valueOf(sortVal.toUpperCase()), sortFieldVal);
+	Pageable pageable = PageRequest.of(currentPage - 1, pageSize,sort);
+
+        
+	Page<Course> paginatedCourse = courseManagementService.findAllCourses(pageable);
         
 	List<CourseCategory> courseCategoryList = courseCategoryManagementService.findAllCourseCategory()
 										 .stream()
 										 .collect(Collectors.toList());
+	
+	model.addAttribute("reverseSortDir", sortVal);
+	
+	model.addAttribute("currentPage", currentPage);
+	
+	model.addAttribute("paginatedCourse", paginatedCourse);
+	
     	model.addAttribute("courseCategory",courseCategoryList);
         
         model.addAttribute("course", new CourseForm());
@@ -179,27 +203,27 @@ public class CourseManagementController {
     }
     
     @PostMapping("/search")
-    public String submitSearchCourseForm(@RequestParam(name = "searchCourseName") String searchCourseName, Model model) {
+    public String submitSearchCourseForm(@ModelAttribute CourseSearchFilter courseSearchFilter, Model model) {
     	
-    	String searchName = searchCourseName.trim();
-    	
-    	if(searchName.isEmpty()) {
+    	if(courseSearchFilter.isSearchEmpty()) {
     		return "redirect:/courses/load";
     	}
     	
     	try {
-	    List<Course> listOfCourse = Optional.ofNullable(courseManagementService.findCoursesByName(searchName))
-						.orElse(Collections.emptySet())
-						.stream()
-						.collect(Collectors.toList());
+	    List<Course> listOfCourse = courseManagementService.findCoursesByCourseSearchFilter(courseSearchFilter)
+							       .stream()
+							       .collect(Collectors.toList());
 	    
+	    Page<Course> paginatedCourse = new PageImpl<>(listOfCourse);
+
+
 	    List<CourseCategory> courseCategoryList = Optional.ofNullable(courseCategoryManagementService.findAllCourseCategory())
 							      .orElse(Collections.emptySet())
 							      .stream()
 							      .collect(Collectors.toList());
 	    
+	    model.addAttribute("paginatedCourse", paginatedCourse);
 	    model.addAttribute("courseCategory",courseCategoryList);
-	    model.addAttribute("courseList", listOfCourse);
 	    model.addAttribute("course", new CourseForm());
 	} catch (NullPointerException e) {
 	    return "course-management/manageCourse";

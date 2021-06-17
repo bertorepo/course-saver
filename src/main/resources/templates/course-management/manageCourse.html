@@ -10,6 +10,8 @@
 <!-- 0.02    | 2021/04/19 | WS) st.diaz           | Updated -->
 <!-- 0.03    | 2021/04/21 | WS) i.fajardo         | Updated -->
 <!-- 0.04    | 2021/05/24 | WS) mi.aguinldo       | Added Course Category column; Added Update button and its modal  -->
+<!-- 0.05    | 2021/06/02 | WS) m.yanoyan         | Changed button value("back" to "cancel"); removed "view more" footer -->
+<!-- 0.06    | 2021/06/10 | WS) m.yanoyan         | Added filter functionality UI -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE HTML>
@@ -26,6 +28,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
+	<link rel="stylesheet" type="text/css" href="/css/app/course-management/manage-course.common.css">
 	<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 	<script th:src="@{/js/app/popper.min.js}"></script>
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -48,17 +51,16 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<form class="form-horizontal" th:action="@{/courses/__${param.courseId}__/delete}" 
-						method="post">
-						<button type="submit" class="btn btn-danger">Confirm Deletion</button>					
+					<form class="form-horizontal" th:action="@{/courses/__${param.courseId}__/delete}" method="post">
+						<button type="submit" class="btn btn-danger">Confirm Deletion</button>
 					</form>
-					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 				</div>
 
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal fade" id="updateConfirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		aria-hidden="true" th:object="${updateCourse != null ? updateCourse: course}">
 		<div class="modal-dialog modal-sm text-center">
@@ -72,15 +74,23 @@
 				</div>
 				<div class="modal-footer">
 					<form class="form-horizontal" th:action="@{/courses/update}" method="post" th:object="${course}">
-					<input type="hidden" th:value="${updateCourse != null ? updateCourse.id: course.id}" th:name="id" th:id="id">
-					<input type="hidden" th:value="${updateCourse != null ? updateCourse.name: course.name}" th:name="name" th:id="name">
-					<input type="hidden" th:value="${updateCourse != null ? updateCourse.detail: course.detail}" th:name="detail" th:id="detail">
-					<input type="hidden" th:value="${updateCourse != null ? updateCourse.isMandatory: course.isMandatory}" th:name="isMandatory" th:id="isMandatory">
-					<input type="hidden" th:value="${updateCourse != null ? updateCourse.deadline: course.deadline}" th:name="deadline" th:id="deadline">
-					<input type="hidden" th:value="${updateCourse != null ? updateCourse.courseCategoryId: course.courseCategoryId}" th:name="courseCategoryId" th:id="courseCategoryId">
-						<button type="submit" class="btn btn-danger">Confirm Update</button>					
+						<input type="hidden" th:value="${updateCourse != null ? updateCourse.id: course.id}"
+							th:name="id" th:id="id">
+						<input type="hidden" th:value="${updateCourse != null ? updateCourse.name: course.name}"
+							th:name="name" th:id="name">
+						<input type="hidden" th:value="${updateCourse != null ? updateCourse.detail: course.detail}"
+							th:name="detail" th:id="detail">
+						<input type="hidden"
+							th:value="${updateCourse != null ? updateCourse.isMandatory: course.isMandatory}"
+							th:name="isMandatory" th:id="isMandatory">
+						<input type="hidden" th:value="${updateCourse != null ? updateCourse.deadline: course.deadline}"
+							th:name="deadline" th:id="deadline">
+						<input type="hidden"
+							th:value="${updateCourse != null ? updateCourse.courseCategoryId: course.courseCategoryId}"
+							th:name="courseCategoryId" th:id="courseCategoryId">
+						<button type="submit" class="btn btn-danger">Confirm Update</button>
 					</form>
-					<button type="submit" class="btn btn-primary" data-dismiss="modal" href="#">Back</button>
+					<button type="submit" class="btn btn-primary" data-dismiss="modal" href="#">Cancel</button>
 				</div>
 
 			</div>
@@ -105,7 +115,7 @@
 
 						<div class="form-group row">
 							<input type="hidden" id="courseIdInput" name="courseIdInput"></input>
-							<label class="col-lg-3 col-form-label">Course Name:</label>				
+							<label class="col-lg-3 col-form-label">Course Name:</label>
 							<div class="col-lg-9">
 								<label class="col-lg-3 col-form-label" id="courseName" name="courseName">
 								</label>
@@ -113,25 +123,26 @@
 							<label class="col-lg-3 col-form-label">Detail:</label>
 							<div class="col-lg-9">
 								<label class="col-lg-3 col-form-label" id="courseDetail" name="courseDetail">
-								</label>		
+								</label>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-danger" href="#confirmModal">Delete</button>
-						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 					</div>
 				</div>
 			</div>
 		</form>
 		<!-- </form> -->
 	</div>
-	
-	
+
+
 	<div class="modal fade" id="infoModalForUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		aria-hidden="true">
 
-		<form id="infoModalFormId"  th:action="@{/courses/update}" th:object="${course}" th:id = "updateCourse" method="get">
+		<form id="infoModalFormId" th:action="@{/courses/update}" th:object="${course}" th:id="updateCourse"
+			method="get">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -143,62 +154,66 @@
 					<div class="modal-body">
 						<h5>Course Information</h5>
 						<div class="form-group row">
-						<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput" th:field="*{id}">
-    						<label for="inputEmail3" class="col-sm-2 col-form-label">Course Name:</label>
-    						<div class="col-sm-10">
-     	 						<input class="form-control needs-validation" id="updateCourseName" name="updateCourseName" type="text" th:field="*{name}" required>
+							<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput" th:field="*{id}">
+							<label for="inputEmail3" class="col-sm-2 col-form-label">Course Name:</label>
+							<div class="col-sm-10">
+								<input class="form-control needs-validation" id="updateCourseName"
+									name="updateCourseName" type="text" th:field="*{name}" required>
 								<div class="invalid-feedback">
 									Please Enter A Course Name.
 								</div>
-    						</div>
- 						</div>
- 						<div class="form-group row">
-						<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput"></input>
-    						<label for="inputEmail3" class="col-sm-2 col-form-label">Course Category:</label>
-    						<div class="col-sm-10">
-     	 						<select class="form-control" id="updateCourseCategory" name="updateCourseCategory"  th:field="*{courseCategoryId}" required>
-      								<option th:each="courseCategory : ${courseCategory}"
-							 			th:attr="data-value = ${courseCategory.id}"
-							 			th:value="${courseCategory.id}"
-							 			th:text="${courseCategory.category}">
-							 		</option>
-    							</select>
-    						</div>
- 						</div>
- 						<div class="form-group row">
-    						<label for="inputEmail3" class="col-sm-2 col-form-label">Detail:</label>
-    						<div class="col-sm-10">
-     	 						<textarea class="form-control needs-validation" id="updateCourseDetail" name="updateCourseDetail" th:field="*{detail}" required></textarea>
-     	 						<div class="invalid-feedback">
+							</div>
+						</div>
+						<div class="form-group row">
+							<input type="hidden" id="updateCourseIdInput" name="updateCourseIdInput"></input>
+							<label for="inputEmail3" class="col-sm-2 col-form-label">Course Category:</label>
+							<div class="col-sm-10">
+								<select class="form-control" id="updateCourseCategory" name="updateCourseCategory"
+									th:field="*{courseCategoryId}" required>
+									<option th:each="courseCategory : ${courseCategory}"
+										th:attr="data-value = ${courseCategory.id}" th:value="${courseCategory.id}"
+										th:text="${courseCategory.category}">
+									</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputEmail3" class="col-sm-2 col-form-label">Detail:</label>
+							<div class="col-sm-10">
+								<textarea class="form-control needs-validation" id="updateCourseDetail"
+									name="updateCourseDetail" th:field="*{detail}" required></textarea>
+								<div class="invalid-feedback">
 									Please Enter A Detail.
 								</div>
-    						</div>
- 						</div>
-						 <div class="form-group row">
-						    <label for="inputEmail3" class="col-sm-2 col-form-label">Mandatory:</label>
-    						<div class="col-sm-10">
-     	 						<select class="form-control" id="updateMandatory" name="updateMandatory" onchange="enableOrDisableDeadline()" th:field="*{isMandatory}">
-      								<option th:value="Yes" th:text="Yes"></option>
-      								<option th:value="No" th:text="No"></option>
-    							</select>
-    						</div>
-						  </div>
- 						<div class="form-group row">
-    						<label for="inputUpdateDeadline" class="col-sm-2 col-form-label">Deadline:</label>
-    						<div class="col-sm-10">
-     	 						<select class="form-control  update-mandatory" id="updateDeadline" name="updateDeadline" th:field="*{deadline}" >
-      								<option id="nan" th:value="Nan">-</option>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputEmail3" class="col-sm-2 col-form-label">Mandatory:</label>
+							<div class="col-sm-10">
+								<select class="form-control" id="updateMandatory" name="updateMandatory"
+									onchange="enableOrDisableDeadline()" th:field="*{isMandatory}">
+									<option th:value="Yes" th:text="Yes"></option>
+									<option th:value="No" th:text="No"></option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inputUpdateDeadline" class="col-sm-2 col-form-label">Deadline:</label>
+							<div class="col-sm-10">
+								<select class="form-control  update-mandatory" id="updateDeadline" name="updateDeadline"
+									th:field="*{deadline}">
+									<option id="nan" th:value="Nan">-</option>
 									<option th:value="Immediate" th:text="Immediate"></option>
 									<option th:value="Monthly" th:text="Monthly"></option>
 									<option th:value="Quarterly" th:text="Quarterly"></option>
 									<option th:value="Annually" th:text="Annually"></option>
-    							</select>
-    						</div>
- 						</div>
+								</select>
+							</div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-danger update-button" href="#confirmModal">Update</button>
-						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
+						<input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">
 					</div>
 				</div>
 			</div>
@@ -221,8 +236,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<a th:href=@{/courses/load}><button type="submit"
-							name="submit_button" value="submit" class="btn btn-primary">OK</button></a>
+					<a th:href=@{/courses/load}><button type="submit" name="submit_button" value="submit"
+							class="btn btn-primary">OK</button></a>
 				</div>
 			</div>
 		</div>
@@ -231,83 +246,191 @@
 
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5">
-			<h3>
-				<i class="fa fa-book"></i> Manage Course
-			</h3>
-			<hr>
-			<div class="card">
-				<div class="card-body">
+		<h3>
+			<i class="fa fa-book"></i> Manage Course
+		</h3>
+		<hr>
+		<div class="card">
+			<div class="card-body">
 					<h5>
-						<i class="fa fa-search"></i> Search Course Name
+						<i class="fa fa-search"></i> Search Course
 					</h5>
 					<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
 					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">Search:</label>
+						<label class="col-lg-2 col-form-label">Course Name:</label>
 						<div class="col-lg-3">
-							<input type="Text" class="form-control" name="searchCourseName" 
-								id="searchCourseName" maxlength="100" tabindex="1">
+							<input type="Text" class="form-control" name="courseName" id="courseName" placeholder="Enter Course Name"  maxlength="100" tabindex="1">
 						</div>
 						<div class="col-auto my-1">
-							<input type="submit" class="btn btn-success" value="Submit">
+							<input type="submit" class="btn btn-success" value="Submit" id="searchBtn1">
+						</div>
+						
+						<br>
+						<br>
+						<br>
+						
+						<button type="button" id="filterBtn" class="collapsible">Filter</button>
+						<div id="filterItems" class="content col-lg-12">	  
+							<!-- Course Category -->
+							<div class="form-group row">
+								<label class="col-lg-2 col-form-label">Course Category</label>
+								<div class="col-lg-5">
+									<input type="text" id="courseCategory" name ="courseCategory" list="courseCategoryList"
+												placeholder="Enter Course Category" 
+												class="form-control custom-select custom-select-md">
+												
+									<datalist id="courseCategoryList">
+										<option value=""></option>
+										<option th:each="courseCategory : ${courseCategory}" th:attr="data-value = ${courseCategory.id}"
+											th:value="${courseCategory.category}" th:selected="${courseCategory.id}"></option>
+									</datalist>
+									</div>
+								</div>
+							<!-- Mandatory -->
+							<div class="form-group row">
+								<label class="col-lg-2 col-form-label">Mandatory</label>
+								<div class="col-lg-5">
+									<select class="form-control form-select" aria-label="Default select example" 
+										id="mandatory" name= "mandatory">
+										<option></option>
+										<option th:value="Yes" th:text="Yes"></option>
+										<option th:value="No" th:text="No"></option>
+									</select>
+								</div>
+							</div>
+							
+							<!-- Deadline -->
+							<div class="form-group row" id="deadlineDiv">
+								<label class="col-lg-2 col-form-label">Deadline</label>
+								<div class="col-lg-5">
+									<select class="form-control form-select" aria-label="Default select example" 
+										id="deadline" name= "deadline">
+										<option></option>
+										<option th:value="Immediate" th:text="Immediate"></option>
+										<option th:value="Monthly" th:text="Monthly"></option>
+										<option th:value="Quarterly" th:text="Quarterly"></option>
+										<option th:value="Annually" th:text="Annually"></option>
+									</select>
+								</div>
+							</div>
+							
+							<!-- Remove filter button -->
+							<div class="float-left">
+								<button id="searchBtn2" class="btn btn-success">Submit</button>&nbsp;
+								<button id="removeFilterBtn" type="button" class="btn btn-danger float-right">Clear</button>
+							</div>
 						</div>
 					</div>
 					</form>
 				</div>
 			</div>
 
-		<div class="card mb-5">
-			<div class="card-header">
-				<h3>
-					<i class="fa fa-list-alt"></i> List Of Courses
-				</h3>
-			</div>
-			<div class="card-body">
-				<div style="overflow-x: auto; display: block; white-space: nowrap;">
-					<table class="table table-bordered text-center">
-						<thead>
-							<th style="width: 15%;">Action</th>
-							<th style="width: 20%;">Course Name</th>
-							<th style="width: 20%;">Course Category</th>
-							<th>Detail</th>
-							<th style="width: 10%;">Mandatory</th>
-							<th style="width: 15%;">Deadline</th>
-						</thead>
-						<tbody th:each="course : *{courseList}">
-							<tr>
-								<td>
-								<input type="submit" value="Update" class="btn btn-success" 
-										th:attr="onclick=|updateButton('${course.id}','${course.name}',
-										'${course.detail}','${course.isMandatory}','${course.deadline}',${course.courseCategory.id})|">
-								<input type="submit" value="Delete" class="btn btn-danger"
-										th:attr="onclick=|deleteButton('${course.id}','${course.name}',
-										'${course.detail}','${course.isMandatory}','${course.deadline}')|">									
-								</td>
-								<td th:text="${course.name}"></td>
-								<td th:text="${course.courseCategory.category}"></td>
-								<td th:text="${course.detail}">Sample2</td>
-								<td th:text="${course.isMandatory}">Yes/No</td>
-								<td th:text="${course.deadline}">Sample2</td>
-							</tr>
-						</tbody>
-					</table>
-					<div th:if="${#lists.isEmpty(courseList)}">
-						<div class="alert alert-dismissible alert-danger text-center">
-							<strong>No Course Found</strong>
-						</div>
-						<div class="card-footer" style="display: none">
-							<div id="pagination"></div>
-						</div>
-					</div>
+			<div class="card mb-5">
+				<div class="card-header">
+					<h3>
+						<i class="fa fa-list-alt"></i> List Of Courses
+					</h3>
 				</div>
-				
-				<div class="float-right">
-					<a th:href="@{/enrollment/viewCourseEnroll}">View More 
-						<i class="fa fa-arrow-circle-right"></i>
-					</a>
+				<div class="card-body">					
+					<div style="overflow-x: auto; display: block; white-space: nowrap;">
+
+						<table class="table table-bordered text-center">
+							<thead>
+								<th style="width: 15%;">Action</th>
+								<th style="width: 20%;">
+									<div class="flex-column">
+										<span>Course Name</span>
+										<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+			 										<a class="fa fa-caret-up" style="color:black;"
+			 											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseName&sortDir=asc'"></a>
+			 										<a class="fa fa-caret-down" style="color:black;"
+														th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseName&sortDir=desc'"></a>
+			 									</div>
+			 								</div>
+			 							</th>
+			 							<th style="width: 20%;">
+			 								<div class="flex-column">
+			 									<span>Course Category</span>
+			 									<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+			 										<a class="fa fa-caret-up" style="color:black;"
+			 											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseCategory&sortDir=asc'"></a>
+			 										<a class="fa fa-caret-down" style="color:black;"
+			 											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseCategory&sortDir=desc'"></a>
+			 									</div>
+			 								</div>
+			 							</th>
+			 							<th>Detail</th>
+			 							<th style="width: 10%;">
+			 								<div class="flex-column">
+			 									<span>Mandatory</span>
+			 									<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+			 										<a class="fa fa-caret-up" style="color:black;"
+			 											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=mandatory&sortDir=asc'"></a>
+			 										<a class="fa fa-caret-down" style="color:black;"
+			 										th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=mandatory&sortDir=desc'"></a>
+			 									</div>
+			 								</div>
+			 							</th>
+			 							<th style="width: 15%;">
+			 								<div class="flex-column">
+			 									<span>Deadline</span>
+			 									<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+			 										<a class="fa fa-caret-up" style="color:black;"
+			 											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=deadline&sortDir=asc'"></a>
+			 										<a class="fa fa-caret-down" style="color:black;"
+			 											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=deadline&sortDir=desc'"></a>
+			 									</div>
+			 								</div>
+			 							</th>
+			 						</thead>
+			 						<tbody th:each="course : *{paginatedCourse.content}">
+			 							<tr>
+			 								<td>
+			 								<input type="submit" value="Update" class="btn btn-success" 
+			 										th:attr="onclick=|updateButton('${course.id}','${course.name}',
+			 										'${course.detail}','${course.isMandatory}','${course.deadline}',${course.courseCategory.id})|">
+			 								<input type="submit" value="Delete" class="btn btn-danger"
+			 										th:attr="onclick=|deleteButton('${course.id}','${course.name}',
+			 										'${course.detail}','${course.isMandatory}','${course.deadline}')|">									
+			 								</td>
+			 								<td th:text="${course.name}"></td>
+			 								<td th:text="${course.courseCategory.category}"></td>
+			 								<td class="text-truncate" style="max-width: 250px;" data-toggle="tooltip" th:title="${course.detail}" th:text="${course.detail}"></td>
+			 								<td th:text="${course.isMandatory}">Yes/No</td>
+			 								<td th:text="${course.deadline}">Sample2</td>
+			 							</tr>
+			 						</tbody>
+			 						</table>
+			 						<nav aria-label="Pagination" th:if="${paginatedCourse.totalPages gt 0} and ${#httpServletRequest.getRequestURI() != '/courses/search'}">
+			 						<ul class="pagination justify-content-center font-weight-bold">
+			 							<li class="page-item" th:classappend="${paginatedCourse.number eq 0} ? 'disabled'">
+			 								<a class="page-link" th:href="@{/courses/load?page={id}&sortField={sortField}&sortDir={sortDir}(id=${paginatedCourse.number lt 2 ? 1 : paginatedCourse.number},sortField=${#request.getParameter('sortField')},sortDir=${#request.getParameter('sortDir')})}"
+			 									aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+			 									<span aria-hidden="true">&laquo;</span>
+			 								</a>
+			 							</li>
+			 							<li class="page-item" th:classappend="${i eq paginatedCourse.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, paginatedCourse.totalPages, 1)}">
+			 					            <a class="page-link" th:href="@{/courses/load?page={id}&sortField={sortField}&sortDir={sortDir}(id=${i},sortField=${#request.getParameter('sortField')},sortDir=${#request.getParameter('sortDir')})}" th:text="${i}"
+			 					               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+								        </li>
+			 					        <li class="page-item" th:classappend="${paginatedCourse.number + 1 eq paginatedCourse.totalPages} ? 'disabled'">
+			 					            <a class="page-link"
+			 					               th:href="@{/courses/load?page={id}&sortField={sortField}&sortDir={sortDir}(id=${paginatedCourse.number + 2},sortField=${#request.getParameter('sortField')},sortDir=${#request.getParameter('sortDir')})}"
+			 					               aria-label="Next" title="Next Page" data-toggle="tooltip">
+			 					                <span aria-hidden="true">&raquo;</span>
+			 					            </a>
+			 					        </li>
+			 					    </ul>
+			 					</nav>
+			 					<div th:if="${paginatedCourse.isEmpty()}">
+			 						<div class="alert alert-dismissible alert-danger text-center">
+			 							<strong>No Course Found</strong>
+			 						</div>
+			 						<div class="card-footer" style="display: none">
+			 							<div id="pagination"></div>
+			 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+				</div>
 
 	<script type="text/javascript" th:inline="javascript">
 
@@ -320,9 +443,9 @@
 			$('#infoModal').modal('show');
 
 		}
-		
+
 		function updateButton(id, courseName, detail, mandatory, deadline, courseCategoryId) {
-			if(deadline === "-"){
+			if (deadline === "-") {
 				deadline = "Nan";
 				$(".update-mandatory").prop('disabled', true);
 			}
@@ -331,15 +454,15 @@
 			document.getElementById("updateCourseDetail").value = detail;
 			document.getElementById("updateMandatory").value = mandatory;
 			document.getElementById("updateDeadline").value = deadline;
-			document.getElementById("updateCourseCategory").value = courseCategoryId;	
-			
+			document.getElementById("updateCourseCategory").value = courseCategoryId;
+
 			$('#infoModalForUpdate').modal('show');
 		}
-		
-		function enableOrDisableDeadline(){
+
+		function enableOrDisableDeadline() {
 			var mandatory = document.getElementById("updateMandatory").value;
-			
-			if(mandatory === "No"){
+
+			if (mandatory === "No") {
 				$(".update-mandatory").prop('disabled', true);
 				document.getElementById("updateDeadline").value = "Nan";
 			} else {
@@ -367,19 +490,19 @@
 			}
 
 		});
-		
-		
-		
+
+
+
 		$('#updateConfirmModal').on('hidden.bs.modal', function () {
 			window.location = "/courses/load";
 		});
-		
+
 		$('#infoModalForUpdate').on('hidden.bs.modal', function () {
 			var inputs = document.getElementsByClassName('needs-validation')
 			var validation = Array.prototype.filter.call(inputs, function (input) {
 				input.classList.remove('is-invalid');
 				input.classList.remove('is-valid');
-				
+
 			});
 
 			$(".update-button").prop('disabled', false);
@@ -388,29 +511,46 @@
 
 		//Update validation
 		$(document).ready((function () {
-				'use strict';
-				window.addEventListener('load', function () {
-					// fetch all the forms we want to apply custom style
-					var inputs = document.getElementsByClassName('needs-validation')
-					// loop over each input and watch blue event
-					var validation = Array.prototype.filter.call(inputs, function (input) {
+			'use strict';
+			window.addEventListener('load', function () {
+				// fetch all the forms we want to apply custom style
+				var inputs = document.getElementsByClassName('needs-validation')
+				// loop over each input and watch blue event
+				var validation = Array.prototype.filter.call(inputs, function (input) {
 
-						input.addEventListener('blur', function (event) {
-							// reset
-							input.classList.remove('is-invalid')
-							input.classList.remove('is-valid')
+					input.addEventListener('blur', function (event) {
+						// reset
+						input.classList.remove('is-invalid')
+						input.classList.remove('is-valid')
 
-							if (input.checkValidity() === false) {
-								input.classList.add('is-invalid')
-								$(".update-button").prop('disabled', true);
-							}
-							else {
-								$(".update-button").prop('disabled', false);
-							}
-						}, false);
-					});
-				}, false);
-			}));
+						if (input.checkValidity() === false) {
+							input.classList.add('is-invalid')
+							$(".update-button").prop('disabled', true);
+						}
+						else {
+							$(".update-button").prop('disabled', false);
+						}
+					}, false);
+				});
+			}, false);
+		}));
+
+		//script for collapsible filter menu
+		$("#filterBtn").click(function () {
+			 var filterItems = document.getElementById('filterItems').style.display;
+      
+            if(filterItems && filterItems === "block"){
+               document.getElementById('searchBtn1').style.display = "block";
+               document.getElementById('filterItems').style.display = "none";
+            } else {
+               document.getElementById('searchBtn1').style.display = "none";
+               document.getElementById('filterItems').style.display = "block";
+            }
+        });
+        
+			$("#removeFilterBtn").click(function () {
+				$(this).closest('form').find("input[type=text], textarea, select").val("");
+			});
 		
 	</script>
 

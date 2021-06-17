@@ -7,9 +7,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -31,6 +31,7 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
 //0.03    | 02/24/2020 | WS) R.Rivero        | Update
 //0.04    | 02/24/2020 | WS) J.ira           | Update
 //0.05    | 02/24/2020 | WS) R.Piloto        | Update
+//0.06    | 06/16/2021 | WS) M.Aguinaldo     | Removed unnecessary imports
 //=======================================================
 /**
  * <pre>
@@ -38,16 +39,17 @@ import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
  * 
  * <pre>
  * 
- * @version 0.05
+ * @version 0.06
  * @author a.batongbacal
  * @author r.rivero
  * @author j.lira
  * @author r.piloto
+ * @author mi.aguinaldo
  *
  */
 @Repository
 public class CourseCategoryManagementDaoImpl implements CourseCategoryManagementDao {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseCategoryManagementDaoImpl.class);
     // Call NamedParameterJdbcTemplate
     @Autowired
     private NamedParameterJdbcTemplate template;
@@ -60,9 +62,9 @@ public class CourseCategoryManagementDaoImpl implements CourseCategoryManagement
                 .addValue("detail", courseCategory.getDetail());
         int result = template.update(query, sqlParameterSource);
         if (result > 0) {
-            System.out.println("Successfully updated course category ID: " + courseCategory.getId());
+            LOGGER.debug("Successfully updated course category ID: " + courseCategory.getId());
         } else {
-            System.out.println("Unable to update course category");
+            LOGGER.debug("Unable to update course category");
         }
     }
 
