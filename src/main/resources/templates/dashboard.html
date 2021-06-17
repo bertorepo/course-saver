@@ -172,9 +172,7 @@
 								<td class="align-middle" th:utext="${#temporals.format(pmoCourse.getStartDateTime(), 'MMM dd, yyyy (E) - hh:mm a')} + '<hr>' + ${#temporals.format(pmoCourse.getEndDateTime(), 'MMM dd, yyyy (E) - hh:mm a')}"></td>
 								<td class="align-middle" th:text="${pmoCourse.getMinRequired()}"></td>
 								<td class="align-middle" th:text="${pmoCourse.getMaxAllowed()}"></td>
-								<td class="align-middle" th:text="${pmoCourse.getEnrolled()}"></td>
-							</tr>
-							
+								<td class="align-middle" th:text="${pmoCourse.getEnrolled()}"></td>				
 						</tbody>
 					</table>
 					<div th:if="${#lists.isEmpty(pmoCourses)}">
