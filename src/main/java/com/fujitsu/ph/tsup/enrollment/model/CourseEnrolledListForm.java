@@ -11,6 +11,7 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/22/2020 | WS) G.Cabiling        | New Creation
 //0.01    | 07/30/2020 | WS) M.Lumontad        | Updated
+//0.02    | 06/16/2021 | WS) K.Sevilla         | Updated
 //==================================================================================================
 
 /** 
@@ -24,7 +25,6 @@ package com.fujitsu.ph.tsup.enrollment.model;
 */
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 

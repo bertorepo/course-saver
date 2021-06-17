@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Attendance -->
+<!-- Name         : generateAttendanceSheet.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | ----/--/-- | WS) -		          | Created -->
+<!-- 0.02    | 2021/06/04 | WS) rl.naval          | Updated -->
+<!-- ================================================================================================== -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -10,7 +21,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Generate Attendance Sheet</title>
+<title>Generate Attendance List</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
@@ -25,7 +36,7 @@
 		<form class="form-horizontal" th:object="${generateAttendance}"
 			method="get">
 			<h3>
-				<i class="fa fa-file-text"></i> Generate Attendance Sheet
+				<i class="fa fa-file-text"></i> Generate Attendance List
 			</h3>
 			<hr>
 			<div class="card">
@@ -46,13 +57,13 @@
 						<div class="col-lg-1">
 							<div
 								th:if="${#httpServletRequest.requestURI == '/attendance/generate/0/present'}">
-								<input type="button" onclick="choices()"
+								<input type="button" onclick="successUrl()"
 									class="btn btn-large btn-success disabled" value="Generate"
 									name="button" id="button"></input>
 							</div>
 							<div
 								th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/present'}">
-								<input type="button" onclick="choices()"
+								<input type="button" onclick="successUrl()"
 									class="btn btn-large btn-success" value="Generate"
 									name="button" id="button"></input>
 							</div>
@@ -82,6 +93,11 @@
 			</div>
 		</div>
 		<!--Success Modal End-->
+		<div class="mt-3" th:if="${#lists.isEmpty(generateAttendance.participants)}">	
+			<div class="alert alert-dismissible alert-danger text-center" id="emptyDiv" hidden>
+					<strong>No records found</strong>
+			</div>
+		</div>
 		<div class="card mt-5" th:if="${not #lists.isEmpty(generateAttendance.participants)}">			
 			<div class="card-body" th:if="${#httpServletRequest.requestURI != '/attendance/generate/0/present'}">
 				<div class="col-lg-12" style="overflow-x: auto">
@@ -100,23 +116,23 @@
 										th:text="${generateAttendance.duration}"></label></td>
 								</tr>
 								<tr>
-									<td colspan="1"><label class="col-lg-6 col-form-label">INCLUSIVE
+									<td colspan="1"><label class="col-lg-8 col-form-label">INCLUSIVE
 											DATES</label></td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">Start</label>
+									<td colspan="1"><label class="col-lg-8 col-form-label">START DATE</label>
 										<label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										id="start1"></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 										text-center"
-										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'MMM dd, yyyy (E)')}"></label>
 									</td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">End</label>
+									<td colspan="1"><label class="col-lg-7 col-form-label">END DATE</label>
 										<label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										id="end1"></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 											text-center"
-										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'MMM dd, yyyy (E)')}"></label>
 									</td>
 									<td colspan="1"><label class="col-lg-6 col-form-label">VENUE</label>
 										<label
@@ -128,21 +144,21 @@
 										<label class="col-lg-1 col-form-label text-center">1</label> <label
 										class="col-lg-3 col-form-label text-center">OF</label> <label
 										class="col-lg-1 col-form-label text-center">5</label></td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">START
+									<td colspan="1"><label class="col-lg-8 col-form-label">START
 											TIME</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										id="start2"></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 										text-center"
-										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(generateAttendance.scheduledStartDateTime, 'HH:mm a')}"></label>
 									</td>
-									<td colspan="1"><label class="col-lg-6 col-form-label">END
+									<td colspan="1"><label class="col-lg-8 col-form-label">END
 											TIME</label> <label
 										class="form-control-plaintext col-lg-12 col-form-label text-center"
 										id="end2"></label> <label
 										class="form-control-plaintext col-lg-12 col-form-label 
 										text-center"
-										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'yyyy-MM-dd - HH:mm a')}"></label>
+										th:text="${#temporals.format(generateAttendance.scheduledEndDateTime, 'HH:mm a')}"></label>
 									</td>
 									<td colspan="1" rowspan="2"><label
 										class="col-lg-6 col-form-label">INSTRUCTOR</label>
@@ -163,7 +179,7 @@
 									<td colspan="3"><label class="col-lg-6 col-form-label">TRAINING
 											TYPE</label>
 										<div class="row">
-											<div class="col-lg-4">
+											<div class="col-lg-3 ml-3">
 												<div class="form-group form-check">
 													<input type="checkbox" class="form-check-input" id="1">
 													<label class="form-check-label" for="1">INDUCTION</label>

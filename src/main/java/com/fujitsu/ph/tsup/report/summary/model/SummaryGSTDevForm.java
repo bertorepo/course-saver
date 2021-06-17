@@ -11,13 +11,32 @@
 //==================================================================================================    
 package com.fujitsu.ph.tsup.report.summary.model;
 
+import java.time.ZonedDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
+import com.sun.istack.NotNull;
+
+//==================================================================================================
+//Project Name : Training Sign Up
+//System Name  : Summary of JDU Standardization Training for Dev
+//Class Name   : SummaryGSTDevDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | ----/--/-- | WS) -                 | Initial Version
+//0.02    | ----/--/-- | WS) g.cabiling        | Updated
+//0.03    | 2021/06/14 | WS) m.padaca          | Updated
+//==================================================================================================
+
+
 /**
  * <pre>
  * The model for G3CC standardization training for dev
  * </pre>
  * 
- * @version 0.0.2
+ * @version 0.03
  * @author g.cabiling
+ * @author m.padaca
  */
 
 public class SummaryGSTDevForm {
@@ -40,10 +59,25 @@ public class SummaryGSTDevForm {
     private int TotalNoJDUDevLastWkFinValue;
 
     /* Percentage Finished As of Today (Total Devs and also Total Courses */
-    private int PercentageFinTodayValue;
+    private double PercentageFinTodayValue;
 
     /* Percentage Finished As of Last Week (Total Devs and also Total Courses) */
-    private int PercentageFinLastWkValue;
+    private double PercentageFinLastWkValue;
+    
+    /**
+     *	Scheduled Start Date and Time
+     */
+    @NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private ZonedDateTime scheduledStartDateTime;
+	
+	/**
+     *	Scheduled End Date and Time
+     */
+	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private ZonedDateTime scheduledEndDateTime;
+
 
     public int getTotalNoJDUDevValue() {
         return TotalNoJDUDevValue;
@@ -93,21 +127,37 @@ public class SummaryGSTDevForm {
         this.TotalNoJDUDevLastWkFinValue = totalNoJDUDevLastWkFinValue;
     }
 
-    public int getPercentageFinTodayValue() {
+    public double getPercentageFinTodayValue() {
         return PercentageFinTodayValue;
     }
 
-    public void setPercentageFinTodayValue(int percentageFinTodayValue) {
+    public void setPercentageFinTodayValue(double percentageFinTodayValue) {
         this.PercentageFinTodayValue = percentageFinTodayValue;
     }
 
-    public int getPercentageFinLastWkValue() {
+    public double getPercentageFinLastWkValue() {
         return PercentageFinLastWkValue;
     }
 
-    public void setPercentageFinLastWkValue(int percentageFinLastWkValue) {
+    public void setPercentageFinLastWkValue(double percentageFinLastWkValue) {
         this.PercentageFinLastWkValue = percentageFinLastWkValue;
     }
+    public ZonedDateTime getScheduledStartDateTime() {
+		return scheduledStartDateTime;
+	}
+
+	public void setScheduledStartDateTime(ZonedDateTime scheduledStartDateTime) {
+		this.scheduledStartDateTime = scheduledStartDateTime;
+	}
+
+	public ZonedDateTime getScheduledEndDateTime() {
+		return scheduledEndDateTime;
+	}
+
+	public void setScheduledEndDateTime(ZonedDateTime scheduledEndDateTime) {
+		this.scheduledEndDateTime = scheduledEndDateTime;
+	}
+
 
     @Override
     public String toString() {
@@ -119,4 +169,6 @@ public class SummaryGSTDevForm {
                 + ", PercentageFinLastWkValue =" + PercentageFinLastWkValue + " ]";
     }
 
+
+	
 }

@@ -13,6 +13,11 @@ public class CourseSchedule {
     private Long courseId;
 
     /**
+     * Course Category
+     */
+    private String courseCategory;
+    
+    /**
      * Course Name
      */
     private String courseName;
@@ -47,6 +52,10 @@ public class CourseSchedule {
      * Venue Name
      */
     private String venueName;
+    
+    //new
+    /** Attendance Status **/
+	private String courseStatus;
 
     /**
      * Minimum number of participants
@@ -91,6 +100,7 @@ public class CourseSchedule {
     private CourseSchedule(Builder builder) {
         this.id = builder.id;
         this.courseId = builder.courseId;
+        this.courseCategory = builder.courseCategory;
         this.courseName = builder.courseName;
         this.instructorId = builder.instructorId;
         this.instructorLastName = builder.instructorLastName;
@@ -118,7 +128,11 @@ public class CourseSchedule {
     public Long getCourseId() {
         return courseId;
     }
-
+    
+    public String getCourseCategory() {
+        return courseCategory;
+    }
+    
     public String getCourseName() {
         return courseName;
     }
@@ -149,6 +163,11 @@ public class CourseSchedule {
 
     public String getVenueName() {
         return venueName;
+    }
+    
+    //new
+    public String getCourseStatus() {
+        return courseStatus;
     }
 
     public int getMinRequired() {
@@ -197,6 +216,11 @@ public class CourseSchedule {
          */
         private Long courseId;
 
+        /**
+         * Course Category
+         */
+        private String courseCategory;
+        
         /**
          * Course Name
          */
@@ -280,12 +304,13 @@ public class CourseSchedule {
          * @param maxAllowed
          * @param totalParticipant
          */
-        public Builder(Long id, Long courseId, String courseName, Long instructorId, String instructorLastName,
+        public Builder(Long id, Long courseId, String courseCategory, String courseName, Long instructorId, String instructorLastName,
                 String instructorFirstName, String mandatory, String deadline, Long venueId, String venueName, int minRequired, int maxAllowed,
                 int totalParticipants, char status) { // added String mandatory & String deadline
             
             validateId(id);
             validateCourseId(courseId);
+            validateCourseCategory(courseCategory);
             validateCourseName(courseName);
             validateInstructorId(instructorId);
             validateInstructorLastName(instructorLastName);
@@ -303,6 +328,7 @@ public class CourseSchedule {
             this.instructorId = instructorId;
             this.venueId = venueId;
             this.minRequired = minRequired;
+            this.courseCategory = courseCategory;
             this.courseName = courseName;
             this.instructorLastName = instructorLastName;
             this.instructorFirstName = instructorFirstName;
@@ -315,12 +341,13 @@ public class CourseSchedule {
 
         }
         //TEMPORARY
-        public Builder(Long id, Long courseId, String courseName, Long instructorId, String instructorLastName,
+        public Builder(Long id, Long courseId, String courseCategory, String courseName, Long instructorId, String instructorLastName,
                 String instructorFirstName, String mandatory, String deadline, Long venueId, String venueName, int minRequired, int maxAllowed,
                  char status) {/*int totalParticipants,*/ // added String mandatory & String deadline
             
             validateId(id);
             validateCourseId(courseId);
+            validateCourseCategory(courseCategory);
             validateCourseName(courseName);
             validateInstructorId(instructorId);
             validateInstructorLastName(instructorLastName);
@@ -338,6 +365,7 @@ public class CourseSchedule {
             this.instructorId = instructorId;
             this.venueId = venueId;
             this.minRequired = minRequired;
+            this.courseCategory = courseCategory;
             this.courseName = courseName;
             this.instructorLastName = instructorLastName;
             this.instructorFirstName = instructorFirstName;
@@ -474,6 +502,21 @@ public class CourseSchedule {
 
         }
 
+        /**
+         * <pre>
+         * Validate the course category based on the condition below. If it is invalid then
+         * throw an IllegalArgumentException with the corresponding message.
+         * 
+         * <pre>
+         * 
+         * @param courseName
+         */
+        private void validateCourseCategory(String courseCategory) {
+            if (courseCategory == null || courseCategory.isEmpty()) {
+                throw new IllegalArgumentException("Course category should not be empty");
+            }
+        }
+        
         /**
          * <pre>
          * Validate the course name based on the condition below. If it is invalid then
@@ -662,11 +705,11 @@ public class CourseSchedule {
         return "CourseSchedule [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", instructorId="
                 + instructorId + ", instructorLastName=" + instructorLastName + ", instructorFirstName="
                 + instructorFirstName + ", mandatory=" + mandatory + ", deadline=" + deadline +
-                ", venueId=" + venueId + ", venueName=" + venueName + ", minRequired="
+                ", venueId=" + venueId + ", venueName=" + venueName +  ", courseStatus=" + courseStatus +  ", minRequired="
                 + minRequired + ", maxAllowed=" + maxAllowed + ", courseScheduleDetail=" + courseScheduleDetail
                 + ", totalParticipants=" + totalParticipants + ", status=" + status + "]";
     }
-    
+
     /**
      * Creates a new instance of the course schedule.
      * 

@@ -10,6 +10,7 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) M. Rivera         | New Creation
+//0.02    | 06/16/2021 | WS) K.Sevilla         | Updated
 //==================================================================================================
 /**
 * <pre>
@@ -52,6 +53,8 @@ public class CourseEnrollmentForm {
     /* Venue Name */
     private String venueName;
     
+    private String courseStatus;
+    
     /* Email Address */
     //NEW
     private String emailAddress;
@@ -65,7 +68,7 @@ public class CourseEnrollmentForm {
     private String attendanceStatus;
     
     private String courseDetails;
-    
+
 
     public String getCourseDetails() {
         return courseDetails;
@@ -105,6 +108,11 @@ public class CourseEnrollmentForm {
     /** Venue Name Getter */
     public String getVenueName() {
         return venueName;
+    }
+    
+    /** setCourseStatus Getter */
+    public String getCourseStatus() {
+        return courseStatus;
     }
     
     public String getEmailAddress() {
@@ -155,6 +163,11 @@ public class CourseEnrollmentForm {
     public void setVenueName(String venueName) {
         this.venueName = venueName;
     }
+    
+    /** setCourseStatus Setter */
+    public void setCourseStatus(String courseStatus) {
+    	this.courseStatus = courseStatus;
+	}
 
     /** CourseScheduleDetails Setter */
     public void setCourseScheduleDetails(CourseScheduleDetailForm courseScheduleDetails) {
@@ -176,10 +189,12 @@ public class CourseEnrollmentForm {
                 + ", courseScheduleId=" + courseScheduleId + ", courseName="
                 + courseName + ", participantId=" + participantId
                 + ", instructorName=" + instructorName + ", venueName="
-                + venueName + ", emailAddress=" + emailAddress
+                + venueName + ", courseStatus=" + courseStatus
+                + ", emailAddress=" + emailAddress
                 + ", courseScheduleDetails=" + courseScheduleDetails
                 + ", registrationDate=" + registrationDate
                 + ", attendanceStatus=" + attendanceStatus + ", courseDetails="
                 + courseDetails + "]";
     }
+	
 }

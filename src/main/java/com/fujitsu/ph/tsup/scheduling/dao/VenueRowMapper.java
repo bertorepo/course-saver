@@ -46,8 +46,10 @@ public class VenueRowMapper implements RowMapper<VenueForm>{
 		
 		Long venueId = rs.getLong("ID");
 		String venueName = rs.getString("NAME");
+		boolean overlap = rs.getBoolean("OVERLAP");
 		venueForm.setId(venueId);
 		venueForm.setName(venueName);
+		venueForm.setOverlap(overlap);
 		
 		
 		return venueForm;

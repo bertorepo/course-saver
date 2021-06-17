@@ -9,7 +9,8 @@ package com.fujitsu.ph.tsup.scheduling.model;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/22/2020 | WS) JC. Jimenez | New Creation
-//
+//0.02    | 06/07/2021 | WS) R. Gemparo  | Fixed toString return
+//0.03    | 06/04/2021 | WS) J. Atendido | Added Overlap boolean
 //=======================================================
 
 /**
@@ -33,6 +34,11 @@ public class VenueForm {
      */
     private String name;
     
+    /**
+     * Checks if venue can have overlapped schedule
+     */
+    private boolean overlap;
+    
     public void setId(Long id) {
         this.id = id;
     }
@@ -48,9 +54,17 @@ public class VenueForm {
     public String getName() {
         return name;
     }
-    
-    @Override
+        
+    public boolean isOverlap() {
+		return overlap;
+	}
+
+	public void setOverlap(boolean overlap) {
+		this.overlap = overlap;
+	}
+
+	@Override
     public String toString() {
-        return "InstructorForm [id = " + id + ", name = " + name + "]";
+        return "VenueForm [id = " + id + ", name = " + name + "]";
     }
 }

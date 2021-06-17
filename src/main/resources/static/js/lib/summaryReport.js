@@ -1,11 +1,5 @@
 function load() {
-    var selectedReportType = document.getElementById("selectReportType").value;
-    $("#viewButton").removeAttr('disabled');
-
-    if (selectedReportType == 2) {
-        document.getElementById("reportTable").style.display = "block";
-        document.getElementById("summaryMainDiv").style.display = "none";
-    } else if (selectedReportType == 3) {
+   
         var fromDateTime = $("#scheduledStartDateTime").val();
         var toDateTime = $("#scheduledEndDateTime").val();
         var fromNewDate = fromDateTime.slice(0, 16);
@@ -56,7 +50,7 @@ function load() {
                 $("#scheduledEndDateTime").prop('value', dateConcat);
             }
         });
-    } else {}
+    
 }
 
 function selectReport() {
@@ -75,24 +69,6 @@ function selectReport() {
     }
 }
 
-function viewButton() {
-    $("#viewButton").attr('disabled', 'disabled');
-    $("#exportButton").removeAttr('disabled');
-    var selectedReportType = document.getElementById("selectReportType").value;
-
-    if (selectedReportType == 1) {
-        window.location.href = "/report/course/";
-    } else if (selectedReportType == 2) {
-        document.getElementById("reportTable").style.display = "none";
-        document.getElementById("summaryMainDiv").style.display = "block";
-    } else if (selectedReportType == 3) {
-        window.location.href = "/report/summary/standardization/pm/";
-    } else if (selectedReportType == 4) {
-		window.location.href = "/mandatoryCourses/load/";
-	} else {
-
-    }
-}
 Date.prototype.YYYYMMDDHHMMSS = function() {
     var yyyy = this.getFullYear().toString();
     var MM = pad(this.getMonth() + 1, 2);
@@ -175,4 +151,13 @@ function viewButtonClick() {
     } else {
         document.getElementById("summaryGstForPMForm").submit();
     }
-}
+ }
+ 
+function viewButtonDev() {
+    if ($("#startDate").val() >= $("#endDate").val()) {
+        document.getElementById("message").innerHTML = dateErrorMessage;
+        $('#errorModal').modal('show');
+    } else {
+        document.getElementById("summaryGstForDevForm").submit();
+    }
+ }

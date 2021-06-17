@@ -48,12 +48,10 @@ function changeScheduleModal(data) {
 		var courseScheduleDetail = object.courseScheduleDetail;
 
 		/* Date Time Modification */
-		var startDate = courseScheduleDetail.scheduledStartDateTime.slice(0, 10);
-		var endDate = courseScheduleDetail.scheduledEndDateTime.slice(0, 10);
-		var startTime = courseScheduleDetail.scheduledStartDateTime.slice(11, 19);
-		var endTime = courseScheduleDetail.scheduledEndDateTime.slice(11, 19);
-		var startDateTimeInput = startDate + " " + startTime;
-		var endDateTimeInput = endDate + " " + endTime;
+		var startDate = courseScheduleDetail.scheduledStartDateTime;
+		var endDate = courseScheduleDetail.scheduledEndDateTime;
+		var startDateTimeInput = formatDate(startDate);
+		var endDateTimeInput = formatDate(endDate);
 		
 		var isDoneDate = new Date(courseScheduleDetail.scheduledEndDateTime.slice(0, 10));
 		isDoneDate.setHours(courseScheduleDetail.scheduledEndDateTime.substring(11, 13));
@@ -182,6 +180,7 @@ function declinedCourseSchedule(courseParticipantId,
 	registrationDate,
 	instructorName,
 	venueName,
+	courseStatus,
 	startDateTime,
 	endDateTime,
 	duration,
@@ -202,6 +201,7 @@ function declinedCourseSchedule(courseParticipantId,
 
 	document.getElementById('courseSchedTime').value = startTime + " to " + endTime + " ( " + duration + " ) hour/(s)";
 	document.getElementById('courseSchedVenue').value = venueName;
+	document.getElementById('courseStatus').value = courseStatus;
 	document.getElementById('participantName').value = "No need to insert this";
 	document.getElementById('registrationDate').value = registrationDate;
 	document.getElementById('courseIdHiddenDecline').value = courseId;
@@ -230,6 +230,30 @@ function confirmDecline() {
 function backModal() {
 	$('#confirmationModal').modal('hide');
 	$('#declineMemberModal').modal('show');
+}
+
+function formatDate(dateVal) {
+    var newDate = new Date(dateVal);
+    var sMonth = padValue(newDate.getMonth() + 1);
+    var sDay = padValue(newDate.getDate());
+    var sYear = newDate.getFullYear();
+    var sHour = newDate.getHours();
+    var sMinute = padValue(newDate.getMinutes());
+    var sAMPM = "AM";
+    var iHourCheck = parseInt(sHour);
+    if (iHourCheck > 12) {
+        sAMPM = "PM";
+        sHour = iHourCheck - 12;
+    }
+    else if (iHourCheck === 0) {
+        sHour = "12";
+    }
+    sHour = padValue(sHour);
+  
+    return sYear + "-" + sMonth + "-" + sDay + " " + sHour + ":" + sMinute + " " + sAMPM;
+}
+function padValue(value) {
+    return (value < 10) ? "0" + value : value;
 }
 
 
