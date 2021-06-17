@@ -327,7 +327,7 @@ public class EnrollmentController {
 		if (courseEnrolledListForm.getToDateTime().isBefore(courseEnrolledListForm.getFromDateTime())) {
 			model.addAttribute("myCourseSched", courseEnrolledListForm);
 			model.addAttribute("errorMessage", "No Course Schedule Found");
-			model.addAttribute("error", "To Date should be greater than or equal to From Date");
+			model.addAttribute("error", "Invalid Date");
 			return "enrollment/myCourseSched";
 		}
 		
@@ -608,7 +608,7 @@ public class EnrollmentController {
 		if (form.getFromDateTime().isAfter(form.getToDateTime())
 				|| form.getFromDateTime().isEqual(form.getToDateTime())) {
 			model.addAttribute(form);
-			model.addAttribute("error", "To Date should be greater than or equal to From Date");
+			model.addAttribute("error", "Invalid Date");
 			model.addAttribute("nullMessage", "No course schedule found");
 			model.addAttribute("paginatedViewMemberCourse", new PageImpl<>(new ArrayList<CourseScheduleForm>()));
 			return "enrollment/viewMemberCourse";
@@ -1032,9 +1032,16 @@ public class EnrollmentController {
 	 * 
 	 */		
     public static boolean isNumeric(String strNum) {
-        if (strNum == null) {
+    	if (strNum == null || strNum.length() == 0) {
             return false;
         }
-        return true;
+ 
+        try {
+            Double.parseDouble(strNum);
+            return true;
+ 
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
