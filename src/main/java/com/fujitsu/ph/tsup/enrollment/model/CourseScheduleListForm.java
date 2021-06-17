@@ -11,7 +11,7 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) M. Lumontad       | New Creation
 //0.02    | 09/09/2020 | WS) J.Yu              | Update
-//0.03    | 06/16/2021 | WS) K.Sevilla         | Update
+//0.03    | 06/14/2021 | WS) L.Celoso          | Update
 //==================================================================================================
 /**
 * <pre>
@@ -24,7 +24,6 @@ package com.fujitsu.ph.tsup.enrollment.model;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class CourseScheduleListForm {
@@ -45,6 +44,27 @@ public class CourseScheduleListForm {
     /* List of Top Learner Form by Quarter */
     private List<TopLearnerForm> topLearnerByQuarter;
 
+    /* Filter course category ID */
+    private String courseCategoryId;
+
+    /* Filter course name ID */
+    private String courseNameId;
+    
+    /* Filter instructor ID */
+    private String instructorId;
+    
+    /* Filter venue ID */
+    private String venueId;
+
+    /* Filter mandatory */
+    private String mandatory;
+    
+    /* Filter deadline */
+    private String deadline;
+    
+    /* Current Page */
+    private String currentPage;
+    
     /** Course From Date Getter */
     public ZonedDateTime getFromDateTime() {
         return fromDateTime;
@@ -94,11 +114,89 @@ public class CourseScheduleListForm {
     public void setTopLearnerByQuarter(List<TopLearnerForm> topLearnerByQuarter) {
         this.topLearnerByQuarter = topLearnerByQuarter;
     }
+    
+    /** Filter course category ID Getter */
+    public String getCourseCategoryId() {
+        return courseCategoryId;
+    }
 
+    /** Filter course category ID Setter */
+    public void setCourseCategoryId(String courseCategoryId) {
+        this.courseCategoryId = courseCategoryId;
+    }
+    
+    /** Filter course name ID Getter */
+    public String getCourseNameId() {
+        return courseNameId;
+    }
+
+    /** Filter course name ID Setter */
+    public void setCourseNameId(String courseNameId) {
+        this.courseNameId = courseNameId;
+    }
+
+    /** Filter instructor ID Getter */
+    public String getInstructorId() {
+        return instructorId;
+    }
+
+    /** Filter instructor ID Setter */
+    public void setInstructorId(String instructorId) {
+        this.instructorId = instructorId;
+    }
+    
+    /** Filter venue ID Getter */
+    public String getVenueId() {
+        return venueId;
+    }
+
+    /** Filter venue ID Setter */
+    public void setVenueId(String venueId) {
+        this.venueId = venueId;
+    }
+    
+    /** Filter Mandatory Getter */
+    public String getMandatory() {
+        return mandatory;
+    }
+
+    /** Filter Mandatory Setter */
+    public void setMandatory(String mandatory) {
+        this.mandatory = mandatory;
+    }
+    
+    /** Filter Deadline Getter */
+    public String getDeadline() {
+        return deadline;
+    }
+
+    /** Filter Deadline Setter */
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+    
+    /** Current Page Getter */
+    public String getCurrentPage() {
+        return currentPage;
+    }
+
+    /** Current Page Setter */
+    public void setCurrentPage(String currentPage) {
+        this.currentPage = currentPage;
+    }
+    
     @Override
     public String toString() {
-        return "CourseScheduleListForm [fromDateTime=" + fromDateTime + ", toDateTime=" + toDateTime
+        return "CourseScheduleListForm [fromDateTime=" + fromDateTime + ", toDateTime=" + toDateTime 
+                + ", courseCategoryId=" + courseCategoryId
+                + ", courseNameId=" + courseNameId
+                + ", instructorId=" + instructorId
+                + ", venueId=" + venueId
+                + ", mandatory=" + mandatory
+                + ", deadline=" + deadline
                 + ", courseSchedules=" + courseSchedules + ", topLearnerByMonth=" + topLearnerByMonth
-                + ", topLearnerByQuarter=" + topLearnerByQuarter + "]";
+                + ", topLearnerByQuarter=" + topLearnerByQuarter +
+                " ]";
     }   
+
 }
