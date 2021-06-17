@@ -1,0 +1,54 @@
+ @media (min-width: 1200px) {
+.dateRange {
+    margin-left: 40px !important;
+}
+select#selectReportType {
+    width: 510px;
+}
+input#inputCourse {
+    width: 510px;
+}
+}
+
+		
+@media only screen and (min-device-width : 992px) and (max-device-width : 1199px) {
+
+select#selectReportType {
+    width: 480px;
+}
+input#inputCourse {
+    width: 480px;
+}
+.dateRange {
+    margin-left: 75px !important;
+}
+}
+
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 991px) {
+
+	.form-group.row.align-items-center.justify-content-center.viewAndExportButton {
+    margin-left: 0% !important;
+}
+
+}
+
+
+@media only screen and (min-device-width : 600px) and (max-device-width : 767px) {
+
+.form-group.row.align-items-center.justify-content-center.viewAndExportButton {
+    margin-left: 10% !important;
+}
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+input#viewButton {
+	width: 75px !important;
+}
+input#exportButton { 
+    width: 75px !important;
+}
+.form-group.row.align-items-center.justify-content-center.viewAndExportButton{
+	margin-left: 0% !important;
+}
+}

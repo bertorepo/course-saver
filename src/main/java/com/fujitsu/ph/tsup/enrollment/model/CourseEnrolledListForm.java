@@ -13,6 +13,7 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //0.02    | 07/30/2020 | WS) M.Lumontad        | Updated
 //0.03    | 06/14/2021 | WS) L.Celoso          | Update
 //0.03    | 06/16/2021 | WS) M.Taboada         | Update
+//0.03    | 06/16/2021 | WS) K.Sevilla         | Updated
 //==================================================================================================
 
 /** 
@@ -26,6 +27,10 @@ package com.fujitsu.ph.tsup.enrollment.model;
 */
 import java.time.ZonedDateTime;
 import java.util.List;
+<<<<<<< src/main/java/com/fujitsu/ph/tsup/enrollment/model/CourseEnrolledListForm.java
+=======
+
+>>>>>>> src/main/java/com/fujitsu/ph/tsup/enrollment/model/CourseEnrolledListForm.java
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class CourseEnrolledListForm {
@@ -41,24 +46,6 @@ public class CourseEnrolledListForm {
     /* Set of Course Enrollment Form */
     private List<CourseEnrollmentForm> courseSchedules;
 
-    /* Filter course category ID */
-    private String courseCategoryId;
-
-    /* Filter course name ID */
-    private String courseNameId;
-    
-    /* Filter instructor ID */
-    private String instructorId;
-    
-    /* Filter venue ID */
-    private String venueId;
-
-    /* Filter mandatory */
-    private String mandatory;
-    
-    /* Filter deadline */
-    private String deadline;
-    
     /** From Date and Time Getter */
     public ZonedDateTime getFromDateTime() {
         return fromDateTime;
@@ -89,77 +76,9 @@ public class CourseEnrolledListForm {
         this.courseSchedules = courseSchedules;
     }
     
-    /** Filter course category ID Getter */
-    public String getCourseCategoryId() {
-        return courseCategoryId;
-    }
-
-    /** Filter course category ID Setter */
-    public void setCourseCategoryId(String courseCategoryId) {
-        this.courseCategoryId = courseCategoryId;
-    }
-    
-    /** Filter course name ID Getter */
-    public String getCourseNameId() {
-        return courseNameId;
-    }
-
-    /** Filter course name ID Setter */
-    public void setCourseNameId(String courseNameId) {
-        this.courseNameId = courseNameId;
-    }
-
-    /** Filter instructor ID Getter */
-    public String getInstructorId() {
-        return instructorId;
-    }
-
-    /** Filter instructor ID Setter */
-    public void setInstructorId(String instructorId) {
-        this.instructorId = instructorId;
-    }
-    
-    /** Filter venue ID Getter */
-    public String getVenueId() {
-        return venueId;
-    }
-
-    /** Filter venue ID Setter */
-    public void setVenueId(String venueId) {
-        this.venueId = venueId;
-    }
-    
-    /** Filter Mandatory Getter */
-    public String getMandatory() {
-        return mandatory;
-    }
-
-    /** Filter Mandatory Setter */
-    public void setMandatory(String mandatory) {
-        this.mandatory = mandatory;
-    }
-    
-    /** Filter Deadline Getter */
-    public String getDeadline() {
-        return deadline;
-    }
-
-    /** Filter Deadline Setter */
-    public void setDeadline(String deadline) {
-        this.deadline = deadline;
-    }
-    
-    
     @Override
 	public String toString() {
 		return "CourseEnrolledListForm [FromDateTime = " + fromDateTime + ", ToDateTime = " + toDateTime + ","
-				+ " CourseSchedules =" + courseSchedules
-				+ ", CourseCategoryId =" + courseCategoryId 
-				+ ", courseNameId=" + courseNameId
-                + ", instructorId=" + instructorId
-                + ", venueId=" + venueId
-                + ", mandatory=" + mandatory
-                + ", deadline=" + deadline
-				+ " ]";
+				+ " CourseSchedules =" + courseSchedules + "]";
 	}
 }

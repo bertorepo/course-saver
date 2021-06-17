@@ -29,70 +29,28 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row">
-						<label class="col-lg-2 col-form-label">From Date</label>
+						<label class="col-lg-2 col-form-label">From Date :</label>
 						<div class="col-lg-3">
 							<input class="form-control" type="datetime-local" id="fromDate" name="fromDate" />
 							<!-- This is used to compile the converted date and pass it to the controller -->
 							<input type="hidden" th:field="*{fromDateTime}" />
 						</div>
-						<label class="col-lg-2 col-form-label">To Date</label>
+						<label class="col-lg-2 col-form-label">To Date :</label>
 						<div class="col-lg-3">
 							<input class="form-control" type="datetime-local" id="toDate" name="toDate" />
 							<!-- This is used to compile the converted date and pass it to the controller -->
+							<div class="text-danger" id="toDateTime_error"></div>
 							<input type="hidden" th:field="*{toDateTime}" />
 						</div>
-					</div>
+					
 					<div class="float-right">
-						<input type="submit" class="btn btn-success" value="Submit">
-					</div>
+						<input type="submit" class="btn btn-success" value="Search">
+					</div></div>
 				</div>
 			</div>
-
-			<!--Error1 Modal-->
-			<div class="modal fade" id="error1Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-sm text-center">
-					<div class="modal-content">
-						<div class="modal-header alert-danger">
-							<h5 class="modal-title"></h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="form-group row">
-								<label class="col-lg-12 col-form-label">To Date can't be less than the From
-									Date.</label>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--Error1 Modal End-->
-			<!--Error2 Modal-->
-			<div class="modal fade" id="error2Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-sm text-center">
-					<div class="modal-content">
-						<div class="modal-header alert-danger">
-							<h5 class="modal-title"></h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="form-group row">
-								<label class="col-lg-12 col-form-label">From Date can't be greater than the To
-									Date.</label>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--Error2 Modal End-->
 			<div class="mt-5 nw_block">
-				<h3><i class="fa fa-list"></i> List of Available Trainings</h3>
-				<table id="data" class="table table-bordered table-responsive text-center width_max">
+				<h3><i class="fa fa-list"></i> List of Available Training(s)</h3>
+				<table id="data" class="table table-bordered table-responsive text-center width_max" th:object="${changeSchedule}">
 					<colgroup>
 						<col style="width:20%" />
 						<col style="width:20%" />
@@ -105,8 +63,8 @@
 							<th>Action</th>
 							<th>Course Name</th>
 							<th>Instructor</th>
-							<th>Start Date/Time</th>
-							<th>End Date/Time</th>
+							<th>Start Date & Time</th>
+							<th>End Date & Time</th>
 							<th>Duration</th>
 						</tr>
 					</thead>
@@ -114,22 +72,25 @@
 						<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
 							<td>
 								<a th:value="${courseSchedules.id}" th:id="${'update' + (stat.index + 1)}" th:href="@{/schedules/courseSchedule/{courseScheduleId}/update
-												(courseScheduleId=${courseSchedules.id})}" class="btn btn-warning">
-									<i class="fa fa-pencil"></i> Update
+												(courseScheduleId=${courseSchedules.id})}" class="btn btn-success">Update
 								</a>
 								<a th:value="${courseSchedules.id}" th:id="${'delete' + (stat.index + 1)}" th:href="@{/schedules/courseSchedule/{courseScheduleId}/delete
-												(courseScheduleId=${courseSchedules.id})}" class="btn btn-danger">
-									<i class="fa fa-trash-o"></i> Delete
+												(courseScheduleId=${courseSchedules.id})}" class="btn btn-danger">Delete 
 								</a>
 							</td>
 							<td th:text="${courseSchedules.courseName}"></td>
 							<td th:text="${courseSchedules.instructorName}"></td>
-							<td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
-                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MM/dd/yyyy hh:mm a')}"></td>
-                        <td th:text="${courseScheduleDetails.duration}"></td>
+							<td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"></td>
+	                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"></td>
+	                        <td th:text="${courseScheduleDetails.duration}"></td>
 					</tr>
 				</tbody>
 			</table>
+			<div th:if="${#lists.isEmpty(changeSchedule.courseSchedules)}">
+				<div class="alert alert-dismissible alert-danger text-center">
+					<strong>No Course Schedule Found</strong> 
+				</div>
+			</div>
 		</div> 
 		</form> 	
 		<!--Update Modal-->
@@ -150,13 +111,13 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group row">
-								<div class="col-lg-6">
+								<div class="col-lg-7">
 									<input type="hidden" th:field="*{id}" id="updateCourseScheduleId">
 									
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<label class="col-lg-3 col-form-label">Course Name :</label>
 								<input type="hidden" th:field="*{courseId}">
 								<div class="col-lg-7">
 									<input type="text" class="form-control border-0 bg-white shadow-none dark-grey" 
@@ -165,40 +126,54 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Instructor:</label>
+								<label class="col-lg-3 col-form-label">Instructor :</label>
 								<div class="col-lg-7">
-									<select class="form-control" th:field="*{instructorId}">
-										<option value=""></option>
-										<option th:each="instructors : *{instructors}" 
-												th:value="${instructors.id}"
-												th:text="${instructors.name}"
-												th:selected="${instructors.id} eq *{instructorId}"></option>
-									</select>
+									<input type="text" list="instructors" id="instructorName" 
+									    th:attr="value = ${currentInstructor}"
+										class="form-control custom-select custom-select-md"
+										onmousedown="instructorNameOnDown(this.id)"
+										onchange="instructorNameOnChange()">
+							<div class="text-danger er" id="instructorId_error"></div>
+							<datalist id="instructors" >
+								<option value=""></option>
+								<option th:each="instructors : *{instructors}" 
+								        th:attr="data-value = ${instructors.id}"
+										th:value="${instructors.name}"
+										th:selected="${instructors.id} eq *{instructorId}"></option>
+							</datalist> 
+							<input type="hidden" th:id="instructorId" th:field="*{instructorId}"/>
 									<div class="text-danger er" id="instructorId_error"></div>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Venue:</label>
+								<label class="col-lg-3 col-form-label">Venue :</label>
 								<div class="col-lg-7">
-									<select class="form-control" th:field="*{venueId}" id="venueId">
-										<option value=""></option>
-										<option th:each="venues : *{venues}" 
-												th:value="${venues.id}"
-												th:text="${venues.name}"
-												th:selected="${venues.id} eq *{venueId}"></option>
-									</select>
+									<input type="text" list="venues" id="venueName" 
+									    th:attr="value = ${currentVenue}"
+										class="form-control custom-select custom-select-md"
+										onmousedown="venueNameOnDown(this.id)"
+										onchange="venueNameOnChange()">
+							<div class="text-danger er" id="venueId_error"></div>
+							<datalist id="venues" >
+								<option value=""></option>
+								<option th:each="venues : *{venues}" 
+								        th:attr="data-value = ${venues.id}"
+										th:value="${venues.name}"
+										th:selected="${venues.id} eq *{venueId}"></option>
+							</datalist> 
+							<input type="hidden" th:id="venueId" th:field="*{venueId}"/>
 									<div class="text-danger er" id="venueId_error"></div>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Participants:</label>
+								<label class="col-lg-3 col-form-label">Participant(s) :</label>
 								<div class="col-lg-3">
-									<input type="text" class="form-control" th:field="*{minRequired}" id="minRequired">
+									<input type="text" class="form-control" th:field="*{minRequired}" id="minRequired" placeholder="Min">
 									<div class="text-danger er" id="minRequired_error"></div>
 								</div>
 								<div class="col-lg-1 text-center">—</div>
 								<div class="col-lg-3">
-									<input type="text" class="form-control" th:field="*{maxAllowed}"  id="maxAllowed" >
+									<input type="text" class="form-control" th:field="*{maxAllowed}"  id="maxAllowed" placeholder="Max">
 									<div class="text-danger er" id="maxAllowed_error"></div>
 								</div>
 							</div>	
@@ -206,18 +181,18 @@
 								<div class="col-lg-12 nw_block_xhidden">
 									<table class="table table-responsive table-borderless text-center overflow-hidden"  >
 										<colgroup >
-											<col style="width:45%"/>
-											<col style="width:10%"/>
-											<col style="width:45%"/>
+											<col style="width:48%"/>
+											<col style="width:4%"/>
+											<col style="width:48%"/>
 										</colgroup>
 										<thead>
 										<tr>
 											<td>
-												<label class="col-lg-6 col-form-label">Start Date and Start Time</label>
+												<label class="col-lg-8 col-form-label">Start Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Start Time</label>
 											</td>
 											<td></td>
 											<td>
-												<label class="col-lg-6 col-form-label">End Date and End Time</label>
+												<label class="col-lg-8 col-form-label">End Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; End Time</label>
 											</td>
 										</tr>
 										</thead>
@@ -225,13 +200,13 @@
 										<tr th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}">
 											<td>
 												<div class="form-group row">
-													<div class="col-lg-6">
+													<div class="col-lg-7">
 														<input type="date" class="form-control" 
 															   th:id="${'startDate' + (stat.index + 1)}">
 														<div class="text-danger er" th:id="${'startDate' + (stat.index + 1) + '_error'}">
 														</div>
 													</div>
-													<div class="col-lg-6">
+													<div class="col-lg-5">
 														<input type="time" class="form-control" 
 																th:id="${'startTime' + (stat.index + 1)}">
 														<div class="text-danger er" th:id="${'startTime' + (stat.index + 1) + '_error'}">
@@ -253,13 +228,13 @@
 											</td>
 											<td>
 												<div class="form-group row">
-													<div class="col-lg-6">
+													<div class="col-lg-7">
 														<input type="date" class="form-control" 
 															   th:id="${'endDate' + (stat.index + 1)}" >
 														<div class="text-danger er" th:id="${'endDate' + (stat.index + 1) + '_error'}"></div>
 														
 													</div>
-													<div class="col-lg-6">
+													<div class="col-lg-5">
 														<input type="time" class="form-control" 
 																th:id="${'endTime' + (stat.index + 1)}">
 														<div class="text-danger er" th:id="${'endTime' + (stat.index + 1) + '_error'}"></div>
@@ -274,7 +249,7 @@
 						</div>
 						<div class="modal-footer">
 							<input type="button" name="update" class="btn btn-success" value="Update Schedule" th:attr="onclick=|validations()|">
-							<input type="button" class="btn btn-danger" data-dismiss="modal" name="backButton" value="Back">
+							<input type="button" class="btn btn-primary" data-dismiss="modal" name="backButton" value="Back">
 						</div>
 					</div>
 				</div>
@@ -283,8 +258,8 @@
 			<div class="modal fade" id="updateConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
-						<div class="modal-header alert-success">
-							<h4 class="modal-title">Update Confirmation</h4>
+						<div class="modal-header alert-warning">
+							<h4 class="modal-title"><i class="fa fa-warning"></i></h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -295,8 +270,8 @@
 						<div class="modal-footer">
 							<button type="submit" id="update" 
 									name="update" value="submit" 
-									class="btn btn-success">Yes</button>
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
+									class="btn btn-success">Yes, update it.</button>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No, leave as is.">
 						</div>
 					</div>
 				</div>
@@ -311,15 +286,19 @@
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
+						<h5 class="modal-title"><i class="fa fa-check-square-o"></i></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<p class="text-center" th:if="${updateSuccess}" th:text="${updateSuccess}" id="updated"></p>
-					</div>
-					<div class="modal-footer">
-						<input type="button" name="updateSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" th:if="${updateSuccess}" th:text="${updateSuccess}" id="updated"></label>
+							
+						</div>		
+						<div align="center">					
+						<input type="button" name="updateSuccess" class="btn btn-primary" data-dismiss="modal" value="OK">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -345,22 +324,22 @@
 						<div class="modal-body">
 							<div class="form-group row">
 								<input type="hidden" class="form-control" th:field="*{id}" id="deleteCourseScheduleId">
-								<label class="col-lg-3 col-form-label">Course ID:</label>
+								<label class="col-lg-3 col-form-label"></label>
 								<div class="col-lg-9 mb-3">
-									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
+									<input type="hidden" class="form-control border-0 bg-white shadow-none black ml-n3" 
 										th:field="*{courseId}" readonly>
 								</div>
-								<label class="col-lg-3 col-form-label">Course Name:</label>
+								<label class="col-lg-3 col-form-label">Course Name :</label>
 								<div class="col-lg-9 mb-3">
 									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
 										th:field="*{courseName}" readonly>
 								</div>
-								<label class="col-lg-3 col-form-label">Instructor:</label>
+								<label class="col-lg-3 col-form-label">Instructor :</label>
 								<div class="col-lg-9 mb-3">
 									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
 										th:field="*{instructorName}" readonly>
 								</div>
-								<label class="col-lg-3 col-form-label">Course Date and Time:</label>
+								<label class="col-lg-3 col-form-label">Course Date & Time :</label>
 								<div class="col-lg-9">
 								<table class="ml-n1 mb-3">
 									<tbody th:each = "courseScheduleDetailsAsList, stat : *{courseScheduleDetailList}"> 
@@ -405,14 +384,14 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Venue:</label>
+								<label class="col-lg-3 col-form-label">Venue :</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
 										th:field="*{venueName}" readonly>
 								</div>
 							</div>	
 							<div class="form-group row">
-								<label class="col-lg-3 col-form-label">Course Details:</label>
+								<label class="col-lg-3 col-form-label">Course Detail :</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
 										th:field="*{courseDetails}" readonly>
@@ -421,7 +400,7 @@
 						</div>
 						<div class="modal-footer">
 							<input type="button" name="delete" class="btn btn-success" value="Delete Schedule">
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="Back">
+							<input type="button" class="btn btn-primary" data-dismiss="modal" value="Back">
 						</div>
 					</div>
 				</div>
@@ -430,21 +409,21 @@
 			<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
-						<div class="modal-header alert-success">
-						<h4 class="modal-title">Delete Confirmation</h4>
+						<div class="modal-header alert-warning">
+						<h4 class="modal-title"><i class="fa fa-warning"></i></h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							Are you sure you want to delete this schedule?
+							Are you sure you want to delete this schedule? In doing so, the action cannot be undone.
 						</div>
 						<div class="modal-footer">
 							<button type="submit" id="deleteBtn" 
 										name="deleteConfirmation" 
 										class="btn btn-success" 
-										th:value="*{id}">Yes</button>
-							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No">
+										th:value="*{id}">Yes, delete it.</button>
+							<input type="button" class="btn btn-danger" data-dismiss="modal" value="No, keep it.">
 						</div>
 					</div>
 				</div>
@@ -459,47 +438,23 @@
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header alert-success">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<p class="text-center" th:if="${deleteSuccess}" th:text="${deleteSuccess}" id="deleted"></p>
-					</div>
-					<div class="modal-footer">
-						<input type="submit" name="deleteSuccess" class="btn btn-success" data-dismiss="modal" value="Okay">
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--Delete Confirmation Success Modal End-->
-		
-		<!--Error Modal-->
-		<div class="modal fade" id="errorModal" th:if="${error}" tabindex="-1" role="dialog" 
-				aria-labelledby="exampleModalLabel" aria-hidden="true" 
-				data-backdrop="static" data-keyboard="false">
-			<div class="modal-dialog modal-sm text-center">
-				<div class="modal-content">
-					<div class="modal-header alert-danger">
-						<h5 id="errorTitle" class="modal-title"></h5>
+					<i class="fa fa-check-square-o"></i>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<input type="hidden" th:value="${error}" id="hasError"/>
-							<label class="col-lg-12 col-form-label" th:if="${error}" th:text="${error}"></label>
-						</div>	
-					</div>
-					<div class="modal-footer">
-						<button type="button" name="goToModal" 
-								id="goToModal" class="btn btn-secondary" data-dismiss="modal">Okay</button>
+							<label class="col-lg-12 col-form-label" th:if="${deleteSuccess}" th:text="${deleteSuccess}" id="deleted"></label>
+						</div>		
+						<div align="center">					
+						<input type="submit" name="deleteSuccess" class="btn btn-primary" data-dismiss="modal" value="OK">
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--Error Modal End-->	
+		<!--Delete Confirmation Success Modal End-->
 		
 		<!--Notice Modal-->
 		<div class="modal fade" id="noticeModal" th:if="${notice}" tabindex="-1" role="dialog" 
@@ -507,8 +462,8 @@
 				data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog text-center">
 				<div class="modal-content">
-					<div class="modal-header alert-warning">
-						<h5 id="noticeTitle" class="modal-title">Important Notice</h5>
+					<div class="modal-header btn-info">
+						<h5 id="noticeTitle" class="modal-title"><i class="fa fa-info-circle"></i>  </h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -519,9 +474,9 @@
 							<label class="col-lg-12 col-form-label" th:if="${notice}" th:text="${notice}"></label>
 						</div>	
 					</div>
-					<div class="modal-footer">
+					<div align="center">
 						<button type="button" name="goToModal2" 
-								id="goToModal2" class="btn btn-secondary" data-dismiss="modal">Okay</button>
+								id="goToModal2" class="btn btn-secondary" data-dismiss="modal">OK</button>
 					</div>
 				</div>
 			</div>
@@ -537,144 +492,161 @@
 	
 	<!-- For CDATA -->
 	<script th:inline="javascript">
+	$("form").keypress(function(e) {
+	  //Enter key
+	  if (e.which == 13) {
+	    return false;
+	  }
+	});
 
-		/*<![CDATA[*/
-		var errorMessage = /*[[${error}]]*/ 'default';
-		if (errorMessage == "To Date should be greater than or equal to From Date") {
-			$('#error1Modal').modal('show');
-		}
-		/*<![CDATA[*/
+	/*<![CDATA[*/
+	
+	//FromDateTime is HIGHER with ToDateTime
+	/*<![CDATA[*/
+	var errorMessage = /*[[${error}]]*/'default';
+	if (errorMessage == "Invalid Date") {
+		document.getElementById("toDateTime_error").innerHTML = "Please pick a date that's greater than the value of 'From Date' field.";
+	}
+	/*]]>*/
+	
+	//FromDateTime is EQUAL with ToDateTime
+	/*<![CDATA[*/
+	var errorMessage = /*[[${error}]]*/'default';
+	if (errorMessage == "Equal Date") {
+		document.getElementById("toDateTime_error").innerHTML = "Please pick a date where 'From Date' & 'To Date' field values should not be equal.";
+	}
+	/*]]>*/
 
-		$("#goToModal").click(function () {
-			$('#updateModal').modal('show');
-		});
+	$("#goToModal").click(function () {
+		$('#updateModal').modal('show');
+	});
 
-		function load() {
-			var fromDateTime = $("#fromDateTime").val();
-			var toDateTime = $("#toDateTime").val();
-			var fromNewDate = fromDateTime.toString().slice(0, 16);
-			var toNewDate = toDateTime.toString().slice(0, 16);
+	function load() {
+		var fromDateTime = $("#fromDateTime").val();
+		var toDateTime = $("#toDateTime").val();
+		var fromNewDate = fromDateTime.toString().slice(0, 16);
+		var toNewDate = toDateTime.toString().slice(0, 16);
 
-			document.getElementById("fromDate").value = fromNewDate;
-			document.getElementById("toDate").value = toNewDate;
+		document.getElementById("fromDate").value = fromNewDate;
+		document.getElementById("toDate").value = toNewDate;
 
-			if ($("#updateView").length > 0) {
-				var updateCourseScheduleId = $("#updateCourseScheduleId").val();
-				if (updateCourseScheduleId !== "" && $("#errorModal").length == 0) {
-					if ($('#noticeModal').length != 0) {
-						$('#noticeModal').modal('show');
-						$("#goToModal2").click(function () {
-							$('#updateModal').modal('show');
-						});
-					} else {
+		if ($("#updateView").length > 0) {
+			var updateCourseScheduleId = $("#updateCourseScheduleId").val();
+			if (updateCourseScheduleId !== "" && $("#errorModal").length == 0) {
+				if ($('#noticeModal').length != 0) {
+					$('#noticeModal').modal('show');
+					$("#goToModal2").click(function () {
 						$('#updateModal').modal('show');
-					}
-				}
-
-				var startDateTime = document.getElementById("startDateTime1").value;
-				var endDateTime = document.getElementById("endDateTime1").value;
-
-				var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
-				var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
-
-				var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-				var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-
-				document.getElementById("startDate1").value = rowStartDate;
-				document.getElementById("endDate1").value = rowEndDate;
-
-				document.getElementById("startTime1").value = rowStartTime;
-				document.getElementById("endTime1").value = rowEndTime;
-			}
-
-			if ($("#deleteView").length > 0) {
-				var deleteCourseScheduleId = $("#deleteCourseScheduleId").val();
-				if (deleteCourseScheduleId !== "") {
-					$('#deleteModal').modal('show');
-				}
-
-				var startDateTime = document.getElementById("startDateTime1").value;
-				var endDateTime = document.getElementById("endDateTime1").value;
-
-				var startDate = startDateTime.substring(0, startDateTime.indexOf("T")).replace(/[-]/gi, "/");
-				var endDate = endDateTime.substring(0, endDateTime.indexOf("T")).replace(/[-]/gi, "/");
-
-				document.getElementById("startDate1").value = startDate;
-				document.getElementById("endDate1").value = endDate;
-
-				var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
-				var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
-
-				var startHours = parseInt(rowStartTime.substring(0, startDateTime.indexOf(":")));
-				var startMinutes = rowStartTime.substring(3, 5);
-
-				if (startHours > 12) {
-					var startTime = String(startHours - 12).padStart(2, "0") + ":" + startMinutes + " PM";
-					document.getElementById("startTime1").value = startTime;
-				} else if (startHours == 12) {
-					document.getElementById("startTime1").value = rowStartTime + " PM";
+					});
 				} else {
-					document.getElementById("startTime1").value = rowStartTime + " AM";
+					$('#updateModal').modal('show');
 				}
-
-				var endHours = parseInt(rowEndTime.substring(0, endDateTime.indexOf(":")));
-				var endMinutes = rowEndTime.substring(3, 5);
-
-				if (endHours > 12) {
-					var endTime = String(endHours - 12).padStart(2, "0") + ":" + endMinutes + " PM";
-					document.getElementById("endTime1").value = endTime;
-				} else if (endHours == 12) {
-					document.getElementById("endTime1").value = rowEndTime + " PM";
-				} else {
-					document.getElementById("endTime1").value = rowEndTime + " AM";
-				}
-
 			}
 
-			if ($("#updateSuccessModal").length > 0) {
-				/*<![CDATA[*/
-				var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
+			var startDateTime = document.getElementById("startDateTime1").value;
+			var endDateTime = document.getElementById("endDateTime1").value;
 
-				var updated = document.getElementById("updated").innerHTML;
+			var rowStartDate = startDateTime.substring(0, startDateTime.indexOf("T"));
+			var rowEndDate = endDateTime.substring(0, endDateTime.indexOf("T"));
 
-				if (updateSuccess == updated) {
-					$('#updateSuccessModal').modal('show');
-				}
-				/*]]>*/
-			}
+			var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+			var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
 
-			if ($("#deleteSuccessModal").length > 0) {
-				/*<![CDATA[*/
-				var deleteSuccess = /*[[${updateSuccess}]]*/ 'default';
+			document.getElementById("startDate1").value = rowStartDate;
+			document.getElementById("endDate1").value = rowEndDate;
 
-				var deleted = document.getElementById("deleted").innerHTML;
-
-				if (deleteSuccess == updated) {
-					$('#deleteSuccessModal').modal('show');
-				}
-				/*]]>*/
-			}
-
-			//Conflict Modal Validation
-			if ($("#errorModal").length > 0) {
-				/*<![CDATA[*/
-				var errorMessage = /*[[${error}]]*/ 'default';
-				var element = document.getElementById('hasError').value;
-
-				if (element.includes('conflict')) {
-					document.getElementById('errorTitle').innerHTML = "Conflict!";
-				}
-
-				console.log(element);
-
-				if (errorMessage == element) {
-
-					$('#errorModal').modal('show');
-
-				}
-				/*]]>*/
-			}
+			document.getElementById("startTime1").value = rowStartTime;
+			document.getElementById("endTime1").value = rowEndTime;
 		}
+
+		if ($("#deleteView").length > 0) {
+			var deleteCourseScheduleId = $("#deleteCourseScheduleId").val();
+			if (deleteCourseScheduleId !== "") {
+				$('#deleteModal').modal('show');
+			}
+
+			var startDateTime = document.getElementById("startDateTime1").value;
+			var endDateTime = document.getElementById("endDateTime1").value;
+
+			var startDate = startDateTime.substring(0, startDateTime.indexOf("T")).replace(/[-]/gi, "/");
+			var endDate = endDateTime.substring(0, endDateTime.indexOf("T")).replace(/[-]/gi, "/");
+
+			document.getElementById("startDate1").value = startDate;
+			document.getElementById("endDate1").value = endDate;
+
+			var rowStartTime = startDateTime.substring(startDateTime.indexOf("T") + 1, startDateTime.indexOf("T") + 6);
+			var rowEndTime = endDateTime.substring(endDateTime.indexOf("T") + 1, endDateTime.indexOf("T") + 6);
+
+			var startHours = parseInt(rowStartTime.substring(0, startDateTime.indexOf(":")));
+			var startMinutes = rowStartTime.substring(3, 5);
+
+			if (startHours > 12) {
+				var startTime = String(startHours - 12).padStart(2, "0") + ":" + startMinutes + " PM";
+				document.getElementById("startTime1").value = startTime;
+			} else if (startHours == 12) {
+				document.getElementById("startTime1").value = rowStartTime + " PM";
+			} else {
+				document.getElementById("startTime1").value = rowStartTime + " AM";
+			}
+
+			var endHours = parseInt(rowEndTime.substring(0, endDateTime.indexOf(":")));
+			var endMinutes = rowEndTime.substring(3, 5);
+
+			if (endHours > 12) {
+				var endTime = String(endHours - 12).padStart(2, "0") + ":" + endMinutes + " PM";
+				document.getElementById("endTime1").value = endTime;
+			} else if (endHours == 12) {
+				document.getElementById("endTime1").value = rowEndTime + " PM";
+			} else {
+				document.getElementById("endTime1").value = rowEndTime + " AM";
+			}
+
+		}
+
+		if ($("#updateSuccessModal").length > 0) {
+			/*<![CDATA[*/
+			var updateSuccess = /*[[${updateSuccess}]]*/ 'default';
+
+			var updated = document.getElementById("updated").innerHTML;
+
+			if (updateSuccess == updated) {
+				$('#updateSuccessModal').modal('show');
+			}
+			/*]]>*/
+		}
+
+		if ($("#deleteSuccessModal").length > 0) {
+			/*<![CDATA[*/
+			var deleteSuccess = /*[[${updateSuccess}]]*/ 'default';
+
+			var deleted = document.getElementById("deleted").innerHTML;
+
+			if (deleteSuccess == updated) {
+				$('#deleteSuccessModal').modal('show');
+			}
+			/*]]>*/
+		}
+
+		//Conflict Modal Validation
+		if ($("#errorModal").length > 0) {
+			/*<![CDATA[*/
+			var errorMessage = /*[[${error}]]*/ 'default';
+			var element = document.getElementById('hasError').value;
+
+			if (element.includes('conflict')) {
+				document.getElementById('errorTitle').innerHTML = "Conflict!";
+			}
+
+			console.log(element);
+
+			if (errorMessage == element) {
+
+				$('#errorModal').modal('show');
+
+			}
+			/*]]>*/
+		}
+	}
 
 	</script>
 </body>

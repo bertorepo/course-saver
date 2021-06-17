@@ -14,6 +14,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //0.01    | 07/08/2020 | WS) K.Freo            | Updated
 //0.01    | 07/29/2020 | WS) K.Freo            | Updated
 //0.01    | 07/30/2020 | WS) M.Lumontad        | Updated
+//0.01	  | 06/16/2021 | WS) K.Sevilla 		   | Updated
 //=================================================================================================
 /**
 * <pre>
@@ -27,7 +28,6 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import org.springframework.jdbc.core.RowMapper;

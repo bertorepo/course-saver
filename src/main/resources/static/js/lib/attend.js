@@ -1,22 +1,3 @@
-init();
-function init() {
-    addRowHandlers('data');
-}
-function addRowHandlers(tableId) {
-    if (document.getElementById(tableId) != null) {
-        var table = document.getElementById(tableId);
-        var rows = table.getElementsByTagName('tr');
-        var id = '';
-        for (var i = 1; i < rows.length; i++) {
-            rows[i].i = i;
-            rows[i].onclick = function() {
-                id = table.rows[this.i].cells[0].innerHTML;
-                var callUrl = '/attendance/signin/' + id;
-                document.location.href = callUrl;
-            };
-        }
-    }
-}
 function onValidation() {
     var fromDateTimeEmpty = $("fromDateTime").val();
     var toDateTimeEmpty = $("toDateTime").val();

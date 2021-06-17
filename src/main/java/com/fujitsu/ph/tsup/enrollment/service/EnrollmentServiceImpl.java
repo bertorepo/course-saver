@@ -17,23 +17,19 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.03    | 03/24/2021 | WS) K.Sanchez         | Update
 //0.03    | 03/23/2021 | WS) C.Macatangay      | Update
 //0.04    | 05/04/2021 | WS) A.Senamin         | Update
-//0.05    | 06/14/2021 | WS) L.Celoso          | Update
+//0.05    | 06/16/2021 | WS) K.Sevilla         | Update
 //==================================================================================================
 
 import com.fujitsu.ph.auth.model.FpiUser;
-import com.fujitsu.ph.tsup.course.category.model.CourseCategory;
-import com.fujitsu.ph.tsup.course.model.Course;
+
 import com.fujitsu.ph.tsup.enrollment.dao.EnrollmentDao;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseSchedule;
 import com.fujitsu.ph.tsup.enrollment.domain.CourseScheduleDetail;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
-import com.fujitsu.ph.tsup.enrollment.model.EnrolledMemberForm;
 import com.fujitsu.ph.tsup.enrollment.model.FileStorageProperties;
 import com.fujitsu.ph.tsup.enrollment.model.SearchForm;
 import com.fujitsu.ph.tsup.enrollment.model.TopLearnerForm;
-import com.fujitsu.ph.tsup.scheduling.model.InstructorForm;
-import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -65,7 +61,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -212,16 +207,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
      * 
      */
     @Override
-    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, 
-    		String instructorId, String venueId, String mandatory, String deadline, Pageable pageable) {
+    public Set<CourseSchedule> findAllScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime) {
         try {
             Set<CourseSchedule> courseScheduleSet = enrollmentDao.findAllScheduledCourses(fromDateTime,
-                    toDateTime, courseCategoryId, courseNameId, instructorId, venueId, mandatory, deadline, pageable);
-            
+                    toDateTime);
             if (courseScheduleSet == null || courseScheduleSet.isEmpty()) {
                 throw new IllegalArgumentException("No Course Schedule Found");
             }
-            
             return courseScheduleSet;
         } catch (DataAccessException ex) {
             throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
@@ -229,12 +221,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId, 
-    		String courseNameId, String instructorId, String venueId, String mandatory, String deadline, Pageable pageable) {
+    public Set<CourseSchedule> findAllMemberScheduledCourses(ZonedDateTime fromDateTime,
+            ZonedDateTime toDateTime) {
         try {
             Set<CourseSchedule> courseScheduleSet = enrollmentDao.findAllScheduledCourses(fromDateTime,
-                    toDateTime,courseCategoryId,courseNameId, instructorId, venueId, mandatory, deadline, pageable);
-            
+                    toDateTime);
             return courseScheduleSet;
         } catch (DataAccessException ex) {
             throw new IllegalArgumentException("Can't Access From Datetime and To Datetime");
@@ -250,6 +241,8 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     /** enroll using the courseParticipant */
     @Override
     public void enroll(CourseParticipant courseParticipant) {
+        System.out.println("MY COURSE ID 2: " + courseParticipant.getCourseScheduleId());
+        System.out.println("FPI USER ID 2: " + courseParticipant.getParticipantId());
 
         // try {
         CourseSchedule courseRecord = enrollmentDao

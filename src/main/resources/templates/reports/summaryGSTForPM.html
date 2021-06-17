@@ -1,4 +1,5 @@
 <!-- @Author: Naval, Rosalyn-->
+<!-- @Author: Padaca, Mariel-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
@@ -31,7 +32,7 @@
 					<span style="width:70px"></span>
 						<div class="col-lg-5">
 							<select id="selectReportType" name="selectReportType" class="form-control" required
-							onchange="selectReport()" style="width:525px; text-align-last:center;">
+							onchange="selectReport()" style="text-align-last:center;">
 								<option value="" disabled selected hidden>Please Select Report Type</option>
 								<option th:value="0" disabled hidden></option>
 								<option th:value="1">Summary of Course Conducted</option>
@@ -42,32 +43,37 @@
 							</select>
 						</div>
 				</div>	     		
- 				<div class="form-group row align-items-center justify-content-center">
- 				<span style="width:31px"></span>
-                <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+ 				<div class="dateRange">
+				 <div class="form-group row align-items-center justify-content-center">
+ 				 <span style="width:31px"></span>
+                  <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+                	<div class= "fromDate" style="display:inherit;">
                         <label class="col-form-label" style="font-weight: bold;">From</label>
-								<span style="width:8px"></span>
-	                            <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+						  <span style="width:8px"></span>
+	                         <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
 								<input type="hidden" th:field="*{scheduledStartDateTime}"/>
-								<span style="width:8px"></span>
-	                        <label class="col-form-label" style="font-weight: bold;">To</label>
-	                        <div class="col-lg-2">
+					</div>
+						  <span style="width:8px"></span>
+							<div class= "toDate" style="display:inherit;">
+	                         <label class="col-form-label" style="font-weight: bold;">To</label>
+	                          <span style="width:8px"></span>
 	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
 	                            <input type="hidden" th:field="*{scheduledEndDateTime}"/>
-	                       </div>
+	                        </div>
                  </div> 
+				</div>
                  
                  <div class="form-group row align-items-center justify-content-center">
  						<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
  						<span style="width:75px"></span>
  						<div class="col-lg-5">
-							<input list="course" class="form-control" id="inputCourse" type="text" style="width:525px;" autocomplete="off" disabled>
+							<input list="course" class="form-control" id="inputCourse" type="text" autocomplete="off" disabled>
 								<datalist id="course">
 								  <option></option>
 								</datalist>
 						    </div>
 					</div>
-					<div class="form-group row align-items-center justify-content-center" style="margin-left:20%">
+					<div class="form-group row align-items-center justify-content-center viewAndExportButton" style="margin-left:20%;">
 						<input type="button" id="viewButton" class="btn btn-success"
 						value="View" onclick="viewButtonClick()" style="width: 100px">
 						<span style="width:100px"></span>
@@ -75,7 +81,7 @@
 					</div>
 					
 					<label>Report Display Summary</label>
-					<div class="container" id="reportTable" style="border-style:groove;width:100%;height:400px;display:block;">
+					<div class="container" id="reportTable" style="border-style:groove;width:100%;height:400px;display:block; overflow-x:auto;">
 						<div id="summaryPM" class="row" style="margin-top:11px">
 							<div class="col-md-6"> 
 								<table class="summaryTable">

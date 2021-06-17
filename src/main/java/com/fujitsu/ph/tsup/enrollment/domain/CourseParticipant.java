@@ -1,7 +1,5 @@
 package com.fujitsu.ph.tsup.enrollment.domain;
 
-import java.time.ZonedDateTime;
-
 //==================================================================================================
 //$Id:PR01$
 //Project Name :Training Sign Up
@@ -15,7 +13,12 @@ import java.time.ZonedDateTime;
 //0.02    | 07/06/2020 | WS) J.Macabugao   | Update
 //0.03	  | 07/07/2020 | WS) T.Oviedo	   | Update
 //0.04    | 06/14/2021 | WS) L.Celoso      | Update
+//0.04	  | 06/16/2021 | WS) K.Sevilla	   | Update
 //==================================================================================================
+
+import java.time.ZonedDateTime;
+
+
 /**
 * <pre>
 * Enrollment Model Use as Course Participant Builder Pattern <added

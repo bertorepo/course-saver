@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Attendance -->
+<!-- Name         : changeAttendanceStatus.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | ----/--/-- | WS) -		          | Created -->
+<!-- 0.02    | 2021/06/04 | WS) rl.naval          | Updated -->
+<!-- ================================================================================================== -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org"
@@ -36,7 +47,7 @@ div.text-danger {
             <div class="card">
                 <div class="card-body">
                     <div class="form-group row justify-content-center">
-                        <label class="col-lg-1">Course</label>
+                        <label class="col-lg-2">Course Schedule</label>
                         <div class="col-lg-6">
                             <select class="form-control courseSelect" id="id"
                                 name='courseSelect' required onchange="ValidateDropDown(this)"
@@ -51,13 +62,13 @@ div.text-danger {
                         <div class="col-lg-1">
                             <div
                                 th:if="${#lists.isEmpty(changeStatusForm.participants)}">
-                                <input type="button" onclick="choices()"
+                                <input type="button" onclick="successUrl()"
                                     class="btn btn-large btn-success disabled" value="Generate"
                                     name="button" id="button"></input>
                             </div>
                             <div
                                  th:if="${not #lists.isEmpty(changeStatusForm.participants)}">
-                                <input type="button" onclick="choices()"
+                                <input type="button" onclick="successUrl()"
                                     class="btn btn-large btn-success" value="Generate"
                                     name="button" id="button"></input>
                             </div>
@@ -66,6 +77,12 @@ div.text-danger {
                 </div>
             </div>
         </form>
+        <div class="mt-3" th:if="${#lists.isEmpty(changeStatusForm.participants)}">
+			<div class="alert alert-dismissible alert-danger text-center" id="emptyDiv" hidden>
+					<strong>No records found</strong>
+			</div>
+		</div>
+        
         <div class="modal fade" th:if="${message}" id="successMessage"
             tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true"></div>
@@ -256,7 +273,7 @@ div.text-danger {
                             </div>
                         </div>
                     </div>
-
+                    
                     <!--Confirmation Modal-->
                     <div class="modal fade" id="confirmModal" tabindex="-1"
                         role="dialog" aria-labelledby="exampleModalLabel"

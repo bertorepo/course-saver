@@ -40,31 +40,36 @@ public class CourseScheduleNewForm{
     /**
      * Course Id
      */
-    @NotNull(message = "Please fill up course name")
+    @NotNull(message = "This field is required.")
     private Long courseId;
     
     /**
      * Instructor Id
      */
-    @NotNull(message = "Please fill up instructors")
+    @NotNull(message = "This field is required.")
     private Long instructorId;
     
     /**
      * Venue Id
      */
-    @NotNull(message = "Please fill up venues")
+    @NotNull(message = "This field is required.")
     private Long venueId;
     
     /**
+     * Venue Overlap
+     */
+    private boolean venueOverlap;
+        
+    /**
      * Minimum Required Participants
      */
-    @Min(value = 1, message = "Please fill up minimum no. of participants")
+    @Min(value = 1, message = "This field is required.")
     private int minRequired;
     
     /**
      * Maximum Allowed Participants
      */
-    @Min(value = 1, message = "Please fill up maximum no. of participants")
+    @Min(value = 1, message = "This field is required.")
     private int maxAllowed;
     
     
@@ -126,7 +131,15 @@ public class CourseScheduleNewForm{
         return venueId;
     }
     
-    public void setMinRequired(int minRequired) {
+    public boolean isVenueOverlap() {
+		return venueOverlap;
+	}
+
+	public void setVenueOverlap(boolean venueOverlap) {
+		this.venueOverlap = venueOverlap;
+	}
+
+	public void setMinRequired(int minRequired) {
         this.minRequired = minRequired;
     }
     

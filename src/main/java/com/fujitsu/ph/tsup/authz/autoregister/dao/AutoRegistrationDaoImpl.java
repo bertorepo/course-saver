@@ -17,13 +17,27 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fujitsu.ph.tsup.authz.dao.EmployeeDetailsRowMapper;
 import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistration;
 import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistrationDepartment;
+import com.fujitsu.ph.tsup.authz.autoregister.model.AutoRegistrationMemberRole;
 import com.fujitsu.ph.tsup.common.domain.Employee;
+
+//=======================================================
+//$Id: 
+//Project Name: Training Sign Up
+//Class Name: AutoRegistrationDaoImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by       | Content
+//--------+------------+------------------+---------------
+//0.01    | ----/--/-- | k.sala	     	  | Created
+//0.02    | 2021/06/07 | WS) R.Gaquit	  | Updated
+//=======================================================
 
 /**
  * AutoRegistrationDaoImpl class
  * 
  * @author k.sala (New Creation by: k.sala)
- * @version 0.01
+ * @author r.gaquit (Updated)
+ * @version 0.02
  */
 @Repository
 @CrossOrigin(origins = "*")
@@ -40,8 +54,8 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
     public int addAutoRegistration(AutoRegistration autoRegistration) {
 
         String query = "INSERT INTO employee"
-                + " (number, last_name, first_name, email_address, username, department_id, employment_date)"
-                + " VALUES(:employeeNumber, :lastName, :firstName, :emailAddress, :userName, :departmentid, :employmentDate)";
+                + " (number, last_name, first_name, email_address, username, department_id, member_role_id, employment_date)"
+                + " VALUES(:employeeNumber, :lastName, :firstName, :emailAddress, :userName, :departmentid, :memberRoleId, :employmentDate)";
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("employeeNumber", autoRegistration.getEmployeeNumber())
@@ -50,6 +64,7 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
                 .addValue("emailAddress", autoRegistration.getEmailAddress())
                 .addValue("userName", autoRegistration.getUserName())
                 .addValue("departmentid", autoRegistration.getDepartmentid())
+                .addValue("memberRoleId", autoRegistration.getMemberRoleId())
                 .addValue("employmentDate", parseEmploymentDate(autoRegistration.getEmploymentDate()));
 
         int rowsAffectedEmployee = template.update(query, sqlParameterSource);
@@ -100,6 +115,16 @@ public class AutoRegistrationDaoImpl implements AutoRegistrationDao {
         String query = "SELECT * FROM tsup.department";
         List<AutoRegistrationDepartment> departmentList = template.query(query, new DepartmentRowMapper());
         return departmentList;
+    }
+    
+    /*
+     * Method for loading all Member role type
+     */
+    @Override
+    public List<AutoRegistrationMemberRole> getAllMemberRole() {
+        String query = "SELECT * FROM tsup.member_role WHERE deleted_at is null";
+        List<AutoRegistrationMemberRole> memberRoleList = template.query(query, new MemberRoleMapper());
+        return memberRoleList;
     }
 
     @Override

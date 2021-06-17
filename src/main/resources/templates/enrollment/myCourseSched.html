@@ -76,7 +76,7 @@
 						</div>
 
 						<div class="float-right">
-							<input type="submit" class="btn btn-success" value="Search" onclick="submitDateTime()">
+							<input type="submit" class="btn btn-success" value="Submit" onclick="submitDateTime()">
 						</div>
 					</div>
 				</div>
@@ -105,11 +105,11 @@
 						<th class="align-middle">Course Name</th>
 						<th class="align-middle">Instructor</th>
 						<th class="align-middle">Venue Name</th>
-						<th class="align-middle">Start Date & Time <br />
-							<hr> End Date & Time
+						<th class="align-middle">Start Date/Time <br />
+							<hr> End Date/Time
 						</th>
-						<th class="hide">Start Date & Time</th>
-						<th class="hide">End Date & Time</th>
+						<th class="hide">Start Date/Time</th>
+						<th class="hide">End Date/Time</th>
 						<th class="align-middle">Duration</th>
 						<th class="align-middle">Course Schedule Status</th>
 						<th class="hide">Course Schedule ID</th>
@@ -141,18 +141,18 @@
  									'${courseSchedules.instructorName}',
  									'${courseSchedules.venueName}',
  									'${courseSchedules.courseStatus}',
- 									'${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - hh:mm a')}',
- 									'${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}',
+ 									'${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
+ 									'${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}',
  									'${courseEnrollmentForm.duration}',
  									'${courseSchedules.courseId}',
  									'${courseSchedules.courseDetails}')|" class="btn btn-danger">
-									DELETE
+									Delete
 								</button>
 
 								<button th:if="${courseSchedules.attendanceStatus == 'A' && courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() > #temporals.createNow() }" title="Change Schedule"
 									th:attr="onclick=|declineUpdate('${courseSchedules.courseId}','${courseSchedules.courseName}','${courseSchedules.courseScheduleId}')|"
 									class="btn btn-primary">
-									UPDATE
+									Update
 								</button>
 								
 								<!-- Upload Certificate Modal -->
@@ -160,14 +160,15 @@
 								Type="button" class="btn btn-info" aria-label="Settings" data-toggle="modal"
 									data-target="#uploadModal"
 									th:attr="onclick=|getCourseId('${courseSchedules.courseId}')|"title="Upload Certificate" >
-									UPLOAD
+									Upload
 									</button>
-								<p th:if="${courseSchedules.attendanceStatus == 'A' && courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() < #temporals.createNow() }">Course is Past Due</p>
-								<p th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</p>
+								<text th:if="${courseSchedules.attendanceStatus == 'A' 
+								&& courseEnrollmentForm.scheduledEndDateTime.toLocalDateTime() < #temporals.createNow() }">Course is Past Due</text>
+								<text th:if="${courseSchedules.attendanceStatus == 'P'}">Already Attended</text>
 							</td>
 
 							<td class="align-middle" th:if= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
-							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}','${courseSchedules.courseId}')|"
+							th:attr="onclick=|certificateDownload('${courseSchedules.courseName}','${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}','${courseSchedules.courseId}')|"
 							th:text="${courseSchedules.courseName}"></td>
 							<td class="align-middle" th:unless= "${#lists.contains(mandatoryCourseList,courseSchedules.courseName)}"
 							th:text="${courseSchedules.courseName}"></td>
@@ -180,18 +181,18 @@
 
 
 							<td class="hide"
-								th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - hh:mm a')}">
+								th:text="${#calendars.format(courseEnrollmentForm.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
 							</td>
 							<td class="hide"
-								th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}">
+								th:text="${#calendars.format(courseEnrollmentForm.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}">
 							</td>
 							<td class="align-middle" th:text="|${courseEnrollmentForm.duration} hour/s|"></td>
 							<td class="align-middle" >
-								<p th:if="${courseSchedules.courseStatus == 'A'}">Active</p>
-								<p th:if="${courseSchedules.courseStatus == 'O'}">Ongoing</p>
-								<p th:if="${courseSchedules.courseStatus == 'D'}">Done</p>
-								<p th:if="${courseSchedules.courseStatus == 'C'}">Closed</p>
-							</td>
+								<text th:if="${courseSchedules.courseStatus == 'A'}">Active</text>
+								<text th:if="${courseSchedules.courseStatus == 'O'}">Ongoing</text>
+								<text th:if="${courseSchedules.courseStatus == 'D'}">Done</text>
+								<text th:if="${courseSchedules.courseStatus == 'C'}">Closed</text>
+								</td>
 							<td class="hide" th:text="${courseSchedules.courseScheduleId}"></td>
 							<td class="hide" th:text="${courseSchedules.participantId}"></td>
 							<td class="hide" th:text="${courseSchedules.registrationDate}"></td>
@@ -348,8 +349,8 @@
 								<tr>
 									<th>Instructor</th>
 									<th>Venue</th>
-									<th>Start Date & Time</th>
-									<th>End Date & Time</th>
+									<th>Start Date/Time</th>
+									<th>End Date/Time</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -418,6 +419,7 @@
 								<input type="hidden" name="courseId" id="courseIdHiddenDecline">
 								<input type="hidden" name="id" id="courseParticipantIdHiddenDecline">
 								<input type="hidden" name="courseScheduleId" id="courseScheduleIdHidden">
+								<input type="hidden" name="courseStatus" id="courseStatus">
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control border-0 bg-white shadow-none"
@@ -443,11 +445,6 @@
 								<div class="col-lg-9">
 									<input type="text" class="form-control border-0 bg-white shadow-none"
 										id="courseSchedVenue" name="venueName" readonly>
-								</div>
-								<label class="col-lg-3 col-form-label">Course Status:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control border-0 bg-white shadow-none"
-										id="courseStatus" name="courseStatus" readonly>
 								</div>
 								<label class="col-lg-3 col-form-label">Course Details:</label>
 								<div class="col-lg-9">
@@ -549,7 +546,7 @@
 		//FromDateTime is Higher that ToDateTime
 		/*<![CDATA[*/
 		var errorMessage = /*[[${error}]]*/'default';
-		if (errorMessage == "To Date should be greater than or equal to From Date") {
+		if (errorMessage == "To Date should be greater than From Date") {
 			document.getElementById("toDateTime_error").innerHTML = errorMessage;
 		}
 		/*]]>*/

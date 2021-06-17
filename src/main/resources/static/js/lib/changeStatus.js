@@ -48,6 +48,7 @@ function myFunction(index) {
 	}
 }
 $(document).ready(function() {
+	choices();
 	$(".auto").click();
 });
 
@@ -236,6 +237,13 @@ function ValidateDropDown(input) {
 }
 
 function choices() {
+   var id = document.getElementById("id").value;
+   if (id != "") {
+		$("#emptyDiv").removeAttr('hidden');
+   }
+}
+
+function successUrl() {
 	var id = document.getElementById("id").value;
 	if (id != "") {
 		var callUrl = '/attendance/' + id + '/participants';

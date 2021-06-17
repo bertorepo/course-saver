@@ -13,6 +13,7 @@ package com.fujitsu.ph.tsup.enrollment.dao;
 //0.03    | 07/15/2020 | WS) T.Oviedo          | Update
 //0.04    | 06/14/2021 | WS) L.Celoso          | Update
 //0.04    | 06/16/2021 | WS) M.Taboada         | Update
+//0.04    | 06/16/2021 | WS) K.Sevilla         | Update
 //=================================================================================================
 /**
 * <pre>
@@ -37,7 +38,6 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         Long id = resultSet.getLong("ID");
         Long courseScheduleDetailId = resultSet.getLong("COURSE_SCHEDULE_DETAIL_ID");//Added
         Long courseId = resultSet.getLong("COURSE_ID");
-        String courseCategory = resultSet.getString("COURSE_CATEGORY");
         String courseName = resultSet.getString("COURSE_NAME");
         String courseDetails = resultSet.getString("DETAILS");
         String mandatory = resultSet.getString("MANDATORY"); // added
@@ -60,7 +60,7 @@ public class EnrollmentRowMapperCourseSchedule implements RowMapper<CourseSchedu
         CourseScheduleDetail courseScheduleDetail = 
                 new CourseScheduleDetail.Builder(courseScheduleDetailId, id, scheduledStartDateTime, scheduledEndDateTime,duration).build();
         
-        CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseCategory, courseName, instructorId, 
+        CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId, courseName, instructorId, 
                 instructorLastName, instructorFirstName, mandatory, deadline, venueId, venueName, minRequired, // added
                 maxAllowed, totalParticipants, status).addDetail(courseScheduleDetail).addCourseDetail(courseDetails).build();
        

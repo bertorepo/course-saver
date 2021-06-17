@@ -9,7 +9,7 @@ package com.fujitsu.ph.tsup.scheduling.dao;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/26/2020 | WS) J.Balanon   | New Creation
-//
+//0.02    | 06/04/2021 | WS) J.Atendido  | Added overlap attribute for venue
 //
 //=======================================================
 
@@ -56,6 +56,7 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
         String instructorFirstName = cs.getString("INSTRUCTOR_FIRST_NAME");
         Long venueId = cs.getLong("VENUE_ID");
         String venueName = cs.getString("VENUE_NAME");
+        boolean venueOverlap = cs.getBoolean("VENUE_OVERLAP");
         int minRequired = cs.getInt("MIN_REQUIRED");
         int maxAllowed = cs.getInt("MAX_ALLOWED");
         int totalParticipants = cs.getInt("TOTAL_PARTICIPANTS");
@@ -92,7 +93,7 @@ public class CourseScheduleRowMapper implements RowMapper<CourseSchedule> {
 
         CourseSchedule courseSchedule = new CourseSchedule.Builder(id, courseId,
                 courseName, instructorId, instructorLastName,
-                instructorFirstName, venueId, venueName, minRequired,
+                instructorFirstName, venueId, venueName, venueOverlap, minRequired,
                 maxAllowed, status, totalParticipants).addDetail(courseScheduleDetailSet).addCourseDetail(courseDetails).build();
 
         return courseSchedule;

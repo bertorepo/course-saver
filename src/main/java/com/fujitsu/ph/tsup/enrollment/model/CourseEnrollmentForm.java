@@ -10,6 +10,7 @@ package com.fujitsu.ph.tsup.enrollment.model;
 //Version | Date       | Updated By            | Content
 //--------+------------+-----------------------+---------------------------------------------------
 //0.01    | 06/23/2020 | WS) M. Rivera         | New Creation
+//0.02    | 06/16/2021 | WS) K.Sevilla         | Updated
 //==================================================================================================
 /**
 * <pre>
@@ -184,19 +185,16 @@ public class CourseEnrollmentForm {
     
     @Override
     public String toString() {
-        return "CourseEnrollmentForm [id=" + id 
-                + ", courseId=" + courseId
-                + ", courseScheduleId=" + courseScheduleId 
-                + ", courseName=" + courseName 
-                + ", participantId=" + participantId
-                + ", instructorName=" + instructorName 
-                + ", venueName=" + venueName 
-                + ", courseStatus=" + courseStatus
+        return "CourseEnrollmentForm [id=" + id + ", courseId=" + courseId
+                + ", courseScheduleId=" + courseScheduleId + ", courseName="
+                + courseName + ", participantId=" + participantId
+                + ", instructorName=" + instructorName + ", venueName="
+                + venueName + ", courseStatus=" + courseStatus
                 + ", emailAddress=" + emailAddress
                 + ", courseScheduleDetails=" + courseScheduleDetails
                 + ", registrationDate=" + registrationDate
-                + ", attendanceStatus=" + attendanceStatus 
-                + ", courseDetails=" + courseDetails + "]";
+                + ", attendanceStatus=" + attendanceStatus + ", courseDetails="
+                + courseDetails + "]";
     }
 	
 }
