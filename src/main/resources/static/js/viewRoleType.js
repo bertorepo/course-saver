@@ -40,6 +40,12 @@ function validateIfEmpty() {
 		document.getElementById("descErrorMsg").innerHTML = "Please enter a Role Description";
 		document.getElementById("updateBtn").disabled = true;
 	}
+	
+	//validate for special character for Role description
+	if(roleDesc.value.match(format)){
+		document.getElementById("descErrorMsg").innerHTML = "Role description is invalid. Please omit special characters.";
+		document.getElementById("updateBtn").disabled = true;
+	}
 	 
 	// validate duplicate --to work--
 	if (roleNameExist(roleName.value, id.value)) { 
@@ -49,7 +55,7 @@ function validateIfEmpty() {
 	
 	// validation for special character for Role Name
 	if (roleName.value.match(format)){
-		document.getElementById("nameErrorMsg").innerHTML = "Role Name is invalid, please omit special characters";
+		document.getElementById("nameErrorMsg").innerHTML = "Role Name is invalid. Please omit special characters.";
 		document.getElementById("updateBtn").disabled = true;
 	}
 	

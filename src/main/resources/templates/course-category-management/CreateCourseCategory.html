@@ -56,8 +56,8 @@
                         </div>
                         <div class="float-right">
                             <button type="submit" id="submit"
-                                class="btn btn-success" disabled tabindex="3" onclick="btnsubmit()">Submit</button>
-                                <a class="btn btn-danger" th:href="@{/courseCategory/load}">Cancel</a>
+                                class="btn btn-success" disabled tabindex="3">Submit</button>
+                                <a class="btn btn-danger" th:href="@{/courseCategory/load}">Back</a>
                         </div>
                     </form>
                 </div>
@@ -118,6 +118,7 @@
     <script th:inline="javascript">
 	    var category = document.getElementById("category");
 	    var detail = document.getElementById("detail");
+	    var format = /[^a-zA-Z0-9 ]/g;
 
        /*<![CDATA[*/
         var courseCategoryList = /*[[${categoryList}]]*/ 'default';
@@ -127,8 +128,6 @@
         var message = /*[[${message}]]*/ 'default';
         if(message == "SUCCESSFUL"){
             $('#successModal').modal('show');
-            localStorage.setItem("category", "");
-            localStorage.setItem("detail", "");
         }
         else if(message == "EXISTING") {
             document.getElementById("invalidMsg").innerHTML = "Course Category Name already exist."
@@ -140,11 +139,7 @@
         }
         /*]]>*/
 
-        function btnsubmit(){
-            localStorage.setItem("category", category.value);
-            localStorage.setItem("detail", detail.value);
-        }
-
+        
         $(function() {
             $("#closeModal").click(function() {
                 $("#successModal").modal('hide');
@@ -158,13 +153,6 @@
                 document.getElementById('required').style.visibility = 'visible';
             });
         });
-
-        //disabling and enabling of submit button
-        document.getElementById("category").value = localStorage.getItem("category");
-        document.getElementById("detail").value = localStorage.getItem("detail");
-        localStorage.setItem("category", "");
-        localStorage.setItem("detail", "");
-        var format = /[^a-zA-Z0-9 ]/g;
         
         function enableSubmitButton(){
             var trimCategory = myTrim(category.value);

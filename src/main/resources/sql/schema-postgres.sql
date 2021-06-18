@@ -451,3 +451,8 @@ TABLESPACE pg_default;
 
 ALTER TABLE tsup.CERTIFICATE_UPLOAD
     OWNER to postgres;
+
+--Added 2021/06/18
+SET search_path = tsup;
+ALTER TABLE venue
+ADD COLUMN overlap boolean;

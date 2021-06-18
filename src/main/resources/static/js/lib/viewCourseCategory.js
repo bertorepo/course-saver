@@ -56,27 +56,18 @@ function validateIfEmpty() {
 	if (checkingForDuplicate(category.value, id.value)) { 
 		document.getElementById("categoryErrorMsg").innerHTML = "Course Category Name already exist";
 		document.getElementById("updateBtn").disabled = true;
-		localStorage.setItem("id", id.value);
-		localStorage.setItem("category", category.value);
-		localStorage.setItem("detail", detail.value);
 	} 
 	
 	// validation for special character 
 	if (category.value.match(format)){
 		document.getElementById("categoryErrorMsg").innerHTML = "Category Name is invalid. Please remove invalid characters. ";
 		document.getElementById("updateBtn").disabled = true;
-		localStorage.setItem("id", id.value);
-		localStorage.setItem("category", category.value);
-		localStorage.setItem("detail", detail.value);
 	}
 		
 	// validation for special character 
 	if (detail.value.match(format)) { 
 		document.getElementById("detailErrorMsg").innerHTML = "Detail is invalid. Please omit special characters. ";
 		document.getElementById("updateBtn").disabled = true;
-		localStorage.setItem("id", id.value);
-		localStorage.setItem("category", category.value);
-		localStorage.setItem("detail", detail.value);
 	} 
 	
 	// validate no change

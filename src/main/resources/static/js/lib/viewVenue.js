@@ -12,8 +12,8 @@ function showDeleteModal(id, name) {
 function showUpdateModal(id, name) {
 	document.getElementById("venueName").innerHTML = name;
 
-	$('#venueUpdateId').attr('value', id);
-	$('#venueUpdateName').attr('value', name);
+	$('#venueUpdateId').val(id);
+	$('#venueUpdateName').val(name);
 
 	$('#updateModal').modal('show');
 }
@@ -52,6 +52,11 @@ function checkForDuplicate(name) {
 	return venueList.some(function(venue) {
 		return venue.name.toLowerCase() === name.toLowerCase();
 	});
+}
+
+function resetUpdateForm() {
+	$('#nameErrorMsg').text('');
+	$("#venueUpdateForm").reset();
 }
 
 function refreshPage() {
