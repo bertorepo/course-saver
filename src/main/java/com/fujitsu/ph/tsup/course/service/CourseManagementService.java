@@ -35,7 +35,7 @@ public interface CourseManagementService {
     // Method for finding all courses base on Pageable object provided
     Page<Course> findAllCourses(Pageable pagable);
     
-    Set<Course> findCoursesByName(String name);
+    Course findCoursesByName(String name);
     
     Set<Course> findCoursesByCourseSearchFilter(CourseSearchFilter courseSearchFilter);
     
@@ -49,5 +49,7 @@ public interface CourseManagementService {
     
     // Method for searching if Role is already existing
     boolean findIfCourseNameExists(String name, Long id);
+    
+    boolean courseNameExists(String name);
 
 }

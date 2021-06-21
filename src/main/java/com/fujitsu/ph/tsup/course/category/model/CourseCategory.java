@@ -25,7 +25,7 @@ public class CourseCategory {
 
     @Override
     public String toString() {
-        return "CourseCategory [id=" + id + ", category=" + category + ", detail=" + detail + "]";
+        return "CourseCategory [category=" + category + ", detail=" + detail + "]";
     }
 
     /**

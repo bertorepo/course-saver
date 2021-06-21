@@ -7,11 +7,13 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -184,20 +186,21 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     }
 
     @Override
-    public Set<Course> findCoursesByName(String name) {
+    public Optional<Course> findCoursesByName(String name) {
     	
 	String query = "SELECT * " + 
-		       "FROM course CE " +
-		       "LEFT JOIN course_category CC " +
-		       "ON CE.course_category_id = CC.id "+
-		       "WHERE LOWER(name) LIKE LOWER('%" + name +"%')";
+		       "FROM course " +
+		       "WHERE LOWER(name) = LOWER('" + name +"')";
     	
     	SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("name", name);
+     
+    	try {
+    	    Course course =  template.queryForObject(query, sqlParameterSource, new CourseRowMapper());
+    	    return Optional.of(course);
+    	} catch (EmptyResultDataAccessException e) {
+	   return Optional.empty();
+	}
     	
-    	List<Course> courseList = template.query(query, sqlParameterSource, new CourseRowMapper());
-        Set<Course> courses = new LinkedHashSet<>(courseList);
-    	
-    	return courses;
     }
     
     @Override

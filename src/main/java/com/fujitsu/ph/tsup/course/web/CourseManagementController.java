@@ -10,6 +10,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -52,6 +55,7 @@ import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 @Controller
 @RequestMapping("/courses")
 public class CourseManagementController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseManagementController.class);
     // Course Management Service class
     @Autowired
     CourseManagementService courseManagementService;
@@ -108,6 +112,7 @@ public class CourseManagementController {
     @GetMapping("/update")
     public String showUpdateCourseForm(@ModelAttribute CourseForm course,
 	    RedirectAttributes redirectAttributes) {
+	
 	if(Objects.isNull(course.getId())) {
 	    return "redirect:/courses/load";
 	}
@@ -269,34 +274,25 @@ public class CourseManagementController {
      */
     @PostMapping("/create")
     public String submitCreateCourseForm(CourseForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-			
 	    	//remove irregular spaces
-	        String cName = form.getName().replaceAll("\\s+", " ");
+	        String cName = StringUtils.trim(form.getName());
 	        
-	        Set<Course> course = courseManagementService.loadAllCourse();
-	        List<Course> courseList = course.stream().collect(Collectors.toList());
-	        model.addAttribute("courseList", courseList);
-	        
-	        //check if course and course category matches in the list
-	        for(Course courseContains : courseList)	{
-	        	 
-	        	if(courseContains.getName().equals(form.getName()) && 
-	        		courseContains.getCourseCategoryId() == form.getCourseCategoryId()) {
-	        		redirectAttributes.addFlashAttribute("ErrorModal", 1);
-	        		return "redirect:/courses/create";
-	        	}
+	        if(courseManagementService.courseNameExists(cName)) {
+	            redirectAttributes.addFlashAttribute("ErrorModal", 1);
+    		    return "redirect:/courses/create";
 	        }
+	        
 	        //proceed with creating course
-		Course courseDetails = Course.builder()
-			     .withName(cName.trim())
-					     .withDetail(form.getDetail())
-					     .withIsMandatory(form.getIsMandatory())
-					     .withDeadline(form.getDeadline())
-					     .withCourseCategoryId(form.getCourseCategoryId())
-					     .build();
+		Course courseDetail = Course.builder()
+					    .withName(cName)
+					    .withDetail(form.getDetail())
+					    .withIsMandatory(form.getIsMandatory())
+					    .withDeadline(form.getDeadline())
+					    .withCourseCategoryId(form.getCourseCategoryId())
+					    .build();
 		
 		
-    		courseManagementService.createCourse(courseDetails);
+    		courseManagementService.createCourse(courseDetail);
     		redirectAttributes.addFlashAttribute("ErrorModal", 2);
 
     		return "redirect:/courses/create";

@@ -191,10 +191,12 @@ public class Course {
 	this.courseCategory = courseCategory;
     }
 
+    
+
     @Override
     public String toString() {
-	return "Course [id=" + id + ", name=" + name + ", detail=" + detail + ", isMandatory=" + isMandatory
-		+ ", deadline=" + deadline + ", courseCategoryId= " + courseCategoryId + "]";
+	return "Course [name=" + name + ", detail=" + detail + ", isMandatory=" + isMandatory + ", deadline=" + deadline
+		+ ", courseCategory=" + courseCategory + "]";
     }
 
     /**

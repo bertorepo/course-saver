@@ -3,6 +3,7 @@
  */
 package com.fujitsu.ph.tsup.course.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
@@ -43,7 +44,7 @@ public interface CourseManagementDao {
     int countCourse();
     
     // Method for searching Courses by Name
-    Set<Course> findCoursesByName(String name);
+    Optional<Course> findCoursesByName(String name);
     
     // Method for searching if Course already exists
     Set<Course> findIfCourseNameExists(String name, Long id);

@@ -5,6 +5,7 @@ package com.fujitsu.ph.tsup.course.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -85,33 +86,19 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     }
 
     @Override
-    public Set<Course> findCoursesByName(String name) {
-
-    	Set<Course> courseFormList = courseManagementDao.findCoursesByName(name);
+    public Course findCoursesByName(String name) {
+    	Optional<Course> course = courseManagementDao.findCoursesByName(name);
     	
-    	try {
-    		
-        	if(courseFormList == null || courseFormList.isEmpty()) {
-        		
-        		return null;
-        		
-        	} else {
-        		
-        		return courseFormList;
-        		
-        	}
-        	
-    	} catch(Exception ex) {
-    		
-    		ex.printStackTrace();
-    		
-    	}
-    	
-    	 return courseFormList;
-    	
-    
+    	return course.orElse(null);
     }
     
+    
+    
+    @Override
+    public boolean courseNameExists(String name) {
+	return courseManagementDao.findCoursesByName(name).isPresent();
+    }
+
     /**
      * Author: WS)I.Fajardo
      * Find if Course name already exists
