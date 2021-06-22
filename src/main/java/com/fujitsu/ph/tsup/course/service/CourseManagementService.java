@@ -47,8 +47,8 @@ public interface CourseManagementService {
     // Method for loading all Course in Course View
     Set<Course> loadAllCourse();
     
-    // Method for searching if Role is already existing
-    boolean findIfCourseNameExists(String name, Long id);
+    // Method for checking if course name already exists 
+    boolean courseNameExists(String name, Long id);
     
     boolean courseNameExists(String name);
 

@@ -98,30 +98,38 @@ public class CourseManagementController {
     	model.addAttribute("courseCategory",courseCategoryList);
         
         model.addAttribute("course", new CourseForm());
-
+        
         return "course-management/manageCourse";
 
     }
 
     /**
      * Method for getting course to update
-     * @param course
+     * @param formCourse
      * @param redirectAttributes
      * @return
      */
     @GetMapping("/update")
-    public String showUpdateCourseForm(@ModelAttribute CourseForm course,
+    public String showUpdateCourseForm(@ModelAttribute CourseForm formCourse,
 	    RedirectAttributes redirectAttributes) {
-	
-	if(Objects.isNull(course.getId())) {
+	if(Objects.isNull(formCourse.getId())) {
 	    return "redirect:/courses/load";
 	}
 	
-	if (Objects.isNull(course.getDeadline()) || course.getDeadline().equals("Nan")) {
-	    course.setDeadline("-");
+	String courseName = StringUtils.trim(formCourse.getName());
+	
+	if (courseManagementService.courseNameExists(courseName, formCourse.getId())){
+	    redirectAttributes.addFlashAttribute("errorMsg", courseName + ", Course Name Already Exists");
+	    return "redirect:/courses/load#errorModal";
+
+	}
+	
+	
+	if (Objects.isNull(formCourse.getDeadline()) || formCourse.getDeadline().equals("Nan")) {
+	    formCourse.setDeadline("-");
 	}
 
-	redirectAttributes.addFlashAttribute("updateCourse", course);
+	redirectAttributes.addFlashAttribute("updateCourse", formCourse);
 
 	return "redirect:/courses/load#updateConfirmModal";
     }

@@ -5,8 +5,10 @@ package com.fujitsu.ph.tsup.course.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -107,17 +109,13 @@ public class CourseManagementServiceImpl implements CourseManagementService {
      * @return isCourseExists
      */
     @Override
-    public boolean findIfCourseNameExists(String name, Long id) {
-        Set<Course> courseList = courseManagementDao.findIfCourseNameExists(name, id);
-        boolean isCourseExists = false;
-        try {
-            if (!courseList.isEmpty()) {
-            	isCourseExists = true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return isCourseExists;
+    public boolean courseNameExists(String name, Long id) {
+	Predicate<Course> notSameId = course -> !Objects.equals(course.getId(), id);
+	Predicate<Course> sameCourseName = course -> Objects.equals(course.getName(), name);
+
+	return courseManagementDao.findCoursesByName(name)
+				  .filter(notSameId.and(sameCourseName))
+				  .isPresent();
     }
     
     /**
