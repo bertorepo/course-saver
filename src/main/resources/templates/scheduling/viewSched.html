@@ -60,17 +60,16 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th>Action</th>
-							<th>Course Name</th>
-							<th>Instructor</th>
-							<th>Start Date & Time</th>
-							<th>End Date & Time</th>
-							<th>Duration</th>
+							<th class="align-middle">Action</th>
+                            <th class="align-middle">Course Name</th>
+                            <th class="align-middle">Instructor</th>
+                            <th>Start Date & Time <hr> End Date & Time</th>
+                            <th class="align-middle">Duration</th>
 						</tr>
 					</thead>
 					<tbody th:each="courseSchedules, stat : *{courseSchedules}">
 						<tr th:each="courseScheduleDetails : ${courseSchedules.courseScheduleDetails}">
-							<td>
+							<td class="align-middle">
 								<a th:value="${courseSchedules.id}" th:id="${'update' + (stat.index + 1)}" th:href="@{/schedules/courseSchedule/{courseScheduleId}/update
 												(courseScheduleId=${courseSchedules.id})}" class="btn btn-success">Update
 								</a>
@@ -78,11 +77,10 @@
 												(courseScheduleId=${courseSchedules.id})}" class="btn btn-danger">Delete 
 								</a>
 							</td>
-							<td th:text="${courseSchedules.courseName}"></td>
-							<td th:text="${courseSchedules.instructorName}"></td>
-							<td th:text="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"></td>
-	                        <td th:text="${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MMM dd, yyyy (E) - HH:mm a')}"></td>
-	                        <td th:text="${courseScheduleDetails.duration}"></td>
+							<td class="align-middle" th:text="${courseSchedules.courseName}"></td>
+							<td class="align-middle" th:text="${courseSchedules.instructorName}"></td>
+                            <td class="align-middle" th:utext="${#temporals.format(courseScheduleDetails.scheduledStartDateTime, 'MMM dd, yyyy (E) - hh:mm a')} + '<hr>' + ${#temporals.format(courseScheduleDetails.scheduledEndDateTime, 'MMM dd, yyyy (E) - hh:mm a')}"></td>
+	                        <td class="align-middle" th:text="${courseScheduleDetails.duration}"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -324,9 +322,9 @@
 						<div class="modal-body">
 							<div class="form-group row">
 								<input type="hidden" class="form-control" th:field="*{id}" id="deleteCourseScheduleId">
-								<label class="col-lg-3 col-form-label"></label>
+								<label class="col-lg-3 col-form-label">Course ID :</label>
 								<div class="col-lg-9 mb-3">
-									<input type="hidden" class="form-control border-0 bg-white shadow-none black ml-n3" 
+									<input type="text" class="form-control border-0 bg-white shadow-none black ml-n3" 
 										th:field="*{courseId}" readonly>
 								</div>
 								<label class="col-lg-3 col-form-label">Course Name :</label>
@@ -455,6 +453,32 @@
 			</div>
 		</div>
 		<!--Delete Confirmation Success Modal End-->
+		
+		<!--Error Modal-->
+		<div class="modal fade" id="errorModal" th:if="${error}" tabindex="-1" role="dialog" 
+				aria-labelledby="exampleModalLabel" aria-hidden="true" 
+				data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 id="errorTitle" class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<input type="hidden" th:value="${error}" id="hasError"/>
+							<label class="col-lg-12 col-form-label" th:if="${error}" th:text="${error}"></label>
+						</div>	
+					</div>
+					<div class="modal-footer">
+						<button type="button" name="goToModal" 
+								id="goToModal" class="btn btn-secondary" data-dismiss="modal">Okay</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		<!--Notice Modal-->
 		<div class="modal fade" id="noticeModal" th:if="${notice}" tabindex="-1" role="dialog" 

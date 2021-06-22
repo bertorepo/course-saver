@@ -736,6 +736,21 @@ public class ScheduleController {
                                         ZonedDateTime.now().withHour(23).withMinute(59)
                                             .withSecond(59).withYear(9999));
 		
+		String currentInstructor = "";
+		String currentVenue = "";
+		
+		for(InstructorForm instructor: instructorFormList) {
+			if(instructor.getId() == form.getInstructorId()) {
+				currentInstructor = instructor.getName();
+			}
+		}
+		
+		for(VenueForm venue: venueFormList) {
+			if(venue.getId() == form.getVenueId()) {
+				currentVenue = venue.getName();
+			}
+		}
+		
         boolean hasDateOrTimeConflict = false;
 
 		for(CourseSchedule courseSchedule : courseSchedules) {
@@ -776,6 +791,8 @@ public class ScheduleController {
                                                                         .withZoneSameInstant(ZoneId.systemDefault())) +". Please pick a different time schedule.");
                         model.addAttribute("changeSchedule", listForm);
                         model.addAttribute("updateView", form);
+                		model.addAttribute("currentInstructor", currentInstructor);
+                		model.addAttribute("currentVenue", currentVenue);
                         return "scheduling/viewSched";
                 } 
               }
