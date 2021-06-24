@@ -116,15 +116,6 @@ public class CourseManagementController {
 	    return "redirect:/courses/load";
 	}
 	
-	String courseName = StringUtils.trim(formCourse.getName());
-	
-	if (courseManagementService.courseNameExists(courseName, formCourse.getId())){
-	    redirectAttributes.addFlashAttribute("errorMsg", courseName + ", Course Name Already Exists");
-	    return "redirect:/courses/load#errorModal";
-
-	}
-	
-	
 	if (Objects.isNull(formCourse.getDeadline()) || formCourse.getDeadline().equals("Nan")) {
 	    formCourse.setDeadline("-");
 	}
@@ -151,10 +142,16 @@ public class CourseManagementController {
 				     .withIsMandatory(courseForUpdate.getIsMandatory())
 				     .withDeadline(courseForUpdate.getDeadline())
 				     .build();
-
-	courseManagementService.updateCourse(updatedCourse);
 	
-        redirectAttributes.addFlashAttribute("deleteSuccessMessage",
+	try {
+	    courseManagementService.updateCourse(updatedCourse);
+	} catch (RuntimeException e) {
+	    LOGGER.error(e.getMessage(), e);
+	    redirectAttributes.addFlashAttribute("errorMsg", e.getMessage());
+	    return "redirect:/courses/load#errorModal";
+	}
+	
+        redirectAttributes.addFlashAttribute("successMessage",
                 "You have successfully update this course "+ courseForUpdate.getName());
 	
 	return "redirect:/courses/load#successModal";
@@ -209,7 +206,7 @@ public class CourseManagementController {
         //Call deleteCourseById() method.
         courseManagementService.deleteCourseById(id);
 
-        redirectAttributes.addFlashAttribute("deleteSuccessMessage",
+        redirectAttributes.addFlashAttribute("successMessage",
                 "You have successfully delete this course");
 
         return "redirect:/courses/load#successModal";
@@ -238,7 +235,8 @@ public class CourseManagementController {
 	    model.addAttribute("paginatedCourse", paginatedCourse);
 	    model.addAttribute("courseCategory",courseCategoryList);
 	    model.addAttribute("course", new CourseForm());
-	} catch (NullPointerException e) {
+	} catch (RuntimeException e) {
+	    LOGGER.error(e.getMessage(),e.getCause());
 	    return "course-management/manageCourse";
 	}
     	
@@ -286,6 +284,7 @@ public class CourseManagementController {
 	        String cName = StringUtils.trim(form.getName());
 	        
 	        if(courseManagementService.courseNameExists(cName)) {
+	            redirectAttributes.addFlashAttribute("errorMsg", cName + ", Course Name Already Exists");
 	            redirectAttributes.addFlashAttribute("ErrorModal", 1);
     		    return "redirect:/courses/create";
 	        }
@@ -298,9 +297,15 @@ public class CourseManagementController {
 					    .withDeadline(form.getDeadline())
 					    .withCourseCategoryId(form.getCourseCategoryId())
 					    .build();
-		
-		
-    		courseManagementService.createCourse(courseDetail);
+
+		try {
+		    courseManagementService.createCourse(courseDetail);
+		} catch (RuntimeException e) {
+	            LOGGER.error(e.getMessage(),e);
+		    redirectAttributes.addFlashAttribute("errorMsg", e.getMessage());
+		    redirectAttributes.addFlashAttribute("ErrorModal", 1);
+		    return "redirect:/courses/create";
+		}
     		redirectAttributes.addFlashAttribute("ErrorModal", 2);
 
     		return "redirect:/courses/create";

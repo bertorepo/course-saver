@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
 import com.fujitsu.ph.tsup.course.model.Course;
+import com.fujitsu.ph.tsup.exception.TsupException;
 import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 
 //==================================================================================================
@@ -123,12 +125,12 @@ public class CourseManagementServiceImpl implements CourseManagementService {
      * Creates course.
      */
     public void createCourse(Course course) {
-    	
-    	try {
-    		courseManagementDao.createCourse(course);
-        } catch (DataAccessException ex) {
-            throw new IllegalArgumentException("Can't create new course");
-        }
+
+	try {
+	    courseManagementDao.createCourse(course);
+	} catch (DataAccessException ex) {
+	    throw new TsupException("Can't create new course", ex.getCause());
+	}
     }
     
     /**
@@ -148,13 +150,17 @@ public class CourseManagementServiceImpl implements CourseManagementService {
      */
     @Override
     public void updateCourse(Course course) {
+	String courseName = StringUtils.trim(course.getName());
+	if (courseNameExists(courseName, course.getId())) {
+	    throw new TsupException(courseName + ", Course Name Already Exists");
+	}
+	
 	try {
 	    courseManagementDao.updateCourse(course);
 	} catch (DataAccessException ex) {
-	    LOGGER.error(ex.getMessage(), ex);
-	    throw new IllegalArgumentException("Can't update course");
+	    throw new TsupException("Can't create new course", ex.getCause());
 	}
 
     }
-    
+
 }
