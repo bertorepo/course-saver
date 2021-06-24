@@ -87,6 +87,7 @@ function courseNameOnChange(){
 		    document.getElementById("courseId").innherHtml = "";
 		    var courseNameNotFound = "Course name not found. Please enter a valid selection."
 		    document.getElementById("courseName_error").innerHTML = courseNameNotFound;
+		    $("#courseName").val("Please select...");
 		  } else {				
 		    document.getElementById("courseId").value = courseId;
 		    document.getElementById("courseName_error").innerHTML = "";

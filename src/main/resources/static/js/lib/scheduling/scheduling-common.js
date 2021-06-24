@@ -128,9 +128,9 @@ function instructorNameOnChange(){
 	} else {
 		var instructorId = $('#instructors [value="'+ instructorName +'"]').data('value');
 		if(instructorId == undefined){
-		    document.getElementById("instructorId").innherHtml = "";
 		    var instructorNotFound = "Instructor not found. Please enter a valid selection."
 		    document.getElementById("instructorId_error").innerHTML = instructorNotFound;
+		    $("#instructorName").val("Please select...");
 		  } else {				
 		    document.getElementById("instructorId").value = instructorId;
 		    document.getElementById("instructorId_error").innerHTML = "";
@@ -174,9 +174,9 @@ function venueNameOnChange(){
 	} else {
 		var venueId = $('#venues [value="'+ venueName +'"]').data('value');
 		if(venueId == undefined){
-		   document.getElementById("venueId").innherHtml = "";
 		   var venueNotFound = "Venue not found. Please enter a valid selection."
 		   document.getElementById("venueId_error").innerHTML = venueNotFound;
+		   $("#venueName").val("Please select...");
 		} else {				
 		   document.getElementById("venueId").value = venueId;
 		   document.getElementById("venueId_error").innerHTML = "";
