@@ -118,7 +118,7 @@ function instructorNameOnChange(){
 	var instructorName = $("#instructorName").val();
 	var holder = document.getElementById("instructorName").placeholder;
 	
-	if(courseName == "" && (holder !== "Select Instructor" || holder !== "")){
+	if(courseName == "" && (holder !== "Please select..." || holder !== "")){
 		document.getElementById("instructorName").value = holder;
 		
 		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
@@ -127,8 +127,14 @@ function instructorNameOnChange(){
 		
 	} else {
 		var instructorId = $('#instructors [value="'+ instructorName +'"]').data('value');
-		
-		document.getElementById("instructorId").value = instructorId;
+		if(instructorId == undefined){
+		    document.getElementById("instructorId").innherHtml = "";
+		    var instructorNotFound = "Instructor not found. Please enter a valid selection."
+		    document.getElementById("instructorId_error").innerHTML = instructorNotFound;
+		  } else {				
+		    document.getElementById("instructorId").value = instructorId;
+		    document.getElementById("instructorId_error").innerHTML = "";
+		}
 	}
 }
 
@@ -158,7 +164,7 @@ function venueNameOnChange(){
 	var venueName = $("#venueName").val();
 	var holder = document.getElementById("venueName").placeholder;
 	
-	if(courseName == "" && (holder !== "Select Venue" || holder !== "")){
+	if(courseName == "" && (holder !== "Please select..." || holder !== "")){
 		document.getElementById("venueName").value = holder;
 		
 		var venueId = $('#venues [value="'+ holder +'"]').data('value');
@@ -167,7 +173,13 @@ function venueNameOnChange(){
 		
 	} else {
 		var venueId = $('#venues [value="'+ venueName +'"]').data('value');
-		
-		document.getElementById("venueId").value = venueId;
+		if(venueId == undefined){
+		   document.getElementById("venueId").innherHtml = "";
+		   var venueNotFound = "Venue not found. Please enter a valid selection."
+		   document.getElementById("venueId_error").innerHTML = venueNotFound;
+		} else {				
+		   document.getElementById("venueId").value = venueId;
+		   document.getElementById("venueId_error").innerHTML = "";
+		}
 	}
 }

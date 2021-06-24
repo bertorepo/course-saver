@@ -75,17 +75,22 @@ function courseNameOnChange(){
 	var courseName = $("#courseName").val();
 	var holder = document.getElementById("courseName").placeholder;
 	
-	if(courseName == "" && (holder !== "This field is required." || holder !== "")){
+	if(courseName == "" && (holder !== "Please select..." || holder !== "")){
 		document.getElementById("courseName").value = holder;
 		
 		var courseId = $('#courses [value="'+ holder +'"]').data('value');
 		
-		document.getElementById("courseId").value = courseId;
-		
+		 document.getElementById("courseId").value = courseId;
 	} else {
 		var courseId = $('#courses [value="'+ courseName +'"]').data('value');
-		
-		document.getElementById("courseId").value = courseId;
+         if(courseId == undefined){
+		    document.getElementById("courseId").innherHtml = "";
+		    var courseNameNotFound = "Course name not found. Please enter a valid selection."
+		    document.getElementById("courseName_error").innerHTML = courseNameNotFound;
+		  } else {				
+		    document.getElementById("courseId").value = courseId;
+		    document.getElementById("courseName_error").innerHTML = "";
+		}
 	}
 }
 
