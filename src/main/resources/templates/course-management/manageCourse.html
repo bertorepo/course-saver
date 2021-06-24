@@ -315,7 +315,7 @@
 								<label class="col-lg-2 col-form-label">Mandatory</label>
 								<div class="col-lg-5">
 									<select class="form-control form-select" aria-label="Default select example" 
-										id="mandatory" name= "mandatory">
+										id="mandatory" name= "mandatory" onchange="enableOrDisableDeadlineOnFilter()">
 										<option></option>
 										<option th:value="Yes" th:text="Yes"></option>
 										<option th:value="No" th:text="No"></option>
@@ -328,7 +328,7 @@
 								<label class="col-lg-2 col-form-label">Deadline</label>
 								<div class="col-lg-5">
 									<select class="form-control form-select" aria-label="Default select example" 
-										id="deadline" name= "deadline">
+										id="searchDeadline" name= "searchDeadline">
 										<option></option>
 										<option th:value="Immediate" th:text="Immediate"></option>
 										<option th:value="Monthly" th:text="Monthly"></option>
@@ -491,6 +491,18 @@
 				document.getElementById("updateDeadline").value = "Nan";
 			} else {
 				$(".update-mandatory").prop('disabled', false);
+			}
+		}
+		
+		function enableOrDisableDeadlineOnFilter() {
+			var mandatory = document.getElementById("mandatory").value;
+			console.log(mandatory);
+
+			if (mandatory === "No") {
+				$("#searchDeadline").prop('disabled', true);
+				document.getElementById("deadline").value = "";
+			} else {
+				$("#searchDeadline").prop('disabled', false);
 			}
 		}
 	</script>
