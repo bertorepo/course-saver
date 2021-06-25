@@ -100,7 +100,7 @@ function instructorNameOnDown(id){
 		document.getElementById(id).placeholder = faceVal;
 		document.getElementById(id).value = '';
 		
-		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
+		var instructorId = $('#instructors [value="'+ faceVal +'"]').data('value');
 		
 		document.getElementById("instructorId").value = instructorId;
 	} else {
@@ -118,7 +118,7 @@ function instructorNameOnChange(){
 	var instructorName = $("#instructorName").val();
 	var holder = document.getElementById("instructorName").placeholder;
 	
-	if(courseName == "" && (holder !== "Please select..." || holder !== "")){
+	if(instructorName == "" && (holder !== "Please select..." || holder !== "")){
 		document.getElementById("instructorName").value = holder;
 		
 		var instructorId = $('#instructors [value="'+ holder +'"]').data('value');
@@ -128,7 +128,7 @@ function instructorNameOnChange(){
 	} else {
 		var instructorId = $('#instructors [value="'+ instructorName +'"]').data('value');
 		if(instructorId == undefined){
-		    var instructorNotFound = "Instructor not found. Please enter a valid selection."
+		    var instructorNotFound = "Please specify a valid instructor name. Use the drop-down list for courses available."
 		    document.getElementById("instructorId_error").innerHTML = instructorNotFound;
 		    $("#instructorName").val("Please select...");
 		  } else {				
@@ -146,7 +146,7 @@ function venueNameOnDown(id){
 		document.getElementById(id).placeholder = faceVal;
 		document.getElementById(id).value = '';
 		
-		var venueId = $('#venues [value="'+ holder +'"]').data('value');
+		var venueId = $('#venues [value="'+ faceVal +'"]').data('value');
 		
 		document.getElementById("venueId").value = venueId;
 	} else {
@@ -164,7 +164,7 @@ function venueNameOnChange(){
 	var venueName = $("#venueName").val();
 	var holder = document.getElementById("venueName").placeholder;
 	
-	if(courseName == "" && (holder !== "Please select..." || holder !== "")){
+	if(venueName == "" && (holder !== "Please select..." || holder !== "")){
 		document.getElementById("venueName").value = holder;
 		
 		var venueId = $('#venues [value="'+ holder +'"]').data('value');
@@ -174,7 +174,7 @@ function venueNameOnChange(){
 	} else {
 		var venueId = $('#venues [value="'+ venueName +'"]').data('value');
 		if(venueId == undefined){
-		   var venueNotFound = "Venue not found. Please enter a valid selection."
+		   var venueNotFound = "Please specify a valid venue name. Use the drop-down list for courses available."
 		   document.getElementById("venueId_error").innerHTML = venueNotFound;
 		   $("#venueName").val("Please select...");
 		} else {				
