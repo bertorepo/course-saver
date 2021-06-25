@@ -76,16 +76,18 @@
 						<div class="col-lg-5">
 							<input type="text" placeholder="Enter Course Name" class="form-control"
 								id="name" name="name">
+								<div class="text-danger er" id="coursename_error"> </div>
 						</div>
-						<span class="text-danger er" id="coursename_error"> </span>
+						
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Details</label>
 						<div class="col-lg-5">
 							<textarea rows="10" cols="50" placeholder="Enter Course Details" 
 								class="form-control" id="detail" name="detail"></textarea>
+								<div class="text-danger er" id="detail_error"></div>
 						</div>
-						<span class="text-danger er" id="detail_error"></span>
+						
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Mandatory</label>
@@ -210,12 +212,16 @@
 		
 		// course name validation
 		$("#name").on("input", function(){
-			
+			var courseName = this.value.trim();
+			var noSpecialCharaterAtStartAndEndRegex = new RegExp('^[a-zA-Z0-9](?!.*?[^\na-za-zA-Z0-9]{2}).*?[a-z0-9]$');
 			<!--empty check-->
-			if (this.value.trim() == "") {
-				$("#coursename_error").text("Please enter a Course Name");
+			if ( courseName == "") {
+				$("#coursename_error").text("Please Enter A Course Name");
 				courseNameErrorCount++;
-			} else {
+			} else if(!noSpecialCharaterAtStartAndEndRegex.test(courseName)){
+			 	$("#coursename_error").text("Special Character On Start And End Are Not Allowed.");
+				courseNameErrorCount++;
+			}else {
 				$("#coursename_error").text("");
 				courseNameErrorCount = 0;
 			}
