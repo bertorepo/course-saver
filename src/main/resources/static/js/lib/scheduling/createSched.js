@@ -112,14 +112,16 @@ function validations() {
 	var errorCount = 0;
 	var courseName = $('#courseName').val();
 	var venue = $('#venueId').val();
+	var venueName = $('#venueName').val();
 	var courseId = $('#courseId').val();
 	var instructorId = $('#instructorId').val();
+	var instructorName = $('#instructorName').val();
 	var minRequired = parseInt($('#minRequired').val().replace("", "0"));
 	var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
 	
 	
 	//Empty Fields Validations
-	if (courseName == "") {
+	if (courseName == "" || courseName == "Please select...") {
 		errorCount++;
 		courseNameError = "This field is required."; 
         document.getElementById("courseName_error").innerHTML = courseNameError;
@@ -131,12 +133,12 @@ function validations() {
         document.getElementById("courseName_error").innerHTML = courseNameError;
 	}
 	
-	if (instructorId == "") {
+	if (instructorId == "" || instructorName == "Please select...") {
 		errorCount++;
 		instructorError = "This field is required.";
         document.getElementById("instructorId_error").innerHTML = instructorError;
 	}
-	if (venue == "") {
+	if (venue == "" || venueName == "Please select...") {
 		errorCount++;
 		venueError = "This field is required.";
         document.getElementById("venueId_error").innerHTML = venueError;
