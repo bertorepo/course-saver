@@ -137,7 +137,7 @@ public class CourseManagementController {
 	Course updatedCourse = Course.builder()
 				     .withId(courseForUpdate.getId())
 				     .withCourseCategoryId(courseForUpdate.getCourseCategoryId())
-				     .withName(courseForUpdate.getName())
+				     .withName(courseForUpdate.getName().trim())
 				     .withDetail(courseForUpdate.getDetail())
 				     .withIsMandatory(courseForUpdate.getIsMandatory())
 				     .withDeadline(courseForUpdate.getDeadline())
