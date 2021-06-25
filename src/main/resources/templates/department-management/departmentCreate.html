@@ -1,0 +1,137 @@
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Venue Management -->
+<!-- Name         : departmentView.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | 23/06/2021 | WS) dw.cardenas       | Created -->
+<!-- ================================================================================================== -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Departments</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
+<link rel="stylesheet" type="text/css" href="/css/app/roletype/roletype.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/popper.min.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+</head>
+
+<body>
+	<div th:insert="fragments/general.html :: header"></div>
+	
+	<!-- Success Modal -->
+	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-success">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${successMessage}"></label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-primary" data-dismiss="modal" 
+						value="Okay" onclick="refreshPage()">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Success Modal End -->
+
+	<!--Error Modal-->
+	<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-danger">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${errorMessage}"></label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-primary" data-dismiss="modal" 
+						value="Okay" onclick="refreshPage()">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Error Modal End-->
+	
+	<div class = "container mt-5">
+		<h3>
+			<i class="fa fa-calendar-o"></i> Create Department
+		</h3>
+		<hr>
+		<div class="card">
+			<div class="card-body">
+				<p>Please input your desired Department Name</p>
+				<form th:action="@{/department/create}" method="POST">
+					<div class="form-group row">
+	                    <label class="col-lg-2 col-form-label">Department Name</label>
+						<div class="col-lg-5">	
+						    <input type="text" placeholder="Enter Department Name" class="form-control"
+						        id="departmentName" name="name" onkeyup=validateInput() maxlength="100" tabindex="1">
+						</div>
+						<span class="text-danger er" id="departmentNameError"></span>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">JDU:</label>
+						<div class="col-lg-5">
+							<input type="text" list="jduList" id="jdu" 
+								placeholder="Enter JDU name" 
+								class="form-control custom-select custom-select-md" 
+								name="jduId"/>
+							<span id="jduNameErr" style="color: red;"></span>
+							<datalist id="jduList">
+								<option value=""/>
+								<option th:each="jdu : ${jduList}"
+										th:attr="data-value = ${jdu.id}"
+										th:value="${jdu.jduName}"
+										th:selected="${jdu.id}"/>
+							</datalist>
+						</div>
+					</div>
+					<div class="float-right">
+						<button type="submit" id="submitButton" class="btn btn-success" disabled>Submit</button>
+						<a class="btn btn-danger" th:href="@{/department/load}">Back</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	
+	<script th:inline="javascript">
+		var departmentList = /*[[${departmentList}]]*/ [];
+		var jduList = /*[[${jduList}]]*/ [];
+	</script>
+	<script type="text/javascript" src="/js/lib/departmentCreate.js"></script>
+	<footer th:replace="fragments/general.html :: footer"></footer>
+</body>
+</html>
