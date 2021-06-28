@@ -213,7 +213,7 @@
 		// course name validation
 		$("#name").on("input", function(){
 			var courseName = this.value.trim();
-			var noSpecialCharaterAtStartAndEndRegex = new RegExp('^[a-zA-Z0-9](?!.*?[^\na-za-zA-Z0-9]{2}).*?[a-z0-9]$');
+			var noSpecialCharaterAtStartAndEndRegex = new RegExp('^[a-zA-Z0-9](?!.*?[^\na-za-zA-Z0-9]{2}).*?[a-zA-Z0-9]$');
 			<!--empty check-->
 			if ( courseName == "") {
 				$("#coursename_error").text("Please Enter A Course Name");
