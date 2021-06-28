@@ -34,7 +34,7 @@
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
 </head>
 
-<body>
+<body onload="localStorage.clear();">
 
 	<!--Confirm Modal-->
 	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -157,7 +157,7 @@
 							<label for="inputEmail3" class="col-sm-2 col-form-label">Course Name:</label>
 							<div class="col-sm-10">
 								<input class="form-control needs-validation" id="updateCourseName"
-									name="updateCourseName" type="text" th:field="*{name}" required pattern="^[a-zA-Z0-9](?!.*?[^\na-za-zA-Z0-9]{2}).*?[a-z0-9]$" title="Course Name">
+									name="updateCourseName" type="text" th:field="*{name}" required pattern="^[a-zA-Z0-9](?!.*?[^\na-za-zA-Z0-9]{2}).*?[a-zA-Z0-9]$" title="Course Name">
 								<div class="invalid-feedback">
 									Please Enter A Valid Course Name (Special Character On Start And End Are Not Allowed).
 								</div>
@@ -510,6 +510,10 @@
 
 	<script>
 		$(document).ready(function () {
+			if(localStorage.getItem("showFilter") == "true") {
+		 	   document.getElementById('searchBtn1').style.display = "none";
+               document.getElementById('filterItems').style.display = "block";
+		 	}
 
 			if (window.location.href.indexOf('#confirmModal') != -1) {
 				$('#confirmModal').modal('show');
@@ -576,14 +580,16 @@
 		
 		//script for collapsible filter menu
 		$("#filterBtn").click(function () {
-			 var filterItems = document.getElementById('filterItems').style.display;
-      
-            if(filterItems && filterItems === "block"){
+			 var showFilter = localStorage.getItem("showFilter");
+      		 
+            if(showFilter && showFilter == "true") {
                document.getElementById('searchBtn1').style.display = "block";
                document.getElementById('filterItems').style.display = "none";
+               localStorage.setItem("showFilter", "false");
             } else {
                document.getElementById('searchBtn1').style.display = "none";
                document.getElementById('filterItems').style.display = "block";
+               localStorage.setItem("showFilter", "true");
             }
         });
         
