@@ -43,7 +43,7 @@ public class CourseScheduleUpdateForm {
     /**
      * Maximum Allowed Participants
      */
-    private int maxAllowed;
+    private Integer maxAllowed;
     
     
     /**
@@ -122,11 +122,11 @@ public class CourseScheduleUpdateForm {
 		this.minRequired = minRequired;
 	}
 
-	public int getMaxAllowed() {
+	public Integer getMaxAllowed() {
 		return maxAllowed;
 	}
 
-	public void setMaxAllowed(int maxAllowed) {
+	public void setMaxAllowed(Integer maxAllowed) {
 		this.maxAllowed = maxAllowed;
 	}
 

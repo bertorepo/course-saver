@@ -30,6 +30,8 @@ import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.relational.core.mapping.Embedded.Nullable;
+
 public class CourseScheduleNewForm{
 
     /**
@@ -69,8 +71,7 @@ public class CourseScheduleNewForm{
     /**
      * Maximum Allowed Participants
      */
-    @Min(value = 1, message = "This field is required.")
-    private int maxAllowed;
+    private Integer maxAllowed;
     
     
     /**
@@ -147,11 +148,11 @@ public class CourseScheduleNewForm{
         return minRequired;
     }
     
-    public void setMaxAllowed(int maxAllowed) {
+    public void setMaxAllowed(Integer maxAllowed) {
         this.maxAllowed = maxAllowed;
     }
     
-    public int getMaxAllowed() {
+    public Integer getMaxAllowed() {
         return maxAllowed;
     }
     

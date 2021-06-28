@@ -118,7 +118,7 @@ function validations() {
 	var instructorName = $('#instructorName').val();
 	var minRequired = parseInt($('#minRequired').val().replace("", "0"));
 	var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
-	
+		
 	
 	//Empty Fields Validations
 	if (courseName == "") {
@@ -156,23 +156,20 @@ function validations() {
 	if(venueName == "Please select..."){
 		errorCount++;
 	}
-	
+
 	if (minRequired <= 0) {
 		errorCount++;
 	  	minRequiredError = "This field is required.";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 	}
-	if (maxAllowed <=0) {
-		errorCount++;
-	  	maxAllowedError = "This field is required.";
-	  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
-	}
 	if (minRequired !==0) {
+		if(!maxAllowed == undefined || !maxAllowed == null|| !maxAllowed == ""){
 		if (maxAllowed <= minRequired) {
 			errorCount++;
 	  	minRequiredError = "Min shouldn't be greater than Max.";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 		}
+	   }
 	}
 	
 	//Empty Fields Validation for Start and End date

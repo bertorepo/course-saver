@@ -332,7 +332,7 @@ public class ScheduleController {
            @ModelAttribute("scheduleNew") CourseScheduleNewForm form, RedirectAttributes redirectAttributes) {
          
          logger.debug("CourseScheduleNewForm : {}", form);
-        
+         
          List<CourseScheduleDetailForm> newCourseScheduleDetailForm = form.getCourseScheduleDetailsAsList();
          
          List<CourseScheduleDetailForm> detailFormList = new ArrayList<>();
@@ -383,7 +383,11 @@ public class ScheduleController {
     @PostMapping("/new")
     public String submitCourseScheduleNewForm(@Valid @ModelAttribute("scheduleNew") CourseScheduleNewForm form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-
+    	
+        if (null == form.getMaxAllowed()) {
+        	form.setMaxAllowed(99999);
+        }
+        
         Set<CourseForm> courseFormList = scheduleService.findAllCourses();
         Set<VenueForm> venueFormList = scheduleService.findAllVenues();
         Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
@@ -713,6 +717,10 @@ public class ScheduleController {
             @Valid @ModelAttribute("updateView") CourseScheduleUpdateForm form, BindingResult bindingResult, 
             Model model, RedirectAttributes redirectAttributes) {
     	
+    	 if (null == form.getMaxAllowed()) {
+         	form.setMaxAllowed(99999);
+         }
+    	 
         CourseScheduleListForm courseSchedListForm = new CourseScheduleListForm();
         
         courseSchedListForm.setFromDateTime(listForm.getFromDateTime());
