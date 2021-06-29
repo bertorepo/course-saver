@@ -24,18 +24,15 @@ function validations() {
 		  	minRequiredError = "This field is required.";
 		  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 		}
-		if (maxAllowed <=0) {
-			errorCount++;
-		  	maxAllowedError = "This field is required.";
-		  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
-		}
 		if (minRequired !==0) {
-			if (maxAllowed <= minRequired) {
-				errorCount++;
-		  	minRequiredError = "Min shouldn't be greater than Max.";
-		  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
-			}
-		}
+		  if(!maxAllowed == undefined || !maxAllowed == null|| !maxAllowed == ""){
+		   if (maxAllowed <= minRequired) {
+			  errorCount++;
+	  	      minRequiredError = "Min shouldn't be greater than Max.";
+	  	      document.getElementById("minRequired_error").innerHTML = minRequiredError;
+		  }
+	     }
+	   }
 		//Scheduled Start Date Time and Scheduled End Date Time Part
 	    for(i = 1; i<= length; i++){
 	    	var startDate = document.getElementById("startDate"+i).value;

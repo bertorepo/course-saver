@@ -672,6 +672,12 @@
 		}
 	}
 
+     //Change placeholder for Max Allowed if current value is 99999
+     if ($("#maxAllowed").val() == 99999){
+	    console.log("value is 99999");
+	    $('#maxAllowed').val("");
+	    document.getElementById('maxAllowed').placeholder = "None";
+     }
 	</script>
 </body>
 
