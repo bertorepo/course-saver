@@ -1,5 +1,5 @@
 function showDeleteModal(id, name, jduName) {
-	document.getElementById("departmentName").innerHTML = name;
+	$('#departmentName').text(name);
 
 	var form = document.getElementById("departmentDeleteForm");
 	form.addEventListener('submit', function() {
@@ -10,7 +10,7 @@ function showDeleteModal(id, name, jduName) {
 }
 
 function showUpdateModal(id, jduId, name, jduName) {
-	document.getElementById("departmentName").innerHTML = name;
+	$('select#jduId').val(jduId);
 
 	$('#departmentUpdateId').val(id);
 	$('#departmentUpdateName').val(name);
@@ -60,7 +60,7 @@ function resetUpdateForm() {
 }
 
 function refreshPage() {
-	window.location = '/venue/load';
+	window.location = '/department/load';
 }
 
 $(document).ready(function() {

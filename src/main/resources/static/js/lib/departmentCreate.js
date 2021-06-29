@@ -1,42 +1,29 @@
 function validateInput() {
-	var hasInvalidInput = false;
-	var departmentNameValue =  $('#departmentName').val().trim();
-	var jduIdValue =  $('#jdu').val().trim();
-	var format = /[`!@#$%^&*+\=\[\]{};':"\\|,.<>\/?~]/;
-
-	$('#departmentNameError').text('');
-
-	if (departmentNameValue == "") {
-		$('#departmentNameError').text("Please enter a venue name.");
-		hasInvalidInput = true;
-	}
-	
-	if (jduIdValue == "") {
-		$('#jduNameErr').text("Please enter a JDU name.");
-		hasInvalidInput = true;
-	}
-
-	if (format.test(departmentNameValue))
-	{
-		$('#departmentNameError').text("Department name contains invalid special characters.");
-		hasInvalidInput = true;
-	}
-
-	if (checkForDuplicate(departmentNameValue)) { //Can be used for checking for no change for now since only one item
-		$('#departmentNameError').text("Department name already exists!");
-		hasInvalidInput = true;
-	}
-
-	if (hasInvalidInput) {
+	if (hasInvalidInput || checkRequiredFields() || hasDuplicate()) {
 		$('#submitButton').prop('disabled', true);
 	} else {
 		$('#submitButton').prop('disabled', false);
 	}
 }
 
-function checkForDuplicate(name) {
+function checkRequiredFields() {
+	var missing = false;
+	$('input,select').filter('[required]:visible').each(function() {
+		if ($(this).val() == "") {
+			console.log("return true");
+			missing = true;
+			return false;
+		}
+	});
+
+	return missing;
+}
+
+function hasDuplicate() {
+	var deptName = $('#departmentName').val().trim();
+	var jduId = $('#jduId').val();
 	return departmentList.some(function(department) {
-		return department.name.toLowerCase() === name.toLowerCase() && department.jduId;
+		return department.name.toLowerCase() === deptName.toLowerCase() && department.jduId == jduId;
 	});
 }
 
@@ -44,4 +31,38 @@ $(document).ready(function() {
 	if (window.location.href.indexOf('#successModal') != -1) {
 		$('#successModal').modal('show');
 	}
+})
+
+var hasInvalidInput = false;
+var formatCheck = /[`!@#$%^&*+\=\[\]{};':"\\|,.<>\/?~]/;
+
+$('#departmentName').on("input", function() {
+	var departmentNameValue = this.value.trim();
+	$('#departmentNameError').text("");
+
+	if (formatCheck.test(departmentNameValue)) {
+		$('#departmentNameError').text("Department name contains invalid special characters.");
+		hasInvalidInput = true;
+	} else if (departmentNameValue == "") {
+		$('#departmentNameError').text("Please enter a venue name.");
+		hasInvalidInput = true;
+	} else {
+		$('#departmentNameError').text("");
+		hasInvalidInput = false;
+	}
+
+	validateInput();
+})
+
+$('#jduId').on("input", function() {
+	var jduValue = this.value.trim();
+	if (jduValue == "") {
+		$('#jduNameErr').text("Please enter a JDU name.");
+		hasInvalidInput = true;
+	} else {
+		$('#jduNameErr').text("");
+		hasInvalidInput = false;
+	}
+
+	validateInput();
 })

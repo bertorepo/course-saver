@@ -1,12 +1,12 @@
 <!-- ================================================================================================== -->
 <!-- Project Name : Training Sign Up -->
 <!-- System Name  : Venue Management -->
-<!-- Name         : departmentView.html -->
+<!-- Name         : jduView.html -->
 
 <!-- <<Modification History>> -->
 <!-- Version | Date       | Updated By            | Content -->
 <!-- --------+------------+-----------------------+--------------------------------------------------- -->
-<!-- 0.01    | 23/06/2021 | WS) dw.cardenas       | Created -->
+<!-- 0.01    | 28/06/2021 | WS) dw.cardenas       | Created -->
 <!-- ================================================================================================== -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -18,7 +18,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Departments</title>
+<title>JDU</title>
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
@@ -30,7 +30,7 @@
 
 <body>
 	<div th:insert="fragments/general.html :: header"></div>
-	
+
 	<!-- Update Modal -->
 	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
 		data-backdrop="static" data-keyboard="false"
@@ -44,29 +44,16 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form id="departmentUpdateForm" th:action="@{/department/update}" th:object="${departmentForm}" method="POST">
+				<form id="jduUpdateForm" th:action="@{/jdu/update}" method="POST">
 					<div class="modal-body">
 						<div class="form-group row">
-							<input type="hidden" id="departmentUpdateId" name="id" th:field="*{id}"/>
+							<input type="hidden" id="jduUpdateId" name="id"/>
 							<div class="col-lg-3">
 								<label class="col-form-label">JDU:</label>
 							</div>
 							<div class="col-lg-9">
-								<select class="form-control form-select" aria-label="Default select example"
-								id="jduId" name="jduId" required>
-									<option selected value="">-</option>
-									<option th:each="jdu : ${jduList}"
-											th:value="${jdu.id}"
-											th:text="${jdu.jduName}"/>
-								</select>
-								<span id="jduNameErr" style="color: red;"></span>
-							</div>
-							<div class="col-lg-3">
-								<label class="col-form-label">Department Name:</label>
-							</div>
-							<div class="col-lg-9">
-								<input type="text" placeholder="Enter department name" id="departmentUpdateName"
-									class="form-control" maxlength="100" name="departmentName" th:field="*{departmentName}" onkeyup="validateUpdateInput()"/>
+								<input type="text" placeholder="Enter jdu name" id="jduUpdateName"
+									class="form-control" maxlength="100" name="name" onkeyup="validateUpdateInput()"/>
 								<span id="nameErrorMsg" style="color: red;"></span>
 							</div>
 						</div>
@@ -80,7 +67,7 @@
 		</div>
 	</div>
 	<!-- Update Modal End -->
-	
+
 	<!-- Delete Modal -->
 	<div class="modal fade" id="deleteInfoModal" tabindex="-1" role="dialog"
 		data-backdrop="static" data-keyboard="false"
@@ -88,7 +75,7 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header alert-info">
-					<h5 class="modal-title">Delete Department</h5>
+					<h5 class="modal-title">Delete jdu</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -97,16 +84,16 @@
 				<div class="modal-body">
 					<div class="form-group row">
 						<label class="col-lg-12 col-form-label">Are you sure you
-							want to delete this Department? In doing so, the action cannot be undone.</label>
-						<label class="col-lg-3 col-form-label"> Department Name:</label>
+							want to delete this JDU? In doing so, the action cannot be undone.</label>
+						<label class="col-lg-3 col-form-label"> JDU Name:</label>
 						<div class="col-lg-9">
-							<label class="col-lg-12 col-form-label" id="departmentName"
-								name="departmentName"></label>
+							<label class="col-lg-12 col-form-label" id="jduName"
+								name="jduName"></label>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<form id="departmentDeleteForm" method="POST">
+					<form id="jduDeleteForm" method="POST">
 						<button type="submit" class="btn btn-danger">Yes, delete it.</button>
 						<button class="btn btn-primary"
 							data-dismiss="modal">No, keep it.</button>
@@ -116,7 +103,7 @@
 		</div>
 	</div>
 	<!-- Delete Modal End -->
-	
+
 	<!-- Success Modal -->
 	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
 		data-backdrop="static" data-keyboard="false"
@@ -142,20 +129,19 @@
 		</div>
 	</div>
 	<!-- Success Modal End -->
-	
-	
+
 	<div class="container mt-5">
 		<h3>
-			<i class="fa fa-calendar-o"></i> Manage Departments
+			<i class="fa fa-calendar-o"></i> Manage JDU
 		</h3>
-		<hr>	
+		<hr>
 		<div class="card">
 			<div class="card-body">
-				<form class="form-horizontal" th:action="@{/department/search}" method="GET">
+				<form class="form-horizontal" th:action="@{/jdu/search}" method="GET">
 					<div class="form-group row justify-content-center">
 						<label class="col-lg-1 col-form-label">Search:</label>
 						<div class="col-lg-8">
-							<input type="Text" class="form-control" id="searchDepartmentName"
+							<input type="Text" class="form-control" id="searchJduName"
 								name="searchKeyName" maxlength="100" tabindex="1"/>
 						</div>
 						<div class="float-right">
@@ -165,54 +151,50 @@
 				</form>
 			</div>
 		</div>
-		
+
 		<div class="card mb-5">
 			<div class="card-header">
 				<h3>
-					<i class="fa fa-cogs"></i> Department List
+					<i class="fa fa-cogs"></i> JDU List
 				</h3>
 			</div>
 			<div class="card-body">
 				<div style="overflow-x: auto; display:block">
-					<a class="btn btn-info pull-right" th:href="@{/department/create}">Add New department</a><br><br>
+					<a class="btn btn-info pull-right" th:href="@{/jdu/create}">Add New JDU</a><br><br>
 					<table class="table table-bordered text-center">
 						<thead>
 							<tr>
 								<th style = "width: 20%"> Action </th>
-								<th style = "width: 40%"> JDU </th>
-								<th style = "width: 40%"> Department Name </th>
+								<th style = "width: 80%"> JDU </th>
 							</tr>
 						</thead>
-						<tbody th:each = "department : *{departmentList}">
+						<tbody th:each = "jdu : *{jduList}">
 							<tr>
 								<td style = "width: 20%">
 									<input type="submit" value="Edit" class="btn btn-success"
-										th:attr="onclick=|showUpdateModal('${department.id}', '${department.jduId}', '${department.name}', '${department.jduName}')|"/>
+										th:attr="onclick=|showUpdateModal('${jdu.id}', '${jdu.jduName}')|"/>
 									<input type="submit" value="Delete" class="btn btn-danger"
-										th:attr="onclick=|showDeleteModal('${department.id}', '${department.name}', '${department.jduName}')|"/>
+										th:attr="onclick=|showDeleteModal('${jdu.id}', '${jdu.jduName}')|"/>
 								</td>
-								
-								<td th:text = "${department.jduName}"\>
-								<td th:text = "${department.name}"\>
+								<td th:text = "${jdu.jduName}"\>
 							</tr>
 						</tbody>
 					</table>
 
-					<div th:if = "${#lists.isEmpty(departmentList)}">
+					<div th:if = "${#lists.isEmpty(jduList)}">
 						<div class="alert alert-dismissible alert-danger text-center">
-							<strong>No departments available</strong>
+							<strong>No jdu available</strong>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
 	</div>
-	
+
 	<script th:inline="javascript">
-		var venueList = /*[[${departmentList}]]*/ [];
+		var venueList = /*[[${jduList}]]*/ [];
 	</script>
-	<script type="text/javascript" src="/js/lib/departmentView.js"></script>
+	<script type="text/javascript" src="/js/lib/jduView.js"></script>
 	<footer th:replace="fragments/general.html :: footer"></footer>
 </body>
 </html>

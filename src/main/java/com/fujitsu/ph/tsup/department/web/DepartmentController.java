@@ -46,7 +46,7 @@ public class DepartmentController {
 
 	@Autowired
 	DepartmentService departmentService;
-	
+
 	@Autowired
 	JduService jduService;
 
@@ -57,23 +57,24 @@ public class DepartmentController {
 
 		model.addAttribute("departmentList", departmentList);
 		model.addAttribute("jduList", jduList);
+		model.addAttribute("departmentForm", new DepartmentForm());
 
 		return "department-management/departmentCreate";
 	}
-	
+
 	@PostMapping("/create")
-	public String submitCreateDepartmentForm(DepartmentForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-		String departmentName = form.getDepartmentName().replaceAll("\\s+", " ").trim();
-		Long jduId = form.getJduId();
+	public String submitCreateDepartmentForm(@ModelAttribute DepartmentForm department, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+		String departmentName = department.getDepartmentName().replaceAll("\\s+", " ").trim();
+		Long jduId = department.getJduId();
 
 		Set<Department> departmentSet = departmentService.findDepartmentByName(departmentName);
-		for (Department department : departmentSet) {
-			if (department.getName().equalsIgnoreCase(departmentName) &&
-					department.getJduId() == jduId) {
+		for (Department dept : departmentSet) {
+			if (dept.getName().equalsIgnoreCase(departmentName) &&
+					dept.getJduId() == jduId) {
 				String message = String.format("An error occured when trying to add new department \"%s\"", departmentName);
-				redirectAttributes.addFlashAttribute("message", message);
+				redirectAttributes.addFlashAttribute("errorMessage", message);
 
-				return null;
+				return "department-management/venueCreate";
 			}
 		}
 
@@ -84,11 +85,11 @@ public class DepartmentController {
 		departmentService.createDepartment(newDepartment);
 
 		String message = String.format("You have successfully added the new department \"%s\"", departmentName);
-		redirectAttributes.addFlashAttribute("message", message);
+		redirectAttributes.addFlashAttribute("successMessage", message);
 
-		return null;
+		return "redirect:/department/create#successModal";
 	}
-	
+
 	@GetMapping("/load")
 	public String load(Model model) {
 		List<Department> departmentList = departmentService.findAllDepartments().stream().collect(Collectors.toList());
@@ -96,31 +97,33 @@ public class DepartmentController {
 
 		model.addAttribute("departmentList", departmentList);
 		model.addAttribute("jduList", jduList);
+		model.addAttribute("departmentForm", new DepartmentForm());
 
 		return "department-management/departmentView";
 	}
-	
+
 	@PostMapping("/update")
-	public String updateDepartmentForm(@ModelAttribute DepartmentForm form, RedirectAttributes redirectAttributes) {
+	public String updateDepartmentForm(@ModelAttribute("departmentForm") DepartmentForm form, BindingResult result, RedirectAttributes redirectAttributes) {
 		Department updatedDept = Department.builder()
 				.addId(form.getId())
-				.addDepartmentName(form.getDepartmentName())
+				.addDepartmentName(form.getDepartmentName().replaceAll("\\s+", " ").trim())
+				.addJduId(form.getJduId())
 				.build();
 		departmentService.updateDepartment(updatedDept);
 
 		String message = String.format("You have successfuly updated the department \"%s\"", updatedDept.getName());
 		redirectAttributes.addFlashAttribute("message", message);
 
-		return null;
+		return "redirect:/department/load#successModal";
 	}
 	
 	@PostMapping("{departmentId}/delete")
-	public String deleteVenue(@PathVariable("departmentId") Long id, RedirectAttributes redirectAttributes, Model model) {
+	public String deleteDepartment(@PathVariable("departmentId") Long id, RedirectAttributes redirectAttributes, Model model) {
 		departmentService.deleteDepartment(id);
 
-		String message = String.format("You have successfuly deleted the department");
+		String message = "You have successfuly deleted the department";
 		redirectAttributes.addFlashAttribute("message", message);
 
-		return null;
+		return "redirect:/department/load#successModal";
 	}
 }

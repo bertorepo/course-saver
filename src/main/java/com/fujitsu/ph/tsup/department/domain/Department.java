@@ -29,7 +29,7 @@ public class Department {
 		this.id = builder.id;
 		this.deptName = builder.departmentName;
 		this.jduId = builder.jduId;
-		this.setJduName(builder.jduName);
+		this.jduName = builder.jduName;
 	}
 	
 	public Long getId() {
@@ -70,6 +70,11 @@ public class Department {
 		this.jduName = jduName;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("Department [%d %s %d %s]", id, deptName, jduId, jduName);
+	}
+
 	public static Builder builder() {
 		return new Builder();
 	}

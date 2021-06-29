@@ -23,7 +23,7 @@ import com.fujitsu.ph.tsup.department.domain.Department;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
-	
+
 	@Autowired
 	DepartmentDao departmentDao;
 	
@@ -42,7 +42,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 		try {
 			departmentDao.createDepartment(department);
 		} catch (Exception ex) {
-			throw new IllegalArgumentException("Failed to save new department");
+			String err = String.format("Failed to save new department: [%s]", ex.getMessage());
+			throw new IllegalArgumentException(err);
 		}
 	}
 
@@ -51,7 +52,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 		try {
 			departmentDao.updateDepartment(updatedDept);
 		} catch (Exception ex) {
-			throw new IllegalArgumentException("Failed to update department");
+			String err = String.format("Failed to update department: [%s]", ex.getMessage());
+			throw new IllegalArgumentException(err);
 		}
 	}
 
@@ -60,8 +62,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 		try {
 			departmentDao.deleteDepartmentById(id);
 		} catch (Exception ex) {
-			throw new IllegalArgumentException("Failed to delete department");
+			String err = String.format("Failed to delete department: [%s]", ex.getMessage());
+			throw new IllegalArgumentException(err);
 		}
 	}
-
 }

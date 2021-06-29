@@ -10,4 +10,12 @@ public interface JduService {
 
 	Set<Jdu> findAllJdus();
 
+	Set<Jdu> findJduByName(String jduName);
+
+	void createJdu(Jdu newJdu);
+
+	void updateJdu(Jdu updatedJdu);
+
+	void deleteDepartment(Long id);
+
 }

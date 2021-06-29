@@ -17,7 +17,6 @@ public class DepartmentForm {
 	private Long id;
 	private String departmentName;
 	private Long jduId;
-	private String jduName;
 
 	public Long getId() {
 		return id;
@@ -43,16 +42,8 @@ public class DepartmentForm {
 		this.jduId = jduId;
 	}
 
-	public String getJduName() {
-		return jduName;
-	}
-
-	public void setJduName(String jduName) {
-		this.jduName = jduName;
-	}
-
 	@Override
 	public String toString() {
-		return "DepartmentForm [Id = " + id + ", name = " + departmentName + "]";
+		return String.format("DepartmentForm [Id = %d, name = %s, jduId = %d]", id, departmentName, jduId);
 	}
 }

@@ -90,31 +90,27 @@
 		<hr>
 		<div class="card">
 			<div class="card-body">
-				<p>Please input your desired Department Name</p>
-				<form th:action="@{/department/create}" method="POST">
+				<p>Please input your desired department name and associated JDU.</p>
+				<form th:action="@{/department/create}" th:object="${departmentForm}" method="POST">
 					<div class="form-group row">
 	                    <label class="col-lg-2 col-form-label">Department Name</label>
 						<div class="col-lg-5">	
 						    <input type="text" placeholder="Enter Department Name" class="form-control"
-						        id="departmentName" name="name" onkeyup=validateInput() maxlength="100" tabindex="1">
+						        id="departmentName" name="departmentName" th:field="*{departmentName}" maxlength="100" tabindex="1" required>
 						</div>
 						<span class="text-danger er" id="departmentNameError"></span>
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">JDU:</label>
 						<div class="col-lg-5">
-							<input type="text" list="jduList" id="jdu" 
-								placeholder="Enter JDU name" 
-								class="form-control custom-select custom-select-md" 
-								name="jduId"/>
-							<span id="jduNameErr" style="color: red;"></span>
-							<datalist id="jduList">
-								<option value=""/>
+							<select class="form-control form-select" aria-label="Default select example"
+								id="jduId" name="jduId" required>
+								<option selected value="">-</option>
 								<option th:each="jdu : ${jduList}"
-										th:attr="data-value = ${jdu.id}"
-										th:value="${jdu.jduName}"
-										th:selected="${jdu.id}"/>
-							</datalist>
+										th:value="${jdu.id}"
+										th:text="${jdu.jduName}"/>
+							</select>
+							<span id="jduNameErr" style="color: red;"></span>
 						</div>
 					</div>
 					<div class="float-right">

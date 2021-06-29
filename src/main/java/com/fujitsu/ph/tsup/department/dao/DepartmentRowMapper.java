@@ -25,13 +25,15 @@ public class DepartmentRowMapper implements RowMapper<Department> {
 	@Override
 	public Department mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
+		Long jduId = rs.getLong("jdu_id");
 		String deptName = rs.getString("department_name");
 		String jduName = rs.getString("jdu_name");
 		
-		Department department = Department.builder().
-				addId(id).
-				addDepartmentName(deptName).
-				addJduName(jduName)
+		Department department = Department.builder()
+				.addId(id)
+				.addJduId(jduId)
+				.addDepartmentName(deptName)
+				.addJduName(jduName)
 				.build();
 		
 		return department;

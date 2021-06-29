@@ -33,15 +33,15 @@ public class DepartmentDaoImpl implements DepartmentDao {
 	
 	@Override
 	public Set<Department> findAllDepartments() {
-		String query = "SELECT * FROM department d INNER JOIN jdu_type j ON d.jdu_id = j.id ORDER BY jdu_name";
+		String query = "SELECT * FROM department d INNER JOIN jdu_type j ON d.jdu_id = j.id ORDER BY d.id";
 		List<Department> departmentList = template.query(query, new DepartmentRowMapper());
-		
+
 		return new LinkedHashSet<>(departmentList);
 	}
 
 	@Override
 	public Set<Department> findDepartmentByName(String departmentName) {
-		String query = "SELECT * FROM DEPARTMENT WHERE LOWER(name) LIKE LOWER('%" + departmentName + "%') ORDER BY name";
+		String query = "SELECT * FROM DEPARTMENT WHERE LOWER(department_name) LIKE LOWER('%" + departmentName + "%') ORDER BY department_name";
 		List<Department> departmentList = template.query(query, new DepartmentRowMapper());
 		
 		return new LinkedHashSet<>(departmentList);
@@ -49,19 +49,20 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
 	@Override
 	public void createDepartment(Department department) {
-		String query = "INSERT INTO DEPARTMENT(name) VALUES(:name)";
+		String query = "INSERT INTO DEPARTMENT(department_name, jdu_id) VALUES(:department_name, :jdu_id)";
 		SqlParameterSource sqlParamSource = new MapSqlParameterSource()
-				.addValue("name", department.getName());
+				.addValue("department_name", department.getName())
+				.addValue("jdu_id", department.getJduId());
 		
 		template.update(query, sqlParamSource);
 	}
 
 	@Override
 	public void updateDepartment(Department updatedDept) {
-		String query = "UPDATE DEPARTMENT SET name = :name WHERE id = :id";
+		String query = "UPDATE DEPARTMENT SET department_name = :department_name WHERE id = :id";
 		SqlParameterSource sqlParamSource = new MapSqlParameterSource()
 				.addValue("id", updatedDept.getId())
-				.addValue("name", updatedDept.getName());
+				.addValue("department_name", updatedDept.getName());
 		
 		template.update(query, sqlParamSource);
 	}
