@@ -327,7 +327,7 @@ public class EnrollmentController {
 		if (courseEnrolledListForm.getToDateTime().isBefore(courseEnrolledListForm.getFromDateTime())) {
 			model.addAttribute("myCourseSched", courseEnrolledListForm);
 			model.addAttribute("errorMessage", "No Course Schedule Found");
-			model.addAttribute("error", "Invalid Date");
+			model.addAttribute("error", "To Date should be greater than From Date");
 			return "enrollment/myCourseSched";
 		}
 		

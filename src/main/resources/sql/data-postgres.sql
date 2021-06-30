@@ -248,3 +248,8 @@ INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, st
 INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, status, log_in_datetime, log_out_datetime, email)
 	VALUES (3, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
 
+--JDU TYPE
+INSERT INTO JDU_TYPE(jdu_name,  timezone)
+    VALUES ('PH', 'GMT+8');
+INSERT INTO JDU_TYPE(jdu_name,  timezone)
+    VALUES ('IN', 'GMT+5');
