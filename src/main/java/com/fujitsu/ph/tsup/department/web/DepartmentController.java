@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.department.domain.Department;
@@ -116,7 +117,7 @@ public class DepartmentController {
 
 		return "redirect:/department/load#successModal";
 	}
-	
+
 	@PostMapping("{departmentId}/delete")
 	public String deleteDepartment(@PathVariable("departmentId") Long id, RedirectAttributes redirectAttributes, Model model) {
 		departmentService.deleteDepartment(id);
@@ -125,5 +126,23 @@ public class DepartmentController {
 		redirectAttributes.addFlashAttribute("message", message);
 
 		return "redirect:/department/load#successModal";
+	}
+
+	@GetMapping("/search")
+	public String submitSearchDepartmentForm(@RequestParam("searchKeyName") String searchKeyName, Model model) {
+		String searchKey = searchKeyName.replaceAll("\\s+", " ").trim();
+
+		if (searchKey.isEmpty()) {
+			return "redirect:/department/load";
+		}
+
+		List<Department> departmentList = departmentService.findDepartmentByName(searchKey).stream().collect(Collectors.toList());
+		List<Jdu> jduList = jduService.findAllJdus().stream().collect(Collectors.toList());
+
+		model.addAttribute("departmentList", departmentList);
+		model.addAttribute("jduList", jduList);
+		model.addAttribute("departmentForm", new DepartmentForm());
+
+		return "department-management/departmentView";
 	}
 }

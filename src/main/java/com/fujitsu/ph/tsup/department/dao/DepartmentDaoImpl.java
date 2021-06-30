@@ -41,7 +41,9 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
 	@Override
 	public Set<Department> findDepartmentByName(String departmentName) {
-		String query = "SELECT * FROM DEPARTMENT WHERE LOWER(department_name) LIKE LOWER('%" + departmentName + "%') ORDER BY department_name";
+		String query = "SELECT * FROM department d INNER JOIN jdu_type j ON d.jdu_id = j.id"
+				+ " WHERE LOWER(d.department_name)  LIKE LOWER('%" + departmentName + "%') ORDER BY d.id";
+
 		List<Department> departmentList = template.query(query, new DepartmentRowMapper());
 		
 		return new LinkedHashSet<>(departmentList);

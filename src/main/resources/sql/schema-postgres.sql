@@ -456,3 +456,37 @@ ALTER TABLE tsup.CERTIFICATE_UPLOAD
 SET search_path = tsup;
 ALTER TABLE venue
 ADD COLUMN overlap boolean;
+
+--Added 2021/06/22
+CREATE SEQUENCE "JDU_TYPE_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE "JDU_TYPE_ID_seq"
+    OWNER TO postgres;
+
+CREATE TABLE JDU_TYPE
+(
+    ID bigint NOT NULL DEFAULT nextval('tsup."JDU_TYPE_ID_seq"'::regclass),
+    JDU_NAME character varying(100) COLLATE pg_catalog."default",
+    TIMEZONE character varying(6) COLLATE pg_catalog."default",
+    CONSTRAINT "JDU_TYPE_pkey" PRIMARY KEY (id),
+    CONSTRAINT "JDU_TYPE_unique" UNIQUE (jdu_name)
+)
+WITH (OIDS = FALSE)
+
+TABLESPACE pg_default;
+
+ALTER TABLE JDU_TYPE
+    OWNER to postgres;
+
+ALTER TABLE department
+    ADD COLUMN JDU_ID bigint NOT NULL DEFAULT nextval('tsup."JDU_TYPE_ID_seq"'::regclass),
+    ADD CONSTRAINT "JDU_TYPE_fkey" FOREIGN KEY (JDU_ID) REFERENCES jdu_type(ID) MATCH SIMPLE ON DELETE CASCADE;
+
+ALTER TABLE course
+    ADD COLUMN DEPARTMENT_ID bigint NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
+    ADD CONSTRAINT "DEPARTMENT_fkey" FOREIGN KEY (DEPARTMENT_ID) REFERENCES department(ID) MATCH SIMPLE ON DELETE CASCADE;

@@ -61,8 +61,7 @@ public class VenueController {
 	 */
 	@GetMapping("/create")
 	public String showCreateVenueForm(Model model) {
-		Set<Venue> venues = venueService.findAllVenues();
-		List<Venue> venueList = venues.stream().collect(Collectors.toList());
+		List<Venue> venueList = venueService.findAllVenues().stream().collect(Collectors.toList());
 
 		model.addAttribute("venueList", venueList);
 
