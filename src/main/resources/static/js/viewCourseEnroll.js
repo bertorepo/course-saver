@@ -5,17 +5,17 @@ var enrollMemberButton;
 
 $(document).ready(function() {
 //	//On load
-	findCourseSchedule("month");
+	//findCourseSchedule("month");
 	
 	//Disabled Cancel Below Minimum Button if there are no course schedule
 	cancelBelowMinimumCallDisabledButton();
 
 	//On dropdown change value
-	dropDown = $("#dropDown");
-	dropDown.change(function() {
-		value = dropDown.val();
-		findCourseSchedule(value);
-	});
+	//dropDown = $("#dropDown");
+	//dropDown.change(function() {
+	//	value = dropDown.val();
+	//	findCourseSchedule(value);
+	//});
 
 	//On click CancelBelowMinimum
 	cancelBelowMinimum = $("#cancelBelowMinimumbtn");
@@ -150,7 +150,7 @@ function cancellingBelowMinimum(){
 	
 	$('#cancelModal').modal('show');
 }
-
+/*
 function findCourseSchedule(queryBy){
 
 	$.ajax({
@@ -175,72 +175,8 @@ function findCourseSchedule(queryBy){
 	});
 
 }
+*/
 
-function toTable(data){
-	//clear table body to not append the new data retrieve
-	$('#table-body').empty();
-	var len = data.length;
-	var table = document.getElementById('table-body')
-	
-	data.forEach(function(object){		
-		var courseScheduleDetail = object.courseScheduleDetail;
-		var tr = document.createElement('tr'); 
-		
-		/* Removing the buttons in the table
-		//creating td element
-		var tdButtonReschedule = document.createElement("td");
-		//creating button element
-		var buttonReschedule = document.createElement("button");
-		//give a value of a button
-		buttonReschedule.innerHTML = "Reschedule"
-		//assigning class of button
-		buttonReschedule.classList.add("btn");
-		buttonReschedule.classList.add("btn-success");
-		buttonReschedule.classList.add("float-right");
-
-		tdButtonReschedule.append(buttonReschedule);
-
-		//creating td element
-		var tdButtonCancel = document.createElement("td");
-		//creating button element
-		var buttonCancel = document.createElement('button');
-		//give a value of a button
-		buttonCancel.innerHTML = "Cancel"
-			//assigning class of button
-		buttonCancel.classList.add("btn");
-		buttonCancel.classList.add("btn-danger");
-		buttonCancel.classList.add("float-right");
-
-		tdButtonReschedule.append(buttonCancel);
-
-		tr.append(tdButtonReschedule);
-		//give a button a eventListener
-		buttonReschedule.addEventListener("click", function(){
-			reschedule(object.id,object.courseName, courseScheduleDetail.id, courseScheduleDetail.scheduledStartDateTime, courseScheduleDetail.scheduledEndDateTime);
-		});
-		//give a button a eventListener
-		buttonCancel.addEventListener("click", function(){
-			cancellation(object.id,object.courseName);
-		});
-		*/
-		
-		tr.innerHTML = 
-			'<td class="align-middle">' + object.courseCategory + '</td>' +
-			'<td class="align-middle">' + object.courseName + '</td>' +
-			'<td class="align-middle">' + object.instructorLastName + ' ' + object.instructorFirstName + '</td>' +
-			'<td class="align-middle">' + object.mandatory + '</td>' +
-			'<td class="align-middle">' + object.deadline + '</td>' +
-			'<td class="align-middle">' + moment.utc(courseScheduleDetail.scheduledStartDateTime, 'YYYY-MM-DD hh:mm').format(
-			'MMM DD, YYYY (ddd)- hh:mm A') + 
-			'<hr>' + moment.utc(courseScheduleDetail.scheduledEndDateTime, 'YYYY-MM-DD hh:mm').format(
-			'MMM DD, YYYY (ddd)- hh:mm A') + '</td>' +
-			'<td class="align-middle">' + courseScheduleDetail.duration + '</td>' +
-			'<td class="align-middle">' + object.venueName + '</td>' +
-			'<td class="align-middle">' + object.totalParticipants + '</td>';
-		table.append(tr);
-	});
-	
-}
 function cancellation(courseScheduleId, courseName){
 //	alert("(Cancellation) CourseName: "+courseScheduleId + courseName);
 	//call cancel confirmation modall
