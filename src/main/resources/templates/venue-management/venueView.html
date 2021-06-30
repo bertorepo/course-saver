@@ -22,7 +22,6 @@
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
-<link rel="stylesheet" type="text/css" href="/css/app/roletype/roletype.common.css">
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -166,7 +165,7 @@
 								<th style = "width: 80%"> Venue Name </th>
 							</tr>
 						</thead>
-						<tbody th:each = "venue : *{venueList}">
+						<tbody th:each = "venue : *{venueList != null ? venueList : paginatedVenue.content}">
 							<tr>
 								<td style = "width: 20%">
 									<input type="submit" value="Edit" class="btn btn-success"
@@ -178,8 +177,28 @@
 							</tr>
 						</tbody>
 					</table>
-
-					<div th:if = "${#lists.isEmpty(venueList)}">
+						<nav aria-label="Pagination" th:if="${paginatedVenue != null}">
+			 				<ul class="pagination justify-content-center font-weight-bold" style="padding-left:4%;">
+			 					<li class="page-item" th:classappend="${paginatedVenue.number eq 0} ? 'disabled'">
+			 						<a class="page-link" th:href="@{/venue/load?page={id}&sortField={sortField}&(id=${paginatedVenue.number lt 2 ? 1 : paginatedVenue.number})}"
+			 									aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+			 							<span aria-hidden="true">&laquo;</span>
+			 						</a>
+			 					</li>
+			 					<li class="page-item" th:classappend="${i eq paginatedVenue.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, paginatedVenue.totalPages, 1)}">
+			 					  	<a class="page-link" th:href="@{/venue/load?page={id}(id=${i})}" th:text="${i}"
+			 					               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+								</li>
+			 					<li class="page-item" th:classappend="${paginatedVenue.number + 1 eq paginatedVenue.totalPages} ? 'disabled'">
+			 						<a class="page-link"
+			 					   th:href="@{/venue/load?page={id}(id=${paginatedVenue.number + 2})}"
+			 					   aria-label="Next" title="Next Page" data-toggle="tooltip">
+			 					    <span aria-hidden="true">&raquo;</span>
+			 						 </a>
+			 					</li>
+			 				</ul>
+			 			</nav>
+					<div th:if = "${venueList != null ? venueList.isEmpty() : paginatedVenue.isEmpty()}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No venues available</strong>
 						</div>

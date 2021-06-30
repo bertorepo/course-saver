@@ -5,9 +5,12 @@ package com.fujitsu.ph.tsup.venue.service;
 
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.fujitsu.ph.tsup.venue.domain.Venue;
 
-//=======================================================
+//============================================================================================
 //Project Name: Training Sign Up
 //Class Name: VenueService.java
 //
@@ -15,7 +18,8 @@ import com.fujitsu.ph.tsup.venue.domain.Venue;
 //Version | Date       | Updated by       | Content
 //--------+------------+------------------+---------------
 //0.01    | 03/06/2021 | WS) dw.cardenas  | Created
-//=======================================================
+//0.02    | 30/06/2021 | WS) mi.aguinaldo | Overload the findAllVenues
+//============================================================================================
 
 /**
  *
@@ -34,6 +38,17 @@ public interface VenueService {
 	 */
 	Set<Venue> findAllVenues();
 
+	
+	/**
+	 * <pre>
+	 * Gets all venues.
+	 * <pre>
+	 *
+	 * @return all venues
+	 */
+	Page<Venue> findAllVenues(Pageable pagable);
+	
+	
 	/**
 	 * <pre>
 	 * Find venues that has specific name.
