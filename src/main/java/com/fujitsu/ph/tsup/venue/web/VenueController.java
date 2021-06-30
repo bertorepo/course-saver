@@ -4,12 +4,14 @@
 package com.fujitsu.ph.tsup.venue.web;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -109,14 +111,21 @@ public class VenueController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping ("/load")
-	public String load(Model model) {
-		Set<Venue> venues = venueService.findAllVenues();
-		List<Venue> venueList = venues.stream().collect(Collectors.toList());
+	@GetMapping("/load")
+	public String load(Model model, @RequestParam("page") Optional<Integer> page,
+		    			@RequestParam("size") Optional<Integer> size, 
+		    			@RequestParam("sortField") Optional<String> sortField,
+		    			@RequestParam("sortDir") Optional<String> sortDir) {
+	    int currentPage = page.orElse(1);
+	    int pageSize = size.orElse(10);
+	    
+	    Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+	    
+	    Page<Venue> paginatedVenue = venueService.findAllVenues(pageable);
 
-		model.addAttribute("venueList", venueList);
+	    model.addAttribute("paginatedVenue", paginatedVenue);
 
-		return "venue-management/venueView";
+	    return "venue-management/venueView";
 	}
 
 	/**
