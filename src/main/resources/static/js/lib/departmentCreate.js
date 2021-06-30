@@ -57,7 +57,7 @@ $('#departmentName').on("input", function() {
 $('#jduId').on("input", function() {
 	var jduValue = this.value.trim();
 	if (jduValue == "") {
-		$('#jduNameErr').text("Please enter a JDU name.");
+		$('#jduNameErr').text("Please pick a JDU name.");
 		hasInvalidInput = true;
 	} else {
 		$('#jduNameErr').text("");

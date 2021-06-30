@@ -59,10 +59,11 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
 	@Override
 	public void updateDepartment(Department updatedDept) {
-		String query = "UPDATE DEPARTMENT SET department_name = :department_name WHERE id = :id";
+		String query = "UPDATE DEPARTMENT SET department_name = :department_name, jdu_id = :jdu_id WHERE id = :id";
 		SqlParameterSource sqlParamSource = new MapSqlParameterSource()
 				.addValue("id", updatedDept.getId())
-				.addValue("department_name", updatedDept.getName());
+				.addValue("department_name", updatedDept.getName())
+				.addValue("jdu_id", updatedDept.getJduId());
 		
 		template.update(query, sqlParamSource);
 	}

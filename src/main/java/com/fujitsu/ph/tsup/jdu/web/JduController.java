@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.department.domain.Department;
-import com.fujitsu.ph.tsup.department.model.DepartmentForm;
+import com.fujitsu.ph.tsup.department.service.DepartmentService;
 import com.fujitsu.ph.tsup.jdu.domain.Jdu;
 import com.fujitsu.ph.tsup.jdu.model.JduForm;
 import com.fujitsu.ph.tsup.jdu.service.JduService;
@@ -44,68 +44,80 @@ import com.fujitsu.ph.tsup.jdu.service.JduService;
 public class JduController {
 	@Autowired
 	JduService jduService;
+	
+	@Autowired
+	DepartmentService departmentService;
 
 	@GetMapping("/create")
 	public String showCreateJduForm(Model model) {
 		List<Jdu> jduList = jduService.findAllJdus().stream().collect(Collectors.toList());
 
 		model.addAttribute("jduList", jduList);
-		return null;
+		return "jdu-management/jduCreate";
 	}
 
 	@PostMapping("/create")
 	public String submitCreateJduForm(@ModelAttribute JduForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-		String jduName = form.getJduName();
+		String jduName = form.getJduName().replaceAll("\\s+", " ").trim();
+		String timezone = form.getTimezone();
 
 		Set<Jdu> jduSet = jduService.findJduByName(jduName);
 		for (Jdu jdu : jduSet) {
-			if (jdu.getJduName() == jduName) {
+			if (jdu.getJduName() == jduName && jdu.getTimezone() == timezone) {
 				String message = String.format("An error occured when trying to add new Jdu \"%s\"", jduName);
 				redirectAttributes.addFlashAttribute("message", message);
 
-				return "venue-management/venueCreate";
+				return "jdu-management/jduCreate";
 			}
 		}
 
-		Jdu newJdu = Jdu.builder().addJduName(jduName).build();
+		Jdu newJdu = Jdu.builder()
+				.addJduName(jduName)
+				.addTimezone(timezone)
+				.build();
 		jduService.createJdu(newJdu);
 
 		String message = String.format("You have successfully added the new jdu \"%s\"", jduName);
 		redirectAttributes.addFlashAttribute("message", message);
 
-		return null;
+		return "redirect:/jdu/create#successModal";
 	}
 
 	@GetMapping("/load")
 	public String load(Model model) {
 		List<Jdu> jduList = jduService.findAllJdus().stream().collect(Collectors.toList());
-
+		List<Department> departmentList = departmentService.findAllDepartments().stream().collect(Collectors.toList());
+		
 		model.addAttribute("jduList", jduList);
+		model.addAttribute("departmentList", departmentList);
+		model.addAttribute("jduForm", new JduForm());
+		
 		return "jdu-management/jduView";
 	}
 
 	@PostMapping("/update")
-	public String updateJduForm(@ModelAttribute JduForm form, RedirectAttributes redirectAttributes) {
+	public String updateJduForm(@ModelAttribute("jduForm") JduForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		Jdu updatedJdu = Jdu.builder()
 				.addId(form.getId())
-				.addJduName(form.getJduName())
+				.addJduName(form.getJduName().replaceAll("\\s+", " ").trim())
+				.addTimezone(form.getTimezone())
 				.build();
 
 		jduService.updateJdu(updatedJdu);
 
-		String message = String.format("You have successfully updated the jdu \"%s\"", form.getJduName());
+		String message = String.format("You have successfully updated the JDU \"%s\"", form.getJduName());
 		redirectAttributes.addFlashAttribute("message", message);
 
-		return null;
+		return "redirect:/jdu/load#successModal";
 	}
 	
 	@PostMapping("{jduId}/delete")
 	public String deleteJdu(@PathVariable("jduId") Long id, RedirectAttributes redirectAttributes, Model model) {
 		jduService.deleteDepartment(id);
 
-		String message = "You have successfully deleted the jdu";
+		String message = "You have successfully deleted the JDU.";
 		redirectAttributes.addFlashAttribute("message", message);
 
-		return null;
+		return "redirect:/jdu/load#successModal";
 	}
 }

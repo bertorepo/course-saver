@@ -41,6 +41,7 @@ public class Venue {
 	 * @param builder
 	 */
 	public Venue(Builder builder) {
+		validateVenueName(builder.venueName);
 		this.id = builder.id;
 		this.venuName = builder.venueName;
 	}
@@ -88,41 +89,55 @@ public class Venue {
 	public void setName(String name) {
 		this.venuName = name;
 	}
+	
+	/**
+	 * <pre>
+	 * Validation for venue id
+	 * <pre>
+	 *
+	 * @param id
+	 */
+	@Deprecated
+	private void validateId(Long id) {
+		if (id == null || id == 0) {
+			throw new IllegalArgumentException("Id should not be empty.");
+		}
+	}
+
+	/**
+	 * <pre>
+	 * Validation for venue name
+	 * <pre>
+	 *
+	 * @param venueName
+	 */
+	private void validateVenueName(String venueName) {
+		if (StringUtils.isEmpty(venueName)) {
+			throw new IllegalArgumentException("Venue name should not be empty.");
+		}
+	}
+	
+	public static Builder builder() {
+		return new Builder();
+	}
 
 	/**
 	 * Builder Class
 	 */
-	public static class Builder {
+	public static final class Builder {
 		private Long id;
 		private String venueName;
 
-		/**
-		 * <pre>
-		 * Constructor with parameter using name
-		 * <pre>
-		 *
-		 * @param name
-		 */
-		public Builder(String name) {
-			validateVenueName(name);
-			this.venueName = name;
-		}
-
-		/**
-		 * <pre>
-		 * Constructor with parameter using id and name
-		 * <pre>
-		 *
-		 * @param id
-		 * @param name
-		 */
-		public Builder(Long id, String name) {
-			validateId(id);
-			validateVenueName(name);
+		public Builder addId(Long id) {
 			this.id = id;
-			this.venueName = name;
+			return this;
 		}
-
+		
+		public Builder addVenueName(String venueName) {
+			this.venueName = venueName;
+			return this;
+		}
+		
 		/**
 		 * <pre>
 		 * Creates and returns instance of venue from builder.
@@ -132,32 +147,6 @@ public class Venue {
 		 */
 		public Venue build() {
 			return new Venue(this);
-		}
-
-		/**
-		 * <pre>
-		 * Validation for venue id
-		 * <pre>
-		 *
-		 * @param id
-		 */
-		private void validateId(Long id) {
-			if (id == null || id == 0) {
-				throw new IllegalArgumentException("Id should not be empty.");
-			}
-		}
-
-		/**
-		 * <pre>
-		 * Validation for venue name
-		 * <pre>
-		 *
-		 * @param venueName
-		 */
-		private void validateVenueName(String venueName) {
-			if (StringUtils.isEmpty(venueName)) {
-				throw new IllegalArgumentException("Venue name should not be empty.");
-			}
 		}
 	}
 }

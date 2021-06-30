@@ -36,19 +36,21 @@ public class JduDaoImpl implements JduDao {
 
 	@Override
 	public void createJdu(Jdu newJdu) {
-		String query = "INSERT INTO JDU_TYPE(jdu_name) VALUES(:jdu_name)";
+		String query = "INSERT INTO JDU_TYPE(jdu_name, timezone) VALUES(:jdu_name, :timezone)";
 		SqlParameterSource sqlParamSource = new MapSqlParameterSource()
-				.addValue("jdu_name", newJdu.getJduName());
+				.addValue("jdu_name", newJdu.getJduName())
+				.addValue("timezone", newJdu.getTimezone());
 
 		template.update(query, sqlParamSource);
 	}
 
 	@Override
 	public void updateJdu(Jdu updatedJdu) {
-		String query = "UPDATE JDU_TYPE SET jdu_name = :jdu_name WHERE id = :id";
+		String query = "UPDATE JDU_TYPE SET jdu_name = :jdu_name, timezone = :timezone WHERE id = :id";
 		SqlParameterSource sqlParamSource = new MapSqlParameterSource()
 				.addValue("id", updatedJdu.getId())
-				.addValue("jdu_name", updatedJdu.getJduName());
+				.addValue("jdu_name", updatedJdu.getJduName())
+				.addValue("timezone", updatedJdu.getTimezone());
 
 		template.update(query, sqlParamSource);
 	}

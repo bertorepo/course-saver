@@ -93,7 +93,7 @@ public class VenueController {
 			}
 		}
 
-		venueService.createVenue(new Venue.Builder(venueName).build());
+		venueService.createVenue(Venue.builder().addVenueName(venueName).build());
 
 		String message = String.format("You have successfuly added the venue \"%s\"", venueName);
 		redirectAttributes.addFlashAttribute("message", message);
@@ -157,7 +157,10 @@ public class VenueController {
 	 */
 	@PostMapping("/update")
 	public String updateVenueForm(@ModelAttribute VenueForm venue, RedirectAttributes redirectAttributes) {
-		Venue updatedVenue = new Venue.Builder(venue.getId(), venue.getName()).build();
+		Venue updatedVenue = Venue.builder()
+				.addId(venue.getId())
+				.addVenueName(venue.getName().replaceAll("\\s+", " ").trim())
+				.build();
 		venueService.updateVenue(updatedVenue);
 
 		String message = String.format("You have successfuly updated the venue \"%s\"", venue.getName());

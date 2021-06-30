@@ -1,6 +1,6 @@
 <!-- ================================================================================================== -->
 <!-- Project Name : Training Sign Up -->
-<!-- System Name  : Venue Management -->
+<!-- System Name  : Jdu Management -->
 <!-- Name         : jduView.html -->
 
 <!-- <<Modification History>> -->
@@ -38,24 +38,73 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header alert-info">
-					<h5 class="modal-title">Update Department</h5>
+					<h5 class="modal-title">Update Jdu</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form id="jduUpdateForm" th:action="@{/jdu/update}" method="POST">
+				<form id="jduUpdateForm" th:action="@{/jdu/update}" th:object="${jduForm}" method="POST">
 					<div class="modal-body">
 						<div class="form-group row">
-							<input type="hidden" id="jduUpdateId" name="id"/>
-							<div class="col-lg-3">
+							<input type="hidden" id="jduUpdateId" name="id" th:field="*{id}"/>
+							<div class="col-lg-2">
 								<label class="col-form-label">JDU:</label>
 							</div>
 							<div class="col-lg-9">
 								<input type="text" placeholder="Enter jdu name" id="jduUpdateName"
-									class="form-control" maxlength="100" name="name" onkeyup="validateUpdateInput()"/>
+									class="form-control" maxlength="100" name="jduName" th:field="*{jduName}" required/>
 								<span id="nameErrorMsg" style="color: red;"></span>
 							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label">Timezone:</label>
+							<div class="col-lg-5">
+								<select name="timezone" id="timezone" class="form-control form-select" required>
+									<option value="" selected>-</option>
+									<option value="GMT -12:00">(GMT -12:00) Eniwetok, Kwajalein</option>
+									<option value="GMT -11:00">(GMT -11:00) Midway Island, Samoa</option>
+									<option value="GMT -10:00">(GMT -10:00) Hawaii</option>
+									<option value="GMT -9:30">(GMT -9:30) Taiohae</option>
+									<option value="GMT -9:00">(GMT -9:00) Alaska</option>
+									<option value="GMT -8:00">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+									<option value="GMT -07:00">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+									<option value="GMT -06:00">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+									<option value="GMT -05:00">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+									<option value="GMT -04:50">(GMT -4:30) Caracas</option>
+									<option value="GMT -04:00">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+									<option value="GMT -03:50">(GMT -3:30) Newfoundland</option>
+									<option value="GMT -03:00">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+									<option value="GMT -02:00">(GMT -2:00) Mid-Atlantic</option>
+									<option value="GMT -01:00">(GMT -1:00) Azores, Cape Verde Islands</option>
+									<option value="GMT +00:00">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+									<option value="GMT +01:00">(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+									<option value="GMT +02:00">(GMT +2:00) Kaliningrad, South Africa</option>
+									<option value="GMT +03:00">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+									<option value="GMT +03:50">(GMT +3:30) Tehran</option>
+									<option value="GMT +04:00">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+									<option value="GMT +04:50">(GMT +4:30) Kabul</option>
+									<option value="GMT +05:00">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+									<option value="GMT +05:50">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+									<option value="GMT +05:75">(GMT +5:45) Kathmandu, Pokhara</option>
+									<option value="GMT +06:00">(GMT +6:00) Almaty, Dhaka, Colombo</option>
+									<option value="GMT +06:50">(GMT +6:30) Yangon, Mandalay</option>
+									<option value="GMT +07:00">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+									<option value="GMT +08:00">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+									<option value="GMT +08:75">(GMT +8:45) Eucla</option>
+									<option value="GMT +09:00">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+									<option value="GMT +09:50">(GMT +9:30) Adelaide, Darwin</option>
+									<option value="GMT +10:00">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+									<option value="GMT +10:50">(GMT +10:30) Lord Howe Island</option>
+									<option value="GMT +11:00">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+									<option value="GMT +11:50">(GMT +11:30) Norfolk Island</option>
+									<option value="GMT +12:00">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+									<option value="GMT +12:75">(GMT +12:45) Chatham Islands</option>
+									<option value="GMT +13:00">(GMT +13:00) Apia, Nukualofa</option>
+									<option value="GMT +14:00">(GMT +14:00) Line Islands, Tokelau</option>
+								</select>
+							</div>
+							<span id="timezoneErr" style="color: red;"></span>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -85,10 +134,17 @@
 					<div class="form-group row">
 						<label class="col-lg-12 col-form-label">Are you sure you
 							want to delete this JDU? In doing so, the action cannot be undone.</label>
+					</div>
+					<div class="row">
 						<label class="col-lg-3 col-form-label"> JDU Name:</label>
 						<div class="col-lg-9">
-							<label class="col-lg-12 col-form-label" id="jduName"
-								name="jduName"></label>
+							<label class="col-lg-12 col-form-label" id="jduName"/>
+						</div>
+					</div>
+					<div class="row">
+						<label class="col-lg-3 col-form-label"> Timezone:</label>
+						<div class="col-lg-9">
+							<label class="col-lg-12 col-form-label" id="timezoneDelete"/>
 						</div>
 					</div>
 				</div>
@@ -165,18 +221,20 @@
 						<thead>
 							<tr>
 								<th style = "width: 20%"> Action </th>
-								<th style = "width: 80%"> JDU </th>
+								<th style = "width: 40%"> JDU </th>
+								<th style = "width: 40%"> Timezone </th>
 							</tr>
 						</thead>
 						<tbody th:each = "jdu : *{jduList}">
 							<tr>
 								<td style = "width: 20%">
 									<input type="submit" value="Edit" class="btn btn-success"
-										th:attr="onclick=|showUpdateModal('${jdu.id}', '${jdu.jduName}')|"/>
+										th:attr="onclick=|showUpdateModal('${jdu.id}', '${jdu.jduName}', '${jdu.timezone}')|"/>
 									<input type="submit" value="Delete" class="btn btn-danger"
-										th:attr="onclick=|showDeleteModal('${jdu.id}', '${jdu.jduName}')|"/>
+										th:attr="onclick=|showDeleteModal('${jdu.id}', '${jdu.jduName}', '${jdu.timezone}')|"/>
 								</td>
 								<td th:text = "${jdu.jduName}"\>
+								<td th:text = "${jdu.timezone}"\>
 							</tr>
 						</tbody>
 					</table>
@@ -192,7 +250,8 @@
 	</div>
 
 	<script th:inline="javascript">
-		var venueList = /*[[${jduList}]]*/ [];
+		var jduList = /*[[${jduList}]]*/ [];
+		var departmentList = /*[[${departmentList}]]*/ [];
 	</script>
 	<script type="text/javascript" src="/js/lib/jduView.js"></script>
 	<footer th:replace="fragments/general.html :: footer"></footer>

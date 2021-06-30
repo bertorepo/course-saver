@@ -33,7 +33,10 @@ public class VenueRowMapper implements RowMapper<Venue> {
 		Long id = rs.getLong("id");
 		String name = rs.getString("name");
 
-		Venue venue = new Venue.Builder(id, name).build();
+		Venue venue = Venue.builder()
+				.addId(id)
+				.addVenueName(name)
+				.build();
 
 		return venue;
 	}

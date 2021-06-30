@@ -12,7 +12,12 @@ public class JduRowMapper implements RowMapper<Jdu> {
 	public Jdu mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
 		String jduName = rs.getString("jdu_name");
+		String timezone = rs.getString("timezone");
 
-		return Jdu.builder().addId(id).addJduName(jduName).build();
+		return Jdu.builder()
+				.addId(id)
+				.addJduName(jduName)
+				.addTimezone(timezone)
+				.build();
 	}
 }
