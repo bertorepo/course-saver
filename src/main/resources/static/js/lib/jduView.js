@@ -7,6 +7,19 @@ function showDeleteModal(id, name, timezone) {
 		this.action = "/jdu/" + id + "/delete";
 	})
 
+	$('#deletedDepartmentsList').empty();
+	var hasDepartments = false;
+	departmentList.forEach(function(dept) {
+		if (dept.jduId == id) {
+			hasDepartments = true;
+			$('#deletedDepartmentsList').append("<li>" + dept.name + "</li>");
+		}
+	});
+
+	if (!hasDepartments) {
+		$('#deletedDepartmentsList').append("<li> None </li>");
+	}
+
 	$('#deleteInfoModal').modal('show');
 }
 

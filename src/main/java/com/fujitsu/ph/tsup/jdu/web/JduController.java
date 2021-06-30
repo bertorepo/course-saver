@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fujitsu.ph.tsup.department.domain.Department;
@@ -119,5 +120,23 @@ public class JduController {
 		redirectAttributes.addFlashAttribute("message", message);
 
 		return "redirect:/jdu/load#successModal";
+	}
+	
+	@GetMapping("/search")
+	public String submitSearchJduForm(@RequestParam("searchKeyName") String searchKeyName, Model model) {
+		String searchKey = searchKeyName.replaceAll("\\s+", " ").trim();
+
+		if (searchKey.isEmpty()) {
+			return "redirect:/jdu/load";
+		}
+
+		List<Jdu> jduList = jduService.findJduByName(searchKey).stream().collect(Collectors.toList());
+		List<Department> departmentList = departmentService.findAllDepartments().stream().collect(Collectors.toList());
+
+		model.addAttribute("jduList", jduList);
+		model.addAttribute("departmentList", departmentList);
+		model.addAttribute("jduForm", new JduForm());
+		
+		return "jdu-management/jduView";
 	}
 }

@@ -28,7 +28,7 @@ public class JduDaoImpl implements JduDao {
 
 	@Override
 	public Set<Jdu> findJduByName(String jduName) {
-		String query = "SELECT * FROM jdu_type ORDER BY jdu_name";
+		String query = "SELECT * FROM jdu_type WHERE LOWER(jdu_name) LIKE LOWER('%" + jduName + "%') ORDER BY jdu_name";
 		List<Jdu> jduList = template.query(query, new JduRowMapper());
 		
 		return new LinkedHashSet<>(jduList);
