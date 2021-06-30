@@ -37,6 +37,7 @@ import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
 //0.03	  | 2021/05/27 | WS) mi.aguinaldo    | Implemented update function
+//0.04	  | 2021/05/27 | WS) mi.aguinaldo    | Implemented courseNameExists function
 //==================================================================================================
 
 @Service

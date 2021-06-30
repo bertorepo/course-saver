@@ -50,6 +50,7 @@ import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
 //0.03    | 2021/05/10 | WS) D.Escala        | Updated
 //0.04	  | 2021/05/27 | WS) mi.aguinaldo    | Added update path for updating course.
+//0.05	  | 2021/05/27 | WS) mi.aguinaldo    | Handle exception.
 //==================================================================================================
 
 @Controller
