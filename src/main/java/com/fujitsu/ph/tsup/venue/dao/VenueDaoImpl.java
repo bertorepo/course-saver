@@ -45,16 +45,17 @@ public class VenueDaoImpl implements VenueDao {
 
 	@Override
 	public void createVenue(Venue venue) {
-		String query = "INSERT INTO VENUE" + "(name)" + "VALUES (:name)";
+		String query = "INSERT INTO VENUE(name, overlap) VALUES (:name, :overlap)";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-				.addValue("name", venue.getName());
+				.addValue("name", venue.getName())
+				.addValue("overlap", venue.getOverlap());
 
 		template.update(query, sqlParameterSource);
 	}
 
 	@Override
 	public Venue findVenueById(Long id) {
-		String query = "SELECT * FROM VENUE WHERE id = :id";
+		String query = "SELECT * FROM VENUE WHERE id = :id ORDER BY id";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource().addValue("id", id);
 
 		return template.queryForObject(query, sqlParameterSource, new VenueRowMapper());
@@ -62,7 +63,7 @@ public class VenueDaoImpl implements VenueDao {
 
 	@Override
 	public Set<Venue> findVenueByName(String name) {
-		String query = "SELECT * FROM VENUE WHERE LOWER(name) LIKE LOWER('%" + name + "%') ORDER BY name";
+		String query = "SELECT * FROM VENUE WHERE LOWER(name) LIKE LOWER('%" + name + "%') ORDER BY id";
 		List<Venue> venueList = template.query(query, new VenueRowMapper());
 		Set<Venue> venueSet = new LinkedHashSet<>(venueList);
 
@@ -99,9 +100,10 @@ public class VenueDaoImpl implements VenueDao {
 
 	@Override
 	public void updateVenue(Venue venue) {
-		String query = "UPDATE VENUE SET name = :name WHERE id = :id";
+		String query = "UPDATE VENUE SET name = :name, overlap = :overlap WHERE id = :id";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
 				.addValue("name", venue.getName())
+				.addValue("overlap", venue.getOverlap())
 				.addValue("id", venue.getId());
 
 		template.update(query, sqlParameterSource);

@@ -23,7 +23,8 @@ import org.springframework.util.StringUtils;
  */
 public class Venue {
 	private Long id;
-	private String venuName;
+	private String venueName;
+	private Boolean overlap;
 
 	/**
 	 * <pre>
@@ -43,7 +44,8 @@ public class Venue {
 	public Venue(Builder builder) {
 		validateVenueName(builder.venueName);
 		this.id = builder.id;
-		this.venuName = builder.venueName;
+		this.venueName = builder.venueName;
+		this.overlap = builder.overlap;
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class Venue {
 	 * @return name
 	 */
 	public String getName() {
-		return venuName;
+		return venueName;
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class Venue {
 	 * @param name
 	 */
 	public void setName(String name) {
-		this.venuName = name;
+		this.venueName = name;
 	}
 	
 	/**
@@ -121,12 +123,21 @@ public class Venue {
 		return new Builder();
 	}
 
+	public Boolean getOverlap() {
+		return overlap;
+	}
+
+	public void setOverlap(Boolean overlap) {
+		this.overlap = overlap;
+	}
+
 	/**
 	 * Builder Class
 	 */
 	public static final class Builder {
 		private Long id;
 		private String venueName;
+		private Boolean overlap;
 
 		public Builder addId(Long id) {
 			this.id = id;
@@ -138,6 +149,11 @@ public class Venue {
 			return this;
 		}
 		
+		public Builder addOverlap(Boolean overlap) {
+			this.overlap = overlap;
+			return this;
+		}
+
 		/**
 		 * <pre>
 		 * Creates and returns instance of venue from builder.

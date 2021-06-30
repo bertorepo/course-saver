@@ -84,6 +84,7 @@ public class VenueController {
 	@PostMapping("/create")
 	public String submitCreateVenueForm(VenueForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		String venueName = form.getName().replaceAll("\\s+", " ").trim();
+		Boolean overlap = form.getOverlap() != null ? true : false;
 
 		Set<Venue> venueSet = venueService.findVenueByName(venueName);
 		for (Venue venue : venueSet) {
@@ -95,7 +96,10 @@ public class VenueController {
 			}
 		}
 
-		venueService.createVenue(Venue.builder().addVenueName(venueName).build());
+		venueService.createVenue(Venue.builder()
+				.addVenueName(venueName)
+				.addOverlap(overlap)
+				.build());
 
 		String message = String.format("You have successfuly added the venue \"%s\"", venueName);
 		redirectAttributes.addFlashAttribute("message", message);
@@ -169,6 +173,7 @@ public class VenueController {
 		Venue updatedVenue = Venue.builder()
 				.addId(venue.getId())
 				.addVenueName(venue.getName().replaceAll("\\s+", " ").trim())
+				.addOverlap(venue.getOverlap() != null ? true : false)
 				.build();
 		venueService.updateVenue(updatedVenue);
 

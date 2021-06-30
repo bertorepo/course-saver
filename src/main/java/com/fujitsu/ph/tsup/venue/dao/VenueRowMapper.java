@@ -32,10 +32,12 @@ public class VenueRowMapper implements RowMapper<Venue> {
 	public Venue mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
 		String name = rs.getString("name");
+		Boolean overlap = rs.getBoolean("overlap");
 
 		Venue venue = Venue.builder()
 				.addId(id)
 				.addVenueName(name)
+				.addOverlap(overlap)
 				.build();
 
 		return venue;
