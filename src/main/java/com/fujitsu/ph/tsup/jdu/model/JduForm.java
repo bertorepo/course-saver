@@ -1,5 +1,23 @@
+/*
+ * Copyright (C) 2021 FUJITSU LIMITED All rights reserved.
+ */
 package com.fujitsu.ph.tsup.jdu.model;
 
+//=======================================================
+//Project Name: Training Sign Up
+//Class Name: JduForm.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by       | Content
+//--------+------------+------------------+---------------
+//0.01    | 28/06/2021 | WS) dw.cardenas  | Created
+//=======================================================
+
+/**
+ *
+ * @author dw.cardenas
+ *
+ */
 public class JduForm {
 	private Long id;
 	private String jduName;

@@ -49,6 +49,15 @@ public class JduController {
 	@Autowired
 	DepartmentService departmentService;
 
+	/**
+	 * <pre>
+	 * View for creation page of a new JDU
+	 * Method: GET
+	 * <pre>
+	 *
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/create")
 	public String showCreateJduForm(Model model) {
 		List<Jdu> jduList = jduService.findAllJdus().stream().collect(Collectors.toList());
@@ -57,6 +66,18 @@ public class JduController {
 		return "jdu-management/jduCreate";
 	}
 
+	/**
+	 * <pre>
+	 * Create a new JDU.
+	 * Method: POST
+	 * <pre>
+	 *
+	 * @param form
+	 * @param bindingResult
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@PostMapping("/create")
 	public String submitCreateJduForm(@ModelAttribute JduForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		String jduName = form.getJduName().replaceAll("\\s+", " ").trim();
@@ -84,6 +105,15 @@ public class JduController {
 		return "redirect:/jdu/create#successModal";
 	}
 
+	/**
+	 * <pre>
+	 * View for management of JDUs
+	 * Method: GET
+	 * <pre>
+	 *
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/load")
 	public String load(Model model) {
 		List<Jdu> jduList = jduService.findAllJdus().stream().collect(Collectors.toList());
@@ -96,6 +126,17 @@ public class JduController {
 		return "jdu-management/jduView";
 	}
 
+	/**
+	 * <pre>
+	 * Updates an existing JDU
+	 * Method: POST
+	 * <pre>
+	 *
+	 * @param form
+	 * @param bindingResult
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@PostMapping("/update")
 	public String updateJduForm(@ModelAttribute("jduForm") JduForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		Jdu updatedJdu = Jdu.builder()
@@ -111,7 +152,18 @@ public class JduController {
 
 		return "redirect:/jdu/load#successModal";
 	}
-	
+
+	/**
+	 * <pre>
+	 * Deletes an existing Jdu
+	 * Method: POST
+	 * <pre>
+	 *
+	 * @param id
+	 * @param redirectAttributes
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("{jduId}/delete")
 	public String deleteJdu(@PathVariable("jduId") Long id, RedirectAttributes redirectAttributes, Model model) {
 		jduService.deleteDepartment(id);
@@ -121,7 +173,17 @@ public class JduController {
 
 		return "redirect:/jdu/load#successModal";
 	}
-	
+
+	/**
+	 * <pre>
+	 * Searches for a specific JDU and shows a view with JDU/s found with search key
+	 * Method: GET
+	 * <pre>
+	 *
+	 * @param searchKeyName
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/search")
 	public String submitSearchJduForm(@RequestParam("searchKeyName") String searchKeyName, Model model) {
 		String searchKey = searchKeyName.replaceAll("\\s+", " ").trim();

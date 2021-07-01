@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2021 FUJITSU LIMITED All rights reserved.
+ */
 package com.fujitsu.ph.tsup.jdu.service;
 
 import java.util.Set;
@@ -8,12 +11,27 @@ import org.springframework.stereotype.Service;
 import com.fujitsu.ph.tsup.jdu.dao.JduDao;
 import com.fujitsu.ph.tsup.jdu.domain.Jdu;
 
+//=======================================================
+//Project Name: Training Sign Up
+//Class Name: JduServiceImpl.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by       | Content
+//--------+------------+------------------+---------------
+//0.01    | 28/06/2021 | WS) dw.cardenas  | Created
+//=======================================================
+
+/**
+ *
+ * @author dw.cardenas
+ *
+ */
 @Service
 public class JduServiceImpl implements JduService {
 	
 	@Autowired
 	JduDao jduDao;
-	
+
 	@Override
 	public Set<Jdu> findAllJdus() {
 		return jduDao.findAllJdus();

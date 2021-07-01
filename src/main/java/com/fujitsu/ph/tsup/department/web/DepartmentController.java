@@ -51,6 +51,15 @@ public class DepartmentController {
 	@Autowired
 	JduService jduService;
 
+	/**
+	 * <pre>
+	 * View create department page
+	 * Method: GET
+	 * <pre>
+	 *
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/create")
 	public String showCreateDepartmentForm(Model model) {
 		List<Department> departmentList = departmentService.findAllDepartments().stream().collect(Collectors.toList());
@@ -63,6 +72,18 @@ public class DepartmentController {
 		return "department-management/departmentCreate";
 	}
 
+	/**
+	 * <pre>
+	 * Create a new department
+	 * Method: POST
+	 * <pre>
+	 *
+	 * @param department
+	 * @param bindingResult
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@PostMapping("/create")
 	public String submitCreateDepartmentForm(@ModelAttribute DepartmentForm department, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		String departmentName = department.getDepartmentName().replaceAll("\\s+", " ").trim();
@@ -91,6 +112,15 @@ public class DepartmentController {
 		return "redirect:/department/create#successModal";
 	}
 
+	/**
+	 * <pre>
+	 * View Manage Departments page. Displays all available departments.
+	 * Method: GET
+	 * <pre>
+	 *
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/load")
 	public String load(Model model) {
 		List<Department> departmentList = departmentService.findAllDepartments().stream().collect(Collectors.toList());
@@ -103,6 +133,17 @@ public class DepartmentController {
 		return "department-management/departmentView";
 	}
 
+	/**
+	 * <pre>
+	 * Update an existing department
+	 * Method: POST
+	 * <pre>
+	 *
+	 * @param form
+	 * @param result
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@PostMapping("/update")
 	public String updateDepartmentForm(@ModelAttribute("departmentForm") DepartmentForm form, BindingResult result, RedirectAttributes redirectAttributes) {
 		Department updatedDept = Department.builder()
@@ -118,6 +159,16 @@ public class DepartmentController {
 		return "redirect:/department/load#successModal";
 	}
 
+	/**
+	 * <pre>
+	 * Delete an existing department
+	 * Method: POST
+	 * <pre>
+	 * @param id
+	 * @param redirectAttributes
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("{departmentId}/delete")
 	public String deleteDepartment(@PathVariable("departmentId") Long id, RedirectAttributes redirectAttributes, Model model) {
 		departmentService.deleteDepartment(id);
@@ -128,6 +179,16 @@ public class DepartmentController {
 		return "redirect:/department/load#successModal";
 	}
 
+	/**
+	 * <pre>
+	 * Search for a specific department using departmentName
+	 * Method: GET
+	 * <pre>
+	 *
+	 * @param searchKeyName
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/search")
 	public String submitSearchDepartmentForm(@RequestParam("searchKeyName") String searchKeyName, Model model) {
 		String searchKey = searchKeyName.replaceAll("\\s+", " ").trim();

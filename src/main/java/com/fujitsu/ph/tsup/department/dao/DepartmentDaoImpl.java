@@ -25,6 +25,11 @@ import com.fujitsu.ph.tsup.department.domain.Department;
 //0.01    | 23/06/2021 | WS) dw.cardenas  | Created
 //=======================================================
 
+/**
+ *
+ * @author dw.cardenas
+ *
+ */
 @Repository
 public class DepartmentDaoImpl implements DepartmentDao {
 	
