@@ -13,7 +13,7 @@ import java.util.List;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/22/2020 | WS) JC. Jimenez | New Creation
-//
+//0.02    | 06/29/2021 | WS) J. Atendido | Added Venue overlap and edited MaxAllowed
 //=======================================================
 
 /**
@@ -30,7 +30,6 @@ import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.relational.core.mapping.Embedded.Nullable;
 
 public class CourseScheduleNewForm{
 

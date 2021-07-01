@@ -16,6 +16,7 @@ import java.time.ZoneId;
 //0.01    | 06/26/2020 | WS) J.Balanon   | New Creation
 //0.02    | 05/28/2021 | WS) J.Atendido  | Bug fixes and enhancements
 //0.03    | 06/07/2021 | WS) R.Gemparo   | Bug fixes & enhancements
+//0.04    | 06/29/2021 | WS) J. Atendido | Bug fixes for Schedule overlap and enhancements for maxAllowed participants
 //=======================================================
 
 /**
@@ -116,7 +117,6 @@ public class ScheduleController {
 	 */
 	@Autowired
 	private ScheduleService scheduleService;
-	//private DashboardMemberService dashboardMemberService;
 
 
 	/**
@@ -611,9 +611,6 @@ public class ScheduleController {
 			return "scheduling/viewSched";
 		}
 
-		//		CourseSchedule courseSched = scheduleService.findCourseScheduleById(id);		
-		//		Course course = courseManagementService.findCourseById(courseSched.getCourseId());
-
 		CourseSchedule courseSchedule = scheduleService.findCourseScheduleById(id);
 		Set<VenueForm> venueFormList = scheduleService.findAllVenues();
 		Set<InstructorForm> instructorFormList = scheduleService.findAllInstructors();
@@ -986,7 +983,6 @@ public class ScheduleController {
 					detailForm.setDuration(detail.getDuration());
 					detailForms.add(detailForm);
 
-					/* System.out.print(detailForm.getId()+" "); */
 				}
 				changeStatusScheduleForm.setCourseScheduleDetails(detailForms);
 
@@ -1001,10 +997,6 @@ public class ScheduleController {
 				}
 
 				changeStatusFormList.add(changeStatusScheduleForm);
-				/*
-				 * System.out.println(changeStatusScheduleForm.getId());
-				 * System.out.println();
-				 */
 			}
 
 			Comparator<ChangeStatusScheduleForm> compareStartDate = Comparator
@@ -1019,10 +1011,6 @@ public class ScheduleController {
 					.collect(Collectors.toList());
 
 		}
-
-		/*
-		 * changeStatusFormListSorted.forEach(i -> { System.out.println(i); });
-		 */
 
 		changeStatusForm.setCourses(courseFormList);
 		changeStatusForm.setCourseSchedules(changeStatusFormListSorted);
@@ -1066,7 +1054,6 @@ public class ScheduleController {
 
 				CourseSchedule schedule = 
 						new CourseSchedule.Builder(x.getId(), x.getCourseId()).active().build();
-				//System.out.println(schedule);
 
 				courseScheduleSet.add(schedule);
 
@@ -1075,7 +1062,6 @@ public class ScheduleController {
 				CourseSchedule schedule = 
 						new CourseSchedule.Builder(x.getId(), x.getCourseId()).ongoing().build();
 
-				//System.out.println(schedule);
 				courseScheduleSet.add(schedule);
 
 			} else if(x.getStatus().contains("Done")) {
@@ -1083,7 +1069,6 @@ public class ScheduleController {
 				CourseSchedule schedule = 
 						new CourseSchedule.Builder(x.getId(), x.getCourseId()).done().build();
 
-				//System.out.println(schedule);
 				courseScheduleSet.add(schedule);
 
 			} else if(x.getStatus().contains("Close")) {
@@ -1091,19 +1076,12 @@ public class ScheduleController {
 				CourseSchedule schedule = 
 						new CourseSchedule.Builder(x.getId(), x.getCourseId()).cancelled().build();
 
-				//System.out.println(schedule);
 				courseScheduleSet.add(schedule);
 
 			}   
 
-			/*
-			 * System.out.println(x); System.out.println(courseScheduleSet);
-			 */
 		});
 
-		/*
-		 * courseScheduleSet.forEach(x -> { System.out.println(x); });
-		 */
 		scheduleService.changeScheduleStatus(courseScheduleSet);        
 
 		System.out.println(changeStatusForm.getCourseSchedules().get(0).getCourseName());
