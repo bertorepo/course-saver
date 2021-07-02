@@ -50,7 +50,7 @@ import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
 //0.03    | 2021/05/10 | WS) D.Escala        | Updated
 //0.04	  | 2021/05/27 | WS) mi.aguinaldo    | Added update path for updating course.
-//0.05	  | 2021/05/27 | WS) mi.aguinaldo    | Handle exception.
+//0.05	  | 2021/07/2  | WS) mi.aguinaldo    | Handle exception.
 //==================================================================================================
 
 @Controller
@@ -113,6 +113,7 @@ public class CourseManagementController {
     @GetMapping("/update")
     public String showUpdateCourseForm(@ModelAttribute CourseForm formCourse,
 	    RedirectAttributes redirectAttributes) {
+	
 	if(Objects.isNull(formCourse.getId())) {
 	    return "redirect:/courses/load";
 	}
@@ -135,6 +136,7 @@ public class CourseManagementController {
      */
     @PostMapping("/update")
     public String updateCourseForm(@ModelAttribute CourseForm courseForUpdate, RedirectAttributes redirectAttributes) {
+	
 	Course updatedCourse = Course.builder()
 				     .withId(courseForUpdate.getId())
 				     .withCourseCategoryId(courseForUpdate.getCourseCategoryId())

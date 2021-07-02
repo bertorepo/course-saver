@@ -2,11 +2,17 @@ package com.fujitsu.ph.tsup.course.category.model;
 
 import org.springframework.util.StringUtils;
 
-/**
- * @author a.batongbaca
- * @version creation: 0.01 Date: 2021-02-08
- *
- */
+//==================================================================================================
+//Project Name : Training Sign Up
+//Class Name   : CourseCategory.java
+//
+//<<Modification History>>
+//Version | Date       | Updated By            | Content
+//--------+------------+-----------------------+---------------------------------------------------
+//0.01    | 2020/02/08 | WS) a.batongbaca      | Initial Version
+//0.03	  | 2021/05/27 | WS) mi.aguinaldo      | Update
+//==================================================================================================
+
 public class CourseCategory {
 
     private Long id;

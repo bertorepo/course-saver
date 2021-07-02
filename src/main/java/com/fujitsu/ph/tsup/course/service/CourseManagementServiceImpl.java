@@ -37,7 +37,7 @@ import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
 //0.03	  | 2021/05/27 | WS) mi.aguinaldo    | Implemented update function
-//0.04	  | 2021/05/27 | WS) mi.aguinaldo    | Implemented courseNameExists function
+//0.04	  | 2021/07/2  | WS) mi.aguinaldo    | Implemented courseNameExists function
 //==================================================================================================
 
 @Service
@@ -68,7 +68,6 @@ public class CourseManagementServiceImpl implements CourseManagementService {
         return courseManagementDao.findAllCourses();
     }
     
-    
     @Override
     public Page<Course> findAllCourses(Pageable pagable) {
 	
@@ -81,9 +80,6 @@ public class CourseManagementServiceImpl implements CourseManagementService {
 	return new PageImpl<>(courses,pagable,countCourse);
     }
     
-    
-    
-
     @Override
     public Set<Course> findCoursesByCourseSearchFilter(CourseSearchFilter searchCriteria) {
 	Set<Course> courses = courseManagementDao.findCoursesByCourseSearchFilter(searchCriteria);
@@ -96,8 +92,6 @@ public class CourseManagementServiceImpl implements CourseManagementService {
     	
     	return course.orElse(null);
     }
-    
-    
     
     @Override
     public boolean courseNameExists(String name) {
