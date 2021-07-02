@@ -1,3 +1,13 @@
+//==================================================================================================                                                                                                                                                                            
+// Project Name : Training Sign Up
+// System Name  : Report For Attendees RowMapper                                                                                                                                                             
+// Class Name   : ReportForAttendeesRowMapper.java                                                                                                                                                                            
+//                                                                                                                                                                          
+// <<Modification History>>                                                                                                                                                                             
+// Version | Date       | Updated By            | Content                                                                                                                                                                           
+//---------+------------+-----------------------+---------------------------------------------------                                                                                                                                                                            
+// 0.1     | 2021/07/02 | WS)L.Celoso           | New Creation             
+//==================================================================================================
 package com.fujitsu.ph.tsup.report.summary.dao;
 
 import java.sql.ResultSet;

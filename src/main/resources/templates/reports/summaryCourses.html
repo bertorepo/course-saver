@@ -1,5 +1,15 @@
-<!-- @Author: Naval, Rosalyn-->
-<!-- @Author: Padaca, Mariel-->
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Reports -->
+<!-- Name         : summaryCourses.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | ----/--/-- | WS) -		          | Created -->
+<!-- 0.02    | ----/--/-- | WS) m.padaca/r.naval  | Updated -->
+<!-- 0.03    | 2021/07/02 | WS) l.celoso          | Updated -->
+<!-- ================================================================================================== -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
@@ -64,22 +74,22 @@
                         </div>
                     </div>
                     <div class="dateRange">
-                      <div class="form-group row align-items-center justify-content-center">
-                        <span style="width:31px"></span>
-                        <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
-                        <div class= "fromDate" style="display:inherit;">
-                         <label class="col-form-label" style="font-weight: bold;">From</label>
-                          <span style="width:8px"></span>
-                          <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
-                          <input type="hidden" th:field="*{scheduledStartDateTime}" />
-                        </div>
-                        <span style="width:8px"></span>
-                        <div class= "toDate" style="display:inherit;">
-                         <label class="col-form-label" style="font-weight: bold;">To</label>
-                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
-                            <input type="hidden" th:field="*{scheduledEndDateTime}" />
-                        </div>
-                    </div>
+                      	<div class="form-group row align-items-center justify-content-center">
+	                        <label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+	                        <div class= "fromDate" style="display:inherit;">
+	                        	<label class="col-form-label" style="font-weight: bold;">From</label>
+	                          	<span style="width:8px"></span>
+	                          	<input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+	                          	<input type="hidden" th:field="*{scheduledStartDateTime}" />
+	                        </div>
+	                        <span style="width:8px"></span>
+	                        <div class= "toDate" style="display:inherit;">
+	                        	<label class="col-form-label" style="font-weight: bold;">To</label>
+	                          	<span style="width:8px"></span>
+	                            <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" required/>
+	                            <input type="hidden" th:field="*{scheduledEndDateTime}" />
+	                        </div>
+                   		</div>
 				   </div>
                     <div class="form-group row align-items-center justify-content-center">
                         <label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>

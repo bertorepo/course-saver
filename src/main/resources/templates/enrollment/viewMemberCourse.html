@@ -8,6 +8,7 @@
 <!-- --------+------------+-----------------------+--------------------------------------------------- -->
 <!-- 0.01    | ----/--/-- | WS) -		          | Created -->
 <!-- 0.02    | 2021/06/02 | WS) l.celoso          | Updated -->
+<!-- 0.03    | 2021/06/24 | WS) m.taboada         | Updated -->
 <!-- 0.03    | 2021/06/30 | WS) l.celoso          | Updated -->
 <!-- ================================================================================================== -->
 <!DOCTYPE html>
@@ -760,10 +761,12 @@
 	function showDeadline(){
 		var mandatory = document.getElementById("mandatorySel");
 		var deadlineDiv = document.getElementById("deadlineDiv");
+		var deadlineSel = document.getElementById("deadlineSel");
 		if(mandatory.value == "Yes"){
 			deadlineDiv.style.display = "flex";
 		} else {
 			deadlineDiv.style.display = "none";
+			deadlineSel.value = "-";
 		}
 	}
 
@@ -850,6 +853,14 @@
 		document.getElementById("currentPage").value = currPage;
 	}
 	
+    $('#errorModal').on('hidden.bs.modal', function () {
+		$('body').addClass('modal-open');
+	});
+	
+	$('#confirmEnrollMemberModal').on('hidden.bs.modal', function () {
+		$('body').addClass('modal-open');
+	});
+
 	function setDateRange(){
 		var mandatory = document.getElementById("viewbySel");
 		var fromDate = document.getElementById("fromDateTime");
