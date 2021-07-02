@@ -175,7 +175,7 @@
 								<th style = "width: 40%"> Overlappable </th>
 							</tr>
 						</thead>
-						<tbody th:each = "venue : *{venueList != null ? venueList : paginatedVenue.content}">
+						<tbody th:each = "venue : *{paginatedVenue.content}">
 							<tr>
 								<td style = "width: 20%">
 									<input type="submit" value="Edit" class="btn btn-success"
@@ -209,7 +209,7 @@
 			 					</li>
 			 				</ul>
 			 			</nav>
-					<div th:if = "${venueList != null ? venueList.isEmpty() : paginatedVenue.isEmpty()}">
+					<div th:if = "${paginatedVenue.isEmpty()}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No venues available</strong>
 						</div>

@@ -29,7 +29,7 @@ function validateInput() {
 }
 
 function isFormModified() {
-	return $('#venueOverlap').is(":checked").toString() == overlapOriginal 
+	return $('#venueOverlap').is(":checked").toString() == overlapOriginal
 		&& $('#venueUpdateName').val().trim() == venueNameOriginal;
 }
 
