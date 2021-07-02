@@ -35,7 +35,7 @@
 	<script th:src="@{/js/app/bootstrap.min.js}"></script>
 </head>
 
-<body onload="localStorage.clear();">
+<body>
 
 	<!--Confirm Modal-->
 	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -466,7 +466,6 @@
 			 					</nav>
 
 	<script type="text/javascript" th:inline="javascript">
-
 		function deleteButton(id, courseName, detail) {
 
 			document.getElementById("courseIdInput").value = id;
@@ -506,7 +505,6 @@
 		
 		function enableOrDisableDeadlineOnFilter() {
 			var mandatory = document.getElementById("mandatory").value;
-			console.log(mandatory);
 
 			if (mandatory === "No") {
 				$("#searchDeadline").prop('disabled', true);
