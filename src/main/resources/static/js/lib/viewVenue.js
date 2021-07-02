@@ -9,54 +9,41 @@ function showDeleteModal(id, name) {
 	$('#deleteInfoModal').modal('show');
 }
 
-function showUpdateModal(id, name) {
-	document.getElementById("venueName").innerHTML = name;
-
+function showUpdateModal(id, name, overlap) {
 	$('#venueUpdateId').val(id);
 	$('#venueUpdateName').val(name);
+	venueNameOriginal = name;
+	
+	overlap == "true" ? $('#venueOverlap').prop('checked', true) : $('#venueOverlap').prop('checked', false);
+	overlapOriginal = overlap;
 
 	$('#updateModal').modal('show');
 }
 
-function validateUpdateInput() {
-	var hasInvalidInput = false;
-	var venueNameValue =  $('#venueUpdateName').val().trim();
-	var format = /[`!@#$%^&*+\=\[\]{};':"\\|,.<>\/?~]/;
-
-	$('#nameErrorMsg').text('');
-
-	if (venueNameValue == "") {
-		$('#nameErrorMsg').text("Please enter a venue name.");
-		hasInvalidInput = true;
-	}
-
-	if (format.test(venueNameValue))
-	{
-		$('#nameErrorMsg').text("Venue name contains invalid special characters.");
-		hasInvalidInput = true;
-	}
-
-	if (checkForDuplicate(venueNameValue)) { //Can be used for checking for no change for now since only one item
-		$('#nameErrorMsg').text("Venue name already exists!");
-		hasInvalidInput = true;
-	}
-
-	if (hasInvalidInput) {
+function validateInput() {
+	if (hasInvalidInput || isFormModified()) {
 		$('#updateButton').prop('disabled', true);
 	} else {
 		$('#updateButton').prop('disabled', false);
 	}
 }
 
-function checkForDuplicate(name) {
+function isFormModified() {
+	return $('#venueOverlap').is(":checked").toString() == overlapOriginal 
+		&& $('#venueUpdateName').val().trim() == venueNameOriginal;
+}
+
+
+function hasDuplicate(name) {
 	return venueList.some(function(venue) {
 		return venue.name.toLowerCase() === name.toLowerCase();
 	});
 }
 
 function resetUpdateForm() {
+	venueNameOriginal = "";
 	$('#nameErrorMsg').text('');
-	$("#venueUpdateForm").reset();
+	$("#venueUpdateForm").trigger("reset");
 }
 
 function refreshPage() {
@@ -68,3 +55,31 @@ $(document).ready(function() {
 		$('#successModal').modal('show');
 	}
 })
+
+var hasInvalidInput = false;
+var format = /[`!@#$%^&*+\=\[\]{};':"\\|,.<>?~]/;
+var venueNameOriginal;
+var overlapOriginal;
+
+$('#venueUpdateName').on("input", function() {
+	var venueNameValue = this.value.trim();
+	$('#nameErrorMsg').text('');
+
+	if (format.test(venueNameValue)) {
+		$('#nameErrorMsg').text("Venue name contains invalid special characters.");
+		hasInvalidInput = true;
+	} else if (hasDuplicate(venueNameValue) && venueNameOriginal != venueNameValue) { 
+		$('#nameErrorMsg').text("Venue name already exists!");
+		hasInvalidInput = true;
+	} else {
+		$('#nameErrorMsg').text('');
+		hasInvalidInput = false;
+	}
+	
+	validateInput();
+})
+
+$('#venueOverlap').on("input", function() {
+	validateInput();
+})
+

@@ -31,23 +31,17 @@ function showUpdateModal(id, name, timezone) {
 	$('#updateModal').modal('show');
 }
 
-function validateUpdateInput() {
-	if (hasInvalidInput || checkRequiredFields() || hasDuplicate() || hasChanged()) {
-		$('#submitButton').prop('disabled', true);
+function validateInput() {
+	if (hasInvalidInput || checkRequiredFields()) {
+		$('#updateButton').prop('disabled', true);
 	} else {
-		$('#submitButton').prop('disabled', false);
+		$('#updateButton').prop('disabled', false);
 	}
 }
 
-function hasDuplicate() {
-	var jduName = $('#jduName').val().trim();
-	var timezone = $('#timezone').val();
+function hasDuplicate(jduName) {
 	return jduList.some(function(jdu) {
-		if (jdu.jduName.toLowerCase() == jduName.toLowerCase() 
-				&& jdu.timezone.toLowerCase() == timezone.toLowerCase()) {
-			$('#jduNameError').text("JDU with same timezone already exists.");
-			return true;
-		}
+		return jdu.jduName.toLowerCase() == jduName.toLowerCase();
 	});
 }
 
@@ -65,7 +59,7 @@ function checkRequiredFields() {
 
 function resetUpdateForm() {
 	$('#nameErrorMsg').text('');
-	$("#jduUpdateForm").reset();
+	$("#jduUpdateForm").trigger("reset");
 }
 
 function refreshPage() {
@@ -85,11 +79,11 @@ $('#jduUpdateName').on("input", function() {
 	var jduNameValue = this.value.trim();
 	$('#nameErrorMsg').text("");
 
-	if (formatCheck.test(jduNameValue)) {
+	if (format.test(jduNameValue)) {
 		$('#nameErrorMsg').text("JDU name contains invalid special characters.");
 		hasInvalidInput = true;
-	} else if (jduNameValue == "") {
-		$('#nameErrorMsg').text("Please enter a JDU name.");
+	} else if(hasDuplicate()) {
+		$('#nameErrorMsg').text("JDU already exists.");
 		hasInvalidInput = true;
 	} else {
 		$('#nameErrorMsg').text("");
@@ -100,15 +94,6 @@ $('#jduUpdateName').on("input", function() {
 })
 
 $('#timezone').on("input", function() {
-	var timezoneValue = this.value.trim();
-	if (timezoneValue == "") {
-		$('#timezoneErr').text("Please pick a Timezone.");
-		hasInvalidInput = true;
-	} else {
-		$('#timezoneErr').text("");
-		hasInvalidInput = false;
-	}
-
 	validateInput();
 })
 

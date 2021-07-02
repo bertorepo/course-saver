@@ -1,5 +1,5 @@
 function validateInput() {
-	if (hasInvalidInput || checkRequiredFields() || hasDuplicate()) {
+	if (hasInvalidInput || checkRequiredFields()) {
 		$('#submitButton').prop('disabled', true);
 	} else {
 		$('#submitButton').prop('disabled', false);
@@ -19,11 +19,9 @@ function checkRequiredFields() {
 	return missing;
 }
 
-function hasDuplicate() {
-	var deptName = $('#departmentName').val().trim();
-	var jduId = $('#jduId').val();
+function hasDuplicate(deptName) {
 	return departmentList.some(function(department) {
-		return department.name.toLowerCase() === deptName.toLowerCase() && department.jduId == jduId;
+		return department.name.toLowerCase() === deptName.toLowerCase();
 	});
 }
 
@@ -43,8 +41,8 @@ $('#departmentName').on("input", function() {
 	if (formatCheck.test(departmentNameValue)) {
 		$('#departmentNameError').text("Department name contains invalid special characters.");
 		hasInvalidInput = true;
-	} else if (departmentNameValue == "") {
-		$('#departmentNameError').text("Please enter a venue name.");
+	} else if (hasDuplicate(departmentNameValue)) {
+		$('#departmentNameError').text("Department already exists.");
 		hasInvalidInput = true;
 	} else {
 		$('#departmentNameError').text("");

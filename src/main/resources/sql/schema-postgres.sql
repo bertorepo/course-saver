@@ -472,7 +472,7 @@ CREATE TABLE JDU_TYPE
 (
     ID bigint NOT NULL DEFAULT nextval('tsup."JDU_TYPE_ID_seq"'::regclass),
     JDU_NAME character varying(100) COLLATE pg_catalog."default",
-    TIMEZONE character varying(6) COLLATE pg_catalog."default",
+    TIMEZONE character varying(10) COLLATE pg_catalog."default",
     CONSTRAINT "JDU_TYPE_pkey" PRIMARY KEY (id),
     CONSTRAINT "JDU_TYPE_unique" UNIQUE (jdu_name)
 )

@@ -127,6 +127,8 @@ public class VenueController {
 	    Page<Venue> paginatedVenue = venueService.findAllVenues(pageable);
 
 	    model.addAttribute("paginatedVenue", paginatedVenue);
+	    model.addAttribute("venueList", venueService.findAllVenues()
+	    		.stream().collect(Collectors.toList()));
 
 	    return "venue-management/venueView";
 	}
