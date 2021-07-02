@@ -458,7 +458,6 @@ ALTER TABLE venue
 ADD COLUMN overlap boolean;
 
 --NEW COLUMN MANDATORY TYPE and NEW TABLE FOR JDU TYPE 
-SET search_path = tsup;
 
 CREATE SEQUENCE "JDU_TYPE_ID_seq"
     INCREMENT 1
@@ -473,7 +472,7 @@ CREATE TABLE JDU_TYPE
 (
     ID bigint NOT NULL DEFAULT nextval('tsup."JDU_TYPE_ID_seq"'::regclass) ,
     JDU_NAME character varying(100) COLLATE pg_catalog."default",
-    TIMEZONE character varying(6) COLLATE pg_catalog."default",
+    TIMEZONE character varying(10) COLLATE pg_catalog."default",
     CONSTRAINT "JDU_TYPE_pkey" PRIMARY KEY (id),
     CONSTRAINT "JDU_TYPE_unique" UNIQUE (jdu_name)
 )
@@ -490,11 +489,8 @@ ALTER TABLE department
 ALTER TABLE course
     ADD COLUMN DEPARTMENT_ID bigint NOT NULL DEFAULT 1,
     ADD CONSTRAINT "DEPARTMENT_fkey" FOREIGN KEY (DEPARTMENT_ID) REFERENCES department(ID) MATCH SIMPLE ON DELETE CASCADE;
-	
-/
-	
-SET search_path = tsup;
 
+--FOR MANDATORY_TYPE
 ALTER TABLE course
     ADD COLUMN mandatory_type character varying(30) DEFAULT '-';
 
