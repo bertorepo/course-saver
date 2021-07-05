@@ -1,13 +1,19 @@
 SET search_path = tsup;
 
-INSERT INTO tsup.DEPARTMENT(department_name)
-	VALUES ('FDC-Apps Dev Manila');
+--JDU TYPE
+INSERT INTO JDU_TYPE(jdu_name,  timezone)
+    VALUES ('PH', 'GMT+8:00');
+INSERT INTO JDU_TYPE(jdu_name,  timezone)
+    VALUES ('IN', 'GMT+5:30');
+
+INSERT INTO tsup.DEPARTMENT(department_name, jdu_id)
+	VALUES ('FDC-Apps Dev Manila', 1);
 	
-INSERT INTO tsup.DEPARTMENT(department_name)
-	VALUES ('FDC-G3CC');
+INSERT INTO tsup.DEPARTMENT(department_name, jdu_id)
+	VALUES ('FDC-G3CC', 1);
 	
-INSERT INTO tsup.DEPARTMENT(department_name)
-	VALUES ('FDC-Apps Dev Cebu');
+INSERT INTO tsup.DEPARTMENT(department_name, jdu_id)
+	VALUES ('FDC-Apps Dev Cebu', 1);
 	
 
 --Course Category
@@ -116,10 +122,10 @@ INSERT INTO tsup.EMPLOYEE_AUTH(AUTH_NAME, USERNAME) VALUES ('PMO', 'm.lumontad')
 INSERT INTO tsup.EMPLOYEE_AUTH(AUTH_NAME, USERNAME) VALUES ('PMO', 'r.ramos');
 
 --Courses
-INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('SpringBoot', 'DETAILS', 1, 'No', '-');
-INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Git', 'DETAILS',1, 'No', '-');
-INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Ruby on Rails', 'DETAILS',1, 'No', '-');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Goal Setting', 'Detail',26, 'No', '-');
+INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('SpringBoot', 'DETAILS', 1, 'No', '-', 1, '-');
+INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Git', 'DETAILS',1, 'Yes', '-', 1, 'GDC');
+INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Ruby on Rails', 'DETAILS',1, 'Yes', '-', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Goal Setting', 'Detail',26, 'No', '-', 1, '-');
 --Added 2021/06/18
 --JDU BAS STANDARDIZATION FOR DEVS TRAINING
 INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Standardization', 'Detail',74,'Yes', 'Immediate');
@@ -247,4 +253,3 @@ INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, st
 	VALUES (2, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
 INSERT INTO tsup.course_attendance(course_schedule_detail_id, participant_id, status, log_in_datetime, log_out_datetime, email)
 	VALUES (3, 3, 'P', '2020-07-01 10:00:00', '2020-07-01 11:00:00', 'g.deguzman@fujitsu.ph');
-

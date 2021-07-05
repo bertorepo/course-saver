@@ -822,7 +822,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     	
     	String query = "SELECT name"
     			+ " from TSUP.COURSE"
-    			+ " WHERE MANDATORY = :isMandatory";
+    			+ " WHERE MANDATORY = :isMandatory AND MANDATORY_TYPE = 'GDC'";
     	
     	SqlParameterSource courseMandatoryParameters = new MapSqlParameterSource()
     			.addValue("isMandatory", "Yes");
