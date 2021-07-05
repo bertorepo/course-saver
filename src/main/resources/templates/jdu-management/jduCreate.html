@@ -1,0 +1,168 @@
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : JDU Management -->
+<!-- Name         : jduCreate.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | 29/06/2021 | WS) dw.cardenas       | Created -->
+<!-- ================================================================================================== -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Jdu Creation</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
+<link rel="stylesheet" type="text/css" href="/css/app/roletype/roletype.common.css">
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/popper.min.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+</head>
+
+<body>
+	<div th:insert="fragments/general.html :: header"></div>
+
+	<!-- Success Modal -->
+	<div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-success">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${message}"></label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-primary" data-dismiss="modal" 
+						value="Okay" onclick="refreshPage()">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Success Modal End -->
+
+	<!--Error Modal-->
+	<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+		data-backdrop="static" data-keyboard="false"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-danger">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${message}"></label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-primary" data-dismiss="modal" 
+						value="Okay" onclick="refreshPage()">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Error Modal End-->
+
+	<div class = "container mt-5">
+		<h3>
+			<i class="fa fa-calendar-o"></i> Create Jdu
+		</h3>
+		<hr>
+		<div class="card">
+			<div class="card-body">
+				<p>Please input your desired Jdu Name</p>
+				<form th:action="@{/jdu/create}" method="POST">
+					<div class="form-group row">
+	                    <label class="col-lg-2 col-form-label">Jdu Name</label>
+						<div class="col-lg-5">
+						    <input type="text" placeholder="Enter Jdu Name" class="form-control"
+						        id="jduName" name="jduName" maxlength="100" tabindex="1" required>
+						</div>
+						<span class="text-danger er" id="jduNameError"></span>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-2 col-form-label">Timezone:</label>
+						<div class="col-lg-5">
+							<select name="timezone" id="timezone" class="form-control form-select" required>
+								<option value="" selected>-</option>
+								<option value="GMT -12:00">(GMT -12:00) Eniwetok, Kwajalein</option>
+								<option value="GMT -11:00">(GMT -11:00) Midway Island, Samoa</option>
+								<option value="GMT -10:00">(GMT -10:00) Hawaii</option>
+								<option value="GMT -9:30">(GMT -9:30) Taiohae</option>
+								<option value="GMT -9:00">(GMT -9:00) Alaska</option>
+								<option value="GMT -8:00">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+								<option value="GMT -07:00">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+								<option value="GMT -06:00">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+								<option value="GMT -05:00">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+								<option value="GMT -04:50">(GMT -4:30) Caracas</option>
+								<option value="GMT -04:00">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+								<option value="GMT -03:50">(GMT -3:30) Newfoundland</option>
+								<option value="GMT -03:00">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+								<option value="GMT -02:00">(GMT -2:00) Mid-Atlantic</option>
+								<option value="GMT -01:00">(GMT -1:00) Azores, Cape Verde Islands</option>
+								<option value="GMT +00:00">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+								<option value="GMT +01:00">(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+								<option value="GMT +02:00">(GMT +2:00) Kaliningrad, South Africa</option>
+								<option value="GMT +03:00">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+								<option value="GMT +03:50">(GMT +3:30) Tehran</option>
+								<option value="GMT +04:00">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+								<option value="GMT +04:50">(GMT +4:30) Kabul</option>
+								<option value="GMT +05:00">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+								<option value="GMT +05:50">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+								<option value="GMT +05:75">(GMT +5:45) Kathmandu, Pokhara</option>
+								<option value="GMT +06:00">(GMT +6:00) Almaty, Dhaka, Colombo</option>
+								<option value="GMT +06:50">(GMT +6:30) Yangon, Mandalay</option>
+								<option value="GMT +07:00">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+								<option value="GMT +08:00">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+								<option value="GMT +08:75">(GMT +8:45) Eucla</option>
+								<option value="GMT +09:00">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+								<option value="GMT +09:50">(GMT +9:30) Adelaide, Darwin</option>
+								<option value="GMT +10:00">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+								<option value="GMT +10:50">(GMT +10:30) Lord Howe Island</option>
+								<option value="GMT +11:00">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+								<option value="GMT +11:50">(GMT +11:30) Norfolk Island</option>
+								<option value="GMT +12:00">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+								<option value="GMT +12:75">(GMT +12:45) Chatham Islands</option>
+								<option value="GMT +13:00">(GMT +13:00) Apia, Nukualofa</option>
+								<option value="GMT +14:00">(GMT +14:00) Line Islands, Tokelau</option>
+							</select>
+						</div>
+						<span id="timezoneErr" style="color: red;"></span>
+					</div>
+					<div class="float-right">
+						<button type="submit" id="submitButton" class="btn btn-success" disabled>Submit</button>
+						<a class="btn btn-danger" th:href="@{/jdu/load}">Back</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script th:inline="javascript">
+		var jduList = /*[[${jduList}]]*/ [];
+	</script>
+	<script type="text/javascript" src="/js/lib/jduCreate.js"></script>
+	<footer th:replace="fragments/general.html :: footer"></footer>
+</body>
+</html>

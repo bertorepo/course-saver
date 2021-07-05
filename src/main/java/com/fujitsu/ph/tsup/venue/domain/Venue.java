@@ -23,7 +23,8 @@ import org.springframework.util.StringUtils;
  */
 public class Venue {
 	private Long id;
-	private String venuName;
+	private String venueName;
+	private Boolean overlap;
 
 	/**
 	 * <pre>
@@ -41,8 +42,10 @@ public class Venue {
 	 * @param builder
 	 */
 	public Venue(Builder builder) {
+		validateVenueName(builder.venueName);
 		this.id = builder.id;
-		this.venuName = builder.venueName;
+		this.venueName = builder.venueName;
+		this.overlap = builder.overlap;
 	}
 
 	/**
@@ -75,7 +78,7 @@ public class Venue {
 	 * @return name
 	 */
 	public String getName() {
-		return venuName;
+		return venueName;
 	}
 
 	/**
@@ -86,41 +89,69 @@ public class Venue {
 	 * @param name
 	 */
 	public void setName(String name) {
-		this.venuName = name;
+		this.venueName = name;
+	}
+	
+	/**
+	 * <pre>
+	 * Validation for venue id
+	 * <pre>
+	 *
+	 * @param id
+	 */
+	@Deprecated
+	private void validateId(Long id) {
+		if (id == null || id == 0) {
+			throw new IllegalArgumentException("Id should not be empty.");
+		}
+	}
+
+	/**
+	 * <pre>
+	 * Validation for venue name
+	 * <pre>
+	 *
+	 * @param venueName
+	 */
+	private void validateVenueName(String venueName) {
+		if (StringUtils.isEmpty(venueName)) {
+			throw new IllegalArgumentException("Venue name should not be empty.");
+		}
+	}
+	
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public Boolean getOverlap() {
+		return overlap;
+	}
+
+	public void setOverlap(Boolean overlap) {
+		this.overlap = overlap;
 	}
 
 	/**
 	 * Builder Class
 	 */
-	public static class Builder {
+	public static final class Builder {
 		private Long id;
 		private String venueName;
+		private Boolean overlap;
 
-		/**
-		 * <pre>
-		 * Constructor with parameter using name
-		 * <pre>
-		 *
-		 * @param name
-		 */
-		public Builder(String name) {
-			validateVenueName(name);
-			this.venueName = name;
-		}
-
-		/**
-		 * <pre>
-		 * Constructor with parameter using id and name
-		 * <pre>
-		 *
-		 * @param id
-		 * @param name
-		 */
-		public Builder(Long id, String name) {
-			validateId(id);
-			validateVenueName(name);
+		public Builder addId(Long id) {
 			this.id = id;
-			this.venueName = name;
+			return this;
+		}
+		
+		public Builder addVenueName(String venueName) {
+			this.venueName = venueName;
+			return this;
+		}
+		
+		public Builder addOverlap(Boolean overlap) {
+			this.overlap = overlap;
+			return this;
 		}
 
 		/**
@@ -132,32 +163,6 @@ public class Venue {
 		 */
 		public Venue build() {
 			return new Venue(this);
-		}
-
-		/**
-		 * <pre>
-		 * Validation for venue id
-		 * <pre>
-		 *
-		 * @param id
-		 */
-		private void validateId(Long id) {
-			if (id == null || id == 0) {
-				throw new IllegalArgumentException("Id should not be empty.");
-			}
-		}
-
-		/**
-		 * <pre>
-		 * Validation for venue name
-		 * <pre>
-		 *
-		 * @param venueName
-		 */
-		private void validateVenueName(String venueName) {
-			if (StringUtils.isEmpty(venueName)) {
-				throw new IllegalArgumentException("Venue name should not be empty.");
-			}
 		}
 	}
 }

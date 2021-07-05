@@ -3,9 +3,14 @@
  */
 package com.fujitsu.ph.tsup.venue.service;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fujitsu.ph.tsup.venue.dao.VenueDao;
@@ -31,12 +36,27 @@ import com.fujitsu.ph.tsup.venue.domain.Venue;
 public class VenueServiceImpl implements VenueService {
 
 	@Autowired
-	VenueDao venueDao;
+	private VenueDao venueDao;
 
 	@Override
 	public Set<Venue> findAllVenues() {
 		return venueDao.findAllVenues();
 	}
+	
+	
+
+	@Override
+	public Page<Venue> findAllVenues(Pageable pagable) {
+	    List<Venue> venues = venueDao.findAllVenues(pagable)
+					  .stream()
+					  .collect(Collectors.toList());
+	    
+	    int countVenue = venueDao.countVenue();
+	    
+	    return new PageImpl<>(venues,pagable,countVenue);
+	}
+
+
 
 	@Override
 	public Set<Venue> findVenueByName(String name) {

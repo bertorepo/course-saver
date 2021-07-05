@@ -1,45 +1,41 @@
 /*
  * Copyright (C) 2021 FUJITSU LIMITED All rights reserved.
  */
-package com.fujitsu.ph.tsup.venue.dao;
+package com.fujitsu.ph.tsup.jdu.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.fujitsu.ph.tsup.venue.domain.Venue;
+import com.fujitsu.ph.tsup.jdu.domain.Jdu;
 
 //=======================================================
 //Project Name: Training Sign Up
-//Class Name: VenueRowMapper.java
+//Class Name: JduRowMapper.java
 //
 //<<Modification History>>
 //Version | Date       | Updated by       | Content
 //--------+------------+------------------+---------------
-//0.01    | 03/06/2021 | WS) dw.cardenas  | Created
+//0.01    | 28/06/2021 | WS) dw.cardenas  | Created
 //=======================================================
 
 /**
  *
- * @version 0.01
  * @author dw.cardenas
  *
  */
-public class VenueRowMapper implements RowMapper<Venue> {
-
+public class JduRowMapper implements RowMapper<Jdu> {
 	@Override
-	public Venue mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Jdu mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
-		String name = rs.getString("name");
-		Boolean overlap = rs.getBoolean("overlap");
+		String jduName = rs.getString("jdu_name");
+		String timezone = rs.getString("timezone");
 
-		Venue venue = Venue.builder()
+		return Jdu.builder()
 				.addId(id)
-				.addVenueName(name)
-				.addOverlap(overlap)
+				.addJduName(jduName)
+				.addTimezone(timezone)
 				.build();
-
-		return venue;
 	}
 }

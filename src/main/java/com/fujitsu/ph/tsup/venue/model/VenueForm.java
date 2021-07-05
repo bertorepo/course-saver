@@ -22,6 +22,7 @@ package com.fujitsu.ph.tsup.venue.model;
 public class VenueForm {
 	private Long id;
 	private String name;
+	private Boolean overlap;
 
 	/**
 	 * <pre>
@@ -65,6 +66,28 @@ public class VenueForm {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * <pre>
+	 * Getter for overlap
+	 * <pre>
+	 *
+	 * @return overlap
+	 */
+	public Boolean getOverlap() {
+		return overlap;
+	}
+
+	/**
+	 * <pre>
+	 * Setter for overlap
+	 * <pre>
+	 *
+	 * @param overlap
+	 */
+	public void setOverlap(Boolean overlap) {
+		this.overlap = overlap;
 	}
 
 	@Override

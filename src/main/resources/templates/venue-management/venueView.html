@@ -22,7 +22,6 @@
 <link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="/css/app/scheduling/scheduling.common.css">
-<link rel="stylesheet" type="text/css" href="/css/app/roletype/roletype.common.css">
 <script th:src="@{/js/app/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/app/popper.min.js}"></script>
 <script th:src="@{/js/app/bootstrap.min.js}"></script>
@@ -45,20 +44,29 @@
 				</div>
 				<form id="venueUpdateForm" th:action="@{/venue/update}" method="POST">
 					<div class="modal-body">
+						<input type="hidden" id="venueUpdateId" name="id"/>
 						<div class="form-group row">
-							<input type="hidden" id="venueUpdateId" name="id"/>
 							<div class="col-lg-3">
 								<label class="col-form-label">Venue Name:</label>
 							</div>
 							<div class="col-lg-9">
 								<input type="text" placeholder="Enter venue name" id="venueUpdateName"
-									class="form-control" maxlength="100" name="name" onkeyup="validateUpdateInput()"/>
+									class="form-control" maxlength="100" name="name"/>
+								<span id="nameErrorMsg" style="color: red;"></span>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-lg-3">
+								<label class="col-form-label">Overlappable?</label>
+							</div>
+							<div class="col-lg-9">
+								<input type="checkbox" id="venueOverlap" name="overlap"/>
 								<span id="nameErrorMsg" style="color: red;"></span>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" id="updateButton" class="btn btn-success">Update</button>
+						<button type="submit" id="updateButton" class="btn btn-success" disabled>Update</button>
 						<button type="button" class="btn btn-primary" onclick="resetUpdateForm()" data-dismiss="modal">Cancel</button>
 					</div>
 				</form>
@@ -163,23 +171,45 @@
 						<thead>
 							<tr>
 								<th style = "width: 20%"> Action </th>
-								<th style = "width: 80%"> Venue Name </th>
+								<th style = "width: 40%"> Venue Name </th>
+								<th style = "width: 40%"> Overlappable </th>
 							</tr>
 						</thead>
-						<tbody th:each = "venue : *{venueList}">
+						<tbody th:each = "venue : *{paginatedVenue.content}">
 							<tr>
 								<td style = "width: 20%">
 									<input type="submit" value="Edit" class="btn btn-success"
-										th:attr="onclick=|showUpdateModal('${venue.id}', '${venue.name}')|"/>
+										th:attr="onclick=|showUpdateModal('${venue.id}', '${venue.name}', '${venue.overlap}')|"/>
 									<input type="submit" value="Delete" class="btn btn-danger"
 										th:attr="onclick=|showDeleteModal('${venue.id}', '${venue.name}')|"/>
 								</td>
 								<td th:text = "${venue.name}">
+								<td th:text = "${venue.overlap}">
 							</tr>
 						</tbody>
 					</table>
-
-					<div th:if = "${#lists.isEmpty(venueList)}">
+						<nav aria-label="Pagination" th:if="${paginatedVenue != null}">
+			 				<ul class="pagination justify-content-center font-weight-bold" style="padding-left:4%;">
+			 					<li class="page-item" th:classappend="${paginatedVenue.number eq 0} ? 'disabled'">
+			 						<a class="page-link" th:href="@{/venue/load?page={id}(id=${paginatedVenue.number lt 2 ? 1 : paginatedVenue.number})}"
+			 									aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+			 							<span aria-hidden="true">&laquo;</span>
+			 						</a>
+			 					</li>
+			 					<li class="page-item" th:classappend="${i eq paginatedVenue.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, paginatedVenue.totalPages, 1)}">
+			 					  	<a class="page-link" th:href="@{/venue/load?page={id}(id=${i})}" th:text="${i}"
+			 					               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+								</li>
+			 					<li class="page-item" th:classappend="${paginatedVenue.number + 1 eq paginatedVenue.totalPages} ? 'disabled'">
+			 						<a class="page-link"
+			 					   th:href="@{/venue/load?page={id}(id=${paginatedVenue.number + 2})}"
+			 					   aria-label="Next" title="Next Page" data-toggle="tooltip">
+			 					    <span aria-hidden="true">&raquo;</span>
+			 						 </a>
+			 					</li>
+			 				</ul>
+			 			</nav>
+					<div th:if = "${paginatedVenue.isEmpty()}">
 						<div class="alert alert-dismissible alert-danger text-center">
 							<strong>No venues available</strong>
 						</div>
