@@ -87,6 +87,7 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 //0.04    | 05/04/2021 | WS) A.Senamin    | Update
 //0.05    | 06/02/2021 | WS) l.Celoso     | Update
 //0.05    | 06/16/2021 | WS) M.Taboada    | Update
+//0.06    | 06/30/2021 | WS) l.Celoso     | Update
 //=======================================================
 /**
  * <pre>
@@ -1001,10 +1002,12 @@ public class EnrollmentController {
 			BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			enrollmentService.enrollBatchMember(enrollMembers);
+			Set<CourseParticipant> employeeList = enrollmentService.getAllEmails(enrollMembers.getBatchId());
+			enrollmentService.sendBatchCalendarInvite(enrollMembers.getCourseId(), employeeList);
 			redirectAttributes.addFlashAttribute("successMsg", "Successfully enrolled the selected member(s).");
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			model.addAttribute("errorMessage01", e.getMessage());
+			//enrollmentService.removeBatchMember(enrollMembers);
+			redirectAttributes.addFlashAttribute("inviteFail", e.getMessage());
 		}
 		return "redirect:/enrollment/viewMemberCourse";
 	}

@@ -8,6 +8,8 @@
 <!-- --------+------------+-----------------------+--------------------------------------------------- -->
 <!-- 0.01    | ----/--/-- | WS) -		          | Created -->
 <!-- 0.02    | 2021/06/02 | WS) l.celoso          | Updated -->
+<!-- 0.03    | 2021/06/23 | WS) m.taboada         | Updated -->
+<!-- 0.03    | 2021/06/30 | WS) l.celoso          | Updated -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE html>
@@ -70,7 +72,19 @@
 				</div>
 				<div class="card-body">
 					<button type="button" id="filterBtn" class="collapsible">Advanced Search</button>
-					<div id="filterItems" class="content">	  
+					<div id="filterItems" class="content">
+						<!-- View By -->
+						<div class="form-group row" id="viewbyDiv">
+							<label class="col-lg-2 col-form-label">View By</label>
+							<div class="col-lg-5">
+								<select class="form-control form-select" aria-label="Default select example" 
+									id="viewbySel" name= "viewby" onclick="setDateRange()">
+									<option th:value="Custom" th:text="Custom"></option>
+									<option th:value="Month" th:text="Month"></option>
+									<option th:value="Quarter" th:text="Quarter"></option>
+								</select>
+							</div>
+						</div>	  
 						<!-- Course Category -->
 						<div class="form-group row">
 							<label class="col-lg-2 col-form-label">Course Category</label>
@@ -344,7 +358,8 @@
         </div> 
 		<!--Top Learners Modal End-->
 		</form>
-		
+
+<!-- 		
 		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5">
 			<h3><i class="fa fa-list"></i> List of All Available Courses
 			<button id="cancelBelowMinimumbtn" class="btn btn-danger float-right" th:disabled="${#lists.isEmpty(activeCourseSchedule)}">
@@ -404,9 +419,10 @@
  				</div>
  			</div>			
 		</div>
-		
+ -->
+ 
 		<!-- CANCELATION & RESCHEDULE -->
-		<div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5" >
+ 		<!-- <div sec:authorize="hasAuthority('PMO')" style="overflow-x:auto;display: block; white-space: nowrap" class="mt-5" >
 			<h3><i class="fa fa-list"></i> List of Available Courses by <span id="listNames"> Months/Quarter</span>
 				<div class="col-lg-2 float-right">
 					<select class="form-control"  id="dropDown">
@@ -427,7 +443,7 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<!-- <th class="align-middle ">Action</th> -->
+						<!-- <th class="align-middle ">Action</th> - ->
 						<th class="align-middle ">Course Category</th>
 						<th class="align-middle ">Course Name</th>
 						<th class="align-middle ">Instructor</th>
@@ -448,9 +464,10 @@
  					<strong th:text="${nullMessage}"></strong> 
  				</div>
  			</div>
-		</div>
+		</div>	
+		 -->
 		<!-- CANCELATION & RESCHEDULE END-->
-			
+ 			
 		<!-- Error Modal-->
 		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm text-center">
@@ -469,7 +486,7 @@
 				</div>
 			</div>
 		</div>
-	<!-- Error Modal End -->
+		<!-- Error Modal End -->
 		
 		
 		<!--Confirmation Modal-->
@@ -829,11 +846,8 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group row">
-									<input type="hidden" id="courseRegistrationCSDId" disabled>
-								<label class="col-lg-3 col-form-label">Course Schedule ID:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control-plaintext" id="courseRegistrationId" name="courseRegistrationId" disabled >
-								</div>
+								<input type="hidden" id="courseRegistrationCSDId" disabled>
+								<input type="hidden" class="form-control-plaintext" id="courseRegistrationId" name="courseRegistrationId" disabled >
 								<label class="col-lg-3 col-form-label">Course Name:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control-plaintext" id="courseRegistrationName" name="" disabled >
@@ -993,6 +1007,7 @@
 		localStorage.setItem("venueId", document.getElementById('venueId').value);
 		localStorage.setItem("mandatory", document.getElementById('mandatorySel').value);
 		localStorage.setItem("deadline", document.getElementById('deadlineSel').value);
+		localStorage.setItem("viewBy", document.getElementById('viewbySel').value);
 	}
 	
 	if(localStorage.getItem("courseCategory") != null) {
@@ -1005,6 +1020,8 @@
 		document.getElementById('venuedetail').value = localStorage.getItem("venue");
 		document.getElementById('venueId').value = localStorage.getItem("venueId");
 		document.getElementById('mandatorySel').value = localStorage.getItem("mandatory");
+		document.getElementById('deadlineSel').value = localStorage.getItem("deadline");
+		document.getElementById('viewbySel').value = localStorage.getItem("viewBy");
 
 		var deadline = document.getElementById("deadlineDiv");
 		var mandatory = document.getElementById('mandatorySel');
@@ -1023,6 +1040,11 @@
 			document.getElementById('filterItems').style.display = "block";
 			document.getElementById('filterBtn').classList.add("collapsible");
 			document.getElementById('filterBtn').classList.add("active");
+		}
+		
+		if(localStorage.getItem("viewBy") != 'Custom'){
+			document.getElementById('fromDateTime').disabled = true;
+			document.getElementById('toDateTime').disabled = true;
 		}
 		
 		localStorage.clear();
@@ -1275,10 +1297,12 @@
 	function showDeadline(){
 		var mandatory = document.getElementById("mandatorySel");
 		var deadlineDiv = document.getElementById("deadlineDiv");
+		var deadlineSel = document.getElementById("deadlineSel");
 		if(mandatory.value == "Yes"){
 			deadlineDiv.style.display = "flex";
 		} else {
 			deadlineDiv.style.display = "none";
+			deadlineSel.value = "-";
 		}
 	}
 	
@@ -1303,10 +1327,67 @@
 		document.getElementById("mandatorySel").value = "-";
 		document.getElementById("deadlineSel").value = "-";
 		document.getElementById("deadlineDiv").style.display = "none";
+		
+		document.getElementById("viewbySel").value = "Custom";
+		document.getElementById("fromDateTime").disabled = false;
+		document.getElementById("toDateTime").disabled = false;
+		
 	}
 	
 	function setPage(currPage){
 		document.getElementById("currentPage").value = currPage;
+	}
+	
+	$("#confirmRegisterModal").on('hidden.bs.modal', function () {
+		$('body').addClass('modal-open');
+	});
+
+	function setDateRange(){
+		var mandatory = document.getElementById("viewbySel");
+		var fromDate = document.getElementById("fromDateTime");
+		var toDate = document.getElementById("toDateTime");
+		
+		var date = new Date();
+		var year = date.getFullYear();
+		
+		if(mandatory.value == "Custom"){
+			fromDate.disabled = false;
+			toDate.disabled = false;
+			
+		} else if (mandatory.value == "Month"){
+			fromDate.disabled = true;
+			toDate.disabled = true;
+			
+			var month = '' + (date.getMonth() + 1)
+			var lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+			
+			fromDate.value = year + '-' + filterZero(month) + '-01T00:00';
+			toDate.value = year + '-' + filterZero(month) + '-' + lastDayOfMonth.getDate() + 'T23:59';
+			
+		} else if (mandatory.value == "Quarter"){
+			fromDate.disabled = true;
+			toDate.disabled = true;
+			
+			var quarter = Math.floor((date.getMonth() / 3));
+			var firstDate = new Date(date.getFullYear(), quarter * 3, 1);
+			var endDate = new Date(firstDate.getFullYear(), firstDate.getMonth() + 3, 0);
+			
+			var firstMonth = '' + (firstDate.getMonth() + 1);
+			var endMonth = '' + (endDate.getMonth() + 1);
+			
+			fromDate.value = year + '-' + filterZero(firstMonth) + '-01T00:00';
+			toDate.value = year + '-' + filterZero(endMonth) + '-' + endDate.getDate() + 'T23:59';
+			
+		}
+	}
+	
+	function filterZero(month){
+		
+		if (month.length < 2) { 
+    		month = '0' + month;
+		}
+		
+		return month;
 	}
 	
 </script>

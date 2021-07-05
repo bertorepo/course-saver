@@ -18,6 +18,7 @@ package com.fujitsu.ph.tsup.enrollment.service;
 //0.03    | 03/23/2021 | WS) C.Macatangay      | Update
 //0.04    | 05/04/2021 | WS) A.Senamin         | Update
 //0.05    | 06/14/2021 | WS) L.Celoso          | Update
+//0.06    | 06/30/2021 | WS) L.Celoso          | Update
 //==================================================================================================
 
 import com.fujitsu.ph.auth.model.FpiUser;
@@ -202,7 +203,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                     e);
         }
     }
-
+    
     /**
      * Finds the scheduled courses starting from today onwards
      * 
@@ -628,5 +629,122 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     	
     	return enrollmentDao.countCourse(fromDateTime, toDateTime, courseCategoryId, courseNameId, instructorId, venueId, mandatory, deadline);
     	
+    }
+    
+    /**
+     * 
+     * Sends multiple calendar invite for selected enrolled members in a course
+     * 
+     * @param courseParticipant
+     * @author L.Celoso
+     * 
+     */
+    public void sendBatchCalendarInvite(Long courseScheduleId, Set<CourseParticipant> courseParticipant) {
+    	
+        CourseSchedule courseSchedule = enrollmentDao.findCourseScheduleById(courseScheduleId);
+        CourseScheduleDetail courseScheduleDetail = courseSchedule.getCourseScheduleDetail();
+        FpiUser user = (FpiUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        Multipart multipart = new MimeMultipart();
+        BodyPart bodyPart = new MimeBodyPart();
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
+        DateTimeFormatter zonedtf = DateTimeFormatter.ofPattern("zzzz");
+        StringBuilder ical = new StringBuilder();
+        int hour = courseScheduleDetail.getScheduledEndDateTime().getHour()
+                - courseScheduleDetail.getScheduledStartDateTime().getHour();
+        int minute = courseScheduleDetail.getScheduledEndDateTime().getMinute()
+                - courseScheduleDetail.getScheduledStartDateTime().getMinute();
+        String zone = zonedtf.format(courseScheduleDetail.getScheduledStartDateTime());
+
+        ical.append("BEGIN:VCALENDAR");
+        ical.append("\nMETHOD:REQUEST");
+        ical.append("\nPRODID:-//Microsoft Corporation//Outlook 16.0 MIMEDIR//EN");
+        ical.append("\nVERSION:2.0");
+        ical.append("\nBEGIN:VEVENT");
+        
+        for (CourseParticipant employee : courseParticipant) {
+	        ical.append("\nATTENDEE;CN:").append(user.getFirstName()).append(" ").append(user.getLastName())
+	                .append(";ROLE:OPT-PARTICIPANT;RSVP=TRUE:mailto:").append(employee.getEmail());
+        }
+        
+        ical.append("\nDTSTART:").append(dtf.format(courseScheduleDetail.getScheduledStartDateTime()));
+        ical.append("\nORGANIZER;CN=").append(courseSchedule.getInstructorFirstName()).append(" ")
+                .append(courseSchedule.getInstructorLastName()).append(":MAILTO:").append(senderEmail);
+        ical.append("\nSUMMARY:").append(courseSchedule.getCourseName());
+        ical.append("\nUID:").append(UUID.randomUUID().toString());
+        ical.append("\nDESCRIPTION:").append(courseSchedule.getCourseName());
+        ical.append(
+                "\nX-ALT-DESC;FMTTYPE=text/html:<html><body style=\"font-family:Arial\"; \"font-size:10pt\">Dear ")
+                .append(user.getFirstName()).append(" ").append(user.getLastName())
+                .append(",<br><br>You have successfully enrolled to ").append(courseSchedule.getCourseName())
+                .append(". Please see details below:<br><br>")
+                .append("<table cellspacing=3 style=\"font-family:Arial\"; \"font-size:10pt\">")
+                .append("<tr><td width=120><b>Start Date:</b></td><td>")
+                .append(dateFormatter.format(courseScheduleDetail.getScheduledStartDateTime()))
+                .append("</td></tr><tr><td width=120><b>Start Time:</b></td><td>")
+                .append(timeFormatter.format(courseScheduleDetail.getScheduledStartDateTime()))
+                .append("</td></tr><tr><td width=120><b>End Date:</b></td><td>")
+                .append(dateFormatter.format(courseScheduleDetail.getScheduledEndDateTime()))
+                .append("</td></tr><tr><td width=120><b>End Time:</b></td><td>")
+                .append(timeFormatter.format(courseScheduleDetail.getScheduledEndDateTime()))
+                .append("</td></tr><tr><td width=120><b>Venue:</b></td><td>")
+                .append(courseSchedule.getVenueName()).append("</td></tr></table></body></html>");
+        ical.append("\nDURATION:PT").append(hour).append("H").append(minute).append("M0S");
+        ical.append("\nLOCATION:").append(courseSchedule.getVenueName());
+        ical.append("\nPRIORITY:5");
+        if (!courseScheduleDetail.getScheduledStartDateTime().toLocalDate()
+                .isEqual(courseScheduleDetail.getScheduledEndDateTime().toLocalDate())) {
+            ical.append("\nRRULE:FREQ=WEEKLY;UNTIL=")
+                    .append(dtf.format(courseScheduleDetail.getScheduledEndDateTime()) + "Z")
+                    .append(";BYDAY=MO,TU,WE,TH,FR");
+        }
+        ical.append("\nTRANSP:OPAQUE");
+        ical.append("\nEND:VEVENT");
+        ical.append("\nBEGIN:VTIMEZONE");
+        ical.append("\nTZID:").append(zone);
+        ical.append("\nEND:VTIMEZONE");
+        ical.append("\nEND:VCALENDAR");
+        System.out.println(ical.toString());
+
+        try {
+            bodyPart.addHeader("Content-Class", "urn:content-classes:calendarmessage");
+            bodyPart.addHeader("Content-ID", "calendar_message");
+            bodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(ical.toString(),
+                    "text/calendar; charset=UTF-8; method=REQUEST; name=\"invite.ics\"")));
+            multipart.addBodyPart(bodyPart);
+            message.addHeaderLine("method=REQUEST");
+            message.addHeaderLine("charset=UTF-8");
+            message.addHeaderLine("component=VEVENT");
+            message.setSubject(courseSchedule.getCourseName());
+            message.setFrom(new InternetAddress(senderEmail));
+            
+            for (CourseParticipant employee : courseParticipant) {
+            	message.addRecipient(Message.RecipientType.TO, new InternetAddress(employee.getEmail()));
+            }
+            
+            message.setContent(multipart);
+            
+            System.out.println("Sending email...");
+            javaMailSender.send(message);
+            System.out.println("Sent email...");
+        } catch (MessagingException e) {
+            throw new IllegalArgumentException("This should never happen unless mail properties are invalid.", e);
+        } catch (MailAuthenticationException e) {
+            throw new RuntimeException("Can't communicate with the mail server. Please try again later.", e);
+        }  catch (IOException e) {
+            throw new RuntimeException(
+                    "This should never happen because ByteArraySource will always have correct and non empty values for the data and type arguments.",
+                    e);
+        }
+    }
+    
+    public Set<CourseParticipant> getAllEmails(String batchId) {
+    	
+    	return enrollmentDao.getAllEmails(batchId);
+   
     }
 }

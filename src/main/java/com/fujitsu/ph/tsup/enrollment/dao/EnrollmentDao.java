@@ -17,6 +17,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //0.02    | 09/14/2020 |  WS) J.Yu		| Update
 //0.03	  | 04/19/2021 |  WS) M.Atayde  | Update
 //0.04	  | 06/14/2021 |  WS) L.Celoso  | Update
+//0.05	  | 06/30/2021 |  WS) L.Celoso  | Update
 //====================================================
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
@@ -29,7 +30,6 @@ import com.fujitsu.ph.tsup.scheduling.model.VenueForm;
 import com.fujitsu.ph.tsup.enrollment.model.Certificate;
 import com.fujitsu.ph.tsup.enrollment.model.EnrolledMemberForm;
 
-//import com.fujitsu.ph.tsup.enrollment.domain.Participant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
@@ -292,4 +292,15 @@ public interface EnrollmentDao {
         * <pre>
         */  
        int countCourse(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
+
+       /**
+        * <pre>
+        *
+        *Method for getting all email of employees to be enrolled
+        *@author l.celoso
+        *
+        * <pre>
+        */  
+       Set<CourseParticipant> getAllEmails(String batchId);
+
 }

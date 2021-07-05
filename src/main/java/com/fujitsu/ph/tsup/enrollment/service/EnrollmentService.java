@@ -17,6 +17,7 @@ import com.fujitsu.ph.tsup.course.model.Course;
 //0.03    | 02/23/2021 | WS) E.Ceniza          | Update
 //0.04    | 05/04/2021 | WS) A.Senamin         | Update
 //0.05    | 06/14/2021 | WS) L.Celoso          | Update
+//0.06    | 06/30/2021 | WS) L.Celoso          | Update
 //==================================================================================================
 
 import com.fujitsu.ph.tsup.enrollment.domain.CourseParticipant;
@@ -242,5 +243,25 @@ public interface EnrollmentService {
      * <pre>
      */  
     int countCourse(ZonedDateTime fromDateTime, ZonedDateTime toDateTime, String courseCategoryId,String courseNameId, String instructorId, String venueId, String mandatory, String deadline);
+
+	/**
+     * <pre>
+     *
+     * Sends multiple calendar invite for selected enrolled members in a course
+     *@author l.celoso
+     *
+     * <pre>
+     */  
+    void sendBatchCalendarInvite(Long courseScheduleId, Set<CourseParticipant> courseParticipant);
+    
+	/**
+     * <pre>
+     *
+     * Get all emails of members to be enrolled
+     *@author l.celoso
+     *
+     * <pre>
+     */  
+    Set<CourseParticipant> getAllEmails(String batchId);
 
 }

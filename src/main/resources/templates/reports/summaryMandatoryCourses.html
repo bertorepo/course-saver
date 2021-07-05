@@ -1,5 +1,13 @@
-<!-- @Author: WS)- -->
-<!-- @Author: Padaca, Mariel-->
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Reports -->
+<!-- Name         : summaryGDCMandatory.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | 2021/07/02 | WS) l.celoso          | Created -->
+<!-- ================================================================================================== -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -53,6 +61,8 @@ hr {
 								<option th:value="2">Summary of JDU Standardization Training for Dev</option>
 								<option th:value="3">Summary of JDU Standardization Training for PM</option>
 								<option th:value="4" selected>Summary of Mandatory Courses</option>
+								<option th:value="5" >Report for members who have not yet completed the JDU Courses</option>
+								<option th:value="6" >Report for members who have not yet completed the GDC Courses</option>
 							</select>
 						</div>
 					</div>
@@ -428,6 +438,10 @@ hr {
 				window.location.href = "/report/summary/standardization/pm/";
 			} else if (selectedReportType == 4) {
 				window.location.href = "/mandatoryCourses/load/";
+            } else if (selectedReportType == 5) {
+                window.location.href = "/report/summary/jduMandatoryCourses/";
+            } else if (selectedReportType == 6) {
+                window.location.href = "/report/summary/gdcMandatoryCourses/";
 			} else {
 
 			}
