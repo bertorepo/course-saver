@@ -47,12 +47,13 @@ public class ReportForAttendeesDaoImpl implements ReportForAttendeesDao {
      * @return mandatoryCourses
      */
     @Override
-    public Set<Attendee> findAllNonAttendees(String mandatoryType, Long empId) {
+    public Set<Attendee> findAllNonAttendees(String mandatoryType, Long jduId) {
             
-        String query = "SELECT * FROM tsup.GET_NON_ATTENDEES(:mandatory_type)";                                                                                    
+        String query = "SELECT * FROM tsup.GET_NON_ATTENDEES(:mandatory_type, :jdu_id)";                                                                                    
         
         SqlParameterSource nonAttendeesParameter = new MapSqlParameterSource()
-                .addValue("mandatory_type", mandatoryType);
+                .addValue("mandatory_type", mandatoryType)
+                .addValue("jdu_id", jduId);
         
         List<Attendee> nonAttendeeList = template.query(query, nonAttendeesParameter, new ReportForAttendeesRowMapper());
         Set<Attendee> nonAttendees = new LinkedHashSet<>(nonAttendeeList);

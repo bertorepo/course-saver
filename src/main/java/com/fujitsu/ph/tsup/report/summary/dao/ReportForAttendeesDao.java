@@ -22,7 +22,7 @@ public interface ReportForAttendeesDao {
      * @param Employee ID 
      * @return Set of non-attendees
      */
-    Set<Attendee> findAllNonAttendees(String mandatoryType, Long empId);
+    Set<Attendee> findAllNonAttendees(String mandatoryType, Long jdu_id);
     
 	 /**
      *  Find all mandatory courses
@@ -30,7 +30,7 @@ public interface ReportForAttendeesDao {
      * @param Employee ID 
      * @return Set of courses
      */
-    Set<Attendee> findMandatoryAllCourses(String mandatoryType, Long empId);
+    Set<Attendee> findMandatoryAllCourses(String mandatoryType, Long jdu_id);
 	 
     /**
      *  Find all employees
@@ -38,7 +38,7 @@ public interface ReportForAttendeesDao {
      * @param Employee ID 
      * @return Set of employees
      */
-    Set<Attendee> findEmployees(String mandatoryType, Long empId);
+    Set<Attendee> findEmployees(String mandatoryType, Long jdu_id);
     
     /**
      *  Get the JDU Type of the login user

@@ -497,3 +497,45 @@ ALTER TABLE course
 ALTER TABLE course
 	ADD CONSTRAINT MANDATORY_TYPE_check 
 	CHECK (mandatory_type = '-' or mandatory_type = 'JDU' or mandatory_type = 'GDC');
+	
+
+--Added 2021/07/05
+--Function for getting non-attendees
+--DROP FUNCTION tsup.GET_NON_ATTENDEES(mandatoryType VARCHAR, jdutype BIGINT);
+CREATE OR REPLACE FUNCTION tsup.GET_NON_ATTENDEES(mandatoryType VARCHAR, jdutype BIGINT)
+RETURNS TABLE (COURSE_ID BIGINT, COURSE_NAME VARCHAR, EMPLOYEE_ID BIGINT, EMPLOYEE_NAME TEXT)
+language plpgsql
+as $$
+begin
+	return query 
+	SELECT DISTINCT C.id  AS COURSE_ID,
+		   C.NAME AS COURSE_NAME,
+		   E.id  AS EMPLOYEE_ID,
+		   CONCAT(E.last_name,', ', E.first_name) As EMPLOYEE_NAME
+	FROM   tsup.employee E,
+		   tsup.course C
+		   INNER JOIN tsup.department D
+		   ON C.department_id = D.id
+	WHERE  C.mandatory = 'Yes'
+		   AND C.mandatory_type = mandatoryType
+		   AND D.jdu_id = jdutype
+		   AND ( C.id, C.NAME, E.last_name ) NOT IN(
+		   SELECT DISTINCT C.id   AS COURSE_ID,
+				   C.NAME AS COURSE_NAME,
+				   E.last_name
+			FROM   tsup.employee E
+			INNER JOIN tsup.course_attendance CA
+				   ON E.id = CA.participant_id
+			   INNER JOIN tsup.course_schedule_detail CSD
+					   ON CSD.id = CA.course_schedule_detail_id
+			   INNER JOIN tsup.course_schedule CS
+					   ON CS.id = CSD.course_schedule_id
+			   INNER JOIN tsup.course C
+					   ON C.id = CS.course_id
+			   INNER JOIN tsup.department D
+					   ON C.department_id = D.id
+				WHERE  C.mandatory = 'Yes'
+					   AND C.mandatory_type = mandatoryType
+					   AND D.jdu_id = jdutype) 
+	ORDER BY COURSE_ID, EMPLOYEE_ID;
+end;$$
