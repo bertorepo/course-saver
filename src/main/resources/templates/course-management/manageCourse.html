@@ -12,6 +12,7 @@
 <!-- 0.04    | 2021/05/24 | WS) mi.aguinldo       | Added Course Category column; Added Update button and its modal  -->
 <!-- 0.05    | 2021/06/02 | WS) m.yanoyan         | Changed button value("back" to "cancel"); removed "view more" footer -->
 <!-- 0.06    | 2021/06/10 | WS) m.yanoyan         | Added filter functionality UI -->
+<!-- 0.07    | 2021/07/2 | WS) mi.aguinaldo       | Move the pagination tab below the table -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE HTML>
@@ -140,7 +141,6 @@
 
 	<div class="modal fade" id="infoModalForUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		aria-hidden="true">
-
 		<form id="infoModalFormId" th:action="@{/courses/update}" th:object="${course}" th:id="updateCourse"
 			method="get">
 			<div class="modal-dialog modal-lg">
@@ -158,9 +158,12 @@
 							<label for="inputEmail3" class="col-sm-2 col-form-label">Course Name:</label>
 							<div class="col-sm-10">
 								<input class="form-control needs-validation" id="updateCourseName"
-									name="updateCourseName" type="text" th:field="*{name}" required>
+									name="updateCourseName" type="text" th:field="*{name}" required
+									pattern="^[a-zA-Z0-9](?!.*?[^\na-za-zA-Z0-9]{2}).*?[a-zA-Z0-9]$"
+									title="Course Name">
 								<div class="invalid-feedback">
-									Please Enter A Course Name.
+									Please Enter A Valid Course Name (Special Character On Start And End Are Not
+									Allowed).
 								</div>
 							</div>
 						</div>
@@ -232,7 +235,7 @@
 					<div class="form-group row">
 						<input type="hidden" id="courseId" name="courseId"></input>
 						<p th:text="${param.courseId}" hidden></p>
-						<label class="col-lg-12 col-form-label" th:text="${deleteSuccessMessage}"></label>
+						<label class="col-lg-12 col-form-label" th:text="${successMessage}"></label>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -244,6 +247,30 @@
 	</div>
 	<!--Succes Modal End-->
 
+	<!--Error Modal-->
+	<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-sm text-center">
+			<div class="modal-content">
+				<div class="modal-header alert-danger">
+					<h5 class="modal-title text-white">Error!</h5>
+					<button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label class="col-lg-12 col-form-label" th:text="${errorMsg}"></label>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Error Modal End-->
+
 	<div th:insert="fragments/general.html :: header"></div>
 	<div class="container mt-5">
 		<h3>
@@ -252,59 +279,63 @@
 		<hr>
 		<div class="card">
 			<div class="card-body">
-					<h5>
-						<i class="fa fa-search"></i> Search Course
-					</h5>
-					<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
+				<h5>
+					<i class="fa fa-search"></i> Search Course
+				</h5>
+				<form class="form-horizontal" action="#" th:action="@{/courses/search}" method="post">
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Name:</label>
 						<div class="col-lg-3">
-							<input type="Text" class="form-control" name="courseName" id="courseName" placeholder="Enter Course Name"  maxlength="100" tabindex="1">
+							<input type="Text" class="form-control" name="courseName" id="courseName"
+								placeholder="Enter Course Name" maxlength="100" tabindex="1">
 						</div>
 						<div class="col-auto my-1">
 							<input type="submit" class="btn btn-success" value="Submit" id="searchBtn1">
 						</div>
-						
+
 						<br>
 						<br>
 						<br>
-						
-						<button type="button" id="filterBtn" class="collapsible">Filter</button>
-						<div id="filterItems" class="content col-lg-12">	  
+
+						<button type="button" id="filterBtn" class="collapsible">Advanced Search</button>
+						<div id="filterItems" class="content col-lg-12">
 							<!-- Course Category -->
 							<div class="form-group row">
 								<label class="col-lg-2 col-form-label">Course Category</label>
 								<div class="col-lg-5">
-									<input type="text" id="courseCategory" name ="courseCategory" list="courseCategoryList"
-												placeholder="Enter Course Category" 
-												class="form-control custom-select custom-select-md">
-												
+									<input type="text" id="courseCategory" name="courseCategory"
+										list="courseCategoryList" placeholder="Enter Course Category"
+										class="form-control custom-select custom-select-md"
+										onkeydown="return (event.keyCode!=13);">
+
 									<datalist id="courseCategoryList">
 										<option value=""></option>
-										<option th:each="courseCategory : ${courseCategory}" th:attr="data-value = ${courseCategory.id}"
-											th:value="${courseCategory.category}" th:selected="${courseCategory.id}"></option>
+										<option th:each="courseCategory : ${courseCategory}"
+											th:attr="data-value = ${courseCategory.id}"
+											th:value="${courseCategory.category}" th:selected="${courseCategory.id}">
+										</option>
 									</datalist>
-									</div>
 								</div>
+							</div>
 							<!-- Mandatory -->
 							<div class="form-group row">
 								<label class="col-lg-2 col-form-label">Mandatory</label>
 								<div class="col-lg-5">
-									<select class="form-control form-select" aria-label="Default select example" 
-										id="mandatory" name= "mandatory">
+									<select class="form-control form-select" aria-label="Default select example"
+										id="mandatory" name="mandatory" onchange="enableOrDisableDeadlineOnFilter()">
 										<option></option>
 										<option th:value="Yes" th:text="Yes"></option>
 										<option th:value="No" th:text="No"></option>
 									</select>
 								</div>
 							</div>
-							
+
 							<!-- Deadline -->
 							<div class="form-group row" id="deadlineDiv">
 								<label class="col-lg-2 col-form-label">Deadline</label>
 								<div class="col-lg-5">
-									<select class="form-control form-select" aria-label="Default select example" 
-										id="deadline" name= "deadline">
+									<select class="form-control form-select" aria-label="Default select example"
+										id="searchDeadline" name="searchDeadline">
 										<option></option>
 										<option th:value="Immediate" th:text="Immediate"></option>
 										<option th:value="Monthly" th:text="Monthly"></option>
@@ -313,34 +344,35 @@
 									</select>
 								</div>
 							</div>
-							
+
 							<!-- Remove filter button -->
 							<div class="float-left">
 								<button id="searchBtn2" class="btn btn-success">Submit</button>&nbsp;
-								<button id="removeFilterBtn" type="button" class="btn btn-danger float-right">Clear</button>
+								<button id="removeFilterBtn" type="button"
+									class="btn btn-danger float-right">Clear</button>
 							</div>
 						</div>
 					</div>
-					</form>
-				</div>
+				</form>
 			</div>
+		</div>
 
-			<div class="card mb-5">
-				<div class="card-header">
-					<h3>
-						<i class="fa fa-list-alt"></i> List Of Courses
-					</h3>
-				</div>
-				<div class="card-body">					
-					<div style="overflow-x: auto; display: block; white-space: nowrap;">
+		<div class="card mb-5">
+			<div class="card-header">
+				<h3>
+					<i class="fa fa-list-alt"></i> List Of Courses
+				</h3>
+			</div>
+			<div class="card-body">
+				<div style="overflow-x: auto; display: block; white-space: nowrap;">
 
-						<table class="table table-bordered text-center">
-							<thead>
-								<th style="width: 15%;">Action</th>
-								<th style="width: 20%;">
-									<div class="flex-column">
-										<span>Course Name</span>
-										<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
+					<table class="table table-bordered text-center">
+						<thead>
+							<th style="width: 15%;">Action</th>
+							<th style="width: 20%;">
+								<div class="flex-column">
+									<span>Course Name</span>
+									<div class="sortButtons" th:if="${#httpServletRequest.getRequestURI() != '/courses/search'}">
 			 										<a class="fa fa-caret-up" style="color:black;"
 			 											th:href="@{'/courses/load?page=' + ${currentPage}} + '&sortField=courseName&sortDir=asc'"></a>
 			 										<a class="fa fa-caret-down" style="color:black;"
@@ -401,7 +433,17 @@
 			 							</tr>
 			 						</tbody>
 			 						</table>
-			 						<nav aria-label="Pagination" th:if="${paginatedCourse.totalPages gt 0} and ${#httpServletRequest.getRequestURI() != '/courses/search'}">
+			 					<div th:if="${paginatedCourse.isEmpty()}">
+			 						<div class="alert alert-dismissible alert-danger text-center">
+			 							<strong>No Course Found</strong>
+			 						</div>
+			 						<div class="card-footer" style="display: none">
+			 							<div id="pagination"></div>
+			 					</div>
+				</div>
+				</div>
+				<br>
+				<nav aria-label="Pagination" th:if="${paginatedCourse.totalPages gt 0} and ${#httpServletRequest.getRequestURI() != '/courses/search'}">
 			 						<ul class="pagination justify-content-center font-weight-bold">
 			 							<li class="page-item" th:classappend="${paginatedCourse.number eq 0} ? 'disabled'">
 			 								<a class="page-link" th:href="@{/courses/load?page={id}&sortField={sortField}&sortDir={sortDir}(id=${paginatedCourse.number lt 2 ? 1 : paginatedCourse.number},sortField=${#request.getParameter('sortField')},sortDir=${#request.getParameter('sortDir')})}"
@@ -422,18 +464,8 @@
 			 					        </li>
 			 					    </ul>
 			 					</nav>
-			 					<div th:if="${paginatedCourse.isEmpty()}">
-			 						<div class="alert alert-dismissible alert-danger text-center">
-			 							<strong>No Course Found</strong>
-			 						</div>
-			 						<div class="card-footer" style="display: none">
-			 							<div id="pagination"></div>
-			 					</div>
-				</div>
-				</div>
 
 	<script type="text/javascript" th:inline="javascript">
-
 		function deleteButton(id, courseName, detail) {
 
 			document.getElementById("courseIdInput").value = id;
@@ -449,6 +481,7 @@
 				deadline = "Nan";
 				$(".update-mandatory").prop('disabled', true);
 			}
+			
 			document.getElementById("updateCourseIdInput").value = id;
 			document.getElementById("updateCourseName").value = courseName;
 			document.getElementById("updateCourseDetail").value = detail;
@@ -469,10 +502,25 @@
 				$(".update-mandatory").prop('disabled', false);
 			}
 		}
+		
+		function enableOrDisableDeadlineOnFilter() {
+			var mandatory = document.getElementById("mandatory").value;
+
+			if (mandatory === "No") {
+				$("#searchDeadline").prop('disabled', true);
+				document.getElementById("deadline").value = "";
+			} else {
+				$("#searchDeadline").prop('disabled', false);
+			}
+		}
 	</script>
 
 	<script>
 		$(document).ready(function () {
+			if(localStorage.getItem("showFilter") == "true") {
+		 	   document.getElementById('searchBtn1').style.display = "none";
+               document.getElementById('filterItems').style.display = "block";
+		 	}
 
 			if (window.location.href.indexOf('#confirmModal') != -1) {
 				$('#confirmModal').modal('show');
@@ -487,6 +535,9 @@
 
 			if (window.location.href.indexOf('#successModal') != -1) {
 				$('#successModal').modal('show');
+			}
+			if (window.location.href.indexOf('#errorModal') != -1) {
+				$('#errorModal').modal('show');
 			}
 
 		});
@@ -522,7 +573,6 @@
 						// reset
 						input.classList.remove('is-invalid')
 						input.classList.remove('is-valid')
-
 						if (input.checkValidity() === false) {
 							input.classList.add('is-invalid')
 							$(".update-button").prop('disabled', true);
@@ -534,22 +584,29 @@
 				});
 			}, false);
 		}));
-
+		
 		//script for collapsible filter menu
 		$("#filterBtn").click(function () {
-			 var filterItems = document.getElementById('filterItems').style.display;
-      
-            if(filterItems && filterItems === "block"){
+			 var showFilter = localStorage.getItem("showFilter");
+      		 
+            if(showFilter && showFilter == "true") {
                document.getElementById('searchBtn1').style.display = "block";
                document.getElementById('filterItems').style.display = "none";
+               localStorage.setItem("showFilter", "false");
             } else {
                document.getElementById('searchBtn1').style.display = "none";
                document.getElementById('filterItems').style.display = "block";
+               localStorage.setItem("showFilter", "true");
             }
         });
         
 			$("#removeFilterBtn").click(function () {
 				$(this).closest('form').find("input[type=text], textarea, select").val("");
+			});
+			
+			// auto trim the course name
+			$("#updateCourseName").change(function () {
+				this.value = $.trim(this.value);
 			});
 		
 	</script>

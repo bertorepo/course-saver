@@ -11,6 +11,7 @@
 <!-- 0.03    | 2021/04/20 | WS) i.fajardo         | Updated -->
 <!-- 0.04    | 2021/05/10 | WS) R.Naval           | Updated -->
 <!-- 0.05    | 2021/05/10 | WS) mi.aguinaldo      | Updated -->
+<!-- 0.06    | 2021/07/2 | WS) mi.aguinaldo      | Updated -->
 <!-- ================================================================================================== -->
 
 <!DOCTYPE html>
@@ -76,16 +77,18 @@
 						<div class="col-lg-5">
 							<input type="text" placeholder="Enter Course Name" class="form-control"
 								id="name" name="name">
+								<div class="text-danger er" id="coursename_error"> </div>
 						</div>
-						<span class="text-danger er" id="coursename_error"> </span>
+						
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Course Details</label>
 						<div class="col-lg-5">
 							<textarea rows="10" cols="50" placeholder="Enter Course Details" 
 								class="form-control" id="detail" name="detail"></textarea>
+								<div class="text-danger er" id="detail_error"></div>
 						</div>
-						<span class="text-danger er" id="detail_error"></span>
+						
 					</div>
 					<div class="form-group row">
 						<label class="col-lg-2 col-form-label">Mandatory</label>
@@ -158,7 +161,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-lg-12 col-form-label">Course under selected Course Category already exist. Please choose another Course Category.</label>
+							<label class="col-lg-12 col-form-label" th:text="${errorMsg}"></label>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -204,17 +207,22 @@
 				courseCategoryErrorCount = 0;
 			}
 			
+			
 			checkForm();
 		});
 		
 		// course name validation
 		$("#name").on("input", function(){
-			
+			var courseName = this.value.trim();
+			var noSpecialCharaterAtStartAndEndRegex = new RegExp('^[a-zA-Z0-9](?!.*?[^\na-za-zA-Z0-9]{2}).*?[a-zA-Z0-9]$');
 			<!--empty check-->
-			if (this.value.trim() == "") {
-				$("#coursename_error").text("Please enter a Course Name");
+			if ( courseName == "") {
+				$("#coursename_error").text("Please Enter A Course Name");
 				courseNameErrorCount++;
-			} else {
+			} else if(!noSpecialCharaterAtStartAndEndRegex.test(courseName)){
+			 	$("#coursename_error").text("Special Character On Start And End Are Not Allowed.");
+				courseNameErrorCount++;
+			}else {
 				$("#coursename_error").text("");
 				courseNameErrorCount = 0;
 			}
@@ -270,6 +278,7 @@
 			if(mandatory.checked == true){
 				deadline.style.display = "flex";
 			} else {
+				document.getElementById("deadlineSel").value = "-";
 				deadline.style.display = "none";
 			}
 		}
@@ -295,6 +304,7 @@
 				var courseId = $('#courseCategory [value="'+ holder +'"]').data('value');
 				
 				document.getElementById("courseCategoryId").value = courseId;
+
 			} else {
 				document.getElementById(id).placeholder = holder;
 				document.getElementById(id).value = '';
@@ -303,6 +313,9 @@
 				
 				document.getElementById("courseCategoryId").value = courseId;
 			}
+			
+			var courseCategoryId = document.getElementById("courseCategoryId").value;
+			
 		}
 
 		function courseNameOnChange(){
@@ -319,9 +332,20 @@
 				
 			} else {
 				var courseId = $('#courseCategory [value="'+ courseName +'"]').data('value');
-				
+	
 				document.getElementById("courseCategoryId").value = courseId;
 			}
+			// check if it is not in the datalist
+			var courseCatId = document.getElementById("courseCategoryId").value;
+			if(courseCatId === "undefined") {
+				var courseCategory = document.getElementById("courseCategorydetail").value; 
+				$("#courseCategory_error").text('No course category found with the name, "'+courseCategory+'".  Please select one from the list.');
+				courseCategoryErrorCount++;
+			}else {
+				$("#courseCategory_error").text("");
+				courseCategoryErrorCount = 0;
+			}
+			checkForm();
 		}	
 	</script>
 </body>
