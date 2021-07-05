@@ -57,7 +57,7 @@ function courseNameOnDown(id){
 		document.getElementById(id).placeholder = faceVal;
 		document.getElementById(id).value = '';
 		
-		var courseId = $('#courses [value="'+ holder +'"]').data('value');
+		var courseId = $('#courses [value="'+ faceVal +'"]').data('value');
 		
 		document.getElementById("courseId").value = courseId;
 	} else {
@@ -74,18 +74,24 @@ function courseNameOnChange(){
 	
 	var courseName = $("#courseName").val();
 	var holder = document.getElementById("courseName").placeholder;
-	
-	if(courseName == "" && (holder !== "This field is required." || holder !== "")){
+
+	if(courseName == "" && (holder !== "Please select..." || holder !== "")){
 		document.getElementById("courseName").value = holder;
 		
 		var courseId = $('#courses [value="'+ holder +'"]').data('value');
 		
-		document.getElementById("courseId").value = courseId;
-		
+		 document.getElementById("courseId").value = courseId;
 	} else {
 		var courseId = $('#courses [value="'+ courseName +'"]').data('value');
-		
-		document.getElementById("courseId").value = courseId;
+         if(courseId == undefined){
+		    document.getElementById("courseId").innherHtml = "";
+		    var courseNameNotFound = "Please specify a valid course name. Use the drop-down list for courses available."
+		    document.getElementById("courseName_error").innerHTML = courseNameNotFound;
+		    $("#courseName").val("Please select...");
+		  } else {				
+		    document.getElementById("courseId").value = courseId;
+		    document.getElementById("courseName_error").innerHTML = "";
+		}
 	}
 }
 
@@ -104,13 +110,15 @@ function removeNewRow(id) {
 
 function validations() {
 	var errorCount = 0;
-	var courseName = $('#courseName').val();
+	var courseName = $('#courseName').attr('placeholder');
 	var venue = $('#venueId').val();
+	var venueName = $('#venueName').val();
 	var courseId = $('#courseId').val();
 	var instructorId = $('#instructorId').val();
+	var instructorName = $('#instructorName').val();
 	var minRequired = parseInt($('#minRequired').val().replace("", "0"));
 	var maxAllowed = parseInt($('#maxAllowed').val().replace("", "0"));
-	
+		
 	
 	//Empty Fields Validations
 	if (courseName == "") {
@@ -119,38 +127,49 @@ function validations() {
         document.getElementById("courseName_error").innerHTML = courseNameError;
 	}
 	
+	if(courseName == "Please select..."){
+		errorCount++;
+	}
+	
 	if ((courseId == "undefined") || (courseId == null) || (courseId == "")) {
 		errorCount++;
-		courseNameError = 'No course found with the name, "'+courseName+'".  Please select one from the list.'; 
+		courseNameError = 'Please specify a valid course name. Use the drop-down list for courses available.'; 
         document.getElementById("courseName_error").innerHTML = courseNameError;
 	}
 	
-	if (instructorId == "") {
+	if ((instructorId == "undefined") || (instructorId == null) || (instructorId == "")) {
 		errorCount++;
-		instructorError = "This field is required.";
+		instructorError = "Please specify a valid instructor name. Use the drop-down list for courses available.";
         document.getElementById("instructorId_error").innerHTML = instructorError;
 	}
-	if (venue == "") {
+	
+	if(instructorName == "Please select..."){
 		errorCount++;
-		venueError = "This field is required.";
+	}
+	
+	if ((venue == "undefined") || (venue == null) || (venue == "")) {
+		errorCount++;
+		venueError = "Please specify a valid venue name. Use the drop-down list for courses available.";
         document.getElementById("venueId_error").innerHTML = venueError;
 	}
+	
+	if(venueName == "Please select..."){
+		errorCount++;
+	}
+
 	if (minRequired <= 0) {
 		errorCount++;
 	  	minRequiredError = "This field is required.";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 	}
-	if (maxAllowed <=0) {
-		errorCount++;
-	  	maxAllowedError = "This field is required.";
-	  	 document.getElementById("maxAllowed_error").innerHTML = maxAllowedError;
-	}
 	if (minRequired !==0) {
+		if(!maxAllowed == undefined || !maxAllowed == null|| !maxAllowed == ""){
 		if (maxAllowed <= minRequired) {
 			errorCount++;
 	  	minRequiredError = "Min shouldn't be greater than Max.";
 	  	 document.getElementById("minRequired_error").innerHTML = minRequiredError;
 		}
+	   }
 	}
 	
 	//Empty Fields Validation for Start and End date

@@ -3,6 +3,7 @@
  */
 package com.fujitsu.ph.tsup.course.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import com.fujitsu.ph.tsup.search.CourseSearchFilter;
 //0.01    | 2020/08/28 | WS) c.lepiten       | Initial Version
 //0.02    | 2021/04/20 | WS) i.fajardo       | Updated
 //0.03    | 2021/05/28 | WS) mi.aguinaldo    | Added Update course
+//0.04    | 2021/06/30 | WS) mi.aguinaldo    | Change the findCoursesByName to a optional 
 //==================================================================================================
 
 public interface CourseManagementDao {
@@ -43,7 +45,7 @@ public interface CourseManagementDao {
     int countCourse();
     
     // Method for searching Courses by Name
-    Set<Course> findCoursesByName(String name);
+    Optional<Course> findCoursesByName(String name);
     
     // Method for searching if Course already exists
     Set<Course> findIfCourseNameExists(String name, Long id);
@@ -54,6 +56,6 @@ public interface CourseManagementDao {
     // Method for updating a course
     void updateCourse(Course course);
     
-	// Method for loading all Course in Course View
+    // Method for loading all Course in Course View
     Set<Course> loadAllCourse();
 }

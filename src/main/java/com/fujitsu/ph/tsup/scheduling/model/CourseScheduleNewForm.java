@@ -13,7 +13,7 @@ import java.util.List;
 //Version | Date       | Updated by      | Content
 //--------+------------+-----------------+---------------
 //0.01    | 06/22/2020 | WS) JC. Jimenez | New Creation
-//
+//0.02    | 06/29/2021 | WS) J. Atendido | Added Venue overlap and edited MaxAllowed
 //=======================================================
 
 /**
@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
 
 public class CourseScheduleNewForm{
 
@@ -69,8 +70,7 @@ public class CourseScheduleNewForm{
     /**
      * Maximum Allowed Participants
      */
-    @Min(value = 1, message = "This field is required.")
-    private int maxAllowed;
+    private Integer maxAllowed;
     
     
     /**
@@ -147,11 +147,11 @@ public class CourseScheduleNewForm{
         return minRequired;
     }
     
-    public void setMaxAllowed(int maxAllowed) {
+    public void setMaxAllowed(Integer maxAllowed) {
         this.maxAllowed = maxAllowed;
     }
     
-    public int getMaxAllowed() {
+    public Integer getMaxAllowed() {
         return maxAllowed;
     }
     

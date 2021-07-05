@@ -457,36 +457,85 @@ SET search_path = tsup;
 ALTER TABLE venue
 ADD COLUMN overlap boolean;
 
---Added 2021/06/22
+--NEW COLUMN MANDATORY TYPE and NEW TABLE FOR JDU TYPE 
+
 CREATE SEQUENCE "JDU_TYPE_ID_seq"
     INCREMENT 1
     START 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE "JDU_TYPE_ID_seq"
+    CACHE 1; 
+ALTER SEQUENCE "JDU_TYPE_ID_seq"  
     OWNER TO postgres;
-
+    
 CREATE TABLE JDU_TYPE
 (
-    ID bigint NOT NULL DEFAULT nextval('tsup."JDU_TYPE_ID_seq"'::regclass),
+    ID bigint NOT NULL DEFAULT nextval('tsup."JDU_TYPE_ID_seq"'::regclass) ,
     JDU_NAME character varying(100) COLLATE pg_catalog."default",
     TIMEZONE character varying(10) COLLATE pg_catalog."default",
     CONSTRAINT "JDU_TYPE_pkey" PRIMARY KEY (id),
     CONSTRAINT "JDU_TYPE_unique" UNIQUE (jdu_name)
 )
-WITH (OIDS = FALSE)
-
-TABLESPACE pg_default;
-
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default; 
 ALTER TABLE JDU_TYPE
     OWNER to postgres;
-
+    
 ALTER TABLE department
-    ADD COLUMN JDU_ID bigint NOT NULL DEFAULT nextval('tsup."JDU_TYPE_ID_seq"'::regclass),
+    ADD COLUMN JDU_ID bigint NOT NULL DEFAULT 1,
     ADD CONSTRAINT "JDU_TYPE_fkey" FOREIGN KEY (JDU_ID) REFERENCES jdu_type(ID) MATCH SIMPLE ON DELETE CASCADE;
+ALTER TABLE course
+    ADD COLUMN DEPARTMENT_ID bigint NOT NULL DEFAULT 1,
+    ADD CONSTRAINT "DEPARTMENT_fkey" FOREIGN KEY (DEPARTMENT_ID) REFERENCES department(ID) MATCH SIMPLE ON DELETE CASCADE;
+
+--FOR MANDATORY_TYPE
+ALTER TABLE course
+    ADD COLUMN mandatory_type character varying(30) DEFAULT '-';
 
 ALTER TABLE course
-    ADD COLUMN DEPARTMENT_ID bigint NOT NULL DEFAULT nextval('tsup."DEPARTMENT_ID_seq"'::regclass),
-    ADD CONSTRAINT "DEPARTMENT_fkey" FOREIGN KEY (DEPARTMENT_ID) REFERENCES department(ID) MATCH SIMPLE ON DELETE CASCADE;
+	ADD CONSTRAINT MANDATORY_TYPE_check 
+	CHECK (mandatory_type = '-' or mandatory_type = 'JDU' or mandatory_type = 'GDC');
+	
+
+--Added 2021/07/05
+--Function for getting non-attendees
+--DROP FUNCTION tsup.GET_NON_ATTENDEES(mandatoryType VARCHAR, jdutype BIGINT);
+CREATE OR REPLACE FUNCTION tsup.GET_NON_ATTENDEES(mandatoryType VARCHAR, jdutype BIGINT)
+RETURNS TABLE (COURSE_ID BIGINT, COURSE_NAME VARCHAR, EMPLOYEE_ID BIGINT, EMPLOYEE_NAME TEXT)
+language plpgsql
+as $$
+begin
+	return query 
+	SELECT DISTINCT C.id  AS COURSE_ID,
+		   C.NAME AS COURSE_NAME,
+		   E.id  AS EMPLOYEE_ID,
+		   CONCAT(E.last_name,', ', E.first_name) As EMPLOYEE_NAME
+	FROM   tsup.employee E,
+		   tsup.course C
+		   INNER JOIN tsup.department D
+		   ON C.department_id = D.id
+	WHERE  C.mandatory = 'Yes'
+		   AND C.mandatory_type = mandatoryType
+		   AND D.jdu_id = jdutype
+		   AND ( C.id, C.NAME, E.last_name ) NOT IN(
+		   SELECT DISTINCT C.id   AS COURSE_ID,
+				   C.NAME AS COURSE_NAME,
+				   E.last_name
+			FROM   tsup.employee E
+			INNER JOIN tsup.course_attendance CA
+				   ON E.id = CA.participant_id
+			   INNER JOIN tsup.course_schedule_detail CSD
+					   ON CSD.id = CA.course_schedule_detail_id
+			   INNER JOIN tsup.course_schedule CS
+					   ON CS.id = CSD.course_schedule_id
+			   INNER JOIN tsup.course C
+					   ON C.id = CS.course_id
+			   INNER JOIN tsup.department D
+					   ON C.department_id = D.id
+				WHERE  C.mandatory = 'Yes'
+					   AND C.mandatory_type = mandatoryType
+					   AND D.jdu_id = jdutype) 
+	ORDER BY COURSE_ID, EMPLOYEE_ID;
+end;$$

@@ -102,9 +102,9 @@
 						<div class="col-lg-2">
 							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
 									class="form-control" placeholder="Max" 
-									th:field="*{maxAllowed}" id="maxAllowed" >
-								<div class="text-danger er" id="maxAllowed_error"> 
-							</div>
+									th:field="*{maxAllowed}" id="maxAllowed">
+								<!--<div class="text-danger er" id="maxAllowed_error"> 
+							</div> -->
 						</div>
 					</div>
 					<div class="mt-5 col-lg-12" style="overflow-x:auto;display: block; white-space: nowrap" id="dateTime">
@@ -191,7 +191,7 @@
 						</table>
 					</div>
 					<div class="float-right">
-						<input id="submit_btn" type="button" class="btn btn-success" th:attr="onclick=|validations()|" value="Submit" disabled>
+						<input id="submit_btn" type="button" class="btn btn-success" th:attr="onclick=|validations()|" value="Submit">
 						<!-- <a class="btn btn-danger" th:href="@{/dashboard}" >Cancel</a> -->
 					</div>
 				</div>
@@ -380,72 +380,7 @@
 		    /*]]>*/
 		}
 		
-		//Check if Course name, Instructor and venue has values, enable submit button
-		
-		if((courseName !== "") && (courseName !== undefined) && (courseName !== null) &&
-		(instructorName !== "") && (instructorName !== undefined) && (instructorName !== null) &&
-		(venueName !== "") && (venueName !== undefined) && (venueName !== null)) {
-		  
-		  $('#submit_btn').removeAttr('disabled');
-		
-		}
 	}
-	
-	/* ========================
-	 *  On input Validation 
-	 * ========================
-	 */
-	 
-	 var courseNameCount = 1;
-	 var instructorNameCount = 1;
-	 var venueNameCount = 1;
-	 var minParticipantCount = 1;
-		 
-	$("#courseName").on("input", function() {
-		if (this.value.trim() == "") {
-		courseNameCount++;
-		} else {
-			courseNameCount = 0;
-		}
-		
-		if (courseNameCount == 0 && instructorNameCount == 0 && venueNameCount == 0) {
-				$('#submit_btn').removeAttr('disabled');
-		} else {
-			$('#submit_btn').removeAttr('disabled');
-			$('#submit_btn').attr('disabled', true);
-		}
-	});
-	
-	$("#instructorName").on("input", function() {
-		if (this.value.trim() == "") {
-		instructorNameCount++;
-		} else {
-			instructorNameCount = 0;
-		}
-		
-		if (courseNameCount == 0 && instructorNameCount == 0 && venueNameCount == 0) {
-				$('#submit_btn').removeAttr('disabled');
-		} else {
-			$('#submit_btn').removeAttr('disabled');
-			$('#submit_btn').attr('disabled', true);
-		}
-	});
-	
-	$("#venueName").on("input", function() {
-		if (this.value.trim() == "") {
-		venueNameCount++;
-		} else {
-			venueNameCount = 0;
-		}
-		
-		if (courseNameCount == 0 && instructorNameCount == 0 && venueNameCount == 0) {
-				$('#submit_btn').removeAttr('disabled');
-		} else {
-			$('#submit_btn').removeAttr('disabled');
-			$('#submit_btn').attr('disabled', true);
-		}
-	});
-	
 	</script>
 </body>
 

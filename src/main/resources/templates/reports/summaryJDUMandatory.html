@@ -1,0 +1,173 @@
+<!-- ================================================================================================== -->
+<!-- Project Name : Training Sign Up -->
+<!-- System Name  : Reports -->
+<!-- Name         : summaryMandatoryCourses.html -->
+
+<!-- <<Modification History>> -->
+<!-- Version | Date       | Updated By            | Content -->
+<!-- --------+------------+-----------------------+--------------------------------------------------- -->
+<!-- 0.01    | ----/--/-- | WS) -		          | Created -->
+<!-- 0.02    | ----/--/-- | WS) m.padaca          | Updated -->
+<!-- 0.03    | 2021/07/02 | WS) l.celoso          | Updated -->
+<!-- ================================================================================================== -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Page of Generate Reports" />
+<meta name="author" content=" " />
+<title>Generate Reports</title>
+<link rel="stylesheet" type="text/css" href="/css/app/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/app/report/summaryGSTForDev.common.css">
+
+<script th:src="@{/js/app/jquery-3.5.1.js}"></script>
+<script th:src="@{/js/app/bootstrap.min.js}"></script>
+<script th:src="@{/js/app/moment.min.js}"></script>
+<script th:src="@{/js/lib/summaryReport.js}"></script>
+</head>
+<body onload="load()">
+	<div th:insert="fragments/general.html :: header"></div>
+	<div class="container mt-5 div_minheight">
+		<h3>
+			<i class="fa fa-file-text"></i> Generate Reports
+		</h3>
+		<hr>
+		<form id="summaryGstForDevForm" class="form-horizontal" action="#" th:action="@{/report/summary/standardization/dev}"  th:object="${summaryMandatoryAttendance}"  method="GET">
+		<div class="card">
+			<div class="card-body">
+				<div
+					class="form-group row align-items-center justify-content-center">
+					<label class="col-lg-2 col-form-label" style="font-weight: bold;">Report
+						Type</label> <span style="width: 70px"></span>
+					<div class="col-lg-5">
+						<select id="selectReportType" name="selectReportType"
+							class="form-control" required onchange="selectReport()"
+							style="text-align-last: center;">
+							<option value="" disabled hidden>Please Select
+								Report Type</option>
+							<option th:value="0" disabled hidden></option>
+							<option th:value="1">Summary of Course Conducted</option>
+							<option th:value="2" >Summary of JDU Standardization Training for Dev</option>
+							<option th:value="3">Summary of JDU Standardization Training for PM</option>
+							<option th:value="4">Summary of Mandatory
+									Courses</option>
+							<option th:value="5" selected>Report for members who have not yet completed the JDU Courses</option>
+							<option th:value="6" >Report for members who have not yet completed the GDC Courses</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="dateRange">
+					<div class="form-group row align-items-center justify-content-center">
+	 				 <span style="width:31px"></span>
+	                 	<label class="col-lg-3 col-form-label" style="font-weight: bold;">Date Range</label>
+		                	<div class= "fromDate" style="display:inherit;">
+		                        <label class="col-form-label" style="font-weight: bold;">From</label>
+								<span style="width:8px"></span>
+			                    <input class="form-control" type="datetime-local" id="startDate" name="startDate" style="width:220px; font-size:14px;" onkeydown="return false" disabled/>
+								<input type="hidden"/>
+							</div>
+					<span style="width:8px"></span>
+					<div class= "toDate" style="display:inherit;">
+	                       <label class="col-form-label" style="font-weight: bold;">To</label>
+	                        <span style="width:8px"></span>
+	                          <input class="form-control" type="datetime-local" id="endDate" name="endDate" style="width:220px; font-size:14px;" onkeydown="return false" disabled/>
+	                          <input type="hidden"/>         
+	             			</div> 
+					</div>
+				  </div>
+				<div class="form-group row align-items-center justify-content-center">
+					<label class="col-lg-2 col-form-label" style="font-weight: bold;">Course</label>
+					<span style="width: 75px"></span>
+					<div class="col-lg-5">
+						<input list="course" class="form-control" id="inputCourse"
+							type="text" autocomplete="off" disabled>
+					</div>
+				</div>
+				<div
+					class="form-group row align-items-center justify-content-center viewAndExportButton"
+					style="margin-left: 20%">
+					<input type="button" id="viewButton" class="btn btn-success"
+						value="View" style="width: 100px" disabled />
+					<span style="width: 100px"></span> <input type="button"
+						id="exportButton" class="btn btn-success"
+						onclick="fileNameCreator()" value="Export" style="width: 100px" />
+				</div>
+				<label>Report Display Summary</label>
+				<div class="container" id="reportTable"  style="border-style: groove; width: 100%; height: 400px; display:block; overflow-x:auto; ">
+				<!-- Display Summary -->
+					<div class="row" style="margin-top:15px;width: 100%;margin-left:15px;">											
+						<h6>Report for members who have not yet completed the JDU mandatory courses <br><br> 
+						Legends: <br>	O = Completed <br>	X = Not yet completed <br><br></h6>
+						<table class="summaryTable table table-bordered text-center width_max">
+							<thead>
+								<tr th:each="course : ${summaryMandatoryAttendance.get(0)}">
+									<th width="50px"> Member List </th>
+									<th th:each="courseName : ${course.courseName}" th:text="${courseName}"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="attendeeForm : ${summaryMandatoryAttendance}">
+									<td class="text-left" style="width:200px" th:text="${attendeeForm.employeeName}"></td>
+									<td class="align-middle" th:each="attendanceStatus : ${attendeeForm.attendanceStatus}" th:text="${attendanceStatus}"></td>
+								</tr>
+							</tbody>
+						</table>
+					  </div>
+				    </div>
+		      </div>
+ 			</div>
+        </form>
+		<!-- End of Display Summary of G3CC Standardization Training -->
+		<!-- Export Summary of G3CC Standardization Training  -->
+		<table id="exportSummaryTable"
+			class="table table-bordered table-responsive text-center sticky-table width_max"
+			style="display: none; width: 100%; height: 400px;">
+			<thead id="tBodyExportSummary" >
+				<tr class="content" th:each="course : ${summaryMandatoryAttendance.get(0)}">
+					<th> Member List </th>
+					<th></th>
+					<th th:each="courseName : ${course.courseName}" th:text="${courseName}"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="attendeeForm : ${summaryMandatoryAttendance}">
+					<td th:text="${attendeeForm.employeeName}"></td>
+					<td th:each="attendanceStatus : ${attendeeForm.attendanceStatus}" th:text="${attendanceStatus}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- End of Export Summary of G3CC Standardization Training -->
+		<!-- Error Modal-->
+		<div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm text-center">
+				<div class="modal-content">
+					<div class="modal-header alert-danger">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-lg-12 col-form-label" id="message"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Error Modal End -->
+	</div>
+	<footer th:replace="fragments/general.html :: footer"></footer>
+</body>
+<script>
+</script>
+</html>

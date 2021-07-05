@@ -4,7 +4,6 @@ function load() {
         var toDateTime = $("#scheduledEndDateTime").val();
         var fromNewDate = fromDateTime.slice(0, 16);
         var toNewDate = toDateTime.slice(0, 16);
-        var selectedReportType = document.getElementById("selectReportType").value;
 
         document.getElementById("startDate").value = fromNewDate;
         document.getElementById("endDate").value = toNewDate;
@@ -64,8 +63,10 @@ function selectReport() {
         window.location.href = "/report/summary/standardization/pm/";
     } else if (selectedReportType == 4) {
 		window.location.href = "/mandatoryCourses/load/";
-	} else {
-
+	} else if (selectedReportType == 5){
+		window.location.href = "/report/summary/jduMandatoryCourses/";
+	} else if (selectedReportType == 6){
+		window.location.href = "/report/summary/gdcMandatoryCourses/";
     }
 }
 
@@ -89,6 +90,10 @@ function fileNameCreator() {
         strFileName += "JDU Standardization Training for PM - ";
     } else if (selectedReportType == 4) {
         strFileName += "Mandatory Courses - ";
+    } else if (selectedReportType == 5) {
+        strFileName += "Report for members who have not yet completed the JDU Courses - ";
+    } else if (selectedReportType == 6) {
+        strFileName += "Report for members who have not yet completed the GDC Courses - ";
     }
     strFileName += dt.YYYYMMDDHHMMSS() + ".csv";
     exportTableToCSV(strFileName);
@@ -136,7 +141,7 @@ function downloadCSV(csv, filename) {
         downloadLink.style.display = "none";
         downloadLink.click();
         setTimeout(function() {
-            alert("Report exported successfully");
+            //alert("Report exported successfully");
         }, 1500);
     }
 }

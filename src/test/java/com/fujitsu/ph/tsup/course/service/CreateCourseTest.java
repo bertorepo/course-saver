@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fujitsu.ph.tsup.course.dao.CourseManagementDao;
 import com.fujitsu.ph.tsup.course.model.Course;
+import com.fujitsu.ph.tsup.exception.TsupException;
 
 
 //==================================================================================================
@@ -99,7 +100,7 @@ public class CreateCourseTest {
         
         Course course = createCourse();
         
-        Exception courseException = assertThrows(IllegalArgumentException.class, () 
+        Exception courseException = assertThrows(TsupException.class, () 
                 -> courseManagementService.createCourse(course));
         
         String expectedMessage = "Can't create new course";

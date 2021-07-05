@@ -85,7 +85,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         String query = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/07/06
+                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/06/07
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "C.DETAIL AS DETAILS, " 
                 + "C.MANDATORY AS MANDATORY," // Added
@@ -170,7 +170,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "CS.ID AS ID, "
                 + "C.DETAIL AS DETAILS, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
-                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/07/06
+                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/06/07
                 + "CS.COURSE_ID AS COURSE_ID, " 
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
@@ -471,7 +471,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         String query = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/07/06
+                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/06/07
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "C.DETAIL AS DETAILS, " 
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
@@ -527,7 +527,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         String sql = "SELECT C.NAME AS COURSE_NAME, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/07/06
+                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/06/07
                 + "CS.COURSE_ID AS COURSE_ID, "
                 + "C.DETAIL AS DETAILS, " 
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
@@ -601,7 +601,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                 + "C.DETAIL AS DETAILS, " 
                 + "CS.ID AS ID, " 
                 + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "
-                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/07/06
+                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/06/07
                 + "CS.COURSE_ID AS COURSE_ID, " 
                 + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " 
@@ -641,7 +641,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         
         String sql = "SELECT C.NAME AS COURSE_NAME, "
                 + "C.DETAIL AS DETAILS, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
-                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/07/06
+                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/06/07
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "C.MANDATORY AS MANDATORY, " // Added
@@ -753,7 +753,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
         
         String query = "SELECT C.NAME AS COURSE_NAME, "
                 + "C.DETAIL AS DETAILS, " + "CS.ID AS ID, " + "CSD.ID AS COURSE_SCHEDULE_DETAIL_ID, "// Added
-                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/07/06
+                + "CC.CATEGORY AS COURSE_CATEGORY, " //Added 2021/06/07
                 + "CS.COURSE_ID AS COURSE_ID, " + "CS.INSTRUCTOR_ID AS INSTRUCTOR_ID, "
                 + "E.LAST_NAME AS INSTRUCTOR_LAST_NAME, " + "E.FIRST_NAME AS INSTRUCTOR_FIRST_NAME, "
                 + "CS.VENUE_ID AS VENUE_ID, " + "V.NAME AS VENUE_NAME, " + "CS.MIN_REQUIRED AS MIN_REQUIRED, "
@@ -822,7 +822,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
     	
     	String query = "SELECT name"
     			+ " from TSUP.COURSE"
-    			+ " WHERE MANDATORY = :isMandatory";
+    			+ " WHERE MANDATORY = :isMandatory AND MANDATORY_TYPE = 'GDC'";
     	
     	SqlParameterSource courseMandatoryParameters = new MapSqlParameterSource()
     			.addValue("isMandatory", "Yes");
@@ -1020,5 +1020,30 @@ public class EnrollmentDaoImpl implements EnrollmentDao {
                     .addValue("toDateTime", toDateTime.withZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime());
 	        return template.queryForObject(query, courseScheduleParameters, Integer.class);
         }
+    }
+    
+    /**
+     *
+     *Method for getting all email of employees to be enrolled
+     */  
+    @Override
+    public Set<CourseParticipant> getAllEmails(String batchId){
+    	
+        List<Long> items = Arrays.asList(batchId.split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
+    	String query = "SELECT E.NUMBER AS EMPLOYEE_ID, " 
+        		+ "			E.ID as EMP_ID, "
+                + "			E.LAST_NAME AS EMPLOYEE_LAST_NAME, " 
+                + "			E.FIRST_NAME AS EMPLOYEE_FIRST_NAME, "
+                + "			E.EMAIL_ADDRESS AS EMAIL "
+                + "		FROM EMPLOYEE AS E "
+                + "		WHERE E.ID IN (:participantIds)";
+    	
+    	SqlParameterSource courseEnrolledParameters = new MapSqlParameterSource().addValue("participantIds",items);
+        List<CourseParticipant> employeeList = template.query(query, 
+        													  courseEnrolledParameters,  
+        													  new EnrollmentRowMapperCourseParticipantByCourseScheduleId());
+        Set<CourseParticipant> employee = new LinkedHashSet<>(employeeList);
+
+        return employee;
     }
 }
