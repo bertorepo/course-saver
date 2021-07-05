@@ -3,6 +3,18 @@ package com.fujitsu.ph.tsup.scheduling.model;
 import java.util.List;
 import java.util.Set;
 
+//=======================================================
+//$Id: PR02$
+//Project Name: Training Sign Up
+//Class Name: CourseScheduleUpdateForm.java
+//
+//<<Modification History>>
+//Version | Date       | Updated by      | Content
+//--------+------------+-----------------+---------------
+//0.01    | 06/29/2021 | WS) J. Atendido | Added Venue overlap and edited MaxAllowed
+//=======================================================
+
+
 public class CourseScheduleUpdateForm {
 
 	/**
@@ -43,7 +55,7 @@ public class CourseScheduleUpdateForm {
     /**
      * Maximum Allowed Participants
      */
-    private int maxAllowed;
+    private Integer maxAllowed;
     
     
     /**
@@ -122,11 +134,11 @@ public class CourseScheduleUpdateForm {
 		this.minRequired = minRequired;
 	}
 
-	public int getMaxAllowed() {
+	public Integer getMaxAllowed() {
 		return maxAllowed;
 	}
 
-	public void setMaxAllowed(int maxAllowed) {
+	public void setMaxAllowed(Integer maxAllowed) {
 		this.maxAllowed = maxAllowed;
 	}
 
