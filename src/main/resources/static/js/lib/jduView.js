@@ -44,13 +44,14 @@ function validateInput() {
 
 function isFormModified() {
 	return $('#jduUpdateName').val() == jduNameOriginal
-		&& $('#timezone').val().trim() == timezoneOriginal;
+		&& $('#timezone').val() == timezoneOriginal;
 }
 
 
 function hasDuplicate(jduName) {
 	return jduList.some(function(jdu) {
-		return jdu.jduName.toLowerCase() == jduName.toLowerCase();
+		return jdu.jduName.toLowerCase() == jduName.toLowerCase() 
+			&& jduNameOriginal != jduName;
 	});
 }
 
@@ -89,15 +90,18 @@ var jduNameOriginal;
 var timezoneOriginal
 
 $('#jduUpdateName').on("input", function() {
-	var jduNameValue = this.value.trim();
+	var jduNameValue = this.value;
 	$('#nameErrorMsg').text("");
 
 	if (format.test(jduNameValue)) {
 		$('#nameErrorMsg').text("JDU name contains invalid special characters.");
 		hasInvalidInput = true;
-	} else if(hasDuplicate(jduNameValue)) {
+	} else if (hasDuplicate(jduNameValue)) {
 		$('#nameErrorMsg').text("JDU already exists.");
 		hasInvalidInput = true;
+	} else if (jduNameValue == "") {
+		$('#nameErrorMsg').text("Please enter a JDU name.");
+		hasInvalidInput = false;
 	} else {
 		$('#nameErrorMsg').text("");
 		hasInvalidInput = false;
@@ -107,6 +111,15 @@ $('#jduUpdateName').on("input", function() {
 })
 
 $('#timezone').on("input", function() {
+	var timezoneValue = this.value.trim();
+	if (timezoneValue == "") {
+		$('#timezoneErr').text("Please pick a timezone.");
+		hasInvalidInput = true;
+	} else {
+		$('#timezoneErr').text("");
+		hasInvalidInput = false;
+	}
+
 	validateInput();
 })
 

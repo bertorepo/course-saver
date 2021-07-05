@@ -93,5 +93,14 @@ $('#departmentUpdateName').on("input", function() {
 })
 
 $('#jduId').on("input", function() {
+	var jduIdValue = this.value.trim();
+	if (jduIdValue == "") {
+		$('#jduNameErr').text("Please pick a JDU.");
+		hasInvalidInput = true;
+	} else {
+		$('#jduNameErr').text("");
+		hasInvalidInput = false;
+	}
+
 	validateInput();
 })
