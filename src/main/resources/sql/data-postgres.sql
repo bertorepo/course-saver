@@ -2,9 +2,9 @@ SET search_path = tsup;
 
 --JDU TYPE
 INSERT INTO JDU_TYPE(jdu_name,  timezone)
-    VALUES ('PH', 'GMT+8:00');
+    VALUES ('PH', 'GMT +08:00');
 INSERT INTO JDU_TYPE(jdu_name,  timezone)
-    VALUES ('IN', 'GMT+5:30');
+    VALUES ('IN', 'GMT +05:30');
 
 INSERT INTO tsup.DEPARTMENT(department_name, jdu_id)
 	VALUES ('FDC-Apps Dev Manila', 1);
