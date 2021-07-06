@@ -47,7 +47,6 @@ function numOnly(id)
 {
 	 var number = document.getElementById(id);
 	 var regex = /[^0-9]/gi;
-	 
 	 number.value = number.value.replace(regex, "");
 }
 
