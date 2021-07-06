@@ -92,7 +92,7 @@
 					<div class="form-group row align-items-center justify-content-center">
 						<label class="col-lg-2 col-form-label">Participant(s) :</label>
 						<div class="col-lg-2">
-							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
+							<input type="text" onchange="numOnly(this.id)" maxlength="5" 
 									class="form-control" placeholder="Min" 
 									th:field="*{minRequired}"id="minRequired" > 
 								<div class="text-danger er" id="minRequired_error"> 
@@ -100,7 +100,7 @@
 						</div>
 						<div class="col-lg-1 text-center">—</div>
 						<div class="col-lg-2">
-							<input type="text" oninput="numOnly(this.id);" maxlength="5" 
+							<input type="text" onchange="numOnly(this.id)" maxlength="5" 
 									class="form-control" placeholder="Max" 
 									th:field="*{maxAllowed}" id="maxAllowed">
 								<!--<div class="text-danger er" id="maxAllowed_error"> 
