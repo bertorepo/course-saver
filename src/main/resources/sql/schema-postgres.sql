@@ -275,7 +275,7 @@ ALTER TABLE tsup.EMPLOYEE
 CREATE TABLE tsup.COURSE
 (
     ID bigint NOT NULL DEFAULT nextval('tsup."COURSE_ID_seq"'::regclass),
-    NAME character varying(100) COLLATE pg_catalog."default",
+    NAME character varying(150) COLLATE pg_catalog."default",
     DETAIL character varying(200) COLLATE pg_catalog."default",
     course_category_id bigint NOT NULL DEFAULT nextval('tsup."COURSE_CATEGORY_ID_seq"'::regclass),
     CONSTRAINT "COURSE_pkey" PRIMARY KEY (ID),

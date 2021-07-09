@@ -16,7 +16,7 @@ INSERT INTO tsup.DEPARTMENT(department_name, jdu_id)
 	VALUES ('FDC-Apps Dev Cebu', 1);
 	
 
---Course Category
+--Course Category 
 INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
 	VALUES('Microsoft Web Applications','Detail for Microsoft Web Applications');
 INSERT INTO tsup.COURSE_CATEGORY(CATEGORY, DETAIL) 
@@ -106,7 +106,6 @@ INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME
 	VALUES ('A17843', 'Lumontad', 'Mark', 'm.lumontad@fujitsu.com', 'm.lumontad', 2, 4, '2017-06-15');
 INSERT INTO tsup.EMPLOYEE(NUMBER, LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, USERNAME, department_id, member_role_id,employment_date)
 	VALUES ('A19075', 'Ramos', 'Ramon', 'r.ramos@fujitsu.com', 'r.ramos', 2, 4, '2017-06-15');
-
 --Access Type
 INSERT INTO tsup.employee_auth(auth_name, username)
 	VALUES ('PMO', 'l.lorenzo');
@@ -123,48 +122,48 @@ INSERT INTO tsup.EMPLOYEE_AUTH(AUTH_NAME, USERNAME) VALUES ('PMO', 'r.ramos');
 
 --Courses
 INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('SpringBoot', 'DETAILS', 1, 'No', '-', 1, '-');
-INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Git', 'DETAILS',1, 'Yes', '-', 1, 'GDC');
-INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Ruby on Rails', 'DETAILS',1, 'Yes', '-', 1, 'JDU');
+INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Git', 'DETAILS',1, 'No', '-', 1, '-');
+INSERT INTO tsup.COURSE(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Ruby on Rails', 'DETAILS',1, 'No', '-', 1, '-');
 INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Goal Setting', 'Detail',26, 'No', '-', 1, '-');
 --Added 2021/06/18
 --JDU BAS STANDARDIZATION FOR DEVS TRAINING
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Standardization', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Understanding UI', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Understanding UI - Practical', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Understanding SS', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Understanding SS - Practical', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Q&A Session - Standardization, Understanding UI, and Understanding SS', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('How to use Git', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('How to use Yakushin', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Coding Standards', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Developer Testing', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Q&A Session - How to use Git, How to use Yakushin, Coding Standards, and Developer Testing', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Junit Practical', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Peer Review Report', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('PT Bug List', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('How to Implement Peer Review Points', 'Detail',74,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Q&A Session - Junit Practical, Peer Review Report, PT Bug List and How to Implement Peer Review Points', 'Detail',74,'Yes', 'Immediate');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Standardization', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Understanding UI', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Understanding UI - Practical', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Understanding SS', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Understanding SS - Practical', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Q&A Session - Standardization, Understanding UI, and Understanding SS', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('How to use Git', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('How to use Yakushin', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Coding Standards', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Developer Testing', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Q&A Session - How to use Git, How to use Yakushin, Coding Standards, and Developer Testing', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Junit Practical', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Peer Review Report', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('PT Bug List', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('How to Implement Peer Review Points', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Q&A Session - Junit Practical, Peer Review Report, PT Bug List and How to Implement Peer Review Points', 'Detail',27,'Yes', 'Immediate', 1, 'JDU');
 --BSE STANDARDIZATION
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Minutes Creation', 'Detail',75,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Business Email', 'Detail',75,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Basic Japanese Etiquette', 'Detail',75,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Client Visit Process', 'Detail',75,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Translation Guidelines', 'Detail',75,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Interpretation for JP Clients', 'Detail',75,'Yes', 'Immediate');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Minutes Creation', 'Detail',28,'Yes', 'Immediate', 1, 'GDC');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Business Email', 'Detail',28,'Yes', 'Immediate', 1, 'GDC');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Basic Japanese Etiquette', 'Detail',28,'Yes', 'Immediate', 1, 'GDC');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Client Visit Process', 'Detail',28,'Yes', 'Immediate', 1, 'GDC');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Translation Guidelines', 'Detail',28,'Yes', 'Immediate', 1, 'GDC');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Interpretation for JP Clients', 'Detail',28,'Yes', 'Immediate', 1, 'GDC');
 --JDU BAS STANDARDIZATION FOR TL/PM TRAINING
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('PM Flow', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Project Plan', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Estimation', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Man Hour Management', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('PA/PFA', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('WBS Upload', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Weekly Status Report', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Yakushin Dashboard', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Furikaeri', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Quality Analysis Tool', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Productivity Analysis', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Audit', 'Detail',76,'Yes', 'Immediate');
-INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE) VALUES ('Information Security', 'Detail',76,'Yes', 'Immediate');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('PM Flow', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Project Plan', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Estimation', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Man Hour Management', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('PA/PFA', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('WBS Upload', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Weekly Status Report', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Yakushin Dashboard', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Furikaeri', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Quality Analysis Tool', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Productivity Analysis', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Audit', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
+INSERT INTO tsup.course(NAME, DETAIL, COURSE_CATEGORY_ID, MANDATORY, DEADLINE, DEPARTMENT_ID, MANDATORY_TYPE) VALUES ('Information Security', 'Detail',29,'Yes', 'Immediate', 1, 'JDU');
 	
 --Venues 
 INSERT INTO tsup.VENUE(NAME) VALUES ('Virtual Training');
